@@ -9,11 +9,20 @@
 
 @interface BTAnalyticsService_Tests : XCTestCase
 
+@property (nonatomic, assign) uint64_t currentTime;
+@property (nonatomic, assign) uint64_t oneSecondLater;
+
 @end
 
 @implementation BTAnalyticsService_Tests
 
 #pragma mark - Analytics tests
+
+- (void)setUp {
+    [super setUp];
+    self.currentTime = (uint64_t)([[NSDate date] timeIntervalSince1970] * 1000);
+    self.oneSecondLater = (uint64_t)(([[NSDate date] timeIntervalSince1970] * 1000) + 999);
+}
 
 - (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_returnsError {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:nil];
@@ -56,6 +65,9 @@
 
     XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
     XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+    XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.currentTime);
+    XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
+
     [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
 }
 
@@ -86,7 +98,13 @@
         XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+        XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.currentTime);
+        XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
+
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"another.analytics.event");
+        XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.currentTime);
+        XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
+
         [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
         [expectation fulfill];
     }];
@@ -112,7 +130,12 @@
         XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+        XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.currentTime);
+        XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
+
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"another.analytics.event");
+        XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.currentTime);
+        XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
         [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
         [expectation fulfill];
     }];
@@ -186,7 +209,13 @@
         XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event.1");
+        XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.currentTime);
+        XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
+        
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"an.analytics.event.2");
+        XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.currentTime);
+        XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
+
         [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
         [expectation fulfill];
     }];
@@ -212,7 +241,12 @@
     XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
     XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
     XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+    XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.currentTime);
+    XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
+
     XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"another.analytics.event");
+    XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.currentTime);
+    XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
     [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
 }
 

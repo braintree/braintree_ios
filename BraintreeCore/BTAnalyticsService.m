@@ -13,9 +13,9 @@
 
 @property (nonatomic, copy) NSString *kind;
 
-@property (nonatomic, assign) long timestamp;
+@property (nonatomic, assign) uint64_t timestamp;
 
-+ (nonnull instancetype)event:(nonnull NSString *)eventKind withTimestamp:(long)timestamp;
++ (nonnull instancetype)event:(nonnull NSString *)eventKind withTimestamp:(uint64_t)timestamp;
 
 /// Event serialized to JSON
 - (nonnull NSDictionary *)json;
@@ -24,7 +24,7 @@
 
 @implementation BTAnalyticsEvent
 
-+ (instancetype)event:(NSString *)eventKind withTimestamp:(long)timestamp {
++ (instancetype)event:(NSString *)eventKind withTimestamp:(uint64_t)timestamp {
     BTAnalyticsEvent *event = [[BTAnalyticsEvent alloc] init];
     event.kind = eventKind;
     event.timestamp = timestamp;
@@ -32,7 +32,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ at %ld", self.kind, (long)self.timestamp];
+    return [NSString stringWithFormat:@"%@ at %llu", self.kind, (uint64_t)self.timestamp];
 }
 
 - (NSDictionary *)json {
@@ -253,8 +253,8 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 #pragma mark - Helpers
 
 - (void)enqueueEvent:(NSString *)eventKind {
-    long timestampInSeconds = round([[NSDate date] timeIntervalSince1970]);
-    BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInSeconds];
+    uint64_t timestampInMilliseconds = ([[NSDate date] timeIntervalSince1970] * 1000);
+    BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInMilliseconds];
 
     BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
                                                              source:self.apiClient.metadata.sourceString
