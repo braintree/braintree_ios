@@ -269,7 +269,8 @@
     XCTAssertEqualObjects(metaParameters[@"deviceScreenOrientation"], @"Portrait");
     XCTAssertEqualObjects(metaParameters[@"integrationType"], @"custom");
     XCTAssertEqualObjects(metaParameters[@"iosBaseSDK"], @(__IPHONE_OS_VERSION_MAX_ALLOWED).stringValue);
-    XCTAssertEqualObjects(metaParameters[@"iosDeploymentTarget"], @"90000");
+    // __IPHONE_OS_VERSION_MIN_REQUIRED refers to deployment target of unit tests, which needs to match the demo app's
+    XCTAssertEqualObjects(metaParameters[@"iosDeploymentTarget"], @(__IPHONE_OS_VERSION_MIN_REQUIRED).stringValue);
     XCTAssertEqualObjects(metaParameters[@"iosDeviceName"], UIDevice.currentDevice.name);
     XCTAssertTrue((BOOL)metaParameters[@"isSimulator"] == TARGET_IPHONE_SIMULATOR);
     XCTAssertEqualObjects(metaParameters[@"merchantAppId"], @"com.braintreepayments.Demo");
