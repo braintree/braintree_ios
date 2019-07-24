@@ -4,6 +4,7 @@
 
 * Send analytics timestamps in milliseconds
 * Fix crash on apps with deployment targets without minor version (thanks @squall09s)
+* Add additional fields to BTThreeDSecureInfo
 
 ## 4.25.1 (2019-07-15)
 
