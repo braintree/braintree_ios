@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* Send analytics timestamps in milliseconds
+* Fix crash on apps with deployment targets without minor version (thanks @squall09s)
+
 ## 4.25.1 (2019-07-15)
 
 * Correct importing of BTConfiguration+ThreeDSecure (thanks @ejensen)

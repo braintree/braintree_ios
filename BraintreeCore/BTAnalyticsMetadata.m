@@ -55,7 +55,6 @@
 }
 
 - (NSString *)platformVersion {
-
     return UIDevice.currentDevice.systemVersion;
 }
 
@@ -97,7 +96,6 @@
     NSString* code = [NSString stringWithCString:systemInfo.machine
                                         encoding:NSUTF8StringEncoding];
 
-
     return code;
 }
 
@@ -106,12 +104,15 @@
 }
 
 - (NSString *)iosDeploymentTarget {
-    NSString *rawVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"MinimumOSVersion"];
-    NSArray *rawVersionArray = [rawVersionString componentsSeparatedByString:@"."];
-    NSInteger majorVersionNumber = [[rawVersionArray objectAtIndex:0] integerValue] * 10000;
-    NSInteger minorVersionNumber = [[rawVersionArray objectAtIndex:1] integerValue] * 100;
+    NSString *rawVersionString = NSBundle.mainBundle.infoDictionary[@"MinimumOSVersion"];
+    NSArray<NSString *> *rawVersionArray = [rawVersionString componentsSeparatedByString:@"."];
+    NSInteger formattedVersionNumber = rawVersionArray[0].integerValue * 10000;
     
-    return [NSString stringWithFormat:@"%i", (int)majorVersionNumber + (int)minorVersionNumber];
+    if (rawVersionArray.count > 1) {
+        formattedVersionNumber += rawVersionArray[1].integerValue * 100;
+    }
+    
+    return [NSString stringWithFormat:@"%@", @(formattedVersionNumber)];
 }
 
 - (NSString *)iosBaseSDK {
