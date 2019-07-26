@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.26.1 (2019-07-26)
+
+* Update CardinalMobile to v2.1.4-2
+  * Fix issue distributing to App Store
+
 ## 4.26.0 (2019-07-26)
 
 * Send analytics timestamps in milliseconds
