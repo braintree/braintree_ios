@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.26.0 (2019-07-26)
 
 * Send analytics timestamps in milliseconds
 * Fix crash on apps with deployment targets without minor version (thanks @squall09s)
