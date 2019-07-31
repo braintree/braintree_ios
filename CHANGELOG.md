@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.26.2 (2019-07-31)
+
+* Add support for CardinalMobile binary only framework when using Carthage
+
 ## 4.26.1 (2019-07-26)
 
 * Update CardinalMobile to v2.1.4-2
