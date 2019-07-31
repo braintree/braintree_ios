@@ -120,15 +120,13 @@ end
 desc 'Run Carthage update'
 namespace :carthage do
   def generate_cartfile
+    run! 'mv Cartfile Cartfile.backup'
     File.write("./Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
-  end
-
-  task :generate do
-    generate_cartfile
   end
 
   task :clean do
     run! 'rm -rf Carthage && rm Cartfile && rm Cartfile.resolved && rm -rf ~/Library/Developers/Xcode/DerivedData'
+    run! 'mv Cartfile.backup Cartfile'
   end
 
   task :test do
