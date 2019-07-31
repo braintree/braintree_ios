@@ -381,7 +381,7 @@
 		A01720182216272000DAA838 /* BTThreeDSecureV2Provider.h in Headers */ = {isa = PBXBuildFile; fileRef = A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */; };
 		A01720192216272000DAA838 /* BTThreeDSecureV2Provider.m in Sources */ = {isa = PBXBuildFile; fileRef = A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */; };
 		A02F975C227B9F5000759F3F /* BTThreeDSecurePostalAddressDeprecation_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A02F975B227B9F5000759F3F /* BTThreeDSecurePostalAddressDeprecation_Tests.m */; };
-		A044377422AFFBD10084E2C1 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; };
+		A044377422AFFBD10084E2C1 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A044377522AFFC0F0084E2C1 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; };
 		A044377622AFFC0F0084E2C1 /* CardinalMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A04F75392230550E00213077 /* BTThreeDSecureAuthenticateJWT.h in Headers */ = {isa = PBXBuildFile; fileRef = A04F75372230550E00213077 /* BTThreeDSecureAuthenticateJWT.h */; };
