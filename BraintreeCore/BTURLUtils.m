@@ -58,26 +58,15 @@
 }
 
 + (NSDictionary *)dictionaryForQueryString:(NSString *)queryString {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    NSArray *components = [queryString componentsSeparatedByString:@"&"];
-    for (NSString *keyValueString in components) {
-        if ([keyValueString length] == 0) {
-            continue;
-        }
-
-        NSArray *keyValueArray = [keyValueString componentsSeparatedByString:@"="];
-        NSString *key = [self percentDecodedStringForString:keyValueArray[0]];
-        if (!key) {
-            continue;
-        }
-        if (keyValueArray.count == 2) {
-            NSString *value = [self percentDecodedStringForString:keyValueArray[1]];
-            parameters[key] = value;
-        } else {
-            parameters[key] = [NSNull null];
+    NSURLComponents *comps = [NSURLComponents componentsWithString:queryString];
+    NSArray<NSURLQueryItem*> *queryItems = [comps queryItems];
+    
+    for (NSURLQueryItem *item in queryItems) {
+        if ([item.name isEqualToString:@"auth_response"]) {
+            return @{@"auth_response": item.value};
         }
     }
-    return [NSDictionary dictionaryWithDictionary:parameters];
+    return [NSDictionary dictionary];
 }
 
 + (NSString *)percentDecodedStringForString:(NSString *)string {
