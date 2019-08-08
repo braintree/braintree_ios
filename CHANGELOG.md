@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* Remove unneeded pre-processor directives
+
 ## 4.26.3 (2019-07-31)
 
 * Fixed issue with Carthage binary spec for CardinalMobile

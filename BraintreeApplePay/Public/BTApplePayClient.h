@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 
  @param completion A completion block that returns the payment request or an error. This block is invoked on the main thread.
 */
-- (void)paymentRequest:(void (^)(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error))completion  NS_AVAILABLE_IOS(8_0);
+- (void)paymentRequest:(void (^)(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error))completion;
 
 /**
  Tokenizes an Apple Pay payment.
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
         `tokenizedApplePayPayment` will be `nil` and `error` will describe the failure.
 */
 - (void)tokenizeApplePayPayment:(PKPayment *)payment
-                     completion:(void (^)(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error))completionBlock NS_AVAILABLE_IOS(8_0);
+                     completion:(void (^)(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error))completionBlock;
 
 @end
 

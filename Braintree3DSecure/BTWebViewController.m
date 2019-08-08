@@ -121,29 +121,13 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         // Not a real error; occurs when webView:shouldStartLoadWithRequest:navigationType: returns NO
         return;
     } else {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        if (@available(iOS 8.0,*)) {
-#else
-        if ([UIAlertController class]) {
-#endif
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
-                                                                           message:nil
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
-                                                      style:UIAlertActionStyleCancel
-                                                    handler:^(__unused UIAlertAction *action) {
-                                                    }]];
-            [self presentViewController:alert animated:YES completion:nil];
-        } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [[[UIAlertView alloc] initWithTitle:error.localizedDescription
-                                        message:nil
-                                       delegate:nil
-                              cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
-                              otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-        }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                                                  style:UIAlertActionStyleCancel
+                                                handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 

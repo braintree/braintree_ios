@@ -62,19 +62,15 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @property (nonatomic, strong) BTPayPalRequest *payPalRequest;
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
 /**
  Exposed for testing, the safariViewController instance used for the PayPal flow on iOS 9 and 10
 */
-@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController NS_AVAILABLE_IOS(9_0);
-#endif
+@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController API_AVAILABLE(ios(9.0));
 
- #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
 /**
  Exposed for testing, the safariAuthenticationSession instance used for the PayPal flow on iOS >=11
  */
-@property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession NS_AVAILABLE_IOS(11_0);
-#endif
+@property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession API_AVAILABLE(ios(11.0));
 
 /**
  Exposed for testing, for determining if SFAuthenticationSession was started

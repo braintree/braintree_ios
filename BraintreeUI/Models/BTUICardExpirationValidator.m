@@ -1,18 +1,12 @@
 #import "BTUICardExpirationValidator.h"
 
-#ifdef __IPHONE_8_0
-#define kBTNSGregorianCalendarIdentifier NSCalendarIdentifierGregorian
-#else
-#define kBTNSGregorianCalendarIdentifier NSGregorianCalendar
-#endif
-
 @implementation BTUICardExpirationValidator
 
 + (BOOL)month:(NSUInteger)month year:(NSUInteger)year validForDate:(NSDate *)date {
     // Creating NSCalendar is expensive, so cache it!
     static NSCalendar *gregorianCalendar;
     if (!gregorianCalendar) {
-        gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:kBTNSGregorianCalendarIdentifier];
+        gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     }
 
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];

@@ -140,37 +140,27 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 
 #pragma mark - Helpers
 
-- (NSDictionary *)parametersForPaymentToken:(PKPaymentToken *)token NS_AVAILABLE_IOS(8_0) {
+- (NSDictionary *)parametersForPaymentToken:(PKPaymentToken *)token {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
 
     mutableParameters[@"paymentData"] = [token.paymentData base64EncodedStringWithOptions:0];
     mutableParameters[@"transactionIdentifier"] = token.transactionIdentifier;
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 9.0, watchOS 3.0, *)) {
-#else
-    if ([PKPaymentMethod class]) {
-#endif
         mutableParameters[@"paymentInstrumentName"] = token.paymentMethod.displayName;
         mutableParameters[@"paymentNetwork"] = token.paymentMethod.network;
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        if (@available(iOS 8.0, *)) {
-#endif
         mutableParameters[@"paymentInstrumentName"] = token.paymentInstrumentName;
         mutableParameters[@"paymentNetwork"] = token.paymentNetwork;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        }
-#endif
 #pragma clang diagnostic pop
     }
 
     return [mutableParameters copy];
 }
 
-- (void)invokeBlock:(nonnull void (^)(PKPaymentRequest * _Nullable, NSError * _Nullable))completion onMainThreadWithPaymentRequest:(nullable PKPaymentRequest *)paymentRequest error:(nullable NSError *)error NS_AVAILABLE_IOS(8_0) {
+- (void)invokeBlock:(nonnull void (^)(PKPaymentRequest * _Nullable, NSError * _Nullable))completion onMainThreadWithPaymentRequest:(nullable PKPaymentRequest *)paymentRequest error:(nullable NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
         completion(paymentRequest, error);
     });

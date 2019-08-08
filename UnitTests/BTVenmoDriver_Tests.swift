@@ -8,10 +8,10 @@ class FakeApplication {
     var cannedCanOpenURL : Bool = true
     var canOpenURLWhitelist : [URL] = []
 
-    @objc func openURL(_ url: URL) -> Bool {
+    @objc func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
         lastOpenURL = url
         openURLWasCalled = true
-        return cannedOpenURLSuccess
+        completion?(cannedOpenURLSuccess)
     }
 
     @objc func canOpenURL(_ url: URL) -> Bool {

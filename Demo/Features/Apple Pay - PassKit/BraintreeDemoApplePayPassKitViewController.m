@@ -50,22 +50,10 @@
     }
 
     UIButton *button;
-    BOOL pkPaymentButtonAvailable = NO;
 
-    // When compiling with an iOS 8.3 or higher SDK, we can check for
-    // the PKPaymentButton, which was added in iOS 8.3. Note that we
-    // still need to check, because the deployment target may be < 8.3
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80300
-    pkPaymentButtonAvailable = [PKPaymentButton class] != nil;
-    if (pkPaymentButtonAvailable) {
+    if (@available(iOS 8.3, *)) {
         button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
-    }
-#endif
-    // If we're compiling with an older version of the iOS SDK (very rare),
-    // we should not use the `PKPaymentButton` at all - not even to check
-    // whether it's available.
-    if (pkPaymentButtonAvailable == NO) {
-        // Create a custom button
+    } else {
         button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setTintColor:[UIColor blackColor]];
         [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:36]];
@@ -125,7 +113,6 @@
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion API_AVAILABLE(ios(11.0), watchos(4.0))  {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     [self.applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
@@ -139,7 +126,6 @@
         }
     }];
 }
-#endif
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment

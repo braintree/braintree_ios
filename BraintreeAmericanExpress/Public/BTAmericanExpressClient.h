@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
  if it fails, `rewardsBalance` will be `nil` and `error` will describe the failure.
  @note If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
  */
-- (void)getRewardsBalanceForNonce:(NSString *)nonce currencyIsoCode:(NSString *)currencyIsoCode completion:(void (^)(BTAmericanExpressRewardsBalance * _Nullable rewardsBalance, NSError * _Nullable error))completionBlock NS_AVAILABLE_IOS(8_0);
+- (void)getRewardsBalanceForNonce:(NSString *)nonce currencyIsoCode:(NSString *)currencyIsoCode completion:(void (^)(BTAmericanExpressRewardsBalance * _Nullable rewardsBalance, NSError * _Nullable error))completionBlock;
 
 @end
 

@@ -146,17 +146,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             request.additionalPayloadAttributes = @{ @"client_key": self.apiClient.tokenizationKey };
         }
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 9.0, *)) {
             // will use in-app browser
         } else {
             [self informDelegateWillPerformAppSwitch];
         }
-#else
-        if (![SFSafariViewController class]) {
-            [self informDelegateWillPerformAppSwitch];
-        }
-#endif
 
         [request performWithAdapterBlock:^(BOOL success, NSURL *url, PPOTRequestTarget target, NSString *clientMetadataId, NSError *error) {
             self.clientMetadataId = clientMetadataId;
@@ -388,17 +382,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           return;
                       }
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
                       if (@available(iOS 9.0, *)) {
                           // will use in-app browser
                       } else {
                           [self informDelegateWillPerformAppSwitch];
                       }
-#else
-                      if (![SFSafariViewController class]) {
-                          [self informDelegateWillPerformAppSwitch];
-                      }
-#endif
 
                       [request performWithAdapterBlock:^(BOOL success, NSURL *url, PPOTRequestTarget target, NSString *clientMetadataId, NSError *error) {
                           self.clientMetadataId = clientMetadataId;
@@ -424,7 +412,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                  forPaymentType:(BTPayPalPaymentType)paymentType {
     appSwitchReturnBlock = ^(NSURL *url) {
         [self informDelegateAppContextDidReturn];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 11.0, *)) {
             if (self.safariAuthenticationSession) {
                 // do nothing
@@ -434,13 +421,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                 [self informDelegateWillProcessAppSwitchReturn];
             }
         } else
-#endif
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 9.0, *)) {
-#else
-        if (self.safariViewController) {
-#endif
             [self informDelegatePresentingViewControllerNeedsDismissal];
         } else {
             [self informDelegateWillProcessAppSwitchReturn];
@@ -532,11 +514,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     if (success) {
 
         // Defensive programming in case PayPal One Touch returns a non-HTTP URL so that SFSafariViewController doesn't crash
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 9.0, *)) {
-#else
-        if ([SFSafariViewController class]) {
-#endif
             if (![url.scheme.lowercaseString hasPrefix:@"http"]) {
                 NSError *urlError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                         code:BTPayPalDriverErrorTypeUnknown
@@ -552,17 +530,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }
         [self performSwitchRequest:url];
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 9.0, *)) {
             // use in-app browser
         } else {
             [self informDelegateDidPerformAppSwitchToTarget:target];
         }
-#else
-        if (![SFSafariViewController class]) {
-            [self informDelegateDidPerformAppSwitchToTarget:target];
-        }
-#endif
     } else {
         if (completionBlock) completionBlock(nil, error);
     }
@@ -570,7 +542,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL {
     [self informDelegateAppContextWillSwitch];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 11.0, *)) {
         NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
 
@@ -613,21 +584,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=1"];
         urlComponents.query = queryForAuthSession;
         [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
-#else
-    if ([SFSafariViewController class]) {
-        NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
-        NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=1"];
-        urlComponents.query = queryForAuthSession;
-        [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
-#endif
     } else {
         UIApplication *application = [UIApplication sharedApplication];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 10.0, *)) {
-#else
-        if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-#endif
             [application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:nil];
         } else {
 #pragma clang diagnostic push
@@ -635,12 +594,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             [application openURL:appSwitchURL];
 #pragma clang diagnostic pop
         }
-#else
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [application openURL:appSwitchURL];
-#pragma clang diagnostic pop
-#endif
     }
 }
 
@@ -896,16 +849,12 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL {
     if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 9.0, *)) {
-#endif
-        self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
-        self.safariViewController.delegate = self;
-        self.safariViewController.transitioningDelegate = self;
-        [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
+            self.safariViewController.delegate = self;
+            self.safariViewController.transitioningDelegate = self;
+            [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
         }
-#endif
     } else {
         [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
@@ -913,14 +862,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 - (void)informDelegatePresentingViewControllerNeedsDismissal {
     if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsDismissalOfViewController:)]) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         if (@available(iOS 9.0, *)) {
-#endif
-        [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
-        self.safariViewController = nil;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
+            self.safariViewController = nil;
         }
-#endif
     } else {
         [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }

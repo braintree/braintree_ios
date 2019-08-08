@@ -35,7 +35,6 @@
     [self setObject:[m deviceAppGeneratedPersistentUuid] forKey:@"deviceAppGeneratedPersistentUuid" inDictionary:data];
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
-    [self setObject:[m userInterfaceOrientation] forKey:@"userInterfaceOrientation" inDictionary:data];
     [self setObject:@([m isVenmoInstalled]) forKey:@"venmoInstalled" inDictionary:data];
     [self setObject:[m dropInVersion] forKey:@"dropinVersion" inDictionary:data];
 
@@ -155,37 +154,6 @@
 
 - (BOOL)isSimulator {
     return TARGET_IPHONE_SIMULATOR;
-}
-
-- (NSString *)userInterfaceOrientation {
-// UIViewController interface orientation methods are deprecated as of iOS 8
-#ifndef __IPHONE_8_0
-    if ([UIApplication class] == nil) {
-        return nil;
-    }
-    
-    if ([self.class isAppExtension]) {
-        return nil;
-    }
-    
-    UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
-    UIInterfaceOrientation deviceOrientation = sharedApplication.keyWindow.rootViewController.interfaceOrientation;
-
-    switch (deviceOrientation) {
-        case UIInterfaceOrientationPortrait:
-            return @"Portrait";
-        case UIInterfaceOrientationPortraitUpsideDown:
-            return @"PortraitUpsideDown";
-        case UIInterfaceOrientationLandscapeLeft:
-            return @"LandscapeLeft";
-        case UIInterfaceOrientationLandscapeRight:
-            return @"LandscapeRight";
-        default:
-            return @"Unknown";
-    }
-#else
-    return nil;
-#endif
 }
 
 - (NSString *)deviceScreenOrientation {

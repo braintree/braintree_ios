@@ -7,7 +7,7 @@
 
 @property (nonatomic, weak) id<BTMockApplePayPaymentAuthorizationViewControllerDelegate> delegate;
 
-- (instancetype)initWithPaymentRequest:(PKPaymentRequest *)request NS_AVAILABLE_IOS(8_0);
+- (instancetype)initWithPaymentRequest:(PKPaymentRequest *)request;
 
 + (BOOL)canMakePayments;
 
@@ -17,7 +17,7 @@
 
 - (void)mockApplePayPaymentAuthorizationViewController:(BTMockApplePayPaymentAuthorizationViewController *)viewController
                                   didAuthorizePayment:(PKPayment *)payment
-                                           completion:(void (^)(PKPaymentAuthorizationStatus status))completion NS_AVAILABLE_IOS(8_0);
+                                           completion:(void (^)(PKPaymentAuthorizationStatus status))completion;
 
 - (void)mockApplePayPaymentAuthorizationViewControllerDidFinish:(BTMockApplePayPaymentAuthorizationViewController *)viewController;
 

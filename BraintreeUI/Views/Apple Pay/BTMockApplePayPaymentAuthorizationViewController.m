@@ -42,14 +42,7 @@
     v.majorVersion = 8;
     v.minorVersion = 1;
     v.patchVersion = 0;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    if (@available(iOS 8.0, watchOS 2.0, *)) {
-#endif
     return [[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)] && [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:v];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    }
-    return NO;
-#endif
 }
 
 - (void)cancel:(__unused id)sender {
@@ -62,7 +55,7 @@
     [self.delegate mockApplePayPaymentAuthorizationViewControllerDidFinish:self];
 }
 
-- (void)mockApplePayPaymentAuthorizationViewDidSucceed:(__unused BTMockApplePayPaymentAuthorizationView *)view NS_AVAILABLE_IOS(8_0) {
+- (void)mockApplePayPaymentAuthorizationViewDidSucceed:(__unused BTMockApplePayPaymentAuthorizationView *)view {
     [self.delegate mockApplePayPaymentAuthorizationViewController:self
                                              didAuthorizePayment:nil
                                                       completion:^(__unused PKPaymentAuthorizationStatus status) {

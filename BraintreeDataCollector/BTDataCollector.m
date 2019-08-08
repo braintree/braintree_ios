@@ -38,15 +38,9 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 
     CLAuthorizationStatus locationStatus = [CLLocationManager authorizationStatus];
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    if (@available(iOS 8.0, watchOS 3.0, *)) {
-#endif
     if ((locationStatus != kCLAuthorizationStatusAuthorizedWhenInUse && locationStatus != kCLAuthorizationStatusAuthorizedAlways) || ![CLLocationManager locationServicesEnabled]) {
         self.kount.locationCollectorConfig = KLocationCollectorConfigSkip;
     }
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    }
-#endif
 }
 
 #pragma mark - Accessors

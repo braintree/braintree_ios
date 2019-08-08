@@ -152,17 +152,10 @@ static BTVenmoDriver *appSwitchedDriver;
         [self informDelegateWillPerformAppSwitch];
         [self informDelegateAppContextWillSwitch];
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-        if ([self.application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            if (@available(iOS 10.0, *)) {
-#endif
-                [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-                    [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
-                }];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            }
-#endif
+        if (@available(iOS 10.0, *)) {
+            [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
+                [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
+            }];
         } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -170,13 +163,6 @@ static BTVenmoDriver *appSwitchedDriver;
             [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
 #pragma clang diagnostic pop
         }
-#else
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        BOOL success = [self.application openURL:appSwitchURL];
-        [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
-#pragma clang diagnostic pop
-#endif
     }];
 }
 
@@ -300,27 +286,14 @@ static BTVenmoDriver *appSwitchedDriver;
 - (void)openVenmoAppPageInAppStore {
     NSURL *venmoAppStoreUrl = [NSURL URLWithString:BTVenmoAppStoreUrl];
     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.app-store.invoked"];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-    if ([self.application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        if (@available(iOS 10.0, *)) {
-#endif
-            [self.application openURL:venmoAppStoreUrl options:[NSDictionary dictionary] completionHandler:nil];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        }
-#endif
+    if (@available(iOS 10.0, *)) {
+        [self.application openURL:venmoAppStoreUrl options:[NSDictionary dictionary] completionHandler:nil];
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [self.application openURL:venmoAppStoreUrl];
+        [self.application openURL:venmoAppStoreUrl];
 #pragma clang diagnostic pop
     }
-#else
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [self.application openURL:venmoAppStoreUrl];
-#pragma clang diagnostic pop
-#endif
 }
 
 #pragma mark - Helpers
