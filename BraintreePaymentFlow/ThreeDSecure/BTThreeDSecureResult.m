@@ -23,7 +23,13 @@
         }
         _liabilityShifted = [json[@"threeDSecureInfo"][@"liabilityShifted"] isTrue];
         _liabilityShiftPossible = [json[@"threeDSecureInfo"][@"liabilityShiftPossible"] isTrue];
-        _success = [json[@"success"] isTrue];
+
+        // Account for absence of "success" key in 2.0 gateway responses
+        if ([json[@"success"] isBool]) {
+            _success = [json[@"success"] isTrue];
+        } else {
+            _success = _errorMessage == nil;
+        }
     }
     return self;
 }

@@ -216,6 +216,11 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 @property (nonatomic, assign, readonly) BOOL isObject;
 
 /**
+ True if this instance of BTJSON is a boolean.
+ */
+@property (nonatomic, assign, readonly) BOOL isBool;
+
+/**
  True if this instance of BTJSON is a value representing `true`.
  */
 @property (nonatomic, assign, readonly) BOOL isTrue;

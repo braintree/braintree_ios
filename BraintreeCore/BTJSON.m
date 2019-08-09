@@ -219,6 +219,10 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     return [self.value isKindOfClass:[NSDictionary class]];
 }
 
+- (BOOL)isBool {
+    return [self.value isEqual:@YES] || [self.value isEqual:@NO];
+}
+
 - (BOOL)isTrue {
     return [self.value isEqual:@YES];
 }
