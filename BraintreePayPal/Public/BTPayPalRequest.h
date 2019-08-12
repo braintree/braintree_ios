@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 */
 typedef NS_ENUM(NSInteger, BTPayPalRequestLandingPageType) {
     /// Default
+    /// NEXT_MAJOR_VERSION the other sdks do not pass a default value, so we should not as well
     BTPayPalRequestLandingPageTypeDefault = 1,
 
     /// Login
