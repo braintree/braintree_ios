@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 4.26.4 (2019-08-15)
+## 4.27.0 (2019-08-15)
 
 * Remove unneeded pre-processor directives
 * Added new fields to BTThreeDSecureInfo
