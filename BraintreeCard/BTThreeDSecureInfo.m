@@ -19,6 +19,10 @@
     return self;
 }
 
+- (NSString *)acsTransactionId {
+    return [self.threeDSecureJSON[@"acsTransactionId"] asString];
+}
+
 - (NSString *)cavv {
     return [self.threeDSecureJSON[@"cavv"] asString];
 }
@@ -43,8 +47,16 @@
     return [self.threeDSecureJSON[@"liabilityShiftPossible"] isTrue];
 }
 
+- (NSString *)paresStatus {
+    return [self.threeDSecureJSON[@"paresStatus"] asString];
+}
+
 - (NSString *)status {
     return [self.threeDSecureJSON[@"status"] asString];
+}
+
+- (NSString *)threeDSecureServerTransactionId {
+    return [self.threeDSecureJSON[@"threeDSecureServerTransactionId"] asString];
 }
 
 - (NSString *)threeDSecureVersion {

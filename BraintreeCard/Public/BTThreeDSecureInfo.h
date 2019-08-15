@@ -18,6 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithJSON:(BTJSON *)json;
 
 /**
+ Unique transaction identifier assigned by the Access Control Server (ACS) to identify a single transaction.
+ */
+@property (nonatomic, readonly, nullable) NSString *acsTransactionId;
+
+/**
  Cardholder authentication verification value or "CAVV" is the main encrypted message issuers and card networks use to verify authentication has occured. Mastercard uses an "AVV" message which will also be returned in the cavv parameter.
  */
 @property (nonatomic, readonly, nullable) NSString *cavv;
@@ -53,9 +58,23 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) BOOL liabilityShiftPossible;
 
 /**
+ The Payer Authentication Response (PARes) Status, a transaction status result identifier. Possible Values:
+ * Y – Successful Authentication
+ * N – Failed Authentication
+ * U – Unable to Complete Authentication
+ * A – Successful Stand-In Attempts Transaction
+ */
+@property (nonatomic, readonly, nullable) NSString *paresStatus;
+
+/**
  The 3D Secure status value.
  */
 @property (nonatomic, readonly, nullable) NSString *status;
+
+/**
+ Unique transaction identifier assigned by the 3DS Server to identify a single transaction.
+ */
+@property (nonatomic, readonly, nullable) NSString *threeDSecureServerTransactionId;
 
 /**
  The 3DS version used in the authentication, example "1.0.2" or "2.1.0".
