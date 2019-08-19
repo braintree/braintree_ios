@@ -5,7 +5,6 @@ Thank you for your contribution to Braintree.
 ### Summary of changes
 
 - 
-- 
 
 ### Checklist
 
