@@ -172,7 +172,7 @@ namespace :release do
     say "* [ ] Tests (rake spec) are passing, manual verifications complete."
     say "* [ ] Email is composed and ready to send to braintree-sdk-announce@googlegroups.com"
 
-    abort(1) unless ask "Ready to release? "
+    abort(1) unless ask "Ready to release? Press any key to continue. "
   end
 
   desc "Check that working directory is clean"
