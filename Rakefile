@@ -166,14 +166,13 @@ namespace :release do
   desc "Print out pre-release checklist"
   task :assumptions do
     say "Release Assumptions"
-    say "* [ ] You have pulled and reconciled origin (internal GitHub Enterprise) vs public (github.com)."
     say "* [ ] You are on the branch and commit you want to release."
     say "* [ ] You have already merged hotfixes and pulled changes."
     say "* [ ] You have already reviewed the diff between the current release and the last tag, noting breaking changes in the semver and CHANGELOG."
     say "* [ ] Tests (rake spec) are passing, manual verifications complete."
     say "* [ ] Email is composed and ready to send to braintree-sdk-announce@googlegroups.com"
 
-    abort(1) unless ask "Ready to release? "
+    abort(1) unless ask "Ready to release? Press any key to continue. "
   end
 
   desc "Check that working directory is clean"
