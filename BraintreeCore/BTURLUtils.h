@@ -1,9 +1,12 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface BTURLUtils : NSObject
 
-+ (NSURL *)URLfromURL:(NSURL *)URL withAppendedQueryDictionary:(NSDictionary *)dictionary;
 + (NSString *)queryStringWithDictionary:(NSDictionary *)dict;
-+ (NSDictionary *)dictionaryForQueryString:(NSString *)queryString;
++ (NSDictionary<NSString *, NSString *> *)queryParametersForURL:(NSURL *)url;
 
 @end
+
+NS_ASSUME_NONNULL_END

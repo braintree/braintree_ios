@@ -17,7 +17,7 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
 - (instancetype)initWithURL:(NSURL *)url {
     self = [self init];
     if (self) {
-        NSDictionary *parameters = [BTURLUtils dictionaryForQueryString:url.query];
+        NSDictionary *parameters = [BTURLUtils queryParametersForURL:url];
         if ([url.path isEqualToString:@"/vzero/auth/venmo/success"]) {
             _state = BTVenmoAppSwitchReturnURLStateSucceeded;
             _nonce = parameters[@"paymentMethodNonce"];

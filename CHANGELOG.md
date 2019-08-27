@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* Fix url parsing bug (thanks @pedrocid)
+
 ## 4.27.0 (2019-08-15)
 
 * Remove unneeded pre-processor directives

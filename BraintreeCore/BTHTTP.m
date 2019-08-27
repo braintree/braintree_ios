@@ -178,8 +178,7 @@
 
     if ([method isEqualToString:@"GET"] || [method isEqualToString:@"DELETE"]) {
         if (isNotDataURL) {
-            NSString *encodedParametersString = [BTURLUtils queryStringWithDictionary:parameters];
-            components.percentEncodedQuery = encodedParametersString;
+            components.percentEncodedQuery = [BTURLUtils queryStringWithDictionary:parameters];
         }
         request = [NSMutableURLRequest requestWithURL:components.URL];
     } else {
