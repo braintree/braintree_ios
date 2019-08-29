@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.27.1 (2019-08-29)
 
 * Fix url parsing bug (thanks @pedrocid)
 
