@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
     BTThreeDSecureVersion2
 };
 
-@class BTThreeDSecureRequest;
+@class BTThreeDSecureRequest, UiCustomization;
 @protocol BTThreeDSecureRequestDelegate;
 
 /**
@@ -90,6 +90,11 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
  Optional. If set to true, an exemption to the authentication challenge will be requested.
  */
 @property (nonatomic) BOOL exemptionRequested;
+
+/**
+ Optional. UI Customization for the 3DS 2 challenge views.
+ */
+@property (nonatomic, nullable, strong) UiCustomization *uiCustomization;
 
 /**
  A delegate for receiving information about the ThreeDSecure payment flow.

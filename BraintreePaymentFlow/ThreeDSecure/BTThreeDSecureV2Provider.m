@@ -24,11 +24,15 @@
 
 + (instancetype)initializeProviderWithConfiguration:(BTConfiguration *)configuration
                                           apiClient:(BTAPIClient *)apiClient
+                                            request:(BTThreeDSecureRequest *)request
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler {
     BTThreeDSecureV2Provider *instance = [self new];
     instance.apiClient = apiClient;
     instance.cardinalSession = [CardinalSession new];
     CardinalSessionConfiguration *cardinalConfiguration = [CardinalSessionConfiguration new];
+    if (request.uiCustomization) {
+        cardinalConfiguration.uiCustomization = request.uiCustomization;
+    }
     CardinalSessionEnvironment cardinalEnvironment = CardinalSessionEnvironmentStaging;
     if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {
         cardinalEnvironment = CardinalSessionEnvironmentProduction;

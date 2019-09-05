@@ -4,6 +4,7 @@
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeUI/BraintreeUI.h>
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
+#import <CardinalMobile/CardinalMobile.h>
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
@@ -115,6 +116,17 @@
         request.billingAddress = billingAddress;
         request.email = @"test@example.com";
         request.shippingMethod = @"01";
+
+        UiCustomization *ui = [[UiCustomization alloc] init];
+        ToolbarCustomization *toolbarCustomization = [[ToolbarCustomization alloc] init];
+        [toolbarCustomization setHeaderText:@"Braintree 3DS Checkout"];
+        [toolbarCustomization setBackgroundColor:@"#FF5A5F"];
+        [toolbarCustomization setButtonText:@"Close"];
+        [toolbarCustomization setTextColor:@"#222222"];
+        [toolbarCustomization setTextFontSize:18];
+        [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
+        [ui setToolbarCustomization:toolbarCustomization];
+        request.uiCustomization = ui;
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;

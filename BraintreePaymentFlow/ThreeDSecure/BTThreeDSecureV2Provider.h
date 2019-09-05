@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "BTThreeDSecureRequest.h"
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureLookup.h"
 
@@ -13,6 +14,7 @@ typedef void (^BTThreeDSecureV2ProviderFailureHandler)(NSError *error);
 
 + (instancetype)initializeProviderWithConfiguration:(BTConfiguration *)configuration
                                           apiClient:(BTAPIClient *)apiClient
+                                            request:(BTThreeDSecureRequest *)request
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler;
 
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult

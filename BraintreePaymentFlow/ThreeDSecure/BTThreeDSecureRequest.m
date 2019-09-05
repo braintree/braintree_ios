@@ -99,6 +99,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         if (configuration.cardinalAuthenticationJWT) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
+                                                                                                request:self
                                                                                              completion:^(NSDictionary *lookupParameters) {
                                                                                                  if (lookupParameters[@"dfReferenceId"]) {
                                                                                                      self.dfReferenceId = lookupParameters[@"dfReferenceId"];
