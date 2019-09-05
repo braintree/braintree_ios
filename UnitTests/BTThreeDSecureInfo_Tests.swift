@@ -16,7 +16,15 @@ class BTThreeDSecureInfo_Tests: XCTestCase {
                 "status": "lookup_enrolled",
                 "threeDSecureServerTransactionId": "fake-threedsecure-server-transaction-id",
                 "threeDSecureVersion": "2.2.0",
-                "xid": "fake-xid"
+                "xid": "fake-xid",
+                "authentication": [
+                    "transStatus": "Y",
+                    "transStatusReason": "02"
+                ],
+                "lookup": [
+                    "transStatus": "N",
+                    "transStatusReason": "01"
+                ]
             ]
         )
         let info = BTThreeDSecureInfo(json: json)
@@ -34,6 +42,10 @@ class BTThreeDSecureInfo_Tests: XCTestCase {
         XCTAssertTrue(info.liabilityShiftPossible)
         XCTAssertFalse(info.liabilityShifted)
         XCTAssertTrue(info.wasVerified)
+        XCTAssertEqual("Y", info.authenticationTransactionStatus)
+        XCTAssertEqual("02", info.authenticationTransactionStatusReason)
+        XCTAssertEqual("N", info.lookupTransactionStatus)
+        XCTAssertEqual("01", info.lookupTransactionStatusReason)
     }
 
 }

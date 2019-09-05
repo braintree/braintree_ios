@@ -23,6 +23,14 @@
     return [self.threeDSecureJSON[@"acsTransactionId"] asString];
 }
 
+- (NSString *)authenticationTransactionStatus {
+    return [self.threeDSecureJSON[@"authentication"][@"transStatus"] asString];
+}
+
+- (NSString *)authenticationTransactionStatusReason {
+    return [self.threeDSecureJSON[@"authentication"][@"transStatusReason"] asString];
+}
+
 - (NSString *)cavv {
     return [self.threeDSecureJSON[@"cavv"] asString];
 }
@@ -45,6 +53,14 @@
 
 - (BOOL)liabilityShiftPossible {
     return [self.threeDSecureJSON[@"liabilityShiftPossible"] isTrue];
+}
+
+- (NSString *)lookupTransactionStatus {
+    return [self.threeDSecureJSON[@"lookup"][@"transStatus"] asString];
+}
+
+- (NSString *)lookupTransactionStatusReason {
+    return [self.threeDSecureJSON[@"lookup"][@"transStatusReason"] asString];
 }
 
 - (NSString *)paresStatus {

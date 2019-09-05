@@ -23,6 +23,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSString *acsTransactionId;
 
 /**
+ On authentication, the transaction status result identifier.
+ */
+@property (nonatomic, readonly, nullable) NSString *authenticationTransactionStatus;
+
+/**
+ On authentication, provides additional information as to why the transaction status has the specific value.
+ */
+@property (nonatomic, readonly, nullable) NSString *authenticationTransactionStatusReason;
+
+/**
  Cardholder authentication verification value or "CAVV" is the main encrypted message issuers and card networks use to verify authentication has occured. Mastercard uses an "AVV" message which will also be returned in the cavv parameter.
  */
 @property (nonatomic, readonly, nullable) NSString *cavv;
@@ -56,6 +66,16 @@ NS_ASSUME_NONNULL_BEGIN
  If the 3D Secure liability shift is possible.
  */
 @property (nonatomic, readonly, assign) BOOL liabilityShiftPossible;
+
+/**
+ On lookup, the transaction status result identifier.
+ */
+@property (nonatomic, readonly, nullable) NSString *lookupTransactionStatus;
+
+/**
+ On lookup, provides additional information as to why the transaction status has the specific value.
+ */
+@property (nonatomic, readonly, nullable) NSString *lookupTransactionStatusReason;
 
 /**
  The Payer Authentication Response (PARes) Status, a transaction status result identifier. Possible Values:

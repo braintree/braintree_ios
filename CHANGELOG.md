@@ -3,6 +3,7 @@
 ## 4.27.1 (2019-08-29)
 
 * Fix url parsing bug (thanks @pedrocid)
+* Add authentication and lookup transaction status information to BTThreeDSecureInfo
 
 ## 4.27.0 (2019-08-15)
 
