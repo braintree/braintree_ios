@@ -1,9 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.28.0 (2019-09-05) 
+
+* Add ability to customize UI for 3D Secure challenge views
+* Add authentication and lookup transaction status information to BTThreeDSecureInfo
+
 ## 4.27.1 (2019-08-29)
 
 * Fix url parsing bug (thanks @pedrocid)
-* Add authentication and lookup transaction status information to BTThreeDSecureInfo
 
 ## 4.27.0 (2019-08-15)
 
