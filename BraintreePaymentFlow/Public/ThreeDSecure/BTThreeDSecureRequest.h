@@ -93,6 +93,8 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
 
 /**
  Optional. UI Customization for the 3DS 2 challenge views.
+ 
+ @see https://cardinaldocs.atlassian.net/wiki/spaces/CMSDK/pages/873234760/iOS+UI+Customization
  */
 @property (nonatomic, nullable, strong) UiCustomization *uiCustomization;
 
