@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+
+* Fix crash and return error when `threeDSecureRequest.amount` is `nil` and 3DS v1 is requested
+
 ## 4.28.0 (2019-09-05) 
 
 * Add ability to customize UI for 3D Secure challenge views

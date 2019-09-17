@@ -56,18 +56,18 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
         NSError *integrationError;
 
-        if (self.versionRequested == BTThreeDSecureVersion2) {
-            if (!configuration.cardinalAuthenticationJWT) {
-                [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."];
-                integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
-                                                       code:BTThreeDSecureFlowErrorTypeConfiguration
-                                                   userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."}];
-            } else if (!self.amount) {
+        if (self.versionRequested == BTThreeDSecureVersion2 && !configuration.cardinalAuthenticationJWT) {
+            [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."];
+            integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                   code:BTThreeDSecureFlowErrorTypeConfiguration
+                                               userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."}];
+        }
+
+        if (!self.amount) {
             [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest amount can not be nil."];
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil."}];
-            }
         }
 
         if (integrationError != nil) {

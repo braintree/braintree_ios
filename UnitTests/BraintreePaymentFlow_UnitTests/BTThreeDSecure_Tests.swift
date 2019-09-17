@@ -624,6 +624,58 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
+    func testStartPayment_v1_returnsErrorWhenAmount_isMissing() {
+        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        threeDSecureRequest = BTThreeDSecureRequest()
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.versionRequested = .version1
+        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
+            "assetsUrl": "http://assets.example.com"
+            ])
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "description": "ending in 02",
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "N",
+                    "liabilityShiftPossible": false,
+                    "liabilityShifted": false,
+                    "status": "authenticate_successful_issuer_not_participating",
+                ],
+                "type": "CreditCard",
+            ],
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": false,
+                "liabilityShifted": false,
+            ]
+            ] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
+        driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else {return}
+            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 4, handler: nil)
+    }
+
     func testStartPayment_v2_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest.versionRequested = .version2
