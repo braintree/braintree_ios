@@ -23,6 +23,12 @@ DerivedData
 # CocoaPods
 Pods
 
+# Carthage
+#
+# Add this line if you want to avoid checking in source code from Carthage dependencies.
+Carthage/Checkouts
+Carthage/Build
+
 # This file is needed for signing the ipa with our enterprise cert;
 # you can get it from the iOS Developer Center.
 EverybodyVenmo.mobileprovision
@@ -32,4 +38,3 @@ EverybodyVenmo.mobileprovision
 .hockeyapp
 
 *.pid
-
