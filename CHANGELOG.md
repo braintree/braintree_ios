@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Fix issue when returning from the Venmo app on iOS13
 * Fix crash and return error when `threeDSecureRequest.amount` is `nil` and 3DS v1 is requested
 
 ## 4.28.0 (2019-09-05) 

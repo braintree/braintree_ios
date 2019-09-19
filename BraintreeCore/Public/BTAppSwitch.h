@@ -207,7 +207,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
  @param sourceApplication The source application you receive in `application:openURL:sourceApplication:annotation`
  @return `YES` when the object can handle returning from the application with a URL
 */
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
++ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString * _Nullable)sourceApplication;
 
 /**
  Pass control back to `BTPayPalDriver` after returning from app or browser switch.

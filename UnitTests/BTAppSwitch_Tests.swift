@@ -74,7 +74,7 @@ class MockAppSwitchHandler: BTAppSwitchHandler {
     static var lastCanHandleSourceApplication : String? = nil
     static var lastHandleAppSwitchReturnURL : URL? = nil
 
-    @objc static func canHandleAppSwitchReturn(_ url: URL, sourceApplication: String) -> Bool {
+    @objc static func canHandleAppSwitchReturn(_ url: URL, sourceApplication: String?) -> Bool {
         lastCanHandleURL = url
         lastCanHandleSourceApplication = sourceApplication
         return cannedCanHandle

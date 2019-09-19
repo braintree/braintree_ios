@@ -11,7 +11,7 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
 @implementation BTVenmoAppSwitchReturnURL
 
 + (BOOL)isValidURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [self isVenmoSourceApplication:sourceApplication] || [self isFakeWalletURL:url andSourceApplication:sourceApplication];
+    return [self isVenmoSourceApplication:sourceApplication] || [self isFakeWalletURL:url andSourceApplication:sourceApplication] || ([url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"]);
 }
 
 - (instancetype)initWithURL:(NSURL *)url {

@@ -584,6 +584,14 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake://fake")!, sourceApplication: venmoDebugSourceApplication))
     }
 
+    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsMissing_andPathIsCorrect_returnsTrue() {
+        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "doesntmatter://x-callback-url/vzero/auth/venmo/stuffffff")!, sourceApplication: nil))
+    }
+
+    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsMissing_andPathIsNotCorrect_returnsFalse() {
+        XCTAssertFalse(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake://fake")!, sourceApplication: nil))
+    }
+
     func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsFakeWalletAppAndURLIsValid_returnsTrue() {
         XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "doesntmatter://x-callback-url/vzero/auth/venmo/stuffffff")!, sourceApplication: fakeWalletSourceApplication))
     }
