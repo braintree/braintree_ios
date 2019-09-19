@@ -6,6 +6,6 @@
 #ifndef PPOTVersion_h
 #define PPOTVersion_h
 
-#define PayPalOTVersion() @"4.28.0"
+#define PayPalOTVersion() @"4.29.0"
 
 #endif
