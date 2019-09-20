@@ -9,3 +9,7 @@ Thank you for your contribution to Braintree.
 ### Checklist
 
 - [ ] Added a changelog entry
+
+### Authors
+
+- 
