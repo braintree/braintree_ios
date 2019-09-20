@@ -11,5 +11,6 @@ Thank you for your contribution to Braintree.
 - [ ] Added a changelog entry
 
 ### Authors
+> List GitHub usernames for everyone who contributed to this pull request.
 
 - 
