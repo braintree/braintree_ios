@@ -82,6 +82,14 @@ describe(@"isValidURL:sourceApplication:", ^{
     it(@"rejects app switches received from all others", ^{
         expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"com.YourCompany.Some-App"]).to.beFalsy();
     });
+
+    it(@"accepts app switches received without a sourceApplication but with a valid url", ^{
+        expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:nil]).to.beTruthy();
+    });
+
+    it(@"rejects app switches received without a sourceApplication and an invalid url", ^{
+        expect([BTVenmoAppSwitchReturnURL isValidURL:[NSURL URLWithString:@"scheme://x-callback-url/not/vzero"] sourceApplication:nil]).to.beFalsy();
+    });
 });
 
 SpecEnd

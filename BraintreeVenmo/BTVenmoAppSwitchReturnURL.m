@@ -11,7 +11,9 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
 @implementation BTVenmoAppSwitchReturnURL
 
 + (BOOL)isValidURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [self isVenmoSourceApplication:sourceApplication] || [self isFakeWalletURL:url andSourceApplication:sourceApplication] || ([url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"]);
+    return [self isVenmoSourceApplication:sourceApplication] || // Pre iOS 13
+           [self isValidVenmoURL:url andUnknownApplication:sourceApplication] || // iOS 13+
+           [self isFakeWalletURL:url andSourceApplication:sourceApplication];
 }
 
 - (instancetype)initWithURL:(NSURL *)url {
@@ -43,7 +45,11 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
 }
 
 + (BOOL)isFakeWalletURL:(NSURL *)url andSourceApplication:(NSString *)sourceApplication {
-   return [sourceApplication isEqualToString:@"com.paypal.PPClient.Debug"] && [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"];
+    return [sourceApplication isEqualToString:@"com.paypal.PPClient.Debug"] && [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"];
+}
+
++ (BOOL)isValidVenmoURL:(NSURL *)url andUnknownApplication:(NSString *)sourceApplicaiton {
+    return sourceApplicaiton == nil && [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"];
 }
 
 @end
