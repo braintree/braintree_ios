@@ -346,6 +346,10 @@
 		41D54D301C7F97750051C96B /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		41D6E2A71B8D12CD00A3C2AE /* FakePayPalClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */; };
 		41F1D1FB1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */; };
+		420E3B592329869B00550CE2 /* BTAuthenticationInsight.h in Headers */ = {isa = PBXBuildFile; fileRef = 420E3B572329869B00550CE2 /* BTAuthenticationInsight.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		420E3B5A2329869B00550CE2 /* BTAuthenticationInsight.m in Sources */ = {isa = PBXBuildFile; fileRef = 420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */; };
+		420E3B5C2329947200550CE2 /* BTAuthenticationInsight_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		42F2FF2F2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */; };
 		46E2F09F1CF47CF700A5789D /* BTUICardPhoneNumberField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4107EB221C88C75000F32D81 /* BTUICardPhoneNumberField.m */; };
 		46E2F0A01CF47D3300A5789D /* BTUIUnionPayVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A78422721C98920500D3EBFF /* BTUIUnionPayVectorArtView.m */; };
 		68178D54CF930DF9D5BC76FB /* libPods-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D9C499891AB1363F3E1290 /* libPods-Demo.a */; };
@@ -1444,6 +1448,10 @@
 		41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakePayPalClasses.h; sourceTree = "<group>"; };
 		41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakePayPalClasses.m; sourceTree = "<group>"; };
 		41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCardClient_UnionPayTests.swift; sourceTree = "<group>"; };
+		420E3B572329869B00550CE2 /* BTAuthenticationInsight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAuthenticationInsight.h; sourceTree = "<group>"; };
+		420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAuthenticationInsight.m; sourceTree = "<group>"; };
+		420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAuthenticationInsight_Internal.h; sourceTree = "<group>"; };
+		42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAuthenticationInsight_Tests.swift; sourceTree = "<group>"; };
 		4621B720EE8A9B65FFFE3632 /* Pods-Tests-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-UnitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		7EDE47701CD2C3D00005E22B /* PayPalUtils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PayPalUtils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+ThreeDSecure.h"; sourceTree = "<group>"; };
@@ -2455,6 +2463,7 @@
 				A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */,
 				A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */,
 				A7CCE2AD1B67F26C006EA661 /* BTAppSwitch_Tests.swift */,
+				42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */,
 				030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */,
 				A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */,
 				A79033971B45C968004C8234 /* BTCard_Tests.swift */,
@@ -2654,6 +2663,7 @@
 		41777D451B8D01510026F987 /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				420E3B572329869B00550CE2 /* BTAuthenticationInsight.h */,
 				A7C889921B5F043B007A0E9C /* BraintreeCard.h */,
 				A7C8899F1B5F0471007A0E9C /* BTCard.h */,
 				03DE927020201CD900A78D29 /* BTThreeDSecureInfo.h */,
@@ -3593,6 +3603,8 @@
 		A7C889911B5F043B007A0E9C /* BraintreeCard */ = {
 			isa = PBXGroup;
 			children = (
+				420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */,
+				420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */,
 				A7C8899E1B5F0471007A0E9C /* BTCard_Internal.h */,
 				A7C889A01B5F0471007A0E9C /* BTCard.m */,
 				8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */,
@@ -3941,9 +3953,11 @@
 				8498EC1B1BB46D4B007FFDEC /* BTCardClient_Internal.h in Headers */,
 				A751CAAF1CAC4667008603E5 /* BTCardRequest.h in Headers */,
 				A7C889AA1B5F04AE007A0E9C /* BraintreeCard.h in Headers */,
+				420E3B592329869B00550CE2 /* BTAuthenticationInsight.h in Headers */,
 				A7C889D81B5F0ACB007A0E9C /* BTCardNonce_Internal.h in Headers */,
 				034CF88A21501EA5003C0616 /* BTConfiguration+Card.h in Headers */,
 				A7C889A81B5F0471007A0E9C /* BTCardNonce.h in Headers */,
+				420E3B5C2329947200550CE2 /* BTAuthenticationInsight_Internal.h in Headers */,
 				A7C889A51B5F0471007A0E9C /* BTCard_Internal.h in Headers */,
 				A7C889A31B5F0471007A0E9C /* BTCardClient.h in Headers */,
 				A7C889A61B5F0471007A0E9C /* BTCard.h in Headers */,
@@ -4869,6 +4883,7 @@
 				A7B4624A1C3C911200048423 /* PPOTAppSwitchResponseTest.m in Sources */,
 				41D6E2A71B8D12CD00A3C2AE /* FakePayPalClasses.m in Sources */,
 				B67F983A1D762177007C1903 /* BTMacroTests.m in Sources */,
+				42F2FF2F2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift in Sources */,
 				A79033981B45C968004C8234 /* BTCard_Tests.swift in Sources */,
 				A7AF0F621C222F9400B3ADC6 /* BTPaymentButton_Tests.swift in Sources */,
 				A7B462561C3C911200048423 /* PPOTErrorTest.m in Sources */,
@@ -5368,6 +5383,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03DE926F20201CCB00A78D29 /* BTThreeDSecureInfo.m in Sources */,
+				420E3B5A2329869B00550CE2 /* BTAuthenticationInsight.m in Sources */,
 				A7C889A71B5F0471007A0E9C /* BTCard.m in Sources */,
 				034CF88721501E24003C0616 /* BTConfiguration+Card.m in Sources */,
 				A7C889A91B5F0471007A0E9C /* BTCardNonce.m in Sources */,

@@ -19,10 +19,15 @@
                       lastTwo:(NSString *)lastTwo
              threeDSecureJSON:(BTJSON *)threeDSecureJSON
                     isDefault:(BOOL)isDefault
-                     cardJSON:(BTJSON *)cardJSON
-{
-
-    self = [super initWithNonce:nonce description:description cardNetwork:cardNetwork lastTwo:lastTwo isDefault:isDefault cardJSON:cardJSON];
+                     cardJSON:(BTJSON *)cardJSON {
+    
+    self = [super initWithNonce:nonce
+                    description:description
+                    cardNetwork:cardNetwork
+                        lastTwo:lastTwo
+                      isDefault:isDefault
+                       cardJSON:cardJSON
+                authInsightJSON:nil];
     if (self) {
         _threeDSecureJSON = threeDSecureJSON;
     }

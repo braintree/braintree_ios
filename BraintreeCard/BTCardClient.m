@@ -78,6 +78,15 @@ static NSString *PayPalDataCollectorClassString = @"PPDataCollector";
 
         // Union Pay tokenization requests should not go through the GraphQL API
         if ([self isGraphQLEnabledForCardTokenization:configuration] && !request.enrollmentID) {
+            
+            if (request.card.authenticationInsightRequested && !request.card.merchantAccountId) {
+                NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                     code:BTCardClientErrorTypeIntegration
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true."}];
+                completionBlock(nil, error);
+                return;
+            }
+            
             NSDictionary *parameters = [request.card graphQLParameters];
             [self.apiClient POST:@""
                       parameters:parameters
@@ -221,6 +230,11 @@ static NSString *PayPalDataCollectorClassString = @"PPDataCollector";
                              };
     if (options) {
         parameters[@"options"] = options;
+    }
+    
+    if (request.card.authenticationInsightRequested) {
+        parameters[@"authenticationInsight"] = @YES;
+        parameters[@"merchantAccountId"] = request.card.merchantAccountId;
     }
 
     return [parameters copy];

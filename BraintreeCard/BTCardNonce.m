@@ -1,4 +1,5 @@
 #import "BTCardNonce_Internal.h"
+#import "BTAuthenticationInsight_Internal.h"
 
 @implementation BTCardNonce
 
@@ -8,7 +9,7 @@
                       lastTwo:(NSString *)lastTwo
                     isDefault:(BOOL)isDefault
                      cardJSON:(nonnull BTJSON *)cardJSON
-{
+              authInsightJSON:(nullable BTJSON *)authInsightJSON {
     self = [super initWithNonce:nonce localizedDescription:description type:[BTCardNonce typeStringFromCardNetwork:cardNetwork] isDefault:isDefault];
     if (self) {
         _cardNetwork = cardNetwork;
@@ -20,6 +21,9 @@
             _bin = [cardJSON[@"bin"] asString];
         }
         _threeDSecureInfo = [[BTThreeDSecureInfo alloc] initWithJSON:cardJSON[@"threeDSecureInfo"]];
+        if (authInsightJSON) {
+            _authenticationInsight = [[BTAuthenticationInsight alloc] initWithJSON:authInsightJSON];
+        }
     }
     return self;
 }
@@ -82,24 +86,37 @@
 }
 
 + (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
+    BTJSON *authInsightJson;
+    if ([cardJSON[@"authenticationInsight"] asDictionary]) {
+        authInsightJson = cardJSON[@"authenticationInsight"];
+    }
+    
     return [[[self class] alloc] initWithNonce:[cardJSON[@"nonce"] asString]
                                    description:[cardJSON[@"description"] asString]
                                    cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"details"][@"cardType"] asString]]
                                        lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]
                                      isDefault:[cardJSON[@"default"] isTrue]
-                                      cardJSON:cardJSON];
+                                      cardJSON:cardJSON
+                               authInsightJSON:authInsightJson];
 }
 
-+ (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)cardJSON {
-    NSString *lastFour = [cardJSON[@"creditCard"][@"last4"] asString];
++ (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)json {
+    NSString *lastFour = [json[@"creditCard"][@"last4"] asString];
     NSString *lastTwo = lastFour.length == 4 ? [lastFour substringFromIndex:2] : @"";
     NSString *description = lastTwo.length > 0 ? [NSString stringWithFormat:@"ending in %@", lastTwo] : @"";
-    return [[[self class] alloc] initWithNonce:[cardJSON[@"token"] asString]
+    
+    BTJSON *authInsightJson;
+    if ([json[@"authenticationInsight"] asDictionary]) {
+        authInsightJson = json[@"authenticationInsight"];
+    }
+    
+    return [[[self class] alloc] initWithNonce:[json[@"token"] asString]
                                    description:description
-                                   cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"creditCard"][@"brand"] asString]]
+                                   cardNetwork:[self.class cardNetworkFromGatewayCardType:[json[@"creditCard"][@"brand"] asString]]
                                        lastTwo:lastTwo
                                      isDefault:NO
-                                      cardJSON:cardJSON[@"creditCard"]];
+                                      cardJSON:json[@"creditCard"]
+                               authInsightJSON:authInsightJson];
 }
 
 @end

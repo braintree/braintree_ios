@@ -46,6 +46,7 @@
 #import "BTDropInUtil.h"
 #import "BTAmericanExpressClient_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
+#import "BTAuthenticationInsight_Internal.h"
 
 #import "BTDropInUtil.h"
 #import "BTSpecHelper.h"

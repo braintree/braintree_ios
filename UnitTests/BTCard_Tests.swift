@@ -2,15 +2,17 @@ import XCTest
 
 // See also BTCard_Internal_Tests
 class BTCard_Tests: XCTestCase {
-
+    
+    // MARK: - Initialization
+    
     func testInitialization_savesStandardProperties() {
         let card = BTCard(number: "4111111111111111", expirationMonth:"12", expirationYear:"2038", cvv: "123")
 
-        XCTAssertEqual(card.number!, "4111111111111111")
-        XCTAssertEqual(card.expirationMonth!, "12")
-        XCTAssertEqual(card.expirationYear!, "2038")
+        XCTAssertEqual(card.number, "4111111111111111")
+        XCTAssertEqual(card.expirationMonth, "12")
+        XCTAssertEqual(card.expirationYear, "2038")
         XCTAssertNil(card.postalCode)
-        XCTAssertEqual(card.cvv!, "123")
+        XCTAssertEqual(card.cvv, "123")
     }
 
     func testInitialization_acceptsNilCvv() {
@@ -26,11 +28,11 @@ class BTCard_Tests: XCTestCase {
         card.expirationYear = "2038"
         card.cvv = "123"
 
-        XCTAssertEqual(card.number!, "4111111111111111")
-        XCTAssertEqual(card.expirationMonth!, "12")
-        XCTAssertEqual(card.expirationYear!, "2038")
+        XCTAssertEqual(card.number, "4111111111111111")
+        XCTAssertEqual(card.expirationMonth, "12")
+        XCTAssertEqual(card.expirationYear, "2038")
         XCTAssertNil(card.postalCode)
-        XCTAssertEqual(card.cvv!, "123")
+        XCTAssertEqual(card.cvv, "123")
     }
 
     func testInitWithParameters_withAllValuesPresent_setsAllProperties() {
@@ -152,6 +154,8 @@ class BTCard_Tests: XCTestCase {
             ] as NSObject)
     }
 
+    // MARK: - Non-GraphQL Parameters
+    
     func testParameters_whenInitializedWithCustomParameters_returnsExpectedValues() {
         let card = BTCard(parameters: [
             "cvv": "123",
@@ -177,8 +181,62 @@ class BTCard_Tests: XCTestCase {
             ] as NSObject)
     }
 
+    // MARK: - GraphQL Parameters
+    
+    let graphQLQuery = """
+    mutation TokenizeCreditCard($input: TokenizeCreditCardInput!) {\
+      tokenizeCreditCard(input: $input) {\
+        token\
+        creditCard {\
+          brand\
+          last4\
+          bin\
+          binData {\
+            prepaid\
+            healthcare\
+            debit\
+            durbinRegulated\
+            commercial\
+            payroll\
+            issuingBank\
+            countryOfIssuance\
+            productId\
+          }\
+        }\
+      }\
+    }
+    """
+    
+    let graphQLQueryWithAuthInsightRequested = """
+    mutation TokenizeCreditCard($input: TokenizeCreditCardInput!, $authenticationInsightInput: AuthenticationInsightInput!) {\
+      tokenizeCreditCard(input: $input) {\
+        token\
+        creditCard {\
+          brand\
+          last4\
+          bin\
+          binData {\
+            prepaid\
+            healthcare\
+            debit\
+            durbinRegulated\
+            commercial\
+            payroll\
+            issuingBank\
+            countryOfIssuance\
+            productId\
+          }\
+        }\
+        authenticationInsight(input: $authenticationInsightInput) {\
+          customerAuthenticationRegulationEnvironment\
+        }\
+      }\
+    }
+    """
+    
     func testGraphQLParameters_whenInitializedWithInitWithParameters_returnsExpectedValues() {
         let card = BTCard(parameters: [
+            "cardholder_name": "Brian Tree",
             "number": "4111111111111111",
             "expiration_date": "12/20",
             "cvv": "123",
@@ -195,13 +253,12 @@ class BTCard_Tests: XCTestCase {
                 "country_code_alpha3": "USA",
                 "postal_code": "94107"
             ],
-            "options": ["validate": false],
-            "cardholder_name": "Brian Tree"
+            "options": ["validate": false]
             ])
 
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
-            "query": BTCardGraphQLTokenizationMutation,
+            "query": graphQLQuery,
             "variables": [
                 "input": [
                     "creditCard": [
@@ -235,7 +292,7 @@ class BTCard_Tests: XCTestCase {
 
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
-            "query": BTCardGraphQLTokenizationMutation,
+            "query": graphQLQuery,
             "variables": [
                 "input": [
                     "creditCard": [
@@ -256,7 +313,7 @@ class BTCard_Tests: XCTestCase {
 
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
-            "query": BTCardGraphQLTokenizationMutation,
+            "query": graphQLQuery,
             "variables": [
                 "input": [
                     "creditCard": [
@@ -279,7 +336,7 @@ class BTCard_Tests: XCTestCase {
         card.shouldValidate = true
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
-            "query": BTCardGraphQLTokenizationMutation,
+            "query": graphQLQuery,
             "variables": [
                 "input": [
                     "creditCard": [
@@ -289,5 +346,89 @@ class BTCard_Tests: XCTestCase {
                 ]
             ]
         ] as NSObject)
+    }
+    
+    func testGraphQLParameters_whenMerchantAccountIdIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.authenticationInsightRequested = true
+        card.merchantAccountId = "some id"
+        
+        XCTAssertEqual(card.graphQLParameters() as NSObject, [
+            "operationName": "TokenizeCreditCard",
+            "query": graphQLQueryWithAuthInsightRequested,
+            "variables": [
+                "input": [
+                    "creditCard": [
+                        "number": "4111111111111111",
+                    ],
+                    "options": [ "validate": false ],
+                ],
+                "authenticationInsightInput": [
+                    "merchantAccountId": "some id"
+                ]
+            ]
+        ] as NSObject)
+    }
+    
+    func testGraphQLParameters_whenMerchantAccountIdIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.authenticationInsightRequested = false
+        card.merchantAccountId = "some id"
+        
+        XCTAssertEqual(card.graphQLParameters() as NSObject, [
+            "operationName": "TokenizeCreditCard",
+            "query": graphQLQuery,
+            "variables": [
+                "input": [
+                    "creditCard": [
+                        "number": "4111111111111111",
+                    ],
+                    "options": [ "validate": false ],
+                ]
+            ]
+            ] as NSObject)
+    }
+    
+    func testGraphQLParameters_whenMerchantAccountIdIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.authenticationInsightRequested = true
+        card.merchantAccountId = nil
+        
+        XCTAssertEqual(card.graphQLParameters() as NSObject, [
+            "operationName": "TokenizeCreditCard",
+            "query": graphQLQueryWithAuthInsightRequested,
+            "variables": [
+                "input": [
+                    "creditCard": [
+                        "number": "4111111111111111",
+                    ],
+                    "options": [ "validate": false ],
+                ],
+                "authenticationInsightInput": NSDictionary()
+            ]
+            ] as NSObject)
+    }
+    
+    func testGraphQLParameters_whenMerchantAccountIdIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.authenticationInsightRequested = false
+        card.merchantAccountId = nil
+        
+        XCTAssertEqual(card.graphQLParameters() as NSObject, [
+            "operationName": "TokenizeCreditCard",
+            "query": graphQLQuery,
+            "variables": [
+                "input": [
+                    "creditCard": [
+                        "number": "4111111111111111",
+                    ],
+                    "options": [ "validate": false ],
+                ]
+            ]
+            ] as NSObject)
     }
 }

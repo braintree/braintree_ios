@@ -2,10 +2,6 @@ import XCTest
 
 class BTCardNonce_Tests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-    }
-
     func testCardNonceWithJSON_createsCardWithExpectedValues() {
         let cardNonce = BTCardNonce(json: BTJSON(value: [
             "description": "Visa ending in 11",
@@ -28,6 +24,9 @@ class BTCardNonce_Tests: XCTestCase {
             "threeDSecureInfo": [
                 "liabilityShifted": true,
                 "liabilityShiftPossible": true
+            ],
+            "authenticationInsight": [
+                "regulationEnvironment": "UNREGULATED"
             ]
             ]))
 
@@ -49,8 +48,16 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.binData.issuingBank, "US")
         XCTAssertEqual(cardNonce.binData.countryOfIssuance, "Something")
         XCTAssertEqual(cardNonce.binData.productId, "123")
+        XCTAssertEqual(cardNonce.authenticationInsight?.regulationEnvironment, "unregulated")
     }
-
+    
+    func testCardWithJSON_whenAuthenticationInsightIsNotPresent_setsAuthenticationInsightToNil() {
+        let cardNonce = BTCardNonce(json: BTJSON(value: [
+            "nonce": "fake-nonce"
+            ]))
+        XCTAssertNil(cardNonce.authenticationInsight)
+    }
+    
     func testCardWithJSON_createsCard_withoutThreeDSecureInfo() {
         let cardNonce = BTCardNonce(json: BTJSON(value: [
             "description": "Visa ending in 11",
@@ -177,7 +184,7 @@ class BTCardNonce_Tests: XCTestCase {
             XCTAssertFalse(cardNonce.threeDSecureInfo.wasVerified)
         }
     }
-
+    
     func testCardNonceWithGraphQLJSON_createsCardWithExpectedValues() {
         let cardNonce = BTCardNonce(graphQLJSON: BTJSON(value: [
             "token": "fake-nonce",
@@ -194,7 +201,10 @@ class BTCardNonce_Tests: XCTestCase {
                     "issuingBank": "US",
                     "countryOfIssuance": "USA",
                     "productId": "123"
-                ],
+                ]
+            ],
+            "authenticationInsight": [
+                "customerAuthenticationRegulationEnvironment": "UNREGULATED"
             ]
             ]))
 
@@ -212,6 +222,15 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.binData.issuingBank, "US")
         XCTAssertEqual(cardNonce.binData.countryOfIssuance, "USA")
         XCTAssertEqual(cardNonce.binData.productId, "123")
+        XCTAssertEqual(cardNonce.authenticationInsight?.regulationEnvironment, "unregulated")
+    }
+    
+    func testCardNonceWithGraphQLJSON_whenAuthenticationInsightIsNotPresent_setsAuthenticationInsightToNil() {
+        let cardNonce = BTCardNonce(graphQLJSON: BTJSON(value: [
+            "token": "fake-nonce"
+            ]))
+        
+        XCTAssertNil(cardNonce.authenticationInsight)
     }
 
     func testCardNonceWithGraphQLJSON_ignoresCaseWhenParsingCardType() {

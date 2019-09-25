@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+
+* Add ability to request `AuthenticationInsight` when tokenizing a credit card, which can be used to make a decision about whether to perform 3D Secure verification
+
 ## 4.29.0 (2019-09-19)
 
 * Fix issue when returning from the Venmo app on iOS13

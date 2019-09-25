@@ -10,8 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
                   cardNetwork:(BTCardNetwork)cardNetwork
                       lastTwo:(nullable NSString *)lastTwo
                     isDefault:(BOOL)isDefault
-                     cardJSON:(BTJSON *)cardJSON;
-
+                     cardJSON:(BTJSON *)cardJSON
+              authInsightJSON:(nullable BTJSON *)authInsightJSON;
 
 /**
  Create a `BTCardNonce` object from JSON.
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Create a `BTCardNonce` object from GraphQL JSON.
  */
-+ (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)cardJSON;
++ (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)json;
 
 @end
 

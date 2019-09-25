@@ -3,32 +3,10 @@
 
 @interface BTCard ()
 @property (nonatomic, strong) NSMutableDictionary *mutableParameters;
+@property (nonatomic, strong, readonly) NSString *cardTokenizationGraphQLMutation;
 @end
 
 @implementation BTCard
-
-NSString *const BTCardGraphQLTokenizationMutation = @""
-"mutation TokenizeCreditCard($input: TokenizeCreditCardInput!) {"
-"  tokenizeCreditCard(input: $input) {"
-"    token"
-"    creditCard {"
-"      brand"
-"      last4"
-"      bin"
-"      binData {"
-"        prepaid"
-"        healthcare"
-"        debit"
-"        durbinRegulated"
-"        commercial"
-"        payroll"
-"        issuingBank"
-"        countryOfIssuance"
-"        productId"
-"      }"
-"    }"
-"  }"
-"}";
 
 - (instancetype)init {
     return [self initWithParameters:@{}];
@@ -85,12 +63,15 @@ NSString *const BTCardGraphQLTokenizationMutation = @""
     if (self.number) {
         p[@"number"] = self.number;
     }
+    
     if (self.expirationMonth && self.expirationYear) {
         p[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", self.expirationMonth, self.expirationYear];
     }
+    
     if (self.cvv) {
         p[@"cvv"] = self.cvv;
     }
+    
     if (self.cardholderName) {
         p[@"cardholder_name"] = self.cardholderName;
     }
@@ -246,13 +227,61 @@ NSString *const BTCardGraphQLTokenizationMutation = @""
     optionsDictionary[@"validate"] = @(self.shouldValidate);
     inputDictionary[@"options"] = [optionsDictionary copy];
 
+    NSMutableDictionary *variables = [@{ @"input": [inputDictionary copy] } mutableCopy];
+    if (self.authenticationInsightRequested) {
+        variables[@"authenticationInsightInput"] = self.merchantAccountId ? @{ @"merchantAccountId": self.merchantAccountId } : @{};
+    }
+    
     return @{
              @"operationName": @"TokenizeCreditCard",
-             @"query": BTCardGraphQLTokenizationMutation,
-             @"variables": @{
-                     @"input": [inputDictionary copy]
-                     }
+             @"query": self.cardTokenizationGraphQLMutation,
+             @"variables": variables
              };
+}
+
+- (NSString *)cardTokenizationGraphQLMutation {
+    NSMutableString *mutation = [@"mutation TokenizeCreditCard($input: TokenizeCreditCardInput!" mutableCopy];
+    
+    if (self.authenticationInsightRequested) {
+        [mutation appendString:@", $authenticationInsightInput: AuthenticationInsightInput!"];
+    }
+    
+    [mutation appendString:@""
+     ") {"
+     "  tokenizeCreditCard(input: $input) {"
+     "    token"
+     "    creditCard {"
+     "      brand"
+     "      last4"
+     "      bin"
+     "      binData {"
+     "        prepaid"
+     "        healthcare"
+     "        debit"
+     "        durbinRegulated"
+     "        commercial"
+     "        payroll"
+     "        issuingBank"
+     "        countryOfIssuance"
+     "        productId"
+     "      }"
+     "    }"
+     ];
+    
+    if (self.authenticationInsightRequested) {
+        [mutation appendString:@""
+         "    authenticationInsight(input: $authenticationInsightInput) {"
+         "      customerAuthenticationRegulationEnvironment"
+         "    }"
+         ];
+    }
+    
+    [mutation appendString:@""
+     "  }"
+     "}"
+     ];
+    
+    return mutation;
 }
 
 @end

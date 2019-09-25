@@ -17,22 +17,64 @@ class BTCardClient_Tests: XCTestCase {
 
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
         card.cardholderName = "Brian Tree"
+        card.authenticationInsightRequested = true
+        card.merchantAccountId = "some merchant account id"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertEqual(fakeHTTP.lastRequest!.endpoint, "v1/payment_methods/credit_cards")
-            XCTAssertEqual(fakeHTTP.lastRequest!.method, "POST")
-
-            if let cardParameters = fakeHTTP.lastRequest!.parameters["credit_card"] as? [String:AnyObject] {
-                XCTAssertEqual(cardParameters["number"] as? String, "4111111111111111")
-                XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
-                XCTAssertEqual(cardParameters["cvv"] as? String, "1234")
-                XCTAssertEqual(cardParameters["cardholder_name"] as? String, "Brian Tree")
-            } else {
+            guard let lastRequest = fakeHTTP.lastRequest else {
                 XCTFail()
+                return
             }
+            
+            XCTAssertEqual(lastRequest.endpoint, "v1/payment_methods/credit_cards")
+            XCTAssertEqual(lastRequest.method, "POST")
+
+            let params = lastRequest.parameters
+            XCTAssertEqual(params["authenticationInsight"] as? Bool, true)
+            XCTAssertEqual(params["merchantAccountId"] as? String, "some merchant account id")
+            
+            guard let cardParams = params["credit_card"] as? [String : AnyObject] else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqual(cardParams["number"] as? String, "4111111111111111")
+            XCTAssertEqual(cardParams["expiration_date"] as? String, "12/2038")
+            XCTAssertEqual(cardParams["cvv"] as? String, "1234")
+            XCTAssertEqual(cardParams["cardholder_name"] as? String, "Brian Tree")
+            
             expectation.fulfill()
         }
 
+        self.waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testTokenization_whenAuthInsightIsNotRequested_postsCardDataWithoutAuthInsight() {
+        let expectation = self.expectation(description: "Tokenize Card")
+        let fakeHTTP = FakeHTTP.fakeHTTP()
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        apiClient.http = fakeHTTP
+        let mockConfigurationHTTP = BTFakeHTTP()!
+        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        apiClient.configurationHTTP = mockConfigurationHTTP
+        
+        let cardClient = BTCardClient(apiClient: apiClient)
+        
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.authenticationInsightRequested = false
+        
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+            guard let params = fakeHTTP.lastRequest?.parameters else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertNil(params["authenticationInsight"])
+            XCTAssertNil(params["merchantAccountId"])
+            
+            expectation.fulfill()
+        }
+        
         self.waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -352,6 +394,32 @@ class BTCardClient_Tests: XCTestCase {
 
     // MARK: - GraphQL API
 
+    func testTokenization_whenAuthInsightRequestedIsTrue_andMerchantAccountIdIsNil_returnsError() {
+        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+        
+        let cardClient = BTCardClient(apiClient: mockApiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.authenticationInsightRequested = true
+        card.merchantAccountId = nil
+        
+        let expectation = self.expectation(description: "Returns an error")
+        
+        cardClient.tokenizeCard(card) { (nonce, error) in
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error?.localizedDescription,
+                           "BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true.")
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+    
     func testTokenization_whenGraphQLIsEnabled_postsCardDataToGraphQLAPI() {
         let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
