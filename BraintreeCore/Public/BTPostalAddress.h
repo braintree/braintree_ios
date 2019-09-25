@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Line 1 of the Address (eg. number, street, etc).
 */
-@property (nonatomic, copy) NSString *streetAddress;
+@property (nonatomic, nullable, copy) NSString *streetAddress;
 
 /**
  Optional line 2 of the Address (eg. suite, apt #, etc.).
@@ -25,12 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  City name
 */
-@property (nonatomic, copy) NSString *locality;
+@property (nonatomic, nullable, copy) NSString *locality;
 
 /**
  2 letter country code.
 */
-@property (nonatomic, copy) NSString *countryCodeAlpha2;
+@property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
 
 /**
  Zip code or equivalent is usually required for countries that have them. For a list of countries that do not have postal codes please refer to http://en.wikipedia.org/wiki/Postal_code.

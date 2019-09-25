@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Fix nullability annotations on `BTPostalAddress` fields (resolves #472)
 * Add ability to request `AuthenticationInsight` when tokenizing a credit card, which can be used to make a decision about whether to perform 3D Secure verification
 
 ## 4.29.0 (2019-09-19)
