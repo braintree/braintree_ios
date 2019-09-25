@@ -48,8 +48,8 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
     return [sourceApplication isEqualToString:@"com.paypal.PPClient.Debug"] && [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"];
 }
 
-+ (BOOL)isValidVenmoURL:(NSURL *)url andUnknownApplication:(NSString *)sourceApplicaiton {
-    return sourceApplicaiton == nil && [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"];
++ (BOOL)isValidVenmoURL:(NSURL *)url andUnknownApplication:(NSString *)sourceApplication {
+    return sourceApplication == nil && [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"];
 }
 
 @end
