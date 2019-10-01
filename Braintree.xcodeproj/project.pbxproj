@@ -350,6 +350,9 @@
 		420E3B5A2329869B00550CE2 /* BTAuthenticationInsight.m in Sources */ = {isa = PBXBuildFile; fileRef = 420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */; };
 		420E3B5C2329947200550CE2 /* BTAuthenticationInsight_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42F2FF2F2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */; };
+		423B6D8623390F8D00646742 /* BTThreeDSecureResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B6D8523390F8D00646742 /* BTThreeDSecureResult_Tests.swift */; };
+		42D79394233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */; };
+		42D79396233A65EB001FDD89 /* MockPaymentFlowDriverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D79395233A65EB001FDD89 /* MockPaymentFlowDriverDelegate.swift */; };
 		46E2F09F1CF47CF700A5789D /* BTUICardPhoneNumberField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4107EB221C88C75000F32D81 /* BTUICardPhoneNumberField.m */; };
 		46E2F0A01CF47D3300A5789D /* BTUIUnionPayVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A78422721C98920500D3EBFF /* BTUIUnionPayVectorArtView.m */; };
 		68178D54CF930DF9D5BC76FB /* libPods-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D9C499891AB1363F3E1290 /* libPods-Demo.a */; };
@@ -1453,6 +1456,9 @@
 		420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAuthenticationInsight.m; sourceTree = "<group>"; };
 		420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAuthenticationInsight_Internal.h; sourceTree = "<group>"; };
 		42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAuthenticationInsight_Tests.swift; sourceTree = "<group>"; };
+		423B6D8523390F8D00646742 /* BTThreeDSecureResult_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureResult_Tests.swift; sourceTree = "<group>"; };
+		42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequest_Tests.swift; sourceTree = "<group>"; };
+		42D79395233A65EB001FDD89 /* MockPaymentFlowDriverDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPaymentFlowDriverDelegate.swift; sourceTree = "<group>"; };
 		4621B720EE8A9B65FFFE3632 /* Pods-Tests-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-UnitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		7EDE47701CD2C3D00005E22B /* PayPalUtils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PayPalUtils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+ThreeDSecure.h"; sourceTree = "<group>"; };
@@ -2492,6 +2498,8 @@
 				A74BCF021BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift */,
 				0301A42E22E2286C008A26BD /* BTThreeDSecureInfo_Tests.swift */,
 				A7AF0F5F1C20E80A00B3ADC6 /* BTThreeDSecureLookupResult_Tests.swift */,
+				42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */,
+				423B6D8523390F8D00646742 /* BTThreeDSecureResult_Tests.swift */,
 				A7B7989F1C238FC0001327FA /* BTTokenizationService_Tests.swift */,
 				A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */,
 				A71F7DDF1B616BA0005DA1B0 /* BTVenmoAppSwitchReturnURLSpec.m */,
@@ -3587,6 +3595,7 @@
 				41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */,
 				A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */,
 				A7D6746C1B84073300ED6C00 /* MockDelegates.swift */,
+				42D79395233A65EB001FDD89 /* MockPaymentFlowDriverDelegate.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -4856,6 +4865,7 @@
 				A02F975C227B9F5000759F3F /* BTThreeDSecurePostalAddressDeprecation_Tests.m in Sources */,
 				A7AF0F601C20E80A00B3ADC6 /* BTThreeDSecureLookupResult_Tests.swift in Sources */,
 				A743CD211B449D8400757C9B /* BTAPIClient_Tests.m in Sources */,
+				42D79396233A65EB001FDD89 /* MockPaymentFlowDriverDelegate.swift in Sources */,
 				842B68F11BCF083E0039634F /* BTAPIClient_SwiftTests.swift in Sources */,
 				A08E9493220CDD1B00907245 /* BTThreeDSecureLookup_Tests.swift in Sources */,
 				03BFA5D91FB4CA650003ABCE /* BTThreeDSecure_Tests.swift in Sources */,
@@ -4891,12 +4901,14 @@
 				805FD35C2331780F0000B514 /* BTPostalAddress_Tests.swift in Sources */,
 				A7AF0F621C222F9400B3ADC6 /* BTPaymentButton_Tests.swift in Sources */,
 				A7B462561C3C911200048423 /* PPOTErrorTest.m in Sources */,
+				423B6D8623390F8D00646742 /* BTThreeDSecureResult_Tests.swift in Sources */,
 				800E23DD22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift in Sources */,
 				16CD2E9F1B4077FC00E68495 /* BTJSON_Tests.swift in Sources */,
 				41B787BD1BAA20DB001AD351 /* BTDropInViewController_Tests.swift in Sources */,
 				A7CCE2AE1B67F26C006EA661 /* BTAppSwitch_Tests.swift in Sources */,
 				A71F7DE41B616BA0005DA1B0 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */,
 				A5D3A5761C20975F003A25A1 /* PPFPTIDataTest.m in Sources */,
+				42D79394233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift in Sources */,
 				A7C8230E1B4DAAB2009D45D6 /* BTSpecHelper.m in Sources */,
 				A7B462531C3C911200048423 /* PPOTEncryptionTest.m in Sources */,
 				80A1EE3E2236AAC600F6218B /* BTThreeDSecureAdditionalInformation_Tests.swift in Sources */,

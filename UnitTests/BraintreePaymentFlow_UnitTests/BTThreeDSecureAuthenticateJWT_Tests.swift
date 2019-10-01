@@ -10,10 +10,31 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: tempClientToken)!
 
-        let paymentMethodNonce = BTCardNonce.init(nonce: "fake-lookup-nonce-to-test", localizedDescription: nil)
-        let threeDSecureResult = BTThreeDSecureResult.init()
-        threeDSecureResult.tokenizedCard = paymentMethodNonce
-        mockThreeDSecureLookup = BTThreeDSecureLookup.init()
+        let threeDSecureResult = BTThreeDSecureResult()
+        threeDSecureResult.tokenizedCard = BTCardNonce(graphQLJSON: BTJSON(value:
+            [
+                "token": "fake-lookup-nonce-to-test",
+                "creditCard": [
+                    "brand": "Visa",
+                    "last4": "1111",
+                    "binData": [
+                        "prepaid": "Yes",
+                        "healthcare": "Yes",
+                        "debit": "No",
+                        "durbinRegulated": "No",
+                        "commercial": "Yes",
+                        "payroll": "No",
+                        "issuingBank": "US",
+                        "countryOfIssuance": "USA",
+                        "productId": "123"
+                    ],
+                    "threeDSecureInfo": [
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": false,
+                    ]
+                ]
+            ]))
+        mockThreeDSecureLookup = BTThreeDSecureLookup()
         mockThreeDSecureLookup.threeDSecureResult = threeDSecureResult
     }
     
@@ -42,8 +63,9 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         BTThreeDSecureAuthenticateJWT.authenticateJWT("fake-jwt", with: mockAPIClient, forLookupResult: mockThreeDSecureLookup, success: { (result) in
             XCTAssertEqual(result.tokenizedCard.nonce, "fake-nonce-to-test")
-            XCTAssertEqual(result.liabilityShifted, true)
-            XCTAssertEqual(result.liabilityShiftPossible, true)
+            XCTAssertTrue(result.tokenizedCard.threeDSecureInfo.liabilityShifted)
+            XCTAssertTrue(result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertNil(result.tokenizedCard.threeDSecureInfo.errorMessage)
             authenticateJwtExpectation.fulfill()
         }) { (error) in
             XCTFail()
@@ -54,12 +76,14 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
     func testThreeDSecureAuthenticateJWT_ReturnsLookupNonce() {
         let authenticationResponseBody = [
-            "error" : [
-                "message" : "test error"
+            "errors" : [
+                [
+                    "message" : "test error"
+                ]
             ],
-            "threeDSecureInfo":     [
+            "threeDSecureInfo": [
                 "liabilityShiftPossible": true,
-                "liabilityShifted": true,
+                "liabilityShifted": false,
             ],
             ] as [String : Any]
 
@@ -69,6 +93,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         BTThreeDSecureAuthenticateJWT.authenticateJWT("fake-jwt", with: mockAPIClient, forLookupResult: mockThreeDSecureLookup, success: { (result) in
             XCTAssertEqual(result.tokenizedCard, self.mockThreeDSecureLookup.threeDSecureResult.tokenizedCard)
+            XCTAssertEqual(result.tokenizedCard.threeDSecureInfo.errorMessage, "test error")
             authenticateJwtExpectation.fulfill()
         }) { (error) in
             XCTFail()

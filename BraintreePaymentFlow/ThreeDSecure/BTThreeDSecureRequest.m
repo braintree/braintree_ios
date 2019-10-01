@@ -228,33 +228,36 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                                                     userInfo:@{NSLocalizedDescriptionKey: @"Auth Response is not a valid BTJSON object."}]];
         return;
     }
-
+    
+    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
 
-    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
-    if ((self.versionRequested == BTThreeDSecureVersion1 && ![authBody[@"success"] isTrue]) || !result.tokenizedCard) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    // NEXT_MAJOR_VERSION we've deprecated `errorMessage` and `success` for public use, but we will continue to use them internally here. Rename to `isSuccess` for parity across SDKs.
+    if ((self.versionRequested == BTThreeDSecureVersion1 && !result.success) || !result.tokenizedCard) {
         [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
 
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
         if (result.errorMessage) {
             userInfo[NSLocalizedDescriptionKey] = result.errorMessage;
         }
-
+#pragma clang diagnostic pop
+        
         NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                              code:BTThreeDSecureFlowErrorTypeFailedAuthentication
                                          userInfo:userInfo];
         [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
         return;
     }
-
+    
     [self logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
-
     [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
 }
 
 - (void)logThreeDSecureCompletedAnalyticsForResult:(BTThreeDSecureResult *)result withAPIClient:(BTAPIClient *)apiClient {
-    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shift-possible.%@", [self stringForBool:result.liabilityShiftPossible]]];
-    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shifted.%@", [self stringForBool:result.liabilityShifted]]];
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shift-possible.%@", [self stringForBool:result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible]]];
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shifted.%@", [self stringForBool:result.tokenizedCard.threeDSecureInfo.liabilityShifted]]];
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.completed"];
 }
 

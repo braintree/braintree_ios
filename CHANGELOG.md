@@ -4,6 +4,7 @@
 
 * Fix nullability annotations on `BTPostalAddress` fields (resolves #472)
 * Add ability to request `AuthenticationInsight` when tokenizing a credit card, which can be used to make a decision about whether to perform 3D Secure verification
+* Set error message on `BTThreeDSecureInfo` when 3D Secure 2.0 challenge fails
 
 ## 4.29.0 (2019-09-19)
 

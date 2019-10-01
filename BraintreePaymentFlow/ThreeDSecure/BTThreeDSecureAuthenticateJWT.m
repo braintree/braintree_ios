@@ -28,21 +28,25 @@
     NSDictionary *requestParameters = @{@"jwt": jwt, @"paymentMethodNonce": lookupResult.threeDSecureResult.tokenizedCard.nonce};
     [apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
          parameters:requestParameters
-         completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+         completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
              if (error) {
                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
                  failureHandler(error);
+                 return;
              }
-             else {
-                 BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-                 if (result.errorMessage) {
-                     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.failure.returned-lookup-nonce"];
-                     successHandler(lookupResult.threeDSecureResult);
-                 } else {
-                     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.succeeded"];
-                     successHandler(result);
-                 }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+             BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
+             if (result.errorMessage) {
+                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.failure.returned-lookup-nonce"];
+                 lookupResult.threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage = result.errorMessage;
+                 successHandler(lookupResult.threeDSecureResult);
+             } else {
+                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.succeeded"];
+                 successHandler(result);
              }
+#pragma clang diagnostic pop
          }];
 }
 

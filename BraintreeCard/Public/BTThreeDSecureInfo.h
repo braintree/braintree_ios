@@ -111,6 +111,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, nullable) NSString *xid;
 
+/**
+ The error message when the 3D Secure flow is unsuccessful
+ */
+@property (nonatomic, nullable, copy) NSString *errorMessage;
+
 @end
 
 NS_ASSUME_NONNULL_END

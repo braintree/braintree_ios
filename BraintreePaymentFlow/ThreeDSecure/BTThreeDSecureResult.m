@@ -35,7 +35,7 @@
 }
 
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"<BTThreeDSecureResult: %p errorMessage:%@>", self, self.errorMessage];
+    return [NSString stringWithFormat:@"<BTThreeDSecureResult: %p errorMessage:%@>", self, self.tokenizedCard.threeDSecureInfo.errorMessage];
 }
 
 @end
