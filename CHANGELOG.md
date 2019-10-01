@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## 4.30.0 (2019-10-01)
 
 * Fix nullability annotations on `BTPostalAddress` fields (resolves #472)
 * Add ability to request `AuthenticationInsight` when tokenizing a credit card, which can be used to make a decision about whether to perform 3D Secure verification
