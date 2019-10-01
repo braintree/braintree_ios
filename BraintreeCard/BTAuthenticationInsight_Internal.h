@@ -1,4 +1,5 @@
 #import "BTAuthenticationInsight.h"
+#import "BTJSON.h"
 
 @interface BTAuthenticationInsight ()
 
