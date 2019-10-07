@@ -157,7 +157,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "error" : [
                 "message" : "testMessage"
             ],
-            "threeDSecureFlowInfo" : [
+            "threeDSecureInfo" : [
                 "testObject" : [
                     "testDict" : "testValue"
                 ]
