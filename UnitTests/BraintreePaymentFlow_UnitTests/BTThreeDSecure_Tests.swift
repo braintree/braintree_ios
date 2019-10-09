@@ -149,37 +149,15 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testLookupThreeDSecure_whenPostLookupWithNonceFails_withErrorCode422() {
-        let url = URL(fileURLWithPath: "example.com")
-        let response = HTTPURLResponse.init(url: url, statusCode: 422, httpVersion: nil, headerFields: nil)
-
-        let userInfo = [
-            BTHTTPURLResponseKey: response,
-            ] as [String : AnyObject]
-
-        mockAPIClient.cannedResponseError = NSError(domain:BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: userInfo)
-
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-
-        let expectation = self.expectation(description: "Post fails with error code 422.")
-
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertEqual(error! as NSError, NSError(domain:BTThreeDSecureFlowErrorDomain, code: 1, userInfo: userInfo))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-
     func testLookupThreeDSecure_whenPostLookupWithNonceFails_errorCode422AndErrorDescriptionParams() {
         let url = URL(fileURLWithPath: "example.com")
-        let response = HTTPURLResponse.init(url: url, statusCode: 422, httpVersion: nil, headerFields: nil)
+        let response = HTTPURLResponse(url: url, statusCode: 422, httpVersion: nil, headerFields: nil)
 
         let errorBody = [
             "error" : [
                 "message" : "testMessage"
             ],
-            "threeDSecureFlowInfo" : [
+            "threeDSecureInfo" : [
                 "testObject" : [
                     "testDict" : "testValue"
                 ]
@@ -198,9 +176,15 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         let expectation = self.expectation(description: "Post fails with error code 422.")
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            // TODO: Make this assertion more specific.
-            // Check that error.userInfo structure matches that set in performThreeDSecureLookup
-            XCTAssertNotEqual(error! as NSError, NSError(domain:BTThreeDSecureFlowErrorDomain, code: 1, userInfo: userInfo))
+            let e = error! as NSError
+            
+            XCTAssertEqual(e.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(e.code, BTThreeDSecureErrorType.failedLookup.rawValue)
+            XCTAssertEqual(e.userInfo[NSLocalizedDescriptionKey] as? String, "testMessage")
+            XCTAssertEqual(e.userInfo["com.braintreepayments.BTThreeDSecureFlowValidationErrorsKey"] as? [String : String],
+                           ["message" : "testMessage"])
+            XCTAssertEqual(e.userInfo["com.braintreepayments.BTThreeDSecureFlowInfoKey"] as? [String : [String : String]],
+                           ["testObject" : ["testDict" : "testValue"]])
             expectation.fulfill()
         }
 

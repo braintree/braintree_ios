@@ -86,8 +86,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
                               if ([errorBody[@"error"][@"message"] isString]) {
                                   userInfo[NSLocalizedDescriptionKey] = [errorBody[@"error"][@"message"] asString];
                               }
-                              if ([errorBody[@"threeDSecureFlowInfo"] isObject]) {
-                                  userInfo[BTThreeDSecureFlowInfoKey] = [errorBody[@"threeDSecureFlowInfo"] asDictionary];
+                              if ([errorBody[@"threeDSecureInfo"] isObject]) {
+                                  userInfo[BTThreeDSecureFlowInfoKey] = [errorBody[@"threeDSecureInfo"] asDictionary];
                               }
                               if ([errorBody[@"error"] isObject]) {
                                   userInfo[BTThreeDSecureFlowValidationErrorsKey] = [errorBody[@"error"] asDictionary];
