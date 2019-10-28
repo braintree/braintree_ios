@@ -19,13 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
  * @constant CardinalResponseActionCodeFailure The transaction resulted in an error.
  * @constant CardinalResponseActionCodeError A service level error was encountered.
  * @constant CardinalResponseActionCodeCancel The transaction was cancelled by the user.
+ * @constant CardinalResponseActionCodeTimeout The transaction was timed out.
  */
 typedef NS_ENUM(NSUInteger, CardinalResponseActionCode) {
     CardinalResponseActionCodeSuccess,
     CardinalResponseActionCodeNoAction,
     CardinalResponseActionCodeFailure,
     CardinalResponseActionCodeError,
-    CardinalResponseActionCodeCancel
+    CardinalResponseActionCodeCancel,
+    CardinalResponseActionCodeTimeout
 };
 
 // REVISIT: Turn these string values into enums for better type/value checking (wjf, 2018-02)
