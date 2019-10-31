@@ -33,6 +33,11 @@
 @property (nonatomic, strong) NSString* acsSignedContent;
 
 /**
+ * @property threeDSRequestorAppURL 3DS Requestor App URL
+ */
+@property (nonatomic, strong) NSString* threeDSRequestorAppURL;
+
+/**
  * The get3DSServerTransactionID method returns the 3DS Server Transaction ID.
  * @return NSString
  */
@@ -55,5 +60,11 @@
  * @return NSString
  */
 - (NSString *) getAcsSignedContent;
+
+/**
+ * The getThreeDSRequestorAppURL method returns the 3DS Requestor App URL.
+ * @return NSString
+ */
+- (NSString *) getThreeDSRequestorAppURL;
 
 @end

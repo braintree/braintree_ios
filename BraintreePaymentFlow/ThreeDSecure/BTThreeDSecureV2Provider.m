@@ -88,7 +88,8 @@
                                                    failure:self.failureHandler];
             break;
         }
-        case CardinalResponseActionCodeError: {
+        case CardinalResponseActionCodeError:
+        case CardinalResponseActionCodeTimeout: {
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
             if (validateResponse.errorDescription) {
                 userInfo[NSLocalizedDescriptionKey] = validateResponse.errorDescription;
@@ -131,6 +132,8 @@
             return @"failed";
         case CardinalResponseActionCodeCancel:
             return @"canceled";
+        case CardinalResponseActionCodeTimeout:
+            return @"timeout";
     }
 }
 

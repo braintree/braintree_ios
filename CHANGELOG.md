@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* Updated CardinalMobile.framework to v2.2.1
+
 ## 4.30.0 (2019-10-01)
 
 * Fix nullability annotations on `BTPostalAddress` fields (resolves #472)

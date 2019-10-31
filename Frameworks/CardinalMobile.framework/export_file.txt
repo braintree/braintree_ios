@@ -11,7 +11,6 @@ _CardinalSessionTimeoutStandard
 _OBJC_CLASS_$_AuthenticationRequestParameters
 _OBJC_CLASS_$_ButtonCustomization
 _OBJC_CLASS_$_CCHtmlViewControllerWV
-_OBJC_CLASS_$_CCProgressViewController
 _OBJC_CLASS_$_CCUIViewController
 _OBJC_CLASS_$_CCViewController
 _OBJC_CLASS_$_CardinalThreeDS2ServiceImpl
@@ -40,7 +39,6 @@ _OBJC_CLASS_$_Warning
 _OBJC_METACLASS_$_AuthenticationRequestParameters
 _OBJC_METACLASS_$_ButtonCustomization
 _OBJC_METACLASS_$_CCHtmlViewControllerWV
-_OBJC_METACLASS_$_CCProgressViewController
 _OBJC_METACLASS_$_CCUIViewController
 _OBJC_METACLASS_$_CCViewController
 _OBJC_METACLASS_$_CardinalThreeDS2ServiceImpl
