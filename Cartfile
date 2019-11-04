@@ -1,1 +1,1 @@
-binary "https://raw.githubusercontent.com/braintree/braintree_ios/master/Frameworks/CardinalMobile.json" == 2.2.1
+binary "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.json" == 2.2.1
