@@ -70,7 +70,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Fraud detection usage</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Card IO Usage</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Card IO Usage</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIRequiredDeviceCapabilities</key>
