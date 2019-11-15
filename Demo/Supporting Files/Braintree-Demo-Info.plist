@@ -41,7 +41,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.30.1</string>
+	<string>4.30.2</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -56,7 +56,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4.30.1</string>
+	<string>4.30.2</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>com.braintreepayments.Demo.payments</string>
@@ -69,10 +69,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Fraud detection usage</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Card IO Usage</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Fraud detection usage</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Card IO Usage</string>
 	<key>UILaunchStoryboardName</key>
