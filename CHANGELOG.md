@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* Updated CardinalMobile.framework to v2.2.1-2
+
 ## 4.30.1 (2019-11-04)
 
 * Updated CardinalMobile.framework to v2.2.1
