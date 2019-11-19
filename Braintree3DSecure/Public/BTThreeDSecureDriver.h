@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
        indication to the user in the meantime.
 
  @param nonce A payment method nonce.
- @param amount The amount of the transaction in the current merchant account's currency.
+ @param amount The amount of the transaction in the current merchant account's currency. This must be expressed in numbers with an optional decimal (using `.`) and precision up to the hundredths place. For example, if you're processing a transaction for 1.234,56 € then `amount` should be `1234.56`.
  @param completionBlock This completion will be invoked exactly once when authorization is complete, is cancelled, or an error occurs.
 */
 - (void)verifyCardWithNonce:(NSString *)nonce
