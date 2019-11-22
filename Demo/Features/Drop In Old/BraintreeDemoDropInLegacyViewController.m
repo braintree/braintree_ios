@@ -4,7 +4,8 @@
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeUI/BraintreeUI.h>
 #import <BraintreeVenmo/BraintreeVenmo.h>
-#import "BraintreeDemoSettings.h"
+
+#import "Demo-Swift.h"
 
 @interface BraintreeDemoDropInLegacyViewController () <BTDropInViewControllerDelegate>
 

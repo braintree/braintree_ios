@@ -1,8 +1,6 @@
 #import "BraintreeDemoCardTokenizationViewController.h"
-#import "BraintreeDemoSettings.h"
 #import <BraintreeCard/BraintreeCard.h>
 #import <CardIO/CardIO.h>
-
 
 @interface BraintreeDemoCardTokenizationViewController () <CardIOPaymentViewControllerDelegate>
 

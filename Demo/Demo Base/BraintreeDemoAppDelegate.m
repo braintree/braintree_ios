@@ -1,7 +1,8 @@
 #import "BraintreeDemoAppDelegate.h"
-#import "BraintreeDemoSettings.h"
 #import "BraintreeDemoDemoContainmentViewController.h"
 #import <BraintreeCore/BraintreeCore.h>
+
+#import "Demo-Swift.h"
 
 NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Demo.payments";
 
@@ -42,9 +43,9 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 - (void)registerDefaultsFromSettings {
     // Check for testing arguments
     if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-EnvironmentSandbox"]) {
-        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant forKey:BraintreeDemoSettingsEnvironmentDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoEnvironmentSandbox forKey:BraintreeDemoSettings.EnvironmentDefaultsKey];
     }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-EnvironmentProduction"]) {
-        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant forKey:BraintreeDemoSettingsEnvironmentDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoEnvironmentProduction forKey:BraintreeDemoSettings.EnvironmentDefaultsKey];
     }
     
     if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-TokenizationKey"]) {

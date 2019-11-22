@@ -1,5 +1,4 @@
 #import "BraintreeDemoApplePayPassKitViewController.h"
-#import "BraintreeDemoSettings.h"
 #import <BraintreeApplePay/BraintreeApplePay.h>
 #import <PureLayout/PureLayout.h>
 

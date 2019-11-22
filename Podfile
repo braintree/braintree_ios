@@ -8,7 +8,6 @@ inhibit_all_warnings!
 target 'Demo' do
   platform :ios, '9.0'
 
-  pod 'AFNetworking'
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'

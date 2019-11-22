@@ -5,9 +5,10 @@
 #import <BraintreeDropIn/BraintreeDropIn.h>
 #import <BraintreeVenmo/BraintreeVenmo.h>
 #import "BraintreeUIKit.h"
-#import "BraintreeDemoSettings.h"
 #import "BTPaymentSelectionViewController.h"
 #import <BraintreeApplePay/BraintreeApplePay.h>
+
+#import "Demo-Swift.h"
 
 @interface BraintreeDemoDropInViewController () <PKPaymentAuthorizationViewControllerDelegate>
 
@@ -207,13 +208,13 @@
         paymentRequest.countryCode = @"US";
         
         switch ([BraintreeDemoSettings currentEnvironment]) {
-            case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+            case BraintreeDemoEnvironmentSandbox:
                 paymentRequest.merchantIdentifier = @"merchant.com.braintreepayments.sandbox.Braintree-Demo";
                 break;
-            case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+            case BraintreeDemoEnvironmentProduction:
                 paymentRequest.merchantIdentifier = @"merchant.com.braintreepayments.Braintree-Demo";
                 break;
-            case BraintreeDemoTransactionServiceEnvironmentCustomMerchant:
+            case BraintreeDemoEnvironmentCustom:
                 self.progressBlock(@"Direct Apple Pay integration does not support custom environments in this Demo App");
                 break;
         }
