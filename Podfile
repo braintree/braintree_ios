@@ -8,6 +8,20 @@ inhibit_all_warnings!
 target 'Demo' do
   platform :ios, '9.0'
 
+  pod 'Braintree/Core', :path => './'
+  pod 'Braintree/Apple-Pay', :path => './'
+  pod 'Braintree/Card', :path => './'
+  pod 'Braintree/DataCollector', :path => './'
+  pod 'Braintree/PayPal', :path => './'
+  pod 'Braintree/Venmo', :path => './'
+  pod 'Braintree/UI', :path => './'
+  pod 'Braintree/UnionPay', :path => './'
+  pod 'Braintree/3D-Secure', :path => './'
+  pod 'Braintree/PayPalDataCollector', :path => './'
+  pod 'Braintree/PayPalUtils', :path => './'
+  pod 'Braintree/AmericanExpress', :path => './'
+  pod 'Braintree/PaymentFlow', :path => './'
+  
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'

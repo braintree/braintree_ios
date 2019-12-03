@@ -1,4 +1,40 @@
 PODS:
+  - Braintree/3D-Secure (4.30.2):
+    - Braintree/Card
+    - Braintree/Core
+  - Braintree/AmericanExpress (4.30.2):
+    - Braintree/Core
+  - Braintree/Apple-Pay (4.30.2):
+    - Braintree/Core
+  - Braintree/Card (4.30.2):
+    - Braintree/Core
+  - Braintree/Core (4.30.2)
+  - Braintree/DataCollector (4.30.2):
+    - Braintree/Core
+  - Braintree/PaymentFlow (4.30.2):
+    - Braintree/Card
+    - Braintree/Core
+    - Braintree/PayPalOneTouch
+  - Braintree/PayPal (4.30.2):
+    - Braintree/Core
+    - Braintree/PayPalOneTouch
+  - Braintree/PayPalDataCollector (4.30.2):
+    - Braintree/Core
+    - Braintree/PayPalUtils
+  - Braintree/PayPalOneTouch (4.30.2):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+    - Braintree/PayPalUtils
+  - Braintree/PayPalUtils (4.30.2)
+  - Braintree/UI (4.30.2):
+    - Braintree/Card
+    - Braintree/Core
+  - Braintree/UnionPay (4.30.2):
+    - Braintree/Card
+    - Braintree/Core
+  - Braintree/Venmo (4.30.2):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
   - BraintreeDropIn (99.99.99-github-master):
     - BraintreeDropIn/DropIn (= 99.99.99-github-master)
     - BraintreeDropIn/UIKit (= 99.99.99-github-master)
@@ -27,6 +63,19 @@ PODS:
   - Specta (1.0.7)
 
 DEPENDENCIES:
+  - Braintree/3D-Secure (from `./`)
+  - Braintree/AmericanExpress (from `./`)
+  - Braintree/Apple-Pay (from `./`)
+  - Braintree/Card (from `./`)
+  - Braintree/Core (from `./`)
+  - Braintree/DataCollector (from `./`)
+  - Braintree/PaymentFlow (from `./`)
+  - Braintree/PayPal (from `./`)
+  - Braintree/PayPalDataCollector (from `./`)
+  - Braintree/PayPalUtils (from `./`)
+  - Braintree/UI (from `./`)
+  - Braintree/UnionPay (from `./`)
+  - Braintree/Venmo (from `./`)
   - BraintreeDropIn (from `BraintreeDropIn.podspec`)
   - CardIO
   - Expecta
@@ -49,6 +98,8 @@ SPEC REPOS:
     - Specta
 
 EXTERNAL SOURCES:
+  Braintree:
+    :path: "./"
   BraintreeDropIn:
     :podspec: BraintreeDropIn.podspec
 
@@ -58,6 +109,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
+  Braintree: 9fc21dc2ead57d104c4a0743454308e404217ec7
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
@@ -68,6 +120,6 @@ SPEC CHECKSUMS:
   PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 751a144aa6e8a074f55c5ed5ee665a74a2b61ee3
+PODFILE CHECKSUM: 9bac01eae54cc062c92bbdea4288b3b903f911b7
 
 COCOAPODS: 1.7.5

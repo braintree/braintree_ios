@@ -1,5 +1,4 @@
 import XCTest
-import BraintreeUnionPay
 
 class BTCardClient_UnionPayTests: XCTestCase {
     
