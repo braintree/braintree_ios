@@ -35,7 +35,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000002")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         
         self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
@@ -55,7 +55,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000010")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
@@ -75,7 +75,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000051")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
         
@@ -87,7 +87,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000077")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
         
@@ -100,7 +100,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000028")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
@@ -125,7 +125,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000101")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
         
@@ -138,7 +138,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000036")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
@@ -158,7 +158,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000093")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
@@ -178,7 +178,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000002")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(app.buttons["Done"])
@@ -195,7 +195,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000990000000004")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
         
@@ -207,7 +207,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000085")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
         
@@ -219,7 +219,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000069")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
         
@@ -231,7 +231,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000044")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(5)
         
@@ -269,7 +269,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000002")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element)
@@ -291,7 +291,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000010")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element)
@@ -313,7 +313,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000051")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
         
@@ -327,7 +327,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000077")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
 
@@ -342,7 +342,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000028")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element)
@@ -371,7 +371,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000101")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
 
@@ -386,7 +386,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000036")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element)
@@ -408,7 +408,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000093")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 
         self.waitForElementToAppear(getPasswordFieldQuery().element)
@@ -430,7 +430,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000002")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
 
@@ -448,7 +448,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000990000000004")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
 
@@ -462,7 +462,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000085")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
 
@@ -476,7 +476,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000069")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
 
@@ -490,7 +490,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
         cardNumberTextField.typeText("4000000000000044")
-        app.textFields["MM/YY"].typeText("012020")
+        app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(5)
 

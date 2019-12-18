@@ -1,7 +1,7 @@
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreePayPal/BraintreePayPal.h>
 #import <BraintreePayPal/BTPayPalDriver_Internal.h>
-#import "BTIntegrationTestsHelper.h"
+#import "BTNonceValidationHelper.h"
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 

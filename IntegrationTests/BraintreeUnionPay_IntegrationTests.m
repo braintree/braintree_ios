@@ -1,5 +1,6 @@
+#import "BTNonceValidationHelper.h"
+#import "IntegrationTests-Swift.h"
 #import <BraintreeUnionPay/BraintreeUnionPay.h>
-#import "BTIntegrationTestsHelper.h"
 #import <XCTest/XCTest.h>
 
 @interface BraintreeUnionPay_IntegrationTests : XCTestCase
@@ -37,7 +38,7 @@
 
 - (void)pendEnrollCard_whenSuccessful_returnsEnrollmentID {
     BTCardRequest *request = [[BTCardRequest alloc] init];
-    request.card = [[BTCard alloc] initWithNumber:@"6222821234560017" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
+    request.card = [[BTCard alloc] initWithNumber:@"6222821234560017" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:@"123"];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
 
@@ -53,7 +54,7 @@
 
 - (void)pendEnrollCard_whenCardDoesNotRequireEnrollment_returnsError {
     BTCardRequest *request = [[BTCardRequest alloc] init];
-    request.card = [[BTCard alloc] initWithNumber:@"6212345678900085" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
+    request.card = [[BTCard alloc] initWithNumber:@"6212345678900085" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:@"123"];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
 
@@ -70,7 +71,7 @@
 
 - (void)pendTokenizeCard_withEnrolledUnionPayCard_isSuccessful {
     BTCardRequest *request = [[BTCardRequest alloc] init];
-    request.card = [[BTCard alloc] initWithNumber:@"6212345678901232" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
+    request.card = [[BTCard alloc] initWithNumber:@"6212345678901232" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:@"123"];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
 

@@ -1,5 +1,5 @@
 #import <BraintreeApplePay/BraintreeApplePay.h>
-#import "BTIntegrationTestsHelper.h"
+#import "BTNonceValidationHelper.h"
 #import <PassKit/PassKit.h>
 #import <XCTest/XCTest.h>
 

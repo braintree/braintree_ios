@@ -1,4 +1,5 @@
-#import "BTIntegrationTestsHelper.h"
+#import "BTNonceValidationHelper.h"
+#import "IntegrationTests-Swift.h"
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeAmericanExpress/BraintreeAmericanExpress.h>
@@ -100,7 +101,7 @@
     BTCard *card = [[BTCard alloc] init];
     card.number = @"371260714673002";
     card.expirationMonth = @"12";
-    card.expirationYear = @"2020";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
     return card;
 }
 
@@ -108,7 +109,7 @@
     BTCard *card = [[BTCard alloc] init];
     card.number = @"371544868764018";
     card.expirationMonth = @"12";
-    card.expirationYear = @"2020";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
     return card;
 }
 
@@ -116,7 +117,7 @@
     BTCard *card = [[BTCard alloc] init];
     card.number = @"378267515471109";
     card.expirationMonth = @"12";
-    card.expirationYear = @"2020";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
     return card;
 }
 

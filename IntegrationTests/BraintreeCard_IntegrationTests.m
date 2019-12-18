@@ -1,4 +1,5 @@
-#import "BTIntegrationTestsHelper.h"
+#import "BTNonceValidationHelper.h"
+#import "IntegrationTests-Swift.h"
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
 #import <Expecta/Expecta.h>
@@ -28,7 +29,7 @@
 - (void)testTokenizeCard_whenCardIsInvalidAndValidationIsEnabled_failsWithExpectedValidationError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-    BTCard *card = [[BTCard alloc] initWithNumber:@"123" expirationMonth:@"12" expirationYear:@"2020" cvv:nil];
+    BTCard *card = [[BTCard alloc] initWithNumber:@"123" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:nil];
     card.shouldValidate = YES;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
@@ -155,7 +156,7 @@
     BTCard *card = [[BTCard alloc] init];
     card.number = @"4111111111111111";
     card.expirationMonth = @"12";
-    card.expirationYear = @"2018";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
     return card;
 }
 
