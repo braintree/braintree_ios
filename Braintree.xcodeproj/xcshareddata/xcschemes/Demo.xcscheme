@@ -55,7 +55,8 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -65,6 +66,127 @@
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "417404481BB084D3008A5DEA"
+            BuildableName = "libBraintree.a"
+            BlueprintName = "Braintree"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2D941D871B5D9E8C0016EFB4"
+            BuildableName = "Braintree3DSecure.framework"
+            BlueprintName = "Braintree3DSecure"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "0357C47B1F96869600E63851"
+            BuildableName = "BraintreeAmericanExpress.framework"
+            BlueprintName = "BraintreeAmericanExpress"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A7C889731B5EF5DE007A0E9C"
+            BuildableName = "BraintreeApplePay.framework"
+            BlueprintName = "BraintreeApplePay"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A7C8898F1B5F043B007A0E9C"
+            BuildableName = "BraintreeCard.framework"
+            BlueprintName = "BraintreeCard"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2DE12F081B59BE0100EA1BCF"
+            BuildableName = "BraintreeCore.framework"
+            BlueprintName = "BraintreeCore"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A76D7BFF1BB1CAB00000FA6A"
+            BuildableName = "BraintreeDataCollector.framework"
+            BlueprintName = "BraintreeDataCollector"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2D941D371B59C76A0016EFB4"
+            BuildableName = "BraintreePayPal.framework"
+            BlueprintName = "BraintreePayPal"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "03502C831E9C0A1700F15EE6"
+            BuildableName = "BraintreePaymentFlow.framework"
+            BlueprintName = "BraintreePaymentFlow"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A77344F61B7A93A10083EC8D"
+            BuildableName = "BraintreeUI.framework"
+            BlueprintName = "BraintreeUI"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4164B9951C9B658E006AE861"
+            BuildableName = "BraintreeUnionPay.framework"
+            BlueprintName = "BraintreeUnionPay"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A77AA29B1B618C7700217B73"
+            BuildableName = "BraintreeVenmo.framework"
+            BlueprintName = "BraintreeVenmo"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A7B462E01C3D9C2200048423"
+            BuildableName = "PayPalDataCollector.framework"
+            BlueprintName = "PayPalDataCollector"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A50C3B041C19F55C00612D90"
+            BuildableName = "libPayPalDataCollector-StaticLibrary.a"
+            BlueprintName = "PayPalDataCollector-StaticLibrary"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A50C3B6E1C1A29C500612D90"
+            BuildableName = "PayPalOneTouch.framework"
+            BlueprintName = "PayPalOneTouch"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A50C3AD41C19F00600612D90"
+            BuildableName = "libPayPalOneTouch-StaticLibrary.a"
+            BlueprintName = "PayPalOneTouch-StaticLibrary"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7EDE474C1CD2C3D00005E22B"
+            BuildableName = "PayPalUtils.framework"
+            BlueprintName = "PayPalUtils"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO">

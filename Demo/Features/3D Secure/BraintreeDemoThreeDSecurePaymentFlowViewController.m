@@ -117,8 +117,8 @@
         request.email = @"test@example.com";
         request.shippingMethod = @"01";
 
-        UiCustomization *ui = [[UiCustomization alloc] init];
-        ToolbarCustomization *toolbarCustomization = [[ToolbarCustomization alloc] init];
+        UiCustomization *ui = [UiCustomization new];
+        ToolbarCustomization *toolbarCustomization = [ToolbarCustomization new];
         [toolbarCustomization setHeaderText:@"Braintree 3DS Checkout"];
         [toolbarCustomization setBackgroundColor:@"#FF5A5F"];
         [toolbarCustomization setButtonText:@"Close"];
@@ -127,7 +127,12 @@
         [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
         [ui setToolbarCustomization:toolbarCustomization];
         request.uiCustomization = ui;
-
+        
+        BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
+        v1UICustomization.redirectButtonText = @"Return to Demo App";
+        v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";
+        request.v1UICustomization = v1UICustomization;
+        
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];

@@ -22,8 +22,7 @@
 #import "BTURLUtils.h"
 #import "BTConfiguration+ThreeDSecure.h"
 #import "BTThreeDSecureV2Provider.h"
-
-NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.6";
+#import "BTThreeDSecureV1BrowserSwitchHelper.h"
 
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>
 
@@ -155,15 +154,19 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 }
 
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult configuration:(BTConfiguration *)configuration {
-    if (lookupResult.requiresUserAuthentication) {
-        if (lookupResult.isThreeDSecureVersion2) {
-            [self performV2Authentication:lookupResult];
-        } else {
-            NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
-            [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:nil];
-        }
-    } else {
+    if (!lookupResult.requiresUserAuthentication) {
         [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:nil];
+        return;
+    }
+    
+    if (lookupResult.isThreeDSecureVersion2) {
+        [self performV2Authentication:lookupResult];
+    } else {
+        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:self.paymentFlowDriverDelegate.returnURLScheme
+                                                                           assetsURL:[configuration.json[@"assetsUrl"] asString]
+                                                                 threeDSecureRequest:self
+                                                                  threeDSecureLookup:lookupResult];
+        [self.paymentFlowDriverDelegate onPaymentWithURL:browserSwitchURL error:nil];
     }
 }
 
@@ -178,27 +181,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
                                                  [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
                                              }];
-}
-
-- (NSURL *)constructV1PaymentURLForLookup:(BTThreeDSecureLookup *)lookupResult configuration:(BTConfiguration *)configuration {
-    NSString *acsurl = [NSString stringWithFormat:@"AcsUrl=%@", [lookupResult.acsURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
-    NSString *pareq = [NSString stringWithFormat:@"PaReq=%@", [self stringByAddingPercentEncodingForRFC3986:lookupResult.PAReq]];
-    NSString *md = [NSString stringWithFormat:@"MD=%@", [lookupResult.MD stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
-
-    NSString *callbackUrl = [NSString stringWithFormat: @"ReturnUrl=%@%@/redirect.html?redirect_url=%@://x-callback-url/braintree/threedsecure?",
-                             [configuration.json[@"assetsUrl"] asString],
-                             BTThreeDSecureAssetsPath,
-                             [self.paymentFlowDriverDelegate returnURLScheme]
-                             ];
-    callbackUrl = [callbackUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-    NSString *authUrl = [NSString stringWithFormat:@"%@",
-                         [lookupResult.termURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]
-                         ];
-
-    NSString *termurl = [NSString stringWithFormat: @"TermUrl=%@", authUrl];
-    NSURL *redirectUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/index.html?%@&%@&%@&%@&%@", [configuration.json[@"assetsUrl"] asString], BTThreeDSecureAssetsPath, acsurl, pareq, md, termurl, callbackUrl]];
-
-    return redirectUrl;
 }
 
 - (void)handleOpenURL:(NSURL *)url {
@@ -267,13 +249,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
 - (NSString *)paymentFlowName {
     return @"three-d-secure";
-}
-
-- (NSString *)stringByAddingPercentEncodingForRFC3986:(NSString *)string {
-    NSString *unreserved = @"-._~/?";
-    NSMutableCharacterSet *allowed = NSMutableCharacterSet.alphanumericCharacterSet;
-    [allowed addCharactersInString:unreserved];
-    return [string stringByAddingPercentEncodingWithAllowedCharacters:allowed];
 }
 
 - (NSString *)stringForBool:(BOOL)boolean {

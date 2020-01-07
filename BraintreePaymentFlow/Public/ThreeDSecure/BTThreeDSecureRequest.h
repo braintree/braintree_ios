@@ -9,6 +9,7 @@
 #import "BTThreeDSecurePostalAddress.h"
 #import "BTThreeDSecureAdditionalInformation.h"
 #import "BTThreeDSecureLookup.h"
+#import "BTThreeDSecureV1UICustomization.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -92,11 +93,16 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
 @property (nonatomic) BOOL exemptionRequested;
 
 /**
- Optional. UI Customization for the 3DS 2 challenge views.
+ Optional. UI Customization for 3DS2 challenge views.
  
  @see https://cardinaldocs.atlassian.net/wiki/spaces/CMSDK/pages/873234760/iOS+UI+Customization
  */
 @property (nonatomic, nullable, strong) UiCustomization *uiCustomization;
+
+/**
+ Optional. UI Customization for 3DS1 challenge views.
+ */
+@property (nonatomic, nullable, strong) BTThreeDSecureV1UICustomization *v1UICustomization;
 
 /**
  A delegate for receiving information about the ThreeDSecure payment flow.

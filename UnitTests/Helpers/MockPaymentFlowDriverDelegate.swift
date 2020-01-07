@@ -1,11 +1,13 @@
 class MockPaymentFlowDriverDelegate: BTPaymentFlowDriverDelegate {
     
-    var onPaymentHandler: ((URL?, Error?) -> Void)?
+    var _returnURLScheme = ""
+    
+    var onPaymentWithURLHandler: ((URL?, Error?) -> Void)?
     var onPaymentCancelHandler: (() -> Void)?
     var onPaymentCompleteHandler: ((BTPaymentFlowResult?, Error?) -> Void)?
     
     func onPayment(with url: URL?, error: Error?) {
-        onPaymentHandler?(url, error)
+        onPaymentWithURLHandler?(url, error)
     }
     
     func onPaymentCancel() {
@@ -17,7 +19,7 @@ class MockPaymentFlowDriverDelegate: BTPaymentFlowDriverDelegate {
     }
     
     func returnURLScheme() -> String {
-        return ""
+        return _returnURLScheme
     }
     
     func apiClient() -> BTAPIClient {

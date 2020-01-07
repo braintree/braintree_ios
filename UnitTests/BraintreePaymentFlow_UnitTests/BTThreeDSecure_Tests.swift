@@ -487,6 +487,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_displaysSafariViewControllerWhenAvailable_andRequiresAuthentication() {
+        BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
+        
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
@@ -498,7 +500,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-        
+
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
             
         }
