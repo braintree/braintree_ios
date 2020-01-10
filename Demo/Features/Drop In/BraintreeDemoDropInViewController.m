@@ -235,9 +235,9 @@
     //dropInRequest.amount = @"10.00";
     //dropInRequest.threeDSecureVerification = YES;
     if (self.dropinThemeSwitch.selectedSegmentIndex == 0) {
-        [BTUIKAppearance lightTheme];
+        [[BTUIKAppearance sharedInstance] setColorScheme:BTUIKColorSchemeLight];
     } else {
-        [BTUIKAppearance darkTheme];
+        [[BTUIKAppearance sharedInstance] setColorScheme:BTUIKColorSchemeDark];
     }
     BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInController * _Nonnull dropInController, BTDropInResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
