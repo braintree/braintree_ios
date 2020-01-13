@@ -41,7 +41,6 @@ PODS:
   - BraintreeDropIn/DropIn (99.99.99-github-master):
     - BraintreeDropIn/UIKit
   - BraintreeDropIn/UIKit (99.99.99-github-master)
-  - CardIO (5.4.1)
   - Expecta (1.0.6)
   - InAppSettingsKit (2.9.1)
   - "NSURL+QueryDictionary (1.2.0)"
@@ -77,7 +76,6 @@ DEPENDENCIES:
   - Braintree/UnionPay (from `./`)
   - Braintree/Venmo (from `./`)
   - BraintreeDropIn (from `BraintreeDropIn.podspec`)
-  - CardIO
   - Expecta
   - InAppSettingsKit
   - "NSURL+QueryDictionary (~> 1.0)"
@@ -88,7 +86,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - CardIO
     - Expecta
     - InAppSettingsKit
     - "NSURL+QueryDictionary"
@@ -111,7 +108,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Braintree: 9fc21dc2ead57d104c4a0743454308e404217ec7
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
-  CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: acb6bc78cf00bbcfa63c4a26fd67f266bc7cfcd2
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
@@ -120,6 +116,6 @@ SPEC CHECKSUMS:
   PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 9bac01eae54cc062c92bbdea4288b3b903f911b7
+PODFILE CHECKSUM: 5b05d04ef2c8083e178dc0765d9f22c4fe9243f5
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.8.1

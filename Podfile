@@ -22,7 +22,6 @@ target 'Demo' do
   pod 'Braintree/AmericanExpress', :path => './'
   pod 'Braintree/PaymentFlow', :path => './'
   
-  pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
   pod 'InAppSettingsKit'

@@ -1,14 +1,12 @@
 #import "BraintreeDemoCardTokenizationViewController.h"
 #import <BraintreeCard/BraintreeCard.h>
-#import <CardIO/CardIO.h>
 
-@interface BraintreeDemoCardTokenizationViewController () <CardIOPaymentViewControllerDelegate>
+@interface BraintreeDemoCardTokenizationViewController ()
 
 @property (nonatomic, strong) IBOutlet UITextField *cardNumberField;
 @property (nonatomic, strong) IBOutlet UITextField *expirationMonthField;
 @property (nonatomic, strong) IBOutlet UITextField *expirationYearField;
 
-@property (weak, nonatomic) IBOutlet UIButton *cardIOButton;
 @property (weak, nonatomic) IBOutlet UIButton *autofillButton;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (nonatomic, strong) BTAPIClient *apiClient;
@@ -29,28 +27,6 @@
 
     self.title = NSLocalizedString(@"Card Tokenization", nil);
     self.edgesForExtendedLayout = UIRectEdgeBottom;
-
-    [CardIOUtilities preload];
-}
-
-- (void)userDidProvideCreditCardInfo:(CardIOCreditCardInfo *)cardInfo inPaymentViewController:(CardIOPaymentViewController *)paymentViewController {
-    self.progressBlock([NSString stringWithFormat:@"Scanned a card with Card.IO: %@", [cardInfo redactedCardNumber]]);
-
-    if (cardInfo.expiryYear) {
-        self.expirationYearField.text = [NSString stringWithFormat:@"%d", (int)cardInfo.expiryYear];
-    }
-
-    if (cardInfo.expiryMonth) {
-        self.expirationMonthField.text = [NSString stringWithFormat:@"%d", (int)cardInfo.expiryMonth];
-    }
-
-    self.cardNumberField.text = cardInfo.cardNumber;
-
-    [paymentViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)userDidCancelPaymentViewController:(CardIOPaymentViewController *)paymentViewController {
-    [paymentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)submitForm {
@@ -81,22 +57,11 @@
     self.expirationYearField.text = [@"2038" copy];
 }
 
-- (IBAction)presentCardIO {
-    CardIOPaymentViewController *cardIO = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self];
-    cardIO.collectExpiry = YES;
-    cardIO.collectCVV = NO;
-    cardIO.useCardIOLogo = YES;
-    cardIO.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:cardIO animated:YES completion:nil];
-
-}
-
 - (void)setFieldsEnabled:(BOOL)enabled {
     self.cardNumberField.enabled = enabled;
     self.expirationMonthField.enabled = enabled;
     self.expirationYearField.enabled = enabled;
     self.submitButton.enabled = enabled;
-    self.cardIOButton.enabled = enabled;
     self.autofillButton.enabled = enabled;
 
 }
