@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.31.0 (2020-01-14)
 
 * Add support for basic UI customization of 3DS1 flows. See `BTThreeDSecureV1UICustomization`.
 
