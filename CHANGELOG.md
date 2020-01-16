@@ -1,6 +1,10 @@
 # Braintree iOS SDK Release Notes
 
-## 4.31.0 (2020-01-14)
+## unreleased
+
+* Update CardinalMobile.framework to v2.2.2-1
+
+## 4.31.0 (2020-01-15)
 
 * Add support for basic UI customization of 3DS1 flows. See `BTThreeDSecureV1UICustomization`.
 

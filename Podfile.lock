@@ -1,38 +1,38 @@
 PODS:
-  - Braintree/3D-Secure (4.30.2):
+  - Braintree/3D-Secure (4.31.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/AmericanExpress (4.30.2):
+  - Braintree/AmericanExpress (4.31.0):
     - Braintree/Core
-  - Braintree/Apple-Pay (4.30.2):
+  - Braintree/Apple-Pay (4.31.0):
     - Braintree/Core
-  - Braintree/Card (4.30.2):
+  - Braintree/Card (4.31.0):
     - Braintree/Core
-  - Braintree/Core (4.30.2)
-  - Braintree/DataCollector (4.30.2):
+  - Braintree/Core (4.31.0)
+  - Braintree/DataCollector (4.31.0):
     - Braintree/Core
-  - Braintree/PaymentFlow (4.30.2):
+  - Braintree/PaymentFlow (4.31.0):
     - Braintree/Card
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPal (4.30.2):
+  - Braintree/PayPal (4.31.0):
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.30.2):
+  - Braintree/PayPalDataCollector (4.31.0):
     - Braintree/Core
     - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.30.2):
+  - Braintree/PayPalOneTouch (4.31.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
     - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.30.2)
-  - Braintree/UI (4.30.2):
+  - Braintree/PayPalUtils (4.31.0)
+  - Braintree/UI (4.31.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/UnionPay (4.30.2):
+  - Braintree/UnionPay (4.31.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/Venmo (4.30.2):
+  - Braintree/Venmo (4.31.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
   - BraintreeDropIn (99.99.99-github-master):
@@ -106,7 +106,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
-  Braintree: 9fc21dc2ead57d104c4a0743454308e404217ec7
+  Braintree: c20fb599a8cfee54ad7dfc603dee68f0922bfcba
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: acb6bc78cf00bbcfa63c4a26fd67f266bc7cfcd2

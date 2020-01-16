@@ -10,7 +10,6 @@
 #import "ProgressDialog.h"
 #import "ChallengeStatusReceiver.h"
 #import "ChallengeParameters.h"
-#import <UIKit/UIKit.h>
 
 /**
  * An object that confronts to Transaction protocol hold parameters that the 3DS Server requires to create AReq messages and to perform the Challenge Flow.
