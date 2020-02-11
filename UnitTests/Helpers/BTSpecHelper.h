@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <OHHTTPStubs/OHHTTPStubs.h>
+#import <OHHTTPStubs/HTTPStubs.h>
 #import <XCTest/XCTest.h>
 
 typedef NS_ENUM(NSInteger, BTTestMode_t) {

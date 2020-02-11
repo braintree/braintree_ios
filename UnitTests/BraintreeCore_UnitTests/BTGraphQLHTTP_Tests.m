@@ -18,7 +18,7 @@
 }
 
 - (void)tearDown {
-    [OHHTTPStubs removeAllStubs];
+    [HTTPStubs removeAllStubs];
     [super tearDown];
 }
 
@@ -128,10 +128,10 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
     id stubResponseData = @{@"success": @YES};
 
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubResponseData options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubResponseData options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
     }];
 
     [http POST:@"" parameters:@{@"hey": @"now"} completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
@@ -295,10 +295,10 @@
                                          ]
                                  };
 
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
     }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
@@ -338,10 +338,10 @@
                              @"error": @{@"message": @"Validation is not supported for requests authorized with a tokenization key."}
                              };
 
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
     }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
@@ -365,10 +365,10 @@
                                    @"error": @{@"message": @"An unexpected error occurred"}
                                    };
 
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
     }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
@@ -387,10 +387,10 @@
                              @"error": @{@"message": @"An unexpected error occurred"}
                              };
 
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[stubGraphQLErrorResponse dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"text/plain; charset=UTF-8"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[stubGraphQLErrorResponse dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"text/plain; charset=UTF-8"}];
     }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
@@ -428,10 +428,10 @@
                                         };
 
 
-        id stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
         XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
@@ -442,7 +442,7 @@
             XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
             XCTAssertEqual(error.code, errorCodes[errorType].longValue);
 
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             [expectation fulfill];
         }];
 
@@ -451,10 +451,10 @@
 }
 
 - (void)testNetworkError_returnsError {
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:-1002 userInfo:@{}]];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:-1002 userInfo:@{}]];
     }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];

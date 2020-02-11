@@ -27,15 +27,15 @@ NSDictionary *parameterDictionary() {
 }
 
 void withStub(void (^block)(void (^removeStub)(void))) {
-    id<OHHTTPStubsDescriptor> stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    id<HTTPStubsDescriptor> stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
         NSData *jsonResponse = [NSJSONSerialization dataWithJSONObject:@{@"requestHeaders": [request allHTTPHeaderFields]} options:NSJSONWritingPrettyPrinted error:nil];
-        return [OHHTTPStubsResponse responseWithData:jsonResponse statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+        return [HTTPStubsResponse responseWithData:jsonResponse statusCode:200 headers:@{@"Content-Type": @"application/json"}];
     }];
 
     block(^{
-        [OHHTTPStubs removeStub:stub];
+        [HTTPStubs removeStub:stub];
     });
 }
 
@@ -50,7 +50,7 @@ NSURLSession *testURLSession() {
 
 @implementation BTHTTPSpec {
     BTHTTP *http;
-    id<OHHTTPStubsDescriptor> stubDescriptor;
+    id<HTTPStubsDescriptor> stubDescriptor;
 }
 
 #pragma mark - performing a request
@@ -63,7 +63,7 @@ NSURLSession *testURLSession() {
 }
 
 - (void)tearDown {
-    [OHHTTPStubs removeAllStubs];
+    [HTTPStubs removeAllStubs];
 
     [super tearDown];
 }
@@ -692,10 +692,10 @@ NSURLSession *testURLSession() {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
-        id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
         [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -707,7 +707,7 @@ NSURLSession *testURLSession() {
 
             expect(error).to.beNil();
 
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             done();
         }];
     });
@@ -723,10 +723,10 @@ NSURLSession *testURLSession() {
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
 
-    id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:errorBody options:NSJSONWritingPrettyPrinted error:NULL] statusCode:403 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:errorBody options:NSJSONWritingPrettyPrinted error:NULL] statusCode:403 headers:@{@"Content-Type": @"application/json"}];
     }];
 
     [http GET:@"403.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -739,7 +739,7 @@ NSURLSession *testURLSession() {
         XCTAssertEqualObjects(error.localizedDescription, @"This is an error message from the gateway");
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
 
-        [OHHTTPStubs removeStub:stub];
+        [HTTPStubs removeStub:stub];
         [expectation fulfill];
     }];
 
@@ -756,10 +756,10 @@ NSURLSession *testURLSession() {
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
     
-    id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:errorBody options:NSJSONWritingPrettyPrinted error:NULL] statusCode:403 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:errorBody options:NSJSONWritingPrettyPrinted error:NULL] statusCode:403 headers:@{@"Content-Type": @"application/json"}];
     }];
     
     [http GET:@"400.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -772,7 +772,7 @@ NSURLSession *testURLSession() {
         XCTAssertEqualObjects(error.localizedDescription, @"This is an error message from the gateway");
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
         
-        [OHHTTPStubs removeStub:stub];
+        [HTTPStubs removeStub:stub];
         [expectation fulfill];
     }];
     
@@ -784,10 +784,10 @@ NSURLSession *testURLSession() {
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
     
-    id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:429 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:429 headers:@{@"Content-Type": @"application/json"}];
     }];
     
     [http GET:@"429.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -801,7 +801,7 @@ NSURLSession *testURLSession() {
         XCTAssertEqualObjects(error.userInfo[NSLocalizedDescriptionKey], @"You are being rate-limited.");
         XCTAssertEqualObjects(error.userInfo[NSLocalizedRecoverySuggestionErrorKey], @"Please try again in a few minutes.");
 
-        [OHHTTPStubs removeStub:stub];
+        [HTTPStubs removeStub:stub];
         [expectation fulfill];
     }];
     
@@ -818,10 +818,10 @@ NSURLSession *testURLSession() {
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
 
-    id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+    id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
-    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:errorBody options:NSJSONWritingPrettyPrinted error:NULL] statusCode:503 headers:@{@"Content-Type": @"application/json"}];
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:errorBody options:NSJSONWritingPrettyPrinted error:NULL] statusCode:503 headers:@{@"Content-Type": @"application/json"}];
     }];
 
     [http GET:@"403.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -835,7 +835,7 @@ NSURLSession *testURLSession() {
         XCTAssertEqualObjects(error.localizedRecoverySuggestion, @"Please try again later.");
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
 
-        [OHHTTPStubs removeStub:stub];
+        [HTTPStubs removeStub:stub];
         [expectation fulfill];
     }];
 
@@ -847,10 +847,10 @@ NSURLSession *testURLSession() {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
-        id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:nil]];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:nil]];
         }];
 
         [self->http GET:@"network-down" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -858,7 +858,7 @@ NSURLSession *testURLSession() {
             expect(response).to.beNil();
             expect(error.domain).to.equal(NSURLErrorDomain);
             expect(error.code).to.equal(NSURLErrorNotConnectedToInternet);
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             done();
         }];
     });
@@ -868,10 +868,10 @@ NSURLSession *testURLSession() {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
-        id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotConnectToHost userInfo:nil]];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotConnectToHost userInfo:nil]];
         }];
 
 
@@ -880,7 +880,7 @@ NSURLSession *testURLSession() {
             expect(response).to.beNil();
             expect(error.domain).to.equal(NSURLErrorDomain);
             expect(error.code).to.equal(NSURLErrorCannotConnectToHost);
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             done();
         }];
     });
@@ -892,10 +892,10 @@ NSURLSession *testURLSession() {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
-        id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:[@"{\"status\": \"OK\"}" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithData:[@"{\"status\": \"OK\"}" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
         [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){
@@ -905,7 +905,7 @@ NSURLSession *testURLSession() {
 
             expect([body[@"status"] asString]).to.equal(@"OK");
 
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             done();
         }];
     });
@@ -915,10 +915,10 @@ NSURLSession *testURLSession() {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
-        id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:[[NSData alloc] init] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithData:[[NSData alloc] init] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
         [self->http GET:@"empty.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){
@@ -928,7 +928,7 @@ NSURLSession *testURLSession() {
             expect(body.asDictionary.count).to.equal(0);
             expect(error).to.beNil();
 
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             done();
         }];
     });
@@ -938,10 +938,10 @@ NSURLSession *testURLSession() {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
-        id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:[@"{ really invalid json ]" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithData:[@"{ really invalid json ]" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
         [self->http GET:@"invalid.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -949,7 +949,7 @@ NSURLSession *testURLSession() {
             expect(body).to.beNil();
             expect(error.domain).to.equal(NSCocoaErrorDomain);
 
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             done();
         }];
     });
@@ -959,10 +959,10 @@ NSURLSession *testURLSession() {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
-        id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:[@"<html>response</html>" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"text/html"}];
+        } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+            return [HTTPStubsResponse responseWithData:[@"<html>response</html>" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"text/html"}];
         }];
 
         [self->http GET:@"200.html" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -975,7 +975,7 @@ NSURLSession *testURLSession() {
             expect(error.domain).to.equal(BTHTTPErrorDomain);
             expect(error.code).to.equal(BTHTTPErrorCodeResponseContentTypeNotAcceptable);
 
-            [OHHTTPStubs removeStub:stub];
+            [HTTPStubs removeStub:stub];
             done();
         }];
     });
