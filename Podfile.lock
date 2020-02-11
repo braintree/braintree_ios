@@ -42,7 +42,7 @@ PODS:
     - BraintreeDropIn/UIKit
   - BraintreeDropIn/UIKit (99.99.99-github-master)
   - Expecta (1.0.6)
-  - InAppSettingsKit (2.9.1)
+  - InAppSettingsKit (2.14)
   - "NSURL+QueryDictionary (1.2.0)"
   - OCMock (3.4.2)
   - OHHTTPStubs (6.1.0):
@@ -109,7 +109,7 @@ SPEC CHECKSUMS:
   Braintree: c20fb599a8cfee54ad7dfc603dee68f0922bfcba
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  InAppSettingsKit: acb6bc78cf00bbcfa63c4a26fd67f266bc7cfcd2
+  InAppSettingsKit: 800853da39388780c15191846688c0974c5b13b5
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   OCMock: ebe9ee1dca7fbed0ff9193ac0b3e2d8862ea56f6
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
