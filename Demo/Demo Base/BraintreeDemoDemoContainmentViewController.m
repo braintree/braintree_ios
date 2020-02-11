@@ -178,8 +178,9 @@
 - (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithAuthorization:(NSString *)authorization {
     NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
     NSLog(@"Loading integration: %@", integrationName);
-
-    Class integrationClass = NSClassFromString(integrationName);
+    
+    // The prefix "Demo." is required for integration view controllers written in Swift
+    Class integrationClass = NSClassFromString(integrationName) ?: NSClassFromString([NSString stringWithFormat:@"Demo.%@", integrationName]);
     if (![integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]]) {
         NSLog(@"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
         return nil;

@@ -39,6 +39,7 @@
 				<string>PayPal Credit</string>
 				<string>iDEAL</string>
 				<string>Amex</string>
+				<string>Preferred Payment Methods</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -64,6 +65,7 @@
 				<string>BraintreeDemoPayPalCreditPaymentViewController</string>
 				<string>BraintreeDemoIdealViewController</string>
 				<string>BraintreeDemoAmexViewController</string>
+				<string>BraintreeDemoPreferredPaymentMethodsViewController</string>
 			</array>
 		</dict>
 		<dict>

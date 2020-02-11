@@ -1,47 +1,6 @@
 import UIKit
 import XCTest
 
-class FakeApplication {
-    var lastOpenURL : URL? = nil
-    var openURLWasCalled : Bool = false
-    var cannedOpenURLSuccess : Bool = true
-    var cannedCanOpenURL : Bool = true
-    var canOpenURLWhitelist : [URL] = []
-
-    @objc func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
-        lastOpenURL = url
-        openURLWasCalled = true
-        completion?(cannedOpenURLSuccess)
-    }
-
-    @objc func canOpenURL(_ url: URL) -> Bool {
-        for whitelistURL in canOpenURLWhitelist {
-            if whitelistURL.scheme == url.scheme {
-                return true
-            }
-        }
-        return cannedCanOpenURL
-    }
-}
-
-class FakeBundle : Bundle {
-    override func object(forInfoDictionaryKey key: String) -> Any? {
-        return "An App";
-    }
-}
-
-class FakeDevice : UIDevice {
-    var fakeSystemVersion:String = "8.9"
-    override var systemVersion: String {
-        get {
-            return fakeSystemVersion
-        }
-        set(newSystemVersion) {
-            fakeSystemVersion = newSystemVersion
-        }
-    }
-}
-
 class BTVenmoDriver_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     var observers : [NSObjectProtocol] = []
