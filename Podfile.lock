@@ -44,7 +44,7 @@ PODS:
   - Expecta (1.0.6)
   - InAppSettingsKit (2.14)
   - "NSURL+QueryDictionary (1.2.0)"
-  - OCMock (3.4.2)
+  - OCMock (3.5)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
   - OHHTTPStubs/Core (6.1.0)
@@ -111,7 +111,7 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: 800853da39388780c15191846688c0974c5b13b5
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
-  OCMock: ebe9ee1dca7fbed0ff9193ac0b3e2d8862ea56f6
+  OCMock: 4ab4577fc941af31f4a0398f6e7e230cf21fc72a
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66

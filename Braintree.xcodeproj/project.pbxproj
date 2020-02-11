@@ -2402,7 +2402,6 @@
 				63F8BC2B7334DA0DF4718329 /* Pods-Tests-UnitTests.debug.xcconfig */,
 				250A66DC3CDB33FCA91C12BC /* Pods-Tests-UnitTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -2516,19 +2515,6 @@
 				A7BC50BE1C29F6600024C870 /* BTDropInErrorState_Tests.m */,
 			);
 			path = BraintreeUI_UnitTests;
-			sourceTree = "<group>";
-		};
-		8373B124DB9275D9E388050C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A71523222292B9B89F6CDCD4 /* Pods-Demo.debug.xcconfig */,
-				F3828228CB0C1C1814DF6AF5 /* Pods-Demo.release.xcconfig */,
-				DF2DA69BC4EF76FF70934477 /* Pods-Tests-IntegrationTests.debug.xcconfig */,
-				4EA8985F532E03BA0F69F3F8 /* Pods-Tests-IntegrationTests.release.xcconfig */,
-				67B3BD5EB77F54589803CD27 /* Pods-Tests-UnitTests.debug.xcconfig */,
-				6D0B29BB50A9DA82FA3EE7AA /* Pods-Tests-UnitTests.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		A50C3A8C1C19E4F300612D90 /* PayPalOneTouch */ = {
