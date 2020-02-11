@@ -58,7 +58,7 @@ PODS:
   - OHHTTPStubs/NSURLSession (6.1.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - PureLayout (3.1.2)
+  - PureLayout (3.1.5)
   - Specta (1.0.7)
 
 DEPENDENCIES:
@@ -113,7 +113,7 @@ SPEC CHECKSUMS:
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   OCMock: 4ab4577fc941af31f4a0398f6e7e230cf21fc72a
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
+  PureLayout: 9b4ad47b2f0388c84ff534af23d96e720c1b875a
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: 5b05d04ef2c8083e178dc0765d9f22c4fe9243f5
