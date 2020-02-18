@@ -20,12 +20,12 @@
     self.dataCollector = nil;
 }
 
-#pragma mark - collectFraudData:
+#pragma mark - collectDeviceData:
 
-- (void)testCollectFraudData_returnsFraudData {
+- (void)testCollectDeviceData_returnsAllFraudData {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     
-    [self.dataCollector collectFraudData:^(NSString * _Nonnull deviceData) {
+    [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
         XCTAssertTrue([deviceData containsString:@"correlation_id"]);
         XCTAssertTrue([deviceData containsString:@"device_session_id"]);
         XCTAssertTrue([deviceData containsString:@"fraud_merchant_id"]);
@@ -34,8 +34,7 @@
     [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
-// Test is failing because sandbox test merchant is configured with a Kount merchant ID that causes Kount to error.
-- (void)pendCollectFraudDataWithCallback_returnsFraudData {
+- (void)testCollectDeviceDataWithCallback_returnsAllFraudData {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:apiClient];
     id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
@@ -46,16 +45,17 @@
     });
 
     XCTestExpectation *callbackExpectation = [self expectationWithDescription:@"Callback invoked"];
-    [self.dataCollector collectFraudData:^(NSString * _Nonnull deviceData) {
+    [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
         XCTAssertTrue([deviceData containsString:@"correlation_id"]);
+        XCTAssertTrue([deviceData containsString:@"device_session_id"]);
+        XCTAssertTrue([deviceData containsString:@"fraud_merchant_id"]);
         [callbackExpectation fulfill];
     }];
     
     [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
-// Test is failing because sandbox test merchant is configured with a Kount merchant ID that causes Kount to error.
-- (void)pendCollectCardFraudDataWithCallback_returnsFraudDataWithNoPayPalFraudData {
+- (void)testCollectCardFraudDataWithCallback_alsoReturnsPayPalFraudData {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:apiClient];
 
@@ -68,8 +68,9 @@
 
     XCTestExpectation *callbackExpectation = [self expectationWithDescription:@"Callback invoked"];
     [self.dataCollector collectCardFraudData:^(NSString * _Nonnull deviceData) {
-        XCTAssertNotNil(deviceData);
-        XCTAssertFalse([deviceData containsString:@"correlation_id"]);
+        XCTAssertTrue([deviceData containsString:@"correlation_id"]);
+        XCTAssertTrue([deviceData containsString:@"device_session_id"]);
+        XCTAssertTrue([deviceData containsString:@"fraud_merchant_id"]);
         [callbackExpectation fulfill];
     }];
     
@@ -77,11 +78,12 @@
     [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
-- (void)testCollectCardFraudData_returnsFraudDataWithNoPayPalFraudData {
+- (void)testCollectCardFraudData_alsoReturnsPayPalFraudData {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [self.dataCollector collectCardFraudData:^(NSString * _Nonnull deviceData) {
-        XCTAssertNotNil(deviceData);
-        XCTAssertFalse([deviceData containsString:@"correlation_id"]);
+        XCTAssertTrue([deviceData containsString:@"correlation_id"]);
+        XCTAssertTrue([deviceData containsString:@"device_session_id"]);
+        XCTAssertTrue([deviceData containsString:@"fraud_merchant_id"]);
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -99,16 +101,6 @@
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
-}
-
-- (void)testCollectPayPalClientMetadataId_returnsClientMetadataId {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [self.dataCollector collectFraudData:^(NSString * _Nonnull deviceData) {
-        XCTAssertTrue([deviceData containsString:@"correlation_id"]);
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 @end

@@ -72,7 +72,7 @@
 
 - (IBAction)tappedCollect
 {    self.progressBlock(@"Started collecting all data...");
-    [self.dataCollector collectFraudData:^(NSString * _Nonnull deviceData) {
+    [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
         self.dataLabel.text = deviceData;
     }];
 }

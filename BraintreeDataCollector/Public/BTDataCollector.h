@@ -58,6 +58,18 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 /**
+ Collects device data based on your merchant configuration.
+
+ We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+ calling it when the customer initiates checkout is also fine.
+
+ Use the return value on your server, e.g. with `Transaction.sale`.
+
+ @param completion A completion block that returns a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
+*/
+- (void)collectDeviceData:(void (^)(NSString *deviceData))completion;
+
+/**
  Collects device data using Kount and PayPal.
 
  This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
@@ -76,7 +88,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 
  @param completion A completion block callback that returns a deviceData string that should be passed into server-side calls, such as `Transaction.sale`. This JSON serialized string contains the merchant ID, session ID, and the PayPal fraud ID (if PayPal is available).
 */
-- (void)collectFraudData:(void (^)(NSString *deviceData))completion;
+- (void)collectFraudData:(void (^)(NSString *deviceData))completion DEPRECATED_MSG_ATTRIBUTE("Use BTDataCollector -collectDeviceData: instead");
 
 /**
  Collects device data for Kount.
@@ -167,7 +179,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
          This JSON serialized string contains the merchant ID, session ID, and
          the PayPal fraud ID (if PayPal is available).
 */
-- (NSString *)collectFraudData DEPRECATED_MSG_ATTRIBUTE("Use BTDataCollector -collectFraudData: instead");
+- (NSString *)collectFraudData DEPRECATED_MSG_ATTRIBUTE("Use BTDataCollector -collectDeviceData: instead");
 
 @end
 
