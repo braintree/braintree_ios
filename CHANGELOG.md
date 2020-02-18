@@ -3,6 +3,7 @@
 ## unreleased
 
 * Update CardinalMobile.framework to v2.2.2-1
+* Update PPDataCollector
 
 ## 4.31.0 (2020-01-15)
 
