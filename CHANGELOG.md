@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.32.0 (2020-02-18)
 
 * Update CardinalMobile.framework to v2.2.2-1
 * Update PPDataCollector
