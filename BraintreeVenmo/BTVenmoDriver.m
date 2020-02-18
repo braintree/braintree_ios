@@ -31,10 +31,14 @@ static BTVenmoDriver *appSwitchedDriver;
 + (void)load {
     if (self == [BTVenmoDriver class]) {
         [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
-        [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
+        [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
             driver.appSwitchDelegate = options[BTTokenizationServiceAppSwitchDelegateOption];
-            [driver authorizeAccountAndVault:YES completion:completionBlock];
+            BOOL vaultOption = YES;
+            if (options && [options objectForKey:@"vault"] != nil) {
+                vaultOption = [options[@"vault"] boolValue];
+            }
+            [driver authorizeAccountAndVault:vaultOption completion:completionBlock];
         }];
         
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
