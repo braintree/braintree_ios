@@ -62,11 +62,11 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."}];
         }
 
-        if (!self.amount) {
-            [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest amount can not be nil."];
+        if (!self.amount || [self.amount isEqualToNumber:NSDecimalNumber.notANumber]) {
+            [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest amount can not be nil or NaN."];
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
-                                               userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil."}];
+                                               userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil or NaN."}];
         }
 
         if (integrationError != nil) {

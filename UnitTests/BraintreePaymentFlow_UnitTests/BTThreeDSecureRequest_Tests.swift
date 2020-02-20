@@ -2,6 +2,29 @@ import XCTest
 
 class BTThreeDSecureRequest_Tests: XCTestCase {
     
+    // MARK: - handleRequest
+    
+    func testHandleRequest_whenAmountIsNotANumber_throwsError() {
+        let request =  BTThreeDSecureRequest()
+        request.amount = NSDecimalNumber.notANumber
+        
+        let mockAPIClient = MockAPIClient(authorization: "development_client_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        
+        let mockPaymentFlowDriverDelegate = MockPaymentFlowDriverDelegate()
+        let expectation = self.expectation(description: "Calls onPaymentWithURL with result")
+        
+        mockPaymentFlowDriverDelegate.onPaymentCompleteHandler = { result, error in
+            XCTAssertNil(result)
+            XCTAssertEqual(error?.localizedDescription, "BTThreeDSecureRequest amount can not be nil or NaN.")
+            expectation.fulfill()
+        }
+        request.paymentFlowDriverDelegate = mockPaymentFlowDriverDelegate
+        
+        request.handle(request, client: mockAPIClient, paymentDriverDelegate: mockPaymentFlowDriverDelegate)
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
     // MARK: - processLookupResult
     
     func testProcessLookupResult_when3DSv1_constructsRedirectUrl() {
