@@ -1,8 +1,9 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.32.1 (2020-02-21) 
 
 * Fix crash when `ThreeDSecureRequest` `amount` field is set to NaN (resolves #507)
+* Update CardinalMobile.framework to v2.2.2-1 for Carthage users
 
 ## 4.32.0 (2020-02-18)
 
