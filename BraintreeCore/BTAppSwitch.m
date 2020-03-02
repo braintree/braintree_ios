@@ -39,16 +39,21 @@ NSString * const BTAppContextDidReturnNotification = @"com.braintreepayments.BTA
 
 + (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options {
     if (@available(iOS 9.0, *)) {
-        return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
+        return [[BTAppSwitch sharedInstance] handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
     } else {
-        return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:@""];
+        return [[BTAppSwitch sharedInstance] handleOpenURL:url sourceApplication:@""];
     }
 }
 
 + (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:sourceApplication];
+    return [[BTAppSwitch sharedInstance] handleOpenURL:url sourceApplication:sourceApplication];
 }
 
++ (BOOL)handleOpenURLContext:(UIOpenURLContext *)URLContext API_AVAILABLE(ios(13.0)) {
+    return [[BTAppSwitch sharedInstance] handleOpenURL:URLContext.URL sourceApplication:URLContext.options.sourceApplication];
+}
+
+// NEXT_MAJOR_VERSION Remove this method from public header, but continue using it internally
 - (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     for (Class<BTAppSwitchHandler> handlerClass in self.appSwitchHandlers) {
         if ([handlerClass canHandleAppSwitchReturnURL:url sourceApplication:sourceApplication]) {

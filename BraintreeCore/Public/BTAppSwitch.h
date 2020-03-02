@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @protocol BTAppSwitchHandler;
 
@@ -53,6 +53,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options;
 
 /**
+ Handles a return from app switch
+
+ @param URLContext The URLContext provided by `scene:openURLContexts:`
+ @return `YES` if the app switch successfully handled the URLContext, or `NO` if the attempt to handle the URLContext failed.
+*/
++ (BOOL)API_AVAILABLE(ios(13.0))handleOpenURLContext:(UIOpenURLContext *)URLContext NS_SWIFT_NAME(handleOpenURLContext(_:));
+
+/**
  Registers a class that knows how to handle a return from app switch
 */
 - (void)registerAppSwitchHandler:(Class<BTAppSwitchHandler>)handler;
@@ -69,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param sourceApplication The string representing the source application
  @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
  */
-- (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+- (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication DEPRECATED_MSG_ATTRIBUTE("Use handleOpenURL:options: or handleOpenURLContext: instead.");
 
 @end
 
