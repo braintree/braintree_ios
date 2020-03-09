@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
                   description:(nullable NSString *)description
                   cardNetwork:(BTCardNetwork)cardNetwork
                       lastTwo:(nullable NSString *)lastTwo
+                     lastFour:(nullable NSString *)lastFour
                     isDefault:(BOOL)isDefault
                      cardJSON:(BTJSON *)cardJSON
               authInsightJSON:(nullable BTJSON *)authInsightJSON;
