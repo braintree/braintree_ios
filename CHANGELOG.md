@@ -4,6 +4,7 @@
 
 * Add support for iOS 13 SceneDelegate to `BTAppSwitch`
 * Add `lastFour` property to `BTCardNonce`
+* Make `BTURLUtils.h` public
 
 ## 4.32.1 (2020-02-21)
 

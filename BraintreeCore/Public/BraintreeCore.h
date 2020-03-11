@@ -25,6 +25,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import "BTViewControllerPresentingDelegate.h"
 #import "BTPreferredPaymentMethods.h"
 #import "BTPreferredPaymentMethodsResult.h"
+#import "BTURLUtils.h"
 
 #ifndef __BT_AVAILABLE
 #define __BT_AVAILABLE(class) NSClassFromString(class) != nil
