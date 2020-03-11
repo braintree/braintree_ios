@@ -3,6 +3,7 @@
 ## unreleased
 
 * Add support for iOS 13 SceneDelegate to `BTAppSwitch`
+* Make `BTURLUtils.h` public
 
 ## 4.32.1 (2020-02-21)
 

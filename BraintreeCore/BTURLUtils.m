@@ -40,11 +40,11 @@
 + (NSDictionary<NSString *, NSString *> *)queryParametersForURL:(NSURL *)url {
     NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    
+
     for (NSURLQueryItem *queryItem in components.queryItems) {
         parameters[queryItem.name] = [queryItem.value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
     }
-    
+
     return [NSDictionary dictionaryWithDictionary:parameters];
 }
 
