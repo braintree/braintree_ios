@@ -25,6 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, readonly, copy) NSString *lastTwo;
 
 /**
+ The last four digits of the card, if available.
+*/
+@property (nonatomic, nullable, readonly, copy) NSString *lastFour;
+
+/**
  The BIN number of the card, if available.
  */
 @property (nonatomic, nullable, readonly, copy) NSString *bin;

@@ -8,6 +8,7 @@ class BTCardNonce_Tests: XCTestCase {
             "details": [
                 "cardType": "Visa",
                 "lastTwo": "11",
+                "lastFour": "1111"
             ],
             "binData": [
                 "prepaid": "Yes",
@@ -37,6 +38,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Visa")
         XCTAssertEqual(cardNonce.binData.prepaid, "Yes")
@@ -64,6 +66,7 @@ class BTCardNonce_Tests: XCTestCase {
             "details": [
                 "cardType": "Visa",
                 "lastTwo": "11",
+                "lastFour": "1111"
             ],
             "binData": [
                 "prepaid": "Yes",
@@ -86,6 +89,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Visa")
         XCTAssertEqual(cardNonce.binData.prepaid, "Yes")
@@ -105,6 +109,7 @@ class BTCardNonce_Tests: XCTestCase {
             "details": [
                 "cardType": "vIsA",
                 "lastTwo": "11",
+                "lastFour": "1111"
             ],
             "nonce": "fake-nonce",
             ]))
@@ -112,6 +117,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Visa")
     }
@@ -211,6 +217,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.localizedDescription, "ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Visa")
         XCTAssertEqual(cardNonce.binData.prepaid, "Yes")
@@ -246,6 +253,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.localizedDescription, "ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Visa")
     }
@@ -330,6 +338,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.localizedDescription, "")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.unknown)
         XCTAssertEqual(cardNonce.lastTwo, "")
+        XCTAssertEqual(cardNonce.lastFour, "")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Unknown")
         XCTAssertEqual(cardNonce.binData.prepaid, "Unknown")

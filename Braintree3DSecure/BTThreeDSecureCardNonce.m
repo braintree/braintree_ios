@@ -25,6 +25,7 @@
                     description:description
                     cardNetwork:cardNetwork
                         lastTwo:lastTwo
+                       lastFour:nil
                       isDefault:isDefault
                        cardJSON:cardJSON
                 authInsightJSON:nil];
