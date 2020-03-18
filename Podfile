@@ -3,7 +3,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 
 workspace 'Braintree.xcworkspace'
-inhibit_all_warnings!
 
 target 'Demo' do
   platform :ios, '9.0'
@@ -22,17 +21,17 @@ target 'Demo' do
   pod 'Braintree/AmericanExpress', :path => './'
   pod 'Braintree/PaymentFlow', :path => './'
   
-  pod 'NSURL+QueryDictionary', '~> 1.0'
-  pod 'PureLayout'
-  pod 'InAppSettingsKit'
+  pod 'NSURL+QueryDictionary', '~> 1.0', :inhibit_warnings => true
+  pod 'PureLayout', :inhibit_warnings => true
+  pod 'InAppSettingsKit', :inhibit_warnings => true
   pod 'BraintreeDropIn', :podspec => 'BraintreeDropIn.podspec'
 end
 
 abstract_target 'Tests' do
-  pod 'Specta'
-  pod 'Expecta'
-  pod 'OCMock'
-  pod 'OHHTTPStubs'
+  pod 'Specta', :inhibit_warnings => true
+  pod 'Expecta', :inhibit_warnings => true
+  pod 'OCMock', :inhibit_warnings => true
+  pod 'OHHTTPStubs', :inhibit_warnings => true
 
   target 'UnitTests'
   target 'IntegrationTests'
