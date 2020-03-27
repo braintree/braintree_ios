@@ -117,8 +117,22 @@ class BTJSON_Tests: XCTestCase {
     }
 
     func testNestedObjects() {
-        let JSON = "{ \"numbers\": [\"one\", \"two\", { \"tens\": 0, \"ones\": 1 } ], \"truthy\": true }".data(using: String.Encoding.utf8)!
-        let nested = BTJSON(data: JSON)
+        let jsonString =
+            """
+            {
+              "numbers": [
+                "one",
+                "two",
+                {
+                  "tens": 0,
+                  "ones": 1
+                }
+              ],
+              "truthy": true
+            }
+            """
+        
+        let nested = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
 
         XCTAssertEqual((nested["numbers"] as! BTJSON)[0].asString()!, "one")
         XCTAssertEqual((nested["numbers"] as! BTJSON)[1].asString()!, "two")
@@ -250,22 +264,42 @@ class BTJSON_Tests: XCTestCase {
     }
 
     func testLargerMixedJSONWithEmoji() {
-        let JSON = ("{" +
-            "\"aString\": \"Hello, JSON 😍!\"," +
-            "\"anArray\": [1, 2, 3 ]," +
-            "\"aSetOfValues\": [\"a\", \"b\", \"c\"]," +
-            "\"aSetWithDuplicates\": [\"a\", \"a\", \"b\", \"b\" ]," +
-            "\"aLookupDictionary\": {" +
-            "\"foo\": { \"definition\": \"A meaningless word\"," +
-            "\"letterCount\": 3," +
-            "\"meaningful\": false }" +
-            "}," +
-            "\"aURL\": \"https://test.example.com:1234/path\"," +
-            "\"anInvalidURL\": \":™£¢://://://???!!!\"," +
-            "\"aTrue\": true," +
-            "\"aFalse\": false" +
-            "}").data(using: String.Encoding.utf8)!
-        let obj = BTJSON(data: JSON)
+        let jsonString =
+        """
+        {
+          "aString": "Hello, JSON 😍!",
+          "anArray": [
+            1,
+            2,
+            3
+          ],
+          "aSetOfValues": [
+            "a",
+            "b",
+            "c"
+          ],
+          "aSetWithDuplicates": [
+            "a",
+            "a",
+            "b",
+            "b"
+          ],
+          "aLookupDictionary": {
+            "foo": {
+              "definition": "A meaningless word",
+              "letterCount": 3,
+              "meaningful": false
+            }
+          },
+          "aURL": "https://test.example.com:1234/path",
+          "anInvalidURL": ":™£¢://://://???!!!",
+          "aTrue": true,
+          "aFalse": false
+        }
+        """
+        
+        let obj = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        
         XCTAssertEqual((obj["aString"] as! BTJSON).asString(), "Hello, JSON 😍!")
         XCTAssertNil((obj["notAString"] as! BTJSON).asString()) // nil for absent keys
         XCTAssertNil((obj["anArray"] as! BTJSON).asString()) // nil for invalid values
