@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Remove `AddressBook.framework` from Podspec
+
 ## 4.32.1 (2020-02-21) 
 
 * Fix crash when `ThreeDSecureRequest` `amount` field is set to NaN (resolves #507)
