@@ -1322,16 +1322,16 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         let request = BTPayPalRequest(amount: "1")
 
-        let lineItem1 = BTPayPalLineItem.init(quantity: "2",
+        let lineItem1 = BTPayPalLineItem(quantity: "2",
                                               unitAmount: "1.23",
                                               name: "itemName",
                                               kind: .debit)
         lineItem1.unitTaxAmount = "0.34"
         lineItem1.itemDescription = "itemDescription"
         lineItem1.productCode = "productCode"
-        lineItem1.url = URL.init(string: "https://www.example.com")
+        lineItem1.url = URL(string: "https://www.example.com")
 
-        let lineItem2 = BTPayPalLineItem.init(quantity: "3",
+        let lineItem2 = BTPayPalLineItem(quantity: "3",
                                               unitAmount: "2.34",
                                               name: "itemName2",
                                               kind: .credit)

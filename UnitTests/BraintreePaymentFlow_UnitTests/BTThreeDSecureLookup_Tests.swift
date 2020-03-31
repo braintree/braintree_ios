@@ -12,14 +12,14 @@ class BTThreeDSecureLookup_Tests: XCTestCase {
             ] as [String : Any]
         let lookupJSON = BTJSON(value: lookupBody)
 
-        guard let lookup = BTThreeDSecureLookup.init(json: lookupJSON) else {
+        guard let lookup = BTThreeDSecureLookup(json: lookupJSON) else {
             XCTFail()
             return
         }
         XCTAssertEqual(lookup.paReq, "paReqField")
-        XCTAssertEqual(lookup.acsURL, URL.init(string: "http://acsUrl.com"))
+        XCTAssertEqual(lookup.acsURL, URL(string: "http://acsUrl.com"))
         XCTAssertEqual(lookup.md, "mdField")
-        XCTAssertEqual(lookup.termURL, URL.init(string: "http://termUrl.com"))
+        XCTAssertEqual(lookup.termURL, URL(string: "http://termUrl.com"))
         XCTAssertEqual(lookup.threeDSecureVersion, "2.1.0")
         XCTAssertEqual(lookup.transactionId, "transactionIdField")
         XCTAssertTrue(lookup.isThreeDSecureVersion2)
@@ -34,14 +34,14 @@ class BTThreeDSecureLookup_Tests: XCTestCase {
             ] as [String : Any]
         let lookupJSON = BTJSON(value: lookupBody)
 
-        guard let lookup = BTThreeDSecureLookup.init(json: lookupJSON) else {
+        guard let lookup = BTThreeDSecureLookup(json: lookupJSON) else {
             XCTFail()
             return
         }
         XCTAssertEqual(lookup.paReq, "paReqField")
         XCTAssertNil(lookup.acsURL)
         XCTAssertEqual(lookup.md, "mdField")
-        XCTAssertEqual(lookup.termURL, URL.init(string: "http://termUrl.com"))
+        XCTAssertEqual(lookup.termURL, URL(string: "http://termUrl.com"))
         XCTAssertNil(lookup.threeDSecureVersion)
         XCTAssertEqual(lookup.transactionId, "transactionIdField")
     }
