@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BTHTTPResponse, BTClientToken;
+@class BTHTTPResponse, BTClientToken, BTPayPalUAT;
 
 /**
  Performs HTTP methods on the Braintree Client API
@@ -46,6 +46,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param clientToken A client token
 */
 - (instancetype)initWithClientToken:(BTClientToken *)clientToken;
+
+/**
+ A convenience initializer to initialize `BTHTTP` with a PayPal UAT
+
+ @param payPalUAT A PayPal UAT
+*/
+- (instancetype)initWithPayPalUAT:(BTPayPalUAT *)payPalUAT;
 
 - (NSString *)userAgentString;
 - (NSString *)acceptString;

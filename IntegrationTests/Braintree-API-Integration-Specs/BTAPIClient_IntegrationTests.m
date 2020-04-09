@@ -50,4 +50,54 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testFetchConfiguration_withPayPalUAT_returnsTheConfiguration {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch UAT from PPCP sample server; then fetch BT config"];
+
+    // NOTE: - This test needs to fetch an active PayPal UAT
+    // Currently, the PP team cannot provide hard-coded UAT test values
+    [self fetchPayPalUAT:^(NSString *uat, NSError * _Nullable error) {
+        if (error) {
+            XCTFail(@"Error fetching a UAT from https://ppcp-sample-merchant-sand.herokuapp.com");
+        }
+
+        BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:uat];
+
+        [client fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+            XCTAssertEqualObjects([configuration.json[@"merchantId"] asString], @"cfxs3ghzwfk2rhqm");
+            XCTAssertEqualObjects([configuration.json[@"environment"] asString], @"sandbox");
+            XCTAssertEqualObjects([configuration.json[@"assetsUrl"] asString], @"https://assets.braintreegateway.com");
+            XCTAssertNil(error);
+            [expectation fulfill];
+        }];
+    }];
+
+    [self waitForExpectationsWithTimeout:20 handler:nil];
+}
+
+#pragma mark - Helpers
+
+-(void)fetchPayPalUAT:(void (^)(NSString *uat, NSError * _Nullable error))completion {
+    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://ppcp-sample-merchant-sand.herokuapp.com/uat?countryCode=US"]];
+
+    [urlRequest setHTTPMethod:@"POST"];
+
+    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            completion(nil, error);
+        }
+
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        if (httpResponse.statusCode == 200) {
+            NSError *parseError = nil;
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
+
+            completion(responseDictionary[@"universal_access_token"], parseError);
+        }
+
+        completion(nil, nil);
+    }];
+
+    [dataTask resume];
+}
+
 @end
