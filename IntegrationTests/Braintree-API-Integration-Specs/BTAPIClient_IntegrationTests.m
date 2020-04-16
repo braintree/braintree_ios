@@ -79,7 +79,7 @@
 -(void)fetchPayPalUAT:(void (^)(NSString *uat, NSError * _Nullable error))completion {
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://ppcp-sample-merchant-sand.herokuapp.com/uat?countryCode=US"]];
 
-    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setHTTPMethod:@"GET"];
 
     NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
