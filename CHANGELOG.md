@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.33.0 (2020-04-16)
 
 * Add support for iOS 13 SceneDelegate to `BTAppSwitch`
 * Add `lastFour` property to `BTCardNonce`
