@@ -120,41 +120,63 @@
         return;
     }
 
-    if ([BraintreeDemoSettings useTokenizationKey]) {
-        [self updateStatus:@"Using Tokenization Key"];
+    switch([BraintreeDemoSettings authorizationType]) {
+        case BraintreeDemoAuthTypeTokenizationKey: {
+            [self updateStatus:@"Using Tokenization Key"];
 
-        // If we're using a Tokenization Key, then we're not using a Customer.
-        NSString *tokenizationKey;
-        switch ([BraintreeDemoSettings currentEnvironment]) {
-            case BraintreeDemoEnvironmentSandbox:
-                tokenizationKey = @"sandbox_9dbg82cq_dcpspy2brwdjr3qn";
-                break;
-            case BraintreeDemoEnvironmentProduction:
-                tokenizationKey = @"production_t2wns2y2_dfy45jdj3dxkmz5m";
-                break;
-            case BraintreeDemoEnvironmentCustom:
-            default:
-                tokenizationKey = @"development_testing_integration_merchant_id";
-                break;
+            // If we're using a Tokenization Key, then we're not using a Customer.
+            NSString *tokenizationKey;
+            switch ([BraintreeDemoSettings currentEnvironment]) {
+                case BraintreeDemoEnvironmentSandbox:
+                    tokenizationKey = @"sandbox_9dbg82cq_dcpspy2brwdjr3qn";
+                    break;
+                case BraintreeDemoEnvironmentProduction:
+                    tokenizationKey = @"production_t2wns2y2_dfy45jdj3dxkmz5m";
+                    break;
+                case BraintreeDemoEnvironmentCustom:
+                default:
+                    tokenizationKey = @"development_testing_integration_merchant_id";
+                    break;
+            }
+
+            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:tokenizationKey];
+            return;
         }
+        case BraintreeDemoAuthTypePayPalUAT: {
+            [self updateStatus:@"Fetching PayPal UAT…"];
 
-        self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:tokenizationKey];
-        return;
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
+            [BraintreeDemoMerchantAPIClient.shared fetchPayPalUATWithCompletion:^(NSString * _Nullable uat, NSError * _Nullable err) {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                if (err) {
+                    [self updateStatus:err.localizedDescription];
+                } else {
+                    [self updateStatus:@"Using PayPal UAT"];
+                    self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:uat];
+                }
+            }];
+
+            break;
+        }
+        case BraintreeDemoAuthTypeClientToken: {
+            [self updateStatus:@"Fetching Client Token…"];
+
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
+            [BraintreeDemoMerchantAPIClient.shared createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                if (error) {
+                    [self updateStatus:error.localizedDescription];
+                } else {
+                    [self updateStatus:@"Using Client Token"];
+                    self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:clientToken];
+                }
+            }];
+
+            break;
+        }
     }
-
-    [self updateStatus:@"Fetching Client Token…"];
-
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
-    [BraintreeDemoMerchantAPIClient.shared createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        if (error) {
-            [self updateStatus:error.localizedDescription];
-        } else {
-            [self updateStatus:@"Using Client Token"];
-            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:clientToken];
-        }
-    }];
 }
 
 - (void)setCurrentDemoViewController:(BraintreeDemoBaseViewController *)currentDemoViewController {

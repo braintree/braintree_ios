@@ -85,8 +85,8 @@
 			</array>
 			<key>Titles</key>
 			<array>
-				<string>Sandbox (braintree-sample-merchant)</string>
-				<string>Production (executive-sample-merchant)</string>
+				<string>Sandbox</string>
+				<string>Production</string>
 				<string>Custom (URL on previous screen)</string>
 			</array>
 			<key>Values</key>
@@ -108,13 +108,31 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
+			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>Use Tokenization Key</string>
+			<string>Authorization Type</string>
+			<key>ShortTitles</key>
+			<array>
+				<string>Tokenization Key</string>
+				<string>Client Token</string>
+				<string>PayPal UAT</string>
+			</array>
 			<key>Key</key>
-			<string>BraintreeDemoUseTokenizationKey</string>
+			<string>BraintreeDemoSettingsAuthorizationTypeKey</string>
 			<key>DefaultValue</key>
-			<true/>
+			<string>0</string>
+			<key>Titles</key>
+			<array>
+				<string>Client Token</string>
+				<string>Tokenization Key</string>
+				<string>PayPal UAT</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>0</string>
+				<string>1</string>
+				<string>2</string>
+			</array>
 		</dict>
 		<dict>
 			<key>Type</key>

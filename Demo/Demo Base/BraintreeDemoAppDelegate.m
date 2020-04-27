@@ -47,13 +47,13 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-EnvironmentProduction"]) {
         [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoEnvironmentProduction forKey:BraintreeDemoSettings.EnvironmentDefaultsKey];
     }
-    
-    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-TokenizationKey"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"BraintreeDemoUseTokenizationKey"];
-    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-ClientToken"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:FALSE forKey:@"BraintreeDemoUseTokenizationKey"];
-        // Use random users for testing with Client Tokens
-        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"BraintreeDemoCustomerIdentifier"];
+
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-ClientToken"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoAuthTypeClientToken forKey:BraintreeDemoSettings.AuthorizationTypeDefaultsKey];
+    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-TokenizationKey"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoAuthTypeTokenizationKey forKey:BraintreeDemoSettings.AuthorizationTypeDefaultsKey];
+    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-PayPalUAT"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoAuthTypePayPalUAT forKey:BraintreeDemoSettings.AuthorizationTypeDefaultsKey];
     }
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"BraintreeDemoSettingsAuthorizationOverride"];

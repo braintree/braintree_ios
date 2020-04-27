@@ -8,6 +8,13 @@ enum BraintreeDemoEnvironment: Int {
 }
 
 @objc
+enum BraintreeDemoAuthType: Int {
+    case clientToken
+    case tokenizationKey
+    case payPalUAT
+}
+
+@objc
 enum BraintreeDemoThreeDSecureRequiredSetting: Int {
     case requiredIfAttempted
     case required
@@ -18,6 +25,7 @@ enum BraintreeDemoThreeDSecureRequiredSetting: Int {
 class BraintreeDemoSettings: NSObject {
     
     @objc static let EnvironmentDefaultsKey = "BraintreeDemoSettingsEnvironmentDefaultsKey"
+    @objc static let AuthorizationTypeDefaultsKey = "BraintreeDemoSettingsAuthorizationTypeKey"
     @objc static let CustomEnvironmentURLDefaultsKey = "BraintreeDemoSettingsCustomEnvironmentURLDefaultsKey"
     @objc static let ThreeDSecureRequiredDefaultsKey = "BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey"
 
@@ -59,10 +67,10 @@ class BraintreeDemoSettings: NSObject {
     static var authorizationOverride: String? {
         return UserDefaults.standard.string(forKey: "BraintreeDemoSettingsAuthorizationOverride")
     }
-    
+
     @objc
-    static var useTokenizationKey: Bool {
-        return UserDefaults.standard.bool(forKey: "BraintreeDemoUseTokenizationKey")
+    static var authorizationType: BraintreeDemoAuthType {
+        return BraintreeDemoAuthType(rawValue: UserDefaults.standard.integer(forKey: AuthorizationTypeDefaultsKey))!
     }
     
     @objc
