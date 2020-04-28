@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Add `environment` property to `BTPayPalUAT`
+
 ## 4.33.0 (2020-04-16)
 
 * Add support for iOS 13 SceneDelegate to `BTAppSwitch`

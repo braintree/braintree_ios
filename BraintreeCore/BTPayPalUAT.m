@@ -40,15 +40,16 @@ NSString * const BTPayPalUATErrorDomain = @"com.braintreepayments.BTPayPalUATErr
         
         NSString *braintreeGatewayURL;
         
-        // TODO: - get the braintree URL from the PP UAT instead of hardcoding; waiting for PP UAT to include BT endpoint
         if ([basePayPalURL isEqualToString:@"https://api.paypal.com"] ) {
+            _environment = BTPayPalUATEnvironmentProd;
             braintreeGatewayURL = @"https://api.braintreegateway.com:443";
-        } else if ([basePayPalURL isEqualToString:@"https://api.msmaster.qa.paypal.com"]
-                   || [basePayPalURL isEqualToString:@"https://api.sandbox.paypal.com"]) {
+        } else if ([basePayPalURL isEqualToString:@"https://api.sandbox.paypal.com"]) {
+            _environment = BTPayPalUATEnvironmentSand;
             braintreeGatewayURL = @"https://api.sandbox.braintreegateway.com:443";
-        }
-
-        if (!basePayPalURL || !braintreeGatewayURL) {
+        } else if ([basePayPalURL isEqualToString:@"https://api.msmaster.qa.paypal.com"]) {
+            _environment = BTPayPalUATEnvironmentStage;
+            braintreeGatewayURL = @"https://api.sandbox.braintreegateway.com:443";
+        } else {
             if (error) {
                 *error = [NSError errorWithDomain:BTPayPalUATErrorDomain
                                              code:BTPayPalUATErrorInvalid
