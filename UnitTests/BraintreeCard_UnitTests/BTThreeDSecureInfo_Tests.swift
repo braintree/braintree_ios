@@ -14,6 +14,7 @@ class BTThreeDSecureInfo_Tests: XCTestCase {
                 "liabilityShifted": false,
                 "paresStatus": "U",
                 "status": "lookup_enrolled",
+                "threeDSecureAuthenticationId" : "3fg8syh4nsmq3nzrmv",
                 "threeDSecureServerTransactionId": "fake-threedsecure-server-transaction-id",
                 "threeDSecureVersion": "2.2.0",
                 "xid": "fake-xid",
@@ -36,6 +37,7 @@ class BTThreeDSecureInfo_Tests: XCTestCase {
         XCTAssertEqual("Y", info.enrolled)
         XCTAssertEqual("U", info.paresStatus)
         XCTAssertEqual("lookup_enrolled", info.status)
+        XCTAssertEqual("3fg8syh4nsmq3nzrmv", info.threeDSecureAuthenticationId)
         XCTAssertEqual("fake-threedsecure-server-transaction-id", info.threeDSecureServerTransactionId)
         XCTAssertEqual("2.2.0", info.threeDSecureVersion)
         XCTAssertEqual("fake-xid", info.xid)

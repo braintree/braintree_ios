@@ -10,6 +10,7 @@
 * Make `BTURLUtils.h` public
 * Add support for authorizing the Braintree SDK with a `PayPalUAT` (universal access token)
 * Remove `AddressBook.framework` from Podspec (thanks @ignotusverum)
+* Add `threeDSecureAuthenticationId` to `BTThreeDSecureInfo`
 
 ## 4.32.1 (2020-02-21)
 

@@ -71,6 +71,10 @@
     return [self.threeDSecureJSON[@"status"] asString];
 }
 
+- (NSString *)threeDSecureAuthenticationId {
+    return [self.threeDSecureJSON[@"threeDSecureAuthenticationId"] asString];
+}
+
 - (NSString *)threeDSecureServerTransactionId {
     return [self.threeDSecureJSON[@"threeDSecureServerTransactionId"] asString];
 }

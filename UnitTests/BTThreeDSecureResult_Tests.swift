@@ -46,6 +46,7 @@ class BTThreeDSecureResult_Tests: XCTestCase {
                         ],
                         "paresStatus" : "Y",
                         "status" : "authenticate_successful",
+                        "threeDSecureAuthenticationId" : "3fg8syh4nsmq3nzrmv",
                         "threeDSecureServerTransactionId" : "6482b0d3-cd94-4e27-a058-12d2ad4237b2",
                         "threeDSecureVersion" : "2.1.0",
                         "xid" : nil,

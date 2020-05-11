@@ -92,6 +92,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSString *status;
 
 /**
+ Unique identifier assigned to the 3D Secure authentication performed for this transaction.
+*/
+@property (nonatomic, readonly, nullable) NSString *threeDSecureAuthenticationId;
+
+/**
  Unique transaction identifier assigned by the 3DS Server to identify a single transaction.
  */
 @property (nonatomic, readonly, nullable) NSString *threeDSecureServerTransactionId;
