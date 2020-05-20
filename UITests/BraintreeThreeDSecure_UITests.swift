@@ -54,7 +54,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         self.waitForElementToAppear(app.textFields["Card Number"])
         let cardNumberTextField = app.textFields["Card Number"]
         cardNumberTextField.tap()
-        cardNumberTextField.typeText("4000000000000010")
+        cardNumberTextField.typeText("5200000000000015")
         app.textFields["MM/YY"].typeText(Helpers.sharedInstance.futureDate())
         app.buttons["Tokenize and Verify New Card"].tap()
 

@@ -42,9 +42,9 @@ PODS:
     - BraintreeDropIn/UIKit
   - BraintreeDropIn/UIKit (99.99.99-github-master)
   - Expecta (1.0.6)
-  - InAppSettingsKit (2.14)
+  - InAppSettingsKit (3.0)
   - "NSURL+QueryDictionary (1.2.0)"
-  - OCMock (3.5)
+  - OCMock (3.6)
   - OHHTTPStubs (9.0.0):
     - OHHTTPStubs/Default (= 9.0.0)
   - OHHTTPStubs/Core (9.0.0)
@@ -58,7 +58,7 @@ PODS:
   - OHHTTPStubs/NSURLSession (9.0.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (9.0.0)
-  - PureLayout (3.1.5)
+  - PureLayout (3.1.6)
   - Specta (1.0.7)
 
 DEPENDENCIES:
@@ -85,7 +85,7 @@ DEPENDENCIES:
   - Specta
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Expecta
     - InAppSettingsKit
     - "NSURL+QueryDictionary"
@@ -102,20 +102,20 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: 1a663bd3c239e5e6bd65f474dba00a35ee767915
+    :commit: e3164729efc108a405e6d3e015b5ea48ce7f2842
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
   Braintree: 586e4d274398fabe9d70ab790eefca41660b8a17
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  InAppSettingsKit: 800853da39388780c15191846688c0974c5b13b5
+  InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
-  OCMock: 4ab4577fc941af31f4a0398f6e7e230cf21fc72a
+  OCMock: 5ea90566be239f179ba766fd9fbae5885040b992
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
-  PureLayout: 9b4ad47b2f0388c84ff534af23d96e720c1b875a
+  PureLayout: bd3c4ec3a3819ad387c99ebb72c6b129c3ed4d2d
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 853d460f1205b58307b3c1009b2bc68fd80ff847
+PODFILE CHECKSUM: 7e5eed01af746900ee05afb66cfc21e7e500b3f7
 
 COCOAPODS: 1.9.1
