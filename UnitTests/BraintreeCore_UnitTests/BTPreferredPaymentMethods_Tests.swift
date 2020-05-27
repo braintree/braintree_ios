@@ -30,23 +30,23 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
             
             let lastRequestParameters = mockGraphQLHTTP.lastRequestParameters as! [String: Any]
             let graphQLQuery = lastRequestParameters["query"] as! String
-            XCTAssertEqual(graphQLQuery,
-                           "query ClientConfiguration { clientConfiguration { paypal { preferredPaymentMethod } } }")
+            XCTAssertEqual(graphQLQuery, "query PreferredPaymentMethods { paypalPreferred }")
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testFetchPreferredPaymentMethods_whenPayPalAppIsInstalled_callsCompletionWithTrue() {
+    func testFetchPreferredPaymentMethods_whenBothPayPalAndVenmoAppsAreInstalled_callsCompletionWithTrueForBoth() {
         
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
         
         let expectation = self.expectation(description: "Calls completion with result")
         
-        // whitelist paypal url
+        // allowlist paypal and venmo urls
         fakeApplication.canOpenURLWhitelist = [
-            URL(string: "paypal://")!
+            URL(string: "paypal://")!,
+            URL(string: "com.venmo.touch.v2://")!
         ]
         
         let sut = BTPreferredPaymentMethods(apiClient: mockAPIClient)
@@ -54,19 +54,48 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         sut.fetch { result in
             XCTAssertTrue(result.isPayPalPreferred)
-            XCTAssertEqual(self.mockAPIClient.lastPOSTPath, "")
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.first, "ios.preferred-payment-methods.paypal.app-installed.true")
+            XCTAssertTrue(result.isVenmoPreferred)
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.paypal.app-installed.true"))
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.venmo.app-installed.true"))
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
 
-    func testFetchPreferredPaymentMethods_whenPayPalIsAvailable_callsCompletionWithTrue() {
+    func testFetchPreferredPaymentMethods_whenVenmoAppIsNotInstalled_callsCompletionWithFalseForVenmo() {
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
+
+        let expectation = self.expectation(description: "Calls completion with result")
+
+        let sut = BTPreferredPaymentMethods(apiClient: mockAPIClient)
+        sut.application = fakeApplication
+
+        sut.fetch { result in
+            XCTAssertFalse(result.isVenmoPreferred)
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.venmo.app-installed.false"))
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+
+    func testFetchPreferredPaymentMethods_whenAPIDetectsPayPalPreferred_callsCompletionWithTrueForPayPal() {
         
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
         
-        mockAPIClient.cannedResponseBody = BTJSON(value: ["data": ["clientConfiguration": ["paypal": ["preferredPaymentMethod": true]]]])
+        let jsonString =
+            """
+            {
+                "data": {
+                    "preferredPaymentMethods": {
+                        "paypalPreferred": true
+                    }
+                }
+            }
+            """
+        mockAPIClient.cannedResponseBody = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
         
         let expectation = self.expectation(description: "Calls completion with result")
         
@@ -75,18 +104,28 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         sut.fetch { result in
             XCTAssertTrue(result.isPayPalPreferred)
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.first, "ios.preferred-payment-methods.paypal.api-detected.true")
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.paypal.api-detected.true"))
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testFetchPreferredPaymentMethods_whenPayPalIsUnavailable_callsCompletionWithFalse() {
+    func testFetchPreferredPaymentMethods_whenAPIDetectsPayPalNotPreferred_callsCompletionWithFalseForPayPal() {
         
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
         
-        mockAPIClient.cannedResponseBody = BTJSON(value: ["data": ["clientConfiguration": ["paypal": ["preferredPaymentMethod": false]]]])
+        let jsonString =
+            """
+            {
+                "data": {
+                    "preferredPaymentMethods": {
+                        "paypalPreferred": false
+                    }
+                }
+            }
+            """
+        mockAPIClient.cannedResponseBody = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
         
         let expectation = self.expectation(description: "Calls completion with result")
         
@@ -95,14 +134,14 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         sut.fetch { result in
             XCTAssertFalse(result.isPayPalPreferred)
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.first, "ios.preferred-payment-methods.paypal.api-detected.false")
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.paypal.api-detected.false"))
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testFetchPreferredPaymentMethods_whenGraphQLResponseIsNull_callsCompletionWithFalse() {
+    func testFetchPreferredPaymentMethods_whenGraphQLResponseIsNull_callsCompletionWithFalseForPayPal() {
         
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
         
@@ -115,14 +154,14 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         sut.fetch { result in
             XCTAssertFalse(result.isPayPalPreferred)
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.first, "ios.preferred-payment-methods.api-error")
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.api-error"))
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testFetchPreferredPaymentMethods_whenGraphQLReturnsError_callsCompletionWithFalse() {
+    func testFetchPreferredPaymentMethods_whenGraphQLReturnsError_callsCompletionWithFalseForPayPal() {
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
         mockAPIClient.cannedResponseError = NSError(domain: "domain", code: 1, userInfo: nil)
@@ -134,14 +173,14 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         sut.fetch { result in
             XCTAssertFalse(result.isPayPalPreferred)
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.first, "ios.preferred-payment-methods.api-error")
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.api-error"))
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testFetchPreferredPaymentMethods_whenGraphQLIsDisabled_callsCompletionWithFalse() {
+    func testFetchPreferredPaymentMethods_whenGraphQLIsDisabled_callsCompletionWithFalseForPayPal() {
         
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": nil ]])
         
@@ -152,14 +191,14 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         sut.fetch { result in
             XCTAssertFalse(result.isPayPalPreferred)
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.first, "ios.preferred-payment-methods.api-disabled")
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.api-disabled"))
             expectation.fulfill()
         }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testFetchPreferredPaymentMethods_whenFetchingConfigurationReturnsAnError_callsCompletionWithFalse() {
+    func testFetchPreferredPaymentMethods_whenFetchingConfigurationReturnsAnError_callsCompletionWithFalseForPayPal() {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "com.braintreepayments.UnitTest", code: 0, userInfo: nil)
         
         let expectation = self.expectation(description: "Calls completion with result")
@@ -169,7 +208,7 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         sut.fetch { result in
             XCTAssertFalse(result.isPayPalPreferred)
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.first, "ios.preferred-payment-methods.api-error")
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.api-error"))
             expectation.fulfill()
         }
         

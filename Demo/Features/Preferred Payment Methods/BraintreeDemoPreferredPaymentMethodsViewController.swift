@@ -4,109 +4,71 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
     
     private let preferredPaymentMethods: BTPreferredPaymentMethods
     private let paypalDriver: BTPayPalDriver
-    
-    private var oneTimePaymentButton: UIButton!
-    private var billingAgreementButton: UIButton!
+    private let venmoDriver: BTVenmoDriver
+    private let oneTimePaymentButton = UIButton(type: .system)
+    private let billingAgreementButton = UIButton(type: .system)
+    private let venmoButton = UIButton(type: .system)
     
     override init?(authorization: String!) {
         guard let apiClient = BTAPIClient(authorization: authorization) else { return nil }
-        self.preferredPaymentMethods = BTPreferredPaymentMethods(apiClient: apiClient)
-        self.paypalDriver = BTPayPalDriver(apiClient: apiClient)
         
+        preferredPaymentMethods = BTPreferredPaymentMethods(apiClient: apiClient)
+        paypalDriver = BTPayPalDriver(apiClient: apiClient)
+        venmoDriver = BTVenmoDriver(apiClient: apiClient)
+
         super.init(authorization: authorization)
         
-        self.paypalDriver.appSwitchDelegate = self
-        self.paypalDriver.viewControllerPresentingDelegate = self
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        paypalDriver.appSwitchDelegate = self
+        paypalDriver.viewControllerPresentingDelegate = self
         
         title = "Preferred Payment Methods"
         view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
         let preferredPaymentMethodsButton = UIButton(type: .system)
         preferredPaymentMethodsButton.setTitle("Fetch Preferred Payment Methods", for: .normal)
-        preferredPaymentMethodsButton.sizeToFit()
         preferredPaymentMethodsButton.translatesAutoresizingMaskIntoConstraints = false
         preferredPaymentMethodsButton.addTarget(self, action: #selector(preferredPaymentMethodsButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(preferredPaymentMethodsButton)
         
-        view.addConstraint(NSLayoutConstraint(item: preferredPaymentMethodsButton,
-                                              attribute: .centerX,
-                                              relatedBy: .equal,
-                                              toItem: view,
-                                              attribute: .centerX,
-                                              multiplier: 1.0,
-                                              constant: 0))
-        
-        view.addConstraint(NSLayoutConstraint(item: preferredPaymentMethodsButton,
-                                              attribute: .centerY,
-                                              relatedBy: .equal,
-                                              toItem: view,
-                                              attribute: .centerY,
-                                              multiplier: 1.0,
-                                              constant: 0))
-        
-        oneTimePaymentButton = UIButton(type: .system)
         oneTimePaymentButton.setTitle("PayPal One-Time Payment", for: .normal)
-        oneTimePaymentButton.sizeToFit()
         oneTimePaymentButton.translatesAutoresizingMaskIntoConstraints = false
         oneTimePaymentButton.addTarget(self, action: #selector(oneTimePaymentButtonTapped(_:)), for: .touchUpInside)
         oneTimePaymentButton.isEnabled = false
         view.addSubview(oneTimePaymentButton)
         
-        view.addConstraint(NSLayoutConstraint(item: oneTimePaymentButton!,
-                                              attribute: .centerX,
-                                              relatedBy: .equal,
-                                              toItem: view,
-                                              attribute: .centerX,
-                                              multiplier: 1.0,
-                                              constant: 0))
-        
-        view.addConstraint(NSLayoutConstraint(item: oneTimePaymentButton!,
-                                              attribute: .bottom,
-                                              relatedBy: .equal,
-                                              toItem: view,
-                                              attribute: .bottom,
-                                              multiplier: 1.0,
-                                              constant: -40))
-        
-        billingAgreementButton = UIButton(type: .system)
         billingAgreementButton.setTitle("PayPal Billing Agreement", for: .normal)
-        billingAgreementButton.sizeToFit()
         billingAgreementButton.translatesAutoresizingMaskIntoConstraints = false
         billingAgreementButton.addTarget(self, action: #selector(billingAgreementButtonTapped(_:)), for: .touchUpInside)
         billingAgreementButton.isEnabled = false
         view.addSubview(billingAgreementButton)
         
-        view.addConstraint(NSLayoutConstraint(item: billingAgreementButton!,
-                                              attribute: .centerX,
-                                              relatedBy: .equal,
-                                              toItem: view,
-                                              attribute: .centerX,
-                                              multiplier: 1.0,
-                                              constant: 0))
+        venmoButton.setTitle("Venmo", for: .normal)
+        venmoButton.translatesAutoresizingMaskIntoConstraints = false
+        venmoButton.addTarget(self, action: #selector(venmoButtonTapped(_:)), for: .touchUpInside)
+        venmoButton.isEnabled = false
+        view.addSubview(venmoButton)
         
-        view.addConstraint(NSLayoutConstraint(item: billingAgreementButton!,
-                                              attribute: .bottom,
-                                              relatedBy: .equal,
-                                              toItem: oneTimePaymentButton,
-                                              attribute: .bottom,
-                                              multiplier: 1.0,
-                                              constant: -40))
+        view.addConstraints([preferredPaymentMethodsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             preferredPaymentMethodsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                             billingAgreementButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             billingAgreementButton.bottomAnchor.constraint(equalTo: oneTimePaymentButton.bottomAnchor, constant: -40),
+                             oneTimePaymentButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             oneTimePaymentButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
+                             venmoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             venmoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc func preferredPaymentMethodsButtonTapped(_ button: UIButton) {
         self.progressBlock("Fetching preferred payment methods...")
         preferredPaymentMethods.fetch { (result) in
-            self.progressBlock("PayPal Preferred: \(result.isPayPalPreferred)")
+            self.progressBlock("PayPal Preferred: \(result.isPayPalPreferred)\nVenmo Preferred: \(result.isVenmoPreferred)")
             self.oneTimePaymentButton.isEnabled = result.isPayPalPreferred
             self.billingAgreementButton.isEnabled = result.isPayPalPreferred
+            self.venmoButton.isEnabled = result.isVenmoPreferred
         }
     }
     
@@ -149,8 +111,28 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             }
         }
     }
+    
+    @objc func venmoButtonTapped(_ button: UIButton) {
+        self.progressBlock("Tapped Venmo")
+        
+        button.setTitle("Processing...", for: .disabled)
+        button.isEnabled = false
+        
+        venmoDriver.authorizeAccountAndVault(false) { (nonce, error) in
+            button.isEnabled = true
+            
+            if let e = error {
+                self.progressBlock(e.localizedDescription)
+            } else if let n = nonce {
+                self.completionBlock(n)
+            } else {
+                self.progressBlock("Cancelled")
+            }
+        }
+    }
 }
 
+// MARK: - BTAppSwitchDelegate
 extension BraintreeDemoPreferredPaymentMethodsViewController: BTAppSwitchDelegate {
     func appSwitcherWillPerformAppSwitch(_ appSwitcher: Any) {
         self.progressBlock("paymentDriverWillPerformAppSwitch:")
@@ -177,6 +159,7 @@ extension BraintreeDemoPreferredPaymentMethodsViewController: BTAppSwitchDelegat
     }
 }
 
+// MARK: - BTViewControllerPresentingDelegate
 extension BraintreeDemoPreferredPaymentMethodsViewController: BTViewControllerPresentingDelegate {
     func paymentDriver(_ driver: Any, requestsPresentationOf viewController: UIViewController) {
         self.present(viewController, animated: true)

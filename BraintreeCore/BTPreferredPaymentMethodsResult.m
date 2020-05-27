@@ -2,9 +2,10 @@
 
 @implementation BTPreferredPaymentMethodsResult
 
-- (instancetype)initWithJSON:(BTJSON * _Nullable)json {
+- (instancetype)initWithJSON:(BTJSON * _Nullable)json venmoInstalled:(BOOL)venmoInstalled {
     if (self = [super init]) {
-        _isPayPalPreferred = [json[@"data"][@"clientConfiguration"][@"paypal"][@"preferredPaymentMethod"] isTrue];
+        _isPayPalPreferred = [json[@"data"][@"preferredPaymentMethods"][@"paypalPreferred"] isTrue];
+        _isVenmoPreferred = venmoInstalled;
     }
     return self;
 }
