@@ -28,10 +28,10 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
                                                options:NSJSONReadingAllowFragments
                                                  error:&error];
     if (error != nil) {
-        return self = [self initWithValue:error];
+        return [self initWithValue:error];
     }
 
-    return self = [self initWithValue:value];
+    return [self initWithValue:value];
 }
 
 - (instancetype)initWithValue:(id)value {

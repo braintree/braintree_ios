@@ -61,7 +61,7 @@
 }
 
 - (void)updateStatus:(NSString *)status {
-    [(UIButton *)self.statusItem.customView setTitle:status forState:UIControlStateNormal];
+    [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
     NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
 }
 
