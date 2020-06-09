@@ -2,6 +2,13 @@ import XCTest
 
 class BTAPIClient_SwiftTests: XCTestCase {
 
+    private let mockConfigurationHTTP = BTFakeHTTP()!
+
+    override func setUp() {
+        super.setUp()
+        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+    }
+
     // MARK: - Initialization
 
     func testAPIClientInitialization_withValidTokenizationKey_returnsClientWithTokenizationKey() {
@@ -116,15 +123,16 @@ class BTAPIClient_SwiftTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    // MARK: - fetchPaymentMethods
+    // MARK: - fetchPaymentMethodNonces with v2 client token
 
-    func testFetchPaymentMethods_performsGETWithCorrectParameter() {
+    func testFetchPaymentMethodNonces_performsGETWithCorrectParameter() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
+        apiClient.configurationHTTP = mockConfigurationHTTP
         let mockHTTP = BTFakeHTTP()!
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
 
-        var expectation = self.expectation(description: "Callback invoked")
+        let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces() { _,_  in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
@@ -133,8 +141,16 @@ class BTAPIClient_SwiftTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
+    }
 
-        expectation = self.expectation(description: "Callback invoked")
+    func testFetchPaymentMethodNonces_whenDefaultFirstIsTrue_performsGETWithCorrectParameters() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
+        apiClient.configurationHTTP = mockConfigurationHTTP
+        let mockHTTP = BTFakeHTTP()!
+        mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        apiClient.http = mockHTTP
+
+        let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(true) { _,_  in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "true")
@@ -142,8 +158,16 @@ class BTAPIClient_SwiftTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
+    }
 
-        expectation = self.expectation(description: "Callback invoked")
+    func testFetchPaymentMethodNonces_whenDefaultFirstIsFalse_performsGETWithCorrectParameters() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
+        apiClient.configurationHTTP = mockConfigurationHTTP
+        let mockHTTP = BTFakeHTTP()!
+        mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        apiClient.http = mockHTTP
+
+        let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(false) { _,_  in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
@@ -153,8 +177,9 @@ class BTAPIClient_SwiftTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testFetchPaymentMethods_returnsPaymentMethodNonces() {
+    func testFetchPaymentMethodNonces_returnsPaymentMethodNonces() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
+        apiClient.configurationHTTP = mockConfigurationHTTP
         let stubHTTP = BTFakeHTTP()!
         let stubbedResponse = [
             "paymentMethods": [
@@ -214,8 +239,11 @@ class BTAPIClient_SwiftTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testFetchPaymentMethods_withTokenizationKey_returnsError() {
+    // MARK: - fetchPaymentMethodNonces with tokenization key
+
+    func testFetchPaymentMethodNonces_withTokenizationKey_returnsError() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
+        apiClient.configurationHTTP = mockConfigurationHTTP
 
         let expectation = self.expectation(description: "Error returned")
         apiClient.fetchPaymentMethodNonces() { (paymentMethodNonces, error) -> Void in
@@ -229,21 +257,19 @@ class BTAPIClient_SwiftTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    // MARK: - V3 Client Token
+    // MARK: - fetchPaymentMethodNonces with v3 client token
 
-    func testFetchPaymentMethods_performsGETWithCorrectParameter_withVersionThreeClientToken() {
+    func testFetchPaymentMethodNonces_performsGETWithCorrectParameter_withV3ClientToken() {
         let clientToken = BTTestClientTokenFactory.token(withVersion: 3)
         let apiClient = BTAPIClient(authorization: clientToken!, sendAnalyticsEvent: false)!
         let mockHTTP = BTFakeHTTP()!
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
-        let mockConfigurationHTTP = BTFakeHTTP()!
-        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
 
         XCTAssertEqual((apiClient.clientToken!.json["version"] as! BTJSON).asIntegerOrZero(), 3)
 
-        var expectation = self.expectation(description: "Callback invoked")
+        let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces() { _,_  in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
@@ -252,8 +278,17 @@ class BTAPIClient_SwiftTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
+    }
 
-        expectation = self.expectation(description: "Callback invoked")
+    func testFetchPaymentMethodNonces_whenDefaultFirstIsTrue_performsGETWithCorrectParameter_withV3ClientToken() {
+        let clientToken = BTTestClientTokenFactory.token(withVersion: 3)
+        let apiClient = BTAPIClient(authorization: clientToken!, sendAnalyticsEvent: false)!
+        let mockHTTP = BTFakeHTTP()!
+        mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        apiClient.http = mockHTTP
+        apiClient.configurationHTTP = mockConfigurationHTTP
+
+        let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(true) { _,_  in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "true")
@@ -261,8 +296,17 @@ class BTAPIClient_SwiftTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
+    }
 
-        expectation = self.expectation(description: "Callback invoked")
+    func testFetchPaymentMethodNonces_whenDefaultFirstIsFalse_performsGETWithCorrectParameter_withV3ClientToken() {
+        let clientToken = BTTestClientTokenFactory.token(withVersion: 3)
+        let apiClient = BTAPIClient(authorization: clientToken!, sendAnalyticsEvent: false)!
+        let mockHTTP = BTFakeHTTP()!
+        mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        apiClient.http = mockHTTP
+        apiClient.configurationHTTP = mockConfigurationHTTP
+
+        let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(false) { _,_  in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
