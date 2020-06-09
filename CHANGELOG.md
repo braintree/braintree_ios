@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.34.0 (2020-06-09)
 * Add `environment` property to `BTPayPalUAT`
 
 ## 4.33.0 (2020-04-16)
