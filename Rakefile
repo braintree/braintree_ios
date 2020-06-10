@@ -258,13 +258,9 @@ def jazzy_command
       --author_url http://braintreepayments.com
       --github_url https://github.com/braintree/braintree_ios
       --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version}
-      --sdk iphonesimulator
-      --module-version #{current_version}
+      --theme fullwidth
       --output docs_output
       --xcodebuild-arguments --objc,Docs/Braintree-Umbrella-Header.h,--,-x,objective-c,-isysroot,$(xcrun --sdk iphonesimulator --show-sdk-path),-I,$(pwd)
-      --min-acl internal
-      --theme fullwidth
-      --module Braintree
   ].join(' ')
 end
 
