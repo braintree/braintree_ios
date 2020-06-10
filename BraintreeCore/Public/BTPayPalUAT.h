@@ -2,6 +2,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+An authorization string used to initialize the Braintree SDK
+*/
 @interface BTPayPalUAT : NSObject
 
 /**
@@ -9,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable instancetype)initWithUATString:(NSString *)payPalUAT error:(NSError **)error NS_DESIGNATED_INITIALIZER;
 
+/**
+Base initializer - do not use.
+*/
 - (instancetype)init __attribute__((unavailable("Please use initWithPayPalUAT:error: instead.")));
 
 /**
@@ -31,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, strong) NSURL *basePayPalURL;
 
+/**
+Environment codes associated with PayPal UAT.
+*/
 typedef NS_ENUM(NSInteger, BTPayPalUATEnvironment) {
     /// Staging
     BTPayPalUATEnvironmentStage = 0,
