@@ -60,6 +60,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.0.0)
   - PureLayout (3.1.6)
   - Specta (1.0.7)
+  - xcbeautify (0.8.0)
 
 DEPENDENCIES:
   - Braintree/3D-Secure (from `./`)
@@ -83,6 +84,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - PureLayout
   - Specta
+  - xcbeautify
 
 SPEC REPOS:
   trunk:
@@ -93,6 +95,7 @@ SPEC REPOS:
     - OHHTTPStubs
     - PureLayout
     - Specta
+    - xcbeautify
 
 EXTERNAL SOURCES:
   Braintree:
@@ -115,7 +118,8 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
   PureLayout: bd3c4ec3a3819ad387c99ebb72c6b129c3ed4d2d
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
+  xcbeautify: 34e667aac66c3357794431c9dd4037808cdab025
 
-PODFILE CHECKSUM: 7e5eed01af746900ee05afb66cfc21e7e500b3f7
+PODFILE CHECKSUM: 809ef127dcc76e53dee46180042e58addb88e4a0
 
 COCOAPODS: 1.9.3

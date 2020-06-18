@@ -32,9 +32,11 @@ abstract_target 'Tests' do
   pod 'Expecta', :inhibit_warnings => true
   pod 'OCMock', :inhibit_warnings => true
   pod 'OHHTTPStubs', :inhibit_warnings => true
+  pod 'xcbeautify', :inhibit_warnings => true
 
   target 'UnitTests'
   target 'IntegrationTests'
+  target 'UITests'
 end
 
 post_install do |installer|
