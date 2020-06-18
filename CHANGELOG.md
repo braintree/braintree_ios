@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Update CardinalMobile.framework to v2.2.3-1
+
 ## 4.34.0 (2020-06-09)
 * Add `environment` property to `BTPayPalUAT`
 
