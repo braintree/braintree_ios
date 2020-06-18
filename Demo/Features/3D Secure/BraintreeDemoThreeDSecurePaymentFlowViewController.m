@@ -20,7 +20,7 @@
     self.title = NSLocalizedString(@"3D Secure - Payment Flow", nil);
 
     self.cardFormView = [[BTUICardFormView alloc] initForAutoLayout];
-    self.cardFormView.optionalFields = BTUICardFormOptionalFieldsNone;
+    self.cardFormView.optionalFields = BTUICardFormOptionalFieldsCvv | BTUICardFormFieldPostalCode;
     [self.view addSubview:self.cardFormView];
     [self.cardFormView autoPinEdgeToSuperviewEdge:ALEdgeTop];
     [self.cardFormView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
