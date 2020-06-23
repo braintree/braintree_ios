@@ -170,7 +170,6 @@ namespace :release do
     say "* [ ] You have already merged hotfixes and pulled changes."
     say "* [ ] You have already reviewed the diff between the current release and the last tag, noting breaking changes in the semver and CHANGELOG."
     say "* [ ] Tests (rake spec) are passing, manual verifications complete."
-    say "* [ ] Email is composed and ready to send to braintree-sdk-announce@googlegroups.com"
 
     abort(1) unless ask "Ready to release? Press any key to continue. "
   end

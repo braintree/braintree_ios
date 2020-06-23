@@ -60,11 +60,6 @@ Here are a few ways to get in touch:
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios/issues)
 * Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
 
-## Releases
-
-Subscribe to our [Google Group](https://groups.google.com/forum/#!forum/braintree-sdk-announce) to
-be notified when SDK releases go out.
-
 ### License
 
 The Braintree iOS SDK is open source and available under the MIT license. See the [LICENSE](LICENSE) file for more info.
