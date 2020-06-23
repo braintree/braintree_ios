@@ -33,7 +33,7 @@ class BraintreeDropInLegacy_TokenizationKey_CardForm_UITests: XCTestCase {
         
         cardNumberTextField.forceTapElement()
         cardNumberTextField.typeText("4111111111111111")
-        expiryTextField.typeText(Helpers.sharedInstance.futureDate())
+        expiryTextField.typeText(DateGenerator.sharedInstance.futureDate())
 
         let postalCodeField = elementsQuery.textFields["Postal Code"]
         self.waitForElementToBeHittable(postalCodeField)
@@ -72,7 +72,7 @@ class BraintreeDropInLegacy_TokenizationKey_CardForm_UITests: XCTestCase {
         self.waitForElementToBeHittable(expiryTextField)
         
         expiryTextField.forceTapElement()
-        expiryTextField.typeText(Helpers.sharedInstance.pastDate())
+        expiryTextField.typeText(DateGenerator.sharedInstance.pastDate())
         
         self.waitForElementToAppear(elementsQuery.textFields["Invalid: MM/YY"])
     }
@@ -100,7 +100,7 @@ class BraintreeDropInLegacy_TokenizationKey_CardForm_UITests: XCTestCase {
         self.waitForElementToBeHittable(expirationField)
         
         expirationField.forceTapElement()
-        expirationField.typeText(Helpers.sharedInstance.pastDate())
+        expirationField.typeText(DateGenerator.sharedInstance.pastDate())
         
         self.waitForElementToAppear(elementsQuery.textFields["Invalid: MM/YY"])
         
