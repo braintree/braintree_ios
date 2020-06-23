@@ -30,7 +30,7 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
             
             let lastRequestParameters = mockGraphQLHTTP.lastRequestParameters as! [String: Any]
             let graphQLQuery = lastRequestParameters["query"] as! String
-            XCTAssertEqual(graphQLQuery, "query PreferredPaymentMethods { paypalPreferred }")
+            XCTAssertEqual(graphQLQuery, "query PreferredPaymentMethods { preferredPaymentMethods { paypalPreferred } }")
             expectation.fulfill()
         }
         
