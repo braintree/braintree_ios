@@ -55,21 +55,21 @@ class << self
     %x{git rev-parse --abbrev-ref HEAD}.strip
   end
 
-  def xcodebuild(scheme, command, configuration, ios_version, options={})
+  def xcodebuild(scheme, command, configuration, ios_version, options={}, output_redirect=nil)
     default_options = {
       :build_settings => {}
     }
     ios_version_specifier = ",OS=#{ios_version}" if !ios_version.nil?
     options = default_options.merge(options)
     build_settings = options[:build_settings].map{|k,v| "#{k}='#{v}'"}.join(" ")
-    return "set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration '#{configuration}' -scheme '#{scheme}' -destination 'name=iPhone 11,platform=iOS Simulator#{ios_version_specifier}' #{build_settings} #{command} | xcpretty -c -r junit"
+    return "set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration '#{configuration}' -scheme '#{scheme}' -destination 'name=iPhone 11,platform=iOS Simulator#{ios_version_specifier}' #{build_settings} #{command} #{output_redirect} | ./Pods/xcbeautify/xcbeautify"
   end
 
 end
 
 namespace :spec do
-  def run_test_scheme! scheme, ios_version = nil
-    run! xcodebuild(scheme, 'test', 'Release', ios_version)
+  def run_test_scheme! scheme, ios_version = nil, output_redirect = nil
+    run! xcodebuild(scheme, 'test', 'Release', ios_version, {}, output_redirect)
   end
 
   desc 'Run unit tests'
@@ -83,7 +83,9 @@ namespace :spec do
 
   desc 'Run UI tests'
   task :ui do
-    run_test_scheme! 'UITests'
+    ENV['NSUnbufferedIO'] = 'YES' #Forces parallel test output to be printed after each test rather than on completion of all tests
+    run_test_scheme! 'UITests', nil, '2>&1'
+    ENV['NSUnbufferedIO'] = 'NO'
   end
 
   namespace :api do
