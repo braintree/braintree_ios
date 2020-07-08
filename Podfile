@@ -1,12 +1,10 @@
 source 'https://cdn.cocoapods.org/'
 
-platform :ios, '9.0'
+platform :ios, '11.0'
 
 workspace 'Braintree.xcworkspace'
 
 target 'Demo' do
-  platform :ios, '9.0'
-
   pod 'Braintree/Core', :path => './'
   pod 'Braintree/Apple-Pay', :path => './'
   pod 'Braintree/Card', :path => './'
