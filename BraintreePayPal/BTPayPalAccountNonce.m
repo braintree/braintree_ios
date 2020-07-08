@@ -25,8 +25,7 @@
              clientMetadataId:(NSString *)clientMetadataId
                       payerId:(NSString *)payerId
                     isDefault:(BOOL)isDefault
-              creditFinancing:(BTPayPalCreditFinancing *)creditFinancing
-{
+              creditFinancing:(BTPayPalCreditFinancing *)creditFinancing {
     if (self = [super initWithNonce:nonce localizedDescription:description type:@"PayPal" isDefault:isDefault]) {
         _email = email;
         _firstName = firstName;

@@ -18,8 +18,7 @@
                             payerAcceptance:(BOOL)payerAcceptance
                                        term:(NSInteger)term
                                   totalCost:(BTPayPalCreditFinancingAmount *)totalCost
-                              totalInterest:(BTPayPalCreditFinancingAmount *)totalInterest
-{
+                              totalInterest:(BTPayPalCreditFinancingAmount *)totalInterest {
     if (self = [super init]) {
         _cardAmountImmutable = cardAmountImmutable;
         _monthlyPayment = monthlyPayment;

@@ -23,7 +23,8 @@
 
 - (instancetype)initWithApprovalURL:(NSURL *)approvalURL
                           pairingId:(NSString *)pairingId
-                           clientID:(NSString *)clientID environment:(NSString *)environment
+                           clientID:(NSString *)clientID
+                        environment:(NSString *)environment
                   callbackURLScheme:(NSString *)callbackURLScheme {
     if (!approvalURL
         || ([environment isEqualToString:PPRequestEnvironmentProduction]
@@ -43,7 +44,9 @@
         return nil;
     }
 
-    self = [super initWithClientID:clientID environment:environment callbackURLScheme:callbackURLScheme];
+    self = [super initWithClientID:clientID
+                       environment:environment
+                 callbackURLScheme:callbackURLScheme];
     if (self) {
         _approvalURL = approvalURL;
 
@@ -56,7 +59,11 @@
                               clientID:(NSString *)clientID
                            environment:(NSString *)environment
                      callbackURLScheme:(NSString *)callbackURLScheme {
-    return [PPOTCheckoutRequest requestWithApprovalURL:approvalURL pairingId:nil clientID:clientID environment:environment callbackURLScheme:callbackURLScheme];
+    return [PPOTCheckoutRequest requestWithApprovalURL:approvalURL
+                                             pairingId:nil
+                                              clientID:clientID
+                                           environment:environment
+                                     callbackURLScheme:callbackURLScheme];
 }
 
 + (instancetype)requestWithApprovalURL:(NSURL *)approvalURL
@@ -75,7 +82,6 @@
 #pragma mark - add subclass-specific info to appSwitchRequest
 
 - (PPOTSwitchRequest *)getAppSwitchRequestForConfigurationRecipe:(PPOTConfigurationRecipe *)configurationRecipe {
-
     PPOTCheckoutSwitchRequest *appSwitchRequest = nil;
 
     switch (configurationRecipe.target) {
