@@ -1,38 +1,32 @@
 PODS:
-  - Braintree/3D-Secure (4.34.0):
-    - Braintree/Card
+  - Braintree/AmericanExpress (5.0.0):
     - Braintree/Core
-  - Braintree/AmericanExpress (4.34.0):
+  - Braintree/Apple-Pay (5.0.0):
     - Braintree/Core
-  - Braintree/Apple-Pay (4.34.0):
+  - Braintree/Card (5.0.0):
     - Braintree/Core
-  - Braintree/Card (4.34.0):
+  - Braintree/Core (5.0.0)
+  - Braintree/DataCollector (5.0.0):
     - Braintree/Core
-  - Braintree/Core (4.34.0)
-  - Braintree/DataCollector (4.34.0):
-    - Braintree/Core
-  - Braintree/PaymentFlow (4.34.0):
+  - Braintree/PaymentFlow (5.0.0):
     - Braintree/Card
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPal (4.34.0):
+  - Braintree/PayPal (5.0.0):
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.34.0):
+  - Braintree/PayPalDataCollector (5.0.0):
     - Braintree/Core
     - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.34.0):
+  - Braintree/PayPalOneTouch (5.0.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
     - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.34.0)
-  - Braintree/UI (4.34.0):
+  - Braintree/PayPalUtils (5.0.0)
+  - Braintree/UnionPay (5.0.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/UnionPay (4.34.0):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Venmo (4.34.0):
+  - Braintree/Venmo (5.0.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
   - BraintreeDropIn (99.99.99-github-master):
@@ -63,7 +57,6 @@ PODS:
   - xcbeautify (0.8.0)
 
 DEPENDENCIES:
-  - Braintree/3D-Secure (from `./`)
   - Braintree/AmericanExpress (from `./`)
   - Braintree/Apple-Pay (from `./`)
   - Braintree/Card (from `./`)
@@ -73,7 +66,6 @@ DEPENDENCIES:
   - Braintree/PayPal (from `./`)
   - Braintree/PayPalDataCollector (from `./`)
   - Braintree/PayPalUtils (from `./`)
-  - Braintree/UI (from `./`)
   - Braintree/UnionPay (from `./`)
   - Braintree/Venmo (from `./`)
   - BraintreeDropIn (from `BraintreeDropIn.podspec`)
@@ -109,7 +101,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
-  Braintree: 1a0026989872c9d96b43e12e52ffb9f9c0361843
+  Braintree: fb57f79a840edcb65243e88f83cc3ea8945c17c7
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
@@ -120,6 +112,6 @@ SPEC CHECKSUMS:
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: 34e667aac66c3357794431c9dd4037808cdab025
 
-PODFILE CHECKSUM: 606aba0ceeeeb0208487e84bff9e852bdb3845ea
+PODFILE CHECKSUM: a072fcca976a443dff6ae3b647dd99fbd940b98b
 
 COCOAPODS: 1.9.3
