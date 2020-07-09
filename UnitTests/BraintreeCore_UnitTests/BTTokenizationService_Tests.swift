@@ -105,10 +105,6 @@ class BTTokenizationService_Tests: XCTestCase {
 
     // This test only verifies that SFSafariViewController is presented
     func testSingleton_canAuthorizePayPalThroughSFSafariViewController() {
-        guard #available(iOS 9.0, *) else {
-            return
-        }
-
         if #available(iOS 11.0, *) {
             return
         }

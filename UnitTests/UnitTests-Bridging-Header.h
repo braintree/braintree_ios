@@ -38,7 +38,6 @@
 #import "BTFakeHTTP.h"
 #import "BTDropInViewController_Internal.h"
 #import "BTPaymentButton_Internal.h"
-#import "BTThreeDSecureLookupResult.h"
 #import "Braintree-Version.h"
 #import "PPDataCollector_Internal.h"
 #import "BTPaymentFlowDriver_Internal.h"

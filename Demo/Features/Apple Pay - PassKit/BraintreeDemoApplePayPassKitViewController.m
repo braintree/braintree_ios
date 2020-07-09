@@ -48,16 +48,7 @@
         return nil;
     }
 
-    UIButton *button;
-
-    if (@available(iOS 8.3, *)) {
-        button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
-    } else {
-        button = [UIButton buttonWithType:UIButtonTypeSystem];
-        [button setTintColor:[UIColor blackColor]];
-        [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:36]];
-        [button setTitle:NSLocalizedString(@"PAY WITH APPLE PAY", nil) forState:UIControlStateNormal];
-    }
+    UIButton *button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
     [button addTarget:self action:@selector(tappedApplePayButton) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
@@ -73,7 +64,7 @@
 
         // Requiring PKAddressFieldPostalAddress crashes Simulator
         //paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
-        paymentRequest.requiredBillingAddressFields = PKAddressFieldName;
+        paymentRequest.requiredBillingContactFields = [NSSet setWithObjects:PKContactFieldName, nil];
 
         PKShippingMethod *shippingMethod1 = [PKShippingMethod summaryItemWithLabel:@"✈️ Fast Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"4.99"]];
         shippingMethod1.detail = @"Fast but expensive";
@@ -85,7 +76,7 @@
         shippingMethod3.detail = @"It will make Apple Pay fail";
         shippingMethod3.identifier = @"fail";
         paymentRequest.shippingMethods = @[shippingMethod1, shippingMethod2, shippingMethod3];
-        paymentRequest.requiredShippingAddressFields = PKAddressFieldAll;
+        paymentRequest.requiredShippingContactFields = [NSSet setWithObjects:PKContactFieldName, PKContactFieldPhoneNumber, PKContactFieldEmailAddress, nil];
         paymentRequest.paymentSummaryItems = @[
                                                [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]],
                                                [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod1.amount],
@@ -112,7 +103,9 @@
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion API_AVAILABLE(ios(11.0), watchos(4.0))  {
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
+                       didAuthorizePayment:(PKPayment *)payment
+                                   handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     [self.applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         if (error) {
@@ -126,38 +119,20 @@
     }];
 }
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                       didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion {
-    self.progressBlock(@"Apple Pay Did Authorize Payment");
-    [self.applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
-        if (error) {
-            self.progressBlock(error.localizedDescription);
-            completion(PKPaymentAuthorizationStatusFailure);
-        } else {
-            self.label.text = tokenizedApplePayPayment.nonce;
-            self.completionBlock(tokenizedApplePayPayment);
-            completion(PKPaymentAuthorizationStatusSuccess);
-        }
-    }];
-}
-
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
+- (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
                    didSelectShippingMethod:(PKShippingMethod *)shippingMethod
-                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
-{
-    PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+                                   handler:(void (^)(PKPaymentRequestShippingMethodUpdate * _Nonnull))completion {
+    PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM"
+                                                                         amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+    PKPaymentRequestShippingMethodUpdate *update = [[PKPaymentRequestShippingMethodUpdate alloc] initWithPaymentSummaryItems:@[testItem]];
+
     if ([shippingMethod.identifier isEqualToString:@"fast"]) {
-        completion(PKPaymentAuthorizationStatusSuccess,
-                   @[
-                     testItem,
-                     [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod.amount],
-                     [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[testItem.amount decimalNumberByAdding:shippingMethod.amount]],
-                     ]);
+        completion(update);
     } else if ([shippingMethod.identifier isEqualToString:@"fail"]) {
-        completion(PKPaymentAuthorizationStatusFailure, @[testItem]);
+        update.status = PKPaymentAuthorizationStatusFailure;
+        completion(update);
     } else {
-        completion(PKPaymentAuthorizationStatusSuccess, @[testItem]);
+        completion(update);
     }
 }
 

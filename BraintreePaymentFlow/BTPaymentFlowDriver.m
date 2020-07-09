@@ -80,24 +80,14 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL {
     [self informDelegateAppContextWillSwitch];
-    if (@available(iOS 9.0, *)) {
-        [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
-    } else {
-        UIApplication *application = [UIApplication sharedApplication];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [application openURL:appSwitchURL];
-#pragma clang diagnostic pop
-    }
+    [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
 }
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL *)appSwitchURL {
     if ([self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
-        if (@available(iOS 9.0, *)) {
-            self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
-            self.safariViewController.delegate = self;
-            [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
-        }
+        self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
+        self.safariViewController.delegate = self;
+        [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
     } else {
         [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue payment flow. BTPaymentFlowDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
@@ -105,10 +95,8 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 - (void)informDelegatePresentingViewControllerNeedsDismissal {
     if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsDismissalOfViewController:)]) {
-        if (@available(iOS 9.0, *)) {
-            [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
-            self.safariViewController = nil;
-        }
+        [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
+        self.safariViewController = nil;
     } else {
         [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end payment flow. BTPaymentFlowDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
@@ -127,15 +115,13 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 - (void)handleOpenURL:(NSURL *)url {
     [self informDelegateAppContextDidReturn];
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
-    if (@available(iOS 9.0, *)) {
-        if (self.safariViewController) {
-            [self informDelegatePresentingViewControllerNeedsDismissal];
-        }
+    if (self.safariViewController) {
+        [self informDelegatePresentingViewControllerNeedsDismissal];
     }
     [self.paymentFlowRequestDelegate handleOpenURL:url];
 }
 
-- (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller API_AVAILABLE(ios(9.0)) {
+- (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller {
     [self onPaymentCancel];
 }
 

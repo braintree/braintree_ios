@@ -1,7 +1,6 @@
-#import "BraintreeDemoBTPaymentButtonViewController.h"
-#import <PureLayout/ALView+PureLayout.h>
 #import "BraintreeDemoPaymentButtonBaseViewController.h"
 #import <BraintreeCore/BraintreeCore.h>
+#import <PureLayout/ALView+PureLayout.h>
 
 @implementation BraintreeDemoPaymentButtonBaseViewController
 

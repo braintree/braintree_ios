@@ -214,17 +214,13 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    // NEXT_MAJOR_VERSION we've deprecated `errorMessage` and `success` for public use, but we will continue to use them internally here. Rename to `isSuccess` for parity across SDKs.
-    if ((self.versionRequested == BTThreeDSecureVersion1 && !result.success) || !result.tokenizedCard) {
+    if ((self.versionRequested == BTThreeDSecureVersion1 && result.tokenizedCard.threeDSecureInfo.errorMessage) || !result.tokenizedCard) {
         [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
 
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-        if (result.errorMessage) {
-            userInfo[NSLocalizedDescriptionKey] = result.errorMessage;
+        if (result.tokenizedCard.threeDSecureInfo.errorMessage) {
+            userInfo[NSLocalizedDescriptionKey] = result.tokenizedCard.threeDSecureInfo.errorMessage;
         }
-#pragma clang diagnostic pop
         
         NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                              code:BTThreeDSecureFlowErrorTypeFailedAuthentication
@@ -260,7 +256,9 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     }
 }
 
-- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {
+- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request
+                  result:(__unused BTThreeDSecureLookup *)result
+                    next:(void (^)(void))next {
     next();
 }
 

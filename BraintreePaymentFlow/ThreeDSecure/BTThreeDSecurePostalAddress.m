@@ -5,22 +5,6 @@
 // Property names follow the `Braintree_Address` convention as documented at:
 // https://developers.braintreepayments.com/ios+php/reference/response/address
 
-- (void)setFirstName:(NSString *)firstName {
-    _givenName = firstName;
-}
-
-- (NSString *)firstName {
-    return _givenName;
-}
-
-- (void)setLastName:(NSString *)lastName {
-    _surname = lastName;
-}
-
-- (NSString *)lastName {
-    return _surname;
-}
-
 - (id)copyWithZone:(__unused NSZone *)zone {
     BTThreeDSecurePostalAddress *address = [[BTThreeDSecurePostalAddress alloc] init];
     address.givenName = self.givenName;

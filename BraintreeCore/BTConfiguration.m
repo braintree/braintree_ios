@@ -13,11 +13,4 @@
     return self;
 }
 
-+ (BOOL)isBetaEnabledPaymentOption:(NSString*)__unused paymentOption {
-    return false;
-}
-
-+ (void)setBetaPaymentOption:(NSString*) __unused paymentOption isEnabled:(BOOL) __unused isEnabled { /* NO OP */ }
-
-
 @end

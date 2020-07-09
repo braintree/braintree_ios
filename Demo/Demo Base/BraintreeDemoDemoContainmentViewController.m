@@ -216,8 +216,8 @@
 
     [self.view addSubview:viewController.view];
 
-    [viewController.view autoPinToTopLayoutGuideOfViewController:self withInset:0];
-    [viewController.view autoPinToBottomLayoutGuideOfViewController:self withInset:0];
+    //[viewController.view autoPinToTopLayoutGuideOfViewController:self withInset:0];
+    //[viewController.view autoPinToBottomLayoutGuideOfViewController:self withInset:0];
     [viewController.view autoPinEdgeToSuperviewEdge:ALEdgeLeading];
     [viewController.view autoPinEdgeToSuperviewEdge:ALEdgeTrailing];
 

@@ -65,12 +65,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Exposed for testing, the safariViewController instance used for the PayPal flow on iOS 9 and 10
 */
-@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController API_AVAILABLE(ios(9.0));
+@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 
 /**
  Exposed for testing, the safariAuthenticationSession instance used for the PayPal flow on iOS >=11
  */
-@property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession API_AVAILABLE(ios(11.0));
+@property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession;
 
 /**
  Exposed for testing, for determining if SFAuthenticationSession was started

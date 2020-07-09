@@ -17,15 +17,11 @@
 			<string>BraintreeDemoDropInViewController</string>
 			<key>Titles</key>
 			<array>
-				<string>Drop In (Legacy)</string>
 				<string>PayPal - Future Payment</string>
 				<string>PayPal - Billing Agreement</string>
 				<string>PayPal - Scopes</string>
 				<string>PayPal - One-Time Payment</string>
 				<string>Credit Card Tokenization</string>
-				<string>Combined - BTPaymentButton</string>
-				<string>PayPal - BTUIPayPalButton</string>
-				<string>Venmo - BTUIVenmoButton</string>
 				<string>Venmo - Custom Button</string>
 				<string>PayPal - Custom Button</string>
 				<string>Apple Pay - PassKit</string>
@@ -42,15 +38,11 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>BraintreeDemoDropInLegacyViewController</string>
 				<string>BraintreeDemoPayPalForceFuturePaymentViewController</string>
 				<string>BraintreeDemoPayPalBillingAgreementViewController</string>
 				<string>BraintreeDemoPayPalScopesViewController</string>
 				<string>BraintreeDemoPayPalOneTimePaymentViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
-				<string>BraintreeDemoBTPaymentButtonViewController</string>
-				<string>BraintreeDemoBTUIPayPalButtonViewController</string>
-				<string>BraintreeDemoBTUIVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomPayPalButtonViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>

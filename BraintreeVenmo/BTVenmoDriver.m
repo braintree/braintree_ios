@@ -156,17 +156,9 @@ static BTVenmoDriver *appSwitchedDriver;
         [self informDelegateWillPerformAppSwitch];
         [self informDelegateAppContextWillSwitch];
 
-        if (@available(iOS 10.0, *)) {
-            [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-                [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
-            }];
-        } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            BOOL success = [self.application openURL:appSwitchURL];
+        [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
             [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
-#pragma clang diagnostic pop
-        }
+        }];
     }];
 }
 
@@ -290,14 +282,9 @@ static BTVenmoDriver *appSwitchedDriver;
 - (void)openVenmoAppPageInAppStore {
     NSURL *venmoAppStoreUrl = [NSURL URLWithString:BTVenmoAppStoreUrl];
     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.app-store.invoked"];
-    if (@available(iOS 10.0, *)) {
-        [self.application openURL:venmoAppStoreUrl options:[NSDictionary dictionary] completionHandler:nil];
-    } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [self.application openURL:venmoAppStoreUrl];
-#pragma clang diagnostic pop
-    }
+    [self.application openURL:venmoAppStoreUrl
+                      options:[NSDictionary dictionary]
+            completionHandler:nil];
 }
 
 #pragma mark - Helpers

@@ -159,19 +159,6 @@ class BTConfiguration_Tests: XCTestCase {
         XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.visa, PKPaymentNetwork.masterCard, PKPaymentNetwork.amex])
     }
 
-    func testApplePaySupportedNetworks_whenRunningBelowiOS9_doesNotReturnDiscover() {
-        let configurationJSON = BTJSON(value: [
-            "applePay": [ "supportedNetworks": ["discover"] ]
-            ])
-        let configuration = BTConfiguration(json: configurationJSON)
-
-        guard #available(iOS 9, *) else {
-            XCTAssertEqual(configuration.applePaySupportedNetworks!, [])
-            return
-        }
-    }
-
-    @available(iOS 9.0, *)
     func testApplePaySupportedNetworks_whenSupportedNetworksIncludesDiscover_returnsSupportedNetworks() {
         let configurationJSON = BTJSON(value: [
             "applePay": [ "supportedNetworks": ["discover"] ]

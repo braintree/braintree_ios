@@ -241,39 +241,4 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     }
 }
 
-#pragma mark - Deprecated methods
-
-- (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment {
-    if (self = [super init]) {
-        [self setUpKountWithDebugOn:NO];
-        [self setCollectorEnvironment:[self collectorEnvironment:environment]];
-        [self setFraudMerchantId:BTDataCollectorSharedMerchantId];
-    }
-    return self;
-}
-
-+ (NSString *)payPalClientMetadataId {
-    return [BTDataCollector generatePayPalClientMetadataId];
-}
-
-/// At this time, this method only collects data with Kount. However, it is possible that in the future,
-/// we will want to collect data (for card transactions) with PayPal as well. If this becomes the case,
-/// we can modify this method to include a clientMetadataID without breaking the public interface.
-- (NSString *)collectCardFraudData {
-    return [self collectDeviceDataForCard:YES forPayPal:NO];
-}
-
-- (NSString *)collectPayPalClientMetadataId {
-    return [self collectDeviceDataForCard:NO forPayPal:YES];
-}
-
-/// Similar to `collectCardFraudData` but with the addition of the payPalClientMetadataId, if available.
-- (NSString *)collectFraudData {
-    return [self collectDeviceDataForCard:YES forPayPal:YES];
-}
-
-- (void)collectFraudData:(void (^)(NSString * _Nonnull))completion {
-    [self collectDeviceDataForCard:YES completion:completion];
-}
-
 @end
