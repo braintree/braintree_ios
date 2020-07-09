@@ -1,7 +1,7 @@
 #import "BraintreeDemoCustomMultiPayViewController.h"
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeUI/BraintreeUI.h>
-#import <PureLayout/ALView+PureLayout.h>
+#import <PureLayout/PureLayout.h>
 
 @interface BraintreeDemoCustomMultiPayViewController () <BTViewControllerPresentingDelegate>
 @property(nonatomic, strong) BTUICardFormView *cardForm;

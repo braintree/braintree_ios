@@ -4,8 +4,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeDropIn/BraintreeDropIn.h>
 #import <BraintreeVenmo/BraintreeVenmo.h>
-#import "BraintreeUIKit.h"
-#import "BTPaymentSelectionViewController.h"
 #import <BraintreeApplePay/BraintreeApplePay.h>
 
 #import "Demo-Swift.h"
@@ -289,22 +287,20 @@
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
+- (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
                    didSelectShippingMethod:(PKShippingMethod *)shippingMethod
-                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
-{
-    PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+                                   handler:(void (^)(PKPaymentRequestShippingMethodUpdate * _Nonnull))completion {
+    PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM"
+                                                                         amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+    PKPaymentRequestShippingMethodUpdate *update = [[PKPaymentRequestShippingMethodUpdate alloc] initWithPaymentSummaryItems:@[testItem]];
+
     if ([shippingMethod.identifier isEqualToString:@"fast"]) {
-        completion(PKPaymentAuthorizationStatusSuccess,
-                   @[
-                     testItem,
-                     [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod.amount],
-                     [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[testItem.amount decimalNumberByAdding:shippingMethod.amount]],
-                     ]);
+        completion(update);
     } else if ([shippingMethod.identifier isEqualToString:@"fail"]) {
-        completion(PKPaymentAuthorizationStatusFailure, @[testItem]);
+        update.status = PKPaymentAuthorizationStatusFailure;
+        completion(update);
     } else {
-        completion(PKPaymentAuthorizationStatusSuccess, @[testItem]);
+        completion(update);
     }
 }
 
@@ -312,7 +308,9 @@
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion API_AVAILABLE(ios(11.0), watchos(4.0)) {
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
+                       didAuthorizePayment:(PKPayment *)payment
+                                   handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:self.authorizationString];
     BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:client];
@@ -323,23 +321,6 @@
         } else {
             self.completionBlock(tokenizedApplePayPayment);
             completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusSuccess errors:nil]);
-        }
-    }];
-}
-
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                       didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion {
-    self.progressBlock(@"Apple Pay Did Authorize Payment");
-    BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:self.authorizationString];
-    BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:client];
-    [applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
-        if (error) {
-            self.progressBlock(error.localizedDescription);
-            completion(PKPaymentAuthorizationStatusFailure);
-        } else {
-            self.completionBlock(tokenizedApplePayPayment);
-            completion(PKPaymentAuthorizationStatusSuccess);
         }
     }];
 }
