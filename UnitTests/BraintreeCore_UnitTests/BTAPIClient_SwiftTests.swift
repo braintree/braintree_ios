@@ -2,7 +2,7 @@ import XCTest
 
 class BTAPIClient_SwiftTests: XCTestCase {
 
-    private let mockConfigurationHTTP = BTFakeHTTP()!
+    private let mockConfigurationHTTP = BTFakeHTTP()
 
     override func setUp() {
         super.setUp()
@@ -109,7 +109,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
 
     func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id", sendAnalyticsEvent: false)!
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         mockHTTP.stubRequest("GET", toEndpoint: "/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockHTTP
 
@@ -128,7 +128,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchPaymentMethodNonces_performsGETWithCorrectParameter() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
         apiClient.configurationHTTP = mockConfigurationHTTP
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
 
@@ -146,7 +146,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchPaymentMethodNonces_whenDefaultFirstIsTrue_performsGETWithCorrectParameters() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
         apiClient.configurationHTTP = mockConfigurationHTTP
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
 
@@ -163,7 +163,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchPaymentMethodNonces_whenDefaultFirstIsFalse_performsGETWithCorrectParameters() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
         apiClient.configurationHTTP = mockConfigurationHTTP
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
 
@@ -180,7 +180,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchPaymentMethodNonces_returnsPaymentMethodNonces() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
         apiClient.configurationHTTP = mockConfigurationHTTP
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         let stubbedResponse = [
             "paymentMethods": [
                 [
@@ -262,7 +262,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchPaymentMethodNonces_performsGETWithCorrectParameter_withV3ClientToken() {
         let clientToken = BTTestClientTokenFactory.token(withVersion: 3)
         let apiClient = BTAPIClient(authorization: clientToken!, sendAnalyticsEvent: false)!
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
         apiClient.configurationHTTP = mockConfigurationHTTP
@@ -283,7 +283,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchPaymentMethodNonces_whenDefaultFirstIsTrue_performsGETWithCorrectParameter_withV3ClientToken() {
         let clientToken = BTTestClientTokenFactory.token(withVersion: 3)
         let apiClient = BTAPIClient(authorization: clientToken!, sendAnalyticsEvent: false)!
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
         apiClient.configurationHTTP = mockConfigurationHTTP
@@ -301,7 +301,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchPaymentMethodNonces_whenDefaultFirstIsFalse_performsGETWithCorrectParameter_withV3ClientToken() {
         let clientToken = BTTestClientTokenFactory.token(withVersion: 3)
         let apiClient = BTAPIClient(authorization: clientToken!, sendAnalyticsEvent: false)!
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
         apiClient.configurationHTTP = mockConfigurationHTTP

@@ -2,7 +2,7 @@
 
 @implementation BTFakeHTTP
 
-- (nullable instancetype)init {
+- (instancetype)init {
     return [self initWithBaseURL:[[NSURL alloc] init] authorizationFingerprint:@""];
 }
 

@@ -12,7 +12,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     // MARK: - Fetch capabilities
 
     func testFetchCapabilities_whenConfigurationFetchFails_returnsError() {
-        let stubConfigurationHTTP = BTFakeHTTP()!
+        let stubConfigurationHTTP = BTFakeHTTP()
         stubConfigurationHTTP.cannedError = NSError(domain: "FakeDomain", code: 2, userInfo: nil)
         apiClient.configurationHTTP = stubConfigurationHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
@@ -68,7 +68,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
     
     func testFetchCapabilities_whenUnionPayIsEnabledForMerchant_sendsGETRequestToCapabilitiesEndpointWithExpectedPayload() {
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
         let cardNumber = "411111111111111"
@@ -93,7 +93,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
 
     func testFetchCapabilities_whenSuccessful_parsesCardCapabilitiesFromJSONResponse() {
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         stubHTTP.stubRequest("GET", toEndpoint: "v1/payment_methods/credit_cards/capabilities", respondWith: [
             "isUnionPay": true,
             "isDebit": false,
@@ -148,7 +148,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
 
     func testFetchCapabilities_whenFailure_returnsError() {
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         let stubbedError = NSError(domain: "FakeError", code: 1, userInfo: nil)
         stubHTTP.stubRequest("GET", toEndpoint: "v1/credit_cards/capabilities", respondWithError: stubbedError)
         apiClient.http = stubHTTP
@@ -170,7 +170,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     // MARK: - Enrollment
 
     func testEnroll_whenConfigurationFetchFails_returnsError() {
-        let stubConfigurationHTTP = BTFakeHTTP()!
+        let stubConfigurationHTTP = BTFakeHTTP()
         stubConfigurationHTTP.cannedError = NSError(domain: "FakeDomain", code: 2, userInfo: nil)
         apiClient.configurationHTTP = stubConfigurationHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
@@ -216,7 +216,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
 
     func testEnrollment_whenUnionPayIsEnabledForMerchant_sendsPOSTRequestToEnrollmentEndpointWithExpectedPayload() {
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
@@ -249,7 +249,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
 
     func testEnrollmentPayload_doesNotContainCVV() {
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
@@ -276,7 +276,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
 
     func testEnrollCard_whenSuccessful_returnsEnrollmentIDAndSmsCodeRequiredFromJSONResponse() {
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWith: [
             "unionPayEnrollmentId": "fake-enrollment-id",
             "smsCodeRequired": true
@@ -302,7 +302,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
     
     func testEnrollCard_when422Failure_returnsValidationError() {
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         let stubbed422HTTPResponse = HTTPURLResponse(url: URL(string: "someendpoint")!, statusCode: 422, httpVersion: nil, headerFields: nil)!
         let stubbed422ResponseBody = BTJSON(value: ["some": "thing"])
         let stubbedError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
@@ -335,7 +335,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
     
     func testEnrollCard_onError_invokesCallbackOnMainThread() {
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWithError: NSError(domain: "CannedError", code: 0, userInfo: nil))
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
@@ -369,7 +369,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
     
     func testEnrollCard_onSuccess_invokesCallbackOnMainThread() {
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWith: [
             "unionPayEnrollmentId": "fake-enrollment-id"
             ], statusCode: 201)
@@ -408,7 +408,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
 
     func testEnrollCard_whenOtherFailure_returnsError() {
-        let stubHTTP = BTFakeHTTP()!
+        let stubHTTP = BTFakeHTTP()
         let stubbedError = NSError(domain: "FakeError", code: 1, userInfo: nil)
         stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWithError:stubbedError)
         apiClient.http = stubHTTP
@@ -432,7 +432,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     // MARK: - Tokenization
     
     func testTokenization_POSTsToTokenizationEndpoint() {
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
         let request = BTCardRequest()
@@ -476,7 +476,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
     
     func testTokenization_withEnrollmentIDAndNoSMSCode_sendsUnionPayEnrollment() {
-        let mockHTTP = BTFakeHTTP()!
+        let mockHTTP = BTFakeHTTP()
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(apiClient: apiClient)
         let request = BTCardRequest()
@@ -565,7 +565,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     
     func clientWithUnionPayEnabled(_ unionPayEnabled: Bool) -> BTAPIClient {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
-        let stubbedConfigurationHTTP = BTFakeHTTP()!
+        let stubbedConfigurationHTTP = BTFakeHTTP()
         stubbedConfigurationHTTP.cannedConfiguration = BTJSON(value: ["unionPay": [
             "enabled": unionPayEnabled
             ] ])

@@ -9,7 +9,7 @@ class BTCardClient_Tests: XCTestCase {
         let fakeHTTP = FakeHTTP.fakeHTTP()
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = fakeHTTP
-        let mockConfigurationHTTP = BTFakeHTTP()!
+        let mockConfigurationHTTP = BTFakeHTTP()
         mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
 
@@ -54,7 +54,7 @@ class BTCardClient_Tests: XCTestCase {
         let fakeHTTP = FakeHTTP.fakeHTTP()
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = fakeHTTP
-        let mockConfigurationHTTP = BTFakeHTTP()!
+        let mockConfigurationHTTP = BTFakeHTTP()
         mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
         
@@ -82,7 +82,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = FakeHTTP.fakeHTTP()
-        let mockConfigurationHTTP = BTFakeHTTP()!
+        let mockConfigurationHTTP = BTFakeHTTP()
         mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
 
@@ -110,7 +110,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = ErrorHTTP.fakeHTTP()
-        let mockConfigurationHTTP = BTFakeHTTP()!
+        let mockConfigurationHTTP = BTFakeHTTP()
         mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
 

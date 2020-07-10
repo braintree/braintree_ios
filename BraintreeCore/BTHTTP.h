@@ -58,10 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)acceptString;
 - (NSString *)acceptLanguageString;
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnullability"
-- (nullable instancetype)init __attribute__((unavailable("Please use initWithBaseURL:authorizationFingerprint: instead.")));
-#pragma clang diagnostic pop
+- (instancetype)init __attribute__((unavailable("Please use initWithBaseURL:authorizationFingerprint: instead.")));
 
 // For testing
 @property (nonatomic, strong) NSURLSession *session;

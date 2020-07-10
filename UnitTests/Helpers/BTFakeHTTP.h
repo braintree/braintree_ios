@@ -3,6 +3,8 @@
 #import "BTGraphQLHTTP.h"
 #import "BTHTTP.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface BTFakeHTTP : BTHTTP
 
 @property (nonatomic, assign) NSUInteger GETRequestCount;
@@ -17,9 +19,9 @@
 @property (nonatomic, assign) NSUInteger cannedStatusCode;
 @property (nonatomic, strong, nullable) NSError *cannedError;
 
-- (nullable instancetype)init;
+- (instancetype)init;
 
-+ (nullable instancetype)fakeHTTP;
++ (instancetype)fakeHTTP;
 
 - (void)stubRequest:(nonnull NSString *)httpMethod toEndpoint:(nonnull NSString *)endpoint respondWith:(nonnull id)value statusCode:(NSUInteger)statusCode;
 
@@ -32,7 +34,7 @@
 @property (nonatomic, assign) NSUInteger POSTRequestCount;
 @property (nonatomic, strong, nullable) NSDictionary *lastRequestParameters;
 
-+ (nullable instancetype)fakeHTTP;
++ (instancetype)fakeHTTP;
 
 @end
 
@@ -41,7 +43,8 @@
 @property (nonatomic, assign) NSUInteger POSTRequestCount;
 @property (nonatomic, strong, nullable) NSDictionary *lastRequestParameters;
 
-+ (nullable instancetype)fakeHTTP;
++ (instancetype)fakeHTTP;
 
 @end
 
+NS_ASSUME_NONNULL_END

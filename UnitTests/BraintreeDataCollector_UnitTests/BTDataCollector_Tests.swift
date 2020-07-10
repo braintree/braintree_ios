@@ -159,7 +159,7 @@ class BTDataCollector_Tests: XCTestCase {
 
 func clientThatReturnsConfiguration(_ configuration: [String:AnyObject]) -> BTAPIClient {
     let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
-    let fakeHttp = BTFakeHTTP()!
+    let fakeHttp = BTFakeHTTP()
     let cannedConfig = BTJSON(value: configuration)
     fakeHttp.cannedConfiguration = cannedConfig
     fakeHttp.cannedStatusCode = 200

@@ -109,24 +109,10 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
-
         payPalDriver.authorizeAccount { _,_  -> Void in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
         XCTAssertTrue(mockRequestFactory.authorizationRequest.appSwitchPerformed)
     }
     
@@ -171,24 +157,10 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
-
         payPalDriver.authorizeAccount { _,_  -> Void in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
 
         for expectedScope in ["email", "https://uri.paypal.com/services/payments/futurepayments"] {
             XCTAssertTrue(mockRequestFactory.lastScopeValues!.contains(expectedScope as NSObject))
@@ -206,24 +178,10 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
-
         payPalDriver.authorizeAccount(withAdditionalScopes: Set(["foo", "bar"])) { _,_  -> Void in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
 
         for expectedScope in ["email", "https://uri.paypal.com/services/payments/futurepayments", "foo", "bar"] {
             XCTAssertTrue(mockRequestFactory.lastScopeValues!.contains(expectedScope as NSObject))
@@ -242,25 +200,10 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let mockRequest = mockRequestFactory.authorizationRequest
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
-        
         payPalDriver.authorizeAccount { _,_  -> Void in }
-        
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            waitForExpectations(timeout: 5, handler: nil)
-        }
 
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
         XCTAssertEqual(mockRequest.additionalPayloadAttributes["client_key"] as? String, "development_tokenization_key")
     }
     
@@ -278,25 +221,10 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let mockRequest = mockRequestFactory.authorizationRequest
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
-        
         payPalDriver.authorizeAccount { _,_  -> Void in }
-        
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            waitForExpectations(timeout: 5, handler: nil)
-        }
 
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
         XCTAssertEqual(mockRequest.additionalPayloadAttributes["client_token"] as? String, ValidClientToken)
     }
 
@@ -341,113 +269,6 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         XCTAssertEqual(paypalAccount["correlation_id"] as? String, "a-correlation-id")
         XCTAssertTrue(paypalAccount["intent"] == nil)
         XCTAssertEqual(paypalAccount, FakePayPalOneTouchCoreResult().response as AnyObject as! NSDictionary)
-    }
-    
-    func testAuthorization_whenSwitchingToSFSafariViewController_makesViewControllerPresentingDelegateCallbacks() {
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "paypalEnabled": true,
-            "paypal": [
-                "environment": "offline"
-            ] ])
-        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PPOTResultType.success
-        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
-        payPalDriver.returnURLScheme = "foo://"
-        payPalDriver.requestFactory = FakePayPalRequestFactory()
-        let mockViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        mockViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-        payPalDriver.viewControllerPresentingDelegate = mockViewControllerPresentingDelegate
-        
-        payPalDriver.authorizeAccount { _,_  -> Void in }
-        waitForExpectations(timeout: 2, handler: nil)
-        
-        // Test dismissal of view controller
-        XCTAssertTrue(mockViewControllerPresentingDelegate.lastViewController is SFSafariViewController)
-        
-        let safariViewController = mockViewControllerPresentingDelegate.lastViewController
-        mockViewControllerPresentingDelegate.lastViewController = nil
-        mockViewControllerPresentingDelegate.lastPaymentDriver = nil
-        mockViewControllerPresentingDelegate.requestsDismissalOfViewControllerExpectation = expectation(description: "Delegate received requestsDismissalOfViewController")
-        
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
-        waitForExpectations(timeout: 2, handler: nil)
-        
-        XCTAssertEqual(mockViewControllerPresentingDelegate.lastViewController, safariViewController)
-        XCTAssertEqual(mockViewControllerPresentingDelegate.lastPaymentDriver as? BTPayPalDriver, payPalDriver)
-    }
-
-    func testAuthorization_whenSwitchingToSFSafariViewController_doesNotMakeAppSwitchDelegateCallbacks() {
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "paypalEnabled": true,
-            "paypal": [
-                "environment": "offline"
-            ] ])
-        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PPOTResultType.success
-        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
-        payPalDriver.returnURLScheme = "foo://"
-        payPalDriver.requestFactory = FakePayPalRequestFactory()
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-        payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        let mockAppSwitchDelegate = MockAppSwitchDelegate()
-        payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
-        
-        payPalDriver.authorizeAccount { _,_  -> Void in }
-        waitForExpectations(timeout: 2, handler: nil)
-        
-        XCTAssertFalse(mockAppSwitchDelegate.willPerformAppSwitchCalled)
-        XCTAssertFalse(mockAppSwitchDelegate.didPerformAppSwitchCalled)
-        
-        stubViewControllerPresentingDelegate.requestsDismissalOfViewControllerExpectation = expectation(description: "Delegate received requestsDismissalOfViewController")
-        
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
-        waitForExpectations(timeout: 2, handler: nil)
-        
-        XCTAssertFalse(mockAppSwitchDelegate.willProcessAppSwitchCalled)
-    }
-
-    func testAuthorization_whenSwitchingToSFSafariViewController_makesContextSwitchDelegateCallbacks() {
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "paypalEnabled": true,
-            "paypal": [
-                "environment": "offline"
-            ] ])
-        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PPOTResultType.success
-        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
-        payPalDriver.returnURLScheme = "foo://"
-        payPalDriver.requestFactory = FakePayPalRequestFactory()
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-        payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        let mockAppSwitchDelegate = MockAppSwitchDelegate()
-        payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
-
-        payPalDriver.authorizeAccount { _,_  -> Void in }
-        waitForExpectations(timeout: 2, handler: nil)
-
-        XCTAssertTrue(mockAppSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertFalse(mockAppSwitchDelegate.appContextDidReturnCalled)
-
-        stubViewControllerPresentingDelegate.requestsDismissalOfViewControllerExpectation = expectation(description: "Delegate received requestsDismissalOfViewController")
-
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
-        waitForExpectations(timeout: 2, handler: nil)
-
-        XCTAssertTrue(mockAppSwitchDelegate.appContextDidReturnCalled)
     }
 
     func testAuthorization_whenSwitchingToSFSafariViewControllerAndURLIsNotHTTP_callsBackWithError() {
@@ -1262,25 +1083,10 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
-
         payPalDriver.requestOneTimePayment(request) { _,_  in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
         XCTAssertTrue(mockRequestFactory.checkoutRequest.appSwitchPerformed)
 
         // Ensure the payment resource had the correct parameters
@@ -1304,25 +1110,13 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
 
         let request = BTPayPalRequest(amount: "1")
         payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+
         XCTAssertTrue(mockRequestFactory.checkoutRequest.appSwitchPerformed)
         XCTAssertEqual(payPalDriver.clientMetadataId, "fake-canned-metadata-id")
     }
@@ -1869,24 +1663,11 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
-        
+
         payPalDriver.requestBillingAgreement(request) { _,_  in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
 
         XCTAssertTrue(mockRequestFactory.billingAgreementRequest.appSwitchPerformed)
         
@@ -1988,25 +1769,12 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
-        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        let stubAppSwitchDelegate = MockAppSwitchDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
-        }
         
         let request = BTPayPalRequest()
         payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
         XCTAssertTrue(mockRequestFactory.billingAgreementRequest.appSwitchPerformed)
     }
     
@@ -2087,42 +1855,20 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
         payPalDriver.returnURLScheme = "foo://"
         payPalDriver.requestFactory = FakePayPalRequestFactory()
-        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-        }
-        payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
         let mockAppSwitchDelegate = MockAppSwitchDelegate()
         payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
-        
         payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _,_  -> Void in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
 
         XCTAssertFalse(mockAppSwitchDelegate.willPerformAppSwitchCalled)
         XCTAssertFalse(mockAppSwitchDelegate.didPerformAppSwitchCalled)
-
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsDismissalOfViewControllerExpectation = expectation(description: "Delegate received requestsDismissalOfViewController")
-        }
         
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
         
         XCTAssertFalse(mockAppSwitchDelegate.willProcessAppSwitchCalled)
     }
@@ -2139,42 +1885,22 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         payPalDriver.requestFactory = FakePayPalRequestFactory()
         let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
-        }
         payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
         let mockAppSwitchDelegate = MockAppSwitchDelegate()
         payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
 
         payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _,_  -> Void in }
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
 
         XCTAssertTrue(mockAppSwitchDelegate.appContextWillSwitchCalled)
         XCTAssertFalse(mockAppSwitchDelegate.appContextDidReturnCalled)
 
-        if #available(iOS 11.0, *) {
-            // do nothing
-        } else {
-            stubViewControllerPresentingDelegate.requestsDismissalOfViewControllerExpectation = expectation(description: "Delegate received requestsDismissalOfViewController")
-        }
-
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
-        if #available(iOS 11.0, *) {
-            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-        } else {
-            self.waitForExpectations(timeout: 2, handler: nil)
-        }
-
+        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
         XCTAssertTrue(mockAppSwitchDelegate.appContextDidReturnCalled)
     }
 
