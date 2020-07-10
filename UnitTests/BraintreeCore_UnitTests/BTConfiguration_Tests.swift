@@ -2,11 +2,6 @@ import XCTest
 import PassKit
 
 class BTConfiguration_Tests: XCTestCase {
-
-    override func tearDown() {
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: false)
-    }
-    
     func testInitWithJSON_setsJSON() {
         let json = BTJSON(value: [
             "some": "things",
@@ -15,12 +10,6 @@ class BTConfiguration_Tests: XCTestCase {
         let configuration = BTConfiguration(json: json)
 
         XCTAssertEqual(configuration.json, json)
-    }
-
-    // MARK: - Beta enabled payment option
-    
-    func testIsBetaEnabledPaymentOption_returnsFalse() {
-        XCTAssertFalse(BTConfiguration.isBetaEnabledPaymentOption("venmo"))
     }
 
     // MARK: - Venmo category methods
@@ -59,11 +48,6 @@ class BTConfiguration_Tests: XCTestCase {
         let configuration = BTConfiguration(json: configurationJSON)
 
         XCTAssertEqual(configuration.venmoEnvironment, "rockbox")
-    }
-
-    func testEnableVenmo_whenDisabled_setsVenmoBetaPaymentOptionToFalse() {
-        BTConfiguration.enableVenmo(false)
-        XCTAssertFalse(BTConfiguration.isBetaEnabledPaymentOption("venmo"))
     }
 
     // MARK: - PayPal category methods

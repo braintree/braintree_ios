@@ -1,5 +1,5 @@
 #import "BraintreeDemoPayPalForceFuturePaymentViewController.h"
-#import <BraintreeUI/BraintreeUI.h>
+#import "BraintreeUI.h"
 #import <BraintreePayPal/BraintreePayPal.h>
 #import <BraintreePayPal/BTPayPalDriver_Internal.h>
 

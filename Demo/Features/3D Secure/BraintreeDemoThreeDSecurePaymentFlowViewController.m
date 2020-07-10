@@ -2,7 +2,7 @@
 #import "ALView+PureLayout.h"
 
 #import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeUI/BraintreeUI.h>
+#import "BraintreeUI.h"
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
 #import <CardinalMobile/CardinalMobile.h>
 

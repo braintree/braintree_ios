@@ -2,8 +2,22 @@
 #import "BTDataCollector_Internal.h"
 #import <CoreLocation/CoreLocation.h>
 
+typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
+    /// Development
+    BTDataCollectorEnvironmentDevelopment,
+
+    /// QA
+    BTDataCollectorEnvironmentQA,
+
+    /// Sandbox
+    BTDataCollectorEnvironmentSandbox,
+
+    /// Production
+    BTDataCollectorEnvironmentProduction
+};
+
 @interface BTDataCollector ()
-@property (nonatomic, assign) BTDataCollectorEnvironment environment;
+//@property (nonatomic, assign) BTDataCollectorEnvironment environment;
 @property (nonatomic, copy) NSString *fraudMerchantId;
 @property (nonatomic, copy) BTAPIClient *apiClient;
 @end

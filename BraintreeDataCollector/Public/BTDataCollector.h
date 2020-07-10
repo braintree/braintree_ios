@@ -6,23 +6,6 @@
 
 #import <Foundation/Foundation.h>
 
-/**
- Data collector environments.
- */
-typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
-    /// Development
-    BTDataCollectorEnvironmentDevelopment,
-
-    /// QA
-    BTDataCollectorEnvironmentQA,
-
-    /// Sandbox
-    BTDataCollectorEnvironmentSandbox,
-
-    /// Production
-    BTDataCollectorEnvironmentProduction
-};
-
 @protocol BTDataCollectorDelegate;
 
 NS_ASSUME_NONNULL_BEGIN

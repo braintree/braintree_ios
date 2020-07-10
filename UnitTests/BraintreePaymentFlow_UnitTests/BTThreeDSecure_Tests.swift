@@ -112,7 +112,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
             XCTAssert(isANonce(tokenizedCard!.nonce))
-            XCTAssertEqual(lookup!.threeDSecureResult.errorMessage, "error description1")
+            XCTAssertEqual(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage, "error description1")
             expectation.fulfill()
         }
 
@@ -177,9 +177,9 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             let e = error! as NSError
-            
+
             XCTAssertEqual(e.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(e.code, BTThreeDSecureErrorType.failedLookup.rawValue)
+            XCTAssertEqual(e.code, BTThreeDSecureFlowErrorType.failedLookup.rawValue)
             XCTAssertEqual(e.userInfo[NSLocalizedDescriptionKey] as? String, "testMessage")
             XCTAssertEqual(e.userInfo["com.braintreepayments.BTThreeDSecureFlowValidationErrorsKey"] as? [String : String],
                            ["message" : "testMessage"])
@@ -283,8 +283,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssert(isANonce(tokenizedCard!.nonce))
             XCTAssertEqual(tokenizedCard!.nonce, "f689056d-aee1-421e-9d10-f2c9b34d4d6f")
             XCTAssertNil(error)
-            XCTAssertTrue(lookup!.threeDSecureResult.liabilityShifted)
-            XCTAssertTrue(lookup!.threeDSecureResult.liabilityShiftPossible)
             XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
             XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.wasVerified)
@@ -377,8 +375,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertTrue(isANonce(tokenizedCard.nonce))
             XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
             XCTAssertNil(error)
-            XCTAssertFalse(lookup!.threeDSecureResult.liabilityShifted)
-            XCTAssertFalse(lookup!.threeDSecureResult.liabilityShiftPossible)
             XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
             XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.wasVerified)
@@ -538,8 +534,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertTrue(isANonce(tokenizedCard.nonce))
             XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
             XCTAssertNil(error)
-            XCTAssertFalse(result.liabilityShifted)
-            XCTAssertFalse(result.liabilityShiftPossible)
             XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
             XCTAssertTrue(result.tokenizedCard.threeDSecureInfo.wasVerified)

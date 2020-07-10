@@ -1,6 +1,6 @@
 #import "BraintreeDemoIdealViewController.h"
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
-#import <BraintreeUI/UIColor+BTUI.h>
+#import "UIColor+BTUI.h"
 
 @interface BraintreeDemoIdealViewController () <BTViewControllerPresentingDelegate, BTLocalPaymentRequestDelegate>
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;

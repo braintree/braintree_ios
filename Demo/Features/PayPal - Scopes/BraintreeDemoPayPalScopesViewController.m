@@ -1,7 +1,7 @@
 #import "BraintreeDemoPayPalScopesViewController.h"
 
 #import <BraintreePayPal/BraintreePayPal.h>
-#import <BraintreeUI/BraintreeUI.h>
+#import "BraintreeUI.h"
 
 @interface BraintreeDemoPayPalScopesViewController () <BTViewControllerPresentingDelegate>
 @property(nonatomic, strong) UITextView *addressTextView;
