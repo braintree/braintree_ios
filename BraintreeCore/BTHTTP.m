@@ -7,7 +7,7 @@
 #import "BTAPIPinnedCertificates.h"
 #import "BTURLUtils.h"
 #import "BTLogger_Internal.h"
-#import "BTPayPalUAT.h"
+#import "BTPayPalIDToken.h"
 
 @interface BTHTTP () <NSURLSessionDelegate>
 
@@ -69,8 +69,8 @@
     return [self initWithBaseURL:[clientToken.json[@"clientApiUrl"] asURL] authorizationFingerprint:clientToken.authorizationFingerprint];
 }
 
-- (instancetype)initWithPayPalUAT:(BTPayPalUAT *)payPalUAT {
-    return [self initWithBaseURL:payPalUAT.baseBraintreeURL authorizationFingerprint:payPalUAT.token];
+- (instancetype)initWithPayPalIDToken:(BTPayPalIDToken *)payPalIDToken {
+    return [self initWithBaseURL:payPalIDToken.baseBraintreeURL authorizationFingerprint:payPalIDToken.token];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {

@@ -142,18 +142,18 @@
             self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:tokenizationKey];
             return;
         }
-        case BraintreeDemoAuthTypePayPalUAT: {
-            [self updateStatus:@"Fetching PayPal UAT…"];
+        case BraintreeDemoAuthTypePayPalIDToken: {
+            [self updateStatus:@"Fetching PayPal ID Token…"];
 
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
-            [BraintreeDemoMerchantAPIClient.shared fetchPayPalUATWithCompletion:^(NSString * _Nullable uat, NSError * _Nullable err) {
+            [BraintreeDemoMerchantAPIClient.shared fetchPayPalIDTokenWithCompletion:^(NSString * _Nullable idToken, NSError * _Nullable err) {
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 if (err) {
                     [self updateStatus:err.localizedDescription];
                 } else {
-                    [self updateStatus:@"Using PayPal UAT"];
-                    self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:uat];
+                    [self updateStatus:@"Using PayPal ID Token"];
+                    self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:idToken];
                 }
             }];
 

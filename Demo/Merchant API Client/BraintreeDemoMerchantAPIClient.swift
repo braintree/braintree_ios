@@ -43,14 +43,14 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         task.resume()
     }
 
-    // NOTE: - The only feature that currently works with a PP UAT is Card Tokenization.
+    // NOTE: - The only feature that currently works with a PP ID Token is Card Tokenization.
     @objc
-    func fetchPayPalUAT(completion: @escaping ((String?, Error?) -> Void)) {
+    func fetchPayPalIDToken(completion: @escaping ((String?, Error?) -> Void)) {
         let ppcpSampleMerchantServerURL = (BraintreeDemoSettings.currentEnvironment == .production
             ? "https://ppcp-sample-merchant-prod.herokuapp.com"
             : "https://ppcp-sample-merchant-sand.herokuapp.com")
         
-        guard let urlComponents = URLComponents(string: ppcpSampleMerchantServerURL + "/uat?countryCode=US") else { return }
+        guard let urlComponents = URLComponents(string: ppcpSampleMerchantServerURL + "/id-token?countryCode=US") else { return }
 
         let task = URLSession.shared.dataTask(with: urlComponents.url!) { (data, response, error) in
             guard let data = data, error == nil else {
@@ -60,7 +60,7 @@ class BraintreeDemoMerchantAPIClient: NSObject {
 
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    let token = json["universal_access_token"]
+                    let token = json["id_token"]
                     DispatchQueue.main.async { completion(token as? String, nil) }
                 }
             } catch let error as NSError {

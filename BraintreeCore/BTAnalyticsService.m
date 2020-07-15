@@ -163,8 +163,8 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.clientToken.authorizationFingerprint];
             } else if (self.apiClient.tokenizationKey) {
                 self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL tokenizationKey:self.apiClient.tokenizationKey];
-            } else if (self.apiClient.payPalUAT) {
-                self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.payPalUAT.token];
+            } else if (self.apiClient.payPalIDToken) {
+                self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.payPalIDToken.token];
                 return;
             }
             if (!self.http) {

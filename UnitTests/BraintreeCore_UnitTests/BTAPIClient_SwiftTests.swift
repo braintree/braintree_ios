@@ -43,15 +43,15 @@ class BTAPIClient_SwiftTests: XCTestCase {
         }
     }
 
-    func testAPIClientInitialization_withValidPayPalUAT_returnsClientWithPayPalUAT() {
-        let payPalUAT = "123.ewogICAiaXNzIjoiaHR0cHM6Ly9hcGkucGF5cGFsLmNvbSIsCiAgICJzdWIiOiJQYXlQYWw6ZmFrZS1wcC1tZXJjaGFudCIsCiAgICJhY3IiOlsKICAgICAgImNsaWVudCIKICAgXSwKICAgInNjb3BlcyI6WwogICAgICAiQnJhaW50cmVlOlZhdWx0IgogICBdLAogICAiZXhwIjoxNTcxOTgwNTA2LAogICAiZXh0ZXJuYWxfaWRzIjpbCiAgICAgICJQYXlQYWw6ZmFrZS1wcC1tZXJjaGFudCIsCiAgICAgICJCcmFpbnRyZWU6ZmFrZS1idC1tZXJjaGFudCIKICAgXSwKICAgImp0aSI6ImZha2UtanRpIgp9.456"
-        let apiClient = BTAPIClient(authorization: payPalUAT)
-        XCTAssertEqual(apiClient?.payPalUAT?.token, payPalUAT)
+    func testAPIClientInitialization_withValidPayPalIDToken_returnsClientWithPayPalIDToken() {
+        let payPalIDToken = "123.eyJpc3MiOiJodHRwczovL2FwaS5zYW5kYm94LnBheXBhbC5jb20iLCJzdWIiOiJNSkZQMzlWNE1RUkFFIiwiYWNyIjpbImNsaWVudCJdLCJzY29wZSI6WyJCcmFpbnRyZWU6VmF1bHQiXSwib3B0aW9ucyI6e30sImF6Ijoic2Iuc2xjIiwiZXh0ZXJuYWxfaWQiOlsiUGF5UGFsOk1KRlAzOVY0TVFSQUUiLCJCcmFpbnRyZWU6Y2Z4czNnaHp3ZmsycmhxbSJdLCJleHAiOjE1OTMwODgxMTMsImp0aSI6IlUyQUFIckM2Vjdpc2tqa0J6Z2ZORkhSeXNuekJIUUVacWdVMVl4ZG0xaWl1a1poQ2RQQXRjQnhhdGtzNVpzeHlZN1hZbkNST0cydzFfLTFPV2R1LVJDeEMtMVlCYXdJWUotT1FQRUdEYVhNWnhUMExWUjBDOWVnQ3BIdUItZllnIn0.456"
+        let apiClient = BTAPIClient(authorization: payPalIDToken)
+        XCTAssertEqual(apiClient?.payPalIDToken?.token, payPalIDToken)
     }
 
-    func testAPIClientIntialization_withInvalidPayPalUAT_returnsNil() {
-        let payPalUAT = "broken.paypal.uat"
-        let apiClient = BTAPIClient(authorization: payPalUAT)
+    func testAPIClientIntialization_withInvalidPayPalIDToken_returnsNil() {
+        let payPalIDToken = "broken.paypal.idToken"
+        let apiClient = BTAPIClient(authorization: payPalIDToken)
         XCTAssertNil(apiClient)
     }
 
@@ -69,10 +69,10 @@ class BTAPIClient_SwiftTests: XCTestCase {
         XCTAssertEqual(apiClientAuthType, .clientToken)
     }
 
-    func testAPIClientAuthorizationType_forPayPalUAT() {
-        let payPalUAT = "1a.2b.3c-_"
-        let apiClientAuthType = BTAPIClient.authorizationType(forAuthorization: payPalUAT)
-        XCTAssertEqual(apiClientAuthType, .payPalUAT)
+    func testAPIClientAuthorizationType_forPayPalIDToken() {
+        let payPalIDToken = "1a.2b.3c-_"
+        let apiClientAuthType = BTAPIClient.authorizationType(forAuthorization: payPalIDToken)
+        XCTAssertEqual(apiClientAuthType, .payPalIDToken)
     }
 
     // MARK: - Copy

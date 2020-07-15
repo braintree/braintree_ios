@@ -115,7 +115,7 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
-				<string>PayPal UAT</string>
+				<string>PayPal ID Token</string>
 			</array>
 			<key>Key</key>
 			<string>BraintreeDemoSettingsAuthorizationTypeKey</string>
@@ -125,7 +125,7 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
-				<string>PayPal UAT</string>
+				<string>PayPal ID Token</string>
 			</array>
 			<key>Values</key>
 			<array>

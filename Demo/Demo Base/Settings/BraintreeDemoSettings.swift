@@ -11,7 +11,7 @@ enum BraintreeDemoEnvironment: Int {
 enum BraintreeDemoAuthType: Int {
     case clientToken
     case tokenizationKey
-    case payPalUAT
+    case payPalIDToken
 }
 
 @objc

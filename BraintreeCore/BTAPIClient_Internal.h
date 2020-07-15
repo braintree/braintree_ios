@@ -6,7 +6,7 @@
 #import "BTAPIHTTP.h"
 #import "BTGraphQLHTTP.h"
 #import "BTJSON.h"
-#import "BTPayPalUAT.h"
+#import "BTPayPalIDToken.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,14 +26,14 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
 typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
     BTAPIClientAuthorizationTypeTokenizationKey = 0,
     BTAPIClientAuthorizationTypeClientToken,
-    BTAPIClientAuthorizationTypePayPalUAT,
+    BTAPIClientAuthorizationTypePayPalIDToken,
 };
 
 @interface BTAPIClient ()
 
 @property (nonatomic, copy, nullable) NSString *tokenizationKey;
 @property (nonatomic, strong, nullable) BTClientToken *clientToken;
-@property (nonatomic, strong, nullable) BTPayPalUAT *payPalUAT;
+@property (nonatomic, strong, nullable) BTPayPalIDToken *payPalIDToken;
 @property (nonatomic, strong) BTHTTP *http;
 @property (nonatomic, strong) BTHTTP *configurationHTTP;
 @property (nonatomic, strong) BTAPIHTTP *braintreeAPI;

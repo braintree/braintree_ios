@@ -48,7 +48,7 @@
 #import "BTAmericanExpressClient_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
 #import "BTAuthenticationInsight_Internal.h"
-#import "BTPayPalUAT.h"
+#import "BTPayPalIDToken.h"
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTPreferredPaymentMethodsResult_Internal.h"
 #import "BTPreferredPaymentMethods_Internal.h"
