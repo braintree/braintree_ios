@@ -148,6 +148,7 @@
 		420E3B592329869B00550CE2 /* BTAuthenticationInsight.h in Headers */ = {isa = PBXBuildFile; fileRef = 420E3B572329869B00550CE2 /* BTAuthenticationInsight.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		420E3B5A2329869B00550CE2 /* BTAuthenticationInsight.m in Sources */ = {isa = PBXBuildFile; fileRef = 420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */; };
 		420E3B5C2329947200550CE2 /* BTAuthenticationInsight_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4213682B24D0AE1200B071E2 /* BTThreeDSecureResult_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4213682A24D0AE0500B071E2 /* BTThreeDSecureResult_Internal.h */; };
 		42138C702367567400376E80 /* BTPayPalIDToken_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 42138C6F2367567400376E80 /* BTPayPalIDToken_Tests.m */; };
 		421CBFD8239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 421CBFD6239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.h */; };
 		421CBFD9239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 421CBFD7239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m */; };
@@ -855,6 +856,7 @@
 		420E3B572329869B00550CE2 /* BTAuthenticationInsight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAuthenticationInsight.h; sourceTree = "<group>"; };
 		420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAuthenticationInsight.m; sourceTree = "<group>"; };
 		420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAuthenticationInsight_Internal.h; sourceTree = "<group>"; };
+		4213682A24D0AE0500B071E2 /* BTThreeDSecureResult_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureResult_Internal.h; sourceTree = "<group>"; };
 		42138C6F2367567400376E80 /* BTPayPalIDToken_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalIDToken_Tests.m; sourceTree = "<group>"; };
 		421CBFD6239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV1BrowserSwitchHelper.h; sourceTree = "<group>"; };
 		421CBFD7239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV1BrowserSwitchHelper.m; sourceTree = "<group>"; };
@@ -1645,6 +1647,7 @@
 				80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */,
 				03800A4D1F045F4B00068F53 /* BTThreeDSecureRequest.m */,
 				03800A4E1F045F4B00068F53 /* BTThreeDSecureResult.m */,
+				4213682A24D0AE0500B071E2 /* BTThreeDSecureResult_Internal.h */,
 				421CBFD6239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.h */,
 				421CBFD7239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m */,
 				BC20A8F5238596850077AF56 /* BTThreeDSecureV1UICustomization.m */,
@@ -2950,6 +2953,7 @@
 				038C7FD31EA1648900241ABE /* BTPaymentFlowDriver_Internal.h in Headers */,
 				03F921C0200EB93D0076CD80 /* BTThreeDSecurePostalAddress.h in Headers */,
 				03E38C102232117D00718102 /* BTThreeDSecureRequest_Internal.h in Headers */,
+				4213682B24D0AE1200B071E2 /* BTThreeDSecureResult_Internal.h in Headers */,
 				038C7FE41EA1648900241ABE /* BTPaymentFlowRequest.h in Headers */,
 				034CDCA91FB518DE00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h in Headers */,
 				BC20A8F6238596850077AF56 /* BTThreeDSecureV1UICustomization.h in Headers */,

@@ -36,9 +36,12 @@
         }
 
         BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-        if (result.tokenizedCard.threeDSecureInfo.errorMessage) {
+        if (result.errorMessage) {
+            // If we get an error message, return the BTThreeDSecureResult from the BTThreeDSecureLookup object
+            // so that merchants can transact with the lookup nonce if desired.
+            // Add the error message to object we're returning so that merchants know what went wrong.
             [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.failure.returned-lookup-nonce"];
-            lookupResult.threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage = result.tokenizedCard.threeDSecureInfo.errorMessage;
+            lookupResult.threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage = result.errorMessage;
             successHandler(lookupResult.threeDSecureResult);
         } else {
             [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.succeeded"];

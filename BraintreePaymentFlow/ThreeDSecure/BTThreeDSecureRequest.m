@@ -214,12 +214,12 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
 
-    if ((self.versionRequested == BTThreeDSecureVersion1 && result.tokenizedCard.threeDSecureInfo.errorMessage) || !result.tokenizedCard) {
+    if ((self.versionRequested == BTThreeDSecureVersion1 && !result.success) || !result.tokenizedCard) {
         [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
 
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-        if (result.tokenizedCard.threeDSecureInfo.errorMessage) {
-            userInfo[NSLocalizedDescriptionKey] = result.tokenizedCard.threeDSecureInfo.errorMessage;
+        if (result.errorMessage) {
+            userInfo[NSLocalizedDescriptionKey] = result.errorMessage;
         }
         
         NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain

@@ -1,4 +1,4 @@
-#import "BTThreeDSecureResult.h"
+#import "BTThreeDSecureResult_Internal.h"
 #if __has_include("BraintreeCard.h")
 #import "BTCardNonce_Internal.h"
 #else
@@ -13,15 +13,21 @@
         if (json[@"paymentMethod"]) {
             _tokenizedCard = [BTCardNonce cardNonceWithJSON:json[@"paymentMethod"]];
         }
-        // TODO: This logic probably needs to be moved to BTThreeDSecureInfo
-//        if ([json[@"errors"] asArray]) {
-//            NSDictionary *firstError = (NSDictionary *)[json[@"errors"] asArray].firstObject;
-//            if (firstError[@"message"]) {
-//                _errorMessage = firstError[@"message"];
-//            }
-//        } else {
-//            _errorMessage = [json[@"error"][@"message"] asString];
-//        }
+        if ([json[@"errors"] asArray]) {
+            NSDictionary *firstError = (NSDictionary *)[json[@"errors"] asArray].firstObject;
+            if (firstError[@"message"]) {
+                _errorMessage = firstError[@"message"];
+            }
+        } else {
+            _errorMessage = [json[@"error"][@"message"] asString];
+        }
+
+        // Account for absence of "success" key in 2.0 gateway responses
+        if ([json[@"success"] isBool]) {
+            _success = [json[@"success"] isTrue];
+        } else {
+            _success = _errorMessage == nil;
+        }
     }
     return self;
 }

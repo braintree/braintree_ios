@@ -74,17 +74,13 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
-    func testThreeDSecureAuthenticateJWT_ReturnsLookupNonce() {
+    func testThreeDSecureAuthenticateJWT_ReturnsLookupNonce_withErrorMessage() {
         let authenticationResponseBody = [
             "errors" : [
                 [
                     "message" : "test error"
                 ]
-            ],
-            "threeDSecureInfo": [
-                "liabilityShiftPossible": true,
-                "liabilityShifted": false,
-            ],
+            ]
             ] as [String : Any]
 
         mockAPIClient.cannedResponseBody = BTJSON(value: authenticationResponseBody)
@@ -93,11 +89,11 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         BTThreeDSecureAuthenticateJWT.authenticateJWT("fake-jwt", with: mockAPIClient, forLookupResult: mockThreeDSecureLookup, success: { (result) in
             XCTAssertEqual(result.tokenizedCard, self.mockThreeDSecureLookup.threeDSecureResult.tokenizedCard)
-            //XCTAssertEqual(result.tokenizedCard.threeDSecureInfo.errorMessage, "test error")
+            XCTAssertEqual(result.tokenizedCard.threeDSecureInfo.errorMessage, "test error")
             authenticateJwtExpectation.fulfill()
-        }) { (error) in
+        }, failure: { (error) in
             XCTFail()
-        }
+        })
 
         waitForExpectations(timeout: 4, handler: nil)
     }

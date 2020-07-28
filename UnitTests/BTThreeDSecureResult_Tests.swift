@@ -72,20 +72,12 @@ class BTThreeDSecureResult_Tests: XCTestCase {
             [
                 "error" : [
                     "message" : "Failed to authenticate, please try a different form of payment."
-                ],
-                "success": false,
-                "threeDSecureInfo" : [
-                    "liabilityShiftPossible" : true,
-                    "liabilityShifted" : false,
                 ]
             ])
         
         let threeDSecureResult = BTThreeDSecureResult(json: json)!
 
-        XCTAssertNotNil(threeDSecureResult.tokenizedCard)
-        XCTAssertFalse(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
-        XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-        XCTAssertEqual("Failed to authenticate, please try a different form of payment.", threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage)
+        XCTAssertNil(threeDSecureResult.tokenizedCard)
     }
     
     func testInitWithJSON_whenCustomerFailsAuthenticationChallenge_v2() {
@@ -99,18 +91,11 @@ class BTThreeDSecureResult_Tests: XCTestCase {
                         "model" : "transaction",
                         "type" : "user",
                     ]
-                ],
-                "threeDSecureInfo" : [
-                    "liabilityShiftPossible" : true,
-                    "liabilityShifted" : false,
                 ]
             ])
         
         let threeDSecureResult = BTThreeDSecureResult(json: json)!
 
-        XCTAssertNotNil(threeDSecureResult.tokenizedCard)
-        XCTAssertFalse(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
-        XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-        XCTAssertEqual("Failed to authenticate, please try a different form of payment.", threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage)
+        XCTAssertNil(threeDSecureResult.tokenizedCard)
     }
 }

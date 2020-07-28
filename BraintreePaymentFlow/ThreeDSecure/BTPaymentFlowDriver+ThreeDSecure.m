@@ -8,7 +8,7 @@
 #endif
 #import "BTPaymentFlowDriver_Internal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
-#import "BTThreeDSecureResult.h"
+#import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureRequest.h"
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
@@ -106,6 +106,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 
                       BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] initWithJSON:lookupJSON];
                       lookup.threeDSecureResult = [[BTThreeDSecureResult alloc] initWithJSON:body];
+                      lookup.threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage = lookup.threeDSecureResult.errorMessage;
 
                       completionBlock(lookup, nil);
                   }];
