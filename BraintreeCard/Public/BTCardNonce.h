@@ -20,6 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) BTCardNetwork cardNetwork;
 
 /**
+ The expiration month of the card, if available.
+*/
+@property (nonatomic, nullable, readonly, copy) NSString *expirationMonth;
+
+/**
+ The expiration year of the card, if available.
+*/
+@property (nonatomic, nullable, readonly, copy) NSString *expirationYear;
+
+/**
  The last two digits of the card, if available.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *lastTwo;

@@ -136,6 +136,8 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(card.parameters() as NSObject, [
             "number": "4111111111111111",
             "expiration_date": "12/20",
+            "expiration_month": "12",
+            "expiration_year": "20",
             "cvv": "123",
             "billing_address": [
                 "first_name": "Joe",
@@ -189,6 +191,8 @@ class BTCard_Tests: XCTestCase {
         token\
         creditCard {\
           brand\
+          expirationMonth\
+          expirationYear\
           last4\
           bin\
           binData {\
@@ -213,6 +217,8 @@ class BTCard_Tests: XCTestCase {
         token\
         creditCard {\
           brand\
+          expirationMonth\
+          expirationYear\
           last4\
           bin\
           binData {\

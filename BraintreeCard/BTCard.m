@@ -63,7 +63,15 @@
     if (self.number) {
         p[@"number"] = self.number;
     }
-    
+
+    if (self.expirationMonth) {
+        p[@"expiration_month"] = self.expirationMonth;
+    }
+
+    if (self.expirationYear) {
+        p[@"expiration_year"] = self.expirationYear;
+    }
+
     if (self.expirationMonth && self.expirationYear) {
         p[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", self.expirationMonth, self.expirationYear];
     }
@@ -252,6 +260,8 @@
      "    token"
      "    creditCard {"
      "      brand"
+     "      expirationMonth"
+     "      expirationYear"
      "      last4"
      "      bin"
      "      binData {"

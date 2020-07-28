@@ -8,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithNonce:(nonnull NSString *)nonce
                   description:(nullable NSString *)description
                   cardNetwork:(BTCardNetwork)cardNetwork
+              expirationMonth:(nullable NSString *)expirationMonth
+               expirationYear:(nullable NSString *)expirationYear
                       lastTwo:(nullable NSString *)lastTwo
                      lastFour:(nullable NSString *)lastFour
                     isDefault:(BOOL)isDefault

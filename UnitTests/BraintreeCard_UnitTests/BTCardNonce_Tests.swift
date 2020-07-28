@@ -7,6 +7,8 @@ class BTCardNonce_Tests: XCTestCase {
             "description": "Visa ending in 11",
             "details": [
                 "cardType": "Visa",
+                "expirationMonth": "01",
+                "expirationYear": "2020",
                 "lastTwo": "11",
                 "lastFour": "1111"
             ],
@@ -37,6 +39,8 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertTrue(cardNonce.threeDSecureInfo.wasVerified)
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
+        XCTAssertEqual(cardNonce.expirationMonth, "01")
+        XCTAssertEqual(cardNonce.expirationYear, "2020")
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
@@ -196,6 +200,8 @@ class BTCardNonce_Tests: XCTestCase {
             "token": "fake-nonce",
             "creditCard": [
                 "brand": "Visa",
+                "expirationMonth": "01",
+                "expirationYear": "2020",
                 "last4": "1111",
                 "binData": [
                     "prepaid": "Yes",
@@ -216,6 +222,8 @@ class BTCardNonce_Tests: XCTestCase {
 
         XCTAssertEqual(cardNonce.localizedDescription, "ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
+        XCTAssertEqual(cardNonce.expirationMonth, "01")
+        XCTAssertEqual(cardNonce.expirationYear, "2020")
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")

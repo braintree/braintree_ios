@@ -6,6 +6,8 @@
 - (instancetype)initWithNonce:(NSString *)nonce
                   description:(NSString *)description
                   cardNetwork:(BTCardNetwork)cardNetwork
+              expirationMonth:(NSString *)expirationMonth
+               expirationYear:(NSString *)expirationYear
                       lastTwo:(NSString *)lastTwo
                      lastFour:(NSString *)lastFour
                     isDefault:(BOOL)isDefault
@@ -17,6 +19,8 @@
                       isDefault:isDefault];
     if (self) {
         _cardNetwork = cardNetwork;
+        _expirationMonth = expirationMonth;
+        _expirationYear = expirationYear;
         _lastTwo = lastTwo;
         _lastFour = lastFour;
         _binData = [[BTBinData alloc] initWithJSON:cardJSON[@"binData"]];
@@ -97,13 +101,15 @@
     }
     
     return [[self.class alloc] initWithNonce:[cardJSON[@"nonce"] asString]
-                                   description:[cardJSON[@"description"] asString]
-                                   cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"details"][@"cardType"] asString]]
-                                       lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]
-                                      lastFour:[cardJSON[@"details"][@"lastFour"] asString]
-                                     isDefault:[cardJSON[@"default"] isTrue]
-                                      cardJSON:cardJSON
-                               authInsightJSON:authInsightJson];
+                                 description:[cardJSON[@"description"] asString]
+                                 cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"details"][@"cardType"] asString]]
+                             expirationMonth:[cardJSON[@"details"][@"expirationMonth"] asString]
+                              expirationYear:[cardJSON[@"details"][@"expirationYear"] asString]
+                                     lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]
+                                    lastFour:[cardJSON[@"details"][@"lastFour"] asString]
+                                   isDefault:[cardJSON[@"default"] isTrue]
+                                    cardJSON:cardJSON
+                             authInsightJSON:authInsightJson];
 }
 
 + (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)json {
@@ -120,13 +126,15 @@
     }
     
     return [[self.class alloc] initWithNonce:[json[@"token"] asString]
-                                   description:description
-                                   cardNetwork:[self.class cardNetworkFromGatewayCardType:[json[@"creditCard"][@"brand"] asString]]
-                                       lastTwo:lastTwo
-                                      lastFour:lastFour
-                                     isDefault:NO
-                                      cardJSON:json[@"creditCard"]
-                               authInsightJSON:authInsightJson];
+                                 description:description
+                                 cardNetwork:[self.class cardNetworkFromGatewayCardType:[json[@"creditCard"][@"brand"] asString]]
+                             expirationMonth:[json[@"creditCard"][@"expirationMonth"] asString]
+                              expirationYear:[json[@"creditCard"][@"expirationYear"] asString]
+                                     lastTwo:lastTwo
+                                    lastFour:lastFour
+                                   isDefault:NO
+                                    cardJSON:json[@"creditCard"]
+                             authInsightJSON:authInsightJson];
 }
 
 @end

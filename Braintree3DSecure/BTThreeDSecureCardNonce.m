@@ -24,6 +24,8 @@
     self = [super initWithNonce:nonce
                     description:description
                     cardNetwork:cardNetwork
+                expirationMonth:nil
+                 expirationYear:nil
                         lastTwo:lastTwo
                        lastFour:nil
                       isDefault:isDefault
