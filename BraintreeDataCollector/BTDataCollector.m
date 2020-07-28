@@ -17,9 +17,10 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 };
 
 @interface BTDataCollector ()
-//@property (nonatomic, assign) BTDataCollectorEnvironment environment;
+
 @property (nonatomic, copy) NSString *fraudMerchantId;
 @property (nonatomic, copy) BTAPIClient *apiClient;
+
 @end
 
 @implementation BTDataCollector
@@ -64,10 +65,6 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     if ([payPalDataCollectorClass isSubclassOfClass:NSClassFromString(@"PPDataCollector")]) {
         PayPalDataCollectorClass = payPalDataCollectorClass;
     }
-}
-
-- (void)setCollectorUrl:(__unused NSString *)url {
-    // do nothing
 }
 
 - (void)setCollectorEnvironment:(KEnvironment)environment {

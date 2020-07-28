@@ -567,8 +567,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         urlComponents.query = queryForAuthSession;
         self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL
                                                                       callbackURLScheme:self.returnURLScheme
-                                                                      completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error)
-                                            {
+                                                                      completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
             if (error) {
                 if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
                     if (self.becameActiveAfterSFAuthenticationSessionModal) {
