@@ -99,7 +99,7 @@
     [cardFormViewController.view addSubview:self.cardForm];
     cardFormViewController.view.backgroundColor = button.backgroundColor;
 
-    //[self.cardForm autoPinToTopLayoutGuideOfViewController:cardFormViewController withInset:40];
+    [self.cardForm autoPinEdgeToSuperviewSafeArea:ALEdgeTop withInset:40];
     [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
     [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 

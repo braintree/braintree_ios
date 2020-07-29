@@ -105,7 +105,7 @@ class BraintreeThreeDSecurePaymentFlowV1_UITests: XCTestCase {
 
         app.webViewSubmitButton.tap()
 
-        waitForElementToAppear(app.unxexpectedErrorMessage)
+        waitForElementToAppear(app.unexpectedErrorMessage)
     }
 
     func testThreeDSecurePaymentFlowV1_acceptsPassword_failsToAuthenticateNonce_dueToCardinalError() {
@@ -120,7 +120,7 @@ class BraintreeThreeDSecurePaymentFlowV1_UITests: XCTestCase {
 
         app.webViewSubmitButton.tap()
 
-        waitForElementToAppear(app.unxexpectedErrorMessage)
+        waitForElementToAppear(app.unexpectedErrorMessage)
     }
 
     func testThreeDSecurePaymentFlowV1_returnsToApp_whenCancelTapped() {
@@ -277,7 +277,7 @@ fileprivate extension XCUIApplication {
         return buttons["3D Secure authentication was attempted but liability shift is not possible"]
     }
 
-    var unxexpectedErrorMessage: XCUIElement {
+    var unexpectedErrorMessage: XCUIElement {
         return buttons["An unexpected error occurred"]
     }
 
