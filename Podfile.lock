@@ -52,7 +52,6 @@ PODS:
   - OHHTTPStubs/NSURLSession (9.0.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (9.0.0)
-  - PureLayout (3.1.6)
   - Specta (1.0.7)
   - xcbeautify (0.8.0)
 
@@ -74,7 +73,6 @@ DEPENDENCIES:
   - "NSURL+QueryDictionary (~> 1.0)"
   - OCMock
   - OHHTTPStubs
-  - PureLayout
   - Specta
   - xcbeautify
 
@@ -85,7 +83,6 @@ SPEC REPOS:
     - "NSURL+QueryDictionary"
     - OCMock
     - OHHTTPStubs
-    - PureLayout
     - Specta
     - xcbeautify
 
@@ -108,10 +105,9 @@ SPEC CHECKSUMS:
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   OCMock: 5ea90566be239f179ba766fd9fbae5885040b992
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
-  PureLayout: bd3c4ec3a3819ad387c99ebb72c6b129c3ed4d2d
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: 34e667aac66c3357794431c9dd4037808cdab025
 
-PODFILE CHECKSUM: a072fcca976a443dff6ae3b647dd99fbd940b98b
+PODFILE CHECKSUM: 7d2791a86e6389ad72159bc385e8a93c4d8d8929
 
 COCOAPODS: 1.9.3

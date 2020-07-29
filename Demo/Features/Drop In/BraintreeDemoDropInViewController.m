@@ -1,12 +1,10 @@
 #import "BraintreeDemoDropInViewController.h"
+#import "Demo-Swift.h"
 
-#import <PureLayout/PureLayout.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeDropIn/BraintreeDropIn.h>
 #import <BraintreeVenmo/BraintreeVenmo.h>
 #import <BraintreeApplePay/BraintreeApplePay.h>
-
-#import "Demo-Swift.h"
 
 @interface BraintreeDemoDropInViewController () <PKPaymentAuthorizationViewControllerDelegate>
 
@@ -30,7 +28,6 @@
 
 - (instancetype)initWithAuthorization:(NSString *)authorization {
     if (self = [super initWithAuthorization:authorization]) {
-
         self.authorizationString = authorization;
     }
     return self;
@@ -64,6 +61,7 @@
 
     self.priceLabel = [[UILabel alloc] init];
     self.priceLabel.text = NSLocalizedString(@"$100", nil);
+    self.priceLabel.textAlignment = NSTextAlignmentRight;
     self.priceLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.priceLabel];
 
@@ -175,7 +173,7 @@
     [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[purchaseButton]-|" options:0 metrics:nil views:viewBindings]];
     [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[cartLabel]-[itemLabel]-[paymentMethodHeaderLabel]" options:0 metrics:nil views:viewBindings]];
 
-    [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[itemLabel]-[priceLabel]-|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewBindings]];
+    [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[itemLabel]-[priceLabel(>=40)]-|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewBindings]];
 
     [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodHeaderLabel]-|" options:0 metrics:nil views:viewBindings]];
 
@@ -210,7 +208,6 @@
 
 - (void)purchaseButtonPressed {
     if (self.useApplePay) {
-
         PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
         paymentRequest.paymentSummaryItems = @[
                                                [PKPaymentSummaryItem summaryItemWithLabel:@"Socks" amount:[NSDecimalNumber decimalNumberWithString:@"100"]]

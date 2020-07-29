@@ -1,12 +1,14 @@
 #import "BraintreeDemoApplePayPassKitViewController.h"
+
 #import <BraintreeApplePay/BraintreeApplePay.h>
-#import <PureLayout/PureLayout.h>
 
 @import PassKit;
 
 @interface BraintreeDemoApplePayPassKitViewController () <PKPaymentAuthorizationViewControllerDelegate>
+
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) BTApplePayClient *applePayClient;
+
 @end
 
 @implementation BraintreeDemoApplePayPassKitViewController
@@ -17,32 +19,25 @@
     self.applePayClient = [[BTApplePayClient alloc] initWithAPIClient:self.apiClient];
 
     self.label = [[UILabel alloc] init];
+    self.label.translatesAutoresizingMaskIntoConstraints = NO;
     self.label.numberOfLines = 1;
     self.label.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.label];
 
     if (self.paymentButton) {
-        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton withOffset:8];
-        [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        [self.label autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
+        [NSLayoutConstraint activateConstraints:@[
+            [self.paymentButton.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:20.0],
+            [self.paymentButton.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:-20.0],
+            [self.label.topAnchor constraintEqualToSystemSpacingBelowAnchor:self.paymentButton.bottomAnchor multiplier:1.0],
+            [self.label.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+            [self.label.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor]
+        ]];
     }
-    
+
     self.title = NSLocalizedString(@"Apple Pay via PassKit", nil);
 }
 
 - (UIControl *)createPaymentButton {
-    if (![PKPaymentAuthorizationViewController class]) {
-        self.progressBlock(@"Apple Pay is not available on this version of iOS");
-        return nil;
-    }
-    if (![PKPaymentAuthorizationViewController canMakePayments]) {
-        self.progressBlock(@"canMakePayments returns NO, hiding Apple Pay button");
-        return nil;
-    }
-
-    // Discover and PrivateLabel were added in iOS 9.0
-    // At this time, we have not tested these options
     if (![PKPaymentAuthorizationViewController canMakePayments]) {
         self.progressBlock(@"canMakePayments returns NO, hiding Apple Pay button");
         return nil;

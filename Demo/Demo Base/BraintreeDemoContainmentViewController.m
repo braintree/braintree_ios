@@ -1,29 +1,30 @@
-#import "BraintreeDemoDemoContainmentViewController.h"
+#import "BraintreeDemoContainmentViewController.h"
+#import "BraintreeDemoBaseViewController.h"
+#import "Demo-Swift.h"
+
+#import <BraintreeCore/BraintreeCore.h>
 
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 #import <InAppSettingsKit/IASKSettingsReader.h>
-#import <PureLayout/PureLayout.h>
-#import <BraintreeCore/BraintreeCore.h>
 
-#import "BraintreeDemoBaseViewController.h"
+@interface BraintreeDemoContainmentViewController () <IASKSettingsDelegate>
 
-#import "Demo-Swift.h"
-
-@interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
 @property (nonatomic, strong) BTPaymentMethodNonce *latestTokenizedPayment;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
+
 @end
 
-@implementation BraintreeDemoDemoContainmentViewController
+@implementation BraintreeDemoContainmentViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+
     self.title = NSLocalizedString(@"Braintree", nil);
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action: @selector(tappedRefresh)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil) style:UIBarButtonItemStylePlain target:self action: @selector(tappedSettings)];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController setToolbarHidden:NO];
-    [super viewDidLoad];
     [self setupToolbar];
     [self reloadIntegration];
 }
@@ -214,12 +215,15 @@
 - (void)containIntegrationViewController:(UIViewController *)viewController {
     [self addChildViewController:viewController];
 
+    viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:viewController.view];
 
-    [viewController.view autoPinEdgeToSuperviewSafeArea:ALEdgeTop];
-    [viewController.view autoPinEdgeToSuperviewSafeArea:ALEdgeBottom];
-    [viewController.view autoPinEdgeToSuperviewEdge:ALEdgeLeading];
-    [viewController.view autoPinEdgeToSuperviewEdge:ALEdgeTrailing];
+    [NSLayoutConstraint activateConstraints:@[
+        [viewController.view.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [viewController.view.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+        [viewController.view.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [viewController.view.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor]
+    ]];
 
     [viewController didMoveToParentViewController:self];
 }

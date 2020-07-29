@@ -4,7 +4,9 @@
 #import "BraintreeUI.h"
 
 @interface BraintreeDemoPayPalScopesViewController () <BTViewControllerPresentingDelegate>
-@property(nonatomic, strong) UITextView *addressTextView;
+
+@property(nonatomic, strong) UILabel *addressLabel;
+
 @end
 
 @implementation BraintreeDemoPayPalScopesViewController
@@ -12,9 +14,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.addressTextView = [[UITextView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 2) - 100, (self.view.bounds.size.width / 8) * 7, 200, 100)];
-    [self.view addSubview:self.addressTextView];
-    self.addressTextView.backgroundColor = [UIColor clearColor];
+    self.addressLabel = [[UILabel alloc] init];
+    self.addressLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.addressLabel.numberOfLines = 0;
+    self.addressLabel.backgroundColor = UIColor.blueColor;
+    [self.view addSubview:self.addressLabel];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [self.addressLabel.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:10],
+        [self.addressLabel.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:-10],
+        [self.addressLabel.topAnchor constraintEqualToAnchor:self.paymentButton.bottomAnchor constant:20]
+    ]];
 
     self.paymentButton.hidden = YES;
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
@@ -52,7 +62,7 @@
             self.completionBlock(tokenizedPayPalAccount);
 
             BTPostalAddress *address = tokenizedPayPalAccount.shippingAddress;
-            self.addressTextView.text = [NSString stringWithFormat:@"Address:\n%@\n%@\n%@ %@\n%@ %@", address.streetAddress, address.extendedAddress, address.locality, address.region, address.postalCode, address.countryCodeAlpha2];
+            self.addressLabel.text = [NSString stringWithFormat:@"Address:\n%@\n%@\n%@ %@\n%@ %@", address.streetAddress, address.extendedAddress, address.locality, address.region, address.postalCode, address.countryCodeAlpha2];
         } else {
             self.progressBlock(@"Cancelled");
         }

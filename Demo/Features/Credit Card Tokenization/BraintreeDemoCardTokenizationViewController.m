@@ -26,7 +26,6 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Card Tokenization", nil);
-    self.edgesForExtendedLayout = UIRectEdgeBottom;
 }
 
 - (IBAction)submitForm {
@@ -34,9 +33,9 @@
 
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
     BTCard *card = [[BTCard alloc] initWithNumber:self.cardNumberField.text
-                                                                           expirationMonth:self.expirationMonthField.text
-                                                                            expirationYear:self.expirationYearField.text
-                                                                                       cvv:nil];
+                                  expirationMonth:self.expirationMonthField.text
+                                   expirationYear:self.expirationYearField.text
+                                              cvv:nil];
 
     [self setFieldsEnabled:NO];
     [cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
@@ -63,7 +62,6 @@
     self.expirationYearField.enabled = enabled;
     self.submitButton.enabled = enabled;
     self.autofillButton.enabled = enabled;
-
 }
 
 @end

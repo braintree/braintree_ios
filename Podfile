@@ -18,7 +18,6 @@ target 'Demo' do
   pod 'Braintree/PaymentFlow', :path => './'
   
   pod 'NSURL+QueryDictionary', '~> 1.0', :inhibit_warnings => true
-  pod 'PureLayout', :inhibit_warnings => true
   pod 'InAppSettingsKit', :inhibit_warnings => true
   pod 'BraintreeDropIn', :podspec => 'BraintreeDropIn.podspec'
 end

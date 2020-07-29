@@ -1,12 +1,14 @@
 #import "BraintreeDemoCustomMultiPayViewController.h"
-#import <BraintreeCard/BraintreeCard.h>
 #import "BraintreeUI.h"
-#import <PureLayout/PureLayout.h>
+
+#import <BraintreeCard/BraintreeCard.h>
 
 @interface BraintreeDemoCustomMultiPayViewController () <BTViewControllerPresentingDelegate>
+
 @property(nonatomic, strong) BTUICardFormView *cardForm;
 @property (nonatomic, strong) UINavigationController *cardFormNavigationViewController;
 @property (nonatomic, weak) UIBarButtonItem *saveButton;
+
 @end
 
 @implementation BraintreeDemoCustomMultiPayViewController
@@ -16,10 +18,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Custom Payment Button", nil);
+
+    if (self.paymentButton) {
+        [NSLayoutConstraint activateConstraints:@[
+            [self.paymentButton.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:20.0],
+            [self.paymentButton.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:-20.0]
+        ]];
+    }
 }
 
 - (UIView *)createPaymentButton {
-    UIView *view = [[UIView alloc] initForAutoLayout];
+    UIView *view = [[UIView alloc] init];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
 
     UIButton *venmoButton = [UIButton buttonWithType:UIButtonTypeSystem];
     venmoButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -49,22 +59,23 @@
     [view addSubview:venmoButton];
     [view addSubview:cardButton];
 
-    [venmoButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:payPalButton];
-    [payPalButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:cardButton];
+    [NSLayoutConstraint activateConstraints:@[
+        [venmoButton.widthAnchor constraintEqualToAnchor:payPalButton.widthAnchor],
+        [payPalButton.widthAnchor constraintEqualToAnchor:cardButton.widthAnchor],
 
-    [venmoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
-    [venmoButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:payPalButton];
-    [payPalButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:cardButton];
-    [cardButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+        [venmoButton.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+        [venmoButton.trailingAnchor constraintEqualToAnchor:payPalButton.leadingAnchor],
+        [payPalButton.trailingAnchor constraintEqualToAnchor:cardButton.leadingAnchor],
+        [cardButton.trailingAnchor constraintEqualToAnchor:view.trailingAnchor],
 
-    [venmoButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
-    [venmoButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
-    [payPalButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
-    [payPalButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
-    [cardButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
-    [cardButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
+        [venmoButton.topAnchor constraintEqualToAnchor:view.topAnchor],
+        [payPalButton.topAnchor constraintEqualToAnchor:view.topAnchor],
+        [cardButton.topAnchor constraintEqualToAnchor:view.topAnchor],
 
-    [view autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:venmoButton];
+        [venmoButton.bottomAnchor constraintEqualToAnchor:view.bottomAnchor],
+        [payPalButton.bottomAnchor constraintEqualToAnchor:view.bottomAnchor],
+        [cardButton.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
+    ]];
 
     return view;
 }
@@ -80,7 +91,8 @@
 }
 
 - (IBAction)tappedCard:(UIButton *)button {
-    self.cardForm = [[BTUICardFormView alloc] initForAutoLayout];
+    self.cardForm = [[BTUICardFormView alloc] init];
+    self.cardForm.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardForm.optionalFields = BTUICardFormOptionalFieldsAll;
 
     UIViewController *cardFormViewController = [[UIViewController alloc] init];
@@ -99,9 +111,11 @@
     [cardFormViewController.view addSubview:self.cardForm];
     cardFormViewController.view.backgroundColor = button.backgroundColor;
 
-    [self.cardForm autoPinEdgeToSuperviewSafeArea:ALEdgeTop withInset:40];
-    [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
-    [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.cardForm.topAnchor constraintEqualToAnchor:cardFormViewController.view.safeAreaLayoutGuide.topAnchor constant:40.0],
+        [self.cardForm.leadingAnchor constraintEqualToAnchor:cardFormViewController.view.safeAreaLayoutGuide.leadingAnchor],
+        [self.cardForm.trailingAnchor constraintEqualToAnchor:cardFormViewController.view.safeAreaLayoutGuide.trailingAnchor]
+    ]];
 
     self.cardFormNavigationViewController = [[UINavigationController alloc] initWithRootViewController:cardFormViewController];
 
