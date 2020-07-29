@@ -37,7 +37,6 @@ PODS:
   - BraintreeDropIn/UIKit (99.99.99-github-master)
   - Expecta (1.0.6)
   - InAppSettingsKit (3.0)
-  - "NSURL+QueryDictionary (1.2.0)"
   - OCMock (3.6)
   - OHHTTPStubs (9.0.0):
     - OHHTTPStubs/Default (= 9.0.0)
@@ -70,7 +69,6 @@ DEPENDENCIES:
   - BraintreeDropIn (from `BraintreeDropIn.podspec`)
   - Expecta
   - InAppSettingsKit
-  - "NSURL+QueryDictionary (~> 1.0)"
   - OCMock
   - OHHTTPStubs
   - Specta
@@ -80,7 +78,6 @@ SPEC REPOS:
   trunk:
     - Expecta
     - InAppSettingsKit
-    - "NSURL+QueryDictionary"
     - OCMock
     - OHHTTPStubs
     - Specta
@@ -102,12 +99,11 @@ SPEC CHECKSUMS:
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
-  "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   OCMock: 5ea90566be239f179ba766fd9fbae5885040b992
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: 34e667aac66c3357794431c9dd4037808cdab025
 
-PODFILE CHECKSUM: 7d2791a86e6389ad72159bc385e8a93c4d8d8929
+PODFILE CHECKSUM: ab5156b4d4c789e70cf3e7d6423a66c8c6a3df75
 
 COCOAPODS: 1.9.3
