@@ -186,32 +186,6 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>UX</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>DefaultValue</key>
-			<true/>
-			<key>Title</key>
-			<string>Modal Presentation</string>
-			<key>Key</key>
-			<string>BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Coinbase Disabled</string>
-			<key>Key</key>
-			<string>BraintreeDemoCoinbaseDisabledDefaultsKey</string>
-			<key>DefaultValue</key>
-			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
 			<string>Client Token Version</string>
 		</dict>
 		<dict>
