@@ -54,7 +54,7 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let lookupResult = BTThreeDSecureResultNew(json: json)
+        let lookupResult = BTThreeDSecureResult(json: json)
         
         let configuration = BTConfiguration(json: BTJSON(value: ["assetsUrl": "https://assets.com"]))
         
@@ -81,7 +81,7 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         let mockPaymentFlowDriverDelegate = MockPaymentFlowDriverDelegate()
         
         mockPaymentFlowDriverDelegate.onPaymentCompleteHandler = { result, error in
-            guard let threeDSecureResult = result as? BTThreeDSecureResultNew else { XCTFail(); return }
+            guard let threeDSecureResult = result as? BTThreeDSecureResult else { XCTFail(); return }
             guard let tokenizedCard = threeDSecureResult.tokenizedCard else { XCTFail(); return }
 
             XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)

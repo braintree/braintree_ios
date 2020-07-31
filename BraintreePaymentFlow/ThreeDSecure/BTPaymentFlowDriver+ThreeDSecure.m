@@ -13,7 +13,6 @@
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
-#import "BTThreeDSecureResultNew_Internal.h"
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)
 
@@ -24,7 +23,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 #pragma mark - ThreeDSecure Lookup
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
-                       completion:(void (^)(BTThreeDSecureResultNew  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock {
+                       completion:(void (^)(BTThreeDSecureResult  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *error) {
         if (error) {
             completionBlock(nil, error);
@@ -103,7 +102,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
                 return;
             }
 
-            completionBlock([[BTThreeDSecureResultNew alloc] initWithJSON:body], nil);
+            completionBlock([[BTThreeDSecureResult alloc] initWithJSON:body], nil);
         }];
     }];
 }
@@ -163,7 +162,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
     [self setupPaymentFlow:request completion:completionBlock];
 
     BTJSON *jsonResponse = [[BTJSON alloc] initWithData:[lookupResponse dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO]];
-    BTThreeDSecureResultNew *lookupResult = [[BTThreeDSecureResultNew alloc] initWithJSON:jsonResponse];
+    BTThreeDSecureResult *lookupResult = [[BTThreeDSecureResult alloc] initWithJSON:jsonResponse];
 
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
     threeDSecureRequest.paymentFlowDriverDelegate = self;

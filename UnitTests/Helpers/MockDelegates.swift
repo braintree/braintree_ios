@@ -79,7 +79,7 @@ import XCTest
         next()
     }
 
-    func onLookupCompleteNew(_ request: BTThreeDSecureRequest, result: BTThreeDSecureResultNew, next: @escaping () -> Void) {
+    func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult: BTThreeDSecureResult, next: @escaping () -> Void) {
         lookupCompleteExpectation?.fulfill()
         next()
     }

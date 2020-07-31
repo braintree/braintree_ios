@@ -13,7 +13,7 @@
 
 @property (strong, nonatomic) CardinalSession *cardinalSession;
 
-@property (strong, nonatomic) BTThreeDSecureResultNew *lookupResult;
+@property (strong, nonatomic) BTThreeDSecureResult *lookupResult;
 @property (strong, nonatomic) BTAPIClient *apiClient;
 @property (copy, nonatomic) BTThreeDSecureV2ProviderSuccessHandler successHandler;
 @property (copy, nonatomic) BTThreeDSecureV2ProviderFailureHandler failureHandler;
@@ -51,7 +51,7 @@
     return instance;
 }
 
-- (void)processLookupResult:(BTThreeDSecureResultNew *)lookupResult
+- (void)processLookupResult:(BTThreeDSecureResult *)lookupResult
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
     self.lookupResult = lookupResult;

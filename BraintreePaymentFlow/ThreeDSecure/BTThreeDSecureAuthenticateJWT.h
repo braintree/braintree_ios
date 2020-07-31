@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)authenticateJWT:(NSString *)cardinalJWT
           withAPIClient:(BTAPIClient *)apiClient
-        forLookupResult:(BTThreeDSecureResultNew *)lookupResult
+        forLookupResult:(BTThreeDSecureResult *)lookupResult
                 success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                 failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
 

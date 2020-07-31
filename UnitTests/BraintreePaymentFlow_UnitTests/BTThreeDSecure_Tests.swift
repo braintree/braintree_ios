@@ -172,7 +172,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
-            guard let result = result as? BTThreeDSecureResultNew else { XCTFail(); return }
+            guard let result = result as? BTThreeDSecureResult else { XCTFail(); return }
             guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
 
             XCTAssertTrue(isANonce(tokenizedCard.nonce))

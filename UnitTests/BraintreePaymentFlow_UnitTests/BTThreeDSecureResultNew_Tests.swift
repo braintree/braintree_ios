@@ -1,6 +1,6 @@
 import XCTest
 
-class BTThreeDSecureResultNew_Tests: XCTestCase {
+class BTThreeDSecureResult_Tests: XCTestCase {
 
     func testInitWithJSON_whenLookupSucceeds() {
         let jsonString =
@@ -25,7 +25,7 @@ class BTThreeDSecureResultNew_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let result = BTThreeDSecureResultNew(json: json)
+        let result = BTThreeDSecureResult(json: json)
         XCTAssertEqual(result.lookup?.acsURL, URL(string: "www.someAcsUrl.com")!)
         XCTAssertEqual(result.lookup?.md, "someMd")
         XCTAssertEqual(result.lookup?.paReq, "somePareq")
@@ -49,7 +49,7 @@ class BTThreeDSecureResultNew_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let result = BTThreeDSecureResultNew(json: json)
+        let result = BTThreeDSecureResult(json: json)
         XCTAssertNil(result.lookup)
         XCTAssertNil(result.tokenizedCard)
         XCTAssertEqual(result.errorMessage, "Record not found")
@@ -70,7 +70,7 @@ class BTThreeDSecureResultNew_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let result = BTThreeDSecureResultNew(json: json)
+        let result = BTThreeDSecureResult(json: json)
         XCTAssertNil(result.lookup)
         XCTAssertEqual(result.tokenizedCard?.nonce, "someLookupNonce")
         XCTAssertTrue(result.tokenizedCard!.threeDSecureInfo.liabilityShiftPossible)
@@ -89,7 +89,7 @@ class BTThreeDSecureResultNew_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let result = BTThreeDSecureResultNew(json: json)
+        let result = BTThreeDSecureResult(json: json)
         XCTAssertNil(result.lookup)
         XCTAssertNil(result.tokenizedCard)
         XCTAssertEqual(result.errorMessage, "An unexpected error occurred")
@@ -108,7 +108,7 @@ class BTThreeDSecureResultNew_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let result = BTThreeDSecureResultNew(json: json)
+        let result = BTThreeDSecureResult(json: json)
         XCTAssertNil(result.lookup)
         XCTAssertNil(result.tokenizedCard)
         XCTAssertEqual(result.errorMessage, "An unexpected error occurred")

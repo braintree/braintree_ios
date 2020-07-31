@@ -1,6 +1,6 @@
 #import "BTThreeDSecureAuthenticateJWT.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
-#import "BTThreeDSecureResultNew_Internal.h"
+#import "BTThreeDSecureResult_Internal.h"
 #if __has_include("BTAPIClient_Internal.h")
 #import "BTAPIClient_Internal.h"
 #else
@@ -11,7 +11,7 @@
 
 + (void)authenticateJWT:(NSString *)jwt
           withAPIClient:(BTAPIClient *)apiClient
-        forLookupResult:(BTThreeDSecureResultNew *)lookupResult
+        forLookupResult:(BTThreeDSecureResult *)lookupResult
                 success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                 failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.started"];
@@ -36,7 +36,7 @@
             return;
         }
 
-        BTThreeDSecureResultNew *result = [[BTThreeDSecureResultNew alloc] initWithJSON:body];
+        BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
         if (result.tokenizedCard && !result.errorMessage) {
             [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.succeeded"];
         } else {

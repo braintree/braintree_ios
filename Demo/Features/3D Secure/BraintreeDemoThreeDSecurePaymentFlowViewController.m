@@ -149,7 +149,7 @@
                     self.progressBlock(error.localizedDescription);
                 }
             } else if (result) {
-                BTThreeDSecureResultNew *threeDSecureResult = (BTThreeDSecureResultNew *)result;
+                BTThreeDSecureResult *threeDSecureResult = (BTThreeDSecureResult *)result;
                 self.completionBlock(threeDSecureResult.tokenizedCard);
                 
                 if (threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible && threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted) {
@@ -178,7 +178,7 @@
     next();
 }
 
-- (void)onLookupCompleteNew:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureResultNew *)result next:(void (^)(void))next {
+- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request lookupResult:(__unused BTThreeDSecureResult *)result next:(void (^)(void))next {
     // Optionally inspect the result and prepare UI if a challenge is required
     next();
 }

@@ -1,14 +1,12 @@
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
 #if __has_include("BraintreeCard.h")
 #import "BTCardNonce.h"
 #else
 #import <BraintreeCard/BTCardNonce.h>
 #endif
 #import "BTPaymentFlowResult.h"
+#import "BTThreeDSecureLookupNew.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  The result of a 3D Secure payment flow
@@ -18,13 +16,12 @@
 /**
  The `BTCardNonce` resulting from the 3D Secure flow
  */
-@property (nonatomic, strong) BTCardNonce *tokenizedCard;
+@property (nonatomic, nullable, readonly, strong) BTCardNonce *tokenizedCard;
 
-/**
- Initialize a BTThreeDSecureResult
- 
- @param JSON BTJSON used to initialize the BTThreeDSecureResult
- */
-- (instancetype)initWithJSON:(BTJSON *)JSON;
+@property (nonatomic, nullable, readonly, strong) BTThreeDSecureLookupNew *lookup;
+
+@property (nonatomic, nullable, readonly, copy) NSString *errorMessage;
 
 @end
+
+NS_ASSUME_NONNULL_END
