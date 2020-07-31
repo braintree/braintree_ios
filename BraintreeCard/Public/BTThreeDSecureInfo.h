@@ -119,6 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The error message when the 3D Secure flow is unsuccessful
  */
+// TODO - remove this
 @property (nonatomic, nullable, copy) NSString *errorMessage;
 
 @end

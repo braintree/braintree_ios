@@ -47,6 +47,8 @@
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTPreferredPaymentMethodsResult_Internal.h"
 #import "BTPreferredPaymentMethods_Internal.h"
+#import "BTThreeDSecureResultNew_Internal.h"
+#import "BTThreeDSecureLookupNew_Internal.h"
 
 #import "BTDropInUtil.h"
 #import "BTSpecHelper.h"
