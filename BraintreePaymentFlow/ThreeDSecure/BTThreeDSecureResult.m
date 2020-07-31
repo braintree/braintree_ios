@@ -1,5 +1,5 @@
 #import "BTThreeDSecureResult_Internal.h"
-#import "BTThreeDSecureLookupNew_Internal.h"
+#import "BTThreeDSecureLookup_Internal.h"
 #if __has_include("BraintreeCard.h")
 #import "BTCardNonce_Internal.h"
 #else
@@ -16,7 +16,7 @@
         }
 
         if ([json[@"lookup"] asDictionary]) {
-            _lookup = [[BTThreeDSecureLookupNew alloc] initWithJSON:json[@"lookup"]];
+            _lookup = [[BTThreeDSecureLookup alloc] initWithJSON:json[@"lookup"]];
         }
 
         if ([json[@"errors"] asArray]) {

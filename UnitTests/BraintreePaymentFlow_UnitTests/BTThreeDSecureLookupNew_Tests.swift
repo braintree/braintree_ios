@@ -1,6 +1,6 @@
 import XCTest
 
-class BTThreeDSecureLookupNew_Tests: XCTestCase {
+class BTThreeDSecureLookup_Tests: XCTestCase {
     func testInitWithJSON_whenFieldsArePresent() {
         let jsonString =
             """
@@ -15,7 +15,7 @@ class BTThreeDSecureLookupNew_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let lookup = BTThreeDSecureLookupNew(json: json)
+        let lookup = BTThreeDSecureLookup(json: json)
 
         XCTAssertEqual(lookup.acsURL, URL(string: "www.someAcsUrl.com"))
         XCTAssertEqual(lookup.md, "someMd")
@@ -31,7 +31,7 @@ class BTThreeDSecureLookupNew_Tests: XCTestCase {
         let jsonString = "{ }"
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let lookup = BTThreeDSecureLookupNew(json: json)
+        let lookup = BTThreeDSecureLookup(json: json)
 
         XCTAssertNil(lookup.acsURL)
         XCTAssertNil(lookup.md)

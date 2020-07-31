@@ -1,4 +1,4 @@
-#import "BTThreeDSecureLookupNew.h"
+#import "BTThreeDSecureLookup.h"
 #if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
 #else
@@ -7,7 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTThreeDSecureLookupNew ()
+@interface BTThreeDSecureLookup ()
 
 - (instancetype)initWithJSON:(BTJSON *)JSON;
 

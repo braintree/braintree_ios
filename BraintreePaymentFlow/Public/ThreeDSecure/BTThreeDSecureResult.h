@@ -4,7 +4,7 @@
 #import <BraintreeCard/BTCardNonce.h>
 #endif
 #import "BTPaymentFlowResult.h"
-#import "BTThreeDSecureLookupNew.h"
+#import "BTThreeDSecureLookup.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, readonly, strong) BTCardNonce *tokenizedCard;
 
-@property (nonatomic, nullable, readonly, strong) BTThreeDSecureLookupNew *lookup;
+@property (nonatomic, nullable, readonly, strong) BTThreeDSecureLookup *lookup;
 
 @property (nonatomic, nullable, readonly, copy) NSString *errorMessage;
 

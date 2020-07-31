@@ -48,7 +48,7 @@
 #import "BTPreferredPaymentMethodsResult_Internal.h"
 #import "BTPreferredPaymentMethods_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
-#import "BTThreeDSecureLookupNew_Internal.h"
+#import "BTThreeDSecureLookup_Internal.h"
 
 #import "BTDropInUtil.h"
 #import "BTSpecHelper.h"

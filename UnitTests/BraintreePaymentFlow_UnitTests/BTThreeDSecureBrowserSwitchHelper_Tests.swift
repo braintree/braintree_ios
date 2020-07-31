@@ -19,7 +19,7 @@ class BTThreeDSecureBrowserSwitchHelper_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let lookupResult = BTThreeDSecureLookupNew(json: json)
+        let lookupResult = BTThreeDSecureLookup(json: json)
                 
         let actualURL = BTThreeDSecureV1BrowserSwitchHelper.url(withScheme: "com.braintreepayments.Demo.payments",
                                                                 assetsURL: "https://assets.com",
@@ -60,7 +60,7 @@ class BTThreeDSecureBrowserSwitchHelper_Tests: XCTestCase {
             """
 
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let lookupResult = BTThreeDSecureLookupNew(json: json)
+        let lookupResult = BTThreeDSecureLookup(json: json)
         
         let actualURL = BTThreeDSecureV1BrowserSwitchHelper.url(withScheme: "com.braintreepayments.Demo.payments",
                                                                 assetsURL: "https://assets.com",
