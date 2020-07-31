@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The result of a 3DS lookup.
 
- Contains laibility shift and challenge information.
+ Contains liability shift and challenge information.
  */
 @interface BTThreeDSecureLookup : NSObject
 

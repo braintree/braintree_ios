@@ -92,6 +92,4 @@
     return [self.threeDSecureJSON[@"xid"] asString];
 }
 
-// TODO: We don't seem to ever parse the error message out of the JSON
-
 @end

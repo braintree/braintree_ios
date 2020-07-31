@@ -18,8 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, readonly, strong) BTCardNonce *tokenizedCard;
 
+/**
+ The result of a 3D Secure lookup. Contains liability shift and challenge information.
+ */
 @property (nonatomic, nullable, readonly, strong) BTThreeDSecureLookup *lookup;
 
+/**
+ The error message when the 3D Secure flow is unsuccessful
+ */
 @property (nonatomic, nullable, readonly, copy) NSString *errorMessage;
 
 @end
