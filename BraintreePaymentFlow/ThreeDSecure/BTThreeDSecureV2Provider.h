@@ -2,6 +2,7 @@
 #import "BTThreeDSecureRequest.h"
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureLookup.h"
+#import "BTThreeDSecureResultNew.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +19,10 @@ typedef void (^BTThreeDSecureV2ProviderFailureHandler)(NSError *error);
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler;
 
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult
+                    success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
+                    failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
+
+- (void)processLookupResultNew:(BTThreeDSecureResultNew *)lookupResult
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
 

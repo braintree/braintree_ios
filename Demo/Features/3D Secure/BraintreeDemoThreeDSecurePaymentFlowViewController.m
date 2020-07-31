@@ -178,4 +178,9 @@
     next();
 }
 
+- (void)onLookupCompleteNew:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureResultNew *)result next:(void (^)(void))next {
+    // Optionally inspect the result and prepare UI if a challenge is required
+    next();
+}
+
 @end

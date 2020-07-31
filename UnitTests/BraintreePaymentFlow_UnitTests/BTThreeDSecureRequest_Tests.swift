@@ -31,13 +31,30 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
 
         let request = BTThreeDSecureRequest()
         request.versionRequested = .version1
-        
-        let lookupResult = BTThreeDSecureLookup()
-        lookupResult.acsURL = URL(string: "https://acs.com")!
-        lookupResult.threeDSecureVersion = "1.0"
-        lookupResult.paReq = "pa.req"
-        lookupResult.md = "m d"
-        lookupResult.termURL = URL(string: "https://terms.com")!
+
+        let jsonString =
+            """
+            {
+                "lookup": {
+                    "acsUrl": "www.someAcsUrl.com",
+                    "md": "someMd",
+                    "pareq": "somePareq",
+                    "termUrl": "www.someTermUrl.com",
+                    "threeDSecureVersion": "1.0",
+                    "transactionId": "someTransactionId"
+                },
+                "paymentMethod": {
+                    "nonce": "someLookupNonce",
+                    "threeDSecureInfo": {
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": false
+                    }
+                }
+            }
+            """
+
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let lookupResult = BTThreeDSecureResultNew(json: json)
         
         let configuration = BTConfiguration(json: BTJSON(value: ["assetsUrl": "https://assets.com"]))
         

@@ -1,4 +1,5 @@
 #import "BTThreeDSecureRequest.h"
+#import "BTThreeDSecureResultNew.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param lookupResult The BTThreeDSecureLookup from a lookup call.
  @param configuration A BTConfiguration used to process the lookup.
  */
-- (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult configuration:(BTConfiguration *)configuration;
+- (void)processLookupResult:(BTThreeDSecureResultNew *)lookupResult configuration:(BTConfiguration *)configuration;
 
 @end
 

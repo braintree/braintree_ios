@@ -523,20 +523,15 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
-            guard let result = result as? BTThreeDSecureResult else {
-                XCTFail()
-                return
-            }
-            guard let tokenizedCard = result.tokenizedCard else {
-                XCTFail()
-                return
-            }
+            guard let result = result as? BTThreeDSecureResultNew else { XCTFail(); return }
+            guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
+
             XCTAssertTrue(isANonce(tokenizedCard.nonce))
             XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
+            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShifted)
+            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertTrue(tokenizedCard.threeDSecureInfo.wasVerified)
             XCTAssertNil(error)
-            XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShifted)
-            XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertTrue(result.tokenizedCard.threeDSecureInfo.wasVerified)
             expectation.fulfill()
         }
 

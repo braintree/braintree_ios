@@ -7,8 +7,8 @@ static NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redir
 + (NSURL *)urlWithScheme:(NSString *)appReturnURLScheme
                assetsURL:(NSString *)assetsURL
      threeDSecureRequest:(BTThreeDSecureRequest *)threeDSecureRequest
-      threeDSecureLookup:(BTThreeDSecureLookup *)threeDSecureLookup {
-    
+      threeDSecureLookup:(BTThreeDSecureLookupNew *)threeDSecureLookup {
+
     NSString *rfc3986UnreservedCharacters = @"-._~";
     NSMutableCharacterSet *unreservedCharacters = NSMutableCharacterSet.alphanumericCharacterSet;
     [unreservedCharacters addCharactersInString:rfc3986UnreservedCharacters];

@@ -175,6 +175,7 @@
 		42F75E5524D46AA5007DC5E7 /* BTThreeDSecureLookupNew_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F75E5424D46AA5007DC5E7 /* BTThreeDSecureLookupNew_Internal.h */; };
 		42F75E5724D46C4D007DC5E7 /* BTThreeDSecureLookupNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F75E5624D46C4D007DC5E7 /* BTThreeDSecureLookupNew.m */; };
 		42F75E5924D46DA2007DC5E7 /* BTThreeDSecureLookupNew_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F75E5824D46DA2007DC5E7 /* BTThreeDSecureLookupNew_Tests.swift */; };
+		42F75E5B24D48138007DC5E7 /* BTPaymentFlowDriver+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F75E5A24D48138007DC5E7 /* BTPaymentFlowDriver+ThreeDSecure_Tests.swift */; };
 		42FCA84D23623FEC00018B43 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		7EDE474E1CD2C3D00005E22B /* PPOTSimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B4632A1C3DA73300048423 /* PPOTSimpleKeychain.m */; };
 		7EDE474F1CD2C3D00005E22B /* PPOTDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B463201C3DA73300048423 /* PPOTDevice.m */; };
@@ -894,6 +895,7 @@
 		42F75E5424D46AA5007DC5E7 /* BTThreeDSecureLookupNew_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookupNew_Internal.h; sourceTree = "<group>"; };
 		42F75E5624D46C4D007DC5E7 /* BTThreeDSecureLookupNew.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLookupNew.m; sourceTree = "<group>"; };
 		42F75E5824D46DA2007DC5E7 /* BTThreeDSecureLookupNew_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureLookupNew_Tests.swift; sourceTree = "<group>"; };
+		42F75E5A24D48138007DC5E7 /* BTPaymentFlowDriver+ThreeDSecure_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTPaymentFlowDriver+ThreeDSecure_Tests.swift"; sourceTree = "<group>"; };
 		5117D61B3D2D2DD39BDF376C /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		5FD03EE8734C2E13E234394D /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		75C3131072828C051210841F /* libPods-Tests-IntegrationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-IntegrationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1639,6 +1641,7 @@
 				42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */,
 				035A59D91EA5DE97002960C8 /* BTLocalPayment_Tests.swift */,
 				03BFA5D81FB4CA650003ABCE /* BTThreeDSecure_Tests.swift */,
+				42F75E5A24D48138007DC5E7 /* BTPaymentFlowDriver+ThreeDSecure_Tests.swift */,
 				80A1EE3D2236AAC600F6218B /* BTThreeDSecureAdditionalInformation_Tests.swift */,
 				800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */,
 				A08E9492220CDD1B00907245 /* BTThreeDSecureLookup_Tests.swift */,
@@ -4092,6 +4095,7 @@
 				BC6F67D12386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift in Sources */,
 				42ED470423A3E9F600B889A8 /* FakeDevice.swift in Sources */,
 				412A51B6201FD24500A5B302 /* BTGraphQLHTTP_Tests.m in Sources */,
+				42F75E5B24D48138007DC5E7 /* BTPaymentFlowDriver+ThreeDSecure_Tests.swift in Sources */,
 				A7B4AD571B4EFC76002FB23E /* MockAPIClient.swift in Sources */,
 				A7BC50BB1C29E4CD0024C870 /* BTLogger_Internal_Tests.m in Sources */,
 				41F1D1FB1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift in Sources */,

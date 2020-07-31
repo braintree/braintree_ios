@@ -80,6 +80,11 @@ import XCTest
         lookupCompleteExpectation?.fulfill()
         next()
     }
+
+    func onLookupCompleteNew(_ request: BTThreeDSecureRequest, result: BTThreeDSecureResultNew, next: @escaping () -> Void) {
+        lookupCompleteExpectation?.fulfill()
+        next()
+    }
 }
 
 @objc class MockLocalPaymentRequestDelegate : NSObject, BTLocalPaymentRequestDelegate {

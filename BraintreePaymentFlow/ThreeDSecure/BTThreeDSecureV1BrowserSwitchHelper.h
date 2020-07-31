@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecureLookup.h"
+#import "BTThreeDSecureLookupNew.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSURL *)urlWithScheme:(NSString *)appReturnURLScheme
                assetsURL:(NSString *)assetsURL
      threeDSecureRequest:(BTThreeDSecureRequest *)threeDSecureRequest
-      threeDSecureLookup:(BTThreeDSecureLookup *)threeDSecureLookup;
+      threeDSecureLookup:(BTThreeDSecureLookupNew *)threeDSecureLookup;
 
 @end
 
