@@ -24,9 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareLookup:(BTAPIClient *)apiClient completion:(void (^)(NSError * _Nullable))completionBlock;
 
 /**
- Process the BTThreeDSecureLookup by presenting a challenge or returning the payment information.
+ Process the 3DS lookup result by presenting a challenge or returning the payment information.
 
- @param lookupResult The BTThreeDSecureLookup from a lookup call.
+ @param lookupResult The BTThreeDSecureResult from a lookup call.
  @param configuration A BTConfiguration used to process the lookup.
  */
 - (void)processLookupResult:(BTThreeDSecureResultNew *)lookupResult configuration:(BTConfiguration *)configuration;

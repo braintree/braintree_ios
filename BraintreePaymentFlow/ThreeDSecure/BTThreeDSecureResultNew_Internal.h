@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTThreeDSecureResultNew ()
 
+@property (nonatomic, nullable, readwrite, strong) BTCardNonce *tokenizedCard;
+
 - (instancetype)initWithJSON:(BTJSON *)JSON;
 
 @end

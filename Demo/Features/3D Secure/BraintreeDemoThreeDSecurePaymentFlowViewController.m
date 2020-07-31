@@ -149,7 +149,7 @@
                     self.progressBlock(error.localizedDescription);
                 }
             } else if (result) {
-                BTThreeDSecureResult *threeDSecureResult = (BTThreeDSecureResult *)result;
+                BTThreeDSecureResultNew *threeDSecureResult = (BTThreeDSecureResultNew *)result;
                 self.completionBlock(threeDSecureResult.tokenizedCard);
                 
                 if (threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible && threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted) {

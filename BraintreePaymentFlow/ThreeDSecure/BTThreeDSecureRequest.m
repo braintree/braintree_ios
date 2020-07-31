@@ -23,6 +23,7 @@
 #import "BTConfiguration+ThreeDSecure.h"
 #import "BTThreeDSecureV2Provider.h"
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
+#import "BTThreeDSecureResultNew_Internal.h"
 
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>
 
@@ -134,7 +135,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     }
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.started"];
-    [paymentFlowDriver performThreeDSecureLookupNew:threeDSecureRequest
+    [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
                                          completion:^(BTThreeDSecureResultNew *lookupResult, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error) {
@@ -174,8 +175,8 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 - (void)performV2Authentication:(BTThreeDSecureResultNew *)lookupResult {
     typeof(self) __weak weakSelf = self;
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
-    [self.threeDSecureV2Provider processLookupResultNew:lookupResult
-                                             success:^(BTThreeDSecureResult *result) {
+    [self.threeDSecureV2Provider processLookupResult:lookupResult
+                                             success:^(BTThreeDSecureResultNew *result) {
                                                  [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
                                                  [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
                                              } failure:^(NSError *error) {
@@ -213,9 +214,9 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     }
     
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
-    BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
+    BTThreeDSecureResultNew *result = [[BTThreeDSecureResultNew alloc] initWithJSON:authBody];
 
-    if ((self.versionRequested == BTThreeDSecureVersion1 && !result.success) || !result.tokenizedCard) {
+    if (result.errorMessage || !result.tokenizedCard) {
         [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
 
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
@@ -229,14 +230,16 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
         return;
     }
-    
+
     [self logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
     [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
 }
 
-- (void)logThreeDSecureCompletedAnalyticsForResult:(BTThreeDSecureResult *)result withAPIClient:(BTAPIClient *)apiClient {
-    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shift-possible.%@", [self stringForBool:result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible]]];
-    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shifted.%@", [self stringForBool:result.tokenizedCard.threeDSecureInfo.liabilityShifted]]];
+- (void)logThreeDSecureCompletedAnalyticsForResult:(BTThreeDSecureResultNew *)result withAPIClient:(BTAPIClient *)apiClient {
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shift-possible.%@",
+                                   [self stringForBool:result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible]]];
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shifted.%@",
+                                   [self stringForBool:result.tokenizedCard.threeDSecureInfo.liabilityShifted]]];
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.completed"];
 }
 

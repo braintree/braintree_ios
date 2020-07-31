@@ -4,7 +4,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 #import "BTPaymentFlowDriver+ThreeDSecure.h"
-#import "BTThreeDSecureLookup.h"
 #import "BTThreeDSecureResultNew.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,10 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTPaymentFlowDriver (ThreeDSecure_Internal)
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
-                       completion:(void (^)(BTThreeDSecureLookup  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
-
-- (void)performThreeDSecureLookupNew:(BTThreeDSecureRequest *)request
-                          completion:(void (^)(BTThreeDSecureResultNew  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
+                       completion:(void (^)(BTThreeDSecureResultNew  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
 
 @end
 

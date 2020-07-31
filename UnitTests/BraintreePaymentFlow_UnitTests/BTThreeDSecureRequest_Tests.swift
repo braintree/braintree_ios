@@ -81,13 +81,11 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         let mockPaymentFlowDriverDelegate = MockPaymentFlowDriverDelegate()
         
         mockPaymentFlowDriverDelegate.onPaymentCompleteHandler = { result, error in
-            guard let threeDSecureResult = result as? BTThreeDSecureResult else {
-                XCTFail()
-                return
-            }
-            
-            XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
+            guard let threeDSecureResult = result as? BTThreeDSecureResultNew else { XCTFail(); return }
+            guard let tokenizedCard = threeDSecureResult.tokenizedCard else { XCTFail(); return }
+
+            XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertNil(error)
             expectation.fulfill()
         }
