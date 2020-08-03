@@ -48,7 +48,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
             XCTAssertEqual(tokenizedCard.nonce, "fake-nonce-to-test")
             XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertNil(tokenizedCard.threeDSecureInfo.errorMessage)
+            XCTAssertNil(result.errorMessage)
             authenticateJwtExpectation.fulfill()
         }) { (error) in
             XCTFail()
