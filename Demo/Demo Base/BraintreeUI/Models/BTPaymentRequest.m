@@ -1,5 +1,4 @@
 #import "BTPaymentRequest.h"
-#import "BTDropInLocalizedString.h"
 
 @implementation BTPaymentRequest
 
@@ -7,7 +6,7 @@
 {
     if (self = [super init]) {
         _displayAmount = @""; // Use empty string as default value for this non-nullable property.
-        _callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION); // Default value for this non-nullable property.
+        _callToActionText = @""; // Default value for this non-nullable property.
         _showDefaultPaymentMethodNonceFirst = NO;
     }
     return self;

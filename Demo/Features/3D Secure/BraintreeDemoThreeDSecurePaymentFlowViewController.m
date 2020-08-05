@@ -3,7 +3,6 @@
 
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
-#import <CardinalMobile/CardinalMobile.h>
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
@@ -125,16 +124,16 @@
         request.email = @"test@example.com";
         request.shippingMethod = @"01";
 
-        UiCustomization *ui = [UiCustomization new];
-        ToolbarCustomization *toolbarCustomization = [ToolbarCustomization new];
-        [toolbarCustomization setHeaderText:@"Braintree 3DS Checkout"];
-        [toolbarCustomization setBackgroundColor:@"#FF5A5F"];
-        [toolbarCustomization setButtonText:@"Close"];
-        [toolbarCustomization setTextColor:@"#222222"];
-        [toolbarCustomization setTextFontSize:18];
-        [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
-        [ui setToolbarCustomization:toolbarCustomization];
-        request.uiCustomization = ui;
+//        UiCustomization *ui = [UiCustomization new];
+//        ToolbarCustomization *toolbarCustomization = [ToolbarCustomization new];
+//        [toolbarCustomization setHeaderText:@"Braintree 3DS Checkout"];
+//        [toolbarCustomization setBackgroundColor:@"#FF5A5F"];
+//        [toolbarCustomization setButtonText:@"Close"];
+//        [toolbarCustomization setTextColor:@"#222222"];
+//        [toolbarCustomization setTextFontSize:18];
+//        [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
+//        [ui setToolbarCustomization:toolbarCustomization];
+//        request.uiCustomization = ui;
         
         BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
         v1UICustomization.redirectButtonText = @"Return to Demo App";

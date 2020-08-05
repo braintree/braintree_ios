@@ -1,3 +1,3 @@
 #import "BraintreeDemoBaseViewController.h"
-#import "BraintreePayPal.h"
-#import "BraintreeVenmo.h"
+#import <BraintreePayPal/BraintreePayPal.h>
+#import <BraintreeVenmo/BraintreeVenmo.h>

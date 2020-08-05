@@ -5,18 +5,7 @@ platform :ios, '11.0'
 workspace 'Braintree.xcworkspace'
 
 target 'Demo' do
-  pod 'Braintree/Core', :path => './'
-  pod 'Braintree/Apple-Pay', :path => './'
-  pod 'Braintree/Card', :path => './'
-  pod 'Braintree/DataCollector', :path => './'
-  pod 'Braintree/PayPal', :path => './'
-  pod 'Braintree/Venmo', :path => './'
-  pod 'Braintree/UnionPay', :path => './'
-  pod 'Braintree/PayPalDataCollector', :path => './'
-  pod 'Braintree/PayPalUtils', :path => './'
-  pod 'Braintree/AmericanExpress', :path => './'
-  pod 'Braintree/PaymentFlow', :path => './'
-  
+  project 'Demo/Demo'
   pod 'InAppSettingsKit', :inhibit_warnings => true
   pod 'BraintreeDropIn', :podspec => 'BraintreeDropIn.podspec'
 end

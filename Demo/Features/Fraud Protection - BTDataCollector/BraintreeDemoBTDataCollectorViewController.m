@@ -1,7 +1,7 @@
 #import "BraintreeDemoBTDataCollectorViewController.h"
-#import "BTDataCollector.h"
-#import "PPDataCollector.h"
-#import <CoreLocation/CLLocationManager.h>
+@import BraintreeDataCollector;
+@import PayPalDataCollector;
+@import CoreLocation;
 
 @interface BraintreeDemoBTDataCollectorViewController () <BTDataCollectorDelegate>
 /// Retain BTDataCollector for entire lifecycle of view controller

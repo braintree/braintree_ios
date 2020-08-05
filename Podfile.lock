@@ -1,34 +1,4 @@
 PODS:
-  - Braintree/AmericanExpress (5.0.0):
-    - Braintree/Core
-  - Braintree/Apple-Pay (5.0.0):
-    - Braintree/Core
-  - Braintree/Card (5.0.0):
-    - Braintree/Core
-  - Braintree/Core (5.0.0)
-  - Braintree/DataCollector (5.0.0):
-    - Braintree/Core
-  - Braintree/PaymentFlow (5.0.0):
-    - Braintree/Card
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPal (5.0.0):
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (5.0.0):
-    - Braintree/Core
-    - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (5.0.0):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-    - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (5.0.0)
-  - Braintree/UnionPay (5.0.0):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Venmo (5.0.0):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
   - BraintreeDropIn (99.99.99-github-master):
     - BraintreeDropIn/DropIn (= 99.99.99-github-master)
     - BraintreeDropIn/UIKit (= 99.99.99-github-master)
@@ -55,17 +25,6 @@ PODS:
   - xcbeautify (0.8.0)
 
 DEPENDENCIES:
-  - Braintree/AmericanExpress (from `./`)
-  - Braintree/Apple-Pay (from `./`)
-  - Braintree/Card (from `./`)
-  - Braintree/Core (from `./`)
-  - Braintree/DataCollector (from `./`)
-  - Braintree/PaymentFlow (from `./`)
-  - Braintree/PayPal (from `./`)
-  - Braintree/PayPalDataCollector (from `./`)
-  - Braintree/PayPalUtils (from `./`)
-  - Braintree/UnionPay (from `./`)
-  - Braintree/Venmo (from `./`)
   - BraintreeDropIn (from `BraintreeDropIn.podspec`)
   - Expecta
   - InAppSettingsKit
@@ -84,8 +43,6 @@ SPEC REPOS:
     - xcbeautify
 
 EXTERNAL SOURCES:
-  Braintree:
-    :path: "./"
   BraintreeDropIn:
     :podspec: BraintreeDropIn.podspec
 
@@ -95,7 +52,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
-  Braintree: fb57f79a840edcb65243e88f83cc3ea8945c17c7
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
@@ -104,6 +60,6 @@ SPEC CHECKSUMS:
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: 34e667aac66c3357794431c9dd4037808cdab025
 
-PODFILE CHECKSUM: ab5156b4d4c789e70cf3e7d6423a66c8c6a3df75
+PODFILE CHECKSUM: 0899a5cbe36c8a6d97724c491367cfedf94da137
 
 COCOAPODS: 1.9.3

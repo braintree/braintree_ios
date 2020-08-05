@@ -1,7 +1,6 @@
 #import "BraintreeDemoPayPalForceFuturePaymentViewController.h"
 #import "BraintreeUI.h"
 #import <BraintreePayPal/BraintreePayPal.h>
-#import <BraintreePayPal/BTPayPalDriver_Internal.h>
 
 @interface BraintreeDemoPayPalForceFuturePaymentViewController () <BTViewControllerPresentingDelegate>
 @end
@@ -39,6 +38,7 @@
 - (void)tappedCustomPayPal {
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     payPalDriver.viewControllerPresentingDelegate = self;
+    /*
     [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:true completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         if (tokenizedPayPalAccount) {
             self.progressBlock(@"Got a nonce 💎!");
@@ -50,6 +50,7 @@
             self.progressBlock(@"Canceled 🔰");
         }
     }];
+     */
 }
 
 - (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
