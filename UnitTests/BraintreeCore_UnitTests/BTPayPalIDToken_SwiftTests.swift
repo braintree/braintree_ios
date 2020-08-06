@@ -24,6 +24,8 @@ class BTPayPalIDToken_Tests: XCTestCase {
         let payPalIDToken = try? BTPayPalIDToken(idTokenString: idTokenString)
         XCTAssertNotNil(payPalIDToken)
         XCTAssertEqual(payPalIDToken?.token, idTokenString)
+        XCTAssertEqual(payPalIDToken?.paypalMerchantID, "fake-pp-merchant")
+        XCTAssertEqual(payPalIDToken?.braintreeMerchantID, "fake-bt-merchant")
         XCTAssertEqual(payPalIDToken?.environment, .prod)
         XCTAssertEqual(payPalIDToken?.configURL, URL(string: "https://api.braintreegateway.com:443/merchants/fake-bt-merchant/client_api/v1/configuration"))
         XCTAssertEqual(payPalIDToken?.basePayPalURL, URL(string: "https://api.paypal.com"))
@@ -35,6 +37,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
         let dict: [String : Any] = [
             "iss": "https://api.msmaster.qa.paypal.com",
             "external_id": [
+                "PayPal:fake-pp-merchant",
                 "Braintree:my-merchant"
             ]
         ]
@@ -49,6 +52,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
         let dict: [String : Any] = [
             "iss": "https://api.sandbox.paypal.com",
             "external_id": [
+                "PayPal:fake-pp-merchant",
                 "Braintree:my-merchant"
             ]
         ]
@@ -145,7 +149,8 @@ class BTPayPalIDToken_Tests: XCTestCase {
         let dict: [String : Any] = [
             "iss": "www.im-a-fraud.com",
             "external_id": [
-                "Braintree:fake-bt-merchant"
+                "Braintree:fake-bt-merchant",
+                "PayPal:merchant-id"
             ]
         ]
         let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
@@ -171,6 +176,22 @@ class BTPayPalIDToken_Tests: XCTestCase {
             XCTFail()
         } catch {
             XCTAssertEqual(error.localizedDescription, "Invalid PayPal ID Token: Associated Braintree merchant ID missing.")
+        }
+    }
+
+    func testInitWithIDTokenString_whenJSONDoesNotContainPayPalMerchantId_throwsError() {
+        let dict: [String : Any] = [
+            "external_id": [
+                "Braintree:fake-bt-merchant"
+            ]
+        ]
+        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+
+        do {
+            let _ = try BTPayPalIDToken(idTokenString: idTokenString)
+            XCTFail()
+        } catch {
+            XCTAssertEqual(error.localizedDescription, "Invalid PayPal ID Token: Associated PayPal merchant ID missing.")
         }
     }
 }
