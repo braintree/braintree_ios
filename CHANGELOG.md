@@ -3,6 +3,7 @@
 ## unreleased
 * Update CardinalMobile.framework to v2.2.3-1
 * Add `expirationMonth` and `expirationYear` to `BTCardNonce`
+* Update PPDataCollector
 
 ## 4.34.0 (2020-06-09)
 * Add `environment` property to `BTPayPalUAT`
