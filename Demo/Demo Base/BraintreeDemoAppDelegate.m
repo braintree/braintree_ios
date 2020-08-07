@@ -1,5 +1,5 @@
 #import "BraintreeDemoAppDelegate.h"
-#import "BraintreeDemoDemoContainmentViewController.h"
+#import "BraintreeDemoContainmentViewController.h"
 #import <BraintreeCore/BraintreeCore.h>
 
 #import "Demo-Swift.h"
@@ -14,7 +14,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 
     [BTAppSwitch setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
     
-    BraintreeDemoDemoContainmentViewController *rootViewController = [[BraintreeDemoDemoContainmentViewController alloc] init];
+    BraintreeDemoContainmentViewController *rootViewController = [[BraintreeDemoContainmentViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = navigationController;

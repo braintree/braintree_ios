@@ -1,8 +1,7 @@
 #import "BraintreeDemoThreeDSecurePaymentFlowViewController.h"
-#import "ALView+PureLayout.h"
+#import "BraintreeUI.h"
 
 #import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeUI/BraintreeUI.h>
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
 #import <CardinalMobile/CardinalMobile.h>
 
@@ -19,35 +18,42 @@
     [super viewDidLoad];
     self.title = NSLocalizedString(@"3D Secure - Payment Flow", nil);
 
-    self.cardFormView = [[BTUICardFormView alloc] initForAutoLayout];
+    self.cardFormView = [[BTUICardFormView alloc] init];
+    self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardFormView.optionalFields = BTUICardFormOptionalFieldsCvv | BTUICardFormFieldPostalCode;
     [self.view addSubview:self.cardFormView];
-    [self.cardFormView autoPinEdgeToSuperviewEdge:ALEdgeTop];
-    [self.cardFormView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-    [self.cardFormView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [self.cardFormView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [self.cardFormView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor]
+    ]];
 }
 
 - (UIView *)createPaymentButton {
     UIButton *verifyNewCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    verifyNewCardButton.translatesAutoresizingMaskIntoConstraints = NO;
     [verifyNewCardButton setTitle:NSLocalizedString(@"Tokenize and Verify New Card", nil) forState:UIControlStateNormal];
     [verifyNewCardButton addTarget:self action:@selector(tappedToVerifyNewCard) forControlEvents:UIControlEventTouchUpInside];
 
-    UIView *threeDSecureButtonsContainer = [[UIView alloc] initForAutoLayout];
+    UIView *threeDSecureButtonsContainer = [[UIView alloc] init];
+    threeDSecureButtonsContainer.translatesAutoresizingMaskIntoConstraints = NO;
     [threeDSecureButtonsContainer addSubview:verifyNewCardButton];
 
-    [verifyNewCardButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
-
-    [verifyNewCardButton autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
-
-    self.callbackCountLabel = [[UILabel alloc] initForAutoLayout];
+    self.callbackCountLabel = [[UILabel alloc] init];
+    self.callbackCountLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.callbackCountLabel.textAlignment = NSTextAlignmentCenter;
     self.callbackCountLabel.font = [UIFont systemFontOfSize:UIFont.smallSystemFontSize];
     [threeDSecureButtonsContainer addSubview:self.callbackCountLabel];
-    [self.callbackCountLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:verifyNewCardButton withOffset:20];
-    [self.callbackCountLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-    [self.callbackCountLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
     self.callbackCount = 0;
     [self updateCallbackCount];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [verifyNewCardButton.topAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.topAnchor],
+        [verifyNewCardButton.centerXAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.centerXAnchor],
+        [self.callbackCountLabel.topAnchor constraintEqualToAnchor:verifyNewCardButton.bottomAnchor constant:20.0],
+        [self.callbackCountLabel.centerXAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.centerXAnchor]
+    ]];
 
     return threeDSecureButtonsContainer;
 }

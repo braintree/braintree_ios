@@ -605,7 +605,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     /// Helper
     func client(_ configurationDictionary: Dictionary<String, String>) -> BTAPIClient {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let fakeHttp = BTFakeHTTP()!
+        let fakeHttp = BTFakeHTTP()
         fakeHttp.cannedResponse = BTJSON(value: configurationDictionary)
         fakeHttp.cannedStatusCode = 200
         apiClient.configurationHTTP = fakeHttp
@@ -614,7 +614,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     
     func clientWithJson(_ configurationJson: BTJSON) -> BTAPIClient {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let fakeHttp = BTFakeHTTP()!
+        let fakeHttp = BTFakeHTTP()
         fakeHttp.cannedResponse = configurationJson
         fakeHttp.cannedStatusCode = 200
         apiClient.configurationHTTP = fakeHttp

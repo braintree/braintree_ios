@@ -2,8 +2,6 @@
 
 @implementation BTConfiguration (Venmo)
 
-+ (void)enableVenmo:(BOOL) __unused isEnabled { /* NO OP */ }
-
 - (BOOL)isVenmoEnabled {
     return self.venmoAccessToken != nil;
 }

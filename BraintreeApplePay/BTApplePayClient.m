@@ -145,17 +145,8 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 
     mutableParameters[@"paymentData"] = [token.paymentData base64EncodedStringWithOptions:0];
     mutableParameters[@"transactionIdentifier"] = token.transactionIdentifier;
-
-    if (@available(iOS 9.0, watchOS 3.0, *)) {
-        mutableParameters[@"paymentInstrumentName"] = token.paymentMethod.displayName;
-        mutableParameters[@"paymentNetwork"] = token.paymentMethod.network;
-    } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        mutableParameters[@"paymentInstrumentName"] = token.paymentInstrumentName;
-        mutableParameters[@"paymentNetwork"] = token.paymentNetwork;
-#pragma clang diagnostic pop
-    }
+    mutableParameters[@"paymentInstrumentName"] = token.paymentMethod.displayName;
+    mutableParameters[@"paymentNetwork"] = token.paymentMethod.network;
 
     return [mutableParameters copy];
 }

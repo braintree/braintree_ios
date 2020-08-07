@@ -60,12 +60,11 @@ class BTThreeDSecureResult_Tests: XCTestCase {
             ])
         
         let threeDSecureResult = BTThreeDSecureResult(json: json)!
-        
-        XCTAssertTrue(threeDSecureResult.success)
-        XCTAssertTrue(threeDSecureResult.liabilityShifted)
-        XCTAssertTrue(threeDSecureResult.liabilityShiftPossible)
+
         XCTAssertNotNil(threeDSecureResult.tokenizedCard)
-        XCTAssertNil(threeDSecureResult.errorMessage)
+        XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
+        XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertNil(threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage)
     }
     
     func testInitWithJSON_whenCustomerFailsAuthenticationChallenge_v1() {
@@ -82,12 +81,11 @@ class BTThreeDSecureResult_Tests: XCTestCase {
             ])
         
         let threeDSecureResult = BTThreeDSecureResult(json: json)!
-        
-        XCTAssertFalse(threeDSecureResult.success)
-        XCTAssertFalse(threeDSecureResult.liabilityShifted)
-        XCTAssertTrue(threeDSecureResult.liabilityShiftPossible)
-        XCTAssertNil(threeDSecureResult.tokenizedCard)
-        XCTAssertEqual("Failed to authenticate, please try a different form of payment.", threeDSecureResult.errorMessage)
+
+        XCTAssertNotNil(threeDSecureResult.tokenizedCard)
+        XCTAssertFalse(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
+        XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertEqual("Failed to authenticate, please try a different form of payment.", threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage)
     }
     
     func testInitWithJSON_whenCustomerFailsAuthenticationChallenge_v2() {
@@ -109,11 +107,10 @@ class BTThreeDSecureResult_Tests: XCTestCase {
             ])
         
         let threeDSecureResult = BTThreeDSecureResult(json: json)!
-        
-        XCTAssertFalse(threeDSecureResult.success)
-        XCTAssertFalse(threeDSecureResult.liabilityShifted)
-        XCTAssertTrue(threeDSecureResult.liabilityShiftPossible)
-        XCTAssertNil(threeDSecureResult.tokenizedCard)
-        XCTAssertEqual("Failed to authenticate, please try a different form of payment.", threeDSecureResult.errorMessage)
+
+        XCTAssertNotNil(threeDSecureResult.tokenizedCard)
+        XCTAssertFalse(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
+        XCTAssertTrue(threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertEqual("Failed to authenticate, please try a different form of payment.", threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage)
     }
 }

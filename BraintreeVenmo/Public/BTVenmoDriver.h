@@ -81,15 +81,6 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 - (void)authorizeAccountWithProfileID:(nullable NSString *)profileId vault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock NS_SWIFT_NAME(authorizeAccount(profileID:vault:completion:));
 
 /**
- Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
-
- @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
-    On success, you will receive an instance of `BTVenmoAccountNonce`; on failure, an error; on user
-    cancellation, you will receive `nil` for both parameters.
-*/
-- (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use [BTVenmoDriver authorizeAccountAndVault:completion instead");
-
-/**
  Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
 */
 - (BOOL)isiOSAppAvailableForAppSwitch;

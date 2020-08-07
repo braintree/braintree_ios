@@ -1,8 +1,7 @@
 #import "BraintreeDemoBTDataCollectorViewController.h"
 #import "BTDataCollector.h"
-#import <CoreLocation/CLLocationManager.h>
 #import "PPDataCollector.h"
-#import <PureLayout/PureLayout.h>
+#import <CoreLocation/CLLocationManager.h>
 
 @interface BraintreeDemoBTDataCollectorViewController () <BTDataCollectorDelegate>
 /// Retain BTDataCollector for entire lifecycle of view controller
@@ -17,54 +16,61 @@
     if (self = [super initWithAuthorization:authorization]) {
         _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     }
-    
+
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"BTDataCollector Protection", nil);
 
     UIButton *collectButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [collectButton setTitle:NSLocalizedString(@"Collect All Data", nil) forState:UIControlStateNormal];
-    [collectButton addTarget:self action:@selector(tappedCollect) forControlEvents:UIControlEventTouchUpInside];
+    [collectButton addTarget:self
+                      action:@selector(tappedCollect)
+            forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *collectKountButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [collectKountButton setTitle:NSLocalizedString(@"Collect Kount Data", nil) forState:UIControlStateNormal];
-    [collectKountButton addTarget:self action:@selector(tappedCollectKount) forControlEvents:UIControlEventTouchUpInside];
+    [collectKountButton addTarget:self
+                           action:@selector(tappedCollectKount)
+                 forControlEvents:UIControlEventTouchUpInside];
 
     UIButton *collectDysonButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [collectDysonButton setTitle:NSLocalizedString(@"Collect PayPal Data", nil) forState:UIControlStateNormal];
-    [collectDysonButton addTarget:self action:@selector(tappedCollectDyson) forControlEvents:UIControlEventTouchUpInside];
-
-    UIButton *obtainLocationPermissionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [obtainLocationPermissionButton setTitle:NSLocalizedString(@"Obtain Location Permission", nil) forState:UIControlStateNormal];
-    [obtainLocationPermissionButton addTarget:self action:@selector(tappedRequestLocationAuthorization:) forControlEvents:UIControlEventTouchUpInside];
+    [collectDysonButton addTarget:self
+                           action:@selector(tappedCollectDyson)
+                 forControlEvents:UIControlEventTouchUpInside];
 
     self.dataLabel = [[UILabel alloc] init];
+    self.dataLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.dataLabel.numberOfLines = 0;
 
-    [self.view addSubview:collectButton];
-    [self.view addSubview:collectKountButton];
-    [self.view addSubview:collectDysonButton];
+    UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[collectButton,
+                                                                             collectKountButton,
+                                                                             collectDysonButton,
+                                                                             self.dataLabel]];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.axis = UILayoutConstraintAxisVertical;
+
+    [self.view addSubview:stackView];
+
+    UIButton *obtainLocationPermissionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    obtainLocationPermissionButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [obtainLocationPermissionButton setTitle:NSLocalizedString(@"Obtain Location Permission", nil) forState:UIControlStateNormal];
+    [obtainLocationPermissionButton addTarget:self
+                                       action:@selector(tappedRequestLocationAuthorization:)
+                             forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:obtainLocationPermissionButton];
-    [self.view addSubview:self.dataLabel];
 
-    [collectButton autoCenterInSuperviewMargins];
-    [collectKountButton autoAlignAxis:ALAxisVertical toSameAxisOfView:collectButton];
-    [collectDysonButton autoAlignAxis:ALAxisVertical toSameAxisOfView:collectButton];
-    [collectKountButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:collectButton];
-    [collectDysonButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:collectKountButton];
-
-    [obtainLocationPermissionButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20];
-    [obtainLocationPermissionButton autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
-    
-    [self.dataLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:collectDysonButton];
-    [self.dataLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-    [self.dataLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
-    [self.dataLabel autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
+    [NSLayoutConstraint activateConstraints:@[
+        [stackView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:100.0],
+        [stackView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [stackView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+        [obtainLocationPermissionButton.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:-10.0],
+        [obtainLocationPermissionButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor]
+    ]];
     
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
     self.dataCollector.delegate = self;

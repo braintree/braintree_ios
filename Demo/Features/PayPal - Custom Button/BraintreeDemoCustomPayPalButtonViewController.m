@@ -1,5 +1,5 @@
 #import "BraintreeDemoCustomPayPalButtonViewController.h"
-#import <BraintreeUI/BraintreeUI.h>
+#import "BraintreeUI.h"
 #import <BraintreePayPal/BraintreePayPal.h>
 
 @interface BraintreeDemoCustomPayPalButtonViewController () <BTViewControllerPresentingDelegate>

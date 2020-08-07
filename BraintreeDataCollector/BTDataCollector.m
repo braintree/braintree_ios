@@ -2,10 +2,25 @@
 #import "BTDataCollector_Internal.h"
 #import <CoreLocation/CoreLocation.h>
 
+typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
+    /// Development
+    BTDataCollectorEnvironmentDevelopment,
+
+    /// QA
+    BTDataCollectorEnvironmentQA,
+
+    /// Sandbox
+    BTDataCollectorEnvironmentSandbox,
+
+    /// Production
+    BTDataCollectorEnvironmentProduction
+};
+
 @interface BTDataCollector ()
-@property (nonatomic, assign) BTDataCollectorEnvironment environment;
+
 @property (nonatomic, copy) NSString *fraudMerchantId;
 @property (nonatomic, copy) BTAPIClient *apiClient;
+
 @end
 
 @implementation BTDataCollector
@@ -50,10 +65,6 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     if ([payPalDataCollectorClass isSubclassOfClass:NSClassFromString(@"PPDataCollector")]) {
         PayPalDataCollectorClass = payPalDataCollectorClass;
     }
-}
-
-- (void)setCollectorUrl:(__unused NSString *)url {
-    // do nothing
 }
 
 - (void)setCollectorEnvironment:(KEnvironment)environment {
@@ -239,41 +250,6 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     if ([self.delegate respondsToSelector:@selector(dataCollector:didFailWithError:)]) {
         [self.delegate dataCollector:self didFailWithError:error];
     }
-}
-
-#pragma mark - Deprecated methods
-
-- (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment {
-    if (self = [super init]) {
-        [self setUpKountWithDebugOn:NO];
-        [self setCollectorEnvironment:[self collectorEnvironment:environment]];
-        [self setFraudMerchantId:BTDataCollectorSharedMerchantId];
-    }
-    return self;
-}
-
-+ (NSString *)payPalClientMetadataId {
-    return [BTDataCollector generatePayPalClientMetadataId];
-}
-
-/// At this time, this method only collects data with Kount. However, it is possible that in the future,
-/// we will want to collect data (for card transactions) with PayPal as well. If this becomes the case,
-/// we can modify this method to include a clientMetadataID without breaking the public interface.
-- (NSString *)collectCardFraudData {
-    return [self collectDeviceDataForCard:YES forPayPal:NO];
-}
-
-- (NSString *)collectPayPalClientMetadataId {
-    return [self collectDeviceDataForCard:NO forPayPal:YES];
-}
-
-/// Similar to `collectCardFraudData` but with the addition of the payPalClientMetadataId, if available.
-- (NSString *)collectFraudData {
-    return [self collectDeviceDataForCard:YES forPayPal:YES];
-}
-
-- (void)collectFraudData:(void (^)(NSString * _Nonnull))completion {
-    [self collectDeviceDataForCard:YES completion:completion];
 }
 
 @end

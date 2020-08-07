@@ -13,23 +13,15 @@
         if (json[@"paymentMethod"]) {
             _tokenizedCard = [BTCardNonce cardNonceWithJSON:json[@"paymentMethod"]];
         }
-        if ([json[@"errors"] asArray]) {
-            NSDictionary *firstError = (NSDictionary *)[json[@"errors"] asArray].firstObject;
-            if (firstError[@"message"]) {
-                _errorMessage = firstError[@"message"];
-            }
-        } else {
-            _errorMessage = [json[@"error"][@"message"] asString];
-        }
-        _liabilityShifted = [json[@"threeDSecureInfo"][@"liabilityShifted"] isTrue];
-        _liabilityShiftPossible = [json[@"threeDSecureInfo"][@"liabilityShiftPossible"] isTrue];
-
-        // Account for absence of "success" key in 2.0 gateway responses
-        if ([json[@"success"] isBool]) {
-            _success = [json[@"success"] isTrue];
-        } else {
-            _success = _errorMessage == nil;
-        }
+        // TODO: This logic probably needs to be moved to BTThreeDSecureInfo
+//        if ([json[@"errors"] asArray]) {
+//            NSDictionary *firstError = (NSDictionary *)[json[@"errors"] asArray].firstObject;
+//            if (firstError[@"message"]) {
+//                _errorMessage = firstError[@"message"];
+//            }
+//        } else {
+//            _errorMessage = [json[@"error"][@"message"] asString];
+//        }
     }
     return self;
 }

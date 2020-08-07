@@ -14,13 +14,13 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         let expectation = self.expectation(description: "Sends query to GraphQL")
         let apiClient = BTAPIClient(authorization: "development_client_key")!
         
-        let mockConfigurationHTTP = BTFakeHTTP()!
+        let mockConfigurationHTTP = BTFakeHTTP()
         mockConfigurationHTTP.cannedConfiguration = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
         mockConfigurationHTTP.cannedStatusCode = 200
 
         apiClient.configurationHTTP = mockConfigurationHTTP
         
-        let mockGraphQLHTTP = BTFakeGraphQLHTTP.fake()!
+        let mockGraphQLHTTP = BTFakeGraphQLHTTP.fake()
         apiClient.graphQL = mockGraphQLHTTP
         
         let sut = BTPreferredPaymentMethods(apiClient: apiClient)

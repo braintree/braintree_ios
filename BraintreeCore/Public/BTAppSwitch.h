@@ -70,15 +70,6 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (void)unregisterAppSwitchHandler:(Class<BTAppSwitchHandler>)handler;
 
-/**
- Handles a return from app switch
- 
- @param url The URL that was opened to return to your app
- @param sourceApplication The string representing the source application
- @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
- */
-- (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication DEPRECATED_MSG_ATTRIBUTE("Use handleOpenURL:options: or handleOpenURLContext: instead.");
-
 @end
 
 #pragma mark - BTAppSwitchDelegate

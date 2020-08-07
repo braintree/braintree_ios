@@ -25,16 +25,6 @@
 + (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID;
 
 /**
- Returns a client metadata ID.
-
- @note This returns a raw client metadata ID, which is not the correct format for device data
- when creating a transaction. Instead, it is recommended to use `collectPayPalDeviceData`.
-
- @return a client metadata ID to send as a header
-*/
-+ (nonnull NSString *)clientMetadataID DEPRECATED_MSG_ATTRIBUTE("Use [PPDataCollector collectPayPalDeviceData] to generate a device data string.");
-
-/**
  Collects device data for PayPal.
 
  This should be used when the user is paying with PayPal or Venmo only.

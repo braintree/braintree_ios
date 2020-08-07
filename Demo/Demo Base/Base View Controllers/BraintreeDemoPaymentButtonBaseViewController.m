@@ -1,5 +1,3 @@
-#import "BraintreeDemoBTPaymentButtonViewController.h"
-#import <PureLayout/ALView+PureLayout.h>
 #import "BraintreeDemoPaymentButtonBaseViewController.h"
 #import <BraintreeCore/BraintreeCore.h>
 
@@ -21,14 +19,14 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:250.0f/255.0f green:253.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
 
     self.paymentButton = [self createPaymentButton];
+    self.paymentButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.paymentButton];
 
-    [self.paymentButton autoCenterInSuperviewMargins];
-    // This margin is important for the Apple Pay button.
-    // BTPaymentButton looks fine without, but it's also not too terrible with it.
-    [self.paymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20];
-    [self.paymentButton autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20];
-    [self.paymentButton autoSetDimension:ALDimensionHeight toSize:44 relation:NSLayoutRelationGreaterThanOrEqual];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.paymentButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [self.paymentButton.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+        [self.paymentButton.heightAnchor constraintEqualToConstant:44.0]
+    ]];
 }
 
 - (UIView *)createPaymentButton {

@@ -660,10 +660,7 @@ NSURLSession *testURLSession() {
         XCTAssertNotNil(response);
         XCTAssertNil(error);
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        expect(dispatch_get_current_queue()).to.equal(dispatch_get_main_queue());
-#pragma clang diagnostic pop
+        expect(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL)).to.equal(dispatch_queue_get_label(dispatch_get_main_queue()));
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -677,10 +674,7 @@ NSURLSession *testURLSession() {
         XCTAssertNotNil(response);
         XCTAssertNil(error);
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        expect(dispatch_get_current_queue()).to.equal(self->http.dispatchQueue);
-#pragma clang diagnostic pop
+        expect(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL)).to.equal(dispatch_queue_get_label(self->http.dispatchQueue));
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:nil];

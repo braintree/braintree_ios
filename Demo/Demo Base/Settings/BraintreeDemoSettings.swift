@@ -77,11 +77,6 @@ class BraintreeDemoSettings: NSObject {
     static var threeDSecureRequiredStatus: BraintreeDemoThreeDSecureRequiredSetting {
         return BraintreeDemoThreeDSecureRequiredSetting(rawValue: UserDefaults.standard.integer(forKey: ThreeDSecureRequiredDefaultsKey)) ?? .requiredIfAttempted
     }
-    
-    @objc
-    static var useModalPresentation: Bool {
-        return UserDefaults.standard.bool(forKey: "BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey")
-    }
 
     @objc
     static var customerPresent: Bool {

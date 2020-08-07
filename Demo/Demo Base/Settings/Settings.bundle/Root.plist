@@ -17,21 +17,15 @@
 			<string>BraintreeDemoDropInViewController</string>
 			<key>Titles</key>
 			<array>
-				<string>Drop In (Legacy)</string>
 				<string>PayPal - Future Payment</string>
 				<string>PayPal - Billing Agreement</string>
 				<string>PayPal - Scopes</string>
 				<string>PayPal - One-Time Payment</string>
 				<string>Credit Card Tokenization</string>
-				<string>Combined - BTPaymentButton</string>
-				<string>PayPal - BTUIPayPalButton</string>
-				<string>Venmo - BTUIVenmoButton</string>
 				<string>Venmo - Custom Button</string>
 				<string>PayPal - Custom Button</string>
 				<string>Apple Pay - PassKit</string>
 				<string>Drop In</string>
-				<string>UI Components</string>
-				<string>Credit Cards - 3D Secure</string>
 				<string>3D Secure Payment Flow</string>
 				<string>Combined - Custom Button</string>
 				<string>Fraud Protection - BTDataCollector</string>
@@ -43,21 +37,15 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>BraintreeDemoDropInLegacyViewController</string>
 				<string>BraintreeDemoPayPalForceFuturePaymentViewController</string>
 				<string>BraintreeDemoPayPalBillingAgreementViewController</string>
 				<string>BraintreeDemoPayPalScopesViewController</string>
 				<string>BraintreeDemoPayPalOneTimePaymentViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
-				<string>BraintreeDemoBTPaymentButtonViewController</string>
-				<string>BraintreeDemoBTUIPayPalButtonViewController</string>
-				<string>BraintreeDemoBTUIVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomPayPalButtonViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
 				<string>BraintreeDemoDropInViewController</string>
-				<string>BraintreeDemoUIWidgetsViewController</string>
-				<string>BraintreeDemoThreeDSecureViewController</string>
 				<string>BraintreeDemoThreeDSecurePaymentFlowViewController</string>
 				<string>BraintreeDemoCustomMultiPayViewController</string>
 				<string>BraintreeDemoBTDataCollectorViewController</string>
@@ -191,32 +179,6 @@
 				<string>Required</string>
 				<string>Optional</string>
 			</array>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>UX</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>DefaultValue</key>
-			<true/>
-			<key>Title</key>
-			<string>Modal Presentation</string>
-			<key>Key</key>
-			<string>BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Coinbase Disabled</string>
-			<key>Key</key>
-			<string>BraintreeDemoCoinbaseDisabledDefaultsKey</string>
-			<key>DefaultValue</key>
-			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>

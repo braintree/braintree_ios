@@ -58,17 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, copy) NSString *phoneNumber;
 
-/**
- 
- Optional. First name associated with the address
- */
-@property (nonatomic, nullable, copy) NSString *firstName DEPRECATED_MSG_ATTRIBUTE("Use givenName instead.");
-
-/**
- Optional. Last name associated with the address
- */
-@property (nonatomic, nullable, copy) NSString *lastName DEPRECATED_MSG_ATTRIBUTE("Use surname instead.");
-
 @end
 
 NS_ASSUME_NONNULL_END

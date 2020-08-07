@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "4.34.0"
+  s.version          = "5.0.0"
   s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -17,16 +17,15 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/braintree/braintree_ios.git", :tag => s.version.to_s }
   s.social_media_url = "https://twitter.com/braintree"
 
-  s.platform         = :ios, "8.0"
+  s.platform         = :ios, "11.0"
   s.requires_arc     = true
   s.compiler_flags = "-Wall -Werror -Wextra"
 
-  s.default_subspecs = %w[Core Card PayPal UI]
+  s.default_subspecs = %w[Core Card PayPal]
 
   s.subspec "Core" do |s|
     s.source_files  = "BraintreeCore/**/*.{h,m}"
     s.public_header_files = "BraintreeCore/Public/*.h"
-    s.weak_frameworks = "Contacts"
   end
 
   s.subspec "Apple-Pay" do |s|
@@ -63,32 +62,12 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/PayPalDataCollector"
   end
 
-  s.subspec "UI" do |s|
-    s.source_files  = "BraintreeUI/**/*.{h,m}"
-    s.public_header_files = "BraintreeUI/Public/*.h"
-    s.frameworks = "UIKit"
-    s.resource_bundles = {
-      "Braintree-UI-Localization" => ["BraintreeUI/Localization/*.lproj"],
-      "Braintree-Drop-In-Localization" => ["BraintreeUI/Drop-In/Localization/*.lproj"] }
-    s.dependency "Braintree/Card"
-    s.dependency "Braintree/Core"
-  end
-
   s.subspec "UnionPay" do |s|
     s.source_files  = "BraintreeUnionPay/**/*.{h,m}"
     s.public_header_files = "BraintreeUnionPay/Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/Core"
-  end
-
-  s.subspec "3D-Secure" do |s|
-    s.source_files = "Braintree3DSecure/**/*.{h,m}"
-    s.public_header_files = "Braintree3DSecure/Public/*.h"
-    s.frameworks = "UIKit"
-    s.dependency "Braintree/Card"
-    s.dependency "Braintree/Core"
-    s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree3DSecure/Localization/*.lproj" }
   end
 
   s.subspec "PayPalOneTouch" do |s|
