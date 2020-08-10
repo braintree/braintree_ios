@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.35.0 (2020-08-10)
 * Update CardinalMobile.framework to v2.2.3-1
 * Add `expirationMonth` and `expirationYear` to `BTCardNonce`
 * Update PPDataCollector
