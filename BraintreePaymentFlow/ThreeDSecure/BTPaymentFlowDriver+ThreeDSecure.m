@@ -73,7 +73,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-
+            
             if (error) {
                 // Provide more context for card validation error when status code 422
                 if ([error.domain isEqualToString:BTHTTPErrorDomain] &&
