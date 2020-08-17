@@ -51,6 +51,8 @@
     [NSLayoutConstraint activateConstraints:@[
         [verifyNewCardButton.topAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.topAnchor],
         [verifyNewCardButton.centerXAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.centerXAnchor],
+        [verifyNewCardButton.leadingAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.leadingAnchor],
+        [verifyNewCardButton.trailingAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.trailingAnchor],
         [self.callbackCountLabel.topAnchor constraintEqualToAnchor:verifyNewCardButton.bottomAnchor constant:20.0],
         [self.callbackCountLabel.centerXAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.centerXAnchor]
     ]];
@@ -174,6 +176,11 @@
 #pragma mark BTThreeDSecureRequestDelegate
 
 - (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {
+    // Optionally inspect the result and prepare UI if a challenge is required
+    next();
+}
+
+- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request lookupResult:(__unused BTThreeDSecureResult *)result next:(void (^)(void))next {
     // Optionally inspect the result and prepare UI if a challenge is required
     next();
 }

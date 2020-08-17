@@ -10,6 +10,7 @@
 #import "BTThreeDSecureAdditionalInformation.h"
 #import "BTThreeDSecureLookup.h"
 #import "BTThreeDSecureV1UICustomization.h"
+#import "BTThreeDSecureResult.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -123,6 +124,11 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
  Use this to do any UI preparation or custom lookup result handling. Use the `next()` callback to continue the flow.
  */
 - (void)onLookupComplete:(BTThreeDSecureRequest *)request result:(BTThreeDSecureLookup *)result next:(void(^)(void))next;
+
+@optional
+
+// TODO: - Replace the old `onLookupComplete` with this method. (Need to figure out the best way to do this, since it will break the demo app's Drop-in integration.)
+- (void)onLookupComplete:(BTThreeDSecureRequest *)request lookupResult:(BTThreeDSecureResult *)result next:(void(^)(void))next;
 
 @end
 

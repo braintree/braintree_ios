@@ -1,48 +1,45 @@
 import XCTest
 
 class BTThreeDSecureLookup_Tests: XCTestCase {
-    func testLookup_initializesAllProperties() {
-        let lookupBody = [
-                "acsUrl": "http://acsUrl.com",
-                "pareq": "paReqField",
-                "md": "mdField",
-                "termUrl": "http://termUrl.com",
+    func testInitWithJSON_whenFieldsArePresent() {
+        let jsonString =
+            """
+            {
+                "acsUrl": "www.someAcsUrl.com",
+                "md": "someMd",
+                "pareq": "somePareq",
+                "termUrl": "www.someTermUrl.com",
                 "threeDSecureVersion": "2.1.0",
-                "transactionId": "transactionIdField"
-            ] as [String : Any]
-        let lookupJSON = BTJSON(value: lookupBody)
+                "transactionId": "someTransactionId"
+            }
+            """
 
-        guard let lookup = BTThreeDSecureLookup(json: lookupJSON) else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(lookup.paReq, "paReqField")
-        XCTAssertEqual(lookup.acsURL, URL(string: "http://acsUrl.com"))
-        XCTAssertEqual(lookup.md, "mdField")
-        XCTAssertEqual(lookup.termURL, URL(string: "http://termUrl.com"))
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let lookup = BTThreeDSecureLookup(json: json)
+
+        XCTAssertEqual(lookup.acsURL, URL(string: "www.someAcsUrl.com"))
+        XCTAssertEqual(lookup.md, "someMd")
+        XCTAssertEqual(lookup.paReq, "somePareq")
+        XCTAssertEqual(lookup.termURL, URL(string: "www.someTermUrl.com"))
         XCTAssertEqual(lookup.threeDSecureVersion, "2.1.0")
-        XCTAssertEqual(lookup.transactionId, "transactionIdField")
+        XCTAssertEqual(lookup.transactionId, "someTransactionId")
         XCTAssertTrue(lookup.isThreeDSecureVersion2)
+        XCTAssertTrue(lookup.requiresUserAuthentication)
     }
 
-    func testLookup_initializesWithNilProperties() {
-        let lookupBody = [
-            "pareq": "paReqField",
-            "md": "mdField",
-            "termUrl": "http://termUrl.com",
-            "transactionId": "transactionIdField",
-            ] as [String : Any]
-        let lookupJSON = BTJSON(value: lookupBody)
+    func testInitWithJSON_whenFieldsAreMissing() {
+        let jsonString = "{ }"
 
-        guard let lookup = BTThreeDSecureLookup(json: lookupJSON) else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(lookup.paReq, "paReqField")
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let lookup = BTThreeDSecureLookup(json: json)
+
         XCTAssertNil(lookup.acsURL)
-        XCTAssertEqual(lookup.md, "mdField")
-        XCTAssertEqual(lookup.termURL, URL(string: "http://termUrl.com"))
+        XCTAssertNil(lookup.md)
+        XCTAssertNil(lookup.paReq)
+        XCTAssertNil(lookup.termURL)
         XCTAssertNil(lookup.threeDSecureVersion)
-        XCTAssertEqual(lookup.transactionId, "transactionIdField")
+        XCTAssertNil(lookup.transactionId)
+        XCTAssertFalse(lookup.isThreeDSecureVersion2)
+        XCTAssertFalse(lookup.requiresUserAuthentication)
     }
 }

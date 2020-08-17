@@ -6,13 +6,20 @@ class BTThreeDSecureBrowserSwitchHelper_Tests: XCTestCase {
 
         let request = BTThreeDSecureRequest()
         request.versionRequested = .version1
-        
-        let lookupResult = BTThreeDSecureLookup()
-        lookupResult.acsURL = URL(string: "https://acs.com")!
-        lookupResult.threeDSecureVersion = "1.0"
-        lookupResult.paReq = "pa.req"
-        lookupResult.md = "m d"
-        lookupResult.termURL = URL(string: "https://terms.com")!
+
+        let jsonString =
+            """
+            {
+                "acsUrl": "https://acs.com",
+                "md": "m d",
+                "pareq": "pa.req",
+                "termUrl": "https://terms.com",
+                "threeDSecureVersion": "1.0",
+            }
+            """
+
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let lookupResult = BTThreeDSecureLookup(json: json)
                 
         let actualURL = BTThreeDSecureV1BrowserSwitchHelper.url(withScheme: "com.braintreepayments.Demo.payments",
                                                                 assetsURL: "https://assets.com",
@@ -41,12 +48,19 @@ class BTThreeDSecureBrowserSwitchHelper_Tests: XCTestCase {
         v1UICustomization.redirectDescription = "description text"
         request.v1UICustomization = v1UICustomization
         
-        let lookupResult = BTThreeDSecureLookup()
-        lookupResult.acsURL = URL(string: "https://acs.com")!
-        lookupResult.threeDSecureVersion = "1.0"
-        lookupResult.paReq = "pa.req"
-        lookupResult.md = "m d"
-        lookupResult.termURL = URL(string: "https://terms.com")!
+        let jsonString =
+            """
+            {
+                "acsUrl": "https://acs.com",
+                "md": "m d",
+                "pareq": "pa.req",
+                "termUrl": "https://terms.com",
+                "threeDSecureVersion": "1.0",
+            }
+            """
+
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let lookupResult = BTThreeDSecureLookup(json: json)
         
         let actualURL = BTThreeDSecureV1BrowserSwitchHelper.url(withScheme: "com.braintreepayments.Demo.payments",
                                                                 assetsURL: "https://assets.com",

@@ -8,7 +8,7 @@
 #endif
 #import "BTPaymentFlowDriver_Internal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
-#import "BTThreeDSecureResult.h"
+#import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureRequest.h"
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
@@ -23,7 +23,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 #pragma mark - ThreeDSecure Lookup
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
-                       completion:(void (^)(BTThreeDSecureLookup *threeDSecureResult, NSError *error))completionBlock {
+                       completion:(void (^)(BTThreeDSecureResult  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *error) {
         if (error) {
             completionBlock(nil, error);
@@ -73,42 +73,37 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+            
+            if (error) {
+                // Provide more context for card validation error when status code 422
+                if ([error.domain isEqualToString:BTHTTPErrorDomain] &&
+                    error.code == BTHTTPErrorCodeClientError &&
+                    ((NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey]).statusCode == 422) {
 
-                      if (error) {
-                          // Provide more context for card validation error when status code 422
-                          if ([error.domain isEqualToString:BTHTTPErrorDomain] &&
-                              error.code == BTHTTPErrorCodeClientError &&
-                              ((NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey]).statusCode == 422) {
+                    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+                    BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
 
-                              NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
-                              BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
+                    if ([errorBody[@"error"][@"message"] isString]) {
+                        userInfo[NSLocalizedDescriptionKey] = [errorBody[@"error"][@"message"] asString];
+                    }
+                    if ([errorBody[@"threeDSecureInfo"] isObject]) {
+                        userInfo[BTThreeDSecureFlowInfoKey] = [errorBody[@"threeDSecureInfo"] asDictionary];
+                    }
+                    if ([errorBody[@"error"] isObject]) {
+                        userInfo[BTThreeDSecureFlowValidationErrorsKey] = [errorBody[@"error"] asDictionary];
+                    }
 
-                              if ([errorBody[@"error"][@"message"] isString]) {
-                                  userInfo[NSLocalizedDescriptionKey] = [errorBody[@"error"][@"message"] asString];
-                              }
-                              if ([errorBody[@"threeDSecureInfo"] isObject]) {
-                                  userInfo[BTThreeDSecureFlowInfoKey] = [errorBody[@"threeDSecureInfo"] asDictionary];
-                              }
-                              if ([errorBody[@"error"] isObject]) {
-                                  userInfo[BTThreeDSecureFlowValidationErrorsKey] = [errorBody[@"error"] asDictionary];
-                              }
+                    error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                code:BTThreeDSecureFlowErrorTypeFailedLookup
+                                            userInfo:userInfo];
+                }
 
-                              error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
-                                                          code:BTThreeDSecureFlowErrorTypeFailedLookup
-                                                      userInfo:userInfo];
-                          }
+                completionBlock(nil, error);
+                return;
+            }
 
-                          completionBlock(nil, error);
-                          return;
-                      }
-
-                      BTJSON *lookupJSON = body[@"lookup"];
-
-                      BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] initWithJSON:lookupJSON];
-                      lookup.threeDSecureResult = [[BTThreeDSecureResult alloc] initWithJSON:body];
-
-                      completionBlock(lookup, nil);
-                  }];
+            completionBlock([[BTThreeDSecureResult alloc] initWithJSON:body], nil);
+        }];
     }];
 }
 
@@ -161,22 +156,23 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
     }];
 }
 
-- (void)initializeChallengeWithLookupResponse:(NSString *)lookupResponse request:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
+- (void)initializeChallengeWithLookupResponse:(NSString *)lookupResponse
+                                      request:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request
+                                   completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
     [self setupPaymentFlow:request completion:completionBlock];
-    BTJSON *jsonResponse = [[BTJSON alloc] initWithData:[lookupResponse dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO]];
-    BTJSON *lookupJSON = jsonResponse[@"lookup"];
 
-    BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] initWithJSON:lookupJSON];
-    lookup.threeDSecureResult = [[BTThreeDSecureResult alloc] initWithJSON:jsonResponse];
+    BTJSON *jsonResponse = [[BTJSON alloc] initWithData:[lookupResponse dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO]];
+    BTThreeDSecureResult *lookupResult = [[BTThreeDSecureResult alloc] initWithJSON:jsonResponse];
 
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
     threeDSecureRequest.paymentFlowDriverDelegate = self;
+
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
         if (configurationError) {
             [threeDSecureRequest.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
             return;
         }
-        [threeDSecureRequest processLookupResult:lookup configuration:configuration];
+        [threeDSecureRequest processLookupResult:lookupResult configuration:configuration];
     }];
 }
 

@@ -2,117 +2,115 @@ import XCTest
 
 class BTThreeDSecureResult_Tests: XCTestCase {
 
-    func testResult_threeDSecureV2Success_initializesAllProperties() {
-        let resultBody = [
-            "paymentMethod": [
-                "type": "credit_card",
-                "nonce": "fake-nonce",
-                "threeDSecureInfo": [
-                    "liabilityShifted": true,
-                    "liabilityShiftPossible": true
-                ],
-            ],
-            "threeDSecureInfo": [
-                "liabilityShifted": true,
-                "liabilityShiftPossible": true
-            ]
-        ] as [String : Any]
+    func testInitWithJSON_whenLookupSucceeds() {
+        let jsonString =
+            """
+            {
+                "lookup": {
+                    "acsUrl": "www.someAcsUrl.com",
+                    "md": "someMd",
+                    "pareq": "somePareq",
+                    "termUrl": "www.someTermUrl.com",
+                    "threeDSecureVersion": "2.1.0",
+                    "transactionId": "someTransactionId"
+                },
+                "paymentMethod": {
+                    "nonce": "someLookupNonce",
+                    "threeDSecureInfo": {
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": false
+                    }
+                }
+            }
+            """
 
-        let resultJSON = BTJSON(value: resultBody)
-
-        guard let result = BTThreeDSecureResult(json: resultJSON) else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertTrue(result.success)
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let result = BTThreeDSecureResult(json: json)
+        XCTAssertEqual(result.lookup?.acsURL, URL(string: "www.someAcsUrl.com")!)
+        XCTAssertEqual(result.lookup?.md, "someMd")
+        XCTAssertEqual(result.lookup?.paReq, "somePareq")
+        XCTAssertEqual(result.lookup?.termURL, URL(string: "www.someTermUrl.com")!)
+        XCTAssertEqual(result.lookup?.threeDSecureVersion, "2.1.0")
+        XCTAssertEqual(result.lookup?.transactionId, "someTransactionId")
+        XCTAssertEqual(result.tokenizedCard?.nonce, "someLookupNonce")
+        XCTAssertTrue(result.tokenizedCard!.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertFalse(result.tokenizedCard!.threeDSecureInfo.liabilityShifted)
         XCTAssertNil(result.errorMessage)
-        XCTAssertTrue(result.liabilityShifted)
-        XCTAssertTrue(result.liabilityShiftPossible)
-        XCTAssertNotNil(result.tokenizedCard)
     }
 
-    func testResult_threeDSecureV1Success_initializesAllProperties() {
-        let resultBody = [
-            "paymentMethod": [
-                "type": "CreditCard",
-                "nonce": "f648f33b-8b61-0855-52bd-a78d50fc977e",
-                "threeDSecureInfo": [
-                    "liabilityShifted": true,
-                    "liabilityShiftPossible": true
-                ]
-            ],
-            "threeDSecureInfo": [
-                "liabilityShifted": true,
-                "liabilityShiftPossible": true
-            ],
-            "success": true
-        ] as [String : Any]
+    func testInitWithJSON_whenLookupErrors() {
+        let jsonString =
+            """
+            {
+                "error": {
+                    "message": "Record not found"
+                }
+            }
+            """
 
-        let resultJSON = BTJSON(value: resultBody)
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let result = BTThreeDSecureResult(json: json)
+        XCTAssertNil(result.lookup)
+        XCTAssertNil(result.tokenizedCard)
+        XCTAssertEqual(result.errorMessage, "Record not found")
+    }
 
-        guard let result = BTThreeDSecureResult(json: resultJSON) else {
-            XCTFail()
-            return
-        }
+    func testInitWithJSON_whenAuthenticationSucceeds() {
+        let jsonString =
+            """
+            {
+                "paymentMethod": {
+                    "nonce": "someLookupNonce",
+                    "threeDSecureInfo": {
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": false
+                    }
+                }
+            }
+            """
 
-        XCTAssertTrue(result.success)
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let result = BTThreeDSecureResult(json: json)
+        XCTAssertNil(result.lookup)
+        XCTAssertEqual(result.tokenizedCard?.nonce, "someLookupNonce")
+        XCTAssertTrue(result.tokenizedCard!.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertFalse(result.tokenizedCard!.threeDSecureInfo.liabilityShifted)
         XCTAssertNil(result.errorMessage)
-        XCTAssertTrue(result.liabilityShifted)
-        XCTAssertTrue(result.liabilityShiftPossible)
-        XCTAssertNotNil(result.tokenizedCard)
     }
 
-    func testResult_threeDSecureV2Error_initializesProperties() {
-        let resultBody = [
-            "errors": [
-                [
-                    "message": "error_message"
+    func testInitWithJSON_whenAuthenticationErrors_v1() {
+        let jsonString =
+            """
+            {
+                "error": {
+                    "message": "An unexpected error occurred"
+                }
+            }
+            """
+
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let result = BTThreeDSecureResult(json: json)
+        XCTAssertNil(result.lookup)
+        XCTAssertNil(result.tokenizedCard)
+        XCTAssertEqual(result.errorMessage, "An unexpected error occurred")
+    }
+
+    func testInitWithJSON_whenAuthenticationErrors_v2() {
+        let jsonString =
+            """
+            {
+                "errors": [
+                    {
+                        "message": "An unexpected error occurred"
+                    }
                 ]
-            ],
-            "threeDSecureInfo": [
-                "liabilityShiftPossible": true,
-                "liabilityShifted" : false
-            ],
-        ] as [String : Any]
+            }
+            """
 
-        let resultJSON = BTJSON(value: resultBody)
-
-        guard let result = BTThreeDSecureResult(json: resultJSON) else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertFalse(result.success)
-        XCTAssertEqual(result.errorMessage, "error_message")
-        XCTAssertFalse(result.liabilityShifted)
-        XCTAssertTrue(result.liabilityShiftPossible)
+        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
+        let result = BTThreeDSecureResult(json: json)
+        XCTAssertNil(result.lookup)
         XCTAssertNil(result.tokenizedCard)
-    }
-
-    func testResult_threeDSecureV1Error__initializesProperties() {
-        let resultBody = [
-            "error": [
-                "message": "error_message",
-            ],
-            "success": false,
-            "threeDSecureInfo": [
-                "liabilityShiftPossible": true,
-                "liabilityShifted" : false
-            ],
-        ] as [String : Any]
-
-        let resultJSON = BTJSON(value: resultBody)
-
-        guard let result = BTThreeDSecureResult(json: resultJSON) else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertFalse(result.success)
-        XCTAssertEqual(result.errorMessage, "error_message")
-        XCTAssertFalse(result.liabilityShifted)
-        XCTAssertTrue(result.liabilityShiftPossible)
-        XCTAssertNil(result.tokenizedCard)
+        XCTAssertEqual(result.errorMessage, "An unexpected error occurred")
     }
 }

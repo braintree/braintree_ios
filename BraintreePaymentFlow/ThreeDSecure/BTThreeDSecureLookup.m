@@ -1,4 +1,4 @@
-#import "BTThreeDSecureLookup.h"
+#import "BTThreeDSecureLookup_Internal.h"
 
 @implementation BTThreeDSecureLookup
 

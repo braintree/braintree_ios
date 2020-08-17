@@ -72,11 +72,14 @@ import XCTest
 }
 
 @objc class MockThreeDSecureRequestDelegate : NSObject, BTThreeDSecureRequestDelegate {
-    var result: BTThreeDSecureLookup?
     var lookupCompleteExpectation : XCTestExpectation?
 
     func onLookupComplete(_ request: BTThreeDSecureRequest, result: BTThreeDSecureLookup, next: @escaping () -> Void) {
-        self.result = result
+        lookupCompleteExpectation?.fulfill()
+        next()
+    }
+
+    func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult: BTThreeDSecureResult, next: @escaping () -> Void) {
         lookupCompleteExpectation?.fulfill()
         next()
     }

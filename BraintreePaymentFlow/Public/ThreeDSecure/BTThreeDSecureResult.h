@@ -1,15 +1,12 @@
-#import <Foundation/Foundation.h>
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
 #if __has_include("BraintreeCard.h")
 #import "BTCardNonce.h"
 #else
 #import <BraintreeCard/BTCardNonce.h>
 #endif
 #import "BTPaymentFlowResult.h"
+#import "BTThreeDSecureLookup.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  The result of a 3D Secure payment flow
@@ -19,13 +16,18 @@
 /**
  The `BTCardNonce` resulting from the 3D Secure flow
  */
-@property (nonatomic, strong) BTCardNonce *tokenizedCard;
+@property (nonatomic, nullable, readonly, strong) BTCardNonce *tokenizedCard;
 
 /**
- Initialize a BTThreeDSecureResult
- 
- @param JSON BTJSON used to initialize the BTThreeDSecureResult
+ The result of a 3D Secure lookup. Contains liability shift and challenge information.
  */
-- (instancetype)initWithJSON:(BTJSON *)JSON;
+@property (nonatomic, nullable, readonly, strong) BTThreeDSecureLookup *lookup;
+
+/**
+ The error message when the 3D Secure flow is unsuccessful
+ */
+@property (nonatomic, nullable, readonly, copy) NSString *errorMessage;
 
 @end
+
+NS_ASSUME_NONNULL_END

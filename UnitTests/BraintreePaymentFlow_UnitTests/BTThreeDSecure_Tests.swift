@@ -23,366 +23,15 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         super.tearDown()
     }
 
-    // MARK: - ThreeDSecure Lookup Tests
-
-    func testLookupThreeDSecure_isThreeDSecureVersion2() {
-        let responseBody = [
-            "paymentMethod": [
-                "consumed": false,
-                "details": [
-                    "cardType": "Visa",
-                    "lastTwo": "02",
-                ],
-                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
-                "threeDSecureInfo": [
-                    "enrolled": "Y",
-                    "liabilityShiftPossible": true,
-                    "liabilityShifted": true,
-                    "status": "authenticate_successful",
-                ],
-                "type": "CreditCard",
-            ],
-            "success": true,
-            "threeDSecureInfo":     [
-                "liabilityShiftPossible": true,
-                "liabilityShifted": true,
-            ],
-            "lookup": [
-                "acsUrl": "http://example.com",
-                "pareq": "",
-                "md": "",
-                "termUrl": "http://example.com",
-                "threeDSecureVersion" : "2.1.0"
-            ]
-            ] as [String : Any]
-        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-
-        let expectation = self.expectation(description: "willCallCompletion")
-
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertTrue(lookup!.isThreeDSecureVersion2)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 3, handler: nil)
-    }
-
-    func testLookupThreeDSecure_lookupResultHasErrors() {
-        let errors = [["message" : "error description1"], ["message" : "error description2"]]
-        let responseBody = [
-            "paymentMethod": [
-                "consumed": false,
-                "details": [
-                    "cardType": "Visa",
-                    "lastTwo": "02",
-                ],
-                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
-                "threeDSecureInfo": [
-                    "enrolled": "Y",
-                    "liabilityShiftPossible": true,
-                    "liabilityShifted": true,
-                    "status": "authenticate_successful",
-                ],
-                "type": "CreditCard",
-            ],
-            "errors" :
-                errors
-            ,
-            "success": true,
-            "threeDSecureInfo":     [
-                "liabilityShiftPossible": true,
-                "liabilityShifted": true,
-            ],
-            "lookup": [
-                "acsUrl": "http://example.com",
-                "pareq": "",
-                "md": "",
-                "termUrl": "http://example.com",
-                "threeDSecureVersion" : "2.1.0"
-            ]
-            ] as [String : Any]
-        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-
-        let expectation = self.expectation(description: "willCallCompletion")
-
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
-            XCTAssert(isANonce(tokenizedCard!.nonce))
-            XCTAssertEqual(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.errorMessage, "error description1")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 3, handler: nil)
-    }
-
-    func testLookupThreeDSecure_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
-        mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
-
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-        
-        let expectation = self.expectation(description: "lookup fails with errors")
-
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-
-    func testLookupThreeDSecure_whenPostLookupWithNonceFails_callsBackWithError() {
-        mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 0, userInfo: nil)
-
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-
-        let expectation = self.expectation(description: "Post fails with error.")
-
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-
-    func testLookupThreeDSecure_whenPostLookupWithNonceFails_errorCode422AndErrorDescriptionParams() {
-        let url = URL(fileURLWithPath: "example.com")
-        let response = HTTPURLResponse(url: url, statusCode: 422, httpVersion: nil, headerFields: nil)
-
-        let errorBody = [
-            "error" : [
-                "message" : "testMessage"
-            ],
-            "threeDSecureInfo" : [
-                "testObject" : [
-                    "testDict" : "testValue"
-                ]
-            ]
-        ] as [String : Any]
-
-        let userInfo = [
-            BTHTTPURLResponseKey: response,
-            BTHTTPJSONResponseBodyKey: BTJSON(value: errorBody)
-        ] as [String : AnyObject]
-
-        mockAPIClient.cannedResponseError = NSError(domain:BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: userInfo)
-
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-
-        let expectation = self.expectation(description: "Post fails with error code 422.")
-
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            let e = error! as NSError
-
-            XCTAssertEqual(e.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(e.code, BTThreeDSecureFlowErrorType.failedLookup.rawValue)
-            XCTAssertEqual(e.userInfo[NSLocalizedDescriptionKey] as? String, "testMessage")
-            XCTAssertEqual(e.userInfo["com.braintreepayments.BTThreeDSecureFlowValidationErrorsKey"] as? [String : String],
-                           ["message" : "testMessage"])
-            XCTAssertEqual(e.userInfo["com.braintreepayments.BTThreeDSecureFlowInfoKey"] as? [String : [String : String]],
-                           ["testObject" : ["testDict" : "testValue"]])
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-
     // MARK: - ThreeDSecure Request Tests
 
     func testThreeDSecureRequest_defaultsToV1() {
         XCTAssertEqual(threeDSecureRequest.versionRequested, .version1)
     }
 
-    func testThreeDSecureRequest_sendsAllParameters() {
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
 
-        let expectation = self.expectation(description: "willCallCompletion")
-
-        threeDSecureRequest.amount = 9.97
-        threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.mobilePhoneNumber = "5151234321"
-        threeDSecureRequest.email = "tester@example.com"
-        threeDSecureRequest.shippingMethod = "03"
-
-        let billingAddress = BTThreeDSecurePostalAddress()
-        billingAddress.givenName = "Joe"
-        billingAddress.surname = "Guy"
-        billingAddress.phoneNumber = "12345678"
-        billingAddress.streetAddress = "555 Smith St."
-        billingAddress.extendedAddress = "#5"
-        billingAddress.line3 = "Suite A"
-        billingAddress.locality = "Oakland"
-        billingAddress.region = "CA"
-        billingAddress.countryCodeAlpha2 = "US"
-        billingAddress.postalCode = "54321"
-        threeDSecureRequest.billingAddress = billingAddress
-
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
-            let additionalInfo = self.mockAPIClient.lastPOSTParameters!["additionalInfo"] as! Dictionary<String, String>
-            XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
-            XCTAssertEqual(additionalInfo["email"], "tester@example.com")
-            XCTAssertEqual(additionalInfo["shippingMethod"], "03")
-
-            XCTAssertEqual(additionalInfo["billingGivenName"], "Joe")
-            XCTAssertEqual(additionalInfo["billingSurname"], "Guy")
-            XCTAssertEqual(additionalInfo["billingPhoneNumber"], "12345678")
-            XCTAssertEqual(additionalInfo["billingLine1"], "555 Smith St.")
-            XCTAssertEqual(additionalInfo["billingLine2"], "#5")
-            XCTAssertEqual(additionalInfo["billingLine3"], "Suite A")
-            XCTAssertEqual(additionalInfo["billingCity"], "Oakland")
-            XCTAssertEqual(additionalInfo["billingState"], "CA")
-            XCTAssertEqual(additionalInfo["billingCountryCode"], "US")
-            XCTAssertEqual(additionalInfo["billingPostalCode"], "54321")
-
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 3, handler: nil)
-    }
 
     // MARK: - ThreeDSecure Authentication Tests
-
-    func testLookupThreeDSecure_withCardThatDoesntRequireAuthentication_callsCompletionWithACard() {
-        let responseBody = [
-            "paymentMethod": [
-                "consumed": false,
-                "description": "ending in 02",
-                "details": [
-                    "cardType": "Visa",
-                    "lastTwo": "02",
-                ],
-                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
-                "threeDSecureInfo": [
-                    "enrolled": "Y",
-                    "liabilityShiftPossible": true,
-                    "liabilityShifted": true,
-                    "status": "authenticate_successful",
-                ],
-                "type": "CreditCard",
-            ],
-            "success": true,
-            "threeDSecureInfo":     [
-                "liabilityShiftPossible": true,
-                "liabilityShifted": true,
-            ]
-            ] as [String : Any]
-        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-
-        let expectation = self.expectation(description: "willCallCompletion")
-        
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertFalse(lookup!.requiresUserAuthentication())
-            let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
-            XCTAssert(isANonce(tokenizedCard!.nonce))
-            XCTAssertEqual(tokenizedCard!.nonce, "f689056d-aee1-421e-9d10-f2c9b34d4d6f")
-            XCTAssertNil(error)
-            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
-            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.wasVerified)
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 3, handler: nil)
-    }
-    
-    func testLookupThreeDSecure_withCardThatRequiresAuthentication_lookupResultRequiresAuthentication() {
-        let responseBody = [
-            "paymentMethod": [
-                "consumed": false,
-                "description": "ending in 02",
-                "details": [
-                    "cardType": "Visa",
-                    "lastTwo": "02",
-                ],
-                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
-                "threeDSecureInfo": [
-                    "enrolled": "Y",
-                    "liabilityShiftPossible": true,
-                    "liabilityShifted": true,
-                    "status": "authenticate_successful",
-                ],
-                "type": "CreditCard",
-            ],
-            "success": true,
-            "threeDSecureInfo":     [
-                "liabilityShiftPossible": true,
-                "liabilityShifted": true,
-            ],
-            "lookup": [
-                "acsUrl": "http://example.com",
-                "pareq": "",
-                "md": "",
-                "termUrl": "http://example.com"
-            ]
-            ] as [String : Any]
-        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-        
-        let expectation = self.expectation(description: "willCallCompletion")
-        
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertTrue(lookup!.requiresUserAuthentication())
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 3, handler: nil)
-    }
-
-    func testVerification_whenCardIsNotEnrolled_returnsCardWithNewNonceAndCorrectLiabilityShiftInformation() {
-        let responseBody = [
-            "paymentMethod": [
-                "consumed": false,
-                "description": "ending in 02",
-                "details": [
-                    "cardType": "Visa",
-                    "lastTwo": "02",
-                ],
-                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
-                "threeDSecureInfo": [
-                    "enrolled": "N",
-                    "liabilityShiftPossible": false,
-                    "liabilityShifted": false,
-                    "status": "authenticate_successful_issuer_not_participating",
-                ],
-                "type": "CreditCard",
-            ],
-            "success": true,
-            "threeDSecureInfo":     [
-                "liabilityShiftPossible": false,
-                "liabilityShifted": false,
-            ]
-            ] as [String : Any]
-        
-        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-        
-        let expectation = self.expectation(description: "willCallCompletion")
-        
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            guard let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard else {
-                XCTFail()
-                return
-            }
-            XCTAssertTrue(isANonce(tokenizedCard.nonce))
-            XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
-            XCTAssertNil(error)
-            XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
-            XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.wasVerified)
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 3, handler: nil)
-    }
 
     func testStartPayment_displaysSafariViewControllerWhenAvailable_andRequiresAuthentication() {
         BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
@@ -523,20 +172,15 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
-            guard let result = result as? BTThreeDSecureResult else {
-                XCTFail()
-                return
-            }
-            guard let tokenizedCard = result.tokenizedCard else {
-                XCTFail()
-                return
-            }
+            guard let result = result as? BTThreeDSecureResult else { XCTFail(); return }
+            guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
+
             XCTAssertTrue(isANonce(tokenizedCard.nonce))
             XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
+            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShifted)
+            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertTrue(tokenizedCard.threeDSecureInfo.wasVerified)
             XCTAssertNil(error)
-            XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShifted)
-            XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertTrue(result.tokenizedCard.threeDSecureInfo.wasVerified)
             expectation.fulfill()
         }
 
@@ -618,7 +262,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
-    func testStartPayment_returnsFailedAuthenticationError_whenSuccessFalse() {
+    func testStartPayment_returnsFailedAuthenticationError_whenErrorReturnedInURL() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "assetsUrl": "http://assets.example.com",
             ])
@@ -644,7 +288,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
         
         paymentFinishedExpectation = self.expectation(description: "Start payment expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,%22description%22:%22ending+in+02%22,%22consumed%22:false,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true,%22status%22:%22authenticate_successful%22,%22enrolled%22:%22Y%22%7D,%22details%22:%7B%22lastTwo%22:%2202%22,%22lastFour%22:%220002%22,%22cardType%22:%22Visa%22%7D,%22bin_data%22:%7B%22prepaid%22:%22Unknown%22,%22healthcare%22:%22Unknown%22,%22debit%22:%22Unknown%22,%22durbin_regulated%22:%22Unknown%22,%22commercial%22:%22Unknown%22,%22payroll%22:%22Unknown%22,%22issuing_bank%22:%22Unknown%22,%22country_of_issuance%22:%22Unknown%22,%22product_id%22:%22Unknown%22%7D%7D,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true%7D,%22success%22:false%7D")!)
+        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22threeDSecureInfo%22:%7B%22liabilityShifted%22:false,%22liabilityShiftPossible%22:true%7D,%22error%22:%7B%22message%22:%22Failed+to+authenticate,+please+try+a+different+form+of+payment.%22%7D,%22success%22:false%7D")!)
         
         waitForExpectations(timeout: 2, handler: nil)
     }
