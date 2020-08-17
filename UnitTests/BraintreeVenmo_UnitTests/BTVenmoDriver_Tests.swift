@@ -621,22 +621,6 @@ class BTVenmoDriver_Tests: XCTestCase {
         return apiClient
     }
 
-    class BTDropInViewControllerTestDelegate : NSObject, BTDropInViewControllerDelegate {
-        var didLoadExpectation: XCTestExpectation
-
-        init(didLoadExpectation: XCTestExpectation) {
-            self.didLoadExpectation = didLoadExpectation
-        }
-
-        @objc func drop(_ viewController: BTDropInViewController, didSucceedWithTokenization paymentMethodNonce: BTPaymentMethodNonce) {}
-
-        @objc func drop(inViewControllerDidCancel viewController: BTDropInViewController) {}
-
-        @objc func drop(inViewControllerDidLoad viewController: BTDropInViewController) {
-            didLoadExpectation.fulfill()
-        }
-    }
-
     func testGotoVenmoInAppStore_opensVenmoAppStoreURL_andSendsAnalyticsEvent() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
@@ -649,50 +633,6 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.absoluteString, "https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.app-store.invoked")
-    }
-
-    // Flaky
-    func pendDropIn_whenVenmoIsNotEnabled_doesNotDisplayVenmoButton() {
-        let apiClient = self.client([:])
-
-        let dropInViewController = BTDropInViewController(apiClient: apiClient)
-        let didLoadExpectation = self.expectation(description: "Drop-in did finish loading")
-
-        // Must be assigned here for a strong reference. The delegate property of the BTDropInViewController is a weak reference.
-        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation)
-        dropInViewController.delegate = testDelegate
-
-        viewController.present(dropInViewController, animated: false, completion: nil)
-
-        self.waitForExpectations(timeout: 5, handler: nil)
-
-        let enabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.enabledPaymentOptions
-        XCTAssertFalse(enabledPaymentOptions.contains("Venmo"))
-    }
-
-    // Flaky
-    func pendDropIn_whenVenmoIsEnabled_displaysVenmoButton() {
-        let json = BTJSON(value: [
-            "payWithVenmo" : ["accessToken" : "access-token"],
-            "merchantId": "merchant_id" ])
-        let apiClient = self.clientWithJson(json)
-
-        let dropInViewController = BTDropInViewController(apiClient: apiClient)
-        let didLoadExpectation = self.expectation(description: "Drop-in did finish loading")
-
-        // Must be assigned here for a strong reference. The delegate property of the BTDropInViewController is a weak reference.
-        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation)
-        
-        dropInViewController.delegate = testDelegate
-
-        dropInViewController.dropInContentView.paymentButton.application = FakeApplication()
-
-        viewController.present(dropInViewController, animated: false, completion: nil)
-
-        self.waitForExpectations(timeout: 5, handler: nil)
-
-        let enabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.enabledPaymentOptions
-        XCTAssertTrue(enabledPaymentOptions.contains("Venmo"))
     }
 }
 

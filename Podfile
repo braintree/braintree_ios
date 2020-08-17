@@ -7,7 +7,6 @@ workspace 'Braintree.xcworkspace'
 target 'Demo' do
   project 'Demo/Demo'
   pod 'InAppSettingsKit', :inhibit_warnings => true
-  pod 'BraintreeDropIn', :podspec => 'BraintreeDropIn.podspec'
 end
 
 abstract_target 'Tests' do
@@ -20,14 +19,4 @@ abstract_target 'Tests' do
   target 'UnitTests'
   target 'IntegrationTests'
   target 'UITests'
-end
-
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    if target.name == "BraintreeDropIn"
-      target.build_configurations.each do |config|
-        config.build_settings['HEADER_SEARCH_PATHS'] = '${PODS_ROOT}/../BraintreeCore/Public ${PODS_ROOT}/../BraintreeCard/Public ${PODS_ROOT}/../BraintreeUnionPay/Public ${PODS_ROOT}/../BraintreePaymentFlow/Public ${PODS_ROOT}/../BraintreePaymentFlow/Public/LocalPayment ${PODS_ROOT}/../BraintreePaymentFlow/Public/ThreeDSecure ${PODS_ROOT}/../BraintreePayPal/Public ${PODS_ROOT}/Headers/Private ${PODS_ROOT}/Headers/Private/BraintreeDropIn ${PODS_ROOT}/Headers/Public'
-      end
-    end
-  end
 end

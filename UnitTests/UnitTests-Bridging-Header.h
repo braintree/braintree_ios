@@ -32,14 +32,11 @@
 #import "FakePayPalClasses.h"
 #import "BTLogger_Internal.h"
 #import "BTFakeHTTP.h"
-#import "BTDropInViewController_Internal.h"
-#import "BTPaymentButton_Internal.h"
 #import "Braintree-Version.h"
 #import "PPDataCollector_Internal.h"
 #import "BTPaymentFlowDriver_Internal.h"
 #import "BTPaymentFlowDriver+LocalPayment_Internal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
-#import "BTDropInUtil.h"
 #import "BTAmericanExpressClient_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
 #import "BTAuthenticationInsight_Internal.h"
@@ -50,7 +47,6 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureLookup_Internal.h"
 
-#import "BTDropInUtil.h"
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>
 #import "BTTestClientTokenFactory.h"

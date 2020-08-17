@@ -14,7 +14,7 @@
 			<key>Key</key>
 			<string>BraintreeDemoSettingsIntegration</string>
 			<key>DefaultValue</key>
-			<string>BraintreeDemoDropInViewController</string>
+			<string>BraintreeDemoCardTokenizationViewController</string>
 			<key>Titles</key>
 			<array>
 				<string>PayPal - Future Payment</string>
@@ -25,7 +25,6 @@
 				<string>Venmo - Custom Button</string>
 				<string>PayPal - Custom Button</string>
 				<string>Apple Pay - PassKit</string>
-				<string>Drop In</string>
 				<string>3D Secure Payment Flow</string>
 				<string>Combined - Custom Button</string>
 				<string>Fraud Protection - BTDataCollector</string>
@@ -45,7 +44,6 @@
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomPayPalButtonViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
-				<string>BraintreeDemoDropInViewController</string>
 				<string>BraintreeDemoThreeDSecurePaymentFlowViewController</string>
 				<string>BraintreeDemoCustomMultiPayViewController</string>
 				<string>BraintreeDemoBTDataCollectorViewController</string>

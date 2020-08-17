@@ -2112,21 +2112,5 @@ class BTPayPalDriver_DropIn_Tests: XCTestCase {
                 "redirectUrl": "fakeURL://"
             ] ])
     }
-    
-    func testDropInViewDelegateSet() {
-        let dropInViewController = BTDropInViewController(apiClient: mockAPIClient)
-
-        var paymentButton : BTPaymentButton? = nil
-        for subView in dropInViewController.view.subviews.first!.subviews.first!.subviews {
-            if let view = subView as? BTPaymentButton {
-                paymentButton = view
-            }
-        }
-        
-        XCTAssertNotNil(paymentButton)
-        XCTAssertNotNil(paymentButton?.viewControllerPresentingDelegate)
-        XCTAssertEqual(paymentButton?.viewControllerPresentingDelegate as? BTDropInViewController, dropInViewController)
-    }
-
 }
 

@@ -1,10 +1,4 @@
 PODS:
-  - BraintreeDropIn (99.99.99-github-master):
-    - BraintreeDropIn/DropIn (= 99.99.99-github-master)
-    - BraintreeDropIn/UIKit (= 99.99.99-github-master)
-  - BraintreeDropIn/DropIn (99.99.99-github-master):
-    - BraintreeDropIn/UIKit
-  - BraintreeDropIn/UIKit (99.99.99-github-master)
   - Expecta (1.0.6)
   - InAppSettingsKit (3.0)
   - OCMock (3.6)
@@ -25,7 +19,6 @@ PODS:
   - xcbeautify (0.8.0)
 
 DEPENDENCIES:
-  - BraintreeDropIn (from `BraintreeDropIn.podspec`)
   - Expecta
   - InAppSettingsKit
   - OCMock
@@ -42,17 +35,7 @@ SPEC REPOS:
     - Specta
     - xcbeautify
 
-EXTERNAL SOURCES:
-  BraintreeDropIn:
-    :podspec: BraintreeDropIn.podspec
-
-CHECKOUT OPTIONS:
-  BraintreeDropIn:
-    :commit: b43cd163a2642aa21be40cac2695d97d25eb176a
-    :git: https://github.com/braintree/braintree-ios-drop-in.git
-
 SPEC CHECKSUMS:
-  BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
   OCMock: 5ea90566be239f179ba766fd9fbae5885040b992
@@ -60,6 +43,6 @@ SPEC CHECKSUMS:
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: 34e667aac66c3357794431c9dd4037808cdab025
 
-PODFILE CHECKSUM: 0899a5cbe36c8a6d97724c491367cfedf94da137
+PODFILE CHECKSUM: e90bb9f30f25b160a932b5ba8d2a8dcd7f9846b4
 
 COCOAPODS: 1.9.3

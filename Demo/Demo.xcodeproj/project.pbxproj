@@ -94,7 +94,6 @@
 		A0988FEE24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */; };
 		A0988FEF24DB44B20095EEEE /* BraintreeDemoPayPalScopesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7024DB44B10095EEEE /* BraintreeDemoPayPalScopesViewController.m */; };
 		A0988FF024DB44B20095EEEE /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */; };
-		A0988FF124DB44B20095EEEE /* BraintreeDemoDropInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7724DB44B10095EEEE /* BraintreeDemoDropInViewController.m */; };
 		A0988FF224DB44B20095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */; };
 		A0988FF324DB44B20095EEEE /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7D24DB44B10095EEEE /* BraintreeDemoPayPalBillingAgreementViewController.m */; };
 		A0988FF424DB44B20095EEEE /* BraintreeDemoAmexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */; };
@@ -342,8 +341,6 @@
 		A0988F7124DB44B10095EEEE /* BraintreeDemoPayPalScopesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalScopesViewController.h; sourceTree = "<group>"; };
 		A0988F7324DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoApplePayPassKitViewController.h; sourceTree = "<group>"; };
 		A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoApplePayPassKitViewController.m; sourceTree = "<group>"; };
-		A0988F7624DB44B10095EEEE /* BraintreeDemoDropInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoDropInViewController.h; sourceTree = "<group>"; };
-		A0988F7724DB44B10095EEEE /* BraintreeDemoDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoDropInViewController.m; sourceTree = "<group>"; };
 		A0988F7924DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoThreeDSecurePaymentFlowViewController.h; sourceTree = "<group>"; };
 		A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoThreeDSecurePaymentFlowViewController.m; sourceTree = "<group>"; };
 		A0988F7C24DB44B10095EEEE /* BraintreeDemoPayPalBillingAgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalBillingAgreementViewController.h; sourceTree = "<group>"; };
@@ -716,7 +713,6 @@
 				A0988F7224DB44B10095EEEE /* Apple Pay - PassKit */,
 				A0988F6524DB44B10095EEEE /* Combined Button - Custom Multi-Pay Button */,
 				A0988F6B24DB44B10095EEEE /* Credit Card Tokenization */,
-				A0988F7524DB44B10095EEEE /* Drop In */,
 				A0988F5C24DB44B10095EEEE /* Fraud Protection - BTDataCollector */,
 				A0988F6224DB44B10095EEEE /* Ideal */,
 				A0988F7B24DB44B10095EEEE /* PayPal - Billing Agreement */,
@@ -811,15 +807,6 @@
 				A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */,
 			);
 			path = "Apple Pay - PassKit";
-			sourceTree = "<group>";
-		};
-		A0988F7524DB44B10095EEEE /* Drop In */ = {
-			isa = PBXGroup;
-			children = (
-				A0988F7624DB44B10095EEEE /* BraintreeDemoDropInViewController.h */,
-				A0988F7724DB44B10095EEEE /* BraintreeDemoDropInViewController.m */,
-			);
-			path = "Drop In";
 			sourceTree = "<group>";
 		};
 		A0988F7824DB44B10095EEEE /* 3D Secure */ = {
@@ -1089,7 +1076,6 @@
 				A0988F9924DB44B20095EEEE /* BTUIUtil.m in Sources */,
 				A0988F9C24DB44B20095EEEE /* BTUICardExpirationValidator.m in Sources */,
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
-				A0988FF124DB44B20095EEEE /* BraintreeDemoDropInViewController.m in Sources */,
 				A0988FB024DB44B20095EEEE /* BTUICardPhoneNumberField.m in Sources */,
 				A0988FB124DB44B20095EEEE /* BTUIPayPalMonogramCardView.m in Sources */,
 				A0988FE224DB44B20095EEEE /* BTUILocalizedString.m in Sources */,
