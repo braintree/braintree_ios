@@ -10,6 +10,7 @@ target 'Demo' do
 end
 
 abstract_target 'Tests' do
+  use_frameworks!
   pod 'Specta', :inhibit_warnings => true
   pod 'Expecta', :inhibit_warnings => true
   pod 'OCMock', :inhibit_warnings => true

@@ -4,11 +4,9 @@ import XCTest
 class BTVenmoDriver_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     var observers : [NSObjectProtocol] = []
-    var viewController : UIViewController!
 
     override func setUp() {
         super.setUp()
-        viewController = UIApplication.shared.windows[0].rootViewController
         mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
@@ -20,10 +18,6 @@ class BTVenmoDriver_Tests: XCTestCase {
     }
 
     override func tearDown() {
-        if viewController.presentedViewController != nil {
-            viewController.dismiss(animated: false, completion: nil)
-        }
-
         for observer in observers { NotificationCenter.default.removeObserver(observer) }
         super.tearDown()
     }

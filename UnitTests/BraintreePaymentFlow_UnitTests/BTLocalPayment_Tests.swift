@@ -308,7 +308,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         var paymentFinishedExpectation: XCTestExpectation? = nil
         driver.startPaymentFlow(localPaymentRequest) { (result, error) in
-            paymentFinishedExpectation!.fulfill()
+            paymentFinishedExpectation?.fulfill()
         }
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
@@ -407,7 +407,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTPaymentFlowDriverErrorDomain)
             XCTAssertEqual(error.code, BTPaymentFlowDriverErrorType.canceled.rawValue)
-            paymentFinishedExpectation!.fulfill()
+//            paymentFinishedExpectation!.fulfill()
         }
 
         waitForExpectations(timeout: 2, handler: nil)
@@ -438,7 +438,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         driver.startPaymentFlow(localPaymentRequest) { (result, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
-            paymentFinishedExpectation!.fulfill()
+//            paymentFinishedExpectation!.fulfill()
         }
 
         waitForExpectations(timeout: 2, handler: nil)

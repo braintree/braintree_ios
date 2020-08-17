@@ -20,9 +20,6 @@
     [self setObject:[m merchantAppId] forKey:@"merchantAppId" inDictionary:data];
     [self setObject:[m merchantAppName] forKey:@"merchantAppName" inDictionary:data];
     [self setObject:[m merchantAppVersion] forKey:@"merchantAppVersion" inDictionary:data];
-#ifndef __IPHONE_8_0
-    [self setObject:@([m deviceRooted]) forKey:@"deviceRooted" inDictionary:data];
-#endif
     [self setObject:[m deviceManufacturer] forKey:@"deviceManufacturer" inDictionary:data];
     [self setObject:[m deviceModel] forKey:@"deviceModel" inDictionary:data];
 
@@ -71,16 +68,6 @@
 
 - (NSString *)merchantAppName {
     return [NSBundle.mainBundle.infoDictionary objectForKey:(__bridge NSString *)kCFBundleNameKey];
-}
-
-- (BOOL)deviceRooted {
-#if TARGET_IPHONE_SIMULATOR || __IPHONE_8_0
-    return NO;
-#else
-    BOOL isJailbroken = system(NULL) == 1;
-
-    return isJailbroken;
-#endif
 }
 
 - (NSString *)deviceManufacturer {
