@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A48CE2F1B02CBE14411EC11 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005293E786DD0B937662A6C1 /* Pods_Demo.framework */; };
 		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
 		A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */; };
 		A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7F24DB44B10095EEEE /* Settings.bundle */; };
@@ -82,7 +83,6 @@
 		A0988FE224DB44B20095EEEE /* BTUILocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F3D24DB44B10095EEEE /* BTUILocalizedString.m */; };
 		A0988FE324DB44B20095EEEE /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5224DB44B10095EEEE /* Main.strings */; };
 		A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5424DB44B10095EEEE /* InfoPlist.strings */; };
-		A0988FE524DB44B20095EEEE /* Braintree-Demo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */; };
 		A0988FE624DB44B20095EEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5824DB44B10095EEEE /* main.m */; };
 		A0988FE724DB44B20095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */; };
 		A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */; };
@@ -127,10 +127,27 @@
 		A098901D24DB44D60095EEEE /* PayPalOneTouch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A098900624DB44D60095EEEE /* PayPalOneTouch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A098901E24DB44D60095EEEE /* PayPalUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A098900724DB44D60095EEEE /* PayPalUtils.framework */; };
 		A098901F24DB44D60095EEEE /* PayPalUtils.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A098900724DB44D60095EEEE /* PayPalUtils.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A9B5ABED24EB2A3200A4E1C8 /* PayPal_FuturePayment_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B5ABE824EB2A3200A4E1C8 /* PayPal_FuturePayment_UITests.swift */; };
+		A9B5ABEE24EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */; };
+		A9B5ABEF24EB2B2700A4E1C8 /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B5ABEA24EB2A3200A4E1C8 /* BTUITest.swift */; };
+		A9B5ABF024EB2B2700A4E1C8 /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B5ABEB24EB2A3200A4E1C8 /* DateGenerator.swift */; };
 		A9C11A9824DB542900AE207A /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C11A9324DB4EF400AE207A /* CardinalMobile.framework */; };
 		A9C11A9924DB542900AE207A /* CardinalMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A9C11A9324DB4EF400AE207A /* CardinalMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F5AE614EA1A0A83A2F4AF477 /* libPods-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE8E22E88B97B8F65A7AF7E /* libPods-Demo.a */; };
+		A9C4E07924EC28F7002F6FF2 /* PayPal_SinglePayment_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07824EC28F7002F6FF2 /* PayPal_SinglePayment_UITests.swift */; };
+		A9C4E07B24EC290F002F6FF2 /* PayPal_BillingAgreement_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07A24EC290F002F6FF2 /* PayPal_BillingAgreement_UITests.swift */; };
+		A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */; };
+		A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A9B5ABE324EB2A2200A4E1C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0988E4124DB43DC0095EEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0988E4824DB43DC0095EEEE;
+			remoteInfo = Demo;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		A098902024DB44D60095EEEE /* Embed Frameworks */ = {
@@ -159,7 +176,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6AE8E22E88B97B8F65A7AF7E /* libPods-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		005293E786DD0B937662A6C1 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		A0988E4924DB43DC0095EEEE /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0988E7B24DB44B10095EEEE /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -370,7 +387,17 @@
 		A098900524DB44D60095EEEE /* PayPalDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PayPalDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A098900624DB44D60095EEEE /* PayPalOneTouch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PayPalOneTouch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A098900724DB44D60095EEEE /* PayPalUtils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PayPalUtils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9B5ABDE24EB2A2200A4E1C8 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9B5ABE224EB2A2200A4E1C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9B5ABE824EB2A3200A4E1C8 /* PayPal_FuturePayment_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayPal_FuturePayment_UITests.swift; sourceTree = "<group>"; };
+		A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V1_UITests.swift; sourceTree = "<group>"; };
+		A9B5ABEA24EB2A3200A4E1C8 /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BTUITest.swift; path = Helpers/BTUITest.swift; sourceTree = "<group>"; };
+		A9B5ABEB24EB2A3200A4E1C8 /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateGenerator.swift; path = Helpers/DateGenerator.swift; sourceTree = "<group>"; };
 		A9C11A9324DB4EF400AE207A /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = ../Frameworks/CardinalMobile.framework; sourceTree = "<group>"; };
+		A9C4E07824EC28F7002F6FF2 /* PayPal_SinglePayment_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_SinglePayment_UITests.swift; sourceTree = "<group>"; };
+		A9C4E07A24EC290F002F6FF2 /* PayPal_BillingAgreement_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_BillingAgreement_UITests.swift; sourceTree = "<group>"; };
+		A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V2_UITests.swift; sourceTree = "<group>"; };
+		A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -392,7 +419,14 @@
 				A098901624DB44D60095EEEE /* BraintreeUnionPay.framework in Frameworks */,
 				A098901024DB44D60095EEEE /* BraintreeDataCollector.framework in Frameworks */,
 				A098901C24DB44D60095EEEE /* PayPalOneTouch.framework in Frameworks */,
-				F5AE614EA1A0A83A2F4AF477 /* libPods-Demo.a in Frameworks */,
+				7A48CE2F1B02CBE14411EC11 /* Pods_Demo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9B5ABDB24EB2A2200A4E1C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,15 +436,11 @@
 		A0988E4024DB43DC0095EEEE = {
 			isa = PBXGroup;
 			children = (
-				A0988E7C24DB44B10095EEEE /* Demo Base */,
-				A0988F5924DB44B10095EEEE /* Features */,
+				A9C4E08024EC2A70002F6FF2 /* Application */,
 				A0988FFB24DB44D60095EEEE /* Frameworks */,
-				A0988F8D24DB44B10095EEEE /* Images.xcassets */,
-				A0988E7B24DB44B10095EEEE /* Localizable.strings */,
-				A0988F8F24DB44B20095EEEE /* Merchant API Client */,
-				A0988E4A24DB43DC0095EEEE /* Products */,
-				A0988F5024DB44B10095EEEE /* Supporting Files */,
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
+				A0988E4A24DB43DC0095EEEE /* Products */,
+				A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -418,11 +448,12 @@
 			isa = PBXGroup;
 			children = (
 				A0988E4924DB43DC0095EEEE /* Demo.app */,
+				A9B5ABDE24EB2A2200A4E1C8 /* UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A0988E7C24DB44B10095EEEE /* Demo Base */ = {
+		A0988E7C24DB44B10095EEEE /* Base */ = {
 			isa = PBXGroup;
 			children = (
 				A0988E8024DB44B10095EEEE /* Base View Controllers */,
@@ -434,7 +465,7 @@
 				A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */,
 				A0988E7D24DB44B10095EEEE /* Settings */,
 			);
-			path = "Demo Base";
+			path = Base;
 			sourceTree = "<group>";
 		};
 		A0988E7D24DB44B10095EEEE /* Settings */ = {
@@ -896,9 +927,63 @@
 				A098900524DB44D60095EEEE /* PayPalDataCollector.framework */,
 				A098900624DB44D60095EEEE /* PayPalOneTouch.framework */,
 				A098900724DB44D60095EEEE /* PayPalUtils.framework */,
-				6AE8E22E88B97B8F65A7AF7E /* libPods-Demo.a */,
+				005293E786DD0B937662A6C1 /* Pods_Demo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A9B5ABEC24EB2A3200A4E1C8 /* Helpers */,
+				A9B5ABE224EB2A2200A4E1C8 /* Info.plist */,
+				A9C4E07624EC2889002F6FF2 /* PayPal UI Tests */,
+				A9C4E07724EC2899002F6FF2 /* ThreeDSecure UI Tests */,
+			);
+			path = "UI Tests";
+			sourceTree = "<group>";
+		};
+		A9B5ABEC24EB2A3200A4E1C8 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A9B5ABEA24EB2A3200A4E1C8 /* BTUITest.swift */,
+				A9B5ABEB24EB2A3200A4E1C8 /* DateGenerator.swift */,
+			);
+			name = Helpers;
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		A9C4E07624EC2889002F6FF2 /* PayPal UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A9B5ABE824EB2A3200A4E1C8 /* PayPal_FuturePayment_UITests.swift */,
+				A9C4E07A24EC290F002F6FF2 /* PayPal_BillingAgreement_UITests.swift */,
+				A9C4E07824EC28F7002F6FF2 /* PayPal_SinglePayment_UITests.swift */,
+			);
+			path = "PayPal UI Tests";
+			sourceTree = "<group>";
+		};
+		A9C4E07724EC2899002F6FF2 /* ThreeDSecure UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */,
+				A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */,
+				A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */,
+			);
+			path = "ThreeDSecure UI Tests";
+			sourceTree = "<group>";
+		};
+		A9C4E08024EC2A70002F6FF2 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				A0988E7C24DB44B10095EEEE /* Base */,
+				A0988F5924DB44B10095EEEE /* Features */,
+				A0988F8D24DB44B10095EEEE /* Images.xcassets */,
+				A0988E7B24DB44B10095EEEE /* Localizable.strings */,
+				A0988F8F24DB44B20095EEEE /* Merchant API Client */,
+				A0988F5024DB44B10095EEEE /* Supporting Files */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 		F1D1FED7D4B39E9B6D0FCC73 /* Pods */ = {
@@ -923,7 +1008,7 @@
 				A0988E4624DB43DC0095EEEE /* Frameworks */,
 				A0988E4724DB43DC0095EEEE /* Resources */,
 				A098902024DB44D60095EEEE /* Embed Frameworks */,
-				2E5D1C0F5A3E3F7145DFB97A /* [CP] Copy Pods Resources */,
+				65DE4DA0A163F074298379F4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -934,17 +1019,40 @@
 			productReference = A0988E4924DB43DC0095EEEE /* Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A9B5ABDD24EB2A2200A4E1C8 /* UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9B5ABE524EB2A2200A4E1C8 /* Build configuration list for PBXNativeTarget "UITests" */;
+			buildPhases = (
+				A9B5ABDA24EB2A2200A4E1C8 /* Sources */,
+				A9B5ABDB24EB2A2200A4E1C8 /* Frameworks */,
+				A9B5ABDC24EB2A2200A4E1C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A9B5ABE424EB2A2200A4E1C8 /* PBXTargetDependency */,
+			);
+			name = UITests;
+			productName = DemoUITests;
+			productReference = A9B5ABDE24EB2A2200A4E1C8 /* UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		A0988E4124DB43DC0095EEEE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1150;
+				LastSwiftUpdateCheck = 1160;
+				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = braintree;
 				TargetAttributes = {
 					A0988E4824DB43DC0095EEEE = {
 						CreatedOnToolsVersion = 11.5;
+					};
+					A9B5ABDD24EB2A2200A4E1C8 = {
+						CreatedOnToolsVersion = 11.6;
+						TestTargetID = A0988E4824DB43DC0095EEEE;
 					};
 				};
 			};
@@ -982,6 +1090,7 @@
 			projectRoot = "";
 			targets = (
 				A0988E4824DB43DC0095EEEE /* Demo */,
+				A9B5ABDD24EB2A2200A4E1C8 /* UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1009,31 +1118,20 @@
 				A0988FA524DB44B20095EEEE /* BTUICardCVVBack.svg in Resources */,
 				A0988FA224DB44B20095EEEE /* BTUICardUnknown.svg in Resources */,
 				A0988FAA24DB44B20095EEEE /* BTUICardCVVFront.svg in Resources */,
-				A0988FE524DB44B20095EEEE /* Braintree-Demo-Info.plist in Resources */,
 				A0988FA424DB44B20095EEEE /* BTUICardDiscover.svg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9B5ABDC24EB2A2200A4E1C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2E5D1C0F5A3E3F7145DFB97A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4B20C942096415547FE03C69 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1054,6 +1152,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		65DE4DA0A163F074298379F4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1142,7 +1257,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9B5ABDA24EB2A2200A4E1C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9B5ABEF24EB2B2700A4E1C8 /* BTUITest.swift in Sources */,
+				A9B5ABF024EB2B2700A4E1C8 /* DateGenerator.swift in Sources */,
+				A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */,
+				A9C4E07924EC28F7002F6FF2 /* PayPal_SinglePayment_UITests.swift in Sources */,
+				A9C4E07B24EC290F002F6FF2 /* PayPal_BillingAgreement_UITests.swift in Sources */,
+				A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */,
+				A9B5ABEE24EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift in Sources */,
+				A9B5ABED24EB2A3200A4E1C8 /* PayPal_FuturePayment_UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A9B5ABE424EB2A2200A4E1C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A0988E4824DB43DC0095EEEE /* Demo */;
+			targetProxy = A9B5ABE324EB2A2200A4E1C8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A0988F3824DB44B10095EEEE /* UI.strings */ = {
@@ -1196,6 +1334,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1254,6 +1393,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1298,6 +1438,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1309,9 +1450,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5.0.0;
-				DEVELOPMENT_TEAM = 83Y6MSQFC4;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../Frameworks";
-				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Braintree-Demo-Info.plist";
+				DEVELOPMENT_TEAM = 43253H4X22;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Frameworks",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Application/Supporting Files/Braintree-Demo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1320,7 +1464,7 @@
 				MARKETING_VERSION = 5.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/Demo-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Application/Supporting Files/Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1333,9 +1477,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5.0.0;
-				DEVELOPMENT_TEAM = 83Y6MSQFC4;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../Frameworks";
-				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Braintree-Demo-Info.plist";
+				DEVELOPMENT_TEAM = 43253H4X22;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Frameworks",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Application/Supporting Files/Braintree-Demo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1344,9 +1491,55 @@
 				MARKETING_VERSION = 5.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/Demo-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Application/Supporting Files/Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A9B5ABE624EB2A2200A4E1C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				INFOPLIST_FILE = "$(SRCROOT)/UITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.DemoUITests;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Demo;
+			};
+			name = Debug;
+		};
+		A9B5ABE724EB2A2200A4E1C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				INFOPLIST_FILE = "$(SRCROOT)/UITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.DemoUITests;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Demo;
 			};
 			name = Release;
 		};
@@ -1367,6 +1560,15 @@
 			buildConfigurations = (
 				A0988E6324DB43DF0095EEEE /* Debug */,
 				A0988E6424DB43DF0095EEEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9B5ABE524EB2A2200A4E1C8 /* Build configuration list for PBXNativeTarget "UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9B5ABE624EB2A2200A4E1C8 /* Debug */,
+				A9B5ABE724EB2A2200A4E1C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

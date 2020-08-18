@@ -1,8 +1,8 @@
 source 'https://cdn.cocoapods.org/'
 
-platform :ios, '11.0'
-
 workspace 'Braintree.xcworkspace'
+platform :ios, '11.0'
+use_frameworks!
 
 target 'Demo' do
   project 'Demo/Demo'
@@ -10,7 +10,6 @@ target 'Demo' do
 end
 
 abstract_target 'Tests' do
-  use_frameworks!
   pod 'Specta', :inhibit_warnings => true
   pod 'Expecta', :inhibit_warnings => true
   pod 'OCMock', :inhibit_warnings => true
@@ -19,5 +18,4 @@ abstract_target 'Tests' do
 
   target 'UnitTests'
   target 'IntegrationTests'
-  target 'UITests'
 end
