@@ -62,7 +62,7 @@
 		03CFEF371CD30B15006D2DA5 /* PPOTTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF2D1CD30B15006D2DA5 /* PPOTTime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03CFEF381CD30B15006D2DA5 /* PPOTURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF2E1CD30B15006D2DA5 /* PPOTURLSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03CFEF391CD30B15006D2DA5 /* PPOTVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF2F1CD30B15006D2DA5 /* PPOTVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		03CFEF3B1CD30C28006D2DA5 /* PayPalUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF3A1CD30C28006D2DA5 /* PayPalUtils.h */; };
+		03CFEF3B1CD30C28006D2DA5 /* PayPalUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF3A1CD30C28006D2DA5 /* PayPalUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03D294FF1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D294FE1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		03DE926F20201CCB00A78D29 /* BTThreeDSecureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */; };
 		03DE927120201CE800A78D29 /* BTThreeDSecureInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03DE927020201CD900A78D29 /* BTThreeDSecureInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -581,6 +581,90 @@
 			remoteInfo = PayPalOneTouch;
 		};
 		A981D36D24EAE15200530DF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7EDE474C1CD2C3D00005E22B;
+			remoteInfo = PayPalUtils;
+		};
+		A9C4E08124EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0357C47B1F96869600E63851;
+			remoteInfo = BraintreeAmericanExpress;
+		};
+		A9C4E08324EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7C889731B5EF5DE007A0E9C;
+			remoteInfo = BraintreeApplePay;
+		};
+		A9C4E08524EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
+			remoteInfo = BraintreeCard;
+		};
+		A9C4E08724EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
+			remoteInfo = BraintreeCore;
+		};
+		A9C4E08924EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
+			remoteInfo = BraintreeDataCollector;
+		};
+		A9C4E08B24EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D941D371B59C76A0016EFB4;
+			remoteInfo = BraintreePayPal;
+		};
+		A9C4E08D24EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03502C831E9C0A1700F15EE6;
+			remoteInfo = BraintreePaymentFlow;
+		};
+		A9C4E08F24EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4164B9951C9B658E006AE861;
+			remoteInfo = BraintreeUnionPay;
+		};
+		A9C4E09124EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A77AA29B1B618C7700217B73;
+			remoteInfo = BraintreeVenmo;
+		};
+		A9C4E09324EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7B462E01C3D9C2200048423;
+			remoteInfo = PayPalDataCollector;
+		};
+		A9C4E09524EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A50C3B6E1C1A29C500612D90;
+			remoteInfo = PayPalOneTouch;
+		};
+		A9C4E09724EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -2444,6 +2528,18 @@
 			buildRules = (
 			);
 			dependencies = (
+				A9C4E08224EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E08424EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E08624EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E08824EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E08A24EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E08C24EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E08E24EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E09024EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E09224EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E09424EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E09624EC2F8B002F6FF2 /* PBXTargetDependency */,
+				A9C4E09824EC2F8B002F6FF2 /* PBXTargetDependency */,
 			);
 			name = IntegrationTests;
 			productName = BraintreeIntegrationTests;
@@ -3261,6 +3357,66 @@
 			isa = PBXTargetDependency;
 			target = 7EDE474C1CD2C3D00005E22B /* PayPalUtils */;
 			targetProxy = A981D36D24EAE15200530DF8 /* PBXContainerItemProxy */;
+		};
+		A9C4E08224EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0357C47B1F96869600E63851 /* BraintreeAmericanExpress */;
+			targetProxy = A9C4E08124EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E08424EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7C889731B5EF5DE007A0E9C /* BraintreeApplePay */;
+			targetProxy = A9C4E08324EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E08624EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
+			targetProxy = A9C4E08524EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E08824EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
+			targetProxy = A9C4E08724EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E08A24EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
+			targetProxy = A9C4E08924EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E08C24EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D941D371B59C76A0016EFB4 /* BraintreePayPal */;
+			targetProxy = A9C4E08B24EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E08E24EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03502C831E9C0A1700F15EE6 /* BraintreePaymentFlow */;
+			targetProxy = A9C4E08D24EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E09024EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4164B9951C9B658E006AE861 /* BraintreeUnionPay */;
+			targetProxy = A9C4E08F24EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E09224EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A77AA29B1B618C7700217B73 /* BraintreeVenmo */;
+			targetProxy = A9C4E09124EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E09424EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7B462E01C3D9C2200048423 /* PayPalDataCollector */;
+			targetProxy = A9C4E09324EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E09624EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A50C3B6E1C1A29C500612D90 /* PayPalOneTouch */;
+			targetProxy = A9C4E09524EC2F8B002F6FF2 /* PBXContainerItemProxy */;
+		};
+		A9C4E09824EC2F8B002F6FF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7EDE474C1CD2C3D00005E22B /* PayPalUtils */;
+			targetProxy = A9C4E09724EC2F8B002F6FF2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

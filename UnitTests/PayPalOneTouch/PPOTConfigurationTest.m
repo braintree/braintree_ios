@@ -292,5 +292,4 @@
     XCTAssertEqualObjects(checkoutRecipe.targetAppBundleIDs, expectedTargetAppBundleIDs);
 }
 
-
 @end

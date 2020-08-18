@@ -16,7 +16,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient = MockAPIClient(authorization: tempClientToken)!
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
     }
-    
+
     override func tearDown() {
         for observer in observers { NotificationCenter.default.removeObserver(observer) }
         super.tearDown()

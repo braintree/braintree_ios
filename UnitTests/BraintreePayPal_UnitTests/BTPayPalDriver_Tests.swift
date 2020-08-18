@@ -2093,24 +2093,3 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
     }
 }
-
-class BTPayPalDriver_DropIn_Tests: XCTestCase {
-    
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-    
-    override func setUp() {
-        super.setUp()
-        
-        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "paypalEnabled": true,
-            "paypal": [
-                "environment": "offline"
-            ] ])
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "fakeURL://"
-            ] ])
-    }
-}
-
