@@ -1,10 +1,11 @@
 # Braintree iOS SDK Release Notes
 
-## 4.36.1 (2020-11-10)
+## 4.35.1 (2020-08-24)
 * Update CardinalMobile.framework to v2.2.4-1
 * Exclude arm64 simulator architectures via Podspec (fixes [Drop-In #233](https://github.com/braintree/braintree-ios-drop-in/issues/233))
 
 ## 4.36.0 (2020-10-07)
+* Migrates minimum deployment target to iOS 9
 * Add `cardholderName` to `BTCardNonce`
 * Add support for `PKPaymentNetworkMaestro` to Apple Pay configuration
 
