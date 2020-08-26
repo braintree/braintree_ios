@@ -31,6 +31,10 @@ let package = Package(
             name: "BraintreeUnionPay",
             targets: ["BraintreeUnionPay"]
         ),
+        .library(
+            name: "PayPalDataCollector",
+            targets: ["PayPalDataCollector", "PPRiskMagnes"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -108,6 +112,23 @@ let package = Package(
                 .headerSearchPath("../BraintreeCore/"),
                 .headerSearchPath("../BraintreeCard/")
             ]
+        ),
+        .target(
+            name: "PayPalDataCollector",
+            dependencies: ["BraintreeCore", "PayPalUtils"],
+            path: "BraintreePayPal/PayPalDataCollector",
+            exclude: ["Info.plist"],
+            sources: nil,
+            resources: nil,
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../BraintreeCore/"),
+                .headerSearchPath("../BraintreeCard/")
+            ]
+        ),
+        .binaryTarget(
+            name: "PPRiskMagnes",
+            path: "Frameworks/PPRiskMagnes.xcframework"
         ),
     ]
 )

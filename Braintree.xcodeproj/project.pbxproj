@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,9 +20,6 @@
 		033248CD2123DD1A009F2B31 /* BTLocalPaymentResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 033248C82123DD1A009F2B31 /* BTLocalPaymentResult.m */; };
 		033248CE2123DD1A009F2B31 /* BTConfiguration+LocalPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 033248C92123DD1A009F2B31 /* BTConfiguration+LocalPayment.m */; };
 		034CDCA91FB518DE00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CDCA81FB518CB00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h */; };
-		034CF883214C5AEA003C0616 /* libPPRiskMagnesOC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034CF87F214C5AA1003C0616 /* libPPRiskMagnesOC.a */; };
-		034CF884214C5B16003C0616 /* PPRMOCMagnesResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF87D214C5AA0003C0616 /* PPRMOCMagnesResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		034CF885214C5B16003C0616 /* PPRMOCMagnesSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF87E214C5AA0003C0616 /* PPRMOCMagnesSDK.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		034CF88721501E24003C0616 /* BTConfiguration+Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 034CF88621501E24003C0616 /* BTConfiguration+Card.m */; };
 		034CF88A21501EA5003C0616 /* BTConfiguration+Card.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF88921501E91003C0616 /* BTConfiguration+Card.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		03502C9B1E9C0D3900F15EE6 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
@@ -173,7 +170,7 @@
 		7EDE475B1CD2C3D00005E22B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD261B431453008857E1 /* CoreLocation.framework */; };
 		7EDE475C1CD2C3D00005E22B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD241B43144D008857E1 /* MessageUI.framework */; };
 		7EDE47721CD2C51C0005E22B /* PayPalUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDE47701CD2C3D00005E22B /* PayPalUtils.framework */; };
-		7EDE47731CD2C5270005E22B /* PayPalUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDE47701CD2C3D00005E22B /* PayPalUtils.framework */; };
+		7EDE47731CD2C5270005E22B /* PayPalUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDE47701CD2C3D00005E22B /* PayPalUtils.framework */; platformFilter = ios; };
 		80036F7D21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m in Sources */ = {isa = PBXBuildFile; fileRef = 80036F7C21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m */; };
 		80036F7E21F7BC6C003A9F5C /* BTConfiguration+ThreeDSecure.h in Headers */ = {isa = PBXBuildFile; fileRef = 80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		800E23DD22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */; };
@@ -331,10 +328,10 @@
 		A7B462721C3C967400048423 /* PPOTPersistentRequestData.h in Headers */ = {isa = PBXBuildFile; fileRef = A50C3B241C19F7FC00612D90 /* PPOTPersistentRequestData.h */; };
 		A7B462731C3C967400048423 /* PPOTRequest_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A50C3AC21C19E6EE00612D90 /* PPOTRequest_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A7B462741C3C967400048423 /* PPOTSwitchRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A50C3B261C19F7FC00612D90 /* PPOTSwitchRequest.h */; };
-		A7B462EE1C3D9C2200048423 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD281B43145D008857E1 /* SystemConfiguration.framework */; };
-		A7B462EF1C3D9C2200048423 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50C3BC41C1B3F1500612D90 /* UIKit.framework */; };
-		A7B462F01C3D9C2200048423 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD261B431453008857E1 /* CoreLocation.framework */; };
-		A7B462F11C3D9C2200048423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD241B43144D008857E1 /* MessageUI.framework */; };
+		A7B462EE1C3D9C2200048423 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD281B43145D008857E1 /* SystemConfiguration.framework */; platformFilter = ios; };
+		A7B462EF1C3D9C2200048423 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50C3BC41C1B3F1500612D90 /* UIKit.framework */; platformFilter = ios; };
+		A7B462F01C3D9C2200048423 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD261B431453008857E1 /* CoreLocation.framework */; platformFilter = ios; };
+		A7B462F11C3D9C2200048423 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD241B43144D008857E1 /* MessageUI.framework */; platformFilter = ios; };
 		A7B463071C3D9F4D00048423 /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B463051C3D9C2200048423 /* PayPalDataCollector.framework */; };
 		A7B463601C3DBEFE00048423 /* PPDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B4635F1C3DBEFE00048423 /* PPDataCollector.m */; };
 		A7B463651C3DBF5E00048423 /* PayPalDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = A7B463631C3DBF5E00048423 /* PayPalDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -375,6 +372,7 @@
 		A7E93E581B601EE900957223 /* BTURLUtils_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */; };
 		A9433F6224EAEE4100DF49ED /* CardinalMobile.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A9C11A9624DB4F3600AE207A /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		A9C7457724F59A3500018961 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C7457024F58C0100018961 /* PPRiskMagnes.xcframework */; platformFilter = ios; };
 		B61F67801CE4C20F0051A3BD /* BTConfiguration+DataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */; };
 		B61F67811CE4C20F0051A3BD /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
 		B67F983A1D762177007C1903 /* BTMacroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B67F98391D762177007C1903 /* BTMacroTests.m */; };
@@ -699,10 +697,6 @@
 		033248C82123DD1A009F2B31 /* BTLocalPaymentResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTLocalPaymentResult.m; sourceTree = "<group>"; };
 		033248C92123DD1A009F2B31 /* BTConfiguration+LocalPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTConfiguration+LocalPayment.m"; sourceTree = "<group>"; };
 		034CDCA81FB518CB00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTPaymentFlowDriver+ThreeDSecure_Internal.h"; sourceTree = "<group>"; };
-		034CF87B214C5A13003C0616 /* libPPRiskMagnesOC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPPRiskMagnesOC.a; path = BraintreePayPal/PayPalDataCollector/Risk/libPPRiskMagnesOC.a; sourceTree = "<group>"; };
-		034CF87D214C5AA0003C0616 /* PPRMOCMagnesResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPRMOCMagnesResult.h; sourceTree = "<group>"; };
-		034CF87E214C5AA0003C0616 /* PPRMOCMagnesSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPRMOCMagnesSDK.h; sourceTree = "<group>"; };
-		034CF87F214C5AA1003C0616 /* libPPRiskMagnesOC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPPRiskMagnesOC.a; sourceTree = "<group>"; };
 		034CF88621501E24003C0616 /* BTConfiguration+Card.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTConfiguration+Card.m"; sourceTree = "<group>"; };
 		034CF88921501E91003C0616 /* BTConfiguration+Card.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+Card.h"; sourceTree = "<group>"; };
 		03502C841E9C0A1700F15EE6 /* BraintreePaymentFlow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreePaymentFlow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1079,6 +1073,7 @@
 		A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchRequestURL.m; sourceTree = "<group>"; };
 		A7F96D0C1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchReturnURL.h; sourceTree = "<group>"; };
 		A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchReturnURL.m; sourceTree = "<group>"; };
+		A9C7457024F58C0100018961 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+DataCollector.h"; sourceTree = "<group>"; };
 		B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "BTConfiguration+DataCollector.m"; path = "Public/BTConfiguration+DataCollector.m"; sourceTree = "<group>"; };
 		B67F98391D762177007C1903 /* BTMacroTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTMacroTests.m; sourceTree = "<group>"; };
@@ -1205,7 +1200,7 @@
 				A7B462EF1C3D9C2200048423 /* UIKit.framework in Frameworks */,
 				A7B462F01C3D9C2200048423 /* CoreLocation.framework in Frameworks */,
 				A7B462F11C3D9C2200048423 /* MessageUI.framework in Frameworks */,
-				034CF883214C5AEA003C0616 /* libPPRiskMagnesOC.a in Frameworks */,
+				A9C7457724F59A3500018961 /* PPRiskMagnes.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1770,19 +1765,8 @@
 				A79BB5BE1CE501D500CC6F0E /* PPDataCollector_Internal.h */,
 				A7B4635F1C3DBEFE00048423 /* PPDataCollector.m */,
 				A7B4635C1C3DA7DF00048423 /* Public */,
-				A50C3AF91C19F27A00612D90 /* Risk */,
 			);
 			path = PayPalDataCollector;
-			sourceTree = "<group>";
-		};
-		A50C3AF91C19F27A00612D90 /* Risk */ = {
-			isa = PBXGroup;
-			children = (
-				034CF87F214C5AA1003C0616 /* libPPRiskMagnesOC.a */,
-				034CF87D214C5AA0003C0616 /* PPRMOCMagnesResult.h */,
-				034CF87E214C5AA0003C0616 /* PPRMOCMagnesSDK.h */,
-			);
-			path = Risk;
 			sourceTree = "<group>";
 		};
 		A715593F1B729297007DE6F0 /* Helpers */ = {
@@ -1810,9 +1794,9 @@
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
+				6A50887E9E10BEB122A9F45D /* Pods */,
 				A75DA3521921394200D997A2 /* Products */,
 				16CD2E9D1B4077FC00E68495 /* UnitTests */,
-				6A50887E9E10BEB122A9F45D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1844,16 +1828,16 @@
 				162174E1192D9220008DC35D /* CoreGraphics.framework */,
 				A7A6DD261B431453008857E1 /* CoreLocation.framework */,
 				A75DA3541921394200D997A2 /* Foundation.framework */,
-				034CF87B214C5A13003C0616 /* libPPRiskMagnesOC.a */,
 				A7A6DD241B43144D008857E1 /* MessageUI.framework */,
 				A7C889891B5EF737007A0E9C /* PassKit.framework */,
 				A7B035B519D6273400750F8A /* PassKit.framework */,
+				8BE4A819E3D2351FC22A69E1 /* Pods_Tests_IntegrationTests.framework */,
+				17BB35547661915A521A1AE0 /* Pods_Tests_UnitTests.framework */,
+				A9C7457024F58C0100018961 /* PPRiskMagnes.xcframework */,
 				A7A6DD281B43145D008857E1 /* SystemConfiguration.framework */,
 				A50C3BC41C1B3F1500612D90 /* UIKit.framework */,
 				A75DA3651921394200D997A2 /* UIKit.framework */,
 				A75DA3621921394200D997A2 /* XCTest.framework */,
-				8BE4A819E3D2351FC22A69E1 /* Pods_Tests_IntegrationTests.framework */,
-				17BB35547661915A521A1AE0 /* Pods_Tests_UnitTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2266,8 +2250,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7B463661C3DBF5E00048423 /* PPDataCollector.h in Headers */,
-				034CF884214C5B16003C0616 /* PPRMOCMagnesResult.h in Headers */,
-				034CF885214C5B16003C0616 /* PPRMOCMagnesSDK.h in Headers */,
 				A79BB5BF1CE501D500CC6F0E /* PPDataCollector_Internal.h in Headers */,
 				A7B463651C3DBF5E00048423 /* PayPalDataCollector.h in Headers */,
 			);
@@ -3265,6 +3247,7 @@
 		};
 		7EDE477B1CD2C5D00005E22B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 7EDE474C1CD2C3D00005E22B /* PayPalUtils */;
 			targetProxy = 7EDE477A1CD2C5D00005E22B /* PBXContainerItemProxy */;
 		};
@@ -3443,6 +3426,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3473,7 +3457,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePaymentFlow;
@@ -3496,6 +3484,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3521,7 +3510,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePaymentFlow;
@@ -3571,7 +3564,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeAmericanExpress;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -3614,7 +3611,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeAmericanExpress;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -3680,7 +3681,11 @@
 				);
 				INFOPLIST_FILE = UnitTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.braintreepayments.Braintree-Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3740,7 +3745,11 @@
 				);
 				INFOPLIST_FILE = UnitTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.braintreepayments.Braintree-Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3796,8 +3805,12 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/BraintreePayPal/PayPalDataCollector/Risk";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePayPal;
@@ -3848,8 +3861,12 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/BraintreePayPal/PayPalDataCollector/Risk";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePayPal;
@@ -3907,7 +3924,11 @@
 				INFOPLIST_FILE = BraintreeCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3958,7 +3979,11 @@
 				INFOPLIST_FILE = BraintreeCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4014,7 +4039,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeUnionPay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4065,7 +4094,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeUnionPay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4122,11 +4155,12 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreePayPal/PayPalUtils/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
+				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/BraintreePayPal/PayPalDataCollector/Risk",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalUtils;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4176,11 +4210,12 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreePayPal/PayPalUtils/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
+				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/BraintreePayPal/PayPalDataCollector/Risk",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalUtils;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4202,6 +4237,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -4236,7 +4272,11 @@
 				INFOPLIST_FILE = BraintreePayPal/PayPalOneTouch/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalOneTouch;
@@ -4258,6 +4298,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -4287,7 +4328,11 @@
 				INFOPLIST_FILE = BraintreePayPal/PayPalOneTouch/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalOneTouch;
@@ -4395,7 +4440,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGET_TYPE = Specs;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -4449,7 +4495,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BraintreeDataCollector/Kount",
@@ -4503,7 +4553,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BraintreeDataCollector/Kount",
@@ -4563,7 +4617,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeVenmo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4613,7 +4671,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeVenmo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4667,7 +4729,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = IntegrationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.IntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4715,7 +4781,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = IntegrationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.IntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4736,6 +4806,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -4770,15 +4841,17 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreePayPal/PayPalDataCollector/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
+				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/BraintreePayPal/PayPalDataCollector/Risk",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4795,6 +4868,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -4821,18 +4895,21 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreePayPal/PayPalDataCollector/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
+				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/BraintreePayPal/PayPalDataCollector/Risk",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4884,7 +4961,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeApplePay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4934,7 +5015,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeApplePay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4990,7 +5075,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeCard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5041,7 +5130,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeCard;
 				PRODUCT_NAME = "$(TARGET_NAME)";

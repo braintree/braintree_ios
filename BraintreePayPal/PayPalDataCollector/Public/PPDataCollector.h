@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PPRMOCMagnesResult.h"
+#import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 
 /**
  Used to collect risk data via the PayPal data collector
@@ -41,6 +41,6 @@
 
  @return a nonnull Result with the device data
  */
-+ (nonnull PPRMOCMagnesSDKResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID;
++ (nonnull MagnesResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID;
 
 @end

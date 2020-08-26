@@ -1,0 +1,11 @@
+framework module PPRiskMagnes {
+  umbrella header "PPRiskMagnes.h"
+
+  export *
+  module * { export * }
+}
+
+module PPRiskMagnes.Swift {
+    header "PPRiskMagnes-Swift.h"
+    requires objc
+}

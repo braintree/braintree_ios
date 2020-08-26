@@ -83,9 +83,9 @@ Pod::Spec.new do |s|
 
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "BraintreePayPal/PayPalDataCollector/**/*.{h,m}"
-    s.public_header_files = "BraintreePayPal/PayPalDataCollector/Public/*.h", "BraintreePayPal/PayPalDataCollector/Risk/*.h"
+    s.public_header_files = "BraintreePayPal/PayPalDataCollector/Public/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
-    s.vendored_library = "BraintreePayPal/PayPalDataCollector/Risk/libPPRiskMagnesOC.a"
+    s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalUtils"
   end

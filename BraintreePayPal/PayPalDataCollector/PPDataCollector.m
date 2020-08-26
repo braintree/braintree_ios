@@ -6,8 +6,6 @@
 //
 
 #import "PPDataCollector_Internal.h"
-#import "PPRMOCMagnesSDK.h"
-#import "PPRMOCMagnesResult.h"
 #if __has_include("PayPalUtils.h")
 #import "PPOTDevice.h"
 #import "PPOTVersion.h"
@@ -22,16 +20,21 @@
 
 @implementation PPDataCollector
 
++ (MagnesResult *)generateMagnesResultWithClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
+    // TODO: The doc comment for this method is incorrect. The build setting CLANG_WARN_DOCUMENTATION_COMMENTS was temporarily disabled for BraintreePaymentFlow, PayPalOneTouch, and PayPalDataCollector
+    [[MagnesSDK shared] setUpWithSetEnviroment:EnvironmentLIVE
+                            setOptionalAppGuid:[PPOTDevice appropriateIdentifier]
+                           setOptionalAPNToken:@""
+                    disableRemoteConfiguration:NO
+                                 disableBeacon:disableBeacon
+                                  magnesSource:MagnesSourceBRAINTREE
+                                         error:nil];
 
-+ (PPRMOCMagnesSDKResult *)generateMagnesResultWithClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
-    [[PPRMOCMagnesSDK shared] setUpEnvironment:LIVE withOptionalAppGuid:[PPOTDevice appropriateIdentifier] withOptionalAPNToken:nil disableRemoteConfiguration:NO disableBeacon:disableBeacon forMagnesSource:MAGNES_SOURCE_BRAINTREE];
-
-    return [[PPRMOCMagnesSDK shared] collectAndSubmitWithPayPalClientMetadataId:[clientMetadataID copy] withAdditionalData:data];
+    return [[MagnesSDK shared] collectAndSubmitWithPayPalClientMetadataId:[clientMetadataID copy] withAdditionalData:data error:nil];
 }
 
 + (NSString *)generateClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
-
-    PPRMOCMagnesSDKResult *result = [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID disableBeacon:disableBeacon data:data];
+    MagnesResult *result = [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID disableBeacon:disableBeacon data:data];
 
     PPLog(@"ClientMetadataID: %@", [result getPayPalClientMetaDataId]);
     return [result getPayPalClientMetaDataId];
@@ -69,9 +72,7 @@
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-
-+ (PPRMOCMagnesSDKResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID
-{
++ (MagnesResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID {
     return [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID disableBeacon:NO data:nil];
 }
 
