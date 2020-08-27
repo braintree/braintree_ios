@@ -1,11 +1,8 @@
-#import <PassKit/PassKit.h>
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-
-#import "BTApplePayCardNonce.h"
+#import <Foundation/Foundation.h>
+@class BTAPIClient;
+@class BTApplePayCardNonce;
+@class PKPayment;
+@class PKPaymentRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 

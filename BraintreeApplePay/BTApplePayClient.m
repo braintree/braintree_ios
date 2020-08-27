@@ -1,17 +1,12 @@
-#if __has_include("BraintreeCore.h")
-#import "BTAPIClient_Internal.h"
-#import "BTPaymentMethodNonce.h"
-#else
+#import <BraintreeApplePay/BTApplePayClient_Internal.h>
+#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
+#import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>
-#endif
-#import "BTApplePayClient_Internal.h"
-#import "BTConfiguration+ApplePay.h"
+#import <BraintreeCore/BTPaymentMethodNonceParser.h>
+#import <BraintreeCore/BTJSON.h>
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
-
-@interface BTApplePayClient ()
-@end
 
 @implementation BTApplePayClient
 

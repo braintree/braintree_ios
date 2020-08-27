@@ -1,5 +1,5 @@
-#import "BTConfiguration+ApplePay.h"
-#import <PassKit/PassKit.h>
+#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTConfiguration (ApplePay)
 

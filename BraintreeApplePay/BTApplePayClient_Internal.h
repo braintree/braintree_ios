@@ -1,4 +1,4 @@
-#import "BTApplePayClient.h"
+#import <BraintreeApplePay/BTApplePayClient.h>
 
 @interface BTApplePayClient ()
 /**
