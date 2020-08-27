@@ -6,7 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PPRiskMagnes/PPRiskMagnes-Swift.h>
+//#import <PPRiskMagnes/PPRiskMagnes-Swift.h>
+@class MagnesResult;
 
 /**
  Used to collect risk data via the PayPal data collector

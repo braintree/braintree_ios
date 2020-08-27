@@ -5,18 +5,12 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPDataCollector_Internal.h"
-#if __has_include("PayPalUtils.h")
-#import "PPOTDevice.h"
-#import "PPOTVersion.h"
-#import "PPOTMacros.h"
-#import "PPOTURLSession.h"
-#else
+#import <PayPalDataCollector/PPDataCollector_Internal.h>
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTVersion.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTURLSession.h>
-#endif
+#import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 
 @implementation PPDataCollector
 
