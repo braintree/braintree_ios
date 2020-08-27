@@ -1,4 +1,4 @@
-#import "BTThreeDSecurePostalAddress.h"
+#import <BraintreePaymentFlow/BTThreeDSecurePostalAddress.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

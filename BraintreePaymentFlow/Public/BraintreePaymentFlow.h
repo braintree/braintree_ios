@@ -6,25 +6,23 @@ FOUNDATION_EXPORT double BraintreePaymentFlowVersionNumber;
 /// Version string
 FOUNDATION_EXPORT const unsigned char BraintreePaymentFlowVersionString[];
 
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
 #import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPaymentFlowDriver.h"
-#import "BTPaymentFlowRequest.h"
-#import "BTPaymentFlowResult.h"
+#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
+#import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 
 // LocalPayment
-#import "BTConfiguration+LocalPayment.h"
-#import "BTLocalPaymentResult.h"
-#import "BTLocalPaymentRequest.h"
-#import "BTPaymentFlowDriver+LocalPayment.h"
+#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
+#import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
+#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver+LocalPayment.h>
 
 // ThreeDSecure
-#import "BTThreeDSecureResult.h"
-#import "BTThreeDSecureRequest.h"
-#import "BTPaymentFlowDriver+ThreeDSecure.h"
-#import "BTThreeDSecurePostalAddress.h"
-#import "BTConfiguration+ThreeDSecure.h"
-#import "BTThreeDSecureAdditionalInformation.h"
+#import <BraintreePaymentFlow/BTConfiguration+ThreeDSecure.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver+ThreeDSecure.h>
+#import <BraintreePaymentFlow/BTThreeDSecureAdditionalInformation.h>
+#import <BraintreePaymentFlow/BTThreeDSecureLookup.h>
+#import <BraintreePaymentFlow/BTThreeDSecurePostalAddress.h>
+#import <BraintreePaymentFlow/BTThreeDSecureRequest.h>
+#import <BraintreePaymentFlow/BTThreeDSecureResult.h>
+#import <BraintreePaymentFlow/BTThreeDSecureV1UICustomization.h>

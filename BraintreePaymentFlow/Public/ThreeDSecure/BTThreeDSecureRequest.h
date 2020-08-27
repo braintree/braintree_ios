@@ -1,16 +1,13 @@
-#import <Foundation/Foundation.h>
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPaymentFlowRequest.h"
-#import "BTPaymentFlowDriver.h"
-#import "BTThreeDSecurePostalAddress.h"
-#import "BTThreeDSecureAdditionalInformation.h"
-#import "BTThreeDSecureLookup.h"
-#import "BTThreeDSecureV1UICustomization.h"
-#import "BTThreeDSecureResult.h"
+#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+@class BTThreeDSecureRequest;
+@class BTThreeDSecureLookup;
+@class BTThreeDSecureResult;
+@class BTThreeDSecurePostalAddress;
+@class BTThreeDSecureAdditionalInformation;
+@class BTThreeDSecureV1UICustomization;
+@class UiCustomization;
+@protocol BTThreeDSecureRequestDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,9 +21,6 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
     /// 3DS 2.0
     BTThreeDSecureVersion2
 };
-
-@class BTThreeDSecureRequest, UiCustomization;
-@protocol BTThreeDSecureRequestDelegate;
 
 /**
  Used to initialize a 3D Secure payment flow

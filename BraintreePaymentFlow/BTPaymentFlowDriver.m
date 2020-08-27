@@ -1,14 +1,6 @@
-#if __has_include("BTLogger_Internal.h")
-#import "BTLogger_Internal.h"
-#else
+#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
-#endif
-#if __has_include("BTAPIClient_Internal.h")
-#import "BTAPIClient_Internal.h"
-#else
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#endif
-#import "BTPaymentFlowDriver_Internal.h"
 #import "Braintree-Version.h"
 #import <SafariServices/SafariServices.h>
 

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecureLookup.h"
+@class BTThreeDSecureRequest;
+@class BTThreeDSecureLookup;
 
 NS_ASSUME_NONNULL_BEGIN
 

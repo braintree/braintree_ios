@@ -1,11 +1,9 @@
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPaymentFlowRequest.h"
-#import "BTPaymentFlowResult.h"
 #import <Foundation/Foundation.h>
+#import <BraintreeCore/BTAppSwitch.h>
+#import <BraintreeCore/BTViewControllerPresentingDelegate.h>
+@class BTPaymentFlowResult;
+@class BTPaymentFlowRequest;
+@class BTAPIClient;
 
 NS_ASSUME_NONNULL_BEGIN
 

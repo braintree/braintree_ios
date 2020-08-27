@@ -1,4 +1,5 @@
-#import "BTConfiguration+ThreeDSecure.h"
+#import <BraintreePaymentFlow/BTConfiguration+ThreeDSecure.h>
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTConfiguration (ThreeDSecure)
 

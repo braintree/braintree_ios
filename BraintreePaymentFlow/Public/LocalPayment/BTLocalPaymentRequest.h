@@ -1,15 +1,9 @@
-#import <Foundation/Foundation.h>
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPaymentFlowRequest.h"
-#import "BTPaymentFlowDriver.h"
+#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+@class BTPostalAddress;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BTLocalPaymentResult;
 @protocol BTLocalPaymentRequestDelegate;
 
 /**

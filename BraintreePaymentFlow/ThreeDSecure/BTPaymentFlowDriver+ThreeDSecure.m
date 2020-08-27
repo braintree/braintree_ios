@@ -1,18 +1,16 @@
-#import "BTPaymentFlowDriver+ThreeDSecure.h"
-#if __has_include("BraintreeCore.h")
-#import "BTAPIClient_Internal.h"
-#import "Braintree-Version.h"
-#else
+#import <BraintreePaymentFlow/BTPaymentFlowDriver+ThreeDSecure.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver+ThreeDSecure_Internal.h>
+#import <BraintreePaymentFlow/BTThreeDSecureResult_Internal.h>
+#import <BraintreePaymentFlow/BTThreeDSecureRequest.h>
+#import <BraintreePaymentFlow/BTThreeDSecureRequest_Internal.h>
+#import <BraintreePaymentFlow/BTThreeDSecurePostalAddress_Internal.h>
+#import <BraintreePaymentFlow/BTThreeDSecureAdditionalInformation_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/Braintree-Version.h>
-#endif
-#import "BTPaymentFlowDriver_Internal.h"
-#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
-#import "BTThreeDSecureResult_Internal.h"
-#import "BTThreeDSecureRequest.h"
-#import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecurePostalAddress_Internal.h"
-#import "BTThreeDSecureAdditionalInformation_Internal.h"
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTHTTPErrors.h>
+#import <BraintreeCore/BTClientToken.h>
+#import "Braintree-Version.h"
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)
 

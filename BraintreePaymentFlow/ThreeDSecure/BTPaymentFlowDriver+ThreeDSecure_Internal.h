@@ -1,10 +1,5 @@
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPaymentFlowDriver+ThreeDSecure.h"
-#import "BTThreeDSecureResult.h"
+#import <BraintreePaymentFlow/BTPaymentFlowDriver+ThreeDSecure.h>
+@class BTThreeDSecureResult;
 
 NS_ASSUME_NONNULL_BEGIN
 

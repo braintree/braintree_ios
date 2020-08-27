@@ -1,11 +1,8 @@
-#import "BTThreeDSecureAuthenticateJWT.h"
-#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
-#import "BTThreeDSecureResult_Internal.h"
-#if __has_include("BTAPIClient_Internal.h")
-#import "BTAPIClient_Internal.h"
-#else
+#import <BraintreePaymentFlow/BTThreeDSecureAuthenticateJWT.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver+ThreeDSecure_Internal.h>
+#import <BraintreePaymentFlow/BTThreeDSecureResult_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#endif
+#import <BraintreeCard/BTCardNonce.h>
 
 @implementation BTThreeDSecureAuthenticateJWT
 

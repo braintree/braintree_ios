@@ -1,10 +1,5 @@
-#import <Foundation/Foundation.h>
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPaymentFlowResult.h"
+#import <BraintreePaymentFlow/BTPaymentFlowResult.h>
+@class BTPostalAddress;
 
 NS_ASSUME_NONNULL_BEGIN
 

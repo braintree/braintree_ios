@@ -1,9 +1,5 @@
-#import "BTLocalPaymentResult.h"
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
+#import <BraintreeCore/BTPostalAddress.h>
 
 @implementation BTLocalPaymentResult
 

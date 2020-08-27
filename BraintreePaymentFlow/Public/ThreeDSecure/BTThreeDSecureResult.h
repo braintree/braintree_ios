@@ -1,10 +1,6 @@
-#if __has_include("BraintreeCard.h")
-#import "BTCardNonce.h"
-#else
-#import <BraintreeCard/BTCardNonce.h>
-#endif
-#import "BTPaymentFlowResult.h"
-#import "BTThreeDSecureLookup.h"
+#import <BraintreePaymentFlow/BTPaymentFlowResult.h>
+@class BTCardNonce;
+@class BTThreeDSecureLookup;
 
 NS_ASSUME_NONNULL_BEGIN
 

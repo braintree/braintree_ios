@@ -1,9 +1,5 @@
-#import "BTThreeDSecureLookup.h"
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+#import <BraintreePaymentFlow/BTThreeDSecureLookup.h>
+@class BTJSON;
 
 NS_ASSUME_NONNULL_BEGIN
 

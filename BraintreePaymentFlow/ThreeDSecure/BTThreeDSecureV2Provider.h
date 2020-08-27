@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
-#import "BTThreeDSecureRequest.h"
-#import "BTThreeDSecureResult.h"
+@class BTThreeDSecureResult;
+@class BTThreeDSecureRequest;
+@class BTConfiguration;
+@class BTAPIClient;
 
 NS_ASSUME_NONNULL_BEGIN
 

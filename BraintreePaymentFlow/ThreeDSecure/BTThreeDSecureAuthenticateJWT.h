@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "BTThreeDSecureV2Provider.h"
+#import <BraintreePaymentFlow/BTThreeDSecureV2Provider.h>
+@class BTAPIClient;
+@class BTThreeDSecureResult;
 
 NS_ASSUME_NONNULL_BEGIN
 
