@@ -5,16 +5,11 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTPersistentRequestData.h"
-#import "PPOTOAuth2SwitchRequest.h"
-#import "PPOTConfiguration.h"
-#if __has_include("PayPalUtils.h")
-#import "PPOTMacros.h"
-#import "PPOTSimpleKeychain.h"
-#else
+#import <PayPalOneTouch/PPOTPersistentRequestData.h>
+#import <PayPalOneTouch/PPOTOAuth2SwitchRequest.h>
+#import <PayPalOneTouch/PPOTConfiguration.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTSimpleKeychain.h>
-#endif
 
 #define kPPOTCoderKeyRequestDataConfigurationRecipe   CARDIO_STR(@"configuration_recipe")
 #define kPPOTCoderKeyRequestDataEnvironment           CARDIO_STR(@"environment")

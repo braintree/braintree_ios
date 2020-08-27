@@ -5,18 +5,11 @@
 //  Copyright © 2014 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTAppSwitchResponse.h"
-#if __has_include("PayPalUtils.h")
-#import "PPOTString.h"
-#import "PPOTTime.h"
-#import "PPOTEncryptionHelper.h"
-#import "PPOTJSONHelper.h"
-#else
+#import <PayPalOneTouch/PPOTAppSwitchResponse.h>
 #import <PayPalUtils/PPOTString.h>
 #import <PayPalUtils/PPOTTime.h>
 #import <PayPalUtils/PPOTEncryptionHelper.h>
 #import <PayPalUtils/PPOTJSONHelper.h>
-#endif
 
 @implementation PPOTAppSwitchResponse
 

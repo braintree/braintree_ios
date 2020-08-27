@@ -6,17 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#import "PPFPTITracker.h"
-#import "PPFPTIData.h"
-
-#if __has_include("PayPalUtils.h")
-#import "PPOTDevice.h"
-#import "PPOTVersion.h"
-#else
+#import <PayPalOneTouch/PPFPTITracker.h>
+#import <PayPalOneTouch/PPFPTIData.h>
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTVersion.h>
-#endif
 
 static NSString* const kTrackerURLAsNSString = @"https://api-m.paypal.com/v1/tracking/events";
 

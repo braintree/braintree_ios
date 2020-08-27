@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PPOTRequest.h"
+#import <PayPalOneTouch/PPOTRequest.h>
 
 /**
  Used to build request objects that initialize PayPay payment flows

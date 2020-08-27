@@ -5,29 +5,19 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTCore.h"
-#import "PPOTCore_Internal.h"
-#import "PPOTResult_Internal.h"
-#import "PPOTRequest_Internal.h"
-#import "PPOTConfiguration.h"
-#import "PPOTPersistentRequestData.h"
-#if __has_include("PayPalUtils.h")
-#import "PPOTDevice.h"
-#import "PPOTMacros.h"
-#import "PPOTVersion.h"
-#else
+#import <PayPalOneTouch/PPOTCore.h>
+#import <PayPalOneTouch/PPOTCore_Internal.h>
+#import <PayPalOneTouch/PPOTResult_Internal.h>
+#import <PayPalOneTouch/PPOTRequest_Internal.h>
+#import <PayPalOneTouch/PPOTConfiguration.h>
+#import <PayPalOneTouch/PPOTPersistentRequestData.h>
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTVersion.h>
-#endif
-#if __has_include("PayPalDataCollector.h")
-#import "PPDataCollector.h"
-#else
 #import <PayPalDataCollector/PPDataCollector.h>
-#endif
 
 // PayPalTouch v1 version
-#import "PPOTAppSwitchUtil.h"
+#import <PayPalOneTouch/PPOTAppSwitchUtil.h>
 
 #define kPPOTSafariViewService            CARDIO_STR(@"com.apple.safariviewservice")
 #define kPPOTSafariSourceApplication      CARDIO_STR(@"com.apple.mobilesafari")

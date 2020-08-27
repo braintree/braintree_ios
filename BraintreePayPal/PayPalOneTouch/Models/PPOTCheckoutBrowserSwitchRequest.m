@@ -5,18 +5,12 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTCheckoutBrowserSwitchRequest.h"
-#import "PPOTAppSwitchUtil.h"
-#import "PPOTPersistentRequestData.h"
-#if __has_include("PayPalUtils.h")
-#import "PPOTTime.h"
-#import "PPOTString.h"
-#import "PPOTMacros.h"
-#else
+#import <PayPalOneTouch/PPOTCheckoutBrowserSwitchRequest.h>
+#import <PayPalOneTouch/PPOTAppSwitchUtil.h>
+#import <PayPalOneTouch/PPOTPersistentRequestData.h>
 #import <PayPalUtils/PPOTTime.h>
 #import <PayPalUtils/PPOTString.h>
 #import <PayPalUtils/PPOTMacros.h>
-#endif
 
 // TODO: have a factory/builder/json reader of sandbox, mock, etc
 

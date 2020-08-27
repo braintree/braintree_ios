@@ -5,12 +5,8 @@
 //  Copyright © 2014 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTOAuth2SwitchRequest.h"
-#if __has_include("PPOTMacros.h")
-#import "PPOTMacros.h"
-#else
+#import <PayPalOneTouch/PPOTOAuth2SwitchRequest.h>
 #import <PayPalUtils/PPOTMacros.h>
-#endif
 
 @implementation PPOTOAuth2SwitchRequest
 

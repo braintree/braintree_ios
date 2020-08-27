@@ -12,7 +12,7 @@ FOUNDATION_EXPORT double PayPalOneTouchVersionNumber;
 /// Project version string for PayPalOneTouch.
 FOUNDATION_EXPORT const unsigned char PayPalOneTouchVersionString[];
 
-#include "PPOTCore.h"
-#include "PPOTResult.h"
-#include "PPOTRequest.h"
-#include "PPOTRequestFactory.h"
+#include <PayPalOneTouch/PPOTCore.h>
+#include <PayPalOneTouch/PPOTResult.h>
+#include <PayPalOneTouch/PPOTRequest.h>
+#include <PayPalOneTouch/PPOTRequestFactory.h>

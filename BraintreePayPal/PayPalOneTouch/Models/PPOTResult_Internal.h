@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTCore.h"
+#import <PayPalOneTouch/PPOTCore.h>
 
 @interface PPOTResult ()
 

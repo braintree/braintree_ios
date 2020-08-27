@@ -5,21 +5,14 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTOAuth2BrowserSwitchRequest.h"
-#import "PPOTPersistentRequestData.h"
-#if __has_include("PayPalUtils.h")
-#import "PPOTTime.h"
-#import "PPOTString.h"
-#import "PPOTMacros.h"
-#import "PPOTJSONHelper.h"
-#import "PPOTEncryptionHelper.h"
-#else
+#import <PayPalOneTouch/PPOTOAuth2BrowserSwitchRequest.h>
+#import <PayPalOneTouch/PPOTPersistentRequestData.h>
 #import <PayPalUtils/PPOTTime.h>
 #import <PayPalUtils/PPOTString.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTJSONHelper.h>
 #import <PayPalUtils/PPOTEncryptionHelper.h>
-#endif
+#import <UIKit/UIKit.h>
 
 @interface PPOTOAuth2BrowserSwitchRequest ()
 @property (nonatomic, readwrite) NSString *msgID;

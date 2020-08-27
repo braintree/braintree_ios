@@ -5,23 +5,12 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTConfiguration.h"
-#if __has_include("PayPalUtils.h")
-#import "PPOTJSONHelper.h"
-#import "PPOTMacros.h"
-#import "PPOTSimpleKeychain.h"
-#import "PPOTURLSession.h"
-#else
+#import <PayPalOneTouch/PPOTConfiguration.h>
 #import <PayPalUtils/PPOTJSONHelper.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTSimpleKeychain.h>
 #import <PayPalUtils/PPOTURLSession.h>
-#endif
-#if __has_include("BraintreeCore.h")
-#import "BTLogger_Internal.h"
-#else
 #import <BraintreeCore/BTLogger_Internal.h>
-#endif
 #import <libkern/OSAtomic.h>
 
 #include "PPDefaultConfigurationJSON.h"
