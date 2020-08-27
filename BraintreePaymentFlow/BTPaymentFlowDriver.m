@@ -1,7 +1,9 @@
-#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
-#import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
+#import "BTPaymentFlowDriver_Internal.h"
+
+#import "BTLogger_Internal.h"
+#import "BTAPIClient_Internal.h"
 #import "Braintree-Version.h"
+
 #import <SafariServices/SafariServices.h>
 
 @interface BTPaymentFlowDriver () <SFSafariViewControllerDelegate>

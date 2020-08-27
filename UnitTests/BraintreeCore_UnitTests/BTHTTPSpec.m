@@ -1,8 +1,11 @@
 #import "BTHTTP.h"
 #import "BTHTTPTestProtocol.h"
 #import "BTSpecHelper.h"
-#import <Specta/Specta.h>
-#import <Expecta/Expecta.h>
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTHTTPErrors.h>
+@import Specta;
+@import Expecta;
+@import OHHTTPStubs;
 
 NSURL *validDataURL() {
     NSDictionary *validObject = @{@"clientId":@"a-client-id", @"nest": @{@"nested":@"nested-value"}};

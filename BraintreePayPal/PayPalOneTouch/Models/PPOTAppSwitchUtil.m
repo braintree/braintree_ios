@@ -6,11 +6,12 @@
 //
 #import <UIKit/UIKit.h>
 
-#import <PayPalOneTouch/PPOTAppSwitchUtil.h>
-#import <PayPalOneTouch/PPOTConfiguration.h>
-#import <PayPalOneTouch/PPOTAnalyticsDefines.h>
-#import <PayPalOneTouch/PPOTAnalyticsTracker.h>
-#import <PayPalOneTouch/PPOTPersistentRequestData.h>
+#import "PPOTAppSwitchUtil.h"
+#import "PPOTConfiguration.h"
+#import "PPOTAnalyticsDefines.h"
+#import "PPOTAnalyticsTracker.h"
+#import "PPOTPersistentRequestData.h"
+
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTVersion.h>
 #import <PayPalUtils/PPOTString.h>

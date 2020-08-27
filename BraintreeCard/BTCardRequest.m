@@ -1,4 +1,4 @@
-#import <BraintreeCard/BTCardRequest.h>
+#import "BTCardRequest.h"
 
 @implementation BTCardRequest
 

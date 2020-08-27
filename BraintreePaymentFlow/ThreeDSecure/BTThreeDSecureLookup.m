@@ -1,4 +1,5 @@
-#import <BraintreePaymentFlow/BTThreeDSecureLookup_Internal.h>
+#import "BTThreeDSecureLookup_Internal.h"
+
 #import <BraintreeCore/BTJSON.h>
 
 @implementation BTThreeDSecureLookup

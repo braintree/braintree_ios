@@ -1,4 +1,5 @@
-#import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
+#import "BTConfiguration+DataCollector.h"
+
 #import <BraintreeCore/BTJSON.h>
 
 @implementation BTConfiguration (DataCollector)

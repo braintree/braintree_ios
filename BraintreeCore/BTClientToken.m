@@ -1,5 +1,5 @@
-#import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTJSON.h>
+#import "BTClientToken.h"
+#import "BTJSON.h"
 
 NSString *const BTClientTokenKeyVersion = @"version";
 NSString *const BTClientTokenKeyAuthorizationFingerprint = @"authorizationFingerprint";

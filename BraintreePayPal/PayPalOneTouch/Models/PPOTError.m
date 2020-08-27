@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalOneTouch/PPOTError.h>
+#import "PPOTError.h"
 
 @implementation PPOTError
 

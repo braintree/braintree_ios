@@ -1,14 +1,15 @@
-#import <BraintreeUnionPay/BTCardClient+UnionPay.h>
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
-#import <BraintreeUnionPay/BTCardCapabilities.h>
+#import "BTCardClient+UnionPay.h"
+#import "BTConfiguration+UnionPay.h"
+#import "BTCardCapabilities.h"
+
+#import "BTCardClient_Internal.h"
 #import <BraintreeCard/BTCard.h>
 #import <BraintreeCard/BTCardRequest.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
+
+#import "BTAPIClient_Internal.h"
 #import <BraintreeCore/BTHTTPErrors.h>
 #import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTTokenizationService.h>
-// TODO: Adding the module causes errors
-#import "BTCardClient_Internal.h"
 
 @implementation BTCardClient (UnionPay)
 

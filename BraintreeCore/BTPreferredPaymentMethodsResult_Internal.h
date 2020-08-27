@@ -1,5 +1,5 @@
-#import <BraintreeCore/BTPreferredPaymentMethodsResult.h>
-#import <BraintreeCore/BTJSON.h>
+#import "BTPreferredPaymentMethodsResult.h"
+#import "BTJSON.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

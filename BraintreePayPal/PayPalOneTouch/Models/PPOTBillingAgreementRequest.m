@@ -5,10 +5,11 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalOneTouch/PPOTRequest_Internal.h>
-#import <PayPalOneTouch/PPOTCheckoutAppSwitchRequest.h>
-#import <PayPalOneTouch/PPOTCheckoutBrowserSwitchRequest.h>
-#import <PayPalOneTouch/PPOTConfiguration.h>
+#import "PPOTRequest_Internal.h"
+#import "PPOTCheckoutAppSwitchRequest.h"
+#import "PPOTCheckoutBrowserSwitchRequest.h"
+#import "PPOTConfiguration.h"
+
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTMacros.h>
 

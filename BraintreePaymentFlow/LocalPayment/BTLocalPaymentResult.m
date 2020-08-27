@@ -1,4 +1,5 @@
-#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
+#import "BTLocalPaymentResult.h"
+
 #import <BraintreeCore/BTPostalAddress.h>
 
 @implementation BTLocalPaymentResult

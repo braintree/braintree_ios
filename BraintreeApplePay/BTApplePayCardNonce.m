@@ -1,4 +1,4 @@
-#import <BraintreeApplePay/BTApplePayCardNonce.h>
+#import "BTApplePayCardNonce.h"
 #import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTBinData.h>
 

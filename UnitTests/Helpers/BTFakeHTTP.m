@@ -1,4 +1,5 @@
 #import "BTFakeHTTP.h"
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTFakeHTTP
 

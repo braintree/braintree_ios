@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTThreeDSecureRequest.h>
+#import "BTThreeDSecureRequest.h"
 @class BTConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN

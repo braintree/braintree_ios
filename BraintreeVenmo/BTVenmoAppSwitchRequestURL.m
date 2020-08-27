@@ -1,4 +1,5 @@
-#import <BraintreeVenmo/BTVenmoAppSwitchRequestURL.h>
+#import "BTVenmoAppSwitchRequestURL.h"
+
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTURLUtils.h>
 #import "Braintree-Version.h"

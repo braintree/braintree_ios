@@ -11,8 +11,9 @@
 //  The OpenStack project is provided under the Apache 2.0 license.
 //
 
-#import <PayPalUtils/PPOTSimpleKeychain.h>
-#import <PayPalUtils/PPOTMacros.h>
+#import "PPOTSimpleKeychain.h"
+#import "PPOTMacros.h"
+
 #import <Security/Security.h>
 #import <TargetConditionals.h>
 

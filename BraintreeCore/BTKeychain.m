@@ -1,4 +1,5 @@
-#import <BraintreeCore/BTKeychain.h>
+#import "BTKeychain.h"
+
 #import <Security/Security.h>
 
 @implementation BTKeychain

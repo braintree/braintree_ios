@@ -1,4 +1,4 @@
-#import <BraintreeVenmo/BTVenmoAccountNonce.h>
+#import "BTVenmoAccountNonce.h"
 
 @interface BTVenmoAccountNonce ()
 

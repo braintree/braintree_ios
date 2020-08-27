@@ -5,9 +5,9 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalOneTouch/PPOTRequestFactory.h>
-#import <PayPalOneTouch/PPOTCheckoutRequest_Internal.h>
-#import <PayPalOneTouch/PPOTAuthorizationRequest_Internal.h>
+#import "PPOTRequestFactory.h"
+#import "PPOTCheckoutRequest_Internal.h"
+#import "PPOTAuthorizationRequest_Internal.h"
 
 @implementation PPOTRequestFactory
 

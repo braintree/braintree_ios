@@ -5,11 +5,13 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalDataCollector/PPDataCollector_Internal.h>
+#import "PPDataCollector_Internal.h"
+
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTVersion.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTURLSession.h>
+
 #import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 
 @implementation PPDataCollector

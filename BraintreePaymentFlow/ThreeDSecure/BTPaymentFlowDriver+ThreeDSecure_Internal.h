@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTPaymentFlowDriver+ThreeDSecure.h>
+#import "BTPaymentFlowDriver+ThreeDSecure.h"
 @class BTThreeDSecureResult;
 
 NS_ASSUME_NONNULL_BEGIN

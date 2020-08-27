@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalOneTouch/PPFPTIData.h>
+#import "PPFPTIData.h"
 
 @interface PPFPTIData ()
 

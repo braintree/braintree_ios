@@ -1,5 +1,6 @@
 #import "BTHTTPTestProtocol.h"
 #import "BTHTTP.h"
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTHTTPTestProtocol
 

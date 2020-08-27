@@ -1,6 +1,6 @@
-#import <BraintreeCard/BTCardNonce_Internal.h>
-#import <BraintreeCard/BTAuthenticationInsight_Internal.h>
-#import <BraintreeCard/BTThreeDSecureInfo.h>
+#import "BTCardNonce_Internal.h"
+#import "BTAuthenticationInsight_Internal.h"
+#import "BTThreeDSecureInfo.h"
 
 @implementation BTCardNonce
 

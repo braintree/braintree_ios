@@ -1,5 +1,5 @@
 #import "BTSpecHelper.h"
-#import <OCMock/OCMock.h>
+@import OCMock;
 
 #ifdef DEBUG
 BTTestMode_t BTTestMode = BTTestModeDebug;

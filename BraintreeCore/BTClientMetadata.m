@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTClientMetadata.h>
+#import "BTClientMetadata.h"
 
 @interface BTClientMetadata () {
     @protected

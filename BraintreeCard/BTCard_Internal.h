@@ -1,4 +1,4 @@
-#import <BraintreeCard/BTCard.h>
+#import "BTCard.h"
 @class BTJSON;
 
 @interface BTCard ()

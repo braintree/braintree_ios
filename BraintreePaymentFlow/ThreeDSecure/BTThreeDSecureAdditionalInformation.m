@@ -1,5 +1,5 @@
-#import <BraintreePaymentFlow/BTThreeDSecureAdditionalInformation_Internal.h>
-#import <BraintreePaymentFlow/BTThreeDSecurePostalAddress_Internal.h>
+#import "BTThreeDSecureAdditionalInformation_Internal.h"
+#import "BTThreeDSecurePostalAddress_Internal.h"
 
 @implementation BTThreeDSecureAdditionalInformation
 

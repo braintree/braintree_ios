@@ -1,13 +1,15 @@
-#import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
-#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
-#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
-#import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
-#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import <BraintreePaymentFlow/BTPaymentFlowDriver+LocalPayment_Internal.h>
-#import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreeCore/BTPostalAddress.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
+#import "BTLocalPaymentRequest.h"
+#import "BTConfiguration+LocalPayment.h"
+#import "BTPaymentFlowDriver_Internal.h"
+#import "BTLocalPaymentRequest.h"
+#import "BTLocalPaymentResult.h"
+#import "BTPaymentFlowDriver+LocalPayment_Internal.h"
+
+#import "BTLogger_Internal.h"
+#import "BTAPIClient_Internal.h"
 #import "Braintree-Version.h"
+#import <BraintreeCore/BTPostalAddress.h>
+#import <BraintreeCore/BTJSON.h>
 #import <PayPalDataCollector/PPDataCollector.h>
 #import <SafariServices/SafariServices.h>
 

@@ -3,9 +3,9 @@
 //  Copyright © 2009 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTSimpleKeychain.h>
-#import <PayPalUtils/PPOTString.h>
+#import "PPOTDevice.h"
+#import "PPOTSimpleKeychain.h"
+#import "PPOTString.h"
 
 #import <UIKit/UIKit.h>
 #include <sys/types.h>

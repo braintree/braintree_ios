@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PayPalOneTouch/PPOTCore.h>
+#import "PPOTCore.h"
 
 @interface PPOTError : NSObject
 

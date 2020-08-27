@@ -1,7 +1,8 @@
-#import <BraintreePaymentFlow/BTThreeDSecureResult_Internal.h>
-#import <BraintreePaymentFlow/BTThreeDSecureLookup_Internal.h>
+#import "BTThreeDSecureResult_Internal.h"
+#import "BTThreeDSecureLookup_Internal.h"
+
+#import "BTCardNonce_Internal.h"
 #import <BraintreeCore/BTJSON.h>
-#import <BraintreeCard/BTCardNonce_Internal.h>
 
 @implementation BTThreeDSecureResult
 

@@ -1,5 +1,6 @@
-#import <XCTest/XCTest.h>
 #import "BTCard_Internal.h"
+@import XCTest;
+@import BraintreeCore;
 
 // See also BTCard_Tests
 @interface BTCard_Internal_Tests : XCTestCase

@@ -1,4 +1,5 @@
-#import <BraintreePayPal/BTPayPalAccountNonce_Internal.h>
+#import "BTPayPalAccountNonce_Internal.h"
+
 #import <Braintreecore/BTPostalAddress.h>
 
 @interface BTPayPalAccountNonce ()

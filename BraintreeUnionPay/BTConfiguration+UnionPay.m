@@ -1,4 +1,5 @@
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
+#import "BTConfiguration+UnionPay.h"
+
 #import <BraintreeCore/BTJSON.h>
 
 @implementation BTConfiguration (UnionPay)

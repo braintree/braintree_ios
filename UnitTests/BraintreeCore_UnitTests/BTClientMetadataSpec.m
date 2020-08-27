@@ -1,5 +1,6 @@
 #import "BTClientMetadata.h"
-#import "BTSpecDependencies.h"
+@import Specta;
+@import Expecta;
 
 SpecBegin(BTClientMetadata)
 

@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTLogger.h>
+#import "BTLogger.h"
 
 @interface BTLogger ()
 

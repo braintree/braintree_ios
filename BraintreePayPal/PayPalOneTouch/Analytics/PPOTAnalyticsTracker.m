@@ -7,19 +7,20 @@
 
 #import <UIKit/UIKit.h>
 
-#import <PayPalOneTouch/PPOTAnalyticsTracker.h>
+#import "PPOTAnalyticsTracker.h"
 
-#import <PayPalOneTouch/PPOTCore_Internal.h>
-#import <PayPalOneTouch/PPFPTIData.h>
-#import <PayPalOneTouch/PPFPTITracker.h>
-#import <PayPalOneTouch/PPOTAnalyticsDefines.h>
+#import "PPOTCore_Internal.h"
+#import "PPFPTIData.h"
+#import "PPFPTITracker.h"
+#import "PPOTAnalyticsDefines.h"
+
 #import <PayPalUtils/PPOTVersion.h>
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTSimpleKeychain.h>
 #import <PayPalUtils/PPOTString.h>
 #import <PayPalUtils/PPOTURLSession.h>
-#import <BraintreeCore/BTLogger_Internal.h>
+#import "BTLogger_Internal.h"
 
 #define kTimeForSession           (30 * 60) // How long should an Omniture session last.
 #define kKeychainIdentifierForUDID @"PayPal_OTC_Analytics_UDID"

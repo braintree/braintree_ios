@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTThreeDSecureLookup.h>
+#import "BTThreeDSecureLookup.h"
 @class BTJSON;
 
 NS_ASSUME_NONNULL_BEGIN

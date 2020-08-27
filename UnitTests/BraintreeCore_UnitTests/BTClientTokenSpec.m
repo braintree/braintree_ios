@@ -1,7 +1,8 @@
 #import "BTClientToken.h"
 #import "BTTestClientTokenFactory.h"
-#import <Expecta/Expecta.h>
-#import <XCTest/XCTest.h>
+#import <BraintreeCore/BTJSON.h>
+@import Expecta;
+@import XCTest;
 
 @interface BTClientToken_Tests : XCTestCase
 @end

@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTThreeDSecurePostalAddress_Internal.h>
+#import "BTThreeDSecurePostalAddress_Internal.h"
 
 @implementation BTThreeDSecurePostalAddress
 

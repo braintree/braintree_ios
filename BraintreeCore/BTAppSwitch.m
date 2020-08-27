@@ -1,4 +1,5 @@
-#import <BraintreeCore/BTAppSwitch.h>
+#import "BTAppSwitch.h"
+
 #import <UIKit/UIKit.h>
 
 NSString * const BTAppSwitchWillSwitchNotification = @"com.braintreepayments.BTAppSwitchWillSwitchNotification";

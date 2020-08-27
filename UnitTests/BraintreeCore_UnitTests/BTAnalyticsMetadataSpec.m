@@ -1,7 +1,8 @@
 #import "BTAnalyticsMetadata.h"
-
-#import <UIKit/UIKit.h>
-#import "BTSpecDependencies.h"
+@import UIKit;
+@import Specta;
+@import Expecta;
+@import OCMock;
 
 SpecBegin(BTAnalyticsMetadata)
 

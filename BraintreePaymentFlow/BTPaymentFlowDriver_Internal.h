@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#import "BTPaymentFlowDriver.h"
 
 @interface BTPaymentFlowDriver ()
 

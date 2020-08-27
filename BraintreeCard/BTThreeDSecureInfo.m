@@ -1,4 +1,4 @@
-#import <BraintreeCard/BTThreeDSecureInfo.h>
+#import "BTThreeDSecureInfo.h"
 #import <BraintreeCore/BTJSON.h>
 
 @interface BTThreeDSecureInfo ()

@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <BraintreePaymentFlow/BTThreeDSecureV2Provider.h>
+#import "BTThreeDSecureV2Provider.h"
 @class BTAPIClient;
 @class BTThreeDSecureResult;
 

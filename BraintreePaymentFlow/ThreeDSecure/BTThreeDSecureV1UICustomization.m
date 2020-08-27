@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTThreeDSecureV1UICustomization.h>
+#import "BTThreeDSecureV1UICustomization.h"
 
 @implementation BTThreeDSecureV1UICustomization
 

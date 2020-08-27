@@ -7,7 +7,7 @@
 
 #import <XCTest/XCTest.h>
 #import "PPDataCollector_Internal.h"
-#import "PPRMOCMagnesResult.h"
+#import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 
 @interface PPDataCollectorTest : XCTestCase
 
@@ -49,7 +49,7 @@
 
 - (void)testCollectPayPalDeviceInfoWithClientMetadataID {
     NSString *pairingID = @"pairing id for device info";
-    PPRMOCMagnesSDKResult *result = [PPDataCollector collectPayPalDeviceInfoWithClientMetadataID:pairingID];
+    MagnesResult *result = [PPDataCollector collectPayPalDeviceInfoWithClientMetadataID:pairingID];
     XCTAssertNotNil(result);
     NSDictionary *payloadDict = [result getDeviceInfo];
     XCTAssertNotNil(payloadDict);

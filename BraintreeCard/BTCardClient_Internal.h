@@ -1,4 +1,4 @@
-#import <BraintreeCard/BTCardClient.h>
+#import "BTCardClient.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

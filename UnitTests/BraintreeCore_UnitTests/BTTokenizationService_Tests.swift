@@ -1,4 +1,5 @@
 import XCTest
+import SafariServices
 
 class BTTokenizationService_Tests: XCTestCase {
 

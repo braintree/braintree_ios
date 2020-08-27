@@ -1,9 +1,9 @@
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreePayPal/BraintreePayPal.h>
-#import <BraintreePayPal/BTPayPalDriver_Internal.h>
+#import "BTAPIClient_Internal.h"
+#import "BTPayPalDriver_Internal.h"
 #import "BTNonceValidationHelper.h"
-#import <OCMock/OCMock.h>
-#import <XCTest/XCTest.h>
+@import BraintreePayPal;
+@import OCMock;
+@import XCTest;
 
 @interface BTAppSwitchTestDelegate : NSObject <BTAppSwitchDelegate>
 @property (nonatomic, strong) XCTestExpectation *willPerform;

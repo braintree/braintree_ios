@@ -1,8 +1,8 @@
-#import <BraintreeCore/BTGraphQLHTTP.h>
-#import <BraintreeCore/BTURLUtils.h>
-#import <BraintreeCore/Braintree-Version.h>
-#import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTJSON.h>
+#import "BTGraphQLHTTP.h"
+#import "BTURLUtils.h"
+#import "Braintree-Version.h"
+#import "BTHTTPErrors.h"
+#import "BTJSON.h"
 
 @interface BTGraphQLHTTP ()
 

@@ -1,12 +1,13 @@
-#import <UIKit/UIKit.h>
-#import <Specta/Specta.h>
-#import <Expecta/Expecta.h>
-#import <OCMock/OCMock.h>
-
+@import UIKit;
+@import Specta;
+@import Expecta;
+@import OCMock;
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoDriver.h"
 #import "Braintree-Version.h"
 #import "BTSpecHelper.h"
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTClientMetadata.h>
 
 SpecBegin(BTVenmoAppSwitchRequestURL)
 

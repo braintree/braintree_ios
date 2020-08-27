@@ -3,6 +3,8 @@
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
+#import <BraintreeCore/BTClientToken.h>
+#import <BraintreeCore/BTJSON.h>
 #import "BTAnalyticsService.h"
 #import "BTAPIClient_Internal.h"
 #import "BTFakeHTTP.h"

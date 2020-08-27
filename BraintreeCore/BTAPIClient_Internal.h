@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTAPIClient.h>
+#import "BTAPIClient.h"
 @class BTAnalyticsService;
 @class BTAPIHTTP;
 @class BTClientMetadata;

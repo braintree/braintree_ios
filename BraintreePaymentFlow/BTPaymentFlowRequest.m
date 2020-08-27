@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
+#import "BTPaymentFlowRequest.h"
 
 @implementation BTPaymentFlowRequest
 

@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalOneTouch/PPOTCore.h>
+#import "PPOTCore.h"
 
 // eg PayPalSDK/OneTouchCore-iOS 1.2.1-g1234567-dirty (iOS 8.1; iPhone 6+; DEBUG)
 #ifdef DEBUG

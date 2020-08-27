@@ -3,8 +3,8 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTTime.h>
+#import "PPOTTime.h"
+#import "PPOTMacros.h"
 
 @implementation PPOTTime
 

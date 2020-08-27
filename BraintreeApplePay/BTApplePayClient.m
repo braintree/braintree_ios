@@ -1,7 +1,8 @@
-#import <BraintreeApplePay/BTApplePayClient_Internal.h>
-#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
-#import <BraintreeApplePay/BTApplePayCardNonce.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
+#import "BTApplePayClient_Internal.h"
+#import "BTConfiguration+ApplePay.h"
+#import "BTApplePayCardNonce.h"
+
+#import "BTAPIClient_Internal.h"
 #import <BraintreeCore/BTPaymentMethodNonce.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BTJSON.h>

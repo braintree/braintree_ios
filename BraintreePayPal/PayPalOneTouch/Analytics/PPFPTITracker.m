@@ -6,8 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <PayPalOneTouch/PPFPTITracker.h>
-#import <PayPalOneTouch/PPFPTIData.h>
+#import "PPFPTITracker.h"
+#import "PPFPTIData.h"
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTVersion.h>
 

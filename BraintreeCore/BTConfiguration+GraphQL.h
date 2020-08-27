@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTConfiguration.h>
+#import "BTConfiguration.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

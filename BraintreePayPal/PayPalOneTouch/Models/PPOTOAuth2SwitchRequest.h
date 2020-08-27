@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PayPalOneTouch/PPOTSwitchRequest.h>
+#import "PPOTSwitchRequest.h"
 
 @interface PPOTOAuth2SwitchRequest : PPOTSwitchRequest
 

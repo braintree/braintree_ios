@@ -3,15 +3,14 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
+
+#import "PPOTURLSession.h"
+#import "PPOTMacros.h"
+#import "PPOTPinnedCertificates.h"
+#import "PPOTDevice.h"
+#import "PPOTVersion.h"
+
 #import <UIKit/UIKit.h>
-
-#import <PayPalUtils/PPOTURLSession.h>
-
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTPinnedCertificates.h>
-
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTVersion.h>
 
 #define STATUS_IS_FAIL(x) (x < 200 || x >= 300)
 

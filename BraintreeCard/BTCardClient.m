@@ -1,14 +1,15 @@
-#import <BraintreeCard/BTCardClient_Internal.h>
-#import <BraintreeCard/BTCardNonce_Internal.h>
-#import <BraintreeCard/BTCard_Internal.h>
-#import <BraintreeCard/BTCardRequest.h>
-#import <BraintreeCard/BTConfiguration+Card.h>
+#import "BTCardClient_Internal.h"
+#import "BTCardNonce_Internal.h"
+#import "BTCard_Internal.h"
+#import "BTCardRequest.h"
+#import "BTConfiguration+Card.h"
+
+#import "BTAPIClient_Internal.h"
 #import <BraintreeCore/BTErrors.h>
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BTTokenizationService.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
 NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";

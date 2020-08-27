@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PayPalOneTouch/PPOTAppSwitchUtil.h>
+#import "PPOTAppSwitchUtil.h"
 
 @interface PPOTSwitchRequest : NSObject
 

@@ -1,6 +1,7 @@
-#import <BraintreeDataCollector/BTDataCollector_Internal.h>
-#import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
-#import <BraintreeDataCollector/kDataCollector.h>
+#import "BTDataCollector_Internal.h"
+#import "BTConfiguration+DataCollector.h"
+#import "kDataCollector.h"
+
 #import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTAPIClient.h>
 

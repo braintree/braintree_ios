@@ -1,4 +1,4 @@
-#import <BraintreeUnionPay/BTCardCapabilities.h>
+#import "BTCardCapabilities.h"
 
 @implementation BTCardCapabilities
 

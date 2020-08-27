@@ -1,7 +1,7 @@
-#import <BraintreePaymentFlow/BTThreeDSecureV1BrowserSwitchHelper.h>
-#import <BraintreePaymentFlow/BTThreeDSecureRequest.h>
-#import <BraintreePaymentFlow/BTThreeDSecureLookup.h>
-#import <BraintreePaymentFlow/BTThreeDSecureV1UICustomization.h>
+#import "BTThreeDSecureV1BrowserSwitchHelper.h"
+#import "BTThreeDSecureRequest.h"
+#import "BTThreeDSecureLookup.h"
+#import "BTThreeDSecureV1UICustomization.h"
 
 static NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.2.0";
 

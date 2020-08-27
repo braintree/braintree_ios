@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalOneTouch/PPOTOAuth2AppSwitchRequest.h>
+#import "PPOTOAuth2AppSwitchRequest.h"
 
 @implementation PPOTOAuth2AppSwitchRequest
 

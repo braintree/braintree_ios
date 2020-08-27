@@ -6,14 +6,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PayPalOneTouch/PPOTResult_Internal.h>
-#import <PayPalOneTouch/PPOTCore_Internal.h>
-#import <PayPalOneTouch/PPOTAppSwitchResponse.h>
-#import <PayPalOneTouch/PPOTConfiguration.h>
-#import <PayPalOneTouch/PPOTAnalyticsDefines.h>
-#import <PayPalOneTouch/PPOTAnalyticsTracker.h>
-#import <PayPalOneTouch/PPOTError.h>
-#import <PayPalOneTouch/PPOTPersistentRequestData.h>
+
+#import "PPOTResult_Internal.h"
+#import "PPOTCore_Internal.h"
+#import "PPOTAppSwitchResponse.h"
+#import "PPOTConfiguration.h"
+#import "PPOTAnalyticsDefines.h"
+#import "PPOTAnalyticsTracker.h"
+#import "PPOTError.h"
+#import "PPOTPersistentRequestData.h"
+
 #import <PayPalUtils/PPOTDevice.h>
 #import <PayPalUtils/PPOTMacros.h>
 #import <PayPalUtils/PPOTVersion.h>

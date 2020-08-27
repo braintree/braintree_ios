@@ -6,8 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PayPalOneTouch/PPOTCore.h>
-#import <PayPalOneTouch/PPOTRequest.h>
+#import "PPOTCore.h"
+#import "PPOTRequest.h"
 
 @interface PPOTConfigurationRecipe : NSObject <NSCoding>
 @property (nonatomic, assign, readwrite) PPOTRequestTarget target;

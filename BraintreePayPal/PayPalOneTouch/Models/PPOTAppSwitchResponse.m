@@ -5,7 +5,7 @@
 //  Copyright © 2014 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalOneTouch/PPOTAppSwitchResponse.h>
+#import "PPOTAppSwitchResponse.h"
 #import <PayPalUtils/PPOTString.h>
 #import <PayPalUtils/PPOTTime.h>
 #import <PayPalUtils/PPOTEncryptionHelper.h>

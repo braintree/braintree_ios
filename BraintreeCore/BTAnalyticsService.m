@@ -1,13 +1,14 @@
-#import <BraintreeCore/BTAnalyticsService.h>
-#import <BraintreeCore/BTAnalyticsMetadata.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTClientMetadata.h>
-#import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTConfiguration.h>
-#import <BraintreeCore/BTHTTP.h>
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreeCore/BTPayPalIDToken.h>
+#import "BTAnalyticsService.h"
+#import "BTAnalyticsMetadata.h"
+#import "BTAPIClient_Internal.h"
+#import "BTClientMetadata.h"
+#import "BTClientToken.h"
+#import "BTConfiguration.h"
+#import "BTHTTP.h"
+#import "BTJSON.h"
+#import "BTLogger_Internal.h"
+#import "BTPayPalIDToken.h"
+
 #import <UIKit/UIKit.h>
 
 #pragma mark - BTAnalyticsEvent

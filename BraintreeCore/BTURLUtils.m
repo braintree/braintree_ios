@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTURLUtils.h>
+#import "BTURLUtils.h"
 
 @implementation BTURLUtils
 

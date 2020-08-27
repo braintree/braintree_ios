@@ -5,8 +5,8 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalUtils/PPOTJSONHelper.h>
-#import <PayPalUtils/PPOTString.h>
+#import "PPOTJSONHelper.h"
+#import "PPOTString.h"
 
 @implementation PPOTJSONHelper
 

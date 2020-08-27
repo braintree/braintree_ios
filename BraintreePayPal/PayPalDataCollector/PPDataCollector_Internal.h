@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <PayPalDataCollector/PPDataCollector.h>
+#import "PPDataCollector.h"
 
 @interface PPDataCollector ()
 

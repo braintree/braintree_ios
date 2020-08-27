@@ -1,4 +1,4 @@
-#import <BraintreePaymentFlow/BTThreeDSecureAdditionalInformation.h>
+#import "BTThreeDSecureAdditionalInformation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

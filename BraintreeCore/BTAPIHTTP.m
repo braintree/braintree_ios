@@ -1,5 +1,5 @@
-#import <BraintreeCore/BTAPIHTTP.h>
-#import <BraintreeCore/BTAPIPinnedCertificates.h>
+#import "BTAPIHTTP.h"
+#import "BTAPIPinnedCertificates.h"
 
 #define BT_API_VERSION @"2016-10-07"
 

@@ -1,4 +1,4 @@
-#import <BraintreeDataCollector/BTDataCollector.h>
+#import "BTDataCollector.h"
 @class KDataCollector;
 
 @interface BTDataCollector ()

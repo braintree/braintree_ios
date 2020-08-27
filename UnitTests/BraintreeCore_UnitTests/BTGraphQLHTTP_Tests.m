@@ -1,8 +1,11 @@
 #import "BTGraphQLHTTP.h"
 #import "BTHTTPTestProtocol.h"
 #import "BTSpecHelper.h"
-#import <Specta/Specta.h>
-#import <Expecta/Expecta.h>
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTHTTPErrors.h>
+@import Specta;
+@import Expecta;
+@import OHHTTPStubs;
 
 @interface BTGraphQLHTTPTests : XCTestCase
 @end

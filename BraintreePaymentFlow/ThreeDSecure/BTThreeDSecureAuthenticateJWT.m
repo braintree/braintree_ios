@@ -1,7 +1,8 @@
-#import <BraintreePaymentFlow/BTThreeDSecureAuthenticateJWT.h>
-#import <BraintreePaymentFlow/BTPaymentFlowDriver+ThreeDSecure_Internal.h>
-#import <BraintreePaymentFlow/BTThreeDSecureResult_Internal.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
+#import "BTThreeDSecureAuthenticateJWT.h"
+#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTThreeDSecureResult_Internal.h"
+
+#import "BTAPIClient_Internal.h"
 #import <BraintreeCard/BTCardNonce.h>
 
 @implementation BTThreeDSecureAuthenticateJWT

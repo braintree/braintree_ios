@@ -1,5 +1,5 @@
-#import <BraintreeCore/BTPayPalIDToken.h>
-#import <BraintreeCore/BTJSON.h>
+#import "BTPayPalIDToken.h"
+#import "BTJSON.h"
 
 NSString * const BTPayPalIDTokenErrorDomain = @"com.braintreepayments.BTPayPalIDTokenErrorDomain";
 
