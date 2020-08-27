@@ -1,16 +1,7 @@
-#import <UIKit/UIKit.h>
-
-#import "BTVenmoAppSwitchRequestURL.h"
-
-#if __has_include("BraintreeCore.h")
-#import "Braintree-Version.h"
-#import "BTClientMetadata.h"
-#import "BTURLUtils.h"
-#else
-#import <BraintreeCore/Braintree-Version.h>
+#import <BraintreeVenmo/BTVenmoAppSwitchRequestURL.h>
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTURLUtils.h>
-#endif
+#import "Braintree-Version.h"
 
 #define kXCallbackTemplate @"scheme://x-callback-url/path"
 #define kVenmoScheme @"com.venmo.touch.v2"

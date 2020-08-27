@@ -1,5 +1,4 @@
-#import <UIKit/UIKit.h>
-#import "BTVenmoDriver.h"
+#import <BraintreeVenmo/BTVenmoDriver.h>
 
 @interface BTVenmoDriver ()
 

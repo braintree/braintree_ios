@@ -1,10 +1,6 @@
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTVenmoAccountNonce.h"
-#import <Foundation/Foundation.h>
+#import <BraintreeCore/BTAppSwitch.h>
+@class BTAPIClient;
+@class BTVenmoAccountNonce;
 
 NS_ASSUME_NONNULL_BEGIN
 
