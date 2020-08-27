@@ -1,4 +1,4 @@
-#import "BTAmericanExpressClient.h"
+#import <BraintreeAmericanExpress/BTAmericanExpressClient.h>
 
 @interface BTAmericanExpressClient ()
 /**

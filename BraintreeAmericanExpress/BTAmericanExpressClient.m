@@ -1,9 +1,6 @@
-#if __has_include("BraintreeCore.h")
-#import "BTAPIClient_Internal.h"
-#else
+#import <BraintreeAmericanExpress/BTAmericanExpressClient_Internal.h>
+#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#endif
-#import "BTAmericanExpressClient_Internal.h"
 
 NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmericanExpressErrorDomain";
 

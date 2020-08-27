@@ -1,9 +1,9 @@
-#import "BTAmericanExpressRewardsBalance.h"
+#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTAmericanExpressRewardsBalance
 
-- (instancetype)initWithJSON:(BTJSON *)json
-{
+- (instancetype)initWithJSON:(BTJSON *)json {
     if (self = [super init]) {
         _errorCode = [json[@"error"][@"code"] asString];
         _errorMessage = [json[@"error"][@"message"] asString];
