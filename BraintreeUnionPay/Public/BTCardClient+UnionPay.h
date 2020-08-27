@@ -1,10 +1,6 @@
-#if __has_include("BraintreeCard.h")
-#import "BraintreeCard.h"
-#else
-#import <BraintreeCard/BraintreeCard.h>
-#endif
-
-@class BTCardCapabilities, BTCardRequest;
+#import <BraintreeCard/BTCardClient.h>
+@class BTCardCapabilities;
+@class BTCardRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 

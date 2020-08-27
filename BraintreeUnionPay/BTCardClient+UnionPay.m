@@ -1,15 +1,14 @@
-#import "BTCardClient+UnionPay.h"
-#import "BTCardCapabilities.h"
-#import "BTConfiguration+UnionPay.h"
-#if __has_include("BraintreeCore.h")
-#import "BTAPIClient_Internal.h"
-#import "BTCardClient_Internal.h"
-#import "BTCardRequest.h"
-#else
+#import <BraintreeUnionPay/BTCardClient+UnionPay.h>
+#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
+#import <BraintreeUnionPay/BTCardCapabilities.h>
+#import <BraintreeCard/BTCard.h>
+#import <BraintreeCard/BTCardRequest.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCard/BTCardClient_Internal.h>
-#import <BraintreeCard/BTCardRequest_Internal.h>
-#endif
+#import <BraintreeCore/BTHTTPErrors.h>
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTTokenizationService.h>
+// TODO: Adding the module causes errors
+#import "BTCardClient_Internal.h"
 
 @implementation BTCardClient (UnionPay)
 
@@ -30,8 +29,7 @@
 #pragma mark - Public methods
 
 - (void)fetchCapabilities:(NSString *)cardNumber
-               completion:(void (^)(BTCardCapabilities * _Nullable, NSError * _Nullable))completion
-{
+               completion:(void (^)(BTCardCapabilities * _Nullable, NSError * _Nullable))completion {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         if (error) {
             completion(nil, error);
@@ -66,8 +64,7 @@
 }
 
 - (void)enrollCard:(BTCardRequest *)request
-        completion:(nonnull void (^)(NSString * _Nullable, BOOL, NSError * _Nullable))completion
-{
+        completion:(nonnull void (^)(NSString * _Nullable, BOOL, NSError * _Nullable))completion {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         if (error) {
             [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:error];
