@@ -1,34 +1,23 @@
-#import "BTPayPalDriver_Internal.h"
+#import <BraintreePayPal/BTPayPalDriver_Internal.h>
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreePayPal/BTPayPalLineItem.h>
+#import <BraintreePayPal/BTPayPalAccountNonce_Internal.h>
+#import <BraintreePayPal/BTPayPalRequest.h>
+#import <BraintreePayPal/BTPayPalRequestFactory.h>
 
-#if __has_include("PayPalOneTouch.h")
-#import "PPOTRequest.h"
-#import "PPOTCore.h"
-#else
-#import <PayPalOneTouch/PPOTRequest.h>
-#import <PayPalOneTouch/PPOTCore.h>
-#endif
-
-#if __has_include("BraintreeCore.h")
-#import "BTAPIClient_Internal.h"
-#import "BTPayPalAccountNonce_Internal.h"
-#import "BTPostalAddress.h"
-#import "BTLogger_Internal.h"
-#else
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPostalAddress.h>
 #import <BraintreeCore/BTLogger_Internal.h>
-#endif
+#import <BraintreeCore/BTPaymentMethodNonceParser.h>
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTTokenizationService.h>
+#import <BraintreeCore/BTClientToken.h>
+#import <BraintreeCore/BTHTTPErrors.h>
 
-#if __has_include("BTPayPalAccountNonce_Internal.h")
-#import "BTPayPalAccountNonce_Internal.h"
-#else
-#import <BraintreePayPal/BTPayPalAccountNonce_Internal.h>
-#endif
-
+#import <PayPalOneTouch/PPOTRequest.h>
+#import <PayPalOneTouch/PPOTCore.h>
 
 #import <SafariServices/SafariServices.h>
-#import "BTConfiguration+PayPal.h"
-#import "BTPayPalLineItem.h"
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 NSString *const BTSFAuthenticationSessionDisabled = @"sfAuthenticationSessionDisabled";

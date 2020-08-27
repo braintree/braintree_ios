@@ -1,15 +1,12 @@
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPayPalAccountNonce.h"
-#import "BTPayPalRequest.h"
 #import <Foundation/Foundation.h>
+#import <BraintreeCore/BTAppSwitch.h>
+#import <BraintreeCore/BTViewControllerPresentingDelegate.h>
+@class BTPayPalAccountNonce;
+@class BTPayPalRequest;
+@class BTAPIClient;
+@class PPOTRequest;
 
 NS_ASSUME_NONNULL_BEGIN
-
-@class PPOTRequest;
 
 /**
  Domain for PayPal errors.

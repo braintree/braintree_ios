@@ -1,26 +1,5 @@
-#import "BTPayPalAccountNonce.h"
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-
-@interface BTPayPalCreditFinancingAmount ()
-
-- (instancetype)initWithCurrency:(NSString *)currency value:(NSString *)value;
-
-@end
-
-@interface BTPayPalCreditFinancing ()
-
-- (instancetype)initWithCardAmountImmutable:(BOOL)cardAmountImmutable
-                             monthlyPayment:(BTPayPalCreditFinancingAmount *)monthlyPayment
-                            payerAcceptance:(BOOL)payerAcceptance
-                                       term:(NSInteger)term
-                                  totalCost:(BTPayPalCreditFinancingAmount *)totalCost
-                              totalInterest:(BTPayPalCreditFinancingAmount *)totalInterest;
-
-@end
+#import <BraintreePayPal/BTPayPalAccountNonce.h>
+#import <BraintreePayPal/BTPayPalCreditFinancing.h>
 
 @interface BTPayPalAccountNonce ()
 
@@ -36,5 +15,22 @@
                       payerId:(NSString *)payerId
                     isDefault:(BOOL)isDefault
               creditFinancing:(BTPayPalCreditFinancing *)creditFinancing;
+
+@end
+
+@interface BTPayPalCreditFinancing ()
+
+- (instancetype)initWithCardAmountImmutable:(BOOL)cardAmountImmutable
+                             monthlyPayment:(BTPayPalCreditFinancingAmount *)monthlyPayment
+                            payerAcceptance:(BOOL)payerAcceptance
+                                       term:(NSInteger)term
+                                  totalCost:(BTPayPalCreditFinancingAmount *)totalCost
+                              totalInterest:(BTPayPalCreditFinancingAmount *)totalInterest;
+
+@end
+
+@interface BTPayPalCreditFinancingAmount ()
+
+- (instancetype)initWithCurrency:(NSString *)currency value:(NSString *)value;
 
 @end

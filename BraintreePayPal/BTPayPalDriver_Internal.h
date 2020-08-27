@@ -1,6 +1,10 @@
-#import "BTPayPalDriver.h"
-#import "BTPayPalRequestFactory.h"
-#import <SafariServices/SafariServices.h>
+#import <BraintreePayPal/BTPayPalDriver.h>
+@class BTPayPalCreditFinancing;
+@class BTPayPalCreditFinancingAmount;
+@class BTJSON;
+@class BTPayPalRequestFactory;
+@class SFSafariViewController;
+@class SFAuthenticationSession;
 
 NS_ASSUME_NONNULL_BEGIN
 

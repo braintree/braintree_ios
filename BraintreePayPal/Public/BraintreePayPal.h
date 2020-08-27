@@ -1,4 +1,4 @@
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 /// Project version number for BraintreePayPal.
 FOUNDATION_EXPORT double BraintreePayPalVersionNumber;
@@ -6,14 +6,10 @@ FOUNDATION_EXPORT double BraintreePayPalVersionNumber;
 /// Project version string for BraintreePayPal.
 FOUNDATION_EXPORT const unsigned char BraintreePayPalVersionString[];
 
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
 #import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTConfiguration+PayPal.h"
-#import "BTPayPalRequest.h"
-#import "BTPayPalDriver.h"
-#import "BTPayPalAccountNonce.h"
-#import "BTPayPalCreditFinancing.h"
-#import "BTPayPalLineItem.h"
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreePayPal/BTPayPalRequest.h>
+#import <BraintreePayPal/BTPayPalDriver.h>
+#import <BraintreePayPal/BTPayPalAccountNonce.h>
+#import <BraintreePayPal/BTPayPalCreditFinancing.h>
+#import <BraintreePayPal/BTPayPalLineItem.h>

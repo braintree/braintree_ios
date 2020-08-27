@@ -1,10 +1,6 @@
-#import <Foundation/Foundation.h>
-#if __has_include("BraintreeCore.h")
-#import "BraintreeCore.h"
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-#import "BTPayPalCreditFinancing.h"
+#import <BraintreeCore/BTPaymentMethodNonce.h>
+@class BTPostalAddress;
+@class BTPayPalCreditFinancing;
 
 /**
  Contains information about a PayPal payment method
