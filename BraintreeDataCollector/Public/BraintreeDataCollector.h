@@ -6,5 +6,7 @@ FOUNDATION_EXPORT double BraintreeDataCollectorVersionNumber;
 /// Version string
 FOUNDATION_EXPORT const unsigned char BraintreeDataCollectorVersionString[];
 
-#import "BTDataCollector.h"
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeDataCollector/BTDataCollector.h>
+#import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
 
