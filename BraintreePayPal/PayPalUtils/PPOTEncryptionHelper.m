@@ -5,10 +5,10 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTEncryptionHelper.h"
+#import <PayPalUtils/PPOTEncryptionHelper.h>
 #import <CommonCrypto/CommonCrypto.h>
 #import <CommonCrypto/CommonHMAC.h>
-#import "PPOTMacros.h"
+#import <PayPalUtils/PPOTMacros.h>
 
 @implementation PPOTEncryptionHelper
 

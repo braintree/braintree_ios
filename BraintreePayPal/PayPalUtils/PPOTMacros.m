@@ -3,7 +3,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTMacros.h"
+#import <PayPalUtils/PPOTMacros.h>
 #import <UIKit/UIKit.h>
 
 @implementation PPOTMacros

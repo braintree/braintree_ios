@@ -3,7 +3,7 @@
 //  Copyright © 2009 PayPal, Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 /**
  Contains information about the current device

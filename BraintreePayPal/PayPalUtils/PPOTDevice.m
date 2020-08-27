@@ -3,8 +3,11 @@
 //  Copyright © 2009 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTDevice.h"
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTSimpleKeychain.h>
+#import <PayPalUtils/PPOTString.h>
 
+#import <UIKit/UIKit.h>
 #include <sys/types.h>
 #include <sys/sysctl.h>
 #include <sys/param.h>
@@ -14,9 +17,6 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <ifaddrs.h>
-
-#import "PPOTSimpleKeychain.h"
-#import "PPOTString.h"
 
 #define kKeychainDeviceIdentifier           @"PayPal_MPL_DeviceGUID"
 #define kPPOTOTDeviceFallbackCountryISOCode     @"US"

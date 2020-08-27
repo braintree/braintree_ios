@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTPinnedCertificates.h"
+#import <PayPalUtils/PPOTPinnedCertificates.h>
 
 @implementation PPOTPinnedCertificates
 

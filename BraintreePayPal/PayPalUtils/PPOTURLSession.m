@@ -5,13 +5,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "PPOTURLSession.h"
+#import <PayPalUtils/PPOTURLSession.h>
 
-#import "PPOTMacros.h"
-#import "PPOTPinnedCertificates.h"
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTPinnedCertificates.h>
 
-#import "PPOTDevice.h"
-#import "PPOTVersion.h"
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTVersion.h>
 
 #define STATUS_IS_FAIL(x) (x < 200 || x >= 300)
 

@@ -3,8 +3,8 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPOTString.h"
-#import "PPOTMacros.h"
+#import <PayPalUtils/PPOTString.h>
+#import <PayPalUtils/PPOTMacros.h>
 #import <CommonCrypto/CommonDigest.h>
 
 static const short _base64DecodingTable[256] = {

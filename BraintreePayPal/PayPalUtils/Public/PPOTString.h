@@ -4,7 +4,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 /**
  NSString helper used for PayPal payments
