@@ -1,5 +1,6 @@
-#import "BTPaymentMethodNonce.h"
-#import "BTPaymentMethodNonceParser.h"
+#import <BraintreeCore/BTPaymentMethodNonceParser.h>
+#import <BraintreeCore/BTPaymentMethodNonce.h>
+#import <BraintreeCore/BTJSON.h>
 
 @interface BTPaymentMethodNonceParser ()
 
@@ -51,7 +52,10 @@
         return block(json);
     }
     // Unregistered types should fall back to parsing basic nonce and description from JSON
-    if (![json[@"nonce"] isString]) return nil;
+    if (![json[@"nonce"] isString]) {
+        return nil;
+    }
+
     return [[BTPaymentMethodNonce alloc] initWithNonce:[json[@"nonce"] asString]
                                   localizedDescription:[json[@"description"] asString]
                                                   type:@"Unknown"

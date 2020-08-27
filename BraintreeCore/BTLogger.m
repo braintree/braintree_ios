@@ -1,6 +1,4 @@
-#import <Foundation/Foundation.h>
-
-#import "BTLogger_Internal.h"
+#import <BraintreeCore/BTLogger_Internal.h>
 
 #define variadicLogLevel(level, format) \
     va_list args; \

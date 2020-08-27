@@ -1,5 +1,4 @@
-#import <UIKit/UIKit.h>
-#import "BTHTTP.h"
+#import <BraintreeCore/BTHTTP.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

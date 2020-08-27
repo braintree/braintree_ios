@@ -1,4 +1,4 @@
-#import "BTErrors.h"
+#import <BraintreeCore/BTErrors.h>
 
 #pragma mark Error userInfo Keys
 

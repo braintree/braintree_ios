@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+@class BTAPIClient;
+@class BTHTTP;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,8 +22,6 @@ typedef NS_ENUM(NSUInteger, BTAnalyticsServiceErrorType) {
     /// Invalid API client
     BTAnalyticsServiceErrorTypeInvalidAPIClient,
 };
-
-@class BTAPIClient, BTHTTP;
 
 @interface BTAnalyticsService : NSObject
 

@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "BTClientMetadata.h"
-#import "BTConfiguration.h"
-#import "BTJSON.h"
+#import <BraintreeCore/BTClientMetadata.h>
+@class BTConfiguration;
+@class BTJSON;
 
 @class BTPaymentMethodNonce;
 

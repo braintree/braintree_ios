@@ -1,16 +1,15 @@
-#import "BTAnalyticsService.h"
-#import "BTAPIClient.h"
-#import "BTClientMetadata.h"
-#import "BTClientToken.h"
-#import "BTHTTP.h"
-#import "BTAPIHTTP.h"
-#import "BTGraphQLHTTP.h"
-#import "BTJSON.h"
-#import "BTPayPalIDToken.h"
+#import <BraintreeCore/BTAPIClient.h>
+@class BTAnalyticsService;
+@class BTAPIHTTP;
+@class BTClientMetadata;
+@class BTClientToken;
+@class BTGraphQLHTTP;
+@class BTHTTP;
+@class BTJSON;
+@class BTPaymentMethodNonce;
+@class BTPayPalIDToken;
 
 NS_ASSUME_NONNULL_BEGIN
-
-@class BTPaymentMethodNonce;
 
 typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
     /// Use the Gateway

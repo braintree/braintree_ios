@@ -1,4 +1,4 @@
-#import "BTPreferredPaymentMethodsResult_Internal.h"
+#import <BraintreeCore/BTPreferredPaymentMethodsResult_Internal.h>
 
 @implementation BTPreferredPaymentMethodsResult
 

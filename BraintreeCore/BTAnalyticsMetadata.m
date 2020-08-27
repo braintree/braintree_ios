@@ -1,11 +1,9 @@
-#import "BTAnalyticsMetadata.h"
-
-#import "Braintree-Version.h"
-#import "BTKeychain.h"
-#import <sys/sysctl.h>
-#import <sys/utsname.h>
+#import <BraintreeCore/BTAnalyticsMetadata.h>
+#import <BraintreeCore/Braintree-Version.h>
+#import <BraintreeCore/BTKeychain.h>
 
 #import <UIKit/UIKit.h>
+#import <sys/utsname.h>
 
 @implementation BTAnalyticsMetadata
 

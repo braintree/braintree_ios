@@ -1,10 +1,14 @@
-#import "BTGraphQLHTTP.h"
-#import "BTURLUtils.h"
-#import "Braintree-Version.h"
+#import <BraintreeCore/BTGraphQLHTTP.h>
+#import <BraintreeCore/BTURLUtils.h>
+#import <BraintreeCore/Braintree-Version.h>
+#import <BraintreeCore/BTHTTPErrors.h>
+#import <BraintreeCore/BTJSON.h>
 
 @interface BTGraphQLHTTP ()
+
 @property (nonatomic, copy) NSString *tokenizationKey;
 @property (nonatomic, copy) NSString *authorizationFingerprint;
+
 @end
 
 @implementation BTGraphQLHTTP

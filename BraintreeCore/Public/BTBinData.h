@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "BTJSON.h"
+@class BTJSON;
 
 NS_ASSUME_NONNULL_BEGIN
 

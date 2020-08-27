@@ -1,10 +1,16 @@
-#import "BTAnalyticsMetadata.h"
-#import "BTAnalyticsService.h"
-#import "BTAPIClient_Internal.h"
-#import "BTClientToken.h"
-#import "BTLogger_Internal.h"
-#import "BTPaymentMethodNonce.h"
-#import "BTPaymentMethodNonceParser.h"
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTAnalyticsService.h>
+#import <BraintreeCore/BTAnalyticsMetadata.h>
+#import <BraintreeCore/BTAPIHTTP.h>
+#import <BraintreeCore/BTClientToken.h>
+#import <BraintreeCore/BTConfiguration.h>
+#import <BraintreeCore/BTGraphQLHTTP.h>
+#import <BraintreeCore/BTHTTP.h>
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTLogger_Internal.h>
+#import <BraintreeCore/BTPaymentMethodNonce.h>
+#import <BraintreeCore/BTPaymentMethodNonceParser.h>
+#import <BraintreeCore/BTPayPalIDToken.h>
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 

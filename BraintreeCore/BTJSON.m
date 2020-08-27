@@ -1,4 +1,4 @@
-#import "BTJSON.h"
+#import <BraintreeCore/BTJSON.h>
 
 NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 

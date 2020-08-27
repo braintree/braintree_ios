@@ -1,6 +1,6 @@
-#import "BTJSON.h"
-#import "BTPaymentMethodNonce.h"
 #import <Foundation/Foundation.h>
+@class BTJSON;
+@class BTPaymentMethodNonce;
 
 NS_ASSUME_NONNULL_BEGIN
 

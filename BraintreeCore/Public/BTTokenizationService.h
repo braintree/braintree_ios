@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "BTAPIClient.h"
-#import "BTPaymentMethodNonce.h"
+@class BTAPIClient;
+@class BTPaymentMethodNonce;
 
 NS_ASSUME_NONNULL_BEGIN
 

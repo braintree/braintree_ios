@@ -1,10 +1,11 @@
 #import <Foundation/Foundation.h>
-#import "BTHTTPErrors.h"
-#import "BTJSON.h"
+@class BTClientToken;
+@class BTHTTPErrors;
+@class BTHTTPResponse;
+@class BTJSON;
+@class BTPayPalIDToken;
 
 NS_ASSUME_NONNULL_BEGIN
-
-@class BTHTTPResponse, BTClientToken, BTPayPalIDToken;
 
 /**
  Performs HTTP methods on the Braintree Client API

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "BTPreferredPaymentMethodsResult.h"
-#import "BTAPIClient.h"
+@class BTPreferredPaymentMethodsResult;
+@class BTAPIClient;
 
 NS_ASSUME_NONNULL_BEGIN
 

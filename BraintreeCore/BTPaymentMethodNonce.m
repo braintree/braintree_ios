@@ -1,10 +1,12 @@
-#import "BTPaymentMethodNonce.h"
+#import <BraintreeCore/BTPaymentMethodNonce.h>
 
 @interface BTPaymentMethodNonce ()
+
 @property (nonatomic, copy, readwrite) NSString *nonce;
 @property (nonatomic, copy, readwrite) NSString *localizedDescription;
 @property (nonatomic, copy, readwrite) NSString *type;
 @property (nonatomic, readwrite, assign) BOOL isDefault;
+
 @end
 
 @implementation BTPaymentMethodNonce
