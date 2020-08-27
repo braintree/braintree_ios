@@ -1,5 +1,5 @@
-#import "BTAuthenticationInsight.h"
-#import "BTJSON.h"
+#import <BraintreeCard/BTAuthenticationInsight.h>
+@class BTJSON;
 
 @interface BTAuthenticationInsight ()
 

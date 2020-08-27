@@ -1,5 +1,5 @@
-#import "BTCard.h"
 #import <Foundation/Foundation.h>
+@class BTCard;
 
 NS_ASSUME_NONNULL_BEGIN
 

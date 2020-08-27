@@ -1,5 +1,5 @@
-#import "BTCardNonce.h"
-#import "BTJSON.h"
+#import <BraintreeCard/BTCardNonce.h>
+@class BTJSON;
 
 NS_ASSUME_NONNULL_BEGIN
 

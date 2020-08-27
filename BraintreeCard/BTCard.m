@@ -1,9 +1,11 @@
-#import "BTCard_Internal.h"
-#import "BTJSON.h"
+#import <BraintreeCard/BTCard_Internal.h>
+#import <BraintreeCore/BTJSON.h>
 
 @interface BTCard ()
+
 @property (nonatomic, strong) NSMutableDictionary *mutableParameters;
 @property (nonatomic, strong, readonly) NSString *cardTokenizationGraphQLMutation;
+
 @end
 
 @implementation BTCard
