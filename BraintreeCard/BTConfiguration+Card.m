@@ -1,5 +1,4 @@
 #import "BTConfiguration+Card.h"
-#import <BraintreeCore/BTJSON.h>
 
 @implementation BTConfiguration (Card)
 

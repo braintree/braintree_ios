@@ -14,13 +14,8 @@
 #import "PPFPTITracker.h"
 #import "PPOTAnalyticsDefines.h"
 
-#import <PayPalUtils/PPOTVersion.h>
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTSimpleKeychain.h>
-#import <PayPalUtils/PPOTString.h>
-#import <PayPalUtils/PPOTURLSession.h>
-#import "BTLogger_Internal.h"
+#import <PayPalUtils/PayPalUtils.h>
+#import <BraintreeCore/BTLogger_Internal.h>
 
 #define kTimeForSession           (30 * 60) // How long should an Omniture session last.
 #define kKeychainIdentifierForUDID @"PayPal_OTC_Analytics_UDID"

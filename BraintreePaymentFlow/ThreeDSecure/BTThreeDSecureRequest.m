@@ -12,11 +12,11 @@
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTThreeDSecureResult_Internal.h"
 
-#import "BTLogger_Internal.h"
-#import "BTAPIClient_Internal.h"
-#import "Braintree-Version.h"
+#import <BraintreeCore/BTLogger_Internal.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/Braintree-Version.h>
 
-#import <BraintreeCard/BTCardNonce.h>
+#import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeCard/BTThreeDSecureInfo.h>
 
 #import <SafariServices/SafariServices.h>

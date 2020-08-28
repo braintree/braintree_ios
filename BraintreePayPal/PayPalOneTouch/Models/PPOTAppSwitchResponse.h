@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PPOTAppSwitchUtil.h"
+#import <PayPalOneTouch/PPOTAppSwitchUtil.h>
 
 @class PPOTConfigurationRecipe;
 

@@ -7,11 +7,9 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 
-#import "BTAPIClient_Internal.h"
-#import "Braintree-Version.h"
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTClientToken.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/Braintree-Version.h>
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)
 

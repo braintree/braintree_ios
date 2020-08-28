@@ -1,4 +1,6 @@
 #import "BTPaymentFlowDriver.h"
+@class BTPaymentFlowRequest;
+@class BTPaymentFlowResult;
 
 @interface BTPaymentFlowDriver ()
 

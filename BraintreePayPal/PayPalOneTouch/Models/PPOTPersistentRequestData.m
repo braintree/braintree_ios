@@ -9,8 +9,7 @@
 #import "PPOTOAuth2SwitchRequest.h"
 #import "PPOTConfiguration.h"
 
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTSimpleKeychain.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 #define kPPOTCoderKeyRequestDataConfigurationRecipe   CARDIO_STR(@"configuration_recipe")
 #define kPPOTCoderKeyRequestDataEnvironment           CARDIO_STR(@"environment")

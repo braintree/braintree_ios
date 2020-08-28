@@ -4,6 +4,8 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 /**
  PayPal One Touch request targets.
  */

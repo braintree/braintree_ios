@@ -6,7 +6,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PPOTRequest.h"
+@class PPOTCheckoutRequest;
+@class PPOTAuthorizationRequest;
+@class PPOTBillingAgreementRequest;
 
 /**
  Used to build request objects that initialize PayPay payment flows

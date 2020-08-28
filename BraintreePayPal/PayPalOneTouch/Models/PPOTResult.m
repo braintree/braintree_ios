@@ -16,9 +16,7 @@
 #import "PPOTError.h"
 #import "PPOTPersistentRequestData.h"
 
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTVersion.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 #define PP_TIMESTAMP_TIMEOUT 10*60 // 10 minutes
 

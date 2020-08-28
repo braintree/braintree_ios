@@ -1,4 +1,4 @@
-#import "BTPreferredPaymentMethods.h"
+#import <BraintreeCore/BTPreferredPaymentMethods.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

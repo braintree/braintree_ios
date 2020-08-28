@@ -10,8 +10,7 @@
 #import "PPOTCheckoutBrowserSwitchRequest.h"
 #import "PPOTConfiguration.h"
 
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 #pragma mark - PPOTBillingAgreementRequest implementation
 

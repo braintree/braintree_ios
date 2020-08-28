@@ -1,7 +1,5 @@
 #import "BTConfiguration+Venmo.h"
 
-#import <BraintreeCore/BTJSON.h>
-
 @implementation BTConfiguration (Venmo)
 
 - (BOOL)isVenmoEnabled {

@@ -1,5 +1,6 @@
 #import "BTAuthenticationInsight_Internal.h"
-#import <BraintreeCore/BTJSON.h>
+
+#import <BraintreeCore/BraintreeCore.h>
 
 @implementation BTAuthenticationInsight
 

@@ -5,8 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "PPOTCore.h"
+#import <PayPalOneTouch/PPOTResult.h>
 
 @interface PPOTError : NSObject
 

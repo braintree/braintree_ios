@@ -11,10 +11,7 @@
 #import "PPOTOAuth2AppSwitchRequest.h"
 #import "PPOTOAuth2BrowserSwitchRequest.h"
 
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTEncryptionHelper.h>
-#import <PayPalUtils/PPOTString.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 #define PPRequestEnvironmentDevelop  @"develop"
 

@@ -5,12 +5,13 @@
 #import "BTLocalPaymentResult.h"
 #import "BTPaymentFlowDriver+LocalPayment_Internal.h"
 
-#import "BTLogger_Internal.h"
-#import "BTAPIClient_Internal.h"
-#import "Braintree-Version.h"
-#import <BraintreeCore/BTPostalAddress.h>
-#import <BraintreeCore/BTJSON.h>
-#import <PayPalDataCollector/PPDataCollector.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BTLogger_Internal.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/Braintree-Version.h>
+
+#import <PayPalDataCollector/PayPalDataCollector.h>
+
 #import <SafariServices/SafariServices.h>
 
 @interface BTLocalPaymentRequest ()

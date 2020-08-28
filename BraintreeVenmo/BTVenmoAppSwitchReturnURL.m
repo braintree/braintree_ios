@@ -1,6 +1,6 @@
 #import "BTVenmoAppSwitchReturnURL.h"
 
-#import <BraintreeCore/BTURLUtils.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain";
 

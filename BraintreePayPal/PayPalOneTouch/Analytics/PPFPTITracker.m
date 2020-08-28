@@ -8,7 +8,8 @@
 #import <UIKit/UIKit.h>
 #import "PPFPTITracker.h"
 #import "PPFPTIData.h"
-#import <PayPalUtils/PPOTDevice.h>
+
+#import <PayPalUtils/PayPalUtils.h>
 #import <PayPalUtils/PPOTVersion.h>
 
 static NSString* const kTrackerURLAsNSString = @"https://api-m.paypal.com/v1/tracking/events";

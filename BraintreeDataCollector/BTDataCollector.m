@@ -2,8 +2,7 @@
 #import "BTConfiguration+DataCollector.h"
 #import "kDataCollector.h"
 
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTAPIClient.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 #import <CoreLocation/CoreLocation.h>
 

@@ -1,4 +1,4 @@
-#import "BTPayPalDriver.h"
+#import <BraintreePayPal/BTPayPalDriver.h>
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;

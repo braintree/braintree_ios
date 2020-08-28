@@ -1,5 +1,5 @@
-#import "BTPayPalAccountNonce.h"
-#import "BTPayPalCreditFinancing.h"
+#import <BraintreePayPal/BTPayPalAccountNonce.h>
+#import <BraintreePayPal/BTPayPalCreditFinancing.h>
 
 @interface BTPayPalAccountNonce ()
 

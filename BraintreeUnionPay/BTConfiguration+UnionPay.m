@@ -1,7 +1,5 @@
 #import "BTConfiguration+UnionPay.h"
 
-#import <BraintreeCore/BTJSON.h>
-
 @implementation BTConfiguration (UnionPay)
 
 - (BOOL)isUnionPayEnabled {

@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTConfiguration.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 /**
  Category on BTConfiguration for ThreeDSecure

@@ -1,5 +1,4 @@
-#import <BraintreeCore/BTPaymentMethodNonce.h>
-@class BTPostalAddress;
+#import <BraintreeCore/BraintreeCore.h>
 @class BTPayPalCreditFinancing;
 
 /**

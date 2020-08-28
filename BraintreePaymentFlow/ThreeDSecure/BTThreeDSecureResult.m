@@ -1,8 +1,8 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureLookup_Internal.h"
 
-#import "BTCardNonce_Internal.h"
-#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCard/BTCardNonce_Internal.h>
 
 @implementation BTThreeDSecureResult
 

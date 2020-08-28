@@ -1,6 +1,4 @@
-#import <BraintreeCore/BTPaymentMethodNonce.h>
-@class BTBinData;
-@class BTJSON;
+#import <BraintreeCore/BraintreeCore.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

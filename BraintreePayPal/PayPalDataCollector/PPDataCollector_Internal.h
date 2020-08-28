@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPDataCollector.h"
+#import <PayPalDataCollector/PPDataCollector.h>
 @class MagnesResult;
 
 @interface PPDataCollector ()

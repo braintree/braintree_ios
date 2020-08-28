@@ -1,4 +1,5 @@
 #import "BTPreferredPaymentMethodsResult_Internal.h"
+#import "BTJSON.h"
 
 @implementation BTPreferredPaymentMethodsResult
 

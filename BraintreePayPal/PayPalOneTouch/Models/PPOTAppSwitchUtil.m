@@ -12,10 +12,7 @@
 #import "PPOTAnalyticsTracker.h"
 #import "PPOTPersistentRequestData.h"
 
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTVersion.h>
-#import <PayPalUtils/PPOTString.h>
-#import <PayPalUtils/PPOTJSONHelper.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 #define STR_TO_URL_SCHEME(str) [NSURL URLWithString:[NSString stringWithFormat:@"%@://", str]]
 

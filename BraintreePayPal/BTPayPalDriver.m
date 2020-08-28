@@ -5,18 +5,11 @@
 #import "BTPayPalRequest.h"
 #import "BTPayPalRequestFactory.h"
 
-#import "BTAPIClient_Internal.h"
-#import "BTLogger_Internal.h"
-#import <BraintreeCore/BTPostalAddress.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTTokenizationService.h>
-#import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTViewControllerPresentingDelegate.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTLogger_Internal.h>
 
-#import <PayPalOneTouch/PPOTRequest.h>
-#import <PayPalOneTouch/PPOTCore.h>
+#import <PayPalOneTouch/PayPalOneTouch.h>
 
 #import <SafariServices/SafariServices.h>
 

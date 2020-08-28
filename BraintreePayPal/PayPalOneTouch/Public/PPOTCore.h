@@ -10,7 +10,7 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 
 #import <Foundation/Foundation.h>
-#import "PPOTResult.h"
+@class PPOTResult;
 
 /**
  Completion block for receiving the result of performing a request

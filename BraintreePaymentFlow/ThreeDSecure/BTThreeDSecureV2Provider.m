@@ -6,9 +6,8 @@
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureLookup.h"
 
-#import "BTAPIClient_Internal.h"
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCard/BTCardNonce.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
 
 #import <CardinalMobile/CardinalMobile.h>
 

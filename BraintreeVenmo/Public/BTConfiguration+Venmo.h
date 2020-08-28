@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTConfiguration.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 /**
  BTConfiguration category for Venmo

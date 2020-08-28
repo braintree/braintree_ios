@@ -1,7 +1,5 @@
 #import "BTConfiguration+LocalPayment.h"
 
-#import <BraintreeCore/BTJSON.h>
-
 @implementation BTConfiguration (LocalPayment)
 
 - (BOOL)isLocalPaymentEnabled {

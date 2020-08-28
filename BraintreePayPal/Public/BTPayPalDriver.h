@@ -1,10 +1,7 @@
-#import <Foundation/Foundation.h>
-#import <BraintreeCore/BTAppSwitch.h>
+#import <BraintreeCore/BraintreeCore.h>
 @class BTPayPalAccountNonce;
 @class BTPayPalRequest;
-@class BTAPIClient;
 @class PPOTRequest;
-@protocol BTViewControllerPresentingDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 

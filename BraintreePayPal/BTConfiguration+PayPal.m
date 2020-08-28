@@ -1,7 +1,5 @@
 #import "BTConfiguration+PayPal.h"
 
-#import <BraintreeCore/BTJSON.h>
-
 @implementation BTConfiguration (PayPal)
 
 - (BOOL)isPayPalEnabled {

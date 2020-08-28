@@ -6,11 +6,9 @@
 //
 
 #import <PayPalOneTouch/PPOTConfiguration.h>
-#import <PayPalUtils/PPOTJSONHelper.h>
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTSimpleKeychain.h>
-#import <PayPalUtils/PPOTURLSession.h>
-#import "BTLogger_Internal.h"
+
+#import <PayPalUtils/PayPalUtils.h>
+#import <BraintreeCore/BTLogger_Internal.h>
 #import <libkern/OSAtomic.h>
 
 #include "PPDefaultConfigurationJSON.h"

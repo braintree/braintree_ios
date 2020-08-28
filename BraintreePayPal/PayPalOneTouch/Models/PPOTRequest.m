@@ -14,8 +14,7 @@
 #import "PPOTPersistentRequestData.h"
 #import "PPOTError.h"
 
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 #import <UIKit/UIKit.h>
 

@@ -1,9 +1,7 @@
 #import <Foundation/Foundation.h>
-#import <BraintreeCore/BTAppSwitch.h>
-#import <BraintreeCore/BTViewControllerPresentingDelegate.h>
-@class BTPaymentFlowResult;
+#import <BraintreeCore/BraintreeCore.h>
 @class BTPaymentFlowRequest;
-@class BTAPIClient;
+@class BTPaymentFlowResult;
 
 NS_ASSUME_NONNULL_BEGIN
 

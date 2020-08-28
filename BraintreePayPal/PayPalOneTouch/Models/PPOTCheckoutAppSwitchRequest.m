@@ -7,7 +7,7 @@
 
 #import "PPOTCheckoutAppSwitchRequest.h"
 
-#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 @implementation PPOTCheckoutAppSwitchRequest
 

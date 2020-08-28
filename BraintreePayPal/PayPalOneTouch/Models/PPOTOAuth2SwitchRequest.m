@@ -6,7 +6,8 @@
 //
 
 #import "PPOTOAuth2SwitchRequest.h"
-#import <PayPalUtils/PPOTMacros.h>
+
+#import <PayPalUtils/PayPalUtils.h>
 
 @implementation PPOTOAuth2SwitchRequest
 

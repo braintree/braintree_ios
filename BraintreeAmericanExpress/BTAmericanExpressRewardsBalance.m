@@ -1,5 +1,6 @@
 #import "BTAmericanExpressRewardsBalance.h"
-#import <BraintreeCore/BTJSON.h>
+
+#import <BraintreeCore/BraintreeCore.h>
 
 @implementation BTAmericanExpressRewardsBalance
 

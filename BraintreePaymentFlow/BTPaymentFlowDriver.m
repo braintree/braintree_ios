@@ -1,8 +1,10 @@
 #import "BTPaymentFlowDriver_Internal.h"
+#import "BTPaymentFlowRequest.h"
+#import "BTPaymentFlowResult.h"
 
-#import "BTLogger_Internal.h"
-#import "BTAPIClient_Internal.h"
-#import "Braintree-Version.h"
+#import <BraintreeCore/BTLogger_Internal.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/Braintree-Version.h>
 
 #import <SafariServices/SafariServices.h>
 

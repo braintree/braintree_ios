@@ -1,6 +1,6 @@
 #import "BTPayPalRequestFactory.h"
 
-#import <PayPalOneTouch/PPOTRequestFactory.h>
+#import <PayPalOneTouch/PayPalOneTouch.h>
 
 @implementation BTPayPalRequestFactory
 

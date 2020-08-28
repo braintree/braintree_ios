@@ -1,6 +1,6 @@
 #import "BTVenmoAccountNonce.h"
 
-#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 @interface BTVenmoAccountNonce ()
 @property (nonatomic, readwrite, copy) NSString *username;

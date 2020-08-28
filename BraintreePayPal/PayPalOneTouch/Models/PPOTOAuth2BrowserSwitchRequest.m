@@ -8,11 +8,7 @@
 #import "PPOTOAuth2BrowserSwitchRequest.h"
 #import "PPOTPersistentRequestData.h"
 
-#import <PayPalUtils/PPOTTime.h>
-#import <PayPalUtils/PPOTString.h>
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTJSONHelper.h>
-#import <PayPalUtils/PPOTEncryptionHelper.h>
+#import <PayPalUtils/PayPalUtils.h>
 #import <UIKit/UIKit.h>
 
 @interface PPOTOAuth2BrowserSwitchRequest ()

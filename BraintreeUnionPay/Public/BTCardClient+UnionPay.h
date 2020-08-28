@@ -1,6 +1,5 @@
-#import <BraintreeCard/BTCardClient.h>
+#import <BraintreeCard/BraintreeCard.h>
 @class BTCardCapabilities;
-@class BTCardRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 

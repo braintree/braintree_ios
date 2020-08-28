@@ -7,10 +7,7 @@
 
 #import "PPDataCollector_Internal.h"
 
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTVersion.h>
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTURLSession.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 #import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 

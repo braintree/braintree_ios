@@ -2,14 +2,11 @@
 #import "BTConfiguration+UnionPay.h"
 #import "BTCardCapabilities.h"
 
-#import "BTCardClient_Internal.h"
-#import <BraintreeCard/BTCard.h>
-#import <BraintreeCard/BTCardRequest.h>
+#import <BraintreeCard/BraintreeCard.h>
+#import <BraintreeCard/BTCardClient_Internal.h>
 
-#import "BTAPIClient_Internal.h"
-#import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTTokenizationService.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
 
 @implementation BTCardClient (UnionPay)
 

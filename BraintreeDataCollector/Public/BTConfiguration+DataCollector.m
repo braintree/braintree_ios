@@ -1,7 +1,5 @@
 #import "BTConfiguration+DataCollector.h"
 
-#import <BraintreeCore/BTJSON.h>
-
 @implementation BTConfiguration (DataCollector)
 
 - (BOOL)isKountEnabled {

@@ -6,10 +6,7 @@
 //
 
 #import "PPOTAppSwitchResponse.h"
-#import <PayPalUtils/PPOTString.h>
-#import <PayPalUtils/PPOTTime.h>
-#import <PayPalUtils/PPOTEncryptionHelper.h>
-#import <PayPalUtils/PPOTJSONHelper.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 @implementation PPOTAppSwitchResponse
 

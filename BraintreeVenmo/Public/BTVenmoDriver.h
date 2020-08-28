@@ -1,5 +1,4 @@
-#import <BraintreeCore/BTAppSwitch.h>
-@class BTAPIClient;
+#import <BraintreeCore/BraintreeCore.h>
 @class BTVenmoAccountNonce;
 
 NS_ASSUME_NONNULL_BEGIN

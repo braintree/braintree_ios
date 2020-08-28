@@ -1,5 +1,6 @@
 #import "BTCard_Internal.h"
-#import <BraintreeCore/BTJSON.h>
+
+#import <BraintreeCore/BraintreeCore.h>
 
 @interface BTCard ()
 

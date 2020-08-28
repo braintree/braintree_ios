@@ -1,4 +1,4 @@
-#import "BTVenmoDriver.h"
+#import <BraintreeVenmo/BTVenmoDriver.h>
 
 @interface BTVenmoDriver ()
 

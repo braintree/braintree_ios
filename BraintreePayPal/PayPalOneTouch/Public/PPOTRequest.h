@@ -5,7 +5,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PPOTResult.h"
+#import <PayPalOneTouch/PPOTResult.h>
 
 /**
  Completion block for receiving the result of preflighting a request

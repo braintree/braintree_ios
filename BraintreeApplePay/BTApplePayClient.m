@@ -2,10 +2,8 @@
 #import "BTConfiguration+ApplePay.h"
 #import "BTApplePayCardNonce.h"
 
-#import "BTAPIClient_Internal.h"
-#import <BraintreeCore/BTPaymentMethodNonce.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
-#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
 

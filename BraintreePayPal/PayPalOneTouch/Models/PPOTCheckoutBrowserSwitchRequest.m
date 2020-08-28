@@ -9,9 +9,7 @@
 #import "PPOTAppSwitchUtil.h"
 #import "PPOTPersistentRequestData.h"
 
-#import <PayPalUtils/PPOTTime.h>
-#import <PayPalUtils/PPOTString.h>
-#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PayPalUtils.h>
 
 // TODO: have a factory/builder/json reader of sandbox, mock, etc
 

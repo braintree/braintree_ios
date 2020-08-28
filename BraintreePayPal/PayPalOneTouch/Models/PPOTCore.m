@@ -12,10 +12,8 @@
 #import "PPOTConfiguration.h"
 #import "PPOTPersistentRequestData.h"
 
-#import <PayPalUtils/PPOTDevice.h>
-#import <PayPalUtils/PPOTMacros.h>
-#import <PayPalUtils/PPOTVersion.h>
-#import <PayPalDataCollector/PPDataCollector.h>
+#import <PayPalUtils/PayPalUtils.h>
+#import <PayPalDataCollector/PayPalDataCollector.h>
 
 // PayPalTouch v1 version
 #import "PPOTAppSwitchUtil.h"

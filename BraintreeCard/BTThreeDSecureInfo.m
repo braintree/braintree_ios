@@ -1,5 +1,6 @@
 #import "BTThreeDSecureInfo.h"
-#import <BraintreeCore/BTJSON.h>
+
+#import <BraintreeCore/BraintreeCore.h>
 
 @interface BTThreeDSecureInfo ()
 

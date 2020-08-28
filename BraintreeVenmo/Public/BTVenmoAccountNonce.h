@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTPaymentMethodNonce.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 /**
  Contains information about a Venmo Account payment method

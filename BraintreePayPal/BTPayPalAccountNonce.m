@@ -1,7 +1,5 @@
 #import "BTPayPalAccountNonce_Internal.h"
 
-#import <Braintreecore/BTPostalAddress.h>
-
 @interface BTPayPalAccountNonce ()
 
 @property (nonatomic, readwrite, copy) NSString *email;
