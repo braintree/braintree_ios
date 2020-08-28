@@ -30,22 +30,30 @@
 }
 
 + (NSString *)generateClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
-    MagnesResult *result = [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID disableBeacon:disableBeacon data:data];
+    MagnesResult *result = [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID
+                                                                       disableBeacon:disableBeacon
+                                                                                data:data];
 
     PPLog(@"ClientMetadataID: %@", [result getPayPalClientMetaDataId]);
     return [result getPayPalClientMetaDataId];
 }
 
 + (NSString *)generateClientMetadataIDWithoutBeacon:(NSString *)clientMetadataID data:(NSDictionary *)data {
-    return [PPDataCollector generateClientMetadataID:clientMetadataID disableBeacon:YES data:data];
+    return [PPDataCollector generateClientMetadataID:clientMetadataID
+                                       disableBeacon:YES
+                                                data:data];
 }
 
 + (NSString *)generateClientMetadataID {
-    return [PPDataCollector generateClientMetadataID:nil disableBeacon:NO data:nil];
+    return [PPDataCollector generateClientMetadataID:nil
+                                       disableBeacon:NO
+                                                data:nil];
 }
 
 + (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
-    return [PPDataCollector generateClientMetadataID:pairingID disableBeacon:NO data:nil];
+    return [PPDataCollector generateClientMetadataID:pairingID
+                                       disableBeacon:NO
+                                                data:nil];
 }
 
 + (nonnull NSString *)clientMetadataID {
@@ -69,7 +77,9 @@
 }
 
 + (MagnesResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID {
-    return [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID disableBeacon:NO data:nil];
+    return [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID
+                                                       disableBeacon:NO
+                                                                data:nil];
 }
 
 @end

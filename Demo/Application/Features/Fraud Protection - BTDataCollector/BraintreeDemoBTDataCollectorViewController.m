@@ -4,10 +4,12 @@
 @import CoreLocation;
 
 @interface BraintreeDemoBTDataCollectorViewController () <BTDataCollectorDelegate>
+
 /// Retain BTDataCollector for entire lifecycle of view controller
 @property (nonatomic, strong) BTDataCollector *dataCollector;
 @property (nonatomic, strong) UILabel *dataLabel;
 @property (nonatomic, strong) BTAPIClient *apiClient;
+
 @end
 
 @implementation BraintreeDemoBTDataCollectorViewController
@@ -37,11 +39,11 @@
                            action:@selector(tappedCollectKount)
                  forControlEvents:UIControlEventTouchUpInside];
 
-    UIButton *collectDysonButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [collectDysonButton setTitle:NSLocalizedString(@"Collect PayPal Data", nil) forState:UIControlStateNormal];
-    [collectDysonButton addTarget:self
-                           action:@selector(tappedCollectDyson)
-                 forControlEvents:UIControlEventTouchUpInside];
+    UIButton *collectPayPalButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [collectPayPalButton setTitle:NSLocalizedString(@"Collect PayPal Data", nil) forState:UIControlStateNormal];
+    [collectPayPalButton addTarget:self
+                            action:@selector(tappedCollectPayPal)
+                  forControlEvents:UIControlEventTouchUpInside];
 
     self.dataLabel = [[UILabel alloc] init];
     self.dataLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -49,7 +51,7 @@
 
     UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[collectButton,
                                                                              collectKountButton,
-                                                                             collectDysonButton,
+                                                                             collectPayPalButton,
                                                                              self.dataLabel]];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.axis = UILayoutConstraintAxisVertical;
@@ -76,8 +78,8 @@
     self.dataCollector.delegate = self;
 }
 
-- (IBAction)tappedCollect
-{    self.progressBlock(@"Started collecting all data...");
+- (IBAction)tappedCollect {
+    self.progressBlock(@"Started collecting all data...");
     [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
         self.dataLabel.text = deviceData;
     }];
@@ -90,7 +92,7 @@
     }];
 }
 
-- (IBAction)tappedCollectDyson {
+- (IBAction)tappedCollectPayPal {
     self.dataLabel.text = [PPDataCollector collectPayPalDeviceData];
     self.progressBlock(@"Collected PayPal clientMetadataID!");
 }

@@ -775,8 +775,8 @@
 		A0988F5C24DB44B10095EEEE /* Fraud Protection - BTDataCollector */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */,
 				A0988F5E24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.h */,
+				A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */,
 			);
 			path = "Fraud Protection - BTDataCollector";
 			sourceTree = "<group>";

@@ -6,6 +6,7 @@
 //
 
 #import "PPDataCollector.h"
+@class MagnesResult;
 
 @interface PPDataCollector ()
 
@@ -43,5 +44,14 @@
  @return a client metadata ID to send as a header
 */
 + (nonnull NSString *)generateClientMetadataID;
+
+/**
+ For internal use only, returns an object with device data and clientMetadataID.
+
+ @param clientMetadataID a pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
+
+ @return a nonnull Result with the device data
+ */
++ (nonnull MagnesResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID;
 
 @end
