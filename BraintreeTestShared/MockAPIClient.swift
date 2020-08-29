@@ -2,19 +2,19 @@ import BraintreeCore
 import BraintreeCore.Private
 
 public class MockAPIClient : BTAPIClient {
-    var lastPOSTPath = ""
-    var lastPOSTParameters = [:] as [AnyHashable: Any]?
+    public var lastPOSTPath = ""
+    public var lastPOSTParameters = [:] as [AnyHashable: Any]?
     var lastPOSTAPIClientHTTPType: BTAPIClientHTTPType?
     var lastGETPath = ""
     var lastGETParameters = [:] as [String : String]?
     var lastGETAPIClientHTTPType: BTAPIClientHTTPType?
     public var postedAnalyticsEvents : [String] = []
 
-    @objc var cannedConfigurationResponseBody : BTJSON? = nil
-    @objc var cannedConfigurationResponseError : NSError? = nil
+    @objc public var cannedConfigurationResponseBody : BTJSON? = nil
+    @objc public var cannedConfigurationResponseError : NSError? = nil
 
     public var cannedResponseError : NSError? = nil
-    var cannedHTTPURLResponse : HTTPURLResponse? = nil
+    public var cannedHTTPURLResponse : HTTPURLResponse? = nil
     public var cannedResponseBody : BTJSON? = nil
     var cannedMetadata : BTClientMetadata? = nil
 
