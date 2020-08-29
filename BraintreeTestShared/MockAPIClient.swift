@@ -1,3 +1,6 @@
+import BraintreeCore
+import BraintreeCore.Private
+
 class MockAPIClient : BTAPIClient {
     var lastPOSTPath = ""
     var lastPOSTParameters = [:] as [AnyHashable: Any]?

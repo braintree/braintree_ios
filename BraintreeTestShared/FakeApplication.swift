@@ -1,3 +1,5 @@
+import UIKit
+
 class FakeApplication {
     var lastOpenURL: URL? = nil
     var openURLWasCalled: Bool = false

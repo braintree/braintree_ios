@@ -1,4 +1,8 @@
 import XCTest
+import BraintreeCore
+import BraintreePaymentFlow
+import BraintreePayPal
+import PayPalOneTouch
 
 @objc class MockAppSwitchDelegate : NSObject, BTAppSwitchDelegate {
     var willPerformAppSwitchExpectation : XCTestExpectation? = nil
