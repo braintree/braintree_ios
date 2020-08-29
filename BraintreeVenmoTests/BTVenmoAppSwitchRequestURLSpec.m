@@ -1,13 +1,9 @@
-@import UIKit;
+#import <BraintreeVenmo/BTVenmoAppSwitchRequestURL.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/Braintree-Version.h>
 @import Specta;
 @import Expecta;
 @import OCMock;
-#import "BTVenmoAppSwitchRequestURL.h"
-#import "BTVenmoDriver.h"
-#import "Braintree-Version.h"
-#import "BTSpecHelper.h"
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTClientMetadata.h>
 
 SpecBegin(BTVenmoAppSwitchRequestURL)
 

@@ -1,9 +1,9 @@
 import UIKit
 
-class FakeDevice: UIDevice {
+public class FakeDevice: UIDevice {
     var fakeSystemVersion:String = "8.9"
     
-    override var systemVersion: String {
+    override public var systemVersion: String {
         get {
             return fakeSystemVersion
         }

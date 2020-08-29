@@ -18,4 +18,5 @@ abstract_target 'Tests' do
 
   target 'UnitTests'
   target 'IntegrationTests'
+  target 'BraintreeVenmoTests'
 end

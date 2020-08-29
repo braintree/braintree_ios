@@ -1,5 +1,8 @@
-import UIKit
 import XCTest
+import UIKit
+import BraintreeTestShared
+import BraintreeVenmo
+import BraintreeCore.Private
 
 class BTVenmoDriver_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
@@ -14,7 +17,7 @@ class BTVenmoDriver_Tests: XCTestCase {
                 "merchantId": "venmo_merchant_id",
                 "accessToken": "venmo-access-token"
             ]
-            ])
+        ])
     }
 
     override func tearDown() {
@@ -170,7 +173,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     func testAuthorizeAccount_whenUsingClientTokenAndAppSwitchSucceeds_tokenizesVenmoAccount() {
         // Test setup sets up mockAPIClient with a tokenization key, we want a client token
         mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: BTTestClientTokenFactory.token(withVersion: 2))
+        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 2))
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
         venmoDriver.application = FakeApplication()
@@ -307,7 +310,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     
     func testAuthorizeAccount_vaultTrue_callsBackWithNonce() {
         mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: BTValidTestClientToken)
+        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "venmoAccounts": [[
                 "type": "VenmoAccount",
@@ -345,7 +348,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     
     func testAuthorizeAccount_vaultTrue_sendsSucessAnalyticsEvent() {
         mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: BTValidTestClientToken)
+        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "venmoAccounts": [[
                 "type": "VenmoAccount",
@@ -384,7 +387,7 @@ class BTVenmoDriver_Tests: XCTestCase {
 
     func testAuthorizeAccount_vaultTrue_sendsFailureAnalyticsEvent() {
         mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: BTValidTestClientToken)
+        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
         mockAPIClient.cannedResponseError = NSError(domain: "Fake Error", code: 400, userInfo: nil)
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         venmoDriver.application = FakeApplication()
@@ -599,7 +602,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     /// Helper
     func client(_ configurationDictionary: Dictionary<String, String>) -> BTAPIClient {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let fakeHttp = BTFakeHTTP()
+        let fakeHttp = FakeHTTP.fakeHTTP()
         fakeHttp.cannedResponse = BTJSON(value: configurationDictionary)
         fakeHttp.cannedStatusCode = 200
         apiClient.configurationHTTP = fakeHttp
@@ -608,7 +611,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     
     func clientWithJson(_ configurationJson: BTJSON) -> BTAPIClient {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let fakeHttp = BTFakeHTTP()
+        let fakeHttp = FakeHTTP.fakeHTTP()
         fakeHttp.cannedResponse = configurationJson
         fakeHttp.cannedStatusCode = 200
         apiClient.configurationHTTP = fakeHttp

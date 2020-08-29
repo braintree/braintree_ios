@@ -6,5 +6,9 @@ framework module BraintreeCore {
 
     explicit module Private {
         header "BTAPIClient_Internal.h"
+        header "BTAPIHTTP.h"
+        header "BTHTTP.h"
+        header "BTGraphQLHTTP.h"
+        header "BTLogger_Internal.h"
     }
 }

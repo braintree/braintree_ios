@@ -8,6 +8,7 @@
 #import <PayPalOneTouch/PPOTConfiguration.h>
 
 #import <PayPalUtils/PayPalUtils.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <libkern/OSAtomic.h>
 

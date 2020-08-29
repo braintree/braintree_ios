@@ -4,11 +4,11 @@ import BraintreePaymentFlow
 import BraintreePayPal
 import PayPalOneTouch
 
-@objc class MockAppSwitchDelegate : NSObject, BTAppSwitchDelegate {
+@objc public class MockAppSwitchDelegate : NSObject, BTAppSwitchDelegate {
     var willPerformAppSwitchExpectation : XCTestExpectation? = nil
     var didPerformAppSwitchExpectation : XCTestExpectation? = nil
     var willProcessAppSwitchExpectation : XCTestExpectation? = nil
-    var appContextWillSwitchExpectation : XCTestExpectation? = nil
+    public var appContextWillSwitchExpectation : XCTestExpectation? = nil
     var appContextDidReturnExpectation : XCTestExpectation? = nil
     // XCTestExpectations verify that delegates callbacks are made; the below bools verify that they are NOT made
     var willPerformAppSwitchCalled = false
@@ -16,40 +16,40 @@ import PayPalOneTouch
     var willProcessAppSwitchCalled = false
     var appContextWillSwitchCalled = false
     var appContextDidReturnCalled = false
-    var lastAppSwitcher : AnyObject? = nil
+    public var lastAppSwitcher : AnyObject? = nil
 
     override init() { }
 
-    init(willPerform: XCTestExpectation?, didPerform: XCTestExpectation?) {
+    public init(willPerform: XCTestExpectation?, didPerform: XCTestExpectation?) {
         willPerformAppSwitchExpectation = willPerform
         didPerformAppSwitchExpectation = didPerform
     }
 
-    @objc func appSwitcherWillPerformAppSwitch(_ appSwitcher: Any) {
+    @objc public func appSwitcherWillPerformAppSwitch(_ appSwitcher: Any) {
         lastAppSwitcher = appSwitcher as AnyObject?
         willPerformAppSwitchExpectation?.fulfill()
         willPerformAppSwitchCalled = true
     }
 
-    @objc func appSwitcher(_ appSwitcher: Any, didPerformSwitchTo target: BTAppSwitchTarget) {
+    @objc public func appSwitcher(_ appSwitcher: Any, didPerformSwitchTo target: BTAppSwitchTarget) {
         lastAppSwitcher = appSwitcher as AnyObject?
         didPerformAppSwitchExpectation?.fulfill()
         didPerformAppSwitchCalled = true
     }
 
-    @objc func appSwitcherWillProcessPaymentInfo(_ appSwitcher: Any) {
+    @objc public func appSwitcherWillProcessPaymentInfo(_ appSwitcher: Any) {
         lastAppSwitcher = appSwitcher as AnyObject?
         willProcessAppSwitchExpectation?.fulfill()
         willProcessAppSwitchCalled = true
     }
 
-    @objc func appContextWillSwitch(_ appSwitcher: Any) {
+    @objc public func appContextWillSwitch(_ appSwitcher: Any) {
         lastAppSwitcher = appSwitcher as AnyObject?
         appContextWillSwitchExpectation?.fulfill()
         appContextWillSwitchCalled = true
     }
 
-    @objc func appContextDidReturn(_ appSwitcher: Any) {
+    @objc public func appContextDidReturn(_ appSwitcher: Any) {
         lastAppSwitcher = appSwitcher as AnyObject?
         appContextDidReturnExpectation?.fulfill()
         appContextDidReturnCalled = true

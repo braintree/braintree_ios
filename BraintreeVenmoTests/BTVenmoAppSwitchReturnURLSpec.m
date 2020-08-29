@@ -1,11 +1,7 @@
-#import "BTVenmoAppSwitchReturnURL.h"
-#import "BTSpecHelper.h"
+#import <BraintreeVenmo/BTVenmoAppSwitchReturnURL.h>
 @import Specta;
 @import Expecta;
 @import OCMock;
-//#import <Specta/Specta.h>
-//#import <Expecta/Expecta.h>
-//#import <OCMock/OCMock.h>
 
 SpecBegin(BTVenmoAppSwitchReturnURL)
 
