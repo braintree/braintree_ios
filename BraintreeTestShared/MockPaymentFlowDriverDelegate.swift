@@ -2,7 +2,6 @@ import BraintreeCore
 import BraintreePaymentFlow
 
 class MockPaymentFlowDriverDelegate: BTPaymentFlowDriverDelegate {
-    
     var _returnURLScheme = ""
     
     var onPaymentWithURLHandler: ((URL?, Error?) -> Void)?
