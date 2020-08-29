@@ -1653,6 +1653,8 @@
 			isa = PBXGroup;
 			children = (
 				A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */,
+				41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */,
+				41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */,
 			);
 			path = BraintreePayPal_UnitTests;
 			sourceTree = "<group>";
@@ -2046,8 +2048,6 @@
 				A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */,
 				A734A98F1B87989400D2461B /* BTTestClientTokenFactory.h */,
 				A734A9901B87989400D2461B /* BTTestClientTokenFactory.m */,
-				41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */,
-				41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
