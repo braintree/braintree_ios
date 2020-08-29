@@ -1,4 +1,6 @@
 import XCTest
+import BraintreeCore
+import BraintreeAmericanExpress
 
 class BTAmericanExpressRewardsBalance_Tests: XCTestCase {
     

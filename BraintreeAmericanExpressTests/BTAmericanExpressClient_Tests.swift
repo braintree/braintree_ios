@@ -1,4 +1,6 @@
 import XCTest
+import BraintreeTestShared
+import BraintreeAmericanExpress
 
 class BTAmericanExpressClient_Tests: XCTestCase {
 
