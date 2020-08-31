@@ -424,6 +424,11 @@
 		A9E5C1D724FD60BB00EE691F /* PPOTErrorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462481C3C911200048423 /* PPOTErrorTest.m */; };
 		A9E5C1D824FD60BB00EE691F /* PPOTTimeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462491C3C911200048423 /* PPOTTimeTest.m */; };
 		A9E5C1DB24FD615F00EE691F /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B463051C3D9C2200048423 /* PayPalDataCollector.framework */; };
+		A9E5C1E524FD665D00EE691F /* BraintreePayPal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; platformFilter = ios; };
+		A9E5C1F124FD66C700EE691F /* BTPayPalDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */; };
+		A9E5C1F224FD66C700EE691F /* FakePayPalClasses.h in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */; };
+		A9E5C1F324FD66C700EE691F /* FakePayPalClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */; };
+		A9E5C1F624FD66F700EE691F /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		B61F67801CE4C20F0051A3BD /* BTConfiguration+DataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B61F67811CE4C20F0051A3BD /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
 		B6D950061EA0212C00BB42F2 /* BTAPIHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = B6D950041EA0212C00BB42F2 /* BTAPIHTTP.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -837,6 +842,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = A7B462E01C3D9C2200048423;
 			remoteInfo = PayPalDataCollector;
+		};
+		A9E5C1E624FD665D00EE691F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D941D371B59C76A0016EFB4;
+			remoteInfo = BraintreePayPal;
+		};
+		A9E5C1F424FD66F300EE691F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A903E1A524F9D34000C314E1;
+			remoteInfo = BraintreeTestShared;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1283,6 +1302,9 @@
 		A9E5C1B624FD5DD500EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9E5C1C524FD607900EE691F /* PayPalOneTouchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PayPalOneTouchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E5C1C924FD607900EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9E5C1E024FD665D00EE691F /* BraintreePayPalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreePayPalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9E5C1E424FD665D00EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9E5C1F724FD672A00EE691F /* BraintreePayPalTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreePayPalTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+DataCollector.h"; sourceTree = "<group>"; };
 		B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "BTConfiguration+DataCollector.m"; path = "Public/BTConfiguration+DataCollector.m"; sourceTree = "<group>"; };
 		B6D950041EA0212C00BB42F2 /* BTAPIHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAPIHTTP.h; sourceTree = "<group>"; };
@@ -1503,6 +1525,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9E5C1DD24FD665D00EE691F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9E5C1F624FD66F700EE691F /* BraintreeTestShared.framework in Frameworks */,
+				A9E5C1E524FD665D00EE691F /* BraintreePayPal.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1660,7 +1691,6 @@
 			children = (
 				806E0E5F2363489200500DCA /* BraintreeCore_UnitTests */,
 				035A59D81EA5DE97002960C8 /* BraintreePaymentFlow_UnitTests */,
-				806E0E5D236345EF00500DCA /* BraintreePayPal_UnitTests */,
 				A7C8230F1B4DAAFB009D45D6 /* Helpers */,
 				16CD2EA01B4077FC00E68495 /* Info.plist */,
 				A7E6E8E11B420D0C004CFA95 /* UnitTests-Bridging-Header.h */,
@@ -1852,16 +1882,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		806E0E5D236345EF00500DCA /* BraintreePayPal_UnitTests */ = {
-			isa = PBXGroup;
-			children = (
-				A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */,
-				41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */,
-				41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */,
-			);
-			path = BraintreePayPal_UnitTests;
-			sourceTree = "<group>";
-		};
 		806E0E5F2363489200500DCA /* BraintreeCore_UnitTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -2020,6 +2040,7 @@
 				A9E5C19F24FD5A7C00EE691F /* BraintreeDataCollectorTests */,
 				038C7FBB1EA1648900241ABE /* BraintreePaymentFlow */,
 				2D941D391B59C76A0016EFB4 /* BraintreePayPal */,
+				A9E5C1E124FD665D00EE691F /* BraintreePayPalTests */,
 				A903E1A724F9D34000C314E1 /* BraintreeTestShared */,
 				4164B9891C9B6553006AE861 /* BraintreeUnionPay */,
 				A9E5C1B324FD5DD500EE691F /* BraintreeUnionPayTests */,
@@ -2059,6 +2080,7 @@
 				A9E5C19E24FD5A7C00EE691F /* BraintreeDataCollectorTests.xctest */,
 				A9E5C1B224FD5DD500EE691F /* BraintreeUnionPayTests.xctest */,
 				A9E5C1C524FD607900EE691F /* PayPalOneTouchTests.xctest */,
+				A9E5C1E024FD665D00EE691F /* BraintreePayPalTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2364,6 +2386,18 @@
 				A7B462491C3C911200048423 /* PPOTTimeTest.m */,
 			);
 			path = PayPalOneTouchTests;
+			sourceTree = "<group>";
+		};
+		A9E5C1E124FD665D00EE691F /* BraintreePayPalTests */ = {
+			isa = PBXGroup;
+			children = (
+				A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */,
+				41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */,
+				41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */,
+				A9E5C1E424FD665D00EE691F /* Info.plist */,
+				A9E5C1F724FD672A00EE691F /* BraintreePayPalTests-Bridging-Header.h */,
+			);
+			path = BraintreePayPalTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3067,6 +3101,25 @@
 			productReference = A9E5C1C524FD607900EE691F /* PayPalOneTouchTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A9E5C1DF24FD665D00EE691F /* BraintreePayPalTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9E5C1E824FD665D00EE691F /* Build configuration list for PBXNativeTarget "BraintreePayPalTests" */;
+			buildPhases = (
+				A9E5C1DC24FD665D00EE691F /* Sources */,
+				A9E5C1DD24FD665D00EE691F /* Frameworks */,
+				A9E5C1DE24FD665D00EE691F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A9E5C1F524FD66F300EE691F /* PBXTargetDependency */,
+				A9E5C1E724FD665D00EE691F /* PBXTargetDependency */,
+			);
+			name = BraintreePayPalTests;
+			productName = BraintreePayPalTests;
+			productReference = A9E5C1E024FD665D00EE691F /* BraintreePayPalTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -3141,6 +3194,9 @@
 					A9E5C1C424FD607900EE691F = {
 						CreatedOnToolsVersion = 12.0;
 					};
+					A9E5C1DF24FD665D00EE691F = {
+						CreatedOnToolsVersion = 12.0;
+					};
 				};
 			};
 			buildConfigurationList = A75DA347192138F000D997A2 /* Build configuration list for PBXProject "Braintree" */;
@@ -3169,6 +3225,7 @@
 				A9E5C19D24FD5A7C00EE691F /* BraintreeDataCollectorTests */,
 				03502C831E9C0A1700F15EE6 /* BraintreePaymentFlow */,
 				2D941D371B59C76A0016EFB4 /* BraintreePayPal */,
+				A9E5C1DF24FD665D00EE691F /* BraintreePayPalTests */,
 				A903E1A524F9D34000C314E1 /* BraintreeTestShared */,
 				4164B9951C9B658E006AE861 /* BraintreeUnionPay */,
 				A9E5C1B124FD5DD500EE691F /* BraintreeUnionPayTests */,
@@ -3347,6 +3404,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A9E5C1C324FD607900EE691F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9E5C1DE24FD665D00EE691F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3840,6 +3904,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9E5C1DC24FD665D00EE691F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9E5C1F124FD66C700EE691F /* BTPayPalDriver_Tests.swift in Sources */,
+				A9E5C1F224FD66C700EE691F /* FakePayPalClasses.h in Sources */,
+				A9E5C1F324FD66C700EE691F /* FakePayPalClasses.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -4138,6 +4212,17 @@
 			isa = PBXTargetDependency;
 			target = A7B462E01C3D9C2200048423 /* PayPalDataCollector */;
 			targetProxy = A9E5C1D924FD615A00EE691F /* PBXContainerItemProxy */;
+		};
+		A9E5C1E724FD665D00EE691F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 2D941D371B59C76A0016EFB4 /* BraintreePayPal */;
+			targetProxy = A9E5C1E624FD665D00EE691F /* PBXContainerItemProxy */;
+		};
+		A9E5C1F524FD66F300EE691F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A903E1A524F9D34000C314E1 /* BraintreeTestShared */;
+			targetProxy = A9E5C1F424FD66F300EE691F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -6627,6 +6712,92 @@
 			};
 			name = Release;
 		};
+		A9E5C1E924FD665D00EE691F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BraintreePayPalTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreePayPalTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "BraintreePayPalTests/BraintreePayPalTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A9E5C1EA24FD665D00EE691F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 43253H4X22;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BraintreePayPalTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreePayPalTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BraintreePayPalTests/BraintreePayPalTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -6833,6 +7004,15 @@
 			buildConfigurations = (
 				A9E5C1CD24FD607900EE691F /* Debug */,
 				A9E5C1CE24FD607900EE691F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9E5C1E824FD665D00EE691F /* Build configuration list for PBXNativeTarget "BraintreePayPalTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9E5C1E924FD665D00EE691F /* Debug */,
+				A9E5C1EA24FD665D00EE691F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

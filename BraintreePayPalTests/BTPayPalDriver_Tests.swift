@@ -1,4 +1,6 @@
 import XCTest
+import BraintreePayPal
+import BraintreeTestShared
 import SafariServices
 
 // MARK: Authorization
@@ -2094,3 +2096,19 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
     }
 }
+
+class MockPayPalApprovalHandlerDelegate : NSObject, BTPayPalApprovalHandler {
+    var handleApprovalExpectation : XCTestExpectation? = nil
+    var url : NSURL? = nil
+    var cancel : Bool = false
+
+    func handleApproval(_ request: PPOTRequest, paypalApprovalDelegate delegate: BTPayPalApprovalDelegate) {
+        if (cancel) {
+            delegate.onApprovalCancel()
+        } else {
+            delegate.onApprovalComplete(url! as URL)
+        }
+        handleApprovalExpectation?.fulfill()
+    }
+}
+
