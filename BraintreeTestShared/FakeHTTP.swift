@@ -10,7 +10,7 @@ public class FakeHTTP: BTHTTP {
     var stubMethod: String?
     var stubEndpoint: String?
     public var cannedResponse: BTJSON?
-    var cannedConfiguration: BTJSON?
+    public var cannedConfiguration: BTJSON?
     public var cannedStatusCode: Int = 0
     var cannedError: Error?
 
