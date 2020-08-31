@@ -413,6 +413,17 @@
 		A9E5C1B724FD5DD500EE691F /* BraintreeUnionPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4164B9AC1C9B658E006AE861 /* BraintreeUnionPay.framework */; platformFilter = ios; };
 		A9E5C1BD24FD5E0D00EE691F /* BTCardClient_UnionPayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */; };
 		A9E5C1C024FD5E3F00EE691F /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
+		A9E5C1CA24FD607900EE691F /* PayPalOneTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50C3B6F1C1A29C500612D90 /* PayPalOneTouch.framework */; platformFilter = ios; };
+		A9E5C1D024FD60BB00EE691F /* PPDataCollectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 032D3A711C580B09000E5F6B /* PPDataCollectorTest.m */; };
+		A9E5C1D124FD60BB00EE691F /* PPFPTIDataTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */; };
+		A9E5C1D224FD60BB00EE691F /* PPFPTITrackerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */; };
+		A9E5C1D324FD60BB00EE691F /* PPOTAppSwitchResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462441C3C911200048423 /* PPOTAppSwitchResponseTest.m */; };
+		A9E5C1D424FD60BB00EE691F /* PPOTAppSwitchUtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462451C3C911200048423 /* PPOTAppSwitchUtilTest.m */; };
+		A9E5C1D524FD60BB00EE691F /* PPOTConfigurationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462461C3C911200048423 /* PPOTConfigurationTest.m */; };
+		A9E5C1D624FD60BB00EE691F /* PPOTEncryptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462471C3C911200048423 /* PPOTEncryptionTest.m */; };
+		A9E5C1D724FD60BB00EE691F /* PPOTErrorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462481C3C911200048423 /* PPOTErrorTest.m */; };
+		A9E5C1D824FD60BB00EE691F /* PPOTTimeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B462491C3C911200048423 /* PPOTTimeTest.m */; };
+		A9E5C1DB24FD615F00EE691F /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B463051C3D9C2200048423 /* PayPalDataCollector.framework */; };
 		B61F67801CE4C20F0051A3BD /* BTConfiguration+DataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B61F67811CE4C20F0051A3BD /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
 		B6D950061EA0212C00BB42F2 /* BTAPIHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = B6D950041EA0212C00BB42F2 /* BTAPIHTTP.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -812,6 +823,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = A903E1A524F9D34000C314E1;
 			remoteInfo = BraintreeTestShared;
+		};
+		A9E5C1CB24FD607900EE691F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A50C3B6E1C1A29C500612D90;
+			remoteInfo = PayPalOneTouch;
+		};
+		A9E5C1D924FD615A00EE691F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7B462E01C3D9C2200048423;
+			remoteInfo = PayPalDataCollector;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1256,6 +1281,8 @@
 		A9E5C1AD24FD5C5A00EE691F /* BraintreeDataCollectorTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeDataCollectorTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A9E5C1B224FD5DD500EE691F /* BraintreeUnionPayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeUnionPayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E5C1B624FD5DD500EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9E5C1C524FD607900EE691F /* PayPalOneTouchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PayPalOneTouchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9E5C1C924FD607900EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+DataCollector.h"; sourceTree = "<group>"; };
 		B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "BTConfiguration+DataCollector.m"; path = "Public/BTConfiguration+DataCollector.m"; sourceTree = "<group>"; };
 		B6D950041EA0212C00BB42F2 /* BTAPIHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAPIHTTP.h; sourceTree = "<group>"; };
@@ -1467,6 +1494,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9E5C1C224FD607900EE691F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9E5C1DB24FD615F00EE691F /* PayPalDataCollector.framework in Frameworks */,
+				A9E5C1CA24FD607900EE691F /* PayPalOneTouch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1627,7 +1663,6 @@
 				806E0E5D236345EF00500DCA /* BraintreePayPal_UnitTests */,
 				A7C8230F1B4DAAFB009D45D6 /* Helpers */,
 				16CD2EA01B4077FC00E68495 /* Info.plist */,
-				A7B462431C3C90DB00048423 /* PayPalOneTouch */,
 				A7E6E8E11B420D0C004CFA95 /* UnitTests-Bridging-Header.h */,
 			);
 			path = UnitTests;
@@ -1992,6 +2027,7 @@
 				A948D6F124FAC8F900F4F178 /* BraintreeVenmoTests */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
+				A9E5C1C624FD607900EE691F /* PayPalOneTouchTests */,
 				6A50887E9E10BEB122A9F45D /* Pods */,
 				A75DA3521921394200D997A2 /* Products */,
 				16CD2E9D1B4077FC00E68495 /* UnitTests */,
@@ -2022,6 +2058,7 @@
 				A95C410824FAEF2100045045 /* BraintreeCardTests.xctest */,
 				A9E5C19E24FD5A7C00EE691F /* BraintreeDataCollectorTests.xctest */,
 				A9E5C1B224FD5DD500EE691F /* BraintreeUnionPayTests.xctest */,
+				A9E5C1C524FD607900EE691F /* PayPalOneTouchTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2136,22 +2173,6 @@
 				A7ABD6741B702FF000A1223C /* braintree-api-integration-specs-Prefix.pch */,
 			);
 			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		A7B462431C3C90DB00048423 /* PayPalOneTouch */ = {
-			isa = PBXGroup;
-			children = (
-				032D3A711C580B09000E5F6B /* PPDataCollectorTest.m */,
-				A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */,
-				A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */,
-				A7B462441C3C911200048423 /* PPOTAppSwitchResponseTest.m */,
-				A7B462451C3C911200048423 /* PPOTAppSwitchUtilTest.m */,
-				A7B462461C3C911200048423 /* PPOTConfigurationTest.m */,
-				A7B462471C3C911200048423 /* PPOTEncryptionTest.m */,
-				A7B462481C3C911200048423 /* PPOTErrorTest.m */,
-				A7B462491C3C911200048423 /* PPOTTimeTest.m */,
-			);
-			path = PayPalOneTouch;
 			sourceTree = "<group>";
 		};
 		A7B4628C1C3D9B6700048423 /* PayPalUtils */ = {
@@ -2326,6 +2347,23 @@
 				A9E5C1B624FD5DD500EE691F /* Info.plist */,
 			);
 			path = BraintreeUnionPayTests;
+			sourceTree = "<group>";
+		};
+		A9E5C1C624FD607900EE691F /* PayPalOneTouchTests */ = {
+			isa = PBXGroup;
+			children = (
+				A9E5C1C924FD607900EE691F /* Info.plist */,
+				032D3A711C580B09000E5F6B /* PPDataCollectorTest.m */,
+				A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */,
+				A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */,
+				A7B462441C3C911200048423 /* PPOTAppSwitchResponseTest.m */,
+				A7B462451C3C911200048423 /* PPOTAppSwitchUtilTest.m */,
+				A7B462461C3C911200048423 /* PPOTConfigurationTest.m */,
+				A7B462471C3C911200048423 /* PPOTEncryptionTest.m */,
+				A7B462481C3C911200048423 /* PPOTErrorTest.m */,
+				A7B462491C3C911200048423 /* PPOTTimeTest.m */,
+			);
+			path = PayPalOneTouchTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3010,6 +3048,25 @@
 			productReference = A9E5C1B224FD5DD500EE691F /* BraintreeUnionPayTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A9E5C1C424FD607900EE691F /* PayPalOneTouchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9E5C1CF24FD607900EE691F /* Build configuration list for PBXNativeTarget "PayPalOneTouchTests" */;
+			buildPhases = (
+				A9E5C1C124FD607900EE691F /* Sources */,
+				A9E5C1C224FD607900EE691F /* Frameworks */,
+				A9E5C1C324FD607900EE691F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A9E5C1DA24FD615A00EE691F /* PBXTargetDependency */,
+				A9E5C1CC24FD607900EE691F /* PBXTargetDependency */,
+			);
+			name = PayPalOneTouchTests;
+			productName = PayPalOneTouchTests;
+			productReference = A9E5C1C524FD607900EE691F /* PayPalOneTouchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -3081,6 +3138,9 @@
 					A9E5C1B124FD5DD500EE691F = {
 						CreatedOnToolsVersion = 12.0;
 					};
+					A9E5C1C424FD607900EE691F = {
+						CreatedOnToolsVersion = 12.0;
+					};
 				};
 			};
 			buildConfigurationList = A75DA347192138F000D997A2 /* Build configuration list for PBXProject "Braintree" */;
@@ -3116,6 +3176,7 @@
 				A948D6EF24FAC8F900F4F178 /* BraintreeVenmoTests */,
 				A7B462E01C3D9C2200048423 /* PayPalDataCollector */,
 				A50C3B6E1C1A29C500612D90 /* PayPalOneTouch */,
+				A9E5C1C424FD607900EE691F /* PayPalOneTouchTests */,
 				7EDE474C1CD2C3D00005E22B /* PayPalUtils */,
 				A7ABD6521B702FD800A1223C /* IntegrationTests */,
 				16CD2E9B1B4077FB00E68495 /* UnitTests */,
@@ -3279,6 +3340,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A9E5C1B024FD5DD500EE691F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9E5C1C324FD607900EE691F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3756,6 +3824,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9E5C1C124FD607900EE691F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9E5C1D024FD60BB00EE691F /* PPDataCollectorTest.m in Sources */,
+				A9E5C1D124FD60BB00EE691F /* PPFPTIDataTest.m in Sources */,
+				A9E5C1D224FD60BB00EE691F /* PPFPTITrackerTest.m in Sources */,
+				A9E5C1D324FD60BB00EE691F /* PPOTAppSwitchResponseTest.m in Sources */,
+				A9E5C1D424FD60BB00EE691F /* PPOTAppSwitchUtilTest.m in Sources */,
+				A9E5C1D524FD60BB00EE691F /* PPOTConfigurationTest.m in Sources */,
+				A9E5C1D624FD60BB00EE691F /* PPOTEncryptionTest.m in Sources */,
+				A9E5C1D724FD60BB00EE691F /* PPOTErrorTest.m in Sources */,
+				A9E5C1D824FD60BB00EE691F /* PPOTTimeTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -4043,6 +4127,17 @@
 			isa = PBXTargetDependency;
 			target = A903E1A524F9D34000C314E1 /* BraintreeTestShared */;
 			targetProxy = A9E5C1BE24FD5E3200EE691F /* PBXContainerItemProxy */;
+		};
+		A9E5C1CC24FD607900EE691F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = A50C3B6E1C1A29C500612D90 /* PayPalOneTouch */;
+			targetProxy = A9E5C1CB24FD607900EE691F /* PBXContainerItemProxy */;
+		};
+		A9E5C1DA24FD615A00EE691F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7B462E01C3D9C2200048423 /* PayPalDataCollector */;
+			targetProxy = A9E5C1D924FD615A00EE691F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -6450,6 +6545,88 @@
 			};
 			name = Release;
 		};
+		A9E5C1CD24FD607900EE691F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = PayPalOneTouchTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.PayPalOneTouchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A9E5C1CE24FD607900EE691F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 43253H4X22;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = PayPalOneTouchTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.PayPalOneTouchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -6647,6 +6824,15 @@
 			buildConfigurations = (
 				A9E5C1BB24FD5DD500EE691F /* Debug */,
 				A9E5C1BC24FD5DD500EE691F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9E5C1CF24FD607900EE691F /* Build configuration list for PBXNativeTarget "PayPalOneTouchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9E5C1CD24FD607900EE691F /* Debug */,
+				A9E5C1CE24FD607900EE691F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -6,7 +6,8 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "PPDataCollector_Internal.h"
+#import <PayPalDataCollector/PayPalDataCollector.h>
+#import <PayPalDataCollector/PPDataCollector_Internal.h>
 #import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 
 @interface PPDataCollectorTest : XCTestCase
