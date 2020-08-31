@@ -1,7 +1,6 @@
 import XCTest
 
 class BTPayPalIDToken_Tests: XCTestCase {
-
     func testInitWithIDTokenString_setsAllProperties() {
         let dict: [String : Any] = [
             "iss": "https://api.paypal.com",
@@ -20,7 +19,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
             "jti": "fake-jti"
         ]
 
-        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+        let idTokenString = PayPalIDTokenTestHelper.encodeIDToken(dict)
         let payPalIDToken = try? BTPayPalIDToken(idTokenString: idTokenString)
         XCTAssertNotNil(payPalIDToken)
         XCTAssertEqual(payPalIDToken?.token, idTokenString)
@@ -38,7 +37,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
                 "Braintree:my-merchant"
             ]
         ]
-        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+        let idTokenString = PayPalIDTokenTestHelper.encodeIDToken(dict)
         let payPalIDToken = try? BTPayPalIDToken(idTokenString: idTokenString)
 
         XCTAssertEqual(payPalIDToken?.environment, .stage)
@@ -52,7 +51,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
                 "Braintree:my-merchant"
             ]
         ]
-        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+        let idTokenString = PayPalIDTokenTestHelper.encodeIDToken(dict)
         let payPalIDToken = try? BTPayPalIDToken(idTokenString: idTokenString)
 
         XCTAssertEqual(payPalIDToken?.environment, .sand)
@@ -131,7 +130,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
 
     func testInitWithIDTokenString_whenJSONDoesNotContainExternalIds_throwsError() {
         let dict: [String : Any] = ["hello" : "world"]
-        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+        let idTokenString = PayPalIDTokenTestHelper.encodeIDToken(dict)
 
         do {
             let _ = try BTPayPalIDToken(idTokenString: idTokenString)
@@ -148,7 +147,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
                 "Braintree:fake-bt-merchant"
             ]
         ]
-        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+        let idTokenString = PayPalIDTokenTestHelper.encodeIDToken(dict)
 
         do {
             let _ = try BTPayPalIDToken(idTokenString: idTokenString)
@@ -164,7 +163,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
                 "PayPal:merchant-id"
             ]
         ]
-        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+        let idTokenString = PayPalIDTokenTestHelper.encodeIDToken(dict)
 
         do {
             let _ = try BTPayPalIDToken(idTokenString: idTokenString)

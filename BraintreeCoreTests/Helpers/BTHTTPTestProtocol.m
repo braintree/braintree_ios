@@ -1,6 +1,6 @@
 #import "BTHTTPTestProtocol.h"
 #import "BTHTTP.h"
-#import <BraintreeCore/BTJSON.h>
+@import BraintreeCore;
 
 @implementation BTHTTPTestProtocol
 
@@ -20,7 +20,7 @@
                                                              HTTPVersion:@"HTTP/1.1"
                                                             headerFields:@{@"Content-Type": @"application/json"}];
 
-    NSData *archivedRequest = [NSKeyedArchiver archivedDataWithRootObject:self.request];
+    NSData *archivedRequest = [NSKeyedArchiver archivedDataWithRootObject:self.request requiringSecureCoding:YES error:nil];
     NSString *base64ArchivedRequest = [archivedRequest base64EncodedStringWithOptions:0];
 
     NSData *requestBodyData;
@@ -63,7 +63,9 @@
 }
 
 + (NSURLRequest *)parseRequestFromTestResponseBody:(BTJSON *)responseBody {
-    return [NSKeyedUnarchiver unarchiveObjectWithData:[[NSData alloc] initWithBase64EncodedString:[responseBody[@"request"] asString] options:0]];
+//    return [NSKeyedUnarchiver unarchiveObjectWithData:[[NSData alloc] initWithBase64EncodedString:[responseBody[@"request"] asString] options:0]];
+    NSData *dataToUnarchive = [[NSData alloc] initWithBase64EncodedString:[responseBody[@"request"] asString] options:0];
+    return [NSKeyedUnarchiver unarchivedObjectOfClass:NSURLRequest.class fromData:dataToUnarchive error:nil];
 }
 
 + (NSString *)parseRequestBodyFromTestResponseBody:(BTJSON *)responseBody {

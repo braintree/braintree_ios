@@ -1,6 +1,6 @@
-#import "UnitTests-Swift.h"
-#import <XCTest/XCTest.h>
 #import "BTPayPalIDToken.h"
+#import "BraintreeCoreTests-Swift.h"
+@import XCTest;
 
 @interface BTPayPalIDToken_ObjCTests : XCTestCase
 
@@ -16,7 +16,7 @@
                                    @"Braintree:some-bt-merchant"
                            ]};
 
-    NSString *idTokenString = [BTPayPalIDTokenTestHelper encodeIDToken:dict];
+    NSString *idTokenString = [PayPalIDTokenTestHelper encodeIDToken:dict];
 
     BTPayPalIDToken *idToken = [[BTPayPalIDToken alloc] initWithIDTokenString:idTokenString error:nil];
     XCTAssertNotNil(idToken);

@@ -1,7 +1,6 @@
 import XCTest
 
 class BTURLUtils_Tests: XCTestCase {
-    
     // MARK: - queryParametersForURL:
         
     func testQueryParametersForURL_returnsDictionaryWithQueryParameters() {

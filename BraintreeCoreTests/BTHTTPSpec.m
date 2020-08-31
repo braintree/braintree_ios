@@ -1,8 +1,6 @@
 #import "BTHTTP.h"
 #import "BTHTTPTestProtocol.h"
-#import "BTSpecHelper.h"
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTHTTPErrors.h>
+@import BraintreeCore;
 @import Specta;
 @import Expecta;
 @import OHHTTPStubs;
@@ -986,7 +984,9 @@ NSURLSession *testURLSession() {
 
         [self->http GET:@"200.json" parameters:nil completion:nil];
 
-        wait_for_potential_async_exceptions(done);
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+            done();
+        });
     });
 }
 

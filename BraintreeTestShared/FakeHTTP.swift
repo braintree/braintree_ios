@@ -1,35 +1,35 @@
 import BraintreeCore
 import BraintreeCore.Private
 
-public class FakeHTTP: BTHTTP {
-    var GETRequestCount: Int = 0
-    var POSTRequestCount: Int = 0
-    public var lastRequestEndpoint: String?
+@objc public class FakeHTTP: BTHTTP {
+    @objc public var GETRequestCount: Int = 0
+    @objc public var POSTRequestCount: Int = 0
+    @objc public var lastRequestEndpoint: String?
     public var lastRequestMethod: String?
-    public var lastRequestParameters: Dictionary<AnyHashable, Any>?
+    @objc public var lastRequestParameters: Dictionary<AnyHashable, Any>?
     var stubMethod: String?
     var stubEndpoint: String?
     public var cannedResponse: BTJSON?
-    public var cannedConfiguration: BTJSON?
-    public var cannedStatusCode: Int = 0
+    @objc public var cannedConfiguration: BTJSON?
+    @objc public var cannedStatusCode: Int = 0
     public var cannedError: Error?
 
     required override init(baseURL: URL) {
         super.init(baseURL: baseURL)
     }
 
-    public static func fakeHTTP() -> FakeHTTP {
+    @objc public static func fakeHTTP() -> FakeHTTP {
         return self.init(baseURL: URL.init(string: "http://fake.com")!)
     }
 
-    public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWith response: Any, statusCode: Int) {
+    @objc public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWith response: Any, statusCode: Int) {
         stubMethod = httpMethod
         stubEndpoint = endpoint
         cannedResponse = BTJSON.init(value: response)
         cannedStatusCode = statusCode
     }
 
-    public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWithError error: Error) {
+    @objc public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWithError error: Error) {
         stubMethod = httpMethod
         stubEndpoint = endpoint
         cannedError = error
@@ -75,38 +75,38 @@ public class FakeHTTP: BTHTTP {
     }
 }
 
-class FakeGraphQLHTTP: BTGraphQLHTTP {
+@objc public class FakeGraphQLHTTP: BTGraphQLHTTP {
     var POSTRequestCount: Int = 0
-    var lastRequestParameters: Dictionary<AnyHashable, Any>?
+    @objc public var lastRequestParameters: Dictionary<AnyHashable, Any>?
 
     required override init(baseURL: URL) {
         super.init(baseURL: baseURL)
     }
 
-    public static func fakeHTTP() -> FakeGraphQLHTTP {
-        return self.init(baseURL: URL.init(string: "")!)
+    @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
+        return self.init(baseURL: URL.init(string: "http://fake.com")!)
     }
 
-    override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
         completionBlock!(nil, nil, nil)
     }
 }
 
-class FakeAPIHTTP: BTAPIHTTP {
+@objc public class FakeAPIHTTP: BTAPIHTTP {
     var POSTRequestCount: Int = 0
-    var lastRequestParameters: Dictionary<AnyHashable, Any>?
+    @objc public var lastRequestParameters: Dictionary<AnyHashable, Any>?
 
     required override init(baseURL: URL) {
         super.init(baseURL: baseURL)
     }
 
-    public static func fakeHTTP() -> FakeAPIHTTP {
-        return self.init(baseURL: URL.init(string: "")!)
+    @objc public static func fakeHTTP() -> FakeAPIHTTP {
+        return self.init(baseURL: URL.init(string: "http://fake.com")!)
     }
 
-    override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
         completionBlock!(nil, nil, nil)

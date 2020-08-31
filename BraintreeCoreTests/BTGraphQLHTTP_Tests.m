@@ -1,8 +1,6 @@
 #import "BTGraphQLHTTP.h"
 #import "BTHTTPTestProtocol.h"
-#import "BTSpecHelper.h"
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTHTTPErrors.h>
+@import BraintreeCore;
 @import Specta;
 @import Expecta;
 @import OHHTTPStubs;

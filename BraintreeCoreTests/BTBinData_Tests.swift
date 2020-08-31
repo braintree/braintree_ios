@@ -1,7 +1,6 @@
 import XCTest
 
 class BTBinData_Tests: XCTestCase {
-    
     func testBinData_withCompleteJSON() {
         let json = BTJSON(value: [
             "description": "Visa ending in 11",

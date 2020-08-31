@@ -1,9 +1,10 @@
-#import "UnitTests-Swift.h"
 #import "BTAnalyticsService.h"
-#import "BTKeychain.h"
+#import "BTHTTP.h"
 #import "Braintree-Version.h"
-#import "BTFakeHTTP.h"
-#import <XCTest/XCTest.h>
+#import "BTKeychain.h"
+@import BraintreeCore;
+@import BraintreeTestShared;
+@import XCTest;
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
 
@@ -54,7 +55,7 @@
 
 - (void)testSendAnalyticsEvent_whenNumberOfQueuedEventsMeetsThreshold_sendsAnalyticsEvent {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.flushThreshold = 1;
     analyticsService.http = mockAnalyticsHTTP;
@@ -73,7 +74,7 @@
 
 - (void)testSendAnalyticsEvent_whenFlushThresholdIsGreaterThanNumberOfBatchedEvents_doesNotSendAnalyticsEvent {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.flushThreshold = 2;
     analyticsService.http = mockAnalyticsHTTP;
@@ -86,7 +87,7 @@
 
 - (void)testSendAnalyticsEventCompletion_whenCalled_sendsAllEvents {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.flushThreshold = 5;
     analyticsService.http = mockAnalyticsHTTP;
@@ -114,7 +115,7 @@
 
 - (void)testFlush_whenCalled_sendsAllQueuedEvents {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.flushThreshold = 5;
     analyticsService.http = mockAnalyticsHTTP;
@@ -145,7 +146,7 @@
 
 - (void)testFlush_whenThereAreNoQueuedEvents_doesNotPOST {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.flushThreshold = 5;
     analyticsService.http = mockAnalyticsHTTP;
@@ -164,7 +165,7 @@
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
     NSError *stubbedError = [NSError errorWithDomain:@"SomeError" code:1 userInfo:nil];
     stubAPIClient.cannedConfigurationResponseError = stubbedError;
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.http = mockAnalyticsHTTP;
     
@@ -189,7 +190,7 @@
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
     NSError *stubbedError = [NSError errorWithDomain:@"SomeError" code:1 userInfo:nil];
     stubAPIClient.cannedConfigurationResponseError = stubbedError;
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.http = mockAnalyticsHTTP;
     
@@ -225,7 +226,7 @@
 
 - (void)testAnalyticsService_whenAppIsBackgrounded_sendsQueuedAnalyticsEvents {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.flushThreshold = 5;
     analyticsService.http = mockAnalyticsHTTP;

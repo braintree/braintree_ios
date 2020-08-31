@@ -1,7 +1,6 @@
 import XCTest
 
 class BTAppSwitch_Tests: XCTestCase {
-
     var appSwitch = BTAppSwitch.sharedInstance()
 
     override func setUp() {

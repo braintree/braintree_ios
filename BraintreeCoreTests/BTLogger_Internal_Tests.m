@@ -1,5 +1,6 @@
-#import <XCTest/XCTest.h>
 #import "BTLogger_Internal.h"
+@import BraintreeCore;
+@import XCTest;
 
 @interface BTLogger_Internal_Tests : XCTestCase
 @end

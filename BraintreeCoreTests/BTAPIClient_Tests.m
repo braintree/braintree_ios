@@ -1,16 +1,13 @@
-#import <XCTest/XCTest.h>
-#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
-#import <BraintreePayPal/BTConfiguration+PayPal.h>
-#import <BraintreeVenmo/BTConfiguration+Venmo.h>
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
-#import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTJSON.h>
+@import BraintreeCore;
+@import BraintreeTestShared;
+@import XCTest;
 #import "BTAnalyticsService.h"
 #import "BTAPIClient_Internal.h"
-#import "BTFakeHTTP.h"
-#import "BTHTTP.h"
-#import "BTHTTPTestProtocol.h"
-#import "BTSpecHelper.h"
+// TODO: Remove these dependencies from BraintreeCoreTests
+//#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
+//#import <BraintreePayPal/BTConfiguration+PayPal.h>
+//#import <BraintreeVenmo/BTConfiguration+Venmo.h>
+//#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 
 @interface StubBTClientMetadata : BTClientMetadata
 
@@ -66,8 +63,8 @@
 }
 
 - (void)testInitialization_withValidClientToken_setsClientToken {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:BTValidTestClientToken sendAnalyticsEvent:NO];
-    XCTAssertEqualObjects(apiClient.clientToken.originalValue, BTValidTestClientToken);
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:TestClientTokenFactory.validClientToken sendAnalyticsEvent:NO];
+    XCTAssertEqualObjects(apiClient.clientToken.originalValue, TestClientTokenFactory.validClientToken);
 }
 
 - (void)testInitialization_withInvalidClientToken_returnsNil {
@@ -93,13 +90,13 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
     BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"test": @YES }];
-    BTFakeHTTP *mockConfigurationHTTP = (BTFakeHTTP *)apiClient.configurationHTTP;
+    FakeHTTP *mockConfigurationHTTP = (FakeHTTP *)apiClient.configurationHTTP;
     mockConfigurationHTTP.GETRequestCount = 0;
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertNotNil(configuration);
         XCTAssertNil(error);
 
-        XCTAssertGreaterThanOrEqual(mockConfigurationHTTP.GETRequestCount, (NSUInteger)1);
+        XCTAssertGreaterThanOrEqual(mockConfigurationHTTP.GETRequestCount, 1);
         XCTAssertTrue([configuration.json[@"test"] isTrue]);
         [expectation fulfill];
     }];
@@ -112,8 +109,8 @@
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
 
-    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
-    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
+    FakeHTTP *fake = [FakeHTTP fakeHTTP];
+    [fake stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
     apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
@@ -134,16 +131,16 @@
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
 
-    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *fake = [FakeHTTP fakeHTTP];
     NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
                                            code:NSURLErrorCannotConnectToHost
                                        userInfo:nil];
-    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
+    [fake stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
     apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         // BTAPIClient fetches the config when initialized so there can potentially be 2 requests here
-        XCTAssertLessThanOrEqual(fake.GETRequestCount, (NSUInteger)2);
+        XCTAssertLessThanOrEqual(fake.GETRequestCount, 2);
         XCTAssertNil(configuration);
         XCTAssertEqual(error, anError);
         [expectation fulfill];
@@ -165,11 +162,11 @@
 
 - (void)testCallbacks_useMainDispatchQueue {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    BTFakeHTTP *fake = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
+    FakeHTTP *fake = [FakeHTTP fakeHTTP];
     // Override apiClient.http so that requests don't fail
     apiClient.configurationHTTP = fake;
     apiClient.http = fake;
-    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{ } statusCode:200];
+    [fake stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{ } statusCode:200];
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, __unused NSError *error) {
@@ -177,7 +174,7 @@
         [expectation1 fulfill];
     }];
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"GET request"];
-    [apiClient GET:@"" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+    [apiClient GET:@"/endpoint" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNotNil(response);
         XCTAssertNil(error);
 
@@ -185,7 +182,7 @@
         [expectation2 fulfill];
     }];
     XCTestExpectation *expectation3 = [self expectationWithDescription:@"POST request"];
-    [apiClient POST:@"" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+    [apiClient POST:@"/endpoint" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNotNil(response);
         XCTAssertNil(error);
 
@@ -198,89 +195,90 @@
 
 #pragma mark - Payment option categories
 
-- (void)testIsPayPalEnabled_whenEnabled_returnsTrue {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(YES) }];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertTrue(configuration.isPayPalEnabled);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsPayPalEnabled_whenDisabled_returnsFalse {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(NO) }];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertFalse(configuration.isPayPalEnabled);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsApplePayEnabled_whenEnabled_returnsTrue {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"applePay": @{ @"status": @"production" } }];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertTrue(configuration.isApplePayEnabled);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsApplePayEnabled_whenDisabled_returnsFalse {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"applePay": @{ @"status": @"off" } }];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertFalse(configuration.isApplePayEnabled);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsUnionPayEnabled_whenGatewayReturnsFalse_isFalse {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPayEnabled": @(NO) }];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertFalse(configuration.isUnionPayEnabled);
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:1 handler:nil];
-}
-
-- (void)testIsUnionPayEnabled_whenGatewayReturnsTrue_isTrue {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPay": @{@"enabled": @(YES) } }];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertTrue(configuration.isUnionPayEnabled);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:1 handler:nil];
-}
+// TODO: Remove these dependencies from BraintreeCoreTests
+//- (void)testIsPayPalEnabled_whenEnabled_returnsTrue {
+//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(YES) }];
+//
+//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+//        XCTAssertNil(error);
+//
+//        XCTAssertTrue(configuration.isPayPalEnabled);
+//        [expectation fulfill];
+//    }];
+//
+//    [self waitForExpectationsWithTimeout:5 handler:nil];
+//}
+//
+//- (void)testIsPayPalEnabled_whenDisabled_returnsFalse {
+//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(NO) }];
+//
+//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+//        XCTAssertNil(error);
+//
+//        XCTAssertFalse(configuration.isPayPalEnabled);
+//        [expectation fulfill];
+//    }];
+//
+//    [self waitForExpectationsWithTimeout:5 handler:nil];
+//}
+//
+//- (void)testIsApplePayEnabled_whenEnabled_returnsTrue {
+//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"applePay": @{ @"status": @"production" } }];
+//
+//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+//        XCTAssertNil(error);
+//
+//        XCTAssertTrue(configuration.isApplePayEnabled);
+//        [expectation fulfill];
+//    }];
+//
+//    [self waitForExpectationsWithTimeout:5 handler:nil];
+//}
+//
+//- (void)testIsApplePayEnabled_whenDisabled_returnsFalse {
+//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"applePay": @{ @"status": @"off" } }];
+//
+//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+//        XCTAssertNil(error);
+//
+//        XCTAssertFalse(configuration.isApplePayEnabled);
+//        [expectation fulfill];
+//    }];
+//
+//    [self waitForExpectationsWithTimeout:5 handler:nil];
+//}
+//
+//- (void)testIsUnionPayEnabled_whenGatewayReturnsFalse_isFalse {
+//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPayEnabled": @(NO) }];
+//
+//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+//        XCTAssertNil(error);
+//
+//        XCTAssertFalse(configuration.isUnionPayEnabled);
+//        [expectation fulfill];
+//    }];
+//
+//    [self waitForExpectationsWithTimeout:1 handler:nil];
+//}
+//
+//- (void)testIsUnionPayEnabled_whenGatewayReturnsTrue_isTrue {
+//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPay": @{@"enabled": @(YES) } }];
+//
+//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+//        XCTAssertNil(error);
+//
+//        XCTAssertTrue(configuration.isUnionPayEnabled);
+//        [expectation fulfill];
+//    }];
+//
+//    [self waitForExpectationsWithTimeout:1 handler:nil];
+//}
 
 #pragma mark - Analytics tests
 
@@ -316,11 +314,11 @@
 - (void)testPOST_whenUsingGateway_includesMetadata {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
-    BTFakeHTTP *mockHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *mockHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = mockHTTP;
-    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = stubConfigurationHTTP;
-    [stubConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
+    [stubConfigurationHTTP stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
 
     BTClientMetadata *metadata = apiClient.metadata;
 
@@ -338,11 +336,11 @@
 - (void)testPOST_whenUsingBraintreeAPI_doesNotIncludeMetadata {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
-    BTFakeAPIHTTP *mockAPIHTTP = [BTFakeAPIHTTP fakeHTTP];
+    FakeAPIHTTP *mockAPIHTTP = [FakeAPIHTTP fakeHTTP];
     apiClient.braintreeAPI = mockAPIHTTP;
-    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = stubConfigurationHTTP;
-    [stubConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
+    [stubConfigurationHTTP stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"POST callback"];
     [apiClient POST:@"/" parameters:@{} httpType:BTAPIClientHTTPTypeBraintreeAPI completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
@@ -356,11 +354,11 @@
 - (void)testPOST_whenUsingGraphQLAPI_includesMetadata {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
-    BTFakeGraphQLHTTP *mockGraphQLHTTP = [BTFakeGraphQLHTTP fakeHTTP];
+    FakeGraphQLHTTP *mockGraphQLHTTP = [FakeGraphQLHTTP fakeHTTP];
     apiClient.graphQL = mockGraphQLHTTP;
-    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = stubConfigurationHTTP;
-    [stubConfigurationHTTP stubRequest:@"GET"
+    [stubConfigurationHTTP stubRequestWithMethod:@"GET"
                             toEndpoint:@"/client_api/v1/configuration"
                            respondWith:@{
                                          @"graphQL": @{
@@ -384,16 +382,16 @@
 
 - (void)testGETCallback_returnFetchConfigErrors {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    BTFakeHTTP *fakeConfigurationHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
-    BTFakeHTTP *fakeHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
-    // Override apiClient.http so that requests don't fail
+
+    FakeHTTP *fakeConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = fakeConfigurationHTTP;
+    FakeHTTP *fakeHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = fakeHTTP;
 
     NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
                                            code:NSURLErrorCannotConnectToHost
                                        userInfo:nil];
-    [fakeConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
+    [fakeConfigurationHTTP stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"GET request"];
 
@@ -410,16 +408,15 @@
 
 - (void)testPOSTCallback_returnFetchConfigErrors {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    BTFakeHTTP *fakeConfigurationHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
-    BTFakeHTTP *fakeHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
-    // Override apiClient.http so that requests don't fail
+    FakeHTTP *fakeConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = fakeConfigurationHTTP;
+    FakeHTTP *fakeHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = fakeHTTP;
 
     NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
                                            code:NSURLErrorCannotConnectToHost
                                        userInfo:nil];
-    [fakeConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
+    [fakeConfigurationHTTP stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"GET request"];
 
@@ -458,10 +455,10 @@
 
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
+    FakeHTTP *fake = [FakeHTTP fakeHTTP];
     fake.cannedConfiguration = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
-    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: configurationDictionary statusCode:200];
+    [fake stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: configurationDictionary statusCode:200];
 
     apiClient.configurationHTTP = fake;
 

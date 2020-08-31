@@ -1,7 +1,6 @@
 import XCTest
 
 class BTPreferredPaymentMethodsResult_Tests: XCTestCase {
-    
     func testInitWithJSON_whenAPIDetectedPayPalPreferredTrue_setsPayPalPreferredToTrue() {
         let jsonString =
             """
