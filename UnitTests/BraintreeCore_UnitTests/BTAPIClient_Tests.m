@@ -13,20 +13,26 @@
 #import "BTSpecHelper.h"
 
 @interface StubBTClientMetadata : BTClientMetadata
+
 @property (nonatomic, assign) BTClientMetadataIntegrationType integration;
 @property (nonatomic, assign) BTClientMetadataSourceType source;
 @property (nonatomic, copy) NSString *sessionId;
+
 @end
 
 @implementation StubBTClientMetadata
+
 @synthesize integration = _integration;
 @synthesize source = _source;
 @synthesize sessionId = _sessionId;
+
 @end
 
 @interface BTFakeAnalyticsService : BTAnalyticsService
+
 @property (nonatomic, copy) NSString *lastEvent;
 @property (nonatomic, assign) BOOL didLastFlush;
+
 @end
 
 @implementation BTFakeAnalyticsService

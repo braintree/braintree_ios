@@ -1,0 +1,11 @@
+framework module PayPalDataCollector {
+    umbrella header "PayPalDataCollector.h"
+
+    export *
+    module * { export * }
+
+    explicit module Private {
+        header "PPDataCollector_Internal.h"
+    }
+}
+

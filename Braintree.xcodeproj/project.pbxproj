@@ -391,6 +391,15 @@
 		A948D6FD24FAC93100F4F178 /* BTVenmoDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F7DE61B6180A3005DA1B0 /* BTVenmoDriver_Tests.swift */; };
 		A948D70024FAC96A00F4F178 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		A948D70324FACF4E00F4F178 /* FakeHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = A948D70224FACF4E00F4F178 /* FakeHTTP.swift */; };
+		A95C410D24FAEF2100045045 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; platformFilter = ios; };
+		A95C411324FAEF5100045045 /* BTAuthenticationInsight_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */; };
+		A95C411424FAEF5100045045 /* BTCard_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */; };
+		A95C411524FAEF5100045045 /* BTCard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79033971B45C968004C8234 /* BTCard_Tests.swift */; };
+		A95C411624FAEF5100045045 /* BTCardClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */; };
+		A95C411724FAEF5100045045 /* BTCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */; };
+		A95C411824FAEF5100045045 /* BTThreeDSecureInfo_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0301A42E22E2286C008A26BD /* BTThreeDSecureInfo_Tests.swift */; };
+		A95C411C24FAF21B00045045 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
+		A95C411E24FAF53400045045 /* FakePPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95C411D24FAF53400045045 /* FakePPDataCollector.swift */; };
 		A96FE18524F752B400C464E5 /* BTPreferredPaymentMethodsResult_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E295FA239FF19000EAB00C /* BTPreferredPaymentMethodsResult_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A977CE4C24F820E2009D1A66 /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A977CE4E24F82206009D1A66 /* BTPreferredPaymentMethods_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E295FD239FF7C400EAB00C /* BTPreferredPaymentMethods_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -582,6 +591,20 @@
 			remoteInfo = BraintreeVenmo;
 		};
 		A948D6FE24FAC96500F4F178 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A903E1A524F9D34000C314E1;
+			remoteInfo = BraintreeTestShared;
+		};
+		A95C410E24FAEF2100045045 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
+			remoteInfo = BraintreeCard;
+		};
+		A95C411A24FAF21600045045 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -1187,8 +1210,13 @@
 		A948D6F424FAC8F900F4F178 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A948D70124FAC9B000F4F178 /* BraintreeVenmoTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeVenmoTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A948D70224FACF4E00F4F178 /* FakeHTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeHTTP.swift; sourceTree = "<group>"; };
+		A95C410824FAEF2100045045 /* BraintreeCardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeCardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A95C410C24FAEF2100045045 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A95C411924FAEFCC00045045 /* BraintreeCardTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeCardTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		A95C411D24FAF53400045045 /* FakePPDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakePPDataCollector.swift; sourceTree = "<group>"; };
 		A9A76CA624F9E92E0044EAEE /* TestClientTokenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClientTokenFactory.swift; sourceTree = "<group>"; };
 		A9C7457024F58C0100018961 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
+		A9E5C19924FD3BD100EE691F /* PayPalDataCollector.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = PayPalDataCollector.modulemap; sourceTree = "<group>"; };
 		B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+DataCollector.h"; sourceTree = "<group>"; };
 		B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "BTConfiguration+DataCollector.m"; path = "Public/BTConfiguration+DataCollector.m"; sourceTree = "<group>"; };
 		B6D950041EA0212C00BB42F2 /* BTAPIHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAPIHTTP.h; sourceTree = "<group>"; };
@@ -1373,6 +1401,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A95C410524FAEF2100045045 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A95C411C24FAF21B00045045 /* BraintreeTestShared.framework in Frameworks */,
+				A95C410D24FAEF2100045045 /* BraintreeCard.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1528,13 +1565,11 @@
 		16CD2E9D1B4077FC00E68495 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				806E0E5E236347EB00500DCA /* BraintreeCard_UnitTests */,
 				806E0E5F2363489200500DCA /* BraintreeCore_UnitTests */,
 				806E0E60236348B100500DCA /* BraintreeDataCollector_UnitTests */,
 				035A59D81EA5DE97002960C8 /* BraintreePaymentFlow_UnitTests */,
 				806E0E5D236345EF00500DCA /* BraintreePayPal_UnitTests */,
 				806E0E612363491F00500DCA /* BraintreeUnionPay_Tests */,
-				806E0E6223634A1800500DCA /* BraintreeVenmo_UnitTests */,
 				A7C8230F1B4DAAFB009D45D6 /* Helpers */,
 				16CD2EA01B4077FC00E68495 /* Info.plist */,
 				A7B462431C3C90DB00048423 /* PayPalOneTouch */,
@@ -1737,19 +1772,6 @@
 			path = BraintreePayPal_UnitTests;
 			sourceTree = "<group>";
 		};
-		806E0E5E236347EB00500DCA /* BraintreeCard_UnitTests */ = {
-			isa = PBXGroup;
-			children = (
-				0301A42E22E2286C008A26BD /* BTThreeDSecureInfo_Tests.swift */,
-				42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */,
-				A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */,
-				A79033971B45C968004C8234 /* BTCard_Tests.swift */,
-				A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */,
-				A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */,
-			);
-			path = BraintreeCard_UnitTests;
-			sourceTree = "<group>";
-		};
 		806E0E5F2363489200500DCA /* BraintreeCore_UnitTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1794,13 +1816,6 @@
 				41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */,
 			);
 			path = BraintreeUnionPay_Tests;
-			sourceTree = "<group>";
-		};
-		806E0E6223634A1800500DCA /* BraintreeVenmo_UnitTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = BraintreeVenmo_UnitTests;
 			sourceTree = "<group>";
 		};
 		A50C3A8C1C19E4F300612D90 /* PayPalOneTouch */ = {
@@ -1898,6 +1913,7 @@
 			isa = PBXGroup;
 			children = (
 				A50C3B631C1A288700612D90 /* Info.plist */,
+				A9E5C19924FD3BD100EE691F /* PayPalDataCollector.modulemap */,
 				A79BB5BE1CE501D500CC6F0E /* PPDataCollector_Internal.h */,
 				A7B4635F1C3DBEFE00048423 /* PPDataCollector.m */,
 				A7B4635C1C3DA7DF00048423 /* Public */,
@@ -1924,6 +1940,7 @@
 				A7C889751B5EF5DE007A0E9C /* BraintreeApplePay */,
 				A948D6DD24FAC6C000F4F178 /* BraintreeApplePayTests */,
 				A7C889911B5F043B007A0E9C /* BraintreeCard */,
+				A95C410924FAEF2100045045 /* BraintreeCardTests */,
 				2DE12F0A1B59BE0100EA1BCF /* BraintreeCore */,
 				A76D7C011BB1CAB00000FA6A /* BraintreeDataCollector */,
 				038C7FBB1EA1648900241ABE /* BraintreePaymentFlow */,
@@ -1961,6 +1978,7 @@
 				A948D6C624FAB79B00F4F178 /* BraintreeAmericanExpressTests.xctest */,
 				A948D6DC24FAC6C000F4F178 /* BraintreeApplePayTests.xctest */,
 				A948D6F024FAC8F900F4F178 /* BraintreeVenmoTests.xctest */,
+				A95C410824FAEF2100045045 /* BraintreeCardTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2192,6 +2210,7 @@
 				42ED470123A3E9DB00B889A8 /* FakeBundle.swift */,
 				42ED470323A3E9F600B889A8 /* FakeDevice.swift */,
 				A948D70224FACF4E00F4F178 /* FakeHTTP.swift */,
+				A95C411D24FAF53400045045 /* FakePPDataCollector.swift */,
 				A903E1A924F9D34000C314E1 /* Info.plist */,
 				A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */,
 				A7D6746C1B84073300ED6C00 /* MockDelegates.swift */,
@@ -2230,6 +2249,21 @@
 				A948D6F424FAC8F900F4F178 /* Info.plist */,
 			);
 			path = BraintreeVenmoTests;
+			sourceTree = "<group>";
+		};
+		A95C410924FAEF2100045045 /* BraintreeCardTests */ = {
+			isa = PBXGroup;
+			children = (
+				A95C411924FAEFCC00045045 /* BraintreeCardTests-Bridging-Header.h */,
+				42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */,
+				A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */,
+				A79033971B45C968004C8234 /* BTCard_Tests.swift */,
+				A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */,
+				A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */,
+				0301A42E22E2286C008A26BD /* BTThreeDSecureInfo_Tests.swift */,
+				A95C410C24FAEF2100045045 /* Info.plist */,
+			);
+			path = BraintreeCardTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2857,6 +2891,25 @@
 			productReference = A948D6F024FAC8F900F4F178 /* BraintreeVenmoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A95C410724FAEF2100045045 /* BraintreeCardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A95C411024FAEF2100045045 /* Build configuration list for PBXNativeTarget "BraintreeCardTests" */;
+			buildPhases = (
+				A95C410424FAEF2100045045 /* Sources */,
+				A95C410524FAEF2100045045 /* Frameworks */,
+				A95C410624FAEF2100045045 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A95C411B24FAF21600045045 /* PBXTargetDependency */,
+				A95C410F24FAEF2100045045 /* PBXTargetDependency */,
+			);
+			name = BraintreeCardTests;
+			productName = BraintreeCardTests;
+			productReference = A95C410824FAEF2100045045 /* BraintreeCardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2919,6 +2972,9 @@
 					A948D6EF24FAC8F900F4F178 = {
 						CreatedOnToolsVersion = 12.0;
 					};
+					A95C410724FAEF2100045045 = {
+						CreatedOnToolsVersion = 12.0;
+					};
 				};
 			};
 			buildConfigurationList = A75DA347192138F000D997A2 /* Build configuration list for PBXProject "Braintree" */;
@@ -2941,6 +2997,7 @@
 				A7C889731B5EF5DE007A0E9C /* BraintreeApplePay */,
 				A948D6DB24FAC6C000F4F178 /* BraintreeApplePayTests */,
 				A7C8898F1B5F043B007A0E9C /* BraintreeCard */,
+				A95C410724FAEF2100045045 /* BraintreeCardTests */,
 				2DE12F081B59BE0100EA1BCF /* BraintreeCore */,
 				A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */,
 				03502C831E9C0A1700F15EE6 /* BraintreePaymentFlow */,
@@ -3093,6 +3150,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A948D6EE24FAC8F900F4F178 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A95C410624FAEF2100045045 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3507,6 +3571,7 @@
 				A948D70324FACF4E00F4F178 /* FakeHTTP.swift in Sources */,
 				A903E1B324F9D35500C314E1 /* FakeDevice.swift in Sources */,
 				A903E1B424F9D35500C314E1 /* MockAPIClient.swift in Sources */,
+				A95C411E24FAF53400045045 /* FakePPDataCollector.swift in Sources */,
 				A903E1B124F9D35500C314E1 /* FakeApplication.swift in Sources */,
 				A903E1B224F9D35500C314E1 /* MockDelegates.swift in Sources */,
 				A9A76CA724F9E92E0044EAEE /* TestClientTokenFactory.swift in Sources */,
@@ -3537,6 +3602,19 @@
 				A948D6FB24FAC93100F4F178 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */,
 				A948D6FC24FAC93100F4F178 /* BTVenmoAppSwitchRequestURLSpec.m in Sources */,
 				A948D6FD24FAC93100F4F178 /* BTVenmoDriver_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A95C410424FAEF2100045045 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A95C411324FAEF5100045045 /* BTAuthenticationInsight_Tests.swift in Sources */,
+				A95C411424FAEF5100045045 /* BTCard_Internal_Tests.m in Sources */,
+				A95C411524FAEF5100045045 /* BTCard_Tests.swift in Sources */,
+				A95C411624FAEF5100045045 /* BTCardClient_Tests.swift in Sources */,
+				A95C411724FAEF5100045045 /* BTCardNonce_Tests.swift in Sources */,
+				A95C411824FAEF5100045045 /* BTThreeDSecureInfo_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3674,6 +3752,17 @@
 			isa = PBXTargetDependency;
 			target = A903E1A524F9D34000C314E1 /* BraintreeTestShared */;
 			targetProxy = A948D6FE24FAC96500F4F178 /* PBXContainerItemProxy */;
+		};
+		A95C410F24FAEF2100045045 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
+			targetProxy = A95C410E24FAEF2100045045 /* PBXContainerItemProxy */;
+		};
+		A95C411B24FAF21600045045 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A903E1A524F9D34000C314E1 /* BraintreeTestShared */;
+			targetProxy = A95C411A24FAF21600045045 /* PBXContainerItemProxy */;
 		};
 		A981D35824EAE15200530DF8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5278,6 +5367,7 @@
 					"@loader_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MODULEMAP_FILE = "$(SRCROOT)/BraintreePayPal/PayPalDataCollector/PayPalDataCollector.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5337,6 +5427,7 @@
 					"@loader_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MODULEMAP_FILE = "$(SRCROOT)/BraintreePayPal/PayPalDataCollector/PayPalDataCollector.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5943,6 +6034,92 @@
 			};
 			name = Release;
 		};
+		A95C411124FAEF2100045045 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BraintreeCardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreeCardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "BraintreeCardTests/BraintreeCardTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A95C411224FAEF2100045045 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 43253H4X22;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BraintreeCardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreeCardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BraintreeCardTests/BraintreeCardTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -6113,6 +6290,15 @@
 			buildConfigurations = (
 				A948D6F924FAC8F900F4F178 /* Debug */,
 				A948D6FA24FAC8F900F4F178 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A95C411024FAEF2100045045 /* Build configuration list for PBXNativeTarget "BraintreeCardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A95C411124FAEF2100045045 /* Debug */,
+				A95C411224FAEF2100045045 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

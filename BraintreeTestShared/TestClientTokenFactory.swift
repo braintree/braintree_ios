@@ -8,7 +8,7 @@ public class TestClientTokenFactory {
         return token(withVersion: version, overrides: Dictionary.init())
     }
 
-    static func token(withVersion version: Int, overrides: Dictionary<String, Any?>) -> String {
+    public static func token(withVersion version: Int, overrides: Dictionary<String, Any?>) -> String {
         let base64Encoded = (version == 1) ? false : true;
 
         let configurationURL = dataURL(withJSONObject: configuration(withOverrides: overrides))

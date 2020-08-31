@@ -1,7 +1,6 @@
 import XCTest
 
 class BTCardNonce_Tests: XCTestCase {
-
     func testCardNonceWithJSON_createsCardWithExpectedValues() {
         let cardNonce = BTCardNonce(json: BTJSON(value: [
             "description": "Visa ending in 11",
@@ -31,7 +30,7 @@ class BTCardNonce_Tests: XCTestCase {
             "authenticationInsight": [
                 "regulationEnvironment": "UNREGULATED"
             ]
-            ]))
+        ]))
 
         XCTAssertNotNil(cardNonce.threeDSecureInfo)
         XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShiftPossible)
@@ -60,7 +59,7 @@ class BTCardNonce_Tests: XCTestCase {
     func testCardWithJSON_whenAuthenticationInsightIsNotPresent_setsAuthenticationInsightToNil() {
         let cardNonce = BTCardNonce(json: BTJSON(value: [
             "nonce": "fake-nonce"
-            ]))
+        ]))
         XCTAssertNil(cardNonce.authenticationInsight)
     }
     
@@ -84,7 +83,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "productId": "123"
             ],
             "nonce": "fake-nonce",
-            ]))
+        ]))
 
         XCTAssertNotNil(cardNonce.threeDSecureInfo)
         XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShiftPossible)
@@ -116,7 +115,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "lastFour": "1111"
             ],
             "nonce": "fake-nonce",
-            ]))
+        ]))
 
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
@@ -218,7 +217,7 @@ class BTCardNonce_Tests: XCTestCase {
             "authenticationInsight": [
                 "customerAuthenticationRegulationEnvironment": "UNREGULATED"
             ]
-            ]))
+        ]))
 
         XCTAssertEqual(cardNonce.localizedDescription, "ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
@@ -243,7 +242,7 @@ class BTCardNonce_Tests: XCTestCase {
     func testCardNonceWithGraphQLJSON_whenAuthenticationInsightIsNotPresent_setsAuthenticationInsightToNil() {
         let cardNonce = BTCardNonce(graphQLJSON: BTJSON(value: [
             "token": "fake-nonce"
-            ]))
+        ]))
         
         XCTAssertNil(cardNonce.authenticationInsight)
     }
@@ -256,7 +255,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "brand": "vIsA",
                 "last4": "1111"
             ]
-            ]))
+        ]))
 
         XCTAssertEqual(cardNonce.localizedDescription, "ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
@@ -283,7 +282,7 @@ class BTCardNonce_Tests: XCTestCase {
             BTCardNetwork.hipercard,
             BTCardNetwork.ukMaestro,
             BTCardNetwork.visa,
-            ]
+        ]
         let cardTypeJSONValues = [
             "some unrecognized type",
             "american express",
@@ -300,7 +299,7 @@ class BTCardNonce_Tests: XCTestCase {
             "hipercard",
             "uk maestro",
             "visa",
-            ]
+        ]
         let cardTypes = [
             "Unknown",
             "AMEX",
@@ -317,7 +316,7 @@ class BTCardNonce_Tests: XCTestCase {
             "Hipercard",
             "UKMaestro",
             "Visa",
-            ]
+        ]
         for i in 0..<cardNetworks.count {
             let jsonValue = [
                 "token": "fake-nonce",
@@ -341,7 +340,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "last4": nil,
                 "binData": nil
             ]
-            ]))
+        ]))
 
         XCTAssertEqual(cardNonce.localizedDescription, "")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.unknown)

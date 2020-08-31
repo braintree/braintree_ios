@@ -2,7 +2,6 @@ import XCTest
 
 // See also BTCard_Internal_Tests
 class BTCard_Tests: XCTestCase {
-    
     // MARK: - Initialization
     
     func testInitialization_savesStandardProperties() {

@@ -1,7 +1,8 @@
 import XCTest
+import BraintreeTestShared
+import BraintreeCore.Private
 
 class BTCardClient_Tests: XCTestCase {
-
     // MARK: - ClientAPI
     
     func testTokenization_postsCardDataToClientAPI() {
@@ -9,8 +10,8 @@ class BTCardClient_Tests: XCTestCase {
         let fakeHTTP = FakeHTTP.fakeHTTP()
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = fakeHTTP
-        let mockConfigurationHTTP = BTFakeHTTP()
-        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
+        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
 
         let cardClient = BTCardClient(apiClient: apiClient)
@@ -21,15 +22,17 @@ class BTCardClient_Tests: XCTestCase {
         card.merchantAccountId = "some merchant account id"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            guard let lastRequest = fakeHTTP.lastRequest else {
+            guard let lastRequestEndpoint = fakeHTTP.lastRequestEndpoint,
+                  let lastRequestMethod = fakeHTTP.lastRequestMethod,
+                  let lastRequestParameters = fakeHTTP.lastRequestParameters else {
                 XCTFail()
                 return
             }
             
-            XCTAssertEqual(lastRequest.endpoint, "v1/payment_methods/credit_cards")
-            XCTAssertEqual(lastRequest.method, "POST")
+            XCTAssertEqual(lastRequestEndpoint, "v1/payment_methods/credit_cards")
+            XCTAssertEqual(lastRequestMethod, "POST")
 
-            let params = lastRequest.parameters
+            let params = lastRequestParameters
             XCTAssertEqual(params["authenticationInsight"] as? Bool, true)
             XCTAssertEqual(params["merchantAccountId"] as? String, "some merchant account id")
             
@@ -54,8 +57,8 @@ class BTCardClient_Tests: XCTestCase {
         let fakeHTTP = FakeHTTP.fakeHTTP()
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = fakeHTTP
-        let mockConfigurationHTTP = BTFakeHTTP()
-        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
+        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
         
         let cardClient = BTCardClient(apiClient: apiClient)
@@ -64,7 +67,7 @@ class BTCardClient_Tests: XCTestCase {
         card.authenticationInsightRequested = false
         
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            guard let params = fakeHTTP.lastRequest?.parameters else {
+            guard let params = fakeHTTP.lastRequestParameters else {
                 XCTFail()
                 return
             }
@@ -81,9 +84,23 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_whenAPIClientSucceeds_returnsTokenizedCard() {
         let expectation = self.expectation(description: "Tokenize Card")
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        apiClient.http = FakeHTTP.fakeHTTP()
-        let mockConfigurationHTTP = BTFakeHTTP()
-        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        let mockAPIClientHTTP = FakeHTTP.fakeHTTP()
+        let mockTokenizeResponse = [
+            "creditCards": [
+                [
+                    "nonce": "fake-nonce",
+                    "description": "Visa ending in 11",
+                    "details": [
+                        "lastTwo" : "11",
+                        "cardType": "visa"]
+                ]
+            ]
+        ]
+        mockAPIClientHTTP.stubRequest(withMethod: "POST", toEndpoint: "v1/payment_methods/credit_cards", respondWith: mockTokenizeResponse, statusCode: 202)
+        apiClient.http = mockAPIClientHTTP
+
+        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
+        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
 
         let cardClient = BTCardClient(apiClient: apiClient)
@@ -96,7 +113,7 @@ class BTCardClient_Tests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(tokenizedCard.nonce, FakeHTTP.fakeNonce)
+            XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
             XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
             XCTAssertEqual(tokenizedCard.lastTwo!, "11")
             XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.visa)
@@ -109,9 +126,13 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_whenAPIClientFails_returnsError() {
         let expectation = self.expectation(description: "Tokenize Card")
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        apiClient.http = ErrorHTTP.fakeHTTP()
-        let mockConfigurationHTTP = BTFakeHTTP()
-        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        let apiErrorHTTP = FakeHTTP.fakeHTTP()
+        let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
+        apiErrorHTTP.stubRequest(withMethod: "POST", toEndpoint: "v1/payment_methods/credit_cards", respondWithError: mockError)
+        apiClient.http = apiErrorHTTP
+
+        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
+        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockConfigurationHTTP
 
         let cardClient = BTCardClient(apiClient: apiClient)
@@ -120,7 +141,7 @@ class BTCardClient_Tests: XCTestCase {
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
-            XCTAssertEqual(error! as NSError, ErrorHTTP.error)
+            XCTAssertEqual(error! as NSError, mockError)
             expectation.fulfill()
         }
 
@@ -128,7 +149,7 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testTokenization_whenTokenizationEndpointReturns422_callCompletionWithValidationError() {
-        let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
+        let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         let stubJSONResponse = BTJSON(value: [
             "error" : [
                 "message" : "Credit card is invalid"
@@ -145,11 +166,11 @@ class BTCardClient_Tests: XCTestCase {
                     ]
                 ]
             ]
-            ])
+        ])
         let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
             BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTHTTPJSONResponseBodyKey: stubJSONResponse
-            ])
+        ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: stubAPIClient)
         let request = BTCardRequest()
@@ -177,7 +198,7 @@ class BTCardClient_Tests: XCTestCase {
     }
     
     func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
-        let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
+        let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: nil)
         let cardClient = BTCardClient(apiClient: stubAPIClient)
         let request = BTCardRequest()
@@ -242,7 +263,7 @@ class BTCardClient_Tests: XCTestCase {
                 "collectDeviceData": true
             ],
             "merchantId": "fake-merchant"
-            ])
+        ])
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "creditCards": [
@@ -252,7 +273,7 @@ class BTCardClient_Tests: XCTestCase {
                     "details": [
                         "lastTwo" : "11",
                         "cardType": "visa"] ] ]
-            ])
+        ])
 
         FakePPDataCollector.resetState()
         BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
@@ -276,18 +297,18 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testCollectsDeviceData_whenEnabled_withCorrectParams_withCustomer() {
-        let clientTokenString = BTTestClientTokenFactory.token(withVersion: 2, overrides: [
+        let clientTokenString = TestClientTokenFactory.token(withVersion: 2, overrides: [
             BTClientTokenKeyConfigURL: "https://api.example.com/client_api/v1/configuration",
             BTClientTokenKeyAuthorizationFingerprint: "an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=fake-customer-123&public_key=integration_public_key"
-            ])
+        ])
 
-        let mockAPIClient = MockAPIClient(authorization: clientTokenString!)!
+        let mockAPIClient = MockAPIClient(authorization: clientTokenString)!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "creditCards": [
                 "collectDeviceData": true
             ],
             "merchantId": "fake-merchant"
-            ])
+        ])
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "creditCards": [
@@ -297,7 +318,7 @@ class BTCardClient_Tests: XCTestCase {
                     "details": [
                         "lastTwo" : "11",
                         "cardType": "visa"] ] ]
-            ])
+        ])
 
         FakePPDataCollector.resetState()
         BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
@@ -327,7 +348,7 @@ class BTCardClient_Tests: XCTestCase {
                 "collectDeviceData": false
             ],
             "merchantId": "fake-merchant"
-            ])
+        ])
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "creditCards": [
@@ -337,7 +358,7 @@ class BTCardClient_Tests: XCTestCase {
                     "details": [
                         "lastTwo" : "11",
                         "cardType": "visa"] ] ]
-            ])
+        ])
 
         FakePPDataCollector.resetState()
         BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
@@ -372,11 +393,11 @@ class BTCardClient_Tests: XCTestCase {
                     ]
                 ]
             ]
-            ])
+        ])
         let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
             BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTHTTPJSONResponseBodyKey: stubJSONResponse
-            ])
+        ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
@@ -401,7 +422,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
@@ -427,7 +448,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
@@ -460,7 +481,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "data": [
@@ -485,7 +506,7 @@ class BTCardClient_Tests: XCTestCase {
             ],
             "extensions": [
             ]
-            ])
+        ])
 
         FakePPDataCollector.resetState()
         BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
@@ -517,12 +538,12 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testCollectsDeviceData_whenEnabledWithGraphQL_withCustomer() {
-        let clientTokenString = BTTestClientTokenFactory.token(withVersion: 2, overrides: [
+        let clientTokenString = TestClientTokenFactory.token(withVersion: 2, overrides: [
             BTClientTokenKeyConfigURL: "https://api.example.com/client_api/v1/configuration",
             BTClientTokenKeyAuthorizationFingerprint: "an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=fake-customer-123&public_key=integration_public_key"
-            ])
+        ])
 
-        let mockAPIClient = MockAPIClient(authorization: clientTokenString!)!
+        let mockAPIClient = MockAPIClient(authorization: clientTokenString)!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "creditCards": [
                 "collectDeviceData": true
@@ -532,7 +553,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "data": [
@@ -557,7 +578,7 @@ class BTCardClient_Tests: XCTestCase {
             ],
             "extensions": [
             ]
-            ])
+        ])
 
         FakePPDataCollector.resetState()
         BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
@@ -599,7 +620,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "data": [
@@ -624,7 +645,7 @@ class BTCardClient_Tests: XCTestCase {
             ],
             "extensions": [
             ]
-            ])
+        ])
 
         FakePPDataCollector.resetState()
         BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
@@ -652,7 +673,7 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_whenGraphQLIsDisabled_postsCardDataToGatewayAPI() {
         let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
-            ])
+        ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
@@ -675,7 +696,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["do_not_tokenize_credit_cards"]
             ]
-            ])
+        ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
@@ -699,7 +720,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
@@ -792,7 +813,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
         mockApiClient.cannedResponseBody = BTJSON(value: [
             "data": [
                 "tokenizeCreditCard" : [
@@ -815,7 +836,7 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ],
             "extensions": []
-            ])
+        ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
@@ -838,7 +859,7 @@ class BTCardClient_Tests: XCTestCase {
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
             ]
-            ])
+        ])
         let stubJSONResponse = BTJSON(value: [
             "error" : [
                 "message" : "Credit card is invalid"
@@ -855,11 +876,11 @@ class BTCardClient_Tests: XCTestCase {
                     ]
                 ]
             ]
-            ])
+        ])
         let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
             BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTHTTPJSONResponseBodyKey: stubJSONResponse
-            ])
+        ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
@@ -872,63 +893,5 @@ class BTCardClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.card.graphql.tokenization.failure"))
-    }
-}
-
-// MARK: - Helpers
-
-class FakeHTTP : BTHTTP {
-    struct Request {
-        let endpoint : String
-        let method : String
-        let parameters : [AnyHashable: Any]
-    }
-
-    static let fakeNonce = "fake-nonce"
-    var lastRequest : Request?
-
-    class func fakeHTTP() -> FakeHTTP {
-        return FakeHTTP(baseURL: URL(string: "fake://fake")!, authorizationFingerprint: "")
-    }
-
-    override func post(_ path: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        self.lastRequest = Request(endpoint: path, method: "POST", parameters: parameters!)
-
-        let response  = HTTPURLResponse(url: URL(string: path)!, statusCode: 202, httpVersion: nil, headerFields: nil)!
-
-        guard let completionBlock = completionBlock else {
-            return
-        }
-        completionBlock(BTJSON(value: [
-            "creditCards": [
-                [
-                    "nonce": FakeHTTP.fakeNonce,
-                    "description": "Visa ending in 11",
-                    "details": [
-                        "lastTwo" : "11",
-                        "cardType": "visa"] ] ] ]), response, nil)
-    }
-}
-
-class ErrorHTTP : BTHTTP {
-    static let error = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
-
-    class func fakeHTTP() -> ErrorHTTP {
-        let fakeURL = URL(string: "fake://fake")
-        return ErrorHTTP(baseURL: fakeURL!, authorizationFingerprint: "")
-    }
-    
-    override func get(_ path: String, parameters: [String : String]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        guard let completionBlock = completionBlock else {
-            return
-        }
-        completionBlock(nil, nil, ErrorHTTP.error)
-    }
-
-    override func post(_ path: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        guard let completionBlock = completionBlock else {
-            return
-        }
-        completionBlock(nil, nil, ErrorHTTP.error)
     }
 }

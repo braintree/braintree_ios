@@ -8,6 +8,7 @@
 #import "PPOTSwitchRequest.h"
 
 #import <PayPalUtils/PayPalUtils.h>
+#import <PayPalDataCollector/PayPalDataCollector.h>
 #import <PayPalDataCollector/PPDataCollector_Internal.h>
 
 @implementation PPOTSwitchRequest

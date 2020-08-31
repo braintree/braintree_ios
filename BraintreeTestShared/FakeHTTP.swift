@@ -4,9 +4,9 @@ import BraintreeCore.Private
 public class FakeHTTP: BTHTTP {
     var GETRequestCount: Int = 0
     var POSTRequestCount: Int = 0
-    var lastRequestEndpoint: String?
-    var lastRequestMethod: String?
-    var lastRequestParameters: Dictionary<AnyHashable, Any>?
+    public var lastRequestEndpoint: String?
+    public var lastRequestMethod: String?
+    public var lastRequestParameters: Dictionary<AnyHashable, Any>?
     var stubMethod: String?
     var stubEndpoint: String?
     public var cannedResponse: BTJSON?
@@ -19,7 +19,7 @@ public class FakeHTTP: BTHTTP {
     }
 
     public static func fakeHTTP() -> FakeHTTP {
-        return self.init(baseURL: URL.init(string: "")!)
+        return self.init(baseURL: URL.init(string: "http://fake.com")!)
     }
 
     public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWith response: Any, statusCode: Int) {
