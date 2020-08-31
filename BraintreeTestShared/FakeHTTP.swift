@@ -12,7 +12,7 @@ public class FakeHTTP: BTHTTP {
     public var cannedResponse: BTJSON?
     public var cannedConfiguration: BTJSON?
     public var cannedStatusCode: Int = 0
-    var cannedError: Error?
+    public var cannedError: Error?
 
     required override init(baseURL: URL) {
         super.init(baseURL: baseURL)
