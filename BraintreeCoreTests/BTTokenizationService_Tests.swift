@@ -1,6 +1,5 @@
-import BraintreeTestShared
 import XCTest
-import SafariServices
+import BraintreeTestShared
 
 class BTTokenizationService_Tests: XCTestCase {
     var tokenizationService : BTTokenizationService!
@@ -9,7 +8,7 @@ class BTTokenizationService_Tests: XCTestCase {
         super.setUp()
         tokenizationService = BTTokenizationService()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
@@ -39,7 +38,7 @@ class BTTokenizationService_Tests: XCTestCase {
         }
 
         tokenizationService.tokenizeType("MyType", options: nil, with: BTAPIClient(authorization: "development_testing_integration_merchant_id")!) { _,_  -> Void in
-        //nada
+            //nada
         }
 
         waitForExpectations(timeout: 2, handler: nil)
@@ -70,78 +69,4 @@ class BTTokenizationService_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler:nil)
     }
-
-    // MARK: - Payment-specific tests
-    //TODO: Remove these dependencies from BraintreeCoreTests
-    func testSingleton_hasExpectedTypesAvailable() {
-        let sharedService = BTTokenizationService.shared()
-
-        XCTAssertTrue(sharedService.isTypeAvailable("PayPal"))
-//        XCTAssertTrue(sharedService.isTypeAvailable("Venmo"))
-//        XCTAssertTrue(sharedService.isTypeAvailable("Card"))
-    }
-
-//    func testSingleton_canTokenizeCards() {
-//        let sharedService = BTTokenizationService.shared()
-//        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2020", cvv: "123")
-//        let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
-//        stubAPIClient.cannedResponseBody = BTJSON(value: [
-//            "creditCards": [
-//                [
-//                    "nonce": "a-nonce",
-//                    "description": "A card"
-//                ]
-//            ]
-//        ])
-//
-//        let expectation = self.expectation(description: "Card is tokenized")
-//        sharedService.tokenizeType("Card", options: card.parameters() as? [String : AnyObject], with: stubAPIClient) { (cardNonce, error) -> Void in
-//            XCTAssertEqual(cardNonce?.nonce, "a-nonce")
-//            XCTAssertNil(error)
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2, handler: nil)
-//    }
-
-    // This test only verifies that SFSafariViewController is presented
-    func testSingleton_canAuthorizePayPalThroughSFSafariViewController() {
-        if #available(iOS 11.0, *) {
-            return
-        }
-        let sharedService = BTTokenizationService.shared()
-        let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
-        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "paypalEnabled": true,
-            "paypal": [
-                "environment": "offline",
-                "privacyUrl": "",
-                "userAgreementUrl": "",
-            ] ])
-        let mockDelegate = MockViewControllerPresentationDelegate()
-        BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
-
-        sharedService.tokenizeType("PayPal", options: [BTTokenizationServiceViewPresentingDelegateOption: mockDelegate], with: stubAPIClient) { _,_  -> Void in }
-
-        XCTAssertTrue(mockDelegate.lastViewController is SFSafariViewController)
-    }
-
-//    func testSingleton_canAuthorizeVenmo() {
-//        let sharedService = BTTokenizationService.shared()
-//        BTOCMockHelper().stubApplicationCanOpenURL()
-//        BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
-//        let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
-//        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-//            "payWithVenmo": [
-//                "environment": "sandbox",
-//                "merchantId": "stubmerchantid",
-//                "accessToken": "stubacesstoken"
-//            ],
-//        ])
-//        let mockDelegate = MockAppSwitchDelegate(willPerform: expectation(description: "Will authorize Venmo Account"), didPerform: nil)
-//
-//        sharedService.tokenizeType("Venmo", options: [BTTokenizationServiceAppSwitchDelegateOption: mockDelegate], with: stubAPIClient) { _,_  -> Void in }
-//
-//        waitForExpectations(timeout: 2, handler: nil)
-//    }
 }
