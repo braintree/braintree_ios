@@ -1,13 +1,8 @@
+#import "BTAnalyticsService.h"
+#import "BTAPIClient_Internal.h"
 @import BraintreeCore;
 @import BraintreeTestShared;
 @import XCTest;
-#import "BTAnalyticsService.h"
-#import "BTAPIClient_Internal.h"
-// TODO: Remove these dependencies from BraintreeCoreTests
-//#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
-//#import <BraintreePayPal/BTConfiguration+PayPal.h>
-//#import <BraintreeVenmo/BTConfiguration+Venmo.h>
-//#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 
 @interface StubBTClientMetadata : BTClientMetadata
 
@@ -89,14 +84,17 @@
 - (void)testAPIClient_canGetRemoteConfiguration {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"test": @YES }];
-    FakeHTTP *mockConfigurationHTTP = (FakeHTTP *)apiClient.configurationHTTP;
-    mockConfigurationHTTP.GETRequestCount = 0;
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
+    FakeHTTP *fakeConfigurationHTTP = [FakeHTTP fakeHTTP];
+    fakeConfigurationHTTP.cannedConfiguration = [[BTJSON alloc] initWithValue:@{ @"test": @YES }];
+    fakeConfigurationHTTP.cannedStatusCode = 200;
+    apiClient.configurationHTTP = fakeConfigurationHTTP;
+
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertNotNil(configuration);
         XCTAssertNil(error);
 
-        XCTAssertGreaterThanOrEqual(mockConfigurationHTTP.GETRequestCount, 1);
+        XCTAssertGreaterThanOrEqual(fakeConfigurationHTTP.GETRequestCount, 1);
         XCTAssertTrue([configuration.json[@"test"] isTrue]);
         [expectation fulfill];
     }];
@@ -192,93 +190,6 @@
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
-
-#pragma mark - Payment option categories
-
-// TODO: Remove these dependencies from BraintreeCoreTests
-//- (void)testIsPayPalEnabled_whenEnabled_returnsTrue {
-//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(YES) }];
-//
-//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-//        XCTAssertNil(error);
-//
-//        XCTAssertTrue(configuration.isPayPalEnabled);
-//        [expectation fulfill];
-//    }];
-//
-//    [self waitForExpectationsWithTimeout:5 handler:nil];
-//}
-//
-//- (void)testIsPayPalEnabled_whenDisabled_returnsFalse {
-//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(NO) }];
-//
-//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-//        XCTAssertNil(error);
-//
-//        XCTAssertFalse(configuration.isPayPalEnabled);
-//        [expectation fulfill];
-//    }];
-//
-//    [self waitForExpectationsWithTimeout:5 handler:nil];
-//}
-//
-//- (void)testIsApplePayEnabled_whenEnabled_returnsTrue {
-//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"applePay": @{ @"status": @"production" } }];
-//
-//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-//        XCTAssertNil(error);
-//
-//        XCTAssertTrue(configuration.isApplePayEnabled);
-//        [expectation fulfill];
-//    }];
-//
-//    [self waitForExpectationsWithTimeout:5 handler:nil];
-//}
-//
-//- (void)testIsApplePayEnabled_whenDisabled_returnsFalse {
-//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"applePay": @{ @"status": @"off" } }];
-//
-//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-//        XCTAssertNil(error);
-//
-//        XCTAssertFalse(configuration.isApplePayEnabled);
-//        [expectation fulfill];
-//    }];
-//
-//    [self waitForExpectationsWithTimeout:5 handler:nil];
-//}
-//
-//- (void)testIsUnionPayEnabled_whenGatewayReturnsFalse_isFalse {
-//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPayEnabled": @(NO) }];
-//
-//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-//        XCTAssertNil(error);
-//
-//        XCTAssertFalse(configuration.isUnionPayEnabled);
-//        [expectation fulfill];
-//    }];
-//
-//    [self waitForExpectationsWithTimeout:1 handler:nil];
-//}
-//
-//- (void)testIsUnionPayEnabled_whenGatewayReturnsTrue_isTrue {
-//    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPay": @{@"enabled": @(YES) } }];
-//
-//    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-//    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-//        XCTAssertNil(error);
-//
-//        XCTAssertTrue(configuration.isUnionPayEnabled);
-//        [expectation fulfill];
-//    }];
-//
-//    [self waitForExpectationsWithTimeout:1 handler:nil];
-//}
 
 #pragma mark - Analytics tests
 
@@ -449,20 +360,6 @@
 - (void)testGraphQLURLForEnvironment_returnsProductionURL_asDefault {
     NSURL *defaultURL = [BTAPIClient graphQLURLForEnvironment:@"unknown"];
     XCTAssertEqualObjects(defaultURL.absoluteString, @"https://payments.braintree-api.com/graphql");
-}
-
-#pragma mark - Helpers
-
-- (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    FakeHTTP *fake = [FakeHTTP fakeHTTP];
-    fake.cannedConfiguration = [[BTJSON alloc] initWithValue:configurationDictionary];
-    fake.cannedStatusCode = 200;
-    [fake stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: configurationDictionary statusCode:200];
-
-    apiClient.configurationHTTP = fake;
-
-    return apiClient;
 }
 
 @end

@@ -207,25 +207,13 @@ class BTAPIClient_SwiftTests: XCTestCase {
             XCTAssertNil(error)
             XCTAssertEqual(paymentMethodNonces.count, 2)
 
-            // TODO: Find a way do do this test without a dependency on Card and PayPal libraries
-//            guard let cardNonce = paymentMethodNonces[0] as? BTCardNonce else {
-//                XCTFail()
-//                return
-//            }
-//            guard let paypalNonce = paymentMethodNonces[1] as? BTPayPalAccountNonce else {
-//                XCTFail()
-//                return
-//            }
+            let firstNonce = paymentMethodNonces[0];
+            XCTAssertEqual(firstNonce.nonce, "fake-nonce")
+            XCTAssertEqual(firstNonce.localizedDescription, "ending in 05")
 
-//            XCTAssertEqual(cardNonce.nonce, "fake-nonce")
-//            XCTAssertEqual(cardNonce.localizedDescription, "ending in 05")
-//            XCTAssertEqual(cardNonce.lastTwo, "05")
-//            XCTAssertTrue(cardNonce.cardNetwork == BTCardNetwork.AMEX)
-//            XCTAssertTrue(cardNonce.isDefault)
-//
-//            XCTAssertEqual(paypalNonce.nonce, "fake-nonce")
-//            XCTAssertEqual(paypalNonce.localizedDescription, "jane.doe@example.com")
-//            XCTAssertFalse(paypalNonce.isDefault)
+            let secondNonce = paymentMethodNonces[1]
+            XCTAssertEqual(secondNonce.nonce, "fake-nonce")
+            XCTAssertEqual(secondNonce.localizedDescription, "jane.doe@example.com")
 
             expectation.fulfill()
         }
@@ -318,5 +306,4 @@ class BTAPIClient_SwiftTests: XCTestCase {
         //TODO: Find out why this isn't working
 //        XCTAssertTrue(firstAPIClient.analyticsService === secondAPIClient.analyticsService)
     }
-
 }
