@@ -257,12 +257,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 }
 
 - (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request
-                  result:(__unused BTThreeDSecureLookup *)result
-                    next:(void (^)(void))next {
-    next();
-}
-
-- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request
             lookupResult:(__unused BTThreeDSecureResult *)result
                     next:(void (^)(void))next {
     next();

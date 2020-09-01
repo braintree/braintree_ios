@@ -1,10 +1,3 @@
-//
-//  BraintreeTestShared.h
-//  BraintreeTestShared
-//
-//  Created by Bill Werges on 8/28/20.
-//
-
 #import <Foundation/Foundation.h>
 
 //! Project version number for BraintreeTestShared.

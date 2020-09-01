@@ -42,7 +42,7 @@
 
             // If authentication wasn't successful, add the BTCardNonce from the lookup result to the authentication result
             // so that merchants can transact with the lookup nonce if desired.
-            result.tokenizedCard = lookupResult.tokenizedCard;
+            //result.tokenizedCard = lookupResult.tokenizedCard;
         }
 
         successHandler(result);

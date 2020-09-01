@@ -1,8 +1,5 @@
 import XCTest
 import BraintreeCore
-import BraintreePaymentFlow
-import BraintreePayPal
-import PayPalOneTouch
 
 @objc public class MockAppSwitchDelegate : NSObject, BTAppSwitchDelegate {
     var willPerformAppSwitchExpectation : XCTestExpectation? = nil
@@ -74,29 +71,3 @@ import PayPalOneTouch
         requestsPresentationOfViewControllerExpectation?.fulfill()
     }
 }
-
-@objc class MockThreeDSecureRequestDelegate : NSObject, BTThreeDSecureRequestDelegate {
-    var lookupCompleteExpectation : XCTestExpectation?
-
-    func onLookupComplete(_ request: BTThreeDSecureRequest, result: BTThreeDSecureLookup, next: @escaping () -> Void) {
-        lookupCompleteExpectation?.fulfill()
-        next()
-    }
-
-    func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult: BTThreeDSecureResult, next: @escaping () -> Void) {
-        lookupCompleteExpectation?.fulfill()
-        next()
-    }
-}
-
-@objc class MockLocalPaymentRequestDelegate : NSObject, BTLocalPaymentRequestDelegate {
-    var paymentId: String?
-    var idExpectation : XCTestExpectation?
-
-    func localPaymentStarted(_ request: BTLocalPaymentRequest, paymentId: String, start: @escaping () -> Void) {
-        self.paymentId = paymentId
-        idExpectation?.fulfill()
-        start()
-    }
-}
-

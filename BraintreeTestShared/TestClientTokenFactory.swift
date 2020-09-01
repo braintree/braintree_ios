@@ -16,7 +16,7 @@ public class TestClientTokenFactory: NSObject {
         let configurationURL = dataURL(withJSONObject: configuration(withOverrides: overrides))
         let clientToken = extend(dictionary: self.clientToken(withVersion: version, configurationURL: configurationURL), withOverrides: overrides)
 
-        let clientTokenData = try! JSONSerialization.data(withJSONObject: clientToken, options: .withoutEscapingSlashes)
+        let clientTokenData = try! JSONSerialization.data(withJSONObject: clientToken, options: [])
 
         if base64Encoded {
             return clientTokenData.base64EncodedString()
@@ -27,7 +27,7 @@ public class TestClientTokenFactory: NSObject {
     }
 
     static func dataURL(withJSONObject JSONObject: Any) -> URL {
-        let configurationData = try! JSONSerialization.data(withJSONObject: JSONObject, options: .withoutEscapingSlashes)
+        let configurationData = try! JSONSerialization.data(withJSONObject: JSONObject, options: [])
         let base64EncodedConfigurationData = configurationData.base64EncodedString()
         let dataURLString = "data:application/json;base64," + base64EncodedConfigurationData
         return URL.init(string: dataURLString)!
