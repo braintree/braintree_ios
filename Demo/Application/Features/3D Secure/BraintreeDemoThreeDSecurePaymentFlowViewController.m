@@ -1,14 +1,14 @@
 #import "BraintreeDemoThreeDSecurePaymentFlowViewController.h"
 #import "BraintreeUI.h"
-
-#import <BraintreeCard/BraintreeCard.h>
-#import <BraintreePaymentFlow/BraintreePaymentFlow.h>
+@import BraintreeThreeDSecure;
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
+
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) BTUICardFormView *cardFormView;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
 @property (nonatomic) int callbackCount;
+
 @end
 
 @implementation BraintreeDemoThreeDSecurePaymentFlowViewController

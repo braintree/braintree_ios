@@ -272,6 +272,17 @@
                ReferencedContainer = "container:../Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A91E1EF124FEF2E3007540E5"
+               BuildableName = "BraintreeThreeDSecureTests.xctest"
+               BlueprintName = "BraintreeThreeDSecureTests"
+               ReferencedContainer = "container:../Braintree.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

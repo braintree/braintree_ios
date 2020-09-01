@@ -1,6 +1,5 @@
 import XCTest
 import BraintreeTestShared
-import BraintreePaymentFlow.BTThreeDSecureResult
 
 class BTThreeDSecureRequest_Tests: XCTestCase {
     

@@ -1,6 +1,8 @@
 import UIKit
 import XCTest
 import BraintreeTestShared
+import BraintreeCore
+import BraintreePaymentFlow
 
 //TODO: These tests are all failing
 class BTLocalPayment_UnitTests: XCTestCase {

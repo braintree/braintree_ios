@@ -139,6 +139,8 @@
 		A9C4E09C24EC3121002F6FF2 /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E09A24EC3121002F6FF2 /* DateGenerator.swift */; };
 		A9C7457C24F59C8600018961 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C7457424F592FD00018961 /* PPRiskMagnes.xcframework */; };
 		A9C7457D24F59C8600018961 /* PPRiskMagnes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A9C7457424F592FD00018961 /* PPRiskMagnes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A9E80AA524FEF58600196BD3 /* BraintreeThreeDSecure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9E80AA424FEF58600196BD3 /* BraintreeThreeDSecure.framework */; };
+		A9E80AA624FEF58600196BD3 /* BraintreeThreeDSecure.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A9E80AA424FEF58600196BD3 /* BraintreeThreeDSecure.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +164,7 @@
 				A098900B24DB44D60095EEEE /* BraintreeApplePay.framework in Embed Frameworks */,
 				A098900D24DB44D60095EEEE /* BraintreeCard.framework in Embed Frameworks */,
 				A098900F24DB44D60095EEEE /* BraintreeCore.framework in Embed Frameworks */,
+				A9E80AA624FEF58600196BD3 /* BraintreeThreeDSecure.framework in Embed Frameworks */,
 				A098901124DB44D60095EEEE /* BraintreeDataCollector.framework in Embed Frameworks */,
 				A098901324DB44D60095EEEE /* BraintreePaymentFlow.framework in Embed Frameworks */,
 				A098901524DB44D60095EEEE /* BraintreePayPal.framework in Embed Frameworks */,
@@ -402,6 +405,7 @@
 		A9C4E09924EC3121002F6FF2 /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BTUITest.swift; path = "UI Tests/Helpers/BTUITest.swift"; sourceTree = SOURCE_ROOT; };
 		A9C4E09A24EC3121002F6FF2 /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateGenerator.swift; path = "UI Tests/Helpers/DateGenerator.swift"; sourceTree = SOURCE_ROOT; };
 		A9C7457424F592FD00018961 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
+		A9E80AA424FEF58600196BD3 /* BraintreeThreeDSecure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeThreeDSecure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -420,6 +424,7 @@
 				A098901624DB44D60095EEEE /* BraintreeUnionPay.framework in Frameworks */,
 				A098901824DB44D60095EEEE /* BraintreeVenmo.framework in Frameworks */,
 				A9C11A9824DB542900AE207A /* CardinalMobile.framework in Frameworks */,
+				A9E80AA524FEF58600196BD3 /* BraintreeThreeDSecure.framework in Frameworks */,
 				A098901A24DB44D60095EEEE /* PayPalDataCollector.framework in Frameworks */,
 				A098901C24DB44D60095EEEE /* PayPalOneTouch.framework in Frameworks */,
 				A098901E24DB44D60095EEEE /* PayPalUtils.framework in Frameworks */,
@@ -919,6 +924,7 @@
 		A0988FFB24DB44D60095EEEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9E80AA424FEF58600196BD3 /* BraintreeThreeDSecure.framework */,
 				A0988FFC24DB44D60095EEEE /* BraintreeAmericanExpress.framework */,
 				A0988FFD24DB44D60095EEEE /* BraintreeApplePay.framework */,
 				A0988FFE24DB44D60095EEEE /* BraintreeCard.framework */,
