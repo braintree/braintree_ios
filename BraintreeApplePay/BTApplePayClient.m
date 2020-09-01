@@ -5,6 +5,8 @@
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 
+#import <PassKit/PassKit.h>
+
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
 
 @implementation BTApplePayClient

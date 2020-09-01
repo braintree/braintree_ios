@@ -1,6 +1,5 @@
 #import "BraintreeDemoAppDelegate.h"
 #import "BraintreeDemoContainmentViewController.h"
-#import <BraintreeCore/BraintreeCore.h>
 
 #import "Demo-Swift.h"
 

@@ -490,10 +490,10 @@
 		A0988E8024DB44B10095EEEE /* Base View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A0988E8124DB44B10095EEEE /* BraintreeDemoPaymentButtonBaseViewController.m */,
+				A0988E8424DB44B10095EEEE /* BraintreeDemoBaseViewController.h */,
 				A0988E8224DB44B10095EEEE /* BraintreeDemoBaseViewController.m */,
 				A0988E8324DB44B10095EEEE /* BraintreeDemoPaymentButtonBaseViewController.h */,
-				A0988E8424DB44B10095EEEE /* BraintreeDemoBaseViewController.h */,
+				A0988E8124DB44B10095EEEE /* BraintreeDemoPaymentButtonBaseViewController.m */,
 			);
 			path = "Base View Controllers";
 			sourceTree = "<group>";
@@ -807,8 +807,8 @@
 		A0988F6524DB44B10095EEEE /* Combined Button - Custom Multi-Pay Button */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F6624DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.m */,
 				A0988F6724DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.h */,
+				A0988F6624DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.m */,
 			);
 			path = "Combined Button - Custom Multi-Pay Button";
 			sourceTree = "<group>";
@@ -816,8 +816,8 @@
 		A0988F6824DB44B10095EEEE /* PayPal - Credit */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalCreditPaymentViewController.m */,
 				A0988F6A24DB44B10095EEEE /* BraintreeDemoPayPalCreditPaymentViewController.h */,
+				A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalCreditPaymentViewController.m */,
 			);
 			path = "PayPal - Credit";
 			sourceTree = "<group>";
@@ -826,8 +826,8 @@
 			isa = PBXGroup;
 			children = (
 				A0988F6C24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.h */,
-				A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */,
 				A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */,
+				A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */,
 			);
 			path = "Credit Card Tokenization";
 			sourceTree = "<group>";
@@ -835,8 +835,8 @@
 		A0988F6F24DB44B10095EEEE /* PayPal - Scopes */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F7024DB44B10095EEEE /* BraintreeDemoPayPalScopesViewController.m */,
 				A0988F7124DB44B10095EEEE /* BraintreeDemoPayPalScopesViewController.h */,
+				A0988F7024DB44B10095EEEE /* BraintreeDemoPayPalScopesViewController.m */,
 			);
 			path = "PayPal - Scopes";
 			sourceTree = "<group>";
@@ -871,8 +871,8 @@
 		A0988F7E24DB44B10095EEEE /* Amex */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */,
 				A0988F8024DB44B10095EEEE /* BraintreeDemoAmexViewController.h */,
+				A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */,
 			);
 			path = Amex;
 			sourceTree = "<group>";
@@ -889,8 +889,8 @@
 		A0988F8424DB44B10095EEEE /* PayPal - Custom Button */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F8524DB44B10095EEEE /* BraintreeDemoCustomPayPalButtonViewController.m */,
 				A0988F8624DB44B10095EEEE /* BraintreeDemoCustomPayPalButtonViewController.h */,
+				A0988F8524DB44B10095EEEE /* BraintreeDemoCustomPayPalButtonViewController.m */,
 			);
 			path = "PayPal - Custom Button";
 			sourceTree = "<group>";
@@ -898,8 +898,8 @@
 		A0988F8724DB44B10095EEEE /* UnionPay */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F8824DB44B10095EEEE /* BraintreeDemoUnionPayViewController.m */,
 				A0988F8924DB44B10095EEEE /* BraintreeDemoUnionPayViewController.h */,
+				A0988F8824DB44B10095EEEE /* BraintreeDemoUnionPayViewController.m */,
 			);
 			path = UnionPay;
 			sourceTree = "<group>";

@@ -1,10 +1,12 @@
 #import "BraintreeDemoAmexViewController.h"
-#import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeAmericanExpress/BraintreeAmericanExpress.h>
 #import "UIColor+BTUI.h"
+@import BraintreeAmericanExpress;
+@import BraintreeCard;
 
 @interface BraintreeDemoAmexViewController ()
+
 @property (nonatomic, strong) BTAmericanExpressClient *amexClient;
+
 @end
 
 @implementation BraintreeDemoAmexViewController

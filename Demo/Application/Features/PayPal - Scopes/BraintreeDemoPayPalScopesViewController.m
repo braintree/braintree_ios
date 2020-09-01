@@ -1,7 +1,6 @@
 #import "BraintreeDemoPayPalScopesViewController.h"
-
-#import <BraintreePayPal/BraintreePayPal.h>
 #import "BraintreeUI.h"
+@import BraintreePayPal;
 
 @interface BraintreeDemoPayPalScopesViewController () <BTViewControllerPresentingDelegate>
 

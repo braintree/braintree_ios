@@ -1,6 +1,6 @@
 #import "BraintreeDemoUnionPayViewController.h"
-#import <BraintreeUnionPay/BraintreeUnionPay.h>
 #import "BTUICardFormView.h"
+@import BraintreeUnionPay;
 
 @interface BraintreeDemoUnionPayViewController () <BTUICardFormViewDelegate>
 
@@ -17,7 +17,6 @@
 @end
 
 @implementation BraintreeDemoUnionPayViewController
-
 
 - (instancetype)initWithAuthorization:(NSString *)authorization {
     if (self = [super initWithAuthorization:authorization]) {

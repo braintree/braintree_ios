@@ -1,8 +1,5 @@
 #import "BraintreeDemoApplePayPassKitViewController.h"
-
-#import <BraintreeApplePay/BraintreeApplePay.h>
-
-@import PassKit;
+@import BraintreeApplePay;
 
 @interface BraintreeDemoApplePayPassKitViewController () <PKPaymentAuthorizationViewControllerDelegate>
 

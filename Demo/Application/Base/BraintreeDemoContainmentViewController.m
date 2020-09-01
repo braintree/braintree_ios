@@ -1,11 +1,7 @@
 #import "BraintreeDemoContainmentViewController.h"
 #import "BraintreeDemoBaseViewController.h"
 #import "Demo-Swift.h"
-
-#import <BraintreeCore/BraintreeCore.h>
-
-#import <InAppSettingsKit/IASKAppSettingsViewController.h>
-#import <InAppSettingsKit/IASKSettingsReader.h>
+@import InAppSettingsKit;
 
 @interface BraintreeDemoContainmentViewController () <IASKSettingsDelegate>
 

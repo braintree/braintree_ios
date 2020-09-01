@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BraintreeDemoBaseViewController.h"
-#import <BraintreeCore/BraintreeCore.h>
+@class BTAPIClient;
 
 @interface BraintreeDemoPaymentButtonBaseViewController : BraintreeDemoBaseViewController
 

@@ -7,6 +7,7 @@ FOUNDATION_EXPORT double BraintreeApplePayVersionNumber;
 FOUNDATION_EXPORT const unsigned char BraintreeApplePayVersionString[];
 
 #import <BraintreeCore/BraintreeCore.h>
+#import <PassKit/PassKit.h>
 #import <BraintreeApplePay/BTApplePayClient.h>
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>

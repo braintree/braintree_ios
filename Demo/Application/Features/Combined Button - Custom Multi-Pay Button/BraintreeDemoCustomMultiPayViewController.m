@@ -1,7 +1,6 @@
 #import "BraintreeDemoCustomMultiPayViewController.h"
 #import "BraintreeUI.h"
-
-#import <BraintreeCard/BraintreeCard.h>
+@import BraintreeCard;
 
 @interface BraintreeDemoCustomMultiPayViewController () <BTViewControllerPresentingDelegate>
 

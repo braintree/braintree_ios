@@ -1,6 +1,5 @@
 #import "BraintreeDemoPayPalBillingAgreementViewController.h"
-
-#import <BraintreePayPal/BraintreePayPal.h>
+@import BraintreePayPal;
 
 @interface BraintreeDemoPayPalBillingAgreementViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
 

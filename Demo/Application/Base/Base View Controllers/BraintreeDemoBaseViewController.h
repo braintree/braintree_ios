@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <BraintreeCore/BraintreeCore.h>
+@class BTPaymentMethodNonce;
 
 @interface BraintreeDemoBaseViewController : UIViewController
 

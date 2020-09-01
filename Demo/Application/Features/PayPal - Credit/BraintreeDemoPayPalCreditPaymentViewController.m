@@ -1,9 +1,10 @@
 #import "BraintreeDemoPayPalCreditPaymentViewController.h"
-
-#import <BraintreePayPal/BraintreePayPal.h>
+@import BraintreePayPal;
 
 @interface BraintreeDemoPayPalCreditPaymentViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
+
 @property (nonatomic, strong) UISegmentedControl *paypalTypeSwitch;
+
 @end
 
 @implementation BraintreeDemoPayPalCreditPaymentViewController

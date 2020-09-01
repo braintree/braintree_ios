@@ -1,7 +1,6 @@
 import UIKit
 
 class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewController {
-    
     private let preferredPaymentMethods: BTPreferredPaymentMethods
     private let paypalDriver: BTPayPalDriver
     private let venmoDriver: BTVenmoDriver

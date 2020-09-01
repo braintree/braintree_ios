@@ -1,6 +1,6 @@
 #import "BraintreeDemoPayPalForceFuturePaymentViewController.h"
 #import "BraintreeUI.h"
-#import <BraintreePayPal/BraintreePayPal.h>
+@import BraintreePayPal;
 
 @interface BraintreeDemoPayPalForceFuturePaymentViewController () <BTViewControllerPresentingDelegate>
 @end

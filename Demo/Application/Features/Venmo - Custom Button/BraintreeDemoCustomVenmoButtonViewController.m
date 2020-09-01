@@ -1,9 +1,11 @@
 #import "BraintreeDemoCustomVenmoButtonViewController.h"
 #import "UIColor+BTUI.h"
-#import <BraintreeVenmo/BraintreeVenmo.h>
+@import BraintreeVenmo;
 
 @interface BraintreeDemoCustomVenmoButtonViewController ()
+
 @property (nonatomic, strong) BTVenmoDriver *venmoDriver;
+
 @end
 
 @implementation BraintreeDemoCustomVenmoButtonViewController

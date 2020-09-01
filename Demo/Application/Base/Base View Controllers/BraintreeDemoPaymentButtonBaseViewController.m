@@ -1,5 +1,5 @@
 #import "BraintreeDemoPaymentButtonBaseViewController.h"
-#import <BraintreeCore/BraintreeCore.h>
+@import BraintreeCore;
 
 @implementation BraintreeDemoPaymentButtonBaseViewController
 
