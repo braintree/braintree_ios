@@ -405,6 +405,10 @@
 		A95C411C24FAF21B00045045 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		A95C411E24FAF53400045045 /* FakePPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95C411D24FAF53400045045 /* FakePPDataCollector.swift */; };
 		A96FE18524F752B400C464E5 /* BTPreferredPaymentMethodsResult_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E295FA239FF19000EAB00C /* BTPreferredPaymentMethodsResult_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A977A03F24FEC2DD006049AB /* BTPaymentMethodNonceParser_ApplePay_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A03E24FEC2DD006049AB /* BTPaymentMethodNonceParser_ApplePay_Tests.swift */; };
+		A977A04124FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04024FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift */; };
+		A977A04324FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */; };
+		A977A04524FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */; };
 		A977CE4C24F820E2009D1A66 /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A977CE4E24F82206009D1A66 /* BTPreferredPaymentMethods_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E295FD239FF7C400EAB00C /* BTPreferredPaymentMethods_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A977CE4F24F82429009D1A66 /* BTAPIClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7A6DD2C1B431B75008857E1 /* BTAPIClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1320,6 +1324,10 @@
 		A95C410C24FAEF2100045045 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A95C411924FAEFCC00045045 /* BraintreeCardTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeCardTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A95C411D24FAF53400045045 /* FakePPDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakePPDataCollector.swift; sourceTree = "<group>"; };
+		A977A03E24FEC2DD006049AB /* BTPaymentMethodNonceParser_ApplePay_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_ApplePay_Tests.swift; sourceTree = "<group>"; };
+		A977A04024FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_PayPal_Tests.swift; sourceTree = "<group>"; };
+		A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Venmo_Tests.swift; sourceTree = "<group>"; };
+		A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Card_Tests.swift; sourceTree = "<group>"; };
 		A9A76CA624F9E92E0044EAEE /* TestClientTokenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClientTokenFactory.swift; sourceTree = "<group>"; };
 		A9C7457024F58C0100018961 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		A9E5C19924FD3BD100EE691F /* PayPalDataCollector.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = PayPalDataCollector.modulemap; sourceTree = "<group>"; };
@@ -2345,6 +2353,7 @@
 				A948D6EB24FAC7F100F4F178 /* BraintreeApplePayTests-Bridging-Header.h */,
 				A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */,
 				A95229CA24FD9E41006F7D25 /* BTConfiguration+ApplePay_Tests.swift */,
+				A977A03E24FEC2DD006049AB /* BTPaymentMethodNonceParser_ApplePay_Tests.swift */,
 				A948D6E024FAC6C000F4F178 /* Info.plist */,
 			);
 			path = BraintreeApplePayTests;
@@ -2355,6 +2364,7 @@
 			children = (
 				A948D70124FAC9B000F4F178 /* BraintreeVenmoTests-Bridging-Header.h */,
 				A9589DD924FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift */,
+				A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */,
 				A71F7DE01B616BA0005DA1B0 /* BTVenmoAppSwitchRequestURLSpec.m */,
 				A71F7DDF1B616BA0005DA1B0 /* BTVenmoAppSwitchReturnURLSpec.m */,
 				A71F7DE61B6180A3005DA1B0 /* BTVenmoDriver_Tests.swift */,
@@ -2372,6 +2382,7 @@
 				A79033971B45C968004C8234 /* BTCard_Tests.swift */,
 				A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */,
 				A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */,
+				A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */,
 				0301A42E22E2286C008A26BD /* BTThreeDSecureInfo_Tests.swift */,
 				A95C410C24FAEF2100045045 /* Info.plist */,
 			);
@@ -2419,11 +2430,12 @@
 			isa = PBXGroup;
 			children = (
 				A9E5C1F724FD672A00EE691F /* BraintreePayPalTests-Bridging-Header.h */,
-				A95229C624FD949D006F7D25 /* BTConfiguration+PayPal_Tests.swift */,
-				A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */,
 				41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */,
 				41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */,
 				A9E5C1E424FD665D00EE691F /* Info.plist */,
+				A95229C624FD949D006F7D25 /* BTConfiguration+PayPal_Tests.swift */,
+				A977A04024FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift */,
+				A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */,
 			);
 			path = BraintreePayPalTests;
 			sourceTree = "<group>";
@@ -3953,6 +3965,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A95229CB24FD9E41006F7D25 /* BTConfiguration+ApplePay_Tests.swift in Sources */,
+				A977A03F24FEC2DD006049AB /* BTPaymentMethodNonceParser_ApplePay_Tests.swift in Sources */,
 				A948D6E724FAC71A00F4F178 /* BTApplePay_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3961,6 +3974,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A977A04324FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift in Sources */,
 				A9589DDA24FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift in Sources */,
 				A948D6FB24FAC93100F4F178 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */,
 				A948D6FC24FAC93100F4F178 /* BTVenmoAppSwitchRequestURLSpec.m in Sources */,
@@ -3975,6 +3989,7 @@
 				A95C411324FAEF5100045045 /* BTAuthenticationInsight_Tests.swift in Sources */,
 				A95C411424FAEF5100045045 /* BTCard_Internal_Tests.m in Sources */,
 				A95C411524FAEF5100045045 /* BTCard_Tests.swift in Sources */,
+				A977A04524FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift in Sources */,
 				A95C411624FAEF5100045045 /* BTCardClient_Tests.swift in Sources */,
 				A95C411724FAEF5100045045 /* BTCardNonce_Tests.swift in Sources */,
 				A95C411824FAEF5100045045 /* BTThreeDSecureInfo_Tests.swift in Sources */,
@@ -4019,6 +4034,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9E5C1F124FD66C700EE691F /* BTPayPalDriver_Tests.swift in Sources */,
+				A977A04124FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift in Sources */,
 				A9E5C1F224FD66C700EE691F /* FakePayPalClasses.h in Sources */,
 				A9E5C1F324FD66C700EE691F /* FakePayPalClasses.m in Sources */,
 				A95229C724FD949D006F7D25 /* BTConfiguration+PayPal_Tests.swift in Sources */,
