@@ -5,6 +5,7 @@ import BraintreeTestShared
 class BTCardClient_UnionPayTests: XCTestCase {
     
     var apiClient: BTAPIClient!
+    let standardTimeout: TimeInterval = 2
     
     override func setUp() {
         super.setUp()
@@ -32,7 +33,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testFetchCapabilities_whenCallToCapabilitiesEndpointReturnsError_sendsAnalyticsEvent() {
@@ -48,7 +49,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testFetchCapabilities_whenUnionPayIsNotEnabledForMerchant_returnsError() {
@@ -66,7 +67,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
     
     func testFetchCapabilities_whenUnionPayIsEnabledForMerchant_sendsGETRequestToCapabilitiesEndpointWithExpectedPayload() {
@@ -79,7 +80,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         cardClient.fetchCapabilities(cardNumber) { (_, _) -> Void in
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
 
         XCTAssertEqual(mockHTTP.lastRequestMethod, "GET")
         XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods/credit_cards/capabilities")
@@ -123,7 +124,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testFetchCapabilities_whenSuccessful_sendsAnalyticsEvent() {
@@ -146,7 +147,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testFetchCapabilities_whenFailure_returnsError() {
@@ -166,7 +167,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
     
     // MARK: - Enrollment
@@ -193,7 +194,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
     
     func testEnrollment_whenUnionPayIsNotEnabledForMerchant_returnsError() {
@@ -214,7 +215,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testEnrollment_whenUnionPayIsEnabledForMerchant_sendsPOSTRequestToEnrollmentEndpointWithExpectedPayload() {
@@ -230,7 +231,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         cardClient.enrollCard(request) { _,_,_  -> Void in
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
 
         XCTAssertEqual(mockHTTP.lastRequestMethod, "POST")
         XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/union_pay_enrollments")
@@ -263,7 +264,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         cardClient.enrollCard(request) { _,_,_  -> Void in
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
 
         guard let parameters = mockHTTP.lastRequestParameters as? [String:AnyObject] else {
             XCTFail()
@@ -300,7 +301,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
     
     func testEnrollCard_when422Failure_returnsValidationError() {
@@ -333,7 +334,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
     
     func testEnrollCard_onError_invokesCallbackOnMainThread() {
@@ -350,7 +351,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testEnrollCard_whenEnrollmentEndpointReturnsError_sendsAnalyticsEvent() {
@@ -367,7 +368,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
     
     func testEnrollCard_onSuccess_invokesCallbackOnMainThread() {
@@ -386,7 +387,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testEnrollCard_onSuccess_sendsAnalyticsEvent() {
@@ -406,7 +407,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testEnrollCard_whenOtherFailure_returnsError() {
@@ -428,7 +429,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     // MARK: - Tokenization
@@ -447,7 +448,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         cardClient.tokenizeCard(request, options: nil) { (_, _) -> Void in
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
 
         XCTAssertEqual(mockHTTP.lastRequestMethod, "POST")
         XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods/credit_cards")
@@ -490,7 +491,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         cardClient.tokenizeCard(request, options: nil) { (_, _) -> Void in
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
 
         XCTAssertEqual(mockHTTP.lastRequestMethod, "POST")
         XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods/credit_cards")
@@ -542,7 +543,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     func testTokenization_whenTokenizingUnionPayEnrolledCardFails_sendsAnalyticsEvent() {
@@ -560,7 +561,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: standardTimeout, handler: nil)
     }
 
     // MARK: - Helpers
