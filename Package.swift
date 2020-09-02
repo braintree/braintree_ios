@@ -8,28 +8,28 @@ let package = Package(
     platforms: [.iOS(.v11)],
     products: [
         .library(
-            name: "BraintreeCore",
-            targets: ["BraintreeCore"]
-        ),
-        .library(
-            name: "BraintreeCard",
-            targets: ["BraintreeCard"]
+            name: "BraintreeAmericanExpress",
+            targets: ["BraintreeAmericanExpress"]
         ),
         .library(
             name: "BraintreeApplePay",
             targets: ["BraintreeApplePay"]
         ),
         .library(
-            name: "PayPalUtils",
-            targets: ["PayPalUtils"]
+            name: "BraintreeCard",
+            targets: ["BraintreeCard"]
         ),
         .library(
-            name: "BraintreeAmericanExpress",
-            targets: ["BraintreeAmericanExpress"]
+            name: "BraintreeCore",
+            targets: ["BraintreeCore"]
         ),
         .library(
             name: "BraintreeUnionPay",
             targets: ["BraintreeUnionPay"]
+        ),
+        .library(
+            name: "PayPalUtils",
+            targets: ["PayPalUtils"]
         ),
         .library(
             name: "PayPalDataCollector",
@@ -44,13 +44,28 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "BraintreeCore",
-            dependencies: [],
-            path: "BraintreeCore",
+            name: "BraintreeAmericanExpress",
+            dependencies: ["BraintreeCore"],
+            path: "BraintreeAmericanExpress",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../BraintreeCore/")
+            ]
+        ),
+        .target(
+            name: "BraintreeApplePay",
+            dependencies: ["BraintreeCore"],
+            path: "BraintreeApplePay",
+            exclude: ["Info.plist"],
+            sources: nil,
+            resources: nil,
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../BraintreeCore/")
+            ]
         ),
         .target(
             name: "BraintreeCard",
@@ -68,37 +83,13 @@ let package = Package(
             ]
         ),
         .target(
-            name: "BraintreeApplePay",
-            dependencies: ["BraintreeCore"],
-            path: "BraintreeApplePay",
-            exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/")
-            ]
-        ),
-        .target(
-            name: "PayPalUtils",
-            dependencies: ["BraintreeCore"],
-            path: "BraintreePayPal/PayPalUtils",
+            name: "BraintreeCore",
+            dependencies: [],
+            path: "BraintreeCore",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
             publicHeadersPath: "Public"
-        ),
-        .target(
-            name: "BraintreeAmericanExpress",
-            dependencies: ["BraintreeCore"],
-            path: "BraintreeAmericanExpress",
-            exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/")
-            ]
         ),
         .target(
             name: "BraintreeUnionPay",
@@ -125,6 +116,15 @@ let package = Package(
                 .headerSearchPath("../BraintreeCore/"),
                 .headerSearchPath("../BraintreeCard/")
             ]
+        ),
+        .target(
+            name: "PayPalUtils",
+            dependencies: ["BraintreeCore"],
+            path: "BraintreePayPal/PayPalUtils",
+            exclude: ["Info.plist"],
+            sources: nil,
+            resources: nil,
+            publicHeadersPath: "Public"
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
