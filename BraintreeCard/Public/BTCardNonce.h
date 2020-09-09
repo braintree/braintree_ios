@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, readonly, copy) NSString *expirationYear;
 
 /**
+ The name of the cardholder, if available.
+*/
+@property (nonatomic, nullable, readonly, copy) NSString *cardholderName;
+
+/**
  The last two digits of the card, if available.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *lastTwo;

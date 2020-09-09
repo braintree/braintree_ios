@@ -72,6 +72,10 @@
         p[@"expiration_year"] = self.expirationYear;
     }
 
+    if (self.cardholderName) {
+        p[@"cardholder_name"] = self.cardholderName;
+    }
+
     if (self.expirationMonth && self.expirationYear) {
         p[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", self.expirationMonth, self.expirationYear];
     }
@@ -262,6 +266,7 @@
      "      brand"
      "      expirationMonth"
      "      expirationYear"
+     "      cardholderName"
      "      last4"
      "      bin"
      "      binData {"

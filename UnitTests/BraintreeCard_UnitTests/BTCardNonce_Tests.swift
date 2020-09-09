@@ -9,6 +9,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "cardType": "Visa",
                 "expirationMonth": "01",
                 "expirationYear": "2020",
+                "cardholderName": "Alyssa Edwards",
                 "lastTwo": "11",
                 "lastFour": "1111"
             ],
@@ -41,6 +42,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.expirationMonth, "01")
         XCTAssertEqual(cardNonce.expirationYear, "2020")
+        XCTAssertEqual(cardNonce.cardholderName, "Alyssa Edwards")
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
@@ -202,6 +204,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "brand": "Visa",
                 "expirationMonth": "01",
                 "expirationYear": "2020",
+                "cardholderName": "Alyssa Edwards",
                 "last4": "1111",
                 "binData": [
                     "prepaid": "Yes",
@@ -224,6 +227,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.expirationMonth, "01")
         XCTAssertEqual(cardNonce.expirationYear, "2020")
+        XCTAssertEqual(cardNonce.cardholderName, "Alyssa Edwards")
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.lastFour, "1111")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
