@@ -127,9 +127,9 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.enterCardDetailsWith(cardNumber: "4000000000000002")
         app.tokenizeButton.tap()
 
-        waitForElementToAppear(app.buttons["Done"])
+        waitForElementToAppear(app.buttons["Cancel"])
 
-        app.buttons["Done"].forceTapElement()
+        app.buttons["Cancel"].forceTapElement()
 
         waitForElementToAppear(app.buttons["Cancelled🎲"])
     }

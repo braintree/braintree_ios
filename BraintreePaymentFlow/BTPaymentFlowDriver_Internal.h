@@ -34,4 +34,9 @@
  */
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *_Nonnull)request completion:(void (^_Nullable)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock;
 
+/**
+ Exposed for testing - instantiates the SFSafariViewController to be presented
+*/
+- (void)informDelegatePresentingViewControllerRequestPresent:(NSURL * _Nullable)appSwitchURL;
+
 @end

@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Breaking Changes
+  * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
 * Update CardinalMobile.framework to v2.2.3-1
 * Add `expirationMonth` and `expirationYear` to `BTCardNonce`
 * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup` (breaking change)
