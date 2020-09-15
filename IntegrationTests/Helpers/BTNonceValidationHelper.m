@@ -1,4 +1,4 @@
-#import "BTSpecHelper.h"
+#import <Foundation/Foundation.h>
 
 @implementation NSString (Nonce)
 
