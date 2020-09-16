@@ -9,6 +9,7 @@
                   cardNetwork:(BTCardNetwork)cardNetwork
               expirationMonth:(NSString *)expirationMonth
                expirationYear:(NSString *)expirationYear
+               cardholderName:(NSString *)cardholderName
                       lastTwo:(NSString *)lastTwo
                      lastFour:(NSString *)lastFour
                     isDefault:(BOOL)isDefault
@@ -22,6 +23,7 @@
         _cardNetwork = cardNetwork;
         _expirationMonth = expirationMonth;
         _expirationYear = expirationYear;
+        _cardholderName = cardholderName;
         _lastTwo = lastTwo;
         _lastFour = lastFour;
         _binData = [[BTBinData alloc] initWithJSON:cardJSON[@"binData"]];
@@ -78,20 +80,20 @@
     // Normalize the card network string in cardJSON to be lowercase so that our enum mapping is case insensitive
     BTJSON *cardType = [[BTJSON alloc] initWithValue:string.lowercaseString];
     return [cardType asEnum:@{
-                              @"american express": @(BTCardNetworkAMEX),
-                              @"diners club": @(BTCardNetworkDinersClub),
-                              @"unionpay": @(BTCardNetworkUnionPay),
-                              @"discover": @(BTCardNetworkDiscover),
-                              @"maestro": @(BTCardNetworkMaestro),
-                              @"mastercard": @(BTCardNetworkMasterCard),
-                              @"jcb": @(BTCardNetworkJCB),
-                              @"hiper": @(BTCardNetworkHiper),
-                              @"hipercard": @(BTCardNetworkHipercard),
-                              @"laser": @(BTCardNetworkLaser),
-                              @"solo": @(BTCardNetworkSolo),
-                              @"switch": @(BTCardNetworkSwitch),
-                              @"uk maestro": @(BTCardNetworkUKMaestro),
-                              @"visa": @(BTCardNetworkVisa),}
+        @"american express": @(BTCardNetworkAMEX),
+        @"diners club": @(BTCardNetworkDinersClub),
+        @"unionpay": @(BTCardNetworkUnionPay),
+        @"discover": @(BTCardNetworkDiscover),
+        @"maestro": @(BTCardNetworkMaestro),
+        @"mastercard": @(BTCardNetworkMasterCard),
+        @"jcb": @(BTCardNetworkJCB),
+        @"hiper": @(BTCardNetworkHiper),
+        @"hipercard": @(BTCardNetworkHipercard),
+        @"laser": @(BTCardNetworkLaser),
+        @"solo": @(BTCardNetworkSolo),
+        @"switch": @(BTCardNetworkSwitch),
+        @"uk maestro": @(BTCardNetworkUKMaestro),
+        @"visa": @(BTCardNetworkVisa),}
                   orDefault:BTCardNetworkUnknown];
 }
 
@@ -106,6 +108,7 @@
                                  cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"details"][@"cardType"] asString]]
                              expirationMonth:[cardJSON[@"details"][@"expirationMonth"] asString]
                               expirationYear:[cardJSON[@"details"][@"expirationYear"] asString]
+                              cardholderName:[cardJSON[@"details"][@"cardholderName"] asString]
                                      lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]
                                     lastFour:[cardJSON[@"details"][@"lastFour"] asString]
                                    isDefault:[cardJSON[@"default"] isTrue]
@@ -131,6 +134,7 @@
                                  cardNetwork:[self.class cardNetworkFromGatewayCardType:[json[@"creditCard"][@"brand"] asString]]
                              expirationMonth:[json[@"creditCard"][@"expirationMonth"] asString]
                               expirationYear:[json[@"creditCard"][@"expirationYear"] asString]
+                              cardholderName:[json[@"creditCard"][@"cardholderName"] asString]
                                      lastTwo:lastTwo
                                     lastFour:lastFour
                                    isDefault:NO

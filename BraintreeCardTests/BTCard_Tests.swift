@@ -192,6 +192,7 @@ class BTCard_Tests: XCTestCase {
           brand\
           expirationMonth\
           expirationYear\
+          cardholderName\
           last4\
           bin\
           binData {\
@@ -218,6 +219,7 @@ class BTCard_Tests: XCTestCase {
           brand\
           expirationMonth\
           expirationYear\
+          cardholderName\
           last4\
           bin\
           binData {\

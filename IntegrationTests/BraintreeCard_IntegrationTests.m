@@ -55,6 +55,7 @@
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
         expect(tokenizedCard.expirationMonth).toNot.beNil();
         expect(tokenizedCard.expirationYear).toNot.beNil();
+        expect(tokenizedCard.cardholderName).toNot.beNil();
         expect(tokenizedCard.binData.prepaid).toNot.beNil();
         expect(tokenizedCard.binData.healthcare).toNot.beNil();
         expect(tokenizedCard.binData.debit).toNot.beNil();
@@ -159,6 +160,7 @@
     card.number = @"4111111111111111";
     card.expirationMonth = @"12";
     card.expirationYear = Helpers.sharedInstance.futureYear;
+    card.cardholderName = @"Alyssa Edwards";
     return card;
 }
 

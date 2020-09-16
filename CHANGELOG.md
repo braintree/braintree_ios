@@ -1,14 +1,18 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## unreleased (v5)
 * Breaking Changes
   * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
+  * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup` (breaking change)
 * Bump Kount to v4.0.4.1 (supports iOS 9.3+)
+
+## unreleased (v4)
+* Add `cardholderName` to `BTCardNonce`
 
 ## 4.35.0 (2020-08-10)
 * Update CardinalMobile.framework to v2.2.3-1
 * Add `expirationMonth` and `expirationYear` to `BTCardNonce`
-* Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup` (breaking change)
+* Update PPDataCollector
 
 ## 4.34.0 (2020-06-09)
 * Add `environment` property to `BTPayPalUAT`

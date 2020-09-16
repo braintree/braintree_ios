@@ -19,19 +19,26 @@ NSString * const BTPayPalIDTokenErrorDomain = @"com.braintreepayments.BTPayPalID
         }
         
         NSArray *externalIds = [json[@"external_id"] asArray];
-        NSString *braintreeMerchantID;
         for (NSString *externalId in externalIds) {
             if ([externalId hasPrefix:@"Braintree:"]) {
-                braintreeMerchantID = [externalId componentsSeparatedByString:@":"][1];
-                break;
+                _braintreeMerchantID = [externalId componentsSeparatedByString:@":"][1];
+            } else if ([externalId hasPrefix:@"PayPal:"]) {
+                _paypalMerchantID = [externalId componentsSeparatedByString:@":"][1];
             }
         }
         
-        if (!braintreeMerchantID) {
+        if (!_braintreeMerchantID) {
             if (error) {
                 *error = [NSError errorWithDomain:BTPayPalIDTokenErrorDomain
                                              code:BTPayPalIDTokenErrorUnlinkedAccount
                                          userInfo:@{NSLocalizedDescriptionKey:@"Invalid PayPal ID Token: Associated Braintree merchant ID missing."}];
+            }
+            return nil;
+        } else if (!_paypalMerchantID) {
+            if (error) {
+                *error = [NSError errorWithDomain:BTPayPalIDTokenErrorDomain
+                                             code:BTPayPalIDTokenErrorUnlinkedAccount
+                                         userInfo:@{NSLocalizedDescriptionKey:@"Invalid PayPal ID Token: Associated PayPal merchant ID missing."}];
             }
             return nil;
         }
@@ -59,7 +66,7 @@ NSString * const BTPayPalIDTokenErrorDomain = @"com.braintreepayments.BTPayPalID
         }
         
         _basePayPalURL = [NSURL URLWithString:basePayPalURL];
-        _baseBraintreeURL = [NSURL URLWithString: [NSString stringWithFormat:@"%@/merchants/%@/client_api", braintreeGatewayURL, braintreeMerchantID]];
+        _baseBraintreeURL = [NSURL URLWithString: [NSString stringWithFormat:@"%@/merchants/%@/client_api", braintreeGatewayURL, _braintreeMerchantID]];
         _configURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/v1/configuration", _baseBraintreeURL]];
         _token = idTokenString;
     }

@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
                   cardNetwork:(BTCardNetwork)cardNetwork
               expirationMonth:(nullable NSString *)expirationMonth
                expirationYear:(nullable NSString *)expirationYear
+               cardholderName:(nullable NSString *)cardholderName
                       lastTwo:(nullable NSString *)lastTwo
                      lastFour:(nullable NSString *)lastFour
                     isDefault:(BOOL)isDefault

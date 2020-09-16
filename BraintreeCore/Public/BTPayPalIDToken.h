@@ -38,6 +38,16 @@ Base initializer - do not use.
 @property (nonatomic, readonly, strong) NSURL *basePayPalURL;
 
 /**
+ The PayPal merchant ID embedded in the token
+ */
+@property (nonatomic, readonly, strong) NSString *paypalMerchantID;
+
+/**
+ The Braintree merchant ID embedded in the token
+ */
+@property (nonatomic, readonly, strong) NSString *braintreeMerchantID;
+
+/**
 Environment codes associated with PayPal ID Token.
 */
 typedef NS_ENUM(NSInteger, BTPayPalIDTokenEnvironment) {
@@ -66,7 +76,7 @@ typedef NS_ENUM(NSInteger, BTPayPalIDTokenError) {
     /// Invalid
     BTPayPalIDTokenErrorInvalid,
 
-    /// Missing associated Braintree merchant ID
+    /// Missing associated merchant ID
     BTPayPalIDTokenErrorUnlinkedAccount,
 };
 
