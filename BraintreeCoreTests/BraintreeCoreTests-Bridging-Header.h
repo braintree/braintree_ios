@@ -4,4 +4,6 @@
 #import <BraintreeCore/BTPreferredPaymentMethodsResult_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
 
+#import "BTAnalyticsService.h"
+
 #import "BTOCMockHelper.h"

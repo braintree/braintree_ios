@@ -303,7 +303,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testAnalyticsService_byDefault_isASingleton() {
         let firstAPIClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let secondAPIClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        //TODO: Find out why this isn't working
-//        XCTAssertTrue(firstAPIClient.analyticsService === secondAPIClient.analyticsService)
+        XCTAssertTrue(firstAPIClient.analyticsService === secondAPIClient.analyticsService)
     }
 }
