@@ -1,4 +1,4 @@
-extension String {
+public extension String {
     func isANonce() -> Bool {
         let nonceRegularExpressionString = "\\A[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\Z"
         let nonceRegex = try! NSRegularExpression.init(pattern: nonceRegularExpressionString, options: [])

@@ -174,14 +174,13 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
             guard let result = result as? BTThreeDSecureResult else { XCTFail(); return }
-            //TODO: Figure out why Swift doesn't recognize tokenizedCard
-//            guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
-//
-//            XCTAssertTrue(tokenizedCard.nonce.isANonce())
-//            XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
-//            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShifted)
-//            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-//            XCTAssertTrue(tokenizedCard.threeDSecureInfo.wasVerified)
+            guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
+
+            XCTAssertTrue(tokenizedCard.nonce.isANonce())
+            XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
+            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShifted)
+            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertTrue(tokenizedCard.threeDSecureInfo.wasVerified)
             XCTAssertNil(error)
             expectation.fulfill()
         }

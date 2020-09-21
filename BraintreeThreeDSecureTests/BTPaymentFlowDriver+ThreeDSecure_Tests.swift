@@ -90,8 +90,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         driver.performThreeDSecureLookup(threeDSecureRequest) { result, error in
             XCTAssertNotNil(result)
             XCTAssertNotNil(result?.lookup)
-            //TODO: Figure out why Swift doesn't recognize tokenizedCard
-//            XCTAssertNotNil(result?.tokenizedCard)
+            XCTAssertNotNil(result?.tokenizedCard)
             XCTAssertNil(error)
             expectation.fulfill()
         }
