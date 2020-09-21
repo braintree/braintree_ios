@@ -184,7 +184,7 @@ class BTPayPalIDToken_Tests: XCTestCase {
                 "Braintree:fake-bt-merchant"
             ]
         ]
-        let idTokenString = BTPayPalIDTokenTestHelper.encodeIDToken(dict)
+        let idTokenString = PayPalIDTokenTestHelper.encodeIDToken(dict)
 
         do {
             let _ = try BTPayPalIDToken(idTokenString: idTokenString)

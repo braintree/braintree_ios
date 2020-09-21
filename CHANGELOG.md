@@ -4,6 +4,7 @@
 * Breaking Changes
   * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
   * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup` (breaking change)
+  * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
 * Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 
 ## unreleased (v4)

@@ -13,6 +13,8 @@
 @property (nonatomic, copy) void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *);
 @property (nonatomic, strong, nullable) SFSafariViewController *safariViewController NS_AVAILABLE_IOS(9_0);
 @property (nonatomic, strong, nullable) id<BTPaymentFlowRequestDelegate> paymentFlowRequestDelegate;
+@property (nonatomic, copy, nonnull) NSString *returnURLScheme;
+@property (nonatomic, strong, nonnull) BTAPIClient *apiClient;
 
 @end
 
@@ -31,35 +33,13 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         _apiClient = apiClient;
+        _returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
     }
     return self;
 }
 
 - (instancetype)init {
     return nil;
-}
-
-#pragma mark - Accessors
-
-- (id)application {
-    if (!_application) {
-        _application = [UIApplication sharedApplication];
-    }
-    return _application;
-}
-
-- (NSBundle *)bundle {
-    if (!_bundle) {
-        _bundle = [NSBundle mainBundle];
-    }
-    return _bundle;
-}
-
-- (NSString *)returnURLScheme {
-    if (!_returnURLScheme) {
-        _returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
-    }
-    return _returnURLScheme;
 }
 
 - (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {

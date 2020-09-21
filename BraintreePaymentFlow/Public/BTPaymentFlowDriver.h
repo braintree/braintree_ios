@@ -28,9 +28,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
     
     /// Braintree SDK is integrated incorrectly.
     BTPaymentFlowDriverErrorTypeIntegration,
-    
-    /// Request URL was invalid, configuration may be missing required values.
-    BTPaymentFlowDriverErrorTypeInvalidRequestURL,
 
     /// Payment flow was canceled, typically initiated by the user when exiting early from the flow.
     BTPaymentFlowDriverErrorTypeCanceled,
