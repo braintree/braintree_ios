@@ -4,7 +4,6 @@
 @interface BTPayPalAccountNonce ()
 
 - (instancetype)initWithNonce:(NSString *)nonce
-                  description:(NSString *)description
                         email:(NSString *)email
                     firstName:(NSString *)firstName
                      lastName:(NSString *)lastName

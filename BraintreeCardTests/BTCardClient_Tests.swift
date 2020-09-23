@@ -89,7 +89,6 @@ class BTCardClient_Tests: XCTestCase {
             "creditCards": [
                 [
                     "nonce": "fake-nonce",
-                    "description": "Visa ending in 11",
                     "details": [
                         "lastTwo" : "11",
                         "cardType": "visa"]
@@ -114,7 +113,6 @@ class BTCardClient_Tests: XCTestCase {
             }
 
             XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
-            XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
             XCTAssertEqual(tokenizedCard.lastTwo!, "11")
             XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.visa)
             expectation.fulfill()
@@ -786,7 +784,6 @@ class BTCardClient_Tests: XCTestCase {
             }
 
             XCTAssertEqual(tokenizedCard.nonce, "a-nonce")
-            XCTAssertEqual(tokenizedCard.localizedDescription, "ending in 11")
             XCTAssertEqual(tokenizedCard.type, "Visa")
             XCTAssertEqual(tokenizedCard.lastTwo!, "11")
             XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.visa)

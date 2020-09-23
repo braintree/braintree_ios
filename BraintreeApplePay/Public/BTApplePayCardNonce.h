@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Used to initialize a `BTApplePayCardNonce` with parameters.
  */
-- (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(nullable NSString *)description type:(NSString *)type json:(BTJSON *)json;
+- (nullable instancetype)initWithNonce:(NSString *)nonce type:(NSString *)type json:(BTJSON *)json;
 
 @end
 

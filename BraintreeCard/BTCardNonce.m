@@ -5,7 +5,6 @@
 @implementation BTCardNonce
 
 - (instancetype)initWithNonce:(NSString *)nonce
-                  description:(NSString *)description
                   cardNetwork:(BTCardNetwork)cardNetwork
               expirationMonth:(NSString *)expirationMonth
                expirationYear:(NSString *)expirationYear
@@ -16,7 +15,6 @@
                      cardJSON:(BTJSON *)cardJSON
               authInsightJSON:(BTJSON *)authInsightJSON {
     self = [super initWithNonce:nonce
-           localizedDescription:description
                            type:[BTCardNonce typeStringFromCardNetwork:cardNetwork]
                       isDefault:isDefault];
     if (self) {
@@ -104,7 +102,6 @@
     }
     
     return [[self.class alloc] initWithNonce:[cardJSON[@"nonce"] asString]
-                                 description:[cardJSON[@"description"] asString]
                                  cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"details"][@"cardType"] asString]]
                              expirationMonth:[cardJSON[@"details"][@"expirationMonth"] asString]
                               expirationYear:[cardJSON[@"details"][@"expirationYear"] asString]
@@ -122,7 +119,6 @@
         lastFour = [json[@"creditCard"][@"last4"] asString];
     }
     NSString *lastTwo = lastFour.length == 4 ? [lastFour substringFromIndex:2] : @"";
-    NSString *description = lastTwo.length > 0 ? [NSString stringWithFormat:@"ending in %@", lastTwo] : @"";
     
     BTJSON *authInsightJson;
     if ([json[@"authenticationInsight"] asDictionary]) {
@@ -130,7 +126,6 @@
     }
     
     return [[self.class alloc] initWithNonce:[json[@"token"] asString]
-                                 description:description
                                  cardNetwork:[self.class cardNetworkFromGatewayCardType:[json[@"creditCard"][@"brand"] asString]]
                              expirationMonth:[json[@"creditCard"][@"expirationMonth"] asString]
                               expirationYear:[json[@"creditCard"][@"expirationYear"] asString]

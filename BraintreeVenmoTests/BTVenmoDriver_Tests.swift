@@ -161,7 +161,6 @@ class BTVenmoDriver_Tests: XCTestCase {
 
             XCTAssertNil(error)
             XCTAssertEqual(venmoAccount.nonce, "fake-nonce")
-            XCTAssertEqual(venmoAccount.localizedDescription, "fake-username")
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }
@@ -188,7 +187,6 @@ class BTVenmoDriver_Tests: XCTestCase {
             
             XCTAssertNil(error)
             XCTAssertEqual(venmoAccount.nonce, "fake-nonce")
-            XCTAssertEqual(venmoAccount.localizedDescription, "fake-username")
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }

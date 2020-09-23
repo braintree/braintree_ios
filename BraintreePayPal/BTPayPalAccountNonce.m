@@ -17,7 +17,6 @@
 @implementation BTPayPalAccountNonce
 
 - (instancetype)initWithNonce:(NSString *)nonce
-                  description:(NSString *)description
                         email:(NSString *)email
                     firstName:(NSString *)firstName
                      lastName:(NSString *)lastName
@@ -28,7 +27,7 @@
                       payerId:(NSString *)payerId
                     isDefault:(BOOL)isDefault
               creditFinancing:(BTPayPalCreditFinancing *)creditFinancing {
-    if (self = [super initWithNonce:nonce localizedDescription:description type:@"PayPal" isDefault:isDefault]) {
+    if (self = [super initWithNonce:nonce type:@"PayPal" isDefault:isDefault]) {
         _email = email;
         _firstName = firstName;
         _lastName = lastName;

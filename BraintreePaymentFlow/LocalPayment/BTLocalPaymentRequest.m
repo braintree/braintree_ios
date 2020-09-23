@@ -177,7 +177,6 @@
              } else {
                  BTJSON *payPalAccount = body[@"paypalAccounts"][0];
                  NSString *nonce = [payPalAccount[@"nonce"] asString];
-                 NSString *description = [payPalAccount[@"description"] asString];
                  NSString *type = [payPalAccount[@"type"] asString];
 
                  BTJSON *details = payPalAccount[@"details"];
@@ -200,18 +199,8 @@
                      shippingAddress = [self.class accountAddressFromJSON:details[@"payerInfo"][@"accountAddress"]];
                  }
 
-                 // Braintree gateway has some inconsistent behavior depending on
-                 // the type of nonce, and sometimes returns "PayPal" for description,
-                 // and sometimes returns a real identifying string. The former is not
-                 // desirable for display. The latter is.
-                 // As a workaround, we ignore descriptions that look like "PayPal".
-                 if ([description caseInsensitiveCompare:@"PayPal"] == NSOrderedSame) {
-                     description = email;
-                 }
-
                  BTLocalPaymentResult *tokenizedLocalPayment = [[BTLocalPaymentResult alloc] initWithNonce:nonce
-                                                                                                description:description
-                                                                                                       type:type
+                                                                                                      type:type
                                                                                                       email:email
                                                                                                   firstName:firstName
                                                                                                    lastName:lastName

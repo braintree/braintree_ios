@@ -34,11 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, readonly, copy) NSString *lastName;
 
 /**
- A localized description of the payment info.
- */
-@property (nonatomic, readonly, copy) NSString *localizedDescription;
-
-/**
  The one-time use payment method nonce.
  */
 @property (nonatomic, readonly, copy) NSString *nonce;
@@ -67,7 +62,6 @@ NS_ASSUME_NONNULL_BEGIN
  Creates a BTLocalPaymentResult.
 
  @param nonce The one-time use payment method nonce.
- @param description A localized description of the payment info.
  @param type The type of the tokenized payment.
  @param email Payer's email address.
  @param firstName Payer's first name.
@@ -79,7 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param payerId Payer Id associated with this transaction.
  */
 - (instancetype)initWithNonce:(NSString *)nonce
-                  description:(NSString *)description
                          type:(NSString *)type
                         email:(NSString *)email
                     firstName:(NSString *)firstName

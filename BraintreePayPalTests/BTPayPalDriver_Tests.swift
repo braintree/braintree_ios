@@ -329,7 +329,6 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             "paypalAccounts": [
                 [
                     "nonce": "a-nonce",
-                    "description": "A description",
                     "details": [
                         "email": "hello@world.com",
                         "payerInfo": [
@@ -348,7 +347,6 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         assertSuccessfulAuthorizationResponse(authResponse as [String : AnyObject],
             assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
                 XCTAssertEqual(tokenizedPayPalAccount!.nonce, "a-nonce")
-                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
                 let shippingAddress = tokenizedPayPalAccount!.shippingAddress!
                 XCTAssertEqual(shippingAddress.recipientName, "Foo Bar")
@@ -377,23 +375,6 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         assertSuccessfulAuthorizationResponse(authResponse as [String : AnyObject],
             assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
-        })
-    }
-
-    func testTokenizedPayPalAccount_whenDescriptionJSONIsPayPal_usesEmailAsLocalizedDescription() {
-        let authResponse = [
-            "paypalAccounts": [
-                [
-                    "nonce": "fake-nonce",
-                    "description": "PayPal",
-                    "details": [
-                        "email": "hello@world.com",
-                    ],
-                    ]
-            ] ]
-        assertSuccessfulAuthorizationResponse(authResponse as [String : AnyObject],
-            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "hello@world.com")
         })
     }
     
@@ -1376,7 +1357,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             "paypalAccounts": [
                 [
                     "nonce": "a-nonce",
-                    "description": "A description",
                     "details": [
                         "email": "hello@world.com",
                         "payerInfo": [
@@ -1416,7 +1396,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         assertSuccessfulCheckoutResponse(checkoutResponse as [String : AnyObject],
             assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
                 XCTAssertEqual(tokenizedPayPalAccount!.nonce, "a-nonce")
-                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
                 XCTAssertEqual(tokenizedPayPalAccount!.firstName, "Some")
                 XCTAssertEqual(tokenizedPayPalAccount!.lastName, "Dude")
                 XCTAssertEqual(tokenizedPayPalAccount!.phone, "867-5309")
@@ -1457,23 +1436,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         assertSuccessfulCheckoutResponse(checkoutResponse as [String : AnyObject],
             assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
-        })
-    }
-
-    func testtokenizedPayPalAccount_whenDescriptionJSONIsPayPal_usesEmailAsLocalizedDescription() {
-        let checkoutResponse = [
-            "paypalAccounts": [
-                [
-                    "nonce": "fake-nonce",
-                    "description": "PayPal",
-                    "details": [
-                        "email": "hello@world.com",
-                    ],
-                    ]
-            ] ]
-        assertSuccessfulCheckoutResponse(checkoutResponse as [String : AnyObject],
-            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "hello@world.com")
         })
     }
 

@@ -3,7 +3,6 @@ import XCTest
 class BTCardNonce_Tests: XCTestCase {
     func testCardNonceWithJSON_createsCardWithExpectedValues() {
         let cardNonce = BTCardNonce(json: BTJSON(value: [
-            "description": "Visa ending in 11",
             "details": [
                 "cardType": "Visa",
                 "expirationMonth": "01",
@@ -37,7 +36,6 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShiftPossible)
         XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShifted)
         XCTAssertTrue(cardNonce.threeDSecureInfo.wasVerified)
-        XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.expirationMonth, "01")
         XCTAssertEqual(cardNonce.expirationYear, "2020")
@@ -67,7 +65,6 @@ class BTCardNonce_Tests: XCTestCase {
     
     func testCardWithJSON_createsCard_withoutThreeDSecureInfo() {
         let cardNonce = BTCardNonce(json: BTJSON(value: [
-            "description": "Visa ending in 11",
             "details": [
                 "cardType": "Visa",
                 "lastTwo": "11",
@@ -91,7 +88,6 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShiftPossible)
         XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShifted)
         XCTAssertFalse(cardNonce.threeDSecureInfo.wasVerified)
-        XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.lastFour, "1111")
@@ -110,7 +106,6 @@ class BTCardNonce_Tests: XCTestCase {
 
     func testCardNonceWithJSON_ignoresCaseWhenParsingCardType() {
         let cardNonce = BTCardNonce(json: BTJSON(value: [
-            "description": "Visa ending in 11",
             "details": [
                 "cardType": "vIsA",
                 "lastTwo": "11",
@@ -119,7 +114,6 @@ class BTCardNonce_Tests: XCTestCase {
             "nonce": "fake-nonce",
         ]))
 
-        XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.lastFour, "1111")
@@ -181,7 +175,6 @@ class BTCardNonce_Tests: XCTestCase {
         ]
         for i in 0..<cardNetworks.count {
             let jsonValue = [
-                "description": "\(cardTypes[i]) ending in 11",
                 "details": [
                     "cardType": cardTypeJSONValues[i],
                     "lastTwo": "11",
@@ -222,7 +215,6 @@ class BTCardNonce_Tests: XCTestCase {
             ]
         ]))
 
-        XCTAssertEqual(cardNonce.localizedDescription, "ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.expirationMonth, "01")
         XCTAssertEqual(cardNonce.expirationYear, "2020")
@@ -261,7 +253,6 @@ class BTCardNonce_Tests: XCTestCase {
             ]
         ]))
 
-        XCTAssertEqual(cardNonce.localizedDescription, "ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.lastFour, "1111")
@@ -346,7 +337,6 @@ class BTCardNonce_Tests: XCTestCase {
             ]
         ]))
 
-        XCTAssertEqual(cardNonce.localizedDescription, "")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.unknown)
         XCTAssertEqual(cardNonce.lastTwo, "")
         XCTAssertEqual(cardNonce.lastFour, "")

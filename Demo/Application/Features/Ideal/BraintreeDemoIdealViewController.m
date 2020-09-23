@@ -76,8 +76,8 @@
             }
         } else if (result) {
             BTLocalPaymentResult *localPaymentResult = (BTLocalPaymentResult *)result;
-            BTPaymentMethodNonce *n = [[BTPaymentMethodNonce alloc] initWithNonce:localPaymentResult.nonce localizedDescription:localPaymentResult.localizedDescription];
-            self.completionBlock(n);
+            BTPaymentMethodNonce *nonce = [[BTPaymentMethodNonce alloc] initWithNonce:localPaymentResult.nonce];
+            self.completionBlock(nonce);
         }
     };
 

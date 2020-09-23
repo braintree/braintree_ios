@@ -5,7 +5,6 @@
 @implementation BTLocalPaymentResult
 
 - (instancetype)initWithNonce:(NSString *)nonce
-                  description:(NSString *)description
                          type:(NSString *)type
                         email:(NSString *)email
                     firstName:(NSString *)firstName
@@ -18,7 +17,6 @@
 {
     if (self = [super init]) {
         _nonce = nonce;
-        _localizedDescription = description;
         _type = type;
         _email = email;
         _firstName = firstName;

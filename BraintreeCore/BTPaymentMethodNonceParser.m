@@ -57,7 +57,6 @@
     }
 
     return [[BTPaymentMethodNonce alloc] initWithNonce:[json[@"nonce"] asString]
-                                  localizedDescription:[json[@"description"] asString]
                                                   type:@"Unknown"
                                              isDefault:[json[@"default"] isTrue]];
 }

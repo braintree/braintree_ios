@@ -178,19 +178,18 @@ class BTAPIClient_SwiftTests: XCTestCase {
             "paymentMethods": [
                 [
                     "default" : true,
-                    "description": "ending in 05",
                     "details": [
                         "cardType": "American Express",
                         "lastTwo": "05"
                     ],
-                    "nonce": "fake-nonce",
+                    "nonce": "fake-nonce1",
                     "type": "CreditCard"
                 ],
                 [
                     "default" : false,
                     "description": "jane.doe@example.com",
                     "details": [],
-                    "nonce": "fake-nonce",
+                    "nonce": "fake-nonce2",
                     "type": "PayPalAccount"
                 ]
             ] ]
@@ -208,12 +207,10 @@ class BTAPIClient_SwiftTests: XCTestCase {
             XCTAssertEqual(paymentMethodNonces.count, 2)
 
             let firstNonce = paymentMethodNonces[0];
-            XCTAssertEqual(firstNonce.nonce, "fake-nonce")
-            XCTAssertEqual(firstNonce.localizedDescription, "ending in 05")
+            XCTAssertEqual(firstNonce.nonce, "fake-nonce1")
 
             let secondNonce = paymentMethodNonces[1]
-            XCTAssertEqual(secondNonce.nonce, "fake-nonce")
-            XCTAssertEqual(secondNonce.localizedDescription, "jane.doe@example.com")
+            XCTAssertEqual(secondNonce.nonce, "fake-nonce2")
 
             expectation.fulfill()
         }

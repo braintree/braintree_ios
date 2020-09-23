@@ -239,7 +239,6 @@ class BTApplePay_Tests: XCTestCase {
             "applePayCards": [
                 [
                     "nonce" : "an-apple-pay-nonce",
-                    "description": "a description",
                     "default": true,
                     "binData": [
                         "prepaid": "Yes",
@@ -261,7 +260,6 @@ class BTApplePay_Tests: XCTestCase {
         let payment = MockPKPayment()
         client.tokenizeApplePay(payment) { (tokenizedPayment, error) -> Void in
             XCTAssertNil(error)
-            XCTAssertEqual(tokenizedPayment!.localizedDescription, "a description")
             XCTAssertEqual(tokenizedPayment!.nonce, "an-apple-pay-nonce")
             XCTAssertTrue(tokenizedPayment!.isDefault)
             XCTAssertEqual(tokenizedPayment!.binData.prepaid, "Yes")
