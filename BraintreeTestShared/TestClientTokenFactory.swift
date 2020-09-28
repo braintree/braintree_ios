@@ -79,13 +79,6 @@ public class TestClientTokenFactory: NSObject {
                                           "mastercard",
                                           "amex"]
                 ],
-                "coinbaseEnabled": true,
-                "coinbase": [
-                    "clientId": "a_coinbase_client_id",
-                    "merchantAccount": "coinbase-account@example.com",
-                    "scopes": "authorizations:braintree user",
-                    "redirectUrl": "https://assets.example.com/coinbase/oauth/redirect"
-                ],
                 "merchantAccountId": "some-merchant-account-id",
             ]
         } else {
@@ -135,13 +128,6 @@ public class TestClientTokenFactory: NSObject {
                                        "mastercard",
                                        "amex" ]
 
-            ],
-            "coinbaseEnabled": false,
-            "coinbase": [
-                "clientId": "a_coinbase_client_id",
-                "merchantAccount": "coinbase-account@example.com",
-                "scopes": "authorizations:braintree user",
-                "redirectUrl": "https://assets.example.com/coinbase/oauth/redirect"
             ],
             "merchantAccountId": "some-merchant-account-id",
         ]
