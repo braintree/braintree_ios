@@ -37,8 +37,12 @@
         } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"amex"] == NSOrderedSame) {
             [supportedNetworks addObject:PKPaymentNetworkAmex];
         } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) {
-            if (@available(iOS 9.0, watchOS 3.0, *)) {
+            if (@available(iOS 9.0, *)) {
                 [supportedNetworks addObject:PKPaymentNetworkDiscover];
+            }
+        } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"maestro"] == NSOrderedSame) {
+            if (@available(iOS 12.0, *)) {
+                [supportedNetworks addObject:PKPaymentNetworkMaestro];
             }
         }
     }

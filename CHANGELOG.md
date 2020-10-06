@@ -2,6 +2,7 @@
 
 ## unreleased
 * Add `cardholderName` to `BTCardNonce`
+* Add support for `PKPaymentNetworkMaestro` to Apple Pay configuration
 
 ## 4.35.0 (2020-08-10)
 * Update CardinalMobile.framework to v2.2.3-1

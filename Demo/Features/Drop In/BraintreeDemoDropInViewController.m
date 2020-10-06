@@ -217,7 +217,11 @@
         paymentRequest.paymentSummaryItems = @[
                                                [PKPaymentSummaryItem summaryItemWithLabel:@"Socks" amount:[NSDecimalNumber decimalNumberWithString:@"100"]]
                                                ];
-        paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover];
+        if (@available(iOS 12.0, *)) {
+            paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover, PKPaymentNetworkMaestro];
+        } else {
+            paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover];
+        }
         paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
         paymentRequest.currencyCode = @"USD";
         paymentRequest.countryCode = @"US";
@@ -312,7 +316,7 @@
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion API_AVAILABLE(ios(11.0), watchos(4.0)) {
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion API_AVAILABLE(ios(11.0)) {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:self.authorizationString];
     BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:client];
