@@ -41,6 +41,16 @@ Start with [**'Hello, Client!'**](https://developers.braintreepayments.com/ios/s
 
 Next, read the [**full documentation**](https://developers.braintreepayments.com/ios/sdk/client) for information about integration options, such as Drop-In UI, PayPal, and credit card tokenization.
 
+## Versions
+
+This SDK abides by our Client SDK Deprecation Policy. For more information on the potential statuses of an SDK check our [developer docs](http://developers.braintreepayments.com/guides/client-sdk/deprecation-policy).
+
+<!--TODO: Make sure October is still the accurate month for the release of v5 -->
+| Major version number | Status | Released | Deprecated | Unsupported |
+| -------------------- | ------ | -------- | ---------- | ----------- |
+| 5.x.x | Active | October 2020 | TBA | TBA |
+| 4.x.x | Inactive | November 2015 | October 2021 | October 2022 |
+
 ## Demo
 
 A demo app is included in the project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode.
