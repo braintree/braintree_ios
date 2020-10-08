@@ -24,55 +24,55 @@ Pod::Spec.new do |s|
   s.default_subspecs = %w[Core Card PayPal]
 
   s.subspec "Core" do |s|
-    s.source_files  = "BraintreeCore/**/*.{h,m}"
-    s.public_header_files = "BraintreeCore/Public/*.h"
+    s.source_files  = "Sources/BraintreeCore/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeCore/Public/*.h"
   end
 
   s.subspec "Apple-Pay" do |s|
-    s.source_files  = "BraintreeApplePay/**/*.{h,m}"
-    s.public_header_files = "BraintreeApplePay/Public/*.h"
+    s.source_files  = "Sources/BraintreeApplePay/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeApplePay/Public/*.h"
     s.dependency "Braintree/Core"
     s.frameworks = "PassKit"
   end
 
   s.subspec "Card" do |s|
-    s.source_files  = "BraintreeCard/**/*.{h,m}"
-    s.public_header_files = "BraintreeCard/Public/*.h"
+    s.source_files  = "Sources/BraintreeCard/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeCard/Public/*.h"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "DataCollector" do |s|
-    s.source_files = "BraintreeDataCollector/**/*.{h,m}"
-    s.public_header_files = "BraintreeDataCollector/Public/*.h"
-    s.vendored_library = "BraintreeDataCollector/Kount/libDeviceCollectorLibrary.a"
+    s.source_files = "Sources/BraintreeDataCollector/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeDataCollector/Public/*.h"
+    s.vendored_library = "Sources/BraintreeDataCollector/Kount/libDeviceCollectorLibrary.a"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "PayPal" do |s|
-    s.source_files = "BraintreePayPal/*.{h,m}", "BraintreePayPal/Public/*.h"
-    s.public_header_files = "BraintreePayPal/Public/*.h"
+    s.source_files = "Sources/BraintreePayPal/*.{h,m}", "Sources/BraintreePayPal/Public/*.h"
+    s.public_header_files = "Sources/BraintreePayPal/Public/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalOneTouch"
   end
 
   s.subspec "Venmo" do |s|
-    s.source_files = "BraintreeVenmo/**/*.{h,m}"
-    s.public_header_files = "BraintreeVenmo/Public/*.h"
+    s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeVenmo/Public/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
   end
 
   s.subspec "UnionPay" do |s|
-    s.source_files  = "BraintreeUnionPay/**/*.{h,m}"
-    s.public_header_files = "BraintreeUnionPay/Public/*.h"
+    s.source_files  = "Sources/BraintreeUnionPay/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeUnionPay/Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "PayPalOneTouch" do |s|
-    s.source_files = "BraintreePayPal/PayPalOneTouch/**/*.{h,m}"
-    s.public_header_files = "BraintreePayPal/PayPalOneTouch/Public/*.h"
+    s.source_files = "Sources/BraintreePayPal/PayPalOneTouch/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreePayPal/PayPalOneTouch/Public/*.h"
     s.frameworks = "UIKit"
     s.weak_frameworks = "SafariServices"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
@@ -82,8 +82,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PayPalDataCollector" do |s|
-    s.source_files = "BraintreePayPal/PayPalDataCollector/**/*.{h,m}"
-    s.public_header_files = "BraintreePayPal/PayPalDataCollector/Public/*.h"
+    s.source_files = "Sources/BraintreePayPal/PayPalDataCollector/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreePayPal/PayPalDataCollector/Public/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
     s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
     s.dependency "Braintree/Core"
@@ -91,20 +91,20 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PayPalUtils" do |s|
-    s.source_files = "BraintreePayPal/PayPalUtils/**/*.{h,m}"
-    s.public_header_files = "BraintreePayPal/PayPalUtils/Public/*.h"
+    s.source_files = "Sources/BraintreePayPal/PayPalUtils/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreePayPal/PayPalUtils/Public/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
   end
 
   s.subspec "AmericanExpress" do |s|
-    s.source_files  = "BraintreeAmericanExpress/**/*.{h,m}"
-    s.public_header_files = "BraintreeAmericanExpress/Public/*.h"
+    s.source_files  = "Sources/BraintreeAmericanExpress/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeAmericanExpress/Public/*.h"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "PaymentFlow" do |s|
-    s.source_files = "BraintreePaymentFlow/**/*.{h,m}"
-    s.public_header_files = "BraintreePaymentFlow/Public/**/*.h"
+    s.source_files = "Sources/BraintreePaymentFlow/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreePaymentFlow/Public/**/*.h"
     s.weak_frameworks = "SafariServices"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"

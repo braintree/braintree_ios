@@ -46,7 +46,6 @@ let package = Package(
         .target(
             name: "BraintreeAmericanExpress",
             dependencies: ["BraintreeCore"],
-            path: "BraintreeAmericanExpress",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
@@ -58,7 +57,6 @@ let package = Package(
         .target(
             name: "BraintreeApplePay",
             dependencies: ["BraintreeCore"],
-            path: "BraintreeApplePay",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
@@ -70,7 +68,6 @@ let package = Package(
         .target(
             name: "BraintreeCard",
             dependencies: ["BraintreeCore"],
-            path: "BraintreeCard",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
@@ -85,7 +82,6 @@ let package = Package(
         .target(
             name: "BraintreeCore",
             dependencies: [],
-            path: "BraintreeCore",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
@@ -94,7 +90,6 @@ let package = Package(
         .target(
             name: "BraintreeUnionPay",
             dependencies: ["BraintreeCore", "BraintreeCard"],
-            path: "BraintreeUnionPay",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
@@ -107,7 +102,7 @@ let package = Package(
         .target(
             name: "PayPalDataCollector",
             dependencies: ["BraintreeCore", "PayPalUtils"],
-            path: "BraintreePayPal/PayPalDataCollector",
+            path: "Sources/BraintreePayPal/PayPalDataCollector",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
@@ -120,7 +115,7 @@ let package = Package(
         .target(
             name: "PayPalUtils",
             dependencies: ["BraintreeCore"],
-            path: "BraintreePayPal/PayPalUtils",
+            path: "Sources/BraintreePayPal/PayPalUtils",
             exclude: ["Info.plist"],
             sources: nil,
             resources: nil,
