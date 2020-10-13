@@ -1,0 +1,4 @@
+module BraintreeUnionPay {
+    umbrella header "/Users/scannillo/bt/braintree-ios/Sources/BraintreeUnionPay/Public/BraintreeUnionPay.h"
+    export *
+}

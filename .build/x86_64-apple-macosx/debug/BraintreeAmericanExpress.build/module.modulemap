@@ -1,0 +1,4 @@
+module BraintreeAmericanExpress {
+    umbrella header "/Users/scannillo/bt/braintree-ios/Sources/BraintreeAmericanExpress/Public/BraintreeAmericanExpress.h"
+    export *
+}

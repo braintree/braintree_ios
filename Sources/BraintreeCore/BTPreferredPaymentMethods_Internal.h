@@ -1,4 +1,8 @@
+#if SWIFT_PACKAGE
+#import "Public/BTPreferredPaymentMethods.h"
+#else
 #import <BraintreeCore/BTPreferredPaymentMethods.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

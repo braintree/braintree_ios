@@ -1,0 +1,4 @@
+module BraintreeCard {
+    umbrella header "/Users/scannillo/bt/braintree-ios/Sources/BraintreeCard/Public/BraintreeCard.h"
+    export *
+}

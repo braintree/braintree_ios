@@ -83,8 +83,6 @@ let package = Package(
             name: "BraintreeCore",
             dependencies: [],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
             publicHeadersPath: "Public"
         ),
         .target(

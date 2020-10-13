@@ -6,6 +6,30 @@ FOUNDATION_EXPORT double BraintreeCoreVersionNumber;
 /// Project version string for BraintreeCore.
 FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 
+// This relies on merchant app defining SWIFT_PACKAGE=1 macro
+#if SWIFT_PACKAGE
+#import "BTAPIClient.h"
+#import "BTAppSwitch.h"
+#import "BTBinData.h"
+#import "BTClientMetadata.h"
+#import "BTClientToken.h"
+#import "BTConfiguration.h"
+#import "BTEnums.h"
+#import "BTErrors.h"
+#import "BTHTTPErrors.h"
+#import "BTJSON.h"
+#import "BTLogger.h"
+#import "BTPostalAddress.h"
+#import "BTPaymentMethodNonce.h"
+#import "BTPaymentMethodNonceParser.h"
+#import "BTPayPalIDToken.h"
+#import "BTTokenizationService.h"
+#import "BTViewControllerPresentingDelegate.h"
+#import "BTPreferredPaymentMethods.h"
+#import "BTPreferredPaymentMethodsResult.h"
+#import "BTURLUtils.h"
+
+#else
 #import <BraintreeCore/BTAPIClient.h>
 #import <BraintreeCore/BTAppSwitch.h>
 #import <BraintreeCore/BTBinData.h>
@@ -27,3 +51,5 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <BraintreeCore/BTPreferredPaymentMethods.h>
 #import <BraintreeCore/BTPreferredPaymentMethodsResult.h>
 #import <BraintreeCore/BTURLUtils.h>
+
+#endif

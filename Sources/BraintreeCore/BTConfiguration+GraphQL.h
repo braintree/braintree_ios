@@ -1,4 +1,8 @@
+#if SWIFT_PACKAGE
+#import "Public/BTConfiguration.h"
+#else
 #import <BraintreeCore/BTConfiguration.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

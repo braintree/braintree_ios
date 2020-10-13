@@ -1,4 +1,8 @@
+#if SWIFT_PACKAGE
+#import "BTHTTP.h"
+#else
 #import <BraintreeCore/BTHTTP.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
