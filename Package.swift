@@ -64,15 +64,7 @@ let package = Package(
             name: "BraintreeCard",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                // TODO: This is currently necessary in a couple of modules because we are using project level
-                // headers to expose some Core functionality to Card. I haven't been able to find anything equivalent
-                // for SPM, so we may need to come up with a new strategy
-                .headerSearchPath("../BraintreeCore/")
-            ]
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeCore",
