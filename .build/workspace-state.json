@@ -1,1 +1,0 @@
-{"object": {"artifacts": [{"packageRef": {"identity": "braintree-ios", "kind": "root", "name": "braintree-ios", "path": "/Users/scannillo/bt/braintree-ios"}, "source": {"path": "Frameworks/PPRiskMagnes.xcframework", "type": "local"}, "targetName": "PPRiskMagnes"}], "dependencies": []}, "version": 4}

@@ -31,5 +31,6 @@ Carthage/Build
 
 # SPM
 .swiftpm
+.build
 
 *.pid

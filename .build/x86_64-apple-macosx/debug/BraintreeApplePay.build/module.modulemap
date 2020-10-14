@@ -1,4 +1,0 @@
-module BraintreeApplePay {
-    umbrella header "/Users/scannillo/bt/braintree-ios/Sources/BraintreeApplePay/Public/BraintreeApplePay.h"
-    export *
-}

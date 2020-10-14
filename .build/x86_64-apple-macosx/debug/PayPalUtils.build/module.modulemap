@@ -1,4 +1,0 @@
-module PayPalUtils {
-    umbrella header "/Users/scannillo/bt/braintree-ios/Sources/BraintreePayPal/PayPalUtils/Public/PayPalUtils.h"
-    export *
-}

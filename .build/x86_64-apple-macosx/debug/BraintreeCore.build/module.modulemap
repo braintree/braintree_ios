@@ -1,4 +1,0 @@
-module BraintreeCore {
-    umbrella header "/Users/scannillo/bt/braintree-ios/Sources/BraintreeCore/Public/BraintreeCore.h"
-    export *
-}

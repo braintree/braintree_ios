@@ -1,4 +1,0 @@
-module PayPalDataCollector {
-    umbrella header "/Users/scannillo/bt/braintree-ios/Sources/BraintreePayPal/PayPalDataCollector/Public/PayPalDataCollector.h"
-    export *
-}
