@@ -1,4 +1,9 @@
+#if SWIFT_PACKAGE
+#import "BraintreeCard.h"
+#else
 #import <BraintreeCard/BraintreeCard.h>
+#endif
+
 @class BTCardCapabilities;
 
 NS_ASSUME_NONNULL_BEGIN
