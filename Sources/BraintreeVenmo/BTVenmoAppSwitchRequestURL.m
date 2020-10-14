@@ -1,7 +1,12 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 
-#import <BraintreeCore/BraintreeCore.h>
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#import "../BraintreeCore/Braintree-Version.h"
+#else
 #import <BraintreeCore/Braintree-Version.h>
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
 #define kXCallbackTemplate @"scheme://x-callback-url/path"
 #define kVenmoScheme @"com.venmo.touch.v2"

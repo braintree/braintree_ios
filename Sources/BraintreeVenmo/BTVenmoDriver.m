@@ -4,10 +4,15 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCore/BTLogger_Internal.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreeCore/Braintree-Version.h>
+#endif
 
 @interface BTVenmoDriver ()
 

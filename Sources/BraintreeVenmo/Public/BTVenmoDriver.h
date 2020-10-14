@@ -1,4 +1,9 @@
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
+
 @class BTVenmoAccountNonce;
 
 NS_ASSUME_NONNULL_BEGIN

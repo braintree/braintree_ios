@@ -24,6 +24,10 @@ let package = Package(
             targets: ["BraintreeCore"]
         ),
         .library(
+            name: "BraintreeVenmo",
+            targets: ["BraintreeVenmo"]
+        ),
+        .library(
             name: "BraintreeUnionPay",
             targets: ["BraintreeUnionPay"]
         ),
@@ -64,6 +68,12 @@ let package = Package(
         .target(
             name: "BraintreeCore",
             dependencies: [],
+            exclude: ["Info.plist"],
+            publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreeVenmo",
+            dependencies: ["BraintreeCore", "PayPalDataCollector"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
