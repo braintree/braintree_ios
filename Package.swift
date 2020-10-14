@@ -88,11 +88,8 @@ let package = Package(
         ),
         .target(
             name: "PayPalUtils",
-            dependencies: ["BraintreeCore"],
             path: "Sources/BraintreePayPal/PayPalUtils",
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
