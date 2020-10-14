@@ -7,7 +7,11 @@
 
 #import "PPDataCollector_Internal.h"
 
+#if SWIFT_PACKAGE
+#import "PayPalUtils.h"
+#else
 #import <PayPalUtils/PayPalUtils.h>
+#endif
 
 #import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 

@@ -78,13 +78,7 @@ let package = Package(
             dependencies: ["BraintreeCore", "PayPalUtils"],
             path: "Sources/BraintreePayPal/PayPalDataCollector",
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/"),
-                .headerSearchPath("../BraintreeCard/")
-            ]
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "PayPalUtils",
