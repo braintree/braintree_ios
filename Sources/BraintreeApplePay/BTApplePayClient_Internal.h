@@ -1,4 +1,8 @@
+#if SWIFT_PACKAGE
+#import "BTApplePayClient.h"
+#else
 #import <BraintreeApplePay/BTApplePayClient.h>
+#endif
 
 @interface BTApplePayClient ()
 /**

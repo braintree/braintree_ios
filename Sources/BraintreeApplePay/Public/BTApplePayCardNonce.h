@@ -1,4 +1,8 @@
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

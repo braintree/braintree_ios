@@ -2,8 +2,13 @@
 #import "BTConfiguration+ApplePay.h"
 #import "BTApplePayCardNonce.h"
 
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#endif
 
 #import <PassKit/PassKit.h>
 
