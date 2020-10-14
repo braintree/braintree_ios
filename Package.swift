@@ -47,12 +47,7 @@ let package = Package(
             name: "BraintreeAmericanExpress",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/")
-            ]
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeApplePay",
