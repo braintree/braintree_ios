@@ -2,9 +2,13 @@
 #import "BTPaymentFlowRequest.h"
 #import "BTPaymentFlowResult.h"
 
+#if SWIFT_PACKAGE
+#import "../BraintreeCore/BTLogger_Internal.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#else
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/Braintree-Version.h>
+#endif
 
 #import <SafariServices/SafariServices.h>
 

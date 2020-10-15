@@ -38,11 +38,15 @@ let package = Package(
         .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
-        ),
+        )
+//        TODO: uncomment once we have CardinalMobile.xcframework
+//        .library(
+//            name: "BraintreePaymentFlow",
+//            targets: ["BraintreePaymentFlow", "CardinalMobile"]
+//        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -96,9 +100,23 @@ let package = Package(
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
+        .target(
+            name: "BraintreePaymentFlow",
+            dependencies: ["BraintreeCore", "BraintreeCard", "PayPalDataCollector"],
+            exclude: ["Info.plist"],
+            publicHeadersPath: "Public"
+        ),
         .binaryTarget(
             name: "PPRiskMagnes",
             path: "Frameworks/PPRiskMagnes.xcframework"
-        ),
+        )
+//        TODO: Get xcframework version of CardinalMobile
+//        .binaryTarget(
+//            name: "CardinalMobile",
+//            path: "Frameworks/CardinalMobile.xcframework"
+//        ),
+
+//        TODO: Add target & library for BraintreeDataCollector (w/ Kount)
+//        Get Kount as .xcframework
     ]
 )

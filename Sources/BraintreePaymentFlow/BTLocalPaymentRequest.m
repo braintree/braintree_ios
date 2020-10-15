@@ -5,12 +5,17 @@
 #import "BTLocalPaymentResult.h"
 #import "BTPaymentFlowDriver+LocalPayment_Internal.h"
 
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#import "../BraintreeCore/BTLogger_Internal.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "PayPalDataCollector.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/Braintree-Version.h>
-
 #import <PayPalDataCollector/PayPalDataCollector.h>
+#endif
 
 #import <SafariServices/SafariServices.h>
 
