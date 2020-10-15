@@ -20,6 +20,13 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 We recommend using either [CocoaPods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
+#### Swift Package Manager
+To add the `Braintree` package to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `https://github.com/braintree/braintree_ios` as repository URL. 
+// TODO: more detail here on which sub-packages they will need to include.
+
+Also, in your Project level Built Settings, you must define the Preprocesor macro `SWIFT_PACKAGE=1`. 
+// TODO: is there a way we can export this macro from the SDK and not require merchants to manually define it?
+
 #### CocoaPods
 ```
 # Includes Cards and PayPal
