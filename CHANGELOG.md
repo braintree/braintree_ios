@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Exclude arm64 simulator architectures from Release build settings
+
 ## 4.36.0 (2020-10-07)
 * Add `cardholderName` to `BTCardNonce`
 * Add support for `PKPaymentNetworkMaestro` to Apple Pay configuration
