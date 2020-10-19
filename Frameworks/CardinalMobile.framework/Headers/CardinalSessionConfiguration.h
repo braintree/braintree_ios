@@ -28,9 +28,11 @@ typedef NS_ENUM(NSUInteger, CardinalSessionEnvironment) {
  * @constant CardinalSessionUITypeHTML Support for HTML UI Type
  */
 typedef NS_ENUM(NSUInteger, CardinalSessionUIType) {
-    CardinalSessionUITypeBoth,
     CardinalSessionUITypeNative,
-    CardinalSessionUITypeHTML
+#if TARGET_OS_IOS
+    CardinalSessionUITypeHTML,
+    CardinalSessionUITypeBoth
+#endif 
 };
 
 /*!
@@ -69,11 +71,13 @@ extern CardinalSessionRenderType const *CardinalSessionRenderTypeMultiSelect;
  */
 extern CardinalSessionRenderType const *CardinalSessionRenderTypeOOB;
 
+#if TARGET_OS_IOS
 /*!
  * @const CardinalSessionRenderTypeHTML
  * @brief CardinalSessionRenderType for HTML
  */
 extern CardinalSessionRenderType const *CardinalSessionRenderTypeHTML;
+#endif
 
 /*!
  * @const CardinalSessionEnvironmentDEFAULT
@@ -110,13 +114,6 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
 @property (nonatomic, assign) CardinalSessionEnvironment deploymentEnvironment;
 
 /*!
- * @property timeout Timeout in Milliseconds
- * @brief This property is deprecated. Use "requestTimeout" property as it's replacement.
- * Default value is CardinalSessionTimeoutDEFAULT (about 8 seconds).
- */
-@property (nonatomic, assign) NSUInteger timeout DEPRECATED_ATTRIBUTE;
-
-/*!
  * @property requestTimeout Timeout in Milliseconds
  * @brief Sets the default timeout in milliseconds for how long the SDK will wait for a response from a Cardinal server for all operations. See preset values for Standard and Short timeouts.
  * Default value is CardinalSessionTimeoutDEFAULT (about 8 seconds).
@@ -138,19 +135,27 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
  */
 @property (nonatomic, copy, nullable) NSURL *proxyServerURL;
 
+#if TARGET_OS_IOS
 /*!
  * @property uiType UI Type
  * @brief Sets the Interface type that the device supports for displaying specific challenge user interfaces within the SDK.
  * Default value is CardinalSessionUITypeBoth.
  */
 @property (nonatomic, assign) CardinalSessionUIType uiType;
-
+#elif TARGET_OS_TV
+/*!
+* @property uiType UI Type
+* @brief The Interface type that the device supports for displaying specific challenge user interfaces within the SDK.
+* Default value is CardinalSessionUITypeNative.
+*/
+@property (nonatomic, assign, readonly) CardinalSessionUIType uiType;
+#endif
 /*!
  * @property enableQuickAuth Enable Quick Authentication
- * @brief Sets enable quick auth.
+ * @brief Sets enable quick auth. This property is deprecated in v2.2.4. This feature will no longer be supported in the SDK.
  * Default value is false.
  */
-@property (nonatomic) BOOL enableQuickAuth;
+@property (nonatomic) BOOL enableQuickAuth DEPRECATED_ATTRIBUTE;
 
 /*!
  * @property renderType Render Type
@@ -186,6 +191,12 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
  */
 @property (nonatomic, copy, nullable) NSString *threeDSRequestorAppURL;
 
+/*!
+ * @property collectLogs Collect Logs
+ * @brief Collect and send logs for each transaction.
+ * Default value is true.
+ */
+@property (nonatomic) BOOL collectLogs;
 @end
 
 NS_ASSUME_NONNULL_END

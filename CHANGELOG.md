@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Update CardinalMobile.framework to v2.2.4-1
 * Exclude arm64 simulator architectures from Release build settings
 
 ## 4.36.0 (2020-10-07)
