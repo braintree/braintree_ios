@@ -10,7 +10,11 @@
 * Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 
 ## unreleased (v4)
+* Exclude arm64 simulator architectures from Release build settings
+
+## 4.36.0 (2020-10-07)
 * Add `cardholderName` to `BTCardNonce`
+* Add support for `PKPaymentNetworkMaestro` to Apple Pay configuration
 
 ## 4.35.0 (2020-08-10)
 * Update CardinalMobile.framework to v2.2.3-1

@@ -62,20 +62,21 @@ class BTConfiguration_ApplePay_Tests : XCTestCase {
 
     func testApplePaySupportedNetworks_returnsSupportedNetworks() {
         let configurationJSON = BTJSON(value: [
-            "applePay": [ "supportedNetworks": ["visa", "mastercard", "amex"] ]
+            "applePay": [ "supportedNetworks": ["visa", "mastercard", "amex", "discover"] ]
         ])
         let configuration = BTConfiguration(json: configurationJSON)
 
-        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.visa, PKPaymentNetwork.masterCard, PKPaymentNetwork.amex])
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.visa, PKPaymentNetwork.masterCard, PKPaymentNetwork.amex, PKPaymentNetwork.discover])
     }
 
-    func testApplePaySupportedNetworks_whenSupportedNetworksIncludesDiscover_returnsSupportedNetworks() {
+    @available(iOS 12.0, *)
+    func testApplePaySupportedNetworks_whenSupportedNetworksIncludesMaestro_returnsSupportedNetworks() {
         let configurationJSON = BTJSON(value: [
-            "applePay": [ "supportedNetworks": ["discover"] ]
-        ])
+            "applePay": [ "supportedNetworks": ["maestro"] ]
+            ])
         let configuration = BTConfiguration(json: configurationJSON)
 
-        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.discover])
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.maestro])
     }
 
     func testApplePaySupportedNetworks_doesNotPassesThroughUnknownValuesFromConfiguration() {
