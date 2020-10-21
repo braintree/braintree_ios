@@ -20,14 +20,20 @@ class PayPal_SinglePayment_UITests: XCTestCase {
         self.waitForElementToBeHittable(app.buttons["PayPal one-time payment"])
         app.buttons["PayPal one-time payment"].tap()
         sleep(2)
+
+        // Tap "Continue" on alert
+        addUIInterruptionMonitor(withDescription: "Alert prompting user that the app wants to use PayPal.com to sign in.") { (alert) -> Bool in
+            let continueButton = alert.buttons["Continue"]
+            if (alert.buttons["Continue"].exists) {
+                continueButton.tap()
+            }
+            return true
+        }
+        app.tap()
+        sleep(1)
     }
 
     func testPayPal_singlePayment_receivesNonce() {
-        if #available(iOS 11.0, *) {
-            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
-            return
-        }
-
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
@@ -40,11 +46,6 @@ class PayPal_SinglePayment_UITests: XCTestCase {
     }
 
     func testPayPal_singlePayment_cancelsSuccessfully() {
-        if #available(iOS 11.0, *) {
-            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
-            return
-        }
-
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])

@@ -20,14 +20,20 @@ class PayPal_FuturePayment_UITests: XCTestCase {
         self.waitForElementToBeHittable(app.buttons["PayPal (future payment button)"])
         app.buttons["PayPal (future payment button)"].tap()
         sleep(2)
+
+        // Tap "Continue" on alert
+        addUIInterruptionMonitor(withDescription: "Alert prompting user that the app wants to use PayPal.com to sign in.") { (alert) -> Bool in
+            let continueButton = alert.buttons["Continue"]
+            if (alert.buttons["Continue"].exists) {
+                continueButton.tap()
+            }
+            return true
+        }
+        app.tap()
+        sleep(1)
     }
     
     func testPayPal_futurePayment_receivesNonce() {
-        if #available(iOS 11.0, *) {
-            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
-            return
-        }
-
         let webviewElementsQuery = app.webViews.element.otherElements
         let emailTextField = webviewElementsQuery.textFields["Email"]
         
@@ -51,11 +57,6 @@ class PayPal_FuturePayment_UITests: XCTestCase {
     }
     
     func testPayPal_futurePayment_cancelsSuccessfully() {
-        if #available(iOS 11.0, *) {
-            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
-            return
-        }
-
         let webviewElementsQuery = app.webViews.element.otherElements
         let emailTextField = webviewElementsQuery.textFields["Email"]
         

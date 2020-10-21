@@ -20,14 +20,20 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
         self.waitForElementToBeHittable(app.buttons["Billing Agreement with PayPal"])
         app.buttons["Billing Agreement with PayPal"].tap()
         sleep(2)
+
+        // Tap "Continue" on alert
+        addUIInterruptionMonitor(withDescription: "Alert prompting user that the app wants to use PayPal.com to sign in.") { (alert) -> Bool in
+            let continueButton = alert.buttons["Continue"]
+            if (alert.buttons["Continue"].exists) {
+                continueButton.tap()
+            }
+            return true
+        }
+        app.tap()
+        sleep(1)
     }
 
     func testPayPal_billingAgreement_receivesNonce() {
-        if #available(iOS 11.0, *) {
-            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
-            return
-        }
-
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
@@ -41,11 +47,6 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
     }
 
     func testPayPal_billingAgreement_cancelsSuccessfully() {
-        if #available(iOS 11.0, *) {
-            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
-            return
-        }
-
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
@@ -59,11 +60,6 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
     }
 
     func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingSFSafariViewControllerDoneButton() {
-        if #available(iOS 11.0, *) {
-            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
-            return
-        }
-
         self.waitForElementToAppear(app.buttons["Done"])
 
         app.buttons["Done"].forceTapElement()

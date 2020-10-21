@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 workspace 'Braintree.xcworkspace'
-platform :ios, '11.0'
+platform :ios, '12.0'
 use_frameworks!
 
 target 'Demo' do

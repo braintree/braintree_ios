@@ -2,6 +2,7 @@
 
 ## unreleased (v5)
 * Breaking Changes
+  * Bump minimum supported deployment target to iOS 12
   * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
   * Remove the `localizedDescription` property on `BTPaymentMethodNonce`.
   * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
