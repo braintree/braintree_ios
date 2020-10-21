@@ -2,8 +2,13 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
 
+#if SWIFT_PACKAGE
+#import "BraintreeCard.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#else
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#endif
 
 @implementation BTThreeDSecureAuthenticateJWT
 

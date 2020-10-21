@@ -1,5 +1,4 @@
 #import "BTPaymentFlowDriver+ThreeDSecure.h"
-#import "BTPaymentFlowDriver_Internal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureRequest.h"
@@ -7,9 +6,17 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 
+#if SWIFT_PACKAGE
+#import "../BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h"
+#import "BraintreeCore.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCore/Braintree-Version.h"
+#else
+#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
+#endif
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)
 

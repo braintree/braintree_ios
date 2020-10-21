@@ -1,4 +1,9 @@
+#if SWIFT_PACKAGE
 #import "BTThreeDSecureRequest.h"
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#endif
+
 @class BTConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN

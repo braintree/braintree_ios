@@ -1,4 +1,8 @@
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 /**
  Category on BTConfiguration for ThreeDSecure

@@ -22,5 +22,11 @@
     return self;
 }
 
+// TODO: Remove
+// This code is a test to see if a merchant includes CardinalMobile directly in their app, if this method will return `true`
+- (BOOL)isCardinalAvailable {
+    return NSClassFromString(@"CardinalSession") != nil;
+}
+
 @end
 

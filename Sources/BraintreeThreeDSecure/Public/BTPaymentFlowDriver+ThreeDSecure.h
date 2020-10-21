@@ -1,4 +1,8 @@
+#if SWIFT_PACKAGE
+#import "BTPaymentFlowDriver.h"
+#else
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

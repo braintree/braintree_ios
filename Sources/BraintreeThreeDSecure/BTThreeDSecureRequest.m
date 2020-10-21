@@ -1,5 +1,4 @@
 #import "BTThreeDSecureRequest.h"
-#import "BTPaymentFlowDriver_Internal.h"
 #import "BTThreeDSecureRequest.h"
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureLookup.h"
@@ -12,12 +11,19 @@
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTThreeDSecureResult_Internal.h"
 
+#if SWIFT_PACKAGE
+#import "../BraintreeCore/BTLogger_Internal.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCore/Braintree-Version.h"
+#import "BraintreeCard.h"
+#import "../BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h"
+#else
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
-
 #import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeCard/BTThreeDSecureInfo.h>
+#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
+#endif
 
 #import <SafariServices/SafariServices.h>
 

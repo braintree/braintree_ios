@@ -38,12 +38,17 @@ let package = Package(
         .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
+        ),
+        .library(
+            name: "BraintreePaymentFlow",
+            targets: ["BraintreePaymentFlow"]
+            //  TODO: uncomment once we have CardinalMobile.xcframework
+            //, "CardinalMobile"]
+        ),
+        .library(
+            name: "BraintreeThreeDSecure",
+            targets: ["BraintreeThreeDSecure"]
         )
-//        TODO: uncomment once we have CardinalMobile.xcframework
-//        .library(
-//            name: "BraintreePaymentFlow",
-//            targets: ["BraintreePaymentFlow", "CardinalMobile"]
-//        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -109,6 +114,12 @@ let package = Package(
         .binaryTarget(
             name: "PPRiskMagnes",
             path: "Frameworks/PPRiskMagnes.xcframework"
+        ),
+        .target(
+            name: "BraintreeThreeDSecure",
+            dependencies: ["BraintreePaymentFlow"],
+            exclude: ["Info.plist"],
+            publicHeadersPath: "Public"
         )
 //        TODO: Get xcframework version of CardinalMobile
 //        .binaryTarget(

@@ -1,5 +1,10 @@
+#if SWIFT_PACKAGE
+#import "BTPaymentFlowDriver.h"
+#import "BTPaymentFlowRequest.h"
+#else
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#endif
 @class BTThreeDSecureRequest;
 @class BTThreeDSecureLookup;
 @class BTThreeDSecureResult;

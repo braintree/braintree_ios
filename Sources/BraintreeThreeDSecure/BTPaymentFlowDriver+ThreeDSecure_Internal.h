@@ -1,4 +1,9 @@
+#if SWIFT_PACKAGE
 #import "BTPaymentFlowDriver+ThreeDSecure.h"
+#else
+#import <BraintreeThreeDSecure/BTPaymentFlowDriver+ThreeDSecure.h>
+#endif
+
 @class BTThreeDSecureResult;
 
 NS_ASSUME_NONNULL_BEGIN

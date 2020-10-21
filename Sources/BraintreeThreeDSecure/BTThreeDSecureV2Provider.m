@@ -6,8 +6,13 @@
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureLookup.h"
 
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#endif
 
 #import <CardinalMobile/CardinalMobile.h>
 
