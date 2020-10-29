@@ -64,7 +64,7 @@
 
 @implementation BTPayPalApprovalHandlerTestDelegate
 
-- (void)handleApproval:(__unused PPOTRequest *)request paypalApprovalDelegate:(id<BTPayPalApprovalDelegate>)delegate {
+- (void)handleApproval:(BTPayPalApprovalRequest *)request paypalApprovalDelegate:(id<BTPayPalApprovalDelegate>)delegate {
     if (self.cancel) {
         [delegate onApprovalCancel];
     } else {
@@ -88,105 +88,6 @@
 @implementation BraintreePayPal_IntegrationTests
 
 NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayments.Demo.payments://onetouch/v1/success?payload=eyJ2ZXJzaW9uIjoyLCJhY2NvdW50X2NvdW50cnkiOiJVUyIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXhwaXJlc19pbiI6LTEsImRpc3BsYXlfbmFtZSI6Im1vY2tEaXNwbGF5TmFtZSIsInNjb3BlIjoiaHR0cHM6XC9cL3VyaS5wYXlwYWwuY29tXC9zZXJ2aWNlc1wvcGF5bWVudHNcL2Z1dHVyZXBheW1lbnRzIiwiZW1haWwiOiJtb2NrZW1haWxhZGRyZXNzQG1vY2suY29tIiwiYXV0aG9yaXphdGlvbl9jb2RlIjoibW9ja1RoaXJkUGFydHlBdXRob3JpemF0aW9uQ29kZSJ9&x-source=com.paypal.ppclient.touch.v1-or-v2";
-
-#pragma mark - Authorization (Future Payments)
-
-- (void)testFuturePayments_withTokenizationKey_tokenizesPayPalAccount {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    payPalDriver.disableSFAuthenticationSession = YES;
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    payPalDriver.clientMetadataId = @"fake-client-metadata-id";
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenized PayPal Account"];
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
-        XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
-        XCTAssertNil(error);
-        [expectation fulfill];
-    }];
-
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture]];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testFuturePayments_withClientToken_tokenizesPayPalAccount {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    payPalDriver.disableSFAuthenticationSession = YES;
-    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
-    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenized PayPal Account"];
-    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
-        XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
-        XCTAssertNil(error);
-        [expectation fulfill];
-    }];
-
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture]];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testFuturePayments_whenReturnURLSchemeIsMissing_returnsError {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    payPalDriver.disableSFAuthenticationSession = YES;
-    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
-    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
-        XCTAssertNil(tokenizedPayPalAccount);
-        XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
-        XCTAssertEqual(error.code, BTPayPalDriverErrorTypeIntegrationReturnURLScheme);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testFuturePayments_whenReturnURLSchemeIsInvalid_returnsError {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    payPalDriver.disableSFAuthenticationSession = YES;
-    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
-    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
-    [BTAppSwitch sharedInstance].returnURLScheme = @"not-my-app-bundle-id";
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
-        XCTAssertNil(tokenizedPayPalAccount);
-        XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
-        XCTAssertEqual(error.code, BTPayPalDriverErrorTypeIntegrationReturnURLScheme);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testFuturePayments_onCancelledAppSwitchAuthorization_callsBackWithNoTokenizedAccountOrError {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    payPalDriver.disableSFAuthenticationSession = YES;
-    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
-    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
-
-    self.didReceiveCompletionCallback = nil;
-    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
-        XCTAssertNil(tokenizedPayPalAccount);
-        XCTAssertNil(error);
-        self.didReceiveCompletionCallback = @(YES);
-    }];
-
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/cancel?payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IjQ1QUZEQkE3LUJEQTYtNDNEMi04MUY2LUY4REM1QjZEOTkzQSIsImVudmlyb25tZW50IjoibW9jayJ9&x-source=com.paypal.ppclient.touch.v2"]];
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"didReceiveCompletionCallback != nil"];
-    [self expectationForPredicate:predicate evaluatedWithObject:self handler:nil];
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
 
 #pragma mark - One-time (Checkout) payments
 
@@ -433,7 +334,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     [self stubDelegatesForPayPalDriver:payPalDriver];
 
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
         if (error) {
             XCTFail(@"%@", error);
@@ -459,7 +361,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
         if (error) {
             XCTFail(@"%@", error);
@@ -485,7 +388,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
         if (error) {
             XCTFail(@"%@", error);
@@ -510,7 +414,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
         if (error) {
             XCTFail(@"%@", error);
@@ -547,7 +452,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
     self.didReceiveCompletionCallback = nil;
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
         if (error) {
             XCTFail(@"%@", error);
@@ -578,7 +484,9 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     payPalDriver.disableSFAuthenticationSession = YES;
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     [self stubDelegatesForPayPalDriver:payPalDriver];
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
         if (error) {
             XCTFail(@"%@", error);
@@ -606,7 +514,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
     self.didReceiveCompletionCallback = nil;
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNil(tokenizedPayPalAccount);
         XCTAssertNotNil(error);
         self.didReceiveCompletionCallback = @(YES);
@@ -631,7 +540,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
     self.didReceiveCompletionCallback = nil;
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertNil(tokenizedPayPalAccount);
         XCTAssertNotNil(error);
         self.didReceiveCompletionCallback = @(YES);

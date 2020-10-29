@@ -42,7 +42,6 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
 
         self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
 
-        XCTAssertTrue(app.textViews["DismissalOfViewController Called"].exists);
         XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
     }
 
@@ -55,18 +54,16 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
 
         self.waitForElementToAppear(app.buttons["Billing Agreement with PayPal"])
 
-        XCTAssertTrue(app.textViews["DismissalOfViewController Called"].exists);
-        XCTAssertTrue(app.buttons["Cancelled"].exists);
+        XCTAssertTrue(app.buttons["Cancelled"].exists)
     }
 
-    func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingSFSafariViewControllerDoneButton() {
-        self.waitForElementToAppear(app.buttons["Done"])
+    func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingSFAuthenticationSessionCancelButton() {
+        self.waitForElementToAppear(app.buttons["Cancel"])
 
-        app.buttons["Done"].forceTapElement()
+        app.buttons["Cancel"].forceTapElement()
 
         self.waitForElementToAppear(app.buttons["Billing Agreement with PayPal"])
 
-        XCTAssertTrue(app.textViews["DismissalOfViewController Called"].exists);
         XCTAssertTrue(app.buttons["Cancelled"].exists);
     }
 }

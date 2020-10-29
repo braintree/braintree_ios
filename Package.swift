@@ -28,10 +28,6 @@ let package = Package(
             targets: ["BraintreeUnionPay"]
         ),
         .library(
-            name: "PayPalUtils",
-            targets: ["PayPalUtils"]
-        ),
-        .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
         ),
@@ -101,7 +97,7 @@ let package = Package(
         ),
         .target(
             name: "PayPalDataCollector",
-            dependencies: ["BraintreeCore", "PayPalUtils"],
+            dependencies: ["BraintreeCore"],
             path: "Sources/BraintreePayPal/PayPalDataCollector",
             exclude: ["Info.plist"],
             sources: nil,
@@ -111,15 +107,6 @@ let package = Package(
                 .headerSearchPath("../BraintreeCore/"),
                 .headerSearchPath("../BraintreeCard/")
             ]
-        ),
-        .target(
-            name: "PayPalUtils",
-            dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreePayPal/PayPalUtils",
-            exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public"
         ),
         .binaryTarget(
             name: "PPRiskMagnes",

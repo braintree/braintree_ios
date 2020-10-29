@@ -2,7 +2,6 @@
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;
-@class BTPayPalRequestFactory;
 @class SFSafariViewController;
 @class SFAuthenticationSession;
 
@@ -11,40 +10,22 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTPayPalDriver ()
 
 /**
- Set up the callback to be invoked on return from browser or app switch for PayPal Express Checkout (Checkout Flow)
+ Set up the callback to be invoked on return from browser for PayPal Express Checkout (Checkout Flow)
 
- Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
+ Exposed internally to test BTPayPalDriver browser switch return behavior by simulating a browser switch return
 */
 - (void)setOneTimePaymentAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedCheckout, NSError * _Nullable error))completionBlock;
 
 /**
- Set up the callback to be invoked on return from browser or app switch for PayPal Billing Agreement (Vault Flow)
+ Set up the callback to be invoked on return from browser for PayPal Billing Agreement (Vault Flow)
 
- Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
+ Exposed internally to test BTPayPalDriver browser switch return behavior by simulating an browser switch return
 */
 - (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
-
-/**
- Set up the callback to be invoked on return from browser or app switch for PayPal Future Payments (Vault Flow)
-
- Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-*/
-- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL;
 
 - (void)informDelegatePresentingViewControllerNeedsDismissal;
-
-/**
- Exposed for testing to create stubbed versions of `PayPalOneTouchAuthorizationRequest` and `PayPalOneTouchCheckoutRequest`
-*/
-@property (nonatomic, strong) BTPayPalRequestFactory *requestFactory;
-
-/**
- Exposed for testing to provide subclasses of PayPalOneTouchCore to stub class methods
-*/
-+ (Class)payPalClass;
-+ (void)setPayPalClass:(Class)payPalClass;
 
 /**
  Exposed for testing to provide a convenient way to inject custom return URL schemes
@@ -72,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 
 /**
- Exposed for testing, the safariAuthenticationSession instance used for the PayPal flow on iOS >=11
+ Exposed for testing, the safariAuthenticationSession instance used for the PayPal flow
  */
 @property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession;
 
@@ -85,11 +66,6 @@ NS_ASSUME_NONNULL_BEGIN
  Exposed for testing, for disabling SFAuthenticationSession and use SFSafariViewController or Safari
  */
 @property (nonatomic, assign) BOOL disableSFAuthenticationSession;
-
-/**
- Used to test the Future Payments flow by force
-*/
-- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes forceFuturePaymentFlow:(BOOL)forceFuturePaymentFlow completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock;
 
 + (nullable BTPayPalCreditFinancingAmount *)creditFinancingAmountFromJSON:(BTJSON *)amountJSON;
 

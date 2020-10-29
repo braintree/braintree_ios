@@ -1,6 +1,6 @@
 import XCTest
 
-class BTPaymentMethodNonceParser_ApplePay_Tests: XCTestCase {
+class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
     func testSharedParser_whenTypeIsPayPal_returnsPayPalAccountNonce() {
         let sharedParser = BTPaymentMethodNonceParser.shared()
         let payPalAccountJSON = BTJSON(value: [

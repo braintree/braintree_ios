@@ -16,20 +16,3 @@
               creditFinancing:(BTPayPalCreditFinancing *)creditFinancing;
 
 @end
-
-@interface BTPayPalCreditFinancing ()
-
-- (instancetype)initWithCardAmountImmutable:(BOOL)cardAmountImmutable
-                             monthlyPayment:(BTPayPalCreditFinancingAmount *)monthlyPayment
-                            payerAcceptance:(BOOL)payerAcceptance
-                                       term:(NSInteger)term
-                                  totalCost:(BTPayPalCreditFinancingAmount *)totalCost
-                              totalInterest:(BTPayPalCreditFinancingAmount *)totalInterest;
-
-@end
-
-@interface BTPayPalCreditFinancingAmount ()
-
-- (instancetype)initWithCurrency:(NSString *)currency value:(NSString *)value;
-
-@end
