@@ -7,6 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
+#if TARGET_OS_TV
+#define PARAM_KEY_TV_OS_FIELDS @"TV_OS_FIELDS"
+#define PARAM_VALUE_I_FIELDS @"I_FIELDS"
+#define PARAM_VALUE_D_FIELDS @"D_FIELDS"
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 /**
  * The ConfigParameters class represent the configuration parameters that are required by the 3DS SDK for initialization.

@@ -7,7 +7,7 @@
 @interface BTPayPalAccountNonce : BTPaymentMethodNonce
 
 /**
- Payer's email address
+ Payer's email address.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *email;
 
@@ -37,12 +37,12 @@
 @property (nonatomic, nullable, readonly, strong) BTPostalAddress *shippingAddress;
 
 /**
- Client Metadata Id associated with this transaction.
+ Client metadata id associated with this transaction.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *clientMetadataId;
 
 /**
- Optional. Payer Id associated with this transaction.
+ Optional. Payer id associated with this transaction.
 
  Will be provided for Billing Agreement and Checkout.
 */

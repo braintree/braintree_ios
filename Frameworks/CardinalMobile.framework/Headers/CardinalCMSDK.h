@@ -10,7 +10,6 @@
 #import <CardinalMobile/CardinalResponse.h>
 #import <CardinalMobile/CardinalSession.h>
 #import <CardinalMobile/CardinalSessionConfiguration.h>
-#import <CardinalMobile/CardinalSessionConfig.h>
 #import <CardinalMobile/CardinalSession.h>
 #import <CardinalMobile/CardinalStepUpDelegate.h>
 #import <CardinalMobile/DirectoryServerIDConst.h>

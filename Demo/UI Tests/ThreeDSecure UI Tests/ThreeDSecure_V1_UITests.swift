@@ -1,5 +1,5 @@
 /*
- IMPORTRANT
+ IMPORTANT
  Hardware keyboard should be disabled on simulator for tests to run reliably.
  */
 
@@ -161,7 +161,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
     func testThreeDSecurePaymentFlowV1_timeout() {
         app.enterCardDetailsWith(cardNumber: "4000000000000044")
         app.tokenizeButton.tap()
-        sleep(5)
+        sleep(8)
 
         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
     }

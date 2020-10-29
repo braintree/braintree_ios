@@ -2,15 +2,29 @@
 
 ## unreleased (v5)
 * Breaking Changes
+  * Bump minimum supported deployment target to iOS 12
   * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
   * Remove the `localizedDescription` property on `BTPaymentMethodNonce`.
   * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
   * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
   * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
+  * PayPal
+    * Remove PayPalOneTouch and PayPalUtils modules
+    * Remove `authorizeAccountWithCompletion` and `authorizeAccountWithAdditionalScopes` methods from `BTPayPalDriver`
+    * Remove `requestOneTimePayment` and `requestBillingAgreement` overloads with custom `handler` parameters from `BTPayPalDriver`
+    * Remove `viewControllerPresentingDelegate` property from `BTPayPalDriver`
+    * Remove use of `SFSafariViewController` from PayPal flow
+    * Update `requestBillingAgreement` and `requestOneTimePayment` completion blocks to return an error when user cancels the PayPal flow
+  * Update all methods on `BTAppSwitchDelegate` to be optional
 * Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 
 ## unreleased (v4)
+* Update CardinalMobile.framework to v2.2.4-1
+* Exclude arm64 simulator architectures from Release build settings
+
+## 4.36.0 (2020-10-07)
 * Add `cardholderName` to `BTCardNonce`
+* Add support for `PKPaymentNetworkMaestro` to Apple Pay configuration
 
 ## 4.35.0 (2020-08-10)
 * Update CardinalMobile.framework to v2.2.3-1

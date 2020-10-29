@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Payment intent.
 
- @note Must be set to sale for immediate payment, authorize to authorize a payment for capture later, or order to create an order. Defaults to authorize. Only works in the Single Payment flow.
+ @note Must be set to sale for immediate payment, authorize to authorize a payment for capture later, or order to create an order. Defaults to authorize. Only works in the checkout (one-time payment) flow.
 
  @see https://developer.paypal.com/docs/integration/direct/payments/capture-payment/ Capture payments later
  @see https://developer.paypal.com/docs/integration/direct/payments/create-process-order/ Create and process orders

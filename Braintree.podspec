@@ -52,7 +52,6 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreePayPal/*.{h,m}", "Sources/BraintreePayPal/Public/*.h"
     s.public_header_files = "Sources/BraintreePayPal/Public/*.h"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPalOneTouch"
   end
 
   s.subspec "Venmo" do |s|
@@ -70,30 +69,12 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
   end
 
-  s.subspec "PayPalOneTouch" do |s|
-    s.source_files = "Sources/BraintreePayPal/PayPalOneTouch/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreePayPal/PayPalOneTouch/Public/*.h"
-    s.frameworks = "UIKit"
-    s.weak_frameworks = "SafariServices"
-    s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
-    s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPalDataCollector"
-    s.dependency "Braintree/PayPalUtils"
-  end
-
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/BraintreePayPal/PayPalDataCollector/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreePayPal/PayPalDataCollector/Public/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
     s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPalUtils"
-  end
-
-  s.subspec "PayPalUtils" do |s|
-    s.source_files = "Sources/BraintreePayPal/PayPalUtils/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreePayPal/PayPalUtils/Public/*.h"
-    s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
   end
 
   s.subspec "AmericanExpress" do |s|
@@ -108,7 +89,7 @@ Pod::Spec.new do |s|
     s.weak_frameworks = "SafariServices"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"
-    s.dependency "Braintree/PayPalOneTouch"
+    # TODO: - create separate subspec for BraintreeThreeDSecure and move this there
     s.vendored_frameworks = "Frameworks/CardinalMobile.framework"
   end
 end

@@ -32,10 +32,6 @@ let package = Package(
             targets: ["BraintreeUnionPay"]
         ),
         .library(
-            name: "PayPalUtils",
-            targets: ["PayPalUtils"]
-        ),
-        .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
         ),
@@ -94,14 +90,8 @@ let package = Package(
         ),
         .target(
             name: "PayPalDataCollector",
-            dependencies: ["BraintreeCore", "PayPalUtils"],
+            dependencies: ["BraintreeCore"],
             path: "Sources/BraintreePayPal/PayPalDataCollector",
-            exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
-        ),
-        .target(
-            name: "PayPalUtils",
-            path: "Sources/BraintreePayPal/PayPalUtils",
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),

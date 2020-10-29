@@ -125,6 +125,8 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 */
 @protocol BTAppSwitchDelegate <NSObject>
 
+@optional
+
 /**
  The app switcher will perform an app switch in order to obtain user payment authorization.
 
@@ -166,8 +168,6 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
  @param appSwitcher The app switcher
 */
 - (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher;
-
-@optional
 
 /**
  Regardless of the method (e.g. app, Safari, SFSafariViewController, SFAuthenticationSession) events will be sent when the context will switch away from from the origin app.

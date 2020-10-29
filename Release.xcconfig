@@ -1,0 +1,5 @@
+// Xcode 12 build system considers arm64 a valid simulator architecture (since it adds support for Apple Silicon which is arm64 based)
+// `xcodebuild` is linking against arm64 based simulators, which aren't available on our intel machines
+// Excluding arm64 in Release builds for simulators allows us to build with Xcode 12 on x86_64 (intel) CPU architecture
+// Workaround to be revisited when Apple Silicon is available
+EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
