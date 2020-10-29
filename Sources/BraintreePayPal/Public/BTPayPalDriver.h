@@ -1,7 +1,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 @class BTPayPalAccountNonce;
 @class BTPayPalRequest;
-@class BTPayPalApprovalRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,41 +36,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
     /// Braintree SDK is integrated incorrectly
     BTPayPalDriverErrorTypeIntegration,
 };
-
-/**
- Protocol to handle custom PayPal Approval via BTPayPalApprovalHandler
-*/
-@protocol BTPayPalApprovalDelegate
-/**
- Use when custom approval has completed with success or error
-*/
-- (void)onApprovalComplete:(NSURL *) url;
-
-/**
- Use when custom approval was canceled
-*/
-- (void)onApprovalCancel;
-
-@end
-
-/**
- Protocol for custom authentication and authorization of PayPal.
-*/
-@protocol BTPayPalApprovalHandler
-
-/**
- Handle approval request for PayPal and carry out custom authentication and authorization.
-
- Use the delegate to handle success/error/cancel flows.
- On completion or error use BTPayPalApprovalDelegate:onApprovalComplete
- On cancel use BTPayPalApprovalDelegate:onApprovalCancel
-
- @param request BTPayPalApprovalRequest request object.
- @param delegate The BTPayPalApprovalDelegate to handle response.
-*/
-- (void)handleApproval:(BTPayPalApprovalRequest *)request paypalApprovalDelegate:(id<BTPayPalApprovalDelegate>)delegate;
-
-@end
 
 /** 
  BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts by presenting the PayPal website.
@@ -110,7 +74,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  authentication.
 
 */
-@interface BTPayPalDriver : NSObject <BTAppSwitchHandler, BTPayPalApprovalDelegate>
+@interface BTPayPalDriver : NSObject <BTAppSwitchHandler>
 
 /**
  Initialize a new PayPal driver instance.
@@ -139,27 +103,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)requestOneTimePayment:(BTPayPalRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
-
-/**
- Check out with PayPal to create a single-use PayPal payment method nonce.
-
- @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
- server when this method completes without any additional user interaction.
-
- On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
- you will receive `nil` for both parameters.
-
- @note This method is mutually exclusive with `authorizeAccountWithCompletion:`. In both cases, you need to create a
- Braintree transaction from your server in order to actually move money!
-
- @param request A PayPal request
- @param handler A BTPayPalApprovalHandler for custom authorization and approval
- @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
- */
-- (void)requestOneTimePayment:(BTPayPalRequest *)request
-                      handler:(id<BTPayPalApprovalHandler>)handler
-                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
-
 /**
  Create a PayPal Billing Agreement for repeat purchases.
 
@@ -173,26 +116,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
 */
 - (void)requestBillingAgreement:(BTPayPalRequest *)request
-                     completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
-
-/**
- Create a PayPal Billing Agreement for repeat purchases.
-
- @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
- server when this method completes without any additional user interaction.
-
- On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
- you will receive `nil` for both parameters.
-
- @note This method is mutually exclusive with `authorizeAccountWithCompletion:`. In both cases, you need to create a
- Braintree transaction from your server in order to actually move money!
-
- @param request A PayPal request
- @param handler A BTPayPalApprovalHandler for custom authorization and approval
- @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
- */
-- (void)requestBillingAgreement:(BTPayPalRequest *)request
-                        handler:(id<BTPayPalApprovalHandler>)handler
                      completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 #pragma mark - Delegate

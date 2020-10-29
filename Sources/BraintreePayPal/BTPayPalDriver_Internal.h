@@ -33,6 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *returnURLScheme;
 
 /**
+ Exposed for testing the approvalURL construction
+*/
+@property (nonatomic, strong) NSURL *approvalUrl;
+
+/**
  Exposed for testing to get the instance of BTAPIClient after it has been copied by `copyWithSource:integration:`
 */
 @property (nonatomic, strong, nullable) BTAPIClient *apiClient;

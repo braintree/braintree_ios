@@ -275,21 +275,6 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertTrue(mockAppSwitchDelegate.appContextDidReturnCalled)
     }
 
-    // TODO: - it doesn't seem like this is testing what it claims to be
-    func testBillingAgreement_whenUsingCustomHandler_callsHandleApprovalDelegateMethod() {
-        let mockHandler = MockPayPalApprovalHandlerDelegate()
-        mockHandler.url = URL(string: "some://url")
-
-        mockHandler.handleApprovalExpectation = self.expectation(description: "Delegate received handleApproval")
-        let blockExpectation = self.expectation(description: "Completion block reached")
-        payPalDriver.requestBillingAgreement(BTPayPalRequest(), handler: mockHandler) { (_, _) in
-            XCTAssertNotNil(mockHandler);
-            blockExpectation.fulfill()
-        }
-
-        self.waitForExpectations(timeout: 1)
-    }
-
     func testBillingAgreement_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [ "paypalAccounts":
             [

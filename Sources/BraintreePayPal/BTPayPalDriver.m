@@ -3,7 +3,6 @@
 #import "BTPayPalLineItem.h"
 #import "BTPayPalAccountNonce_Internal.h"
 #import "BTPayPalRequest.h"
-#import "BTPayPalApprovalRequest.h"
 #import "BTPayPalCreditFinancing.h"
 #import "BTPayPalCreditFinancingAmount.h"
 
@@ -97,16 +96,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     [self requestExpressCheckout:request
               isBillingAgreement:YES
-                         handler:nil
-                      completion:completionBlock];
-}
-
-- (void)requestBillingAgreement:(BTPayPalRequest *)request
-                        handler:(id<BTPayPalApprovalHandler>)handler
-                     completion:(void (^)(BTPayPalAccountNonce * _Nullable, NSError * _Nullable))completionBlock {
-    [self requestExpressCheckout:request
-              isBillingAgreement:YES
-                         handler:handler
                       completion:completionBlock];
 }
 
@@ -120,16 +109,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     [self requestExpressCheckout:request
               isBillingAgreement:NO
-                         handler:nil
-                      completion:completionBlock];
-}
-
-- (void)requestOneTimePayment:(BTPayPalRequest *)request
-                      handler:(id<BTPayPalApprovalHandler>)handler
-                   completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestExpressCheckout:request
-              isBillingAgreement:NO
-                         handler:handler
                       completion:completionBlock];
 }
 
@@ -142,7 +121,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 /// A "Hermes checkout" is used by both Billing Agreements and Express Checkout
 - (void)requestExpressCheckout:(BTPayPalRequest *)request
             isBillingAgreement:(BOOL)isBillingAgreement
-                       handler:(id<BTPayPalApprovalHandler>)handler
                     completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
@@ -296,33 +274,13 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                 [self setOneTimePaymentAppSwitchReturnBlock:completionBlock];
             }
 
-            NSString *payPalClientID = [configuration.json[@"paypal"][@"clientId"] asString];
-            if (!payPalClientID && [self payPalEnvironmentForRemoteConfiguration:configuration.json] == PayPalEnvironmentMock) {
-                payPalClientID = @"FAKE-PAYPAL-CLIENT-ID";
-            } else {
-                payPalClientID = @"";
-            }
-
             NSURL *approvalUrl = [body[@"paymentResource"][@"redirectUrl"] asURL];
             if (approvalUrl == nil) {
                 approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
             }
-            approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
+            self.approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
 
-            NSString *pairingId = [self.class tokenFromApprovalURL:approvalUrl];
-
-            // Call custom handler and return before beginning the default approval process
-            if (handler != nil) {
-                BTPayPalApprovalRequest *approvalRequest = [BTPayPalApprovalRequest new];
-                approvalRequest.clientID = payPalClientID;
-                approvalRequest.approvalURL = approvalUrl;
-                approvalRequest.pairingId = pairingId;
-                approvalRequest.environment = [self payPalEnvironmentForRemoteConfiguration:configuration.json];
-                approvalRequest.callbackURLScheme = self.returnURLScheme;
-
-                [handler handleApproval:approvalRequest paypalApprovalDelegate:self];
-                return;
-            }
+            NSString *pairingId = [self.class tokenFromApprovalURL:self.approvalUrl];
 
             self.clientMetadataId = [PPDataCollector generateClientMetadataID:pairingId
                                                                 disableBeacon:NO
@@ -885,16 +843,6 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
         _returnURLScheme = [[BTAppSwitch sharedInstance] returnURLScheme];
     }
     return _returnURLScheme;
-}
-
-#pragma mark - BTPayPalApprovalHandler delegate methods
-
-- (void)onApprovalComplete:(NSURL *)url {
-    [self.class handleAppSwitchReturnURL:url];
-}
-
-- (void)onApprovalCancel {
-    [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
 }
 
 #pragma mark - Internal

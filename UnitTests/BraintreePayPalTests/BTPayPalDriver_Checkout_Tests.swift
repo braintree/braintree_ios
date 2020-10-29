@@ -493,14 +493,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         ])
 
         let request = BTPayPalRequest(amount: "1")
-        let expectation = self.expectation(description: "Calls handleApproval when userAction is not set")
-        let mockHandler = MockPayPalApprovalHandler(expectation: expectation)
+        payPalDriver.requestOneTimePayment(request) { (_, _) in }
 
-        payPalDriver.requestOneTimePayment(request, handler: mockHandler) { (_, _) in }
-
-        waitForExpectations(timeout: 1)
-
-        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", mockHandler.request?.approvalURL.absoluteString)
+        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalDriver.approvalUrl.absoluteString)
     }
 
     func testCheckout_whenUserActionIsSetToDefault_approvalUrlIsNotModified() {
@@ -512,14 +507,10 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         let request = BTPayPalRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.default
-        let expectation = self.expectation(description: "Calls handleApproval when userAction is set to default")
-        let mockHandler = MockPayPalApprovalHandler(expectation: expectation)
 
-        payPalDriver.requestOneTimePayment(request, handler: mockHandler) { _,_  -> Void in }
+        payPalDriver.requestOneTimePayment(request) { (_, _) in }
 
-        waitForExpectations(timeout: 1)
-
-        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", mockHandler.request?.approvalURL.absoluteString)
+        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalDriver.approvalUrl.absoluteString)
     }
 
     func testCheckout_whenUserActionIsSetToCommit_approvalUrlIsModified() {
@@ -531,14 +522,10 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         let request = BTPayPalRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.commit
-        let expectation = self.expectation(description: "Calls handleApproval when userAction is set to commit")
-        let mockHandler = MockPayPalApprovalHandler(expectation: expectation)
 
-        payPalDriver.requestOneTimePayment(request, handler: mockHandler) { _,_  -> Void in }
+        payPalDriver.requestOneTimePayment(request) { (_, _) in }
 
-        waitForExpectations(timeout: 1)
-
-        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value&useraction=commit", mockHandler.request?.approvalURL.absoluteString)
+        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value&useraction=commit", payPalDriver.approvalUrl.absoluteString)
     }
 
     // MARK: - Browser switch
@@ -725,20 +712,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         XCTAssertTrue(delegate.lastAppSwitcher is BTPayPalDriver)
         XCTAssertTrue(delegate.appContextDidReturnCalled)
-    }
-
-    func testCheckout_whenUsingCustomHandler_callsHandleApprovalDelegateMethod() {
-        let handler = MockPayPalApprovalHandlerDelegate()
-        handler.url = URL(string: "some://url")
-
-        handler.handleApprovalExpectation = self.expectation(description: "Delegate received handleApproval")
-        let blockExpectation = self.expectation(description: "Completion block reached")
-        payPalDriver.requestOneTimePayment(BTPayPalRequest(amount: "1"), handler: handler) { (_, _) in
-            XCTAssertNotNil(handler);
-            blockExpectation.fulfill()
-        }
-
-        self.waitForExpectations(timeout: 1)
     }
 
     // MARK: - Tokenization

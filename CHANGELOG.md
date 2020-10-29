@@ -8,6 +8,7 @@
   * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
   * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
   * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
+  * Remove custom approval handler methods from `BTPayPalDriver`
   * Remove PayPalOneTouch and PayPalUtils modules
 * Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 
