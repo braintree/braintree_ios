@@ -3,8 +3,8 @@
 #import "BTPayPalLineItem.h"
 #import "BTPayPalAccountNonce_Internal.h"
 #import "BTPayPalRequest.h"
-#import "BTPayPalCreditFinancing.h"
-#import "BTPayPalCreditFinancingAmount.h"
+#import "BTPayPalCreditFinancing_Internal.h"
+#import "BTPayPalCreditFinancingAmount_Internal.h"
 
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>

@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <BraintreePayPal/BTPayPalCreditFinancingAmount.h>
 
 @interface BTPayPalCreditFinancingAmount ()
 
