@@ -1,7 +1,7 @@
 #import "PPDataCollector_Internal.h"
 #import <PPRiskMagnes/PPRiskMagnes-Swift.h>
 #if SWIFT_PACKAGE
-#import "BTKeychain.h"
+#import "../BraintreeCore/BTKeychain.h"
 #else
 #import <BraintreeCore/BTKeychain.h>
 #endif
