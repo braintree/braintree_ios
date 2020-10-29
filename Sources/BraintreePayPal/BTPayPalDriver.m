@@ -15,39 +15,24 @@
 #import <SafariServices/SafariServices.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
-NSString *const BTSFAuthenticationSessionDisabled = @"sfAuthenticationSessionDisabled";
 NSString *const BTRedirectURLHostAndPath = @"onetouch/v1/";
-
-static void (^appSwitchReturnBlock)(NSURL *url);
-
-typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
-    BTPayPalPaymentTypeUnknown = 0,
-    BTPayPalPaymentTypeCheckout,
-    BTPayPalPaymentTypeBillingAgreement
-};
-
-typedef NS_ENUM(NSInteger, BTPayPalResultType) {
-    BTPayPalResultTypeError,
-    BTPayPalResultTypeCancel,
-    BTPayPalResultTypeSuccess,
-};
 
 /**
  This environment MUST be used for App Store submissions.
-*/
+ */
 NSString * _Nonnull const PayPalEnvironmentProduction = @"live";
 
 /**
  Sandbox: Uses the PayPal sandbox for transactions. Useful for development.
-*/
+ */
 NSString * _Nonnull const PayPalEnvironmentSandbox = @"sandbox";
 
 /**
  Mock: Mock mode. Does not submit transactions to PayPal. Fakes successful responses. Useful for unit tests.
-*/
+ */
 NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
-@interface BTPayPalDriver () <SFSafariViewControllerDelegate, UIViewControllerTransitioningDelegate>
+@interface BTPayPalDriver ()
 
 @property (nonatomic, assign) BOOL becameActiveAfterSFAuthenticationSessionModal;
 
@@ -57,8 +42,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 + (void)load {
     if (self == [BTPayPalDriver class]) {
-        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
-        
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
             return [self payPalAccountFromJSON:payPalAccount];
         }];
@@ -94,34 +77,26 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 - (void)requestBillingAgreement:(BTPayPalRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestExpressCheckout:request
-              isBillingAgreement:YES
-                      completion:completionBlock];
-}
-
-- (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
-    [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeBillingAgreement];
+    [self requestPayPalCheckout:request
+             isBillingAgreement:YES
+                     completion:completionBlock];
 }
 
 #pragma mark - Express Checkout (One-Time Payments)
 
 - (void)requestOneTimePayment:(BTPayPalRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestExpressCheckout:request
-              isBillingAgreement:NO
-                      completion:completionBlock];
-}
-
-- (void)setOneTimePaymentAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
-    [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeCheckout];
+    [self requestPayPalCheckout:request
+             isBillingAgreement:NO
+                     completion:completionBlock];
 }
 
 #pragma mark - Helpers
 
-/// A "Hermes checkout" is used by both Billing Agreements and Express Checkout
-- (void)requestExpressCheckout:(BTPayPalRequest *)request
-            isBillingAgreement:(BOOL)isBillingAgreement
-                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+/// A "Hermes checkout" is used by both Billing Agreements (Vault) and One-Time Payments (Checkout)
+- (void)requestPayPalCheckout:(BTPayPalRequest *)request
+           isBillingAgreement:(BOOL)isBillingAgreement
+                   completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration
@@ -150,7 +125,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             return;
         }
 
-        self.disableSFAuthenticationSession = [configuration.json[BTSFAuthenticationSessionDisabled] isTrue] || self.disableSFAuthenticationSession;
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
 
@@ -268,12 +242,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                 return;
             }
 
-            if (isBillingAgreement) {
-                [self setBillingAgreementAppSwitchReturnBlock:completionBlock];
-            } else {
-                [self setOneTimePaymentAppSwitchReturnBlock:completionBlock];
-            }
-
             NSURL *approvalUrl = [body[@"paymentResource"][@"redirectUrl"] asURL];
             if (approvalUrl == nil) {
                 approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
@@ -301,116 +269,24 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     }];
 }
 
-- (void)setAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock
-                 forPaymentType:(BTPayPalPaymentType)paymentType {
-    appSwitchReturnBlock = ^(NSURL *url) {
-        [self informDelegateAppContextDidReturn];
-        if (self.safariAuthenticationSession) {
-            // do nothing
-        } else if (self.safariViewController) {
-            [self informDelegatePresentingViewControllerNeedsDismissal];
-        } else {
-            [self informDelegateWillProcessAppSwitchReturn];
-        }
-
-        // Before parsing the return URL, check whether the user cancelled by breaking
-        // out of the PayPal browser switch flow (e.g. "Cancel" button in SFAuthenticationSession)
-        if ([url.absoluteString isEqualToString:SFSafariViewControllerFinishedURL]) {
-            if (completionBlock) {
-                completionBlock(nil, nil);
-            }
-            appSwitchReturnBlock = nil;
-            return;
-        }
-
-        [self.class parseResponseURL:url completion:^(NSDictionary *response, NSError *error) {
-            if (response) {
-                NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-                parameters[@"paypal_account"] = [response mutableCopy];
-
-                if (paymentType == BTPayPalPaymentTypeCheckout) {
-                    parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
-                    if (self.payPalRequest) {
-                        parameters[@"paypal_account"][@"intent"] = [self.class intentTypeToString:self.payPalRequest.intent];
-                    }
-                }
-                if (self.clientMetadataId) {
-                    parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataId;
-                }
-
-                if (self.payPalRequest != nil && self.payPalRequest.merchantAccountId != nil) {
-                    parameters[@"merchant_account_id"] = self.payPalRequest.merchantAccountId;
-                }
-
-                BTClientMetadata *metadata = [self clientMetadata];
-                parameters[@"_meta"] = @{
-                                         @"source" : metadata.sourceString,
-                                         @"integration" : metadata.integrationString,
-                                         @"sessionId" : metadata.sessionId,
-                                         };
-
-                [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
-                          parameters:parameters
-                          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-                    if (error) {
-                        [self sendAnalyticsEventForTokenizationFailureForPaymentType:paymentType];
-                        if (completionBlock) {
-                            completionBlock(nil, error);
-                        }
-                        return;
-                    }
-
-                    [self sendAnalyticsEventForTokenizationSuccessForPaymentType:paymentType];
-
-                    BTJSON *payPalAccount = body[@"paypalAccounts"][0];
-                    BTPayPalAccountNonce *tokenizedAccount = [self.class payPalAccountFromJSON:payPalAccount];
-
-                    [self sendAnalyticsEventIfCreditFinancingInNonce:tokenizedAccount forPaymentType:paymentType];
-
-                    if (completionBlock) {
-                        completionBlock(tokenizedAccount, nil);
-                    }
-                }];
-            }
-            else if (error) {
-                completionBlock(nil, error);
-            }
-            else {
-                completionBlock(nil, nil);
-            }
-
-            appSwitchReturnBlock = nil;
-        }];
-    };
-}
-
-+ (void)parseResponseURL:(NSURL *)url completion:(void (^)(NSDictionary *response, NSError *error))completionBlock {
-    BOOL valid = [self isValidURLAction:url];
-    if (valid) {
-        if ([[self.class actionFromURLAction: url] isEqualToString:@"cancel"]) {
-            completionBlock(nil, nil);
-            return;
-        }
-
-        NSDictionary *resultDictionary = @{
-            @"client": @{
-                    @"platform": @"iOS",
-                    @"product_name": @"PayPal",
-                    @"paypal_sdk_version": @"version"
-
-            },
-            @"response": @{
-                    @"webURL": url.absoluteString
-            },
-            @"response_type": @"web"
-        };
-        completionBlock(resultDictionary, nil);
-    } else {
-        NSError *responseError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                                     code:BTPayPalDriverErrorTypeUnknown
-                                                 userInfo:@{ NSLocalizedDescriptionKey: @"Unexpected response" }];
-        completionBlock(nil, responseError);
+- (NSDictionary *)dictionaryFromResponseURL:(NSURL *)url {
+    if ([[self.class actionFromURLAction: url] isEqualToString:@"cancel"]) {
+        return nil;
     }
+
+    NSDictionary *resultDictionary = @{
+        @"client": @{
+                @"platform": @"iOS",
+                @"product_name": @"PayPal",
+                @"paypal_sdk_version": @"version"
+
+        },
+        @"response": @{
+                @"webURL": url.absoluteString
+        },
+        @"response_type": @"web"
+    };
+    return resultDictionary;
 }
 
 - (void)handlePayPalRequestWithURL:(NSURL *)url
@@ -418,11 +294,11 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                        paymentType:(BTPayPalPaymentType)paymentType
                         completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!error) {
-        // Defensive programming in case PayPal One Touch returns a non-HTTP URL so that SFSafariViewController doesn't crash
+        // Defensive programming in case PayPal One Touch returns a non-HTTP URL so that SFAuthenticationSession doesn't crash
         if (![url.scheme.lowercaseString hasPrefix:@"http"]) {
             NSError *urlError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                     code:BTPayPalDriverErrorTypeUnknown
-                                                userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in SFSafariViewController: %@://", url.scheme],
+                                                userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in SFAuthenticationSession: %@://", url.scheme],
                                                             NSLocalizedRecoverySuggestionErrorKey: @"Try again or contact Braintree Support." }];
 
             NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.error.safariviewcontrollerbadscheme.%@", [self.class eventStringForPaymentType:paymentType], url.scheme];
@@ -435,53 +311,56 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             return;
         }
 
-        [self performSwitchRequest:url];
+        [self performSwitchRequest:url paymentType:paymentType completion:completionBlock];
 
     } else if (completionBlock) {
         completionBlock(nil, error);
     }
 }
 
-- (void)performSwitchRequest:(NSURL *)appSwitchURL {
+- (void)performSwitchRequest:(NSURL *)appSwitchURL paymentType:(BTPayPalPaymentType)paymentType completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     [self informDelegateAppContextWillSwitch];
 
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
 
-    if (self.disableSFAuthenticationSession) {
-        // Append "force-one-touch" query param when One Touch functions correctly
-        NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=1"];
-        urlComponents.query = queryForAuthSession;
-        [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
-    } else {
-        NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
-        urlComponents.query = queryForAuthSession;
-        self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL
-                                                                      callbackURLScheme:self.returnURLScheme
-                                                                      completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-            if (error) {
-                if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
-                    if (self.becameActiveAfterSFAuthenticationSessionModal) {
-                        [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.web"];
-                    } else {
-                        [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.modal"];
-                    }
+    NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
+    urlComponents.query = queryForAuthSession;
+    self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL
+                                                                  callbackURLScheme:self.returnURLScheme
+                                                                  completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        if (error) {
+            if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
+                if (self.becameActiveAfterSFAuthenticationSessionModal) {
+                    [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.web"];
+                } else {
+                    [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.modal"];
                 }
-
-                [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
-                return;
             }
-            [BTAppSwitch handleOpenURL:callbackURL sourceApplication:@"com.apple.safariviewservice"];
-            self.safariAuthenticationSession = nil;
-        }];
-
-        if (self.safariAuthenticationSession != nil) {
-            self.becameActiveAfterSFAuthenticationSessionModal = NO;
-            self.isSFAuthenticationSessionStarted = [self.safariAuthenticationSession start];
-            if (self.isSFAuthenticationSessionStarted) {
-                [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.succeeded"];
-            } else {
-                [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.failed"];
+            
+            // User cancelled by breaking out of the PayPal browser switch flow
+            // (e.g. "Cancel" button in SFAuthenticationSession)
+            NSError *err = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                               code:BTPayPalDriverErrorTypeCanceled
+                                           userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow was canceled by the user."}];
+            if (completionBlock) {
+                completionBlock(nil, err);
             }
+            return;
+        }
+
+        [self handleBrowserSwitchReturnURL:callbackURL
+                               paymentType:paymentType
+                                completion:completionBlock];
+        self.safariAuthenticationSession = nil;
+    }];
+
+    if (self.safariAuthenticationSession != nil) {
+        self.becameActiveAfterSFAuthenticationSessionModal = NO;
+        self.isSFAuthenticationSessionStarted = [self.safariAuthenticationSession start];
+        if (self.isSFAuthenticationSessionStarted) {
+            [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.succeeded"];
+        } else {
+            [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.failed"];
         }
     }
 }
@@ -654,41 +533,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     }
 }
 
-#pragma mark - Delegate Informers
-
-- (void)informDelegateWillPerformAppSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillSwitchNotification
-                                                                 object:self
-                                                               userInfo:nil];
-    [NSNotificationCenter.defaultCenter postNotification:notification];
-    
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
-        [self.appSwitchDelegate appSwitcherWillPerformAppSwitch:self];
-    }
-}
-
-- (void)informDelegateDidPerformAppSwitch {
-    BTAppSwitchTarget appSwitchTarget = BTAppSwitchTargetWebBrowser;
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchDidSwitchNotification
-                                                                 object:self
-                                                               userInfo:@{ BTAppSwitchNotificationTargetKey : @(appSwitchTarget) } ];
-    [NSNotificationCenter.defaultCenter postNotification:notification];
-    
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
-        [self.appSwitchDelegate appSwitcher:self didPerformSwitchToTarget:appSwitchTarget];
-    }
-}
-
-- (void)informDelegateWillProcessAppSwitchReturn {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillProcessPaymentInfoNotification
-                                                                 object:self
-                                                               userInfo:nil];
-    [NSNotificationCenter.defaultCenter postNotification:notification];
-    
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
-        [self.appSwitchDelegate appSwitcherWillProcessPaymentInfo:self];
-    }
-}
+#pragma mark - App Switch Delegate Informers
 
 - (void)informDelegateAppContextWillSwitch {
     NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextWillSwitchNotification
@@ -710,34 +555,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
         [self.appSwitchDelegate appContextDidReturn:self];
     }
-}
-
-- (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*)appSwitchURL {
-    if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
-        self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
-        self.safariViewController.delegate = self;
-        self.safariViewController.transitioningDelegate = self;
-        [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
-    } else {
-        [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
-    }
-}
-
-- (void)informDelegatePresentingViewControllerNeedsDismissal {
-    if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsDismissalOfViewController:)]) {
-        [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
-        self.safariViewController = nil;
-    } else {
-        [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
-    }
-}
-
-#pragma mark - SFSafariViewControllerDelegate
-
-static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontroller://finished";
-
-- (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller {
-    [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
 }
 
 #pragma mark - Preflight check
@@ -795,17 +612,13 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
             return @"paypal-ba";
         case BTPayPalPaymentTypeCheckout:
             return @"paypal-single-payment";
-        case BTPayPalPaymentTypeUnknown:
+        default:
             return nil;
     }
 }
 
 - (void)sendAnalyticsEventForInitiatingOneTouchForPaymentType:(BTPayPalPaymentType)paymentType
                                                   withSuccess:(BOOL)success {
-    if (paymentType == BTPayPalPaymentTypeUnknown) {
-        return;
-    }
-
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.initiate.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
     [self.apiClient sendAnalyticsEvent:eventName];
 
@@ -825,15 +638,11 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 }
 
 - (void)sendAnalyticsEventForTokenizationSuccessForPaymentType:(BTPayPalPaymentType)paymentType {
-    if (paymentType == BTPayPalPaymentTypeUnknown) return;
-    
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.tokenize.succeeded", [self.class eventStringForPaymentType:paymentType]];
     [self.apiClient sendAnalyticsEvent:eventName];
 }
 
 - (void)sendAnalyticsEventForTokenizationFailureForPaymentType:(BTPayPalPaymentType)paymentType {
-    if (paymentType == BTPayPalPaymentTypeUnknown) return;
-    
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.tokenize.failed", [self.class eventStringForPaymentType:paymentType]];
     [self.apiClient sendAnalyticsEvent:eventName];
 }
@@ -866,35 +675,83 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 
 #pragma mark - Browser Switch handling
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return appSwitchReturnBlock != nil && [self canParseURL:url sourceApplication:sourceApplication];
-}
+- (void)handleBrowserSwitchReturnURL:(NSURL *)url
+                         paymentType:(BTPayPalPaymentType)paymentType
+                          completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+    [self informDelegateAppContextDidReturn];
 
-+ (BOOL)canParseURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    BOOL canHandle = NO;
-    canHandle = ([self isSourceApplicationValid:sourceApplication]
-                 && [self isValidURLAction:url]);
-    return canHandle;
-}
+    if (![self.class isValidURLAction: url]) {
+        NSError *responseError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                                     code:BTPayPalDriverErrorTypeUnknown
+                                                 userInfo:@{ NSLocalizedDescriptionKey: @"Unexpected response" }];
 
-+ (BOOL)isSourceApplicationValid:(NSString *)sourceApplication {
-    if (!sourceApplication.length) {
-        return NO;
+        if (completionBlock) {
+            completionBlock(nil, responseError);
+        }
+        return;
     }
 
-    sourceApplication = [sourceApplication lowercaseString];
+    NSDictionary *response = [self dictionaryFromResponseURL:url];
 
-    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] || [sourceApplication isEqualToString:@"com.apple.safariviewservice"] ) {
-        return YES;
+    if (!response) {
+        if (completionBlock) {
+            // If there's no response, the user canceled out of the flow using the cancel link
+            // on the PayPal website
+            NSError *err = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                               code:BTPayPalDriverErrorTypeCanceled
+                                           userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow was canceled by the user."}];
+
+            completionBlock(nil, err);
+        }
+        return;
     }
 
-    return NO;
-}
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"paypal_account"] = [response mutableCopy];
 
-+ (void)handleAppSwitchReturnURL:(NSURL *)url {
-    if (appSwitchReturnBlock) {
-        appSwitchReturnBlock(url);
+    if (paymentType == BTPayPalPaymentTypeCheckout) {
+        parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
+        if (self.payPalRequest) {
+            parameters[@"paypal_account"][@"intent"] = [self.class intentTypeToString:self.payPalRequest.intent];
+        }
     }
+    if (self.clientMetadataId) {
+        parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataId;
+    }
+
+    if (self.payPalRequest != nil && self.payPalRequest.merchantAccountId != nil) {
+        parameters[@"merchant_account_id"] = self.payPalRequest.merchantAccountId;
+    }
+
+    BTClientMetadata *metadata = [self clientMetadata];
+    parameters[@"_meta"] = @{
+        @"source" : metadata.sourceString,
+        @"integration" : metadata.integrationString,
+        @"sessionId" : metadata.sessionId,
+    };
+
+    [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
+              parameters:parameters
+              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+        if (error) {
+            [self sendAnalyticsEventForTokenizationFailureForPaymentType:paymentType];
+            if (completionBlock) {
+                completionBlock(nil, error);
+            }
+            return;
+        }
+
+        [self sendAnalyticsEventForTokenizationSuccessForPaymentType:paymentType];
+
+        BTJSON *payPalAccount = body[@"paypalAccounts"][0];
+        BTPayPalAccountNonce *tokenizedAccount = [self.class payPalAccountFromJSON:payPalAccount];
+
+        [self sendAnalyticsEventIfCreditFinancingInNonce:tokenizedAccount forPaymentType:paymentType];
+
+        if (completionBlock) {
+            completionBlock(tokenizedAccount, nil);
+        }
+    }];
 }
 
 + (BOOL)doesApplicationSupportOneTouchCallbackURLScheme:(NSString *)callbackURLScheme {

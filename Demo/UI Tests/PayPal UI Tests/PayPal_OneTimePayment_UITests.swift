@@ -1,11 +1,11 @@
 /*
- IMPORTRANT
+ IMPORTANT
  Hardware keyboard should be disabled on simulator for tests to run reliably.
  */
 
 import XCTest
 
-class PayPal_SinglePayment_UITests: XCTestCase {
+class PayPal_OneTimePayment_UITests: XCTestCase {
     var app: XCUIApplication!
 
     override func setUp() {
@@ -33,7 +33,7 @@ class PayPal_SinglePayment_UITests: XCTestCase {
         sleep(1)
     }
 
-    func testPayPal_singlePayment_receivesNonce() {
+    func testPayPal_oneTimePayment_receivesNonce() {
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
@@ -45,7 +45,7 @@ class PayPal_SinglePayment_UITests: XCTestCase {
         XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
     }
 
-    func testPayPal_singlePayment_cancelsSuccessfully() {
+    func testPayPal_oneTimePayment_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
@@ -54,6 +54,16 @@ class PayPal_SinglePayment_UITests: XCTestCase {
 
         self.waitForElementToAppear(app.buttons["PayPal one-time payment"])
 
-        XCTAssertTrue(app.buttons["Cancelled"].exists);
+        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists);
+    }
+
+    func testPayPal_oneTimePayment_cancelsSuccessfully_whenTappingSFAuthenticationSessionCancelButton() {
+        self.waitForElementToAppear(app.buttons["Cancel"])
+
+        app.buttons["Cancel"].forceTapElement()
+
+        self.waitForElementToAppear(app.buttons["PayPal one-time payment"])
+
+        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists);
     }
 }

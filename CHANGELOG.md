@@ -8,8 +8,14 @@
   * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
   * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
   * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
-  * Remove custom approval handler methods from `BTPayPalDriver`
-  * Remove PayPalOneTouch and PayPalUtils modules
+  * PayPal
+    * Remove PayPalOneTouch and PayPalUtils modules
+    * Remove `authorizeAccountWithCompletion` and `authorizeAccountWithAdditionalScopes` methods from `BTPayPalDriver`
+    * Remove `requestOneTimePayment` and `requestBillingAgreement` overloads with custom `handler` parameters from `BTPayPalDriver`
+    * Remove `viewControllerPresentingDelegate` property from `BTPayPalDriver`
+    * Remove use of `SFSafariViewController` from PayPal flow
+    * Update `requestBillingAgreement` and `requestOneTimePayment` completion blocks to return an error when user cancels the PayPal flow
+  * Update all methods on `BTAppSwitchDelegate` to be optional
 * Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 
 ## unreleased (v4)

@@ -1,5 +1,5 @@
 /*
- IMPORTRANT
+ IMPORTANT
  Hardware keyboard should be disabled on simulator for tests to run reliably.
  */
 
@@ -45,7 +45,7 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
         XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
     }
 
-    func testPayPal_billingAgreement_cancelsSuccessfully() {
+    func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
@@ -54,7 +54,7 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
 
         self.waitForElementToAppear(app.buttons["Billing Agreement with PayPal"])
 
-        XCTAssertTrue(app.buttons["Cancelled"].exists)
+        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists)
     }
 
     func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingSFAuthenticationSessionCancelButton() {
@@ -64,6 +64,6 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
 
         self.waitForElementToAppear(app.buttons["Billing Agreement with PayPal"])
 
-        XCTAssertTrue(app.buttons["Cancelled"].exists);
+        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists);
     }
 }

@@ -105,9 +105,9 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-ba.webswitch.credit.offered.started"))
     }
 
-    func testBillingAgreement_whenAppSwitchSucceeds_tokenizesPayPalAccount() {
-        payPalDriver.setBillingAgreementAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+    func testBillingAgreement_whenBrowserSwitchSucceeds_tokenizesPayPalAccount() {
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -128,6 +128,21 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertEqual(response?["webURL"], "bar://onetouch/v1/success?token=hermes_token")
 
         XCTAssertEqual(paypalAccount["response_type"] as? String, "web")
+    }
+
+    func testBillingAgreement_whenBrowserSwitchCancels_callsBackWithNoResultAndError() {
+        let returnURL = URL(string: "bar://onetouch/v1/cancel?token=hermes_token")!
+
+        let expectation = self.expectation(description: "completion block called")
+        
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (nonce, error) in
+            XCTAssertNil(nonce)
+            XCTAssertEqual((error! as NSError).domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual((error! as NSError).code, BTPayPalDriverErrorType.canceled.rawValue)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 1)
     }
 
     func testBillingAgreement_whenConfigurationHasCurrency_doesNotSendCurrencyOrIntentViaPOSTParameters() {
@@ -187,76 +202,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
-
-    func testBillingAgreement_whenSFSafariViewControllerIsAvailable_callsViewControllerPresentationDelegateMethods() {
-        let mockDelegate = MockViewControllerPresentationDelegate()
-
-        // Setup for requestsPresentationOfViewController
-        mockDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
-
-        payPalDriver.viewControllerPresentingDelegate = mockDelegate
-        payPalDriver.informDelegatePresentingViewControllerRequestPresent(URL(string: "http://example.com")!)
-
-        self.waitForExpectations(timeout: 1)
-
-        XCTAssertNotNil(mockDelegate.lastViewController)
-        XCTAssertEqual(mockDelegate.lastViewController, payPalDriver.safariViewController)
-        XCTAssertEqual(mockDelegate.lastPaymentDriver as? BTPayPalDriver, payPalDriver)
-
-        let safariViewController = payPalDriver.safariViewController
-
-        mockDelegate.lastViewController = nil
-        mockDelegate.lastPaymentDriver = nil
-
-        // Setup for requestsDismissalOfViewController
-        mockDelegate.requestsDismissalOfViewControllerExpectation = self.expectation(description: "Delegate received requestsDismissalOfViewController")
-        payPalDriver.informDelegatePresentingViewControllerNeedsDismissal()
-
-        self.waitForExpectations(timeout: 1)
-
-        XCTAssertNotNil(mockDelegate.lastViewController)
-        XCTAssertEqual(mockDelegate.lastViewController, safariViewController)
-        XCTAssertNil(payPalDriver.safariViewController)
-        XCTAssertEqual(mockDelegate.lastPaymentDriver as? BTPayPalDriver, payPalDriver)
-    }
-
-    // TODO: - do we want to throw an error instead of just logging?
-    func testBillingAgreement_whenSFSafariViewControllerIsAvailableButNoViewControllerPresentingDelegateSet_logsError() {
-        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
-
-        var criticalMessageLogged = false
-        BTLogger.shared().logBlock = {
-            (level: BTLogLevel, message: String?) in
-            if (level == BTLogLevel.critical && message == "Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.") {
-                criticalMessageLogged = true
-            }
-            return
-        }
-
-        payPalDriver.informDelegatePresentingViewControllerRequestPresent(URL(string: "http://example.com")!)
-        XCTAssertTrue(criticalMessageLogged)
-    }
-
-    func testBillingAgreement_whenSFSafariViewControllerIsAvailable_doesNotCallAppSwitchDelegateMethods() {
-        let mockAppSwitchDelegate = MockAppSwitchDelegate()
-        payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
-        payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _,_ in }
-
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-
-        XCTAssertFalse(mockAppSwitchDelegate.willPerformAppSwitchCalled)
-        XCTAssertFalse(mockAppSwitchDelegate.didPerformAppSwitchCalled)
-
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
-
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
-
-        XCTAssertFalse(mockAppSwitchDelegate.willProcessAppSwitchCalled)
-    }
-
-    func testBillingAgreement_whenSFSafariViewControllerIsAvailable_makesContextSwitchDelegateCallbacks() {
+    func testBillingAgreement_makesContextSwitchDelegateCallbacks() {
         let mockAppSwitchDelegate = MockAppSwitchDelegate()
         payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
 
@@ -268,7 +214,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertTrue(mockAppSwitchDelegate.appContextWillSwitchCalled)
         XCTAssertFalse(mockAppSwitchDelegate.appContextDidReturnCalled)
 
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
+        let returnURL = URL(string: "bar://hello/world")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
 
         XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
         XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
@@ -290,8 +237,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             ])
         payPalDriver.payPalRequest = BTPayPalRequest()
 
-        payPalDriver.setBillingAgreementAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
+        let returnURL = URL(string: "bar://hello/world")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
@@ -329,8 +276,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
 
         payPalDriver.payPalRequest = BTPayPalRequest()
 
-        payPalDriver.setBillingAgreementAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?hermes_token")!)
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }

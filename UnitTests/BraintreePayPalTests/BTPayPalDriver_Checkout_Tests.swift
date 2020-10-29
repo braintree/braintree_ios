@@ -564,44 +564,41 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertNotNil(payPalDriver.clientMetadataId)
     }
 
-    func testCheckout_whenAppSwitchCancels_callsBackWithNoResultOrError() {
-        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+    func testCheckout_whenBrowserSwitchCancels_callsBackWithNoResultAndError() {
+        let returnURL = URL(string: "bar://onetouch/v1/cancel?token=hermes_token")!
 
         let expectation = self.expectation(description: "completion block called")
 
-        payPalDriver.requestOneTimePayment(BTPayPalRequest(amount: "1")) { (nonce, error) in
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (nonce, error) in
             XCTAssertNil(nonce)
-            XCTAssertNil(error)
+            XCTAssertEqual((error! as NSError).domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual((error! as NSError).code, BTPayPalDriverErrorType.canceled.rawValue)
             expectation.fulfill()
         }
-
-        BTPayPalDriver.handleAppSwitchReturn(returnURL)
 
         self.waitForExpectations(timeout: 1)
     }
 
-    func testCheckout_whenAppSwitchHasInvalidReturnURL_callsBackWithError() {
+    func testCheckout_whenBrowserSwitchHasInvalidReturnURL_callsBackWithError() {
         let returnURL = URL(string: "bar://onetouch/v1/invalid")!
 
         let continuationExpectation = self.expectation(description: "Continuation called")
 
-        payPalDriver.requestOneTimePayment(BTPayPalRequest()) { (nonce, error) in
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (nonce, error) in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertNotNil(error)
             XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
-            XCTAssertEqual(error.code, BTPayPalDriverErrorType.invalidRequest.rawValue)
+            XCTAssertEqual(error.code, BTPayPalDriverErrorType.unknown.rawValue)
             continuationExpectation.fulfill()
         }
-
-        BTPayPalDriver.handleAppSwitchReturn(returnURL)
 
         self.waitForExpectations(timeout: 1)
     }
 
-    func testCheckout_whenAppSwitchSucceeds_tokenizesPayPalCheckout() {
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+    func testCheckout_whenBrowserSwitchSucceeds_tokenizesPayPalCheckout() {
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
 
@@ -611,12 +608,12 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertFalse(options["validate"] as! Bool)
     }
 
-    func testCheckout_whenAppSwitchSucceeds_intentShouldExistAsPayPalAccountParameter() {
+    func testCheckout_whenBrowserSwitchSucceeds_intentShouldExistAsPayPalAccountParameter() {
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
         payPalDriver.payPalRequest.intent = .sale
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
 
@@ -628,13 +625,13 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertFalse(options["validate"] as! Bool)
     }
 
-    func testCheckout_whenAppSwitchSucceeds_merchantAccountIdIsSet() {
+    func testCheckout_whenBrowserSwitchSucceeds_merchantAccountIdIsSet() {
         let merchantAccountId = "alternate-merchant-account-id"
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
         payPalDriver.payPalRequest.merchantAccountId = merchantAccountId
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         let lastPostParameters = mockAPIClient.lastPOSTParameters!
@@ -656,8 +653,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         ])
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
     }
@@ -694,19 +691,19 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         ])
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
     }
 
-    func testCheckout_whenAppSwitchSucceeds_makesDelegateCallback() {
+    func testCheckout_whenBrowserSwitchSucceeds_makesDelegateCallback() {
         let delegate = MockAppSwitchDelegate()
         delegate.appContextDidReturnExpectation = expectation(description: "appContextDidReturn called")
         payPalDriver.appSwitchDelegate = delegate
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
+        let returnURL = URL(string: "bar://hello/world")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         waitForExpectations(timeout: 1)
 
@@ -808,8 +805,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     // MARK: - _meta parameter
 
     func testMetadata_whenCheckoutBrowserSwitchIsSuccessful_isPOSTedToServer() {
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         let lastPostParameters = mockAPIClient.lastPOSTParameters!
@@ -834,9 +831,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     func assertSuccessfulCheckoutResponse(_ response: [String:AnyObject], assertionBlock: @escaping (BTPayPalAccountNonce?, NSError?) -> Void) {
         mockAPIClient.cannedResponseBody = BTJSON(value: response)
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ (tokenizedPayPalAccount, error) -> Void in
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (tokenizedPayPalAccount, error) in
             assertionBlock(tokenizedPayPalAccount, error as NSError?)
-        })
-        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://onetouch/v1/success?token=hermes_token")!)
+        }
     }
 }

@@ -1,7 +1,7 @@
 #import "BraintreeDemoPayPalCreditPaymentViewController.h"
 @import BraintreePayPal;
 
-@interface BraintreeDemoPayPalCreditPaymentViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
+@interface BraintreeDemoPayPalCreditPaymentViewController () <BTAppSwitchDelegate>
 
 @property (nonatomic, strong) UISegmentedControl *paypalTypeSwitch;
 
@@ -50,7 +50,6 @@
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.appSwitchDelegate = self;
-    driver.viewControllerPresentingDelegate = self;
     BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
 
     request.offerCredit = YES;
@@ -84,34 +83,12 @@
 
 #pragma mark BTAppSwitchDelegate
 
-- (void)appSwitcherWillPerformAppSwitch:(__unused id)appSwitcher {
-    self.progressBlock(@"paymentDriverWillPerformAppSwitch:");
+- (void)appContextWillSwitch:(__unused id)appSwitcher {
+   self.progressBlock(@"appContextWillSwitch:");
 }
 
-- (void)appSwitcherWillProcessPaymentInfo:(__unused id)appSwitcher {
-    self.progressBlock(@"paymentDriverWillProcessPaymentInfo:");
-}
-
-- (void)appSwitcher:(__unused id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
-    switch (target) {
-        case BTAppSwitchTargetWebBrowser:
-            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: browser");
-            break;
-        case BTAppSwitchTargetNativeApp:
-            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: app");
-            break;
-        case BTAppSwitchTargetUnknown:
-            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: unknown");
-            break;
-    }
-}
-
-- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
-    [self presentViewController:viewController animated:YES completion:nil];
-}
-
-- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
-    [viewController dismissViewControllerAnimated:YES completion:nil];
+- (void)appContextDidReturn:(__unused id)appSwitcher {
+    self.progressBlock(@"appContextDidReturn:");
 }
 
 @end

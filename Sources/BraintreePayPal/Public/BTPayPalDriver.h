@@ -35,6 +35,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
     
     /// Braintree SDK is integrated incorrectly
     BTPayPalDriverErrorTypeIntegration,
+
+    /// Payment flow was canceled, typically initiated by the user when exiting early from the flow.
+    BTPayPalDriverErrorTypeCanceled
 };
 
 /** 
@@ -74,7 +77,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  authentication.
 
 */
-@interface BTPayPalDriver : NSObject <BTAppSwitchHandler>
+@interface BTPayPalDriver : NSObject
 
 /**
  Initialize a new PayPal driver instance.
@@ -94,8 +97,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
  server when this method completes without any additional user interaction.
 
- On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
- you will receive `nil` for both parameters.
+ On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
 
  @param request A PayPal request
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
@@ -109,8 +111,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
  server when this method completes without any additional user interaction.
  
- On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
- you will receive `nil` for both parameters.
+ On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
 
  @param request A PayPal request
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
@@ -122,13 +123,10 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 /**
  An optional delegate for receiving notifications about the lifecycle of a PayPal browser switch for updating your UI
+
+ @note BTPayPalDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
 */
 @property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
-
-/**
- A required delegate to control the presentation and dismissal of view controllers
-*/
-@property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
 @end
 

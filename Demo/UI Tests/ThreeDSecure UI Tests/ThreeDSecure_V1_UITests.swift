@@ -1,5 +1,5 @@
 /*
- IMPORTRANT
+ IMPORTANT
  Hardware keyboard should be disabled on simulator for tests to run reliably.
  */
 
