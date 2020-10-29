@@ -1,3 +1,4 @@
+#import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalAccountNonce_Internal.h"
 
 @interface BTPayPalCreditFinancing ()
