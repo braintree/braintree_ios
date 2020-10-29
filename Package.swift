@@ -95,7 +95,7 @@ let package = Package(
         .target(
             name: "PayPalDataCollector",
             dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreePayPal/PayPalDataCollector",
+            path: "Sources/PayPalDataCollector",
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
