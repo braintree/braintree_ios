@@ -6,11 +6,19 @@
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 
+#if SWIFT_PACKAGE
+#import "BraintreeCore.h"
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCore/BTLogger_Internal.h"
+#import "PayPalDataCollector.h"
+#import "../PayPalDataCollector/PPDataCollector_Internal.h"
+#else
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <PayPalDataCollector/PayPalDataCollector.h>
 #import <PayPalDataCollector/PPDataCollector_Internal.h>
+#endif
 
 #import <SafariServices/SafariServices.h>
 
