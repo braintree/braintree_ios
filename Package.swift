@@ -38,12 +38,16 @@ let package = Package(
         .library(
             name: "BraintreePaymentFlow",
             targets: ["BraintreePaymentFlow"]
-            //  TODO: uncomment once we have CardinalMobile.xcframework
-            //, "CardinalMobile"]
         ),
         .library(
             name: "BraintreeThreeDSecure",
             targets: ["BraintreeThreeDSecure"]
+            //  TODO: uncomment once we have CardinalMobile.xcframework
+            //, "CardinalMobile"]
+        ),
+        .library(
+            name: "BraintreePayPal",
+            targets: ["BraintreePayPal"]
         )
     ],
     dependencies: [
@@ -110,7 +114,13 @@ let package = Package(
             dependencies: ["BraintreePaymentFlow"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
-        )
+        ),
+        .target(
+            name: "BraintreePayPal",
+            dependencies: ["BraintreeCore"],
+            exclude: ["Info.plist"],
+            publicHeadersPath: "Public"
+        ),
 //        TODO: Get xcframework version of CardinalMobile
 //        .binaryTarget(
 //            name: "CardinalMobile",
