@@ -1,5 +1,10 @@
+#if SWIFT_PACKAGE
+#import "BTPayPalAccountNonce.h"
+#import "BTPayPalCreditFinancing.h"
+#else
 #import <BraintreePayPal/BTPayPalAccountNonce.h>
 #import <BraintreePayPal/BTPayPalCreditFinancing.h>
+#endif
 
 @interface BTPayPalAccountNonce ()
 
