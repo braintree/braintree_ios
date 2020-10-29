@@ -19,6 +19,7 @@
 * Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 
 ## unreleased (v4)
+* Update CardinalMobile.framework to v2.2.4-1
 * Exclude arm64 simulator architectures from Release build settings
 
 ## 4.36.0 (2020-10-07)

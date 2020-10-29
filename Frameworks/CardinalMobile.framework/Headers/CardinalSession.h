@@ -62,9 +62,11 @@ typedef void (^CardinalSessionProcessBinDidCompleteHandler)(void);
          didComplete:(CardinalSessionSetupDidCompleteHandler)didCompleteHandler
          didValidate:(CardinalSessionSetupDidValidateHandler)didValidateHandler NS_SWIFT_NAME(setup(jwtString:completed:validated:));
 
+#if TARGET_OS_IOS
 /*!
  * Sets up the frictionless "Quick Authentication" transaction flow that allows your app to provide its own JWT and account number.
  * Only one of the handler code blocks will be invoked, depending on whether Cardinal Setup was successful or not. Handlers will be invoked on the main thread.
+ * @brief This property is deprecated in v2.2.4. This feature will no longer be supported in the SDK.
  * @param jwtString A valid JSON Web Token string obtained from the Midas server.
  * @param accountNumber A valid account number ("bin number") string.
  * @param didCompleteHandler Code to be invoked upon successful completion of Cardinal Setup.
@@ -73,44 +75,18 @@ typedef void (^CardinalSessionProcessBinDidCompleteHandler)(void);
 - (void)setupWithJWT:(NSString*)jwtString
        accountNumber:(NSString*)accountNumber
          didComplete:(CardinalSessionSetupDidCompleteHandler)didCompleteHandler
-         didValidate:(CardinalSessionSetupDidValidateHandler)didValidateHandler NS_SWIFT_NAME(setup(jwtString:account:completed:validated:));
+         didValidate:(CardinalSessionSetupDidValidateHandler)didValidateHandler NS_SWIFT_NAME(setup(jwtString:account:completed:validated:))__deprecated;
 
 /*!
  * Process a "Bin" account number as part of the "Quick Authentication" transaction flow.
  * May be invoked multiple times with different account numbers.
+ * @brief This property is deprecated in 2.2.4. This feature will no longer be supported in the SDK.
  * @param accountNumber A valid account number ("bin number") string.
  * @param didCompleteHandler Code to be invoked upon successfully processing an account number. Handler will be invoked on the main thread.
  */
 - (void)processBin:(NSString*)accountNumber
-       didComplete:(nullable CardinalSessionProcessBinDidCompleteHandler)didCompleteHandler NS_SWIFT_NAME(processBin(_:completed:));
-
-/*!
- * Continue the challenge flow using SDK Controlled UI with the transaction id and encoded payload.
- * @param transactionId Transaction ID
- * @param payload Encoded Payload from Lookup
- * @param acsUrl ACS Url
- * @param directoryServerID Directory Server ID
- * @param validationDelegate Class confronting to CardinalValidationDelegate protocol which receives the Validation Response after the challenge completion.
- * Deprecated in v2.1.3
- */
-- (void)continueWithTransactionId:(nonnull NSString *)transactionId
-                          payload:(nonnull NSString *)payload
-                           acsUrl:(nonnull NSString *)acsUrl
-                directoryServerID:(CCADirectoryServerID) directoryServerID
-              didValidateDelegate:(nonnull id<CardinalValidationDelegate>)validationDelegate NS_SWIFT_NAME(continueWith(transactionId:payload:acsUrl:directoryServerID:validationDelegate:)) __deprecated;
-
-/*!
- * Continue the challenge flow using SDK Controlled UI with the transaction id and encoded payload.
- * @param transactionId Transaction ID
- * @param payload Encoded Payload from Lookup
- * @param directoryServerID Directory Server ID
- * @param validationDelegate Class confronting to CardinalValidationDelegate protocol which receives the Validation Response after the challenge completion.
- * Deprecated in v2.1.4
- */
-- (void)continueWithTransactionId:(nonnull NSString *)transactionId
-                          payload:(nonnull NSString *)payload
-                directoryServerID:(CCADirectoryServerID) directoryServerID
-              didValidateDelegate:(nonnull id<CardinalValidationDelegate>)validationDelegate NS_SWIFT_NAME(continueWith(transactionId:payload:directoryServerID:validationDelegate:)) __deprecated;
+       didComplete:(nullable CardinalSessionProcessBinDidCompleteHandler)didCompleteHandler NS_SWIFT_NAME(processBin(_:completed:))__deprecated;
+#endif
 
 /*!
  * Continue the challenge flow using SDK Controlled UI with the transaction id and encoded payload.

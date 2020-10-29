@@ -18,4 +18,3 @@ FOUNDATION_EXPORT const unsigned char CardinalMobileVersionString[];
 
 #import <CardinalMobile/CardinalCMSDK.h>
 #import <CardinalMobile/CardinalEMVCoSDK.h>
-
