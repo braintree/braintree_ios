@@ -53,10 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithJSON:(BTJSON *)json;
 
-// TODO: Remove
-// This code is a test to see if a merchant includes CardinalMobile directly in their app, if this method will return `true`
-- (BOOL)isCardinalAvailable;
-
 @end
 
 NS_ASSUME_NONNULL_END
