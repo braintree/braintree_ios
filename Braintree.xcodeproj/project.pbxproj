@@ -1362,17 +1362,17 @@
 				0357C4911F9690A900E63851 /* BTAmericanExpressClient_Internal.h */,
 				0357C48B1F96882500E63851 /* BTAmericanExpressClient.m */,
 				039A8BD41F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m */,
-				0357C48C1F96882500E63851 /* include */,
+				0357C48C1F96882500E63851 /* Public */,
 			);
 			path = BraintreeAmericanExpress;
 			sourceTree = "<group>";
 		};
-		0357C48C1F96882500E63851 /* include */ = {
+		0357C48C1F96882500E63851 /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA0E254C745200CE0C1D /* BraintreeAmericanExpress */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		038C7FBB1EA1648900241ABE /* BraintreePaymentFlow */ = {
@@ -1387,17 +1387,17 @@
 				033248C82123DD1A009F2B31 /* BTLocalPaymentResult.m */,
 				033248C52123DD1A009F2B31 /* BTPaymentFlowDriver+LocalPayment_Internal.h */,
 				033248C72123DD1A009F2B31 /* BTPaymentFlowDriver+LocalPayment.m */,
-				038C7FC61EA1648900241ABE /* include */,
+				038C7FC61EA1648900241ABE /* Public */,
 			);
 			path = BraintreePaymentFlow;
 			sourceTree = "<group>";
 		};
-		038C7FC61EA1648900241ABE /* include */ = {
+		038C7FC61EA1648900241ABE /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA12254C74CC00CE0C1D /* BraintreePaymentFlow */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
@@ -1414,7 +1414,7 @@
 				16C42B6D1B3DE0550028A3B4 /* BTPayPalDriver.m */,
 				A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */,
 				16E17D271B3DFA0F0024F9AB /* BTPayPalRequest.m */,
-				41777D461B8D02050026F987 /* include */,
+				41777D461B8D02050026F987 /* Public */,
 			);
 			path = BraintreePayPal;
 			sourceTree = "<group>";
@@ -1463,7 +1463,7 @@
 				A773462F1B7BB1A70083EC8D /* BTTokenizationService.m */,
 				80BB0C85241937A5003C8BA9 /* BTURLUtils.m */,
 				2DE12F0D1B59BE0100EA1BCF /* Info.plist */,
-				41777D441B8CFEE60026F987 /* include */,
+				41777D441B8CFEE60026F987 /* Public */,
 			);
 			path = BraintreeCore;
 			sourceTree = "<group>";
@@ -1474,57 +1474,57 @@
 				A77426561CA20793003CACBA /* BTCardCapabilities.m */,
 				4164B9B91C9B6988006AE861 /* BTCardClient+UnionPay.m */,
 				41472F921CB6D52200AFA75C /* BTConfiguration+UnionPay.m */,
-				4164B9AE1C9B665D006AE861 /* include */,
+				4164B9AE1C9B665D006AE861 /* Public */,
 			);
 			path = BraintreeUnionPay;
 			sourceTree = "<group>";
 		};
-		4164B9AE1C9B665D006AE861 /* include */ = {
+		4164B9AE1C9B665D006AE861 /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA14254C74F800CE0C1D /* BraintreeUnionPay */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
-		41777D441B8CFEE60026F987 /* include */ = {
+		41777D441B8CFEE60026F987 /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA11254C74A200CE0C1D /* BraintreeCore */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
-		41777D451B8D01510026F987 /* include */ = {
+		41777D451B8D01510026F987 /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA10254C748800CE0C1D /* BraintreeCard */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
-		41777D461B8D02050026F987 /* include */ = {
+		41777D461B8D02050026F987 /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA13254C74E000CE0C1D /* BraintreePayPal */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
-		41777D471B8D028C0026F987 /* include */ = {
+		41777D471B8D028C0026F987 /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA15254C750C00CE0C1D /* BraintreeVenmo */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
-		41D6E2A81B8D242B00A3C2AE /* include */ = {
+		41D6E2A81B8D242B00A3C2AE /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA0F254C746F00CE0C1D /* BraintreeApplePay */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		424EAA0E254C745200CE0C1D /* BraintreeAmericanExpress */ = {
@@ -1731,17 +1731,17 @@
 				80AEE9D92540C3C1008CCA4F /* PPDataCollector.m */,
 				80AEE9DA2540C3C1008CCA4F /* PayPalDataCollector.modulemap */,
 				80AEE9DB2540C3C1008CCA4F /* PPDataCollector_Internal.h */,
-				80AEE9DC2540C3C1008CCA4F /* include */,
+				80AEE9DC2540C3C1008CCA4F /* Public */,
 			);
 			path = PayPalDataCollector;
 			sourceTree = "<group>";
 		};
-		80AEE9DC2540C3C1008CCA4F /* include */ = {
+		80AEE9DC2540C3C1008CCA4F /* Public */ = {
 			isa = PBXGroup;
 			children = (
 				424EAA16254C751B00CE0C1D /* PayPalDataCollector */,
 			);
-			path = include;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		A715593F1B729297007DE6F0 /* Helpers */ = {
@@ -1920,7 +1920,7 @@
 				412FE0561B9799EE008AAABE /* BTApplePayClient_Internal.h */,
 				A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */,
 				A7B1C14E1B66E46900ED063C /* BTConfiguration+ApplePay.m */,
-				41D6E2A81B8D242B00A3C2AE /* include */,
+				41D6E2A81B8D242B00A3C2AE /* Public */,
 			);
 			path = BraintreeApplePay;
 			sourceTree = "<group>";
@@ -1940,7 +1940,7 @@
 				034CF88921501E91003C0616 /* BTConfiguration+Card.h */,
 				034CF88621501E24003C0616 /* BTConfiguration+Card.m */,
 				03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */,
-				41777D451B8D01510026F987 /* include */,
+				41777D451B8D01510026F987 /* Public */,
 			);
 			path = BraintreeCard;
 			sourceTree = "<group>";
@@ -1957,7 +1957,7 @@
 				A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */,
 				A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */,
 				A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */,
-				41777D471B8D028C0026F987 /* include */,
+				41777D471B8D028C0026F987 /* Public */,
 			);
 			path = BraintreeVenmo;
 			sourceTree = "<group>";
