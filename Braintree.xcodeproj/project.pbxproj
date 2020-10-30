@@ -885,7 +885,6 @@
 		80A1EE3D2236AAC600F6218B /* BTThreeDSecureAdditionalInformation_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAdditionalInformation_Tests.swift; sourceTree = "<group>"; };
 		80A1EE3F2236B04F00F6218B /* BTThreeDSecureAdditionalInformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureAdditionalInformation.h; sourceTree = "<group>"; };
 		80AEE9D92540C3C1008CCA4F /* PPDataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPDataCollector.m; sourceTree = "<group>"; };
-		80AEE9DA2540C3C1008CCA4F /* PayPalDataCollector.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = PayPalDataCollector.modulemap; sourceTree = "<group>"; };
 		80AEE9DB2540C3C1008CCA4F /* PPDataCollector_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPDataCollector_Internal.h; sourceTree = "<group>"; };
 		80AEE9DD2540C3C2008CCA4F /* PayPalDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalDataCollector.h; sourceTree = "<group>"; };
 		80AEE9DE2540C3C2008CCA4F /* PPDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPDataCollector.h; sourceTree = "<group>"; };
@@ -1056,7 +1055,6 @@
 		A903E1A824F9D34000C314E1 /* BraintreeTestShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeTestShared.h; sourceTree = "<group>"; };
 		A903E1A924F9D34000C314E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A903E1B524F9D37B00C314E1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		A903E1C524F9D46200C314E1 /* BraintreeCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = BraintreeCore.modulemap; sourceTree = "<group>"; };
 		A908437524FD8D13004134CA /* BTOCMockHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTOCMockHelper.h; sourceTree = "<group>"; };
 		A908437624FD8D13004134CA /* BTOCMockHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTOCMockHelper.m; sourceTree = "<group>"; };
 		A91B06FE24FFFFE1006BD4C1 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1434,7 +1432,6 @@
 			isa = PBXGroup;
 			children = (
 				A7C889F81B5F0B6A007A0E9C /* Braintree-Version.h */,
-				A903E1C524F9D46200C314E1 /* BraintreeCore.modulemap */,
 				A7A6DD3E1B445550008857E1 /* BTAnalyticsMetadata.h */,
 				A7A6DD3F1B445550008857E1 /* BTAnalyticsMetadata.m */,
 				A74BF1C31C57F25F0049E149 /* BTAnalyticsService.h */,
@@ -1659,7 +1656,6 @@
 			isa = PBXGroup;
 			children = (
 				80AEE9D92540C3C1008CCA4F /* PPDataCollector.m */,
-				80AEE9DA2540C3C1008CCA4F /* PayPalDataCollector.modulemap */,
 				80AEE9DB2540C3C1008CCA4F /* PPDataCollector_Internal.h */,
 				80AEE9DC2540C3C1008CCA4F /* Public */,
 			);
@@ -4300,7 +4296,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MODULEMAP_FILE = "$(SRCROOT)/Sources/BraintreeCore/BraintreeCore.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4357,7 +4352,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MODULEMAP_FILE = "$(SRCROOT)/Sources/BraintreeCore/BraintreeCore.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5001,7 +4995,6 @@
 					"@loader_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MODULEMAP_FILE = "$(SRCROOT)/Sources/PayPalDataCollector/PayPalDataCollector.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5061,7 +5054,6 @@
 					"@loader_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MODULEMAP_FILE = "$(SRCROOT)/Sources/PayPalDataCollector/PayPalDataCollector.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.paypal.PayPalDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
