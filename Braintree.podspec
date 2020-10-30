@@ -25,46 +25,46 @@ Pod::Spec.new do |s|
 
   s.subspec "Core" do |s|
     s.source_files  = "Sources/BraintreeCore/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeCore/Public/*.h"
+    s.public_header_files = "Sources/BraintreeCore/Public/BraintreeCore/*.h"
   end
 
   s.subspec "Apple-Pay" do |s|
     s.source_files  = "Sources/BraintreeApplePay/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeApplePay/Public/*.h"
+    s.public_header_files = "Sources/BraintreeApplePay/Public/BraintreeApplePay/*.h"
     s.dependency "Braintree/Core"
     s.frameworks = "PassKit"
   end
 
   s.subspec "Card" do |s|
     s.source_files  = "Sources/BraintreeCard/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeCard/Public/*.h"
+    s.public_header_files = "Sources/BraintreeCard/Public/BraintreeCard/*.h"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "DataCollector" do |s|
     s.source_files = "Sources/BraintreeDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeDataCollector/Public/*.h"
+    s.public_header_files = "Sources/BraintreeDataCollector/Public/BraintreeDataCollector/*.h"
     s.vendored_library = "Sources/BraintreeDataCollector/Kount/libDeviceCollectorLibrary.a"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "PayPal" do |s|
-    s.source_files = "Sources/BraintreePayPal/*.{h,m}", "Sources/BraintreePayPal/Public/*.h"
-    s.public_header_files = "Sources/BraintreePayPal/Public/*.h"
+    s.source_files = "Sources/BraintreePayPal/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreePayPal/Public/BraintreePayPal/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
   end
 
   s.subspec "Venmo" do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeVenmo/Public/*.h"
+    s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
   end
 
   s.subspec "UnionPay" do |s|
     s.source_files  = "Sources/BraintreeUnionPay/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeUnionPay/Public/*.h"
+    s.public_header_files = "Sources/BraintreeUnionPay/Public/BraintreeUnionPay/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/Core"
@@ -72,7 +72,7 @@ Pod::Spec.new do |s|
 
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/PayPalDataCollector/Public/*.h"
+    s.public_header_files = "Sources/PayPalDataCollector/Public/PayPalDataCollector/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
     s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
     s.dependency "Braintree/Core"
@@ -80,17 +80,22 @@ Pod::Spec.new do |s|
 
   s.subspec "AmericanExpress" do |s|
     s.source_files  = "Sources/BraintreeAmericanExpress/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeAmericanExpress/Public/*.h"
+    s.public_header_files = "Sources/BraintreeAmericanExpress/Public/BraintreeAmericanExpress/*.h"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "PaymentFlow" do |s|
     s.source_files = "Sources/BraintreePaymentFlow/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreePaymentFlow/Public/**/*.h"
+    s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
     s.weak_frameworks = "SafariServices"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/Card"
-    # TODO: - create separate subspec for BraintreeThreeDSecure and move this there
+    s.dependency "Braintree/Card" # TODO: - is this dependency still required?
+  end
+
+  s.subspec "ThreeDSecure" do |s|
+    s.source_files = "Sources/BraintreeThreeDSecure/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/*.h"
+    s.dependency "Braintree/PaymentFlow"
     s.vendored_frameworks = "Frameworks/CardinalMobile.framework"
   end
 end
