@@ -1,4 +1,4 @@
-#import "BTTokenizationService.h"
+#import <BraintreeCore/BTTokenizationService.h>
 
 NSString * const BTTokenizationServiceErrorDomain = @"com.braintreepayments.BTTokenizationServiceErrorDomain";
 NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewControllerPresentingDelegate";

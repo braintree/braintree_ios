@@ -1,5 +1,5 @@
-#import "BTBinData.h"
-#import "BTJSON.h"
+#import <BraintreeCore/BTBinData.h>
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTBinData
 

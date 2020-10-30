@@ -1,4 +1,4 @@
-#import "BTPostalAddress.h"
+#import <BraintreeCore/BTPostalAddress.h>
 
 @implementation BTPostalAddress
 

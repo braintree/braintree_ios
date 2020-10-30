@@ -1,12 +1,12 @@
 #import "BTHTTP.h"
 #import "Braintree-Version.h"
 #import "BTAPIPinnedCertificates.h"
-#import "BTClientToken.h"
-#import "BTHTTPErrors.h"
-#import "BTJSON.h"
-#import "BTURLUtils.h"
+#import <BraintreeCore/BTClientToken.h>
+#import <BraintreeCore/BTHTTPErrors.h>
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTURLUtils.h>
 #import "BTLogger_Internal.h"
-#import "BTPayPalIDToken.h"
+#import <BraintreeCore/BTPayPalIDToken.h>
 
 #include <sys/sysctl.h>
 

@@ -1,13 +1,13 @@
 #import "BTAnalyticsService.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTAPIClient_Internal.h"
-#import "BTClientMetadata.h"
-#import "BTClientToken.h"
-#import "BTConfiguration.h"
+#import <BraintreeCore/BTClientMetadata.h>
+#import <BraintreeCore/BTClientToken.h>
+#import <BraintreeCore/BTConfiguration.h>
 #import "BTHTTP.h"
-#import "BTJSON.h"
+#import <BraintreeCore/BTJSON.h>
 #import "BTLogger_Internal.h"
-#import "BTPayPalIDToken.h"
+#import <BraintreeCore/BTPayPalIDToken.h>
 
 #import <UIKit/UIKit.h>
 

@@ -1,10 +1,5 @@
 #import <Foundation/Foundation.h>
-
-#if SWIFT_PACKAGE
-#import "BTClientMetadata.h"
-#else
 #import <BraintreeCore/BTClientMetadata.h>
-#endif
 
 @class BTConfiguration;
 @class BTJSON;

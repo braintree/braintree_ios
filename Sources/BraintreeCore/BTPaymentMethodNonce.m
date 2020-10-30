@@ -1,4 +1,4 @@
-#import "BTPaymentMethodNonce.h"
+#import <BraintreeCore/BTPaymentMethodNonce.h>
 
 @interface BTPaymentMethodNonce ()
 

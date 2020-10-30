@@ -1,6 +1,6 @@
-#import "BTPaymentMethodNonceParser.h"
-#import "BTPaymentMethodNonce.h"
-#import "BTJSON.h"
+#import <BraintreeCore/BTPaymentMethodNonceParser.h>
+#import <BraintreeCore/BTPaymentMethodNonce.h>
+#import <BraintreeCore/BTJSON.h>
 
 @interface BTPaymentMethodNonceParser ()
 

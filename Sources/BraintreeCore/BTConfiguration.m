@@ -1,4 +1,4 @@
-#import "BTConfiguration.h"
+#import <BraintreeCore/BTConfiguration.h>
 
 @implementation BTConfiguration
 

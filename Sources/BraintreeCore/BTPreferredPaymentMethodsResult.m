@@ -1,5 +1,5 @@
 #import "BTPreferredPaymentMethodsResult_Internal.h"
-#import "BTJSON.h"
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTPreferredPaymentMethodsResult
 

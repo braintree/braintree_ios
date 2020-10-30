@@ -1,4 +1,4 @@
-#import "BTAppSwitch.h"
+#import <BraintreeCore/BTAppSwitch.h>
 
 #import <UIKit/UIKit.h>
 

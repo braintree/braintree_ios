@@ -1,5 +1,5 @@
 #import "BTConfiguration+GraphQL.h"
-#import "BTJSON.h"
+#import <BraintreeCore/BTJSON.h>
 
 @implementation BTConfiguration (GraphQL)
 

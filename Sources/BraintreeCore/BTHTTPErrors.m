@@ -1,4 +1,4 @@
-#import "BTHTTPErrors.h"
+#import <BraintreeCore/BTHTTPErrors.h>
 
 NSString * const BTHTTPErrorDomain = @"com.braintreepayments.BTHTTPErrorDomain";
 
