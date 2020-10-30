@@ -1,9 +1,8 @@
 #import "BTDataCollector_Internal.h"
-#import "BTConfiguration+DataCollector.h"
+#import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
 #import "kDataCollector.h"
 
 #import <BraintreeCore/BraintreeCore.h>
-
 #import <CoreLocation/CoreLocation.h>
 
 typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {

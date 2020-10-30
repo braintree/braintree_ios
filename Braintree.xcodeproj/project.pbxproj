@@ -1667,6 +1667,16 @@
 			path = BraintreeThreeDSecure;
 			sourceTree = "<group>";
 		};
+		42510683254C9F630091B50F /* BraintreeDataCollector */ = {
+			isa = PBXGroup;
+			children = (
+				A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */,
+				B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */,
+				A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */,
+			);
+			path = BraintreeDataCollector;
+			sourceTree = "<group>";
+		};
 		6A50887E9E10BEB122A9F45D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1853,9 +1863,7 @@
 		A76D7C1D1BB1CBBF0000FA6A /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */,
-				B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */,
-				A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */,
+				42510683254C9F630091B50F /* BraintreeDataCollector */,
 			);
 			path = Public;
 			sourceTree = "<group>";
