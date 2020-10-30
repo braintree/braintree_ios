@@ -1,4 +1,4 @@
-#import "BTPayPalLineItem.h"
+#import <BraintreePayPal/BTPayPalLineItem.h>
 
 @implementation BTPayPalLineItem
 

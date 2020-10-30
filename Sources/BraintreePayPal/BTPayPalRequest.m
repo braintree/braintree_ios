@@ -1,4 +1,4 @@
-#import "BTPayPalRequest.h"
+#import <BraintreePayPal/BTPayPalRequest.h>
 
 @implementation BTPayPalRequest
 

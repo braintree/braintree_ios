@@ -1,4 +1,4 @@
-#import "BTConfiguration+PayPal.h"
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
 
 @implementation BTConfiguration (PayPal)
 

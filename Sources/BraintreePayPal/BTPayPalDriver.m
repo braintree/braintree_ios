@@ -1,25 +1,24 @@
 #import "BTPayPalDriver_Internal.h"
-#import "BTConfiguration+PayPal.h"
-#import "BTPayPalLineItem.h"
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreePayPal/BTPayPalLineItem.h>
 #import "BTPayPalAccountNonce_Internal.h"
-#import "BTPayPalRequest.h"
+#import <BraintreePayPal/BTPayPalRequest.h>
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "PayPalDataCollector.h"
 #import "../PayPalDataCollector/PPDataCollector_Internal.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <PayPalDataCollector/PayPalDataCollector.h>
 #import <PayPalDataCollector/PPDataCollector_Internal.h>
 #endif
 
+#import <BraintreeCore/BraintreeCore.h>
 #import <SafariServices/SafariServices.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";

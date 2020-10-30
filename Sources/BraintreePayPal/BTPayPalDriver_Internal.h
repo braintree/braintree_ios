@@ -1,8 +1,5 @@
-#if SWIFT_PACKAGE
-#import "BTPayPalDriver.h"
-#else
 #import <BraintreePayPal/BTPayPalDriver.h>
-#endif
+
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;
