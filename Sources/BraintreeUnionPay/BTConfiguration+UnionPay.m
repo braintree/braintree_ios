@@ -1,4 +1,4 @@
-#import "BTConfiguration+UnionPay.h"
+#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 
 @implementation BTConfiguration (UnionPay)
 
