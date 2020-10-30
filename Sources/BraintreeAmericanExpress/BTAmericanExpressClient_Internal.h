@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTAmericanExpressClient.h"
-#else
 #import <BraintreeAmericanExpress/BTAmericanExpressClient.h>
-#endif
 
 @interface BTAmericanExpressClient ()
 /**

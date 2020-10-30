@@ -1,11 +1,10 @@
 #import "BTAmericanExpressClient_Internal.h"
-#import "BTAmericanExpressRewardsBalance.h"
+#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
 
