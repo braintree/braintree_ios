@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "Public/BTAPIClient.h"
-#else
 #import <BraintreeCore/BTAPIClient.h>
-#endif
 
 @class BTAnalyticsService;
 @class BTAPIHTTP;

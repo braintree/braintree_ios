@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "Public/BTPreferredPaymentMethodsResult.h"
-#else
 #import <BraintreeCore/BTPreferredPaymentMethodsResult.h>
-#endif
 
 @class BTJSON;
 

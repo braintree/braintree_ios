@@ -54,50 +54,50 @@ let package = Package(
             name: "BraintreeAmericanExpress",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .target(
             name: "BraintreeApplePay",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .target(
             name: "BraintreeCard",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .target(
             name: "BraintreeCore",
             dependencies: [],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .target(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .target(
             name: "BraintreeUnionPay",
             dependencies: ["BraintreeCore", "BraintreeCard"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .target(
             name: "PayPalDataCollector",
             dependencies: ["BraintreeCore"],
             path: "Sources/PayPalDataCollector",
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .target(
             name: "BraintreePaymentFlow",
             dependencies: ["BraintreeCore", "BraintreeCard", "PayPalDataCollector"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
@@ -107,7 +107,7 @@ let package = Package(
             name: "BraintreePayPal",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "include"
         )
     ]
 )

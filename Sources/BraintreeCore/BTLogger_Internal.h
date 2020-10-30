@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "Public/BTLogger.h"
-#else
 #import <BraintreeCore/BTLogger.h>
-#endif
 
 @interface BTLogger ()
 
