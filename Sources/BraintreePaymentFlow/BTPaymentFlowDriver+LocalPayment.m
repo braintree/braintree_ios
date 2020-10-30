@@ -1,5 +1,5 @@
-#import "BTPaymentFlowDriver+LocalPayment.h"
-#import "BTConfiguration+LocalPayment.h"
+#import <BraintreePaymentFlow/BTPaymentFlowDriver+LocalPayment.h>
+#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import "BTPaymentFlowDriver_Internal.h"
 
 #if SWIFT_PACKAGE

@@ -1,10 +1,6 @@
-#if SWIFT_PACKAGE
-#import "BTPaymentFlowRequest.h"
-#import "BTPaymentFlowDriver.h"
-#else
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
-#endif
+
 
 @class BTPostalAddress;
 

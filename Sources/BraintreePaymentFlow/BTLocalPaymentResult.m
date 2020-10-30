@@ -1,10 +1,5 @@
-#import "BTLocalPaymentResult.h"
-
-#if SWIFT_PACKAGE
-#import "BraintreeCore.h"
-#else
+#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
 #import <BraintreeCore/BraintreeCore.h>
-#endif
 
 @implementation BTLocalPaymentResult
 

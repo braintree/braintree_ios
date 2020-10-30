@@ -1,4 +1,4 @@
-#import "BTPaymentFlowDriver.h"
+#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

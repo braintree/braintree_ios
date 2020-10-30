@@ -1,6 +1,6 @@
 #import "BTPaymentFlowDriver_Internal.h"
-#import "BTPaymentFlowRequest.h"
-#import "BTPaymentFlowResult.h"
+#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
+#import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 
 #if SWIFT_PACKAGE
 #import "../BraintreeCore/BTLogger_Internal.h"

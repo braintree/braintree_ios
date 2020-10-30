@@ -1,4 +1,4 @@
-#import "BTConfiguration+LocalPayment.h"
+#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 
 @implementation BTConfiguration (LocalPayment)
 

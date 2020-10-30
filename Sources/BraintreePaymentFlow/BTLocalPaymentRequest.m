@@ -1,22 +1,19 @@
-#import "BTLocalPaymentRequest.h"
-#import "BTConfiguration+LocalPayment.h"
+#import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
+#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import "BTPaymentFlowDriver_Internal.h"
-#import "BTLocalPaymentRequest.h"
-#import "BTLocalPaymentResult.h"
+#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
 #import "BTPaymentFlowDriver+LocalPayment_Internal.h"
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "PayPalDataCollector.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <PayPalDataCollector/PayPalDataCollector.h>
 #endif
 
+#import <BraintreeCore/BraintreeCore.h>
+#import <PayPalDataCollector/PayPalDataCollector.h>
 #import <SafariServices/SafariServices.h>
 
 @interface BTLocalPaymentRequest ()

@@ -5,11 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#if SWIFT_PACKAGE
-#import "PPDataCollector.h"
-#else
 #import <PayPalDataCollector/PPDataCollector.h>
-#endif
 
 @class MagnesResult;
 

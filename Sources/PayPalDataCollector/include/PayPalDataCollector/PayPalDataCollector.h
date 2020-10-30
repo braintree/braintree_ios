@@ -13,8 +13,4 @@ FOUNDATION_EXPORT double PayPalDataCollectorVersionNumber;
 /// Project version string for PayPalRisk.
 FOUNDATION_EXPORT const unsigned char PayPalDataCollectorVersionString[];
 
-#if SWIFT_PACKAGE
-#import "PPDataCollector.h"
-#else
 #import <PayPalDataCollector/PPDataCollector.h>
-#endif
