@@ -1,10 +1,5 @@
 #import "BTAuthenticationInsight_Internal.h"
-
-#if SWIFT_PACKAGE
-#import "BraintreeCore.h"
-#else
 #import <BraintreeCore/BraintreeCore.h>
-#endif
 
 @implementation BTAuthenticationInsight
 

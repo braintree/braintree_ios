@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTCard.h"
-#else
 #import <BraintreeCard/BTCard.h>
-#endif
 
 @class BTJSON;
 

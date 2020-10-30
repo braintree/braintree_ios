@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTCardClient.h"
-#else
 #import <BraintreeCard/BTCardClient.h>
-#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
