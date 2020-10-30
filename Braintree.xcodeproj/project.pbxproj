@@ -1651,6 +1651,22 @@
 			path = PayPalDataCollector;
 			sourceTree = "<group>";
 		};
+		4251066E254C9EDD0091B50F /* BraintreeThreeDSecure */ = {
+			isa = PBXGroup;
+			children = (
+				A91E1EAD24FEEF21007540E5 /* BraintreeThreeDSecure.h */,
+				80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */,
+				03800A5E1F04632B00068F53 /* BTPaymentFlowDriver+ThreeDSecure.h */,
+				80A1EE3F2236B04F00F6218B /* BTThreeDSecureAdditionalInformation.h */,
+				42F75E5224D466D5007DC5E7 /* BTThreeDSecureLookup.h */,
+				03F921BB200EB7940076CD80 /* BTThreeDSecurePostalAddress.h */,
+				03800A541F045F5600068F53 /* BTThreeDSecureRequest.h */,
+				423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */,
+				BC20A8F4238596850077AF56 /* BTThreeDSecureV1UICustomization.h */,
+			);
+			path = BraintreeThreeDSecure;
+			sourceTree = "<group>";
+		};
 		6A50887E9E10BEB122A9F45D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2036,15 +2052,7 @@
 		A91E1EBE24FEEF47007540E5 /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				A91E1EAD24FEEF21007540E5 /* BraintreeThreeDSecure.h */,
-				80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */,
-				03800A5E1F04632B00068F53 /* BTPaymentFlowDriver+ThreeDSecure.h */,
-				80A1EE3F2236B04F00F6218B /* BTThreeDSecureAdditionalInformation.h */,
-				42F75E5224D466D5007DC5E7 /* BTThreeDSecureLookup.h */,
-				03F921BB200EB7940076CD80 /* BTThreeDSecurePostalAddress.h */,
-				03800A541F045F5600068F53 /* BTThreeDSecureRequest.h */,
-				423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */,
-				BC20A8F4238596850077AF56 /* BTThreeDSecureV1UICustomization.h */,
+				4251066E254C9EDD0091B50F /* BraintreeThreeDSecure */,
 			);
 			path = Public;
 			sourceTree = "<group>";

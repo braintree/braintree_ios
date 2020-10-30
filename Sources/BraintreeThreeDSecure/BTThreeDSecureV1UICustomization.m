@@ -1,4 +1,4 @@
-#import "BTThreeDSecureV1UICustomization.h"
+#import <BraintreeThreeDSecure/BTThreeDSecureV1UICustomization.h>
 
 @implementation BTThreeDSecureV1UICustomization
 

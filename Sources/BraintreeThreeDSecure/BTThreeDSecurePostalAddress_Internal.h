@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTThreeDSecurePostalAddress.h"
-#else
 #import <BraintreeThreeDSecure/BTThreeDSecurePostalAddress.h>
-#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

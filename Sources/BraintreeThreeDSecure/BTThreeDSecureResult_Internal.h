@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTThreeDSecureResult.h"
-#else
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#endif
 
 @class BTJSON;
 

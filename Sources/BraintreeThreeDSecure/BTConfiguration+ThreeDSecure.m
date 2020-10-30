@@ -1,4 +1,4 @@
-#import "BTConfiguration+ThreeDSecure.h"
+#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 
 @implementation BTConfiguration (ThreeDSecure)
 

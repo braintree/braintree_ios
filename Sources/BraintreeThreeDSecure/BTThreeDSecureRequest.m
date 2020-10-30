@@ -1,12 +1,11 @@
-#import "BTThreeDSecureRequest.h"
-#import "BTThreeDSecureRequest.h"
-#import "BTThreeDSecureResult.h"
-#import "BTThreeDSecureLookup.h"
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
-#import "BTConfiguration+ThreeDSecure.h"
+#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import "BTThreeDSecureV2Provider.h"
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTThreeDSecureResult_Internal.h"
@@ -15,16 +14,15 @@
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/Braintree-Version.h"
-#import "BraintreeCard.h"
 #import "../BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h"
 #else
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
-#import <BraintreeCard/BraintreeCard.h>
 #import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
 #endif
 
+#import <BraintreeCard/BraintreeCard.h>
 #import <SafariServices/SafariServices.h>
 
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>

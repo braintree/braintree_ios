@@ -1,8 +1,5 @@
-#if SWIFT_PACKAGE
-#import "BTPaymentFlowResult.h"
-#else
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
-#endif
+
 @class BTCardNonce;
 @class BTThreeDSecureLookup;
 

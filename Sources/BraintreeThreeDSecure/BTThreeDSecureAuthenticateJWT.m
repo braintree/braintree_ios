@@ -3,12 +3,12 @@
 #import "BTThreeDSecureResult_Internal.h"
 
 #if SWIFT_PACKAGE
-#import "BraintreeCard.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #else
-#import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
+
+#import <BraintreeCard/BraintreeCard.h>
 
 @implementation BTThreeDSecureAuthenticateJWT
 

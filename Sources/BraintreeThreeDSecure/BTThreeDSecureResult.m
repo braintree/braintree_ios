@@ -1,11 +1,10 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureLookup_Internal.h"
+#import <BraintreeCore/BraintreeCore.h>
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCard/BTCardNonce_Internal.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BTCardNonce_Internal.h>
 #endif
 

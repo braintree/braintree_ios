@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTPaymentFlowDriver+ThreeDSecure.h"
-#else
 #import <BraintreeThreeDSecure/BTPaymentFlowDriver+ThreeDSecure.h>
-#endif
 
 @class BTThreeDSecureResult;
 

@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTThreeDSecureLookup.h"
-#else
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#endif
 
 @class BTJSON;
 

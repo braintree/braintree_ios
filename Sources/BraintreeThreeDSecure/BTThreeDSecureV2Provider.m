@@ -1,19 +1,18 @@
 #import "BTThreeDSecureV2Provider.h"
-#import "BTConfiguration+ThreeDSecure.h"
+#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
-#import "BTThreeDSecureRequest.h"
-#import "BTThreeDSecureResult.h"
-#import "BTThreeDSecureLookup.h"
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
 
+#import <BraintreeCore/BraintreeCore.h>
 #import <CardinalMobile/CardinalMobile.h>
 
 @interface BTThreeDSecureV2Provider() <CardinalValidationDelegate>
