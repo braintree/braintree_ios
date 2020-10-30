@@ -52,6 +52,7 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreePayPal/*.{h,m}", "Sources/BraintreePayPal/Public/*.h"
     s.public_header_files = "Sources/BraintreePayPal/Public/*.h"
     s.dependency "Braintree/Core"
+    s.dependency "Braintree/PayPalDataCollector"
   end
 
   s.subspec "Venmo" do |s|
