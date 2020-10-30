@@ -3,15 +3,14 @@
 #import <BraintreeUnionPay/BTCardCapabilities.h>
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCard/BTCardClient_Internal.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCard/BTCardClient_Internal.h>
 #endif
 
+#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
 
 @implementation BTCardClient (UnionPay)
