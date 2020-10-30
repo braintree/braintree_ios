@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTVenmoDriver.h"
-#else
 #import <BraintreeVenmo/BTVenmoDriver.h>
-#endif
 
 @interface BTVenmoDriver ()
 

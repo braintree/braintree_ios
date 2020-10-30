@@ -1,15 +1,14 @@
 #import "BTVenmoDriver_Internal.h"
-#import "BTConfiguration+Venmo.h"
+#import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import "BTVenmoAccountNonce_Internal.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
+#import <BraintreeCore/BraintreeCore.h>
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #endif

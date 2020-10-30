@@ -1,8 +1,4 @@
-#if SWIFT_PACKAGE
-#import "BTVenmoAccountNonce.h"
-#else
 #import <BraintreeVenmo/BTVenmoAccountNonce.h>
-#endif
 
 @interface BTVenmoAccountNonce ()
 

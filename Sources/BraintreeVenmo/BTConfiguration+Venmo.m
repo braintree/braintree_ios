@@ -1,4 +1,4 @@
-#import "BTConfiguration+Venmo.h"
+#import <BraintreeVenmo/BTConfiguration+Venmo.h>
 
 @implementation BTConfiguration (Venmo)
 
