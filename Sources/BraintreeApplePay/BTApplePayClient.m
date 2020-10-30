@@ -1,15 +1,14 @@
 #import "BTApplePayClient_Internal.h"
-#import "BTConfiguration+ApplePay.h"
-#import "BTApplePayCardNonce.h"
+#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
+#import <BraintreeApplePay/BTApplePayCardNonce.h>
 
 #if SWIFT_PACKAGE
-#import "BraintreeCore.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
 
+#import <BraintreeCore/BraintreeCore.h>
 #import <PassKit/PassKit.h>
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";

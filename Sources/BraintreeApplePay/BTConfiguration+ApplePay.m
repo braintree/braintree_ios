@@ -1,4 +1,4 @@
-#import "BTConfiguration+ApplePay.h"
+#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 
 @implementation BTConfiguration (ApplePay)
 
