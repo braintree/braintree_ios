@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTClientMetadata.h>
+#else
 #import <BraintreeCore/BTClientMetadata.h>
+#endif
 
 @interface BTClientMetadata () {
     @protected

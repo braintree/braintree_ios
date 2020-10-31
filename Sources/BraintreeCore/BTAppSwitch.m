@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTAppSwitch.h>
+#else
 #import <BraintreeCore/BTAppSwitch.h>
+#endif
 
 #import <UIKit/UIKit.h>
 

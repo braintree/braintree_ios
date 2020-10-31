@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTAPIClient.h>
+#else
 #import <BraintreeCore/BTAPIClient.h>
+#endif
 
 @class BTAnalyticsService;
 @class BTAPIHTTP;

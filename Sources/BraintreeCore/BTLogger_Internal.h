@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTLogger.h>
+#else
 #import <BraintreeCore/BTLogger.h>
+#endif
 
 @interface BTLogger ()
 

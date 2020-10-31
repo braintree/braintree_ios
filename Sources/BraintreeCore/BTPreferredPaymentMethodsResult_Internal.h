@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTPreferredPaymentMethodsResult.h>
+#else
 #import <BraintreeCore/BTPreferredPaymentMethodsResult.h>
+#endif
 
 @class BTJSON;
 

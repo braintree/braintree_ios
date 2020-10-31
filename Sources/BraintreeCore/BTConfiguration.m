@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTConfiguration.h>
+#else
 #import <BraintreeCore/BTConfiguration.h>
+#endif
 
 @implementation BTConfiguration
 

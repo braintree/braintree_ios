@@ -1,13 +1,22 @@
 #import "BTAnalyticsService.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTAPIClient_Internal.h"
+#import "BTHTTP.h"
+#import "BTLogger_Internal.h"
+
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTClientMetadata.h>
+#import <Braintree/BTClientToken.h>
+#import <Braintree/BTConfiguration.h>
+#import <Braintree/BTJSON.h>
+#import <Braintree/BTPayPalIDToken.h>
+#else
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
-#import "BTHTTP.h"
 #import <BraintreeCore/BTJSON.h>
-#import "BTLogger_Internal.h"
 #import <BraintreeCore/BTPayPalIDToken.h>
+#endif
 
 #import <UIKit/UIKit.h>
 

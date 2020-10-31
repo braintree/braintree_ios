@@ -6,6 +6,29 @@ FOUNDATION_EXPORT double BraintreeCoreVersionNumber;
 /// Project version string for BraintreeCore.
 FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTAPIClient.h>
+#import <Braintree/BTAppSwitch.h>
+#import <Braintree/BTBinData.h>
+#import <Braintree/BTClientMetadata.h>
+#import <Braintree/BTClientToken.h>
+#import <Braintree/BTConfiguration.h>
+#import <Braintree/BTEnums.h>
+#import <Braintree/BTErrors.h>
+#import <Braintree/BTHTTPErrors.h>
+#import <Braintree/BTJSON.h>
+#import <Braintree/BTLogger.h>
+#import <Braintree/BTPostalAddress.h>
+#import <Braintree/BTPaymentMethodNonce.h>
+#import <Braintree/BTPaymentMethodNonceParser.h>
+#import <Braintree/BTPayPalIDToken.h>
+#import <Braintree/BTTokenizationService.h>
+#import <Braintree/BTPaymentMethodNonce.h>
+#import <Braintree/BTViewControllerPresentingDelegate.h>
+#import <Braintree/BTPreferredPaymentMethods.h>
+#import <Braintree/BTPreferredPaymentMethodsResult.h>
+#import <Braintree/BTURLUtils.h>
+#else
 #import <BraintreeCore/BTAPIClient.h>
 #import <BraintreeCore/BTAppSwitch.h>
 #import <BraintreeCore/BTBinData.h>
@@ -27,3 +50,4 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <BraintreeCore/BTPreferredPaymentMethods.h>
 #import <BraintreeCore/BTPreferredPaymentMethodsResult.h>
 #import <BraintreeCore/BTURLUtils.h>
+#endif
