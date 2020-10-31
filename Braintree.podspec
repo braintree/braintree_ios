@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/braintree/braintree_ios.git", :tag => s.version.to_s }
   s.social_media_url = "https://twitter.com/braintree"
 
-  s.platform         = :ios, "11.0"
+  s.platform         = :ios, "12.0"
   s.requires_arc     = true
   s.compiler_flags = "-Wall -Werror -Wextra"
 
@@ -98,5 +98,9 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/PaymentFlow"
     s.vendored_frameworks = "Frameworks/CardinalMobile.framework"
   end
+
+  # https://github.com/CocoaPods/CocoaPods/issues/10065#issuecomment-694266259
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end
 
