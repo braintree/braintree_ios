@@ -1,9 +1,14 @@
 #import "BTDataCollector_Internal.h"
-#import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
 #import "kDataCollector.h"
-
-#import <BraintreeCore/BraintreeCore.h>
 #import <CoreLocation/CoreLocation.h>
+
+#if __has_include(<Braintree/BraintreeDataCollector.h>)
+#import <Braintree/BTConfiguration+DataCollector.h>
+#import <Braintree/BraintreeCore.h>
+#else
+#import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
 typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
     /// Development
