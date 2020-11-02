@@ -13,4 +13,8 @@ FOUNDATION_EXPORT double PayPalDataCollectorVersionNumber;
 /// Project version string for PayPalRisk.
 FOUNDATION_EXPORT const unsigned char PayPalDataCollectorVersionString[];
 
+#if __has_include(<Braintree/PPDataCollector.h>)
+#import <Braintree/PPDataCollector.h>
+#else
 #import <PayPalDataCollector/PPDataCollector.h>
+#endif

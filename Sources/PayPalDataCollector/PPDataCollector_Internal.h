@@ -5,7 +5,11 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
+#if __has_include(<Braintree/PPDataCollector.h>)
+#import <Braintree/PPDataCollector.h>
+#else
 #import <PayPalDataCollector/PPDataCollector.h>
+#endif
 
 @class MagnesResult;
 
