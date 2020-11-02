@@ -1,13 +1,17 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased (v5)
+* Add support for Swift Package Manager (resolves #462)
+* Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 12
-  * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
-  * Remove the `localizedDescription` property on `BTPaymentMethodNonce`.
-  * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
-  * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
-  * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
+  * Core
+    * Remove the `localizedDescription` property on `BTPaymentMethodNonce`.
+    * Update all methods on `BTAppSwitchDelegate` to be optional
+  * PaymentFlow
+    * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
+    * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
+    * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
   * PayPal
     * Remove PayPalOneTouch and PayPalUtils modules
     * Remove `authorizeAccountWithCompletion` and `authorizeAccountWithAdditionalScopes` methods from `BTPayPalDriver`
@@ -15,8 +19,9 @@
     * Remove `viewControllerPresentingDelegate` property from `BTPayPalDriver`
     * Remove use of `SFSafariViewController` from PayPal flow
     * Update `requestBillingAgreement` and `requestOneTimePayment` completion blocks to return an error when user cancels the PayPal flow
-  * Update all methods on `BTAppSwitchDelegate` to be optional
-* Bump Kount to v4.0.4.1 (supports iOS 9.3+)
+  * ThreeDSecure
+    * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
+    * Create a stand-alone 3DS module
 
 ## unreleased (v4)
 * Update CardinalMobile.framework to v2.2.4-1
