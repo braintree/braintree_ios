@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeUnionPay.h>)
+#import <Braintree/BraintreeCore.h>
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 /**
  BTConfiguration category for UnionPay
