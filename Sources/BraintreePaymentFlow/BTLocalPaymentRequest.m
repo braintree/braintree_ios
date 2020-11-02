@@ -1,20 +1,35 @@
+#import "BTPaymentFlowDriver_Internal.h"
+#import "BTPaymentFlowDriver+LocalPayment_Internal.h"
+#import <SafariServices/SafariServices.h>
+
+#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#import <Braintree/BTLocalPaymentRequest.h>
+#import <Braintree/BTConfiguration+LocalPayment.h>
+#import <Braintree/BTLocalPaymentResult.h>
+#import <Braintree/BTLogger_Internal.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/PayPalDataCollector.h>
+
+#elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
-#import "BTPaymentFlowDriver_Internal.h"
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import "BTPaymentFlowDriver+LocalPayment_Internal.h"
-
-#if SWIFT_PACKAGE
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#else
-#import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#endif
-
 #import <BraintreeCore/BraintreeCore.h>
 #import <PayPalDataCollector/PayPalDataCollector.h>
-#import <SafariServices/SafariServices.h>
+
+#else // Carthage
+#import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
+#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
+#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
+#import <BraintreeCore/BTLogger_Internal.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <PayPalDataCollector/PayPalDataCollector.h>
+
+#endif
 
 @interface BTLocalPaymentRequest ()
 
