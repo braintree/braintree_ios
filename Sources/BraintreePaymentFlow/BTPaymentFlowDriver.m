@@ -1,16 +1,25 @@
 #import "BTPaymentFlowDriver_Internal.h"
+#import <SafariServices/SafariServices.h>
+
+#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#import <Braintree/BTPaymentFlowRequest.h>
+#import <Braintree/BTPaymentFlowResult.h>
+#import <Braintree/BTLogger_Internal.h>
+#import <Braintree/BTAPIClient_Internal.h>
+
+#elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
-
-#if SWIFT_PACKAGE
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#else
+
+#else // Carthage
+#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
+#import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#endif
 
-#import <SafariServices/SafariServices.h>
+#endif
 
 @interface BTPaymentFlowDriver () <SFSafariViewControllerDelegate>
 

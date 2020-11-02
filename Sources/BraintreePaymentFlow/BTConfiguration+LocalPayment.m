@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreePaymentFlow.h>)
+#import <Braintree/BTConfiguration+LocalPayment.h>
+#else
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
+#endif
 
 @implementation BTConfiguration (LocalPayment)
 

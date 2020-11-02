@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreePaymentFlow.h>)
+#import <Braintree/BraintreeCore.h>
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 /**
  Category on BTConfiguration for LocalPayment
