@@ -1,16 +1,26 @@
 #import "BTVenmoDriver_Internal.h"
-#import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import "BTVenmoAccountNonce_Internal.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
-#import <BraintreeCore/BraintreeCore.h>
 
-#if SWIFT_PACKAGE
+#if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
+#import <Braintree/BTConfiguration+Venmo.h>
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BTLogger_Internal.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
-#else
+
+#else // Carthage
+#import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
+
 #endif
 
 @interface BTVenmoDriver ()

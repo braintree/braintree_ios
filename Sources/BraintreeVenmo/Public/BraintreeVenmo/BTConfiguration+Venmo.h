@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeVenmo.h>)
+#import <Braintree/BraintreeCore.h>
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 /**
  BTConfiguration category for Venmo

@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeVenmo.h>)
+#import <Braintree/BTVenmoDriver.h>
+#else
 #import <BraintreeVenmo/BTVenmoDriver.h>
+#endif
 
 @interface BTVenmoDriver ()
 

@@ -1,10 +1,17 @@
 #import "BTVenmoAppSwitchRequestURL.h"
-#import <BraintreeCore/BraintreeCore.h>
 
-#if SWIFT_PACKAGE
+#if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/Braintree-Version.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/Braintree-Version.h"
-#else
+
+#else // Carthage
+#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/Braintree-Version.h>
+
 #endif
 
 #define kXCallbackTemplate @"scheme://x-callback-url/path"
