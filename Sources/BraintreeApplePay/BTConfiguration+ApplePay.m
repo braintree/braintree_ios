@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeApplePay.h>)
+#import <Braintree/BTConfiguration+ApplePay.h>
+#else
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
+#endif
 
 @implementation BTConfiguration (ApplePay)
 

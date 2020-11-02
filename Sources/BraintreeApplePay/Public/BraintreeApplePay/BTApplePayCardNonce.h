@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeApplePay.h>)
+#import <Braintree/BraintreeCore.h>
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
