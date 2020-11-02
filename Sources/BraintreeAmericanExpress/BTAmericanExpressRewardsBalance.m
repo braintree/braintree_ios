@@ -1,5 +1,10 @@
+#if __has_include(<Braintree/BraintreeAmericanExpress.h>)
+#import <Braintree/BTAmericanExpressRewardsBalance.h>
+#import <Braintree/BraintreeCore.h>
+#else
 #import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @implementation BTAmericanExpressRewardsBalance
 

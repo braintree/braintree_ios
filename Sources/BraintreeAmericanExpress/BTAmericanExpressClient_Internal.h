@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeAmericanExpress.h>)
+#import <Braintree/BTAmericanExpressClient.h>
+#else
 #import <BraintreeAmericanExpress/BTAmericanExpressClient.h>
+#endif
 
 @interface BTAmericanExpressClient ()
 /**
