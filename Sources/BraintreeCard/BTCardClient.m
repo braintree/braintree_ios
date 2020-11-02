@@ -1,16 +1,24 @@
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
-#import <BraintreeCard/BTCardRequest.h>
 #import "BTConfiguration+Card.h"
 
-#if SWIFT_PACKAGE
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#else
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#endif
+#if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
+#import <Braintree/BTCardRequest.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BraintreeCore.h>
 
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeCard/BTCardRequest.h>
+#import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
+
+#else // Carthage
+#import <BraintreeCard/BTCardRequest.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BraintreeCore.h>
+
+#endif
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
 NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";

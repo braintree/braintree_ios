@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCard.h>)
+#import <Braintree/BTCardNonce.h>
+#else
 #import <BraintreeCard/BTCardNonce.h>
+#endif
 
 @class BTJSON;
 

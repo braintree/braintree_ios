@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeUnionPay.h>)
+#import <Braintree/BraintreeCard.h>
+#else
 #import <BraintreeCard/BraintreeCard.h>
+#endif
 
 @class BTCardCapabilities;
 

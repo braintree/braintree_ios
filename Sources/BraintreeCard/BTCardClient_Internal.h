@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeCard.h>)
+#import <Braintree/BTCardClient.h>
+#else
 #import <BraintreeCard/BTCardClient.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
