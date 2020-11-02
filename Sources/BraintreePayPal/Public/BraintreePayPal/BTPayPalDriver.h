@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreePayPal.h>)
+#import <Braintree/BraintreeCore.h>
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @class BTPayPalAccountNonce;
 @class BTPayPalRequest;

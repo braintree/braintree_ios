@@ -1,23 +1,39 @@
 #import "BTPayPalDriver_Internal.h"
-#import <BraintreePayPal/BTConfiguration+PayPal.h>
-#import <BraintreePayPal/BTPayPalLineItem.h>
 #import "BTPayPalAccountNonce_Internal.h"
-#import <BraintreePayPal/BTPayPalRequest.h>
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 
-#if SWIFT_PACKAGE
+#if __has_include(<Braintree/BraintreeApplePay.h>) // CocoaPods
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BTLogger_Internal.h>
+#import <Braintree/PayPalDataCollector.h>
+#import <Braintree/PPDataCollector_Internal.h>
+#import <Braintree/BTPayPalRequest.h>
+#import <Braintree/BTConfiguration+PayPal.h>
+#import <Braintree/BTPayPalLineItem.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
+#import <PayPalDataCollector/PayPalDataCollector.h>
 #import "../PayPalDataCollector/PPDataCollector_Internal.h"
-#else
+#import <BraintreePayPal/BTPayPalRequest.h>
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreePayPal/BTPayPalLineItem.h>
+
+#else // Carthage
+#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
+#import <PayPalDataCollector/PayPalDataCollector.h>
 #import <PayPalDataCollector/PPDataCollector_Internal.h>
+#import <BraintreePayPal/BTPayPalRequest.h>
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreePayPal/BTPayPalLineItem.h>
 #endif
 
-#import <BraintreeCore/BraintreeCore.h>
-#import <PayPalDataCollector/PayPalDataCollector.h>
 #import <SafariServices/SafariServices.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";

@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreePayPal.h>)
+#import <Braintree/BTPayPalLineItem.h>
+#else
 #import <BraintreePayPal/BTPayPalLineItem.h>
+#endif
 
 @implementation BTPayPalLineItem
 
