@@ -3,7 +3,7 @@
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 
-#if __has_include(<Braintree/BraintreeApplePay.h>) // CocoaPods
+#if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTLogger_Internal.h>
@@ -347,6 +347,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
     urlComponents.query = queryForAuthSession;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL
                                                                   callbackURLScheme:self.returnURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
@@ -385,6 +388,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.failed"];
         }
     }
+#pragma clang diagnostic pop
 }
 
 - (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {
