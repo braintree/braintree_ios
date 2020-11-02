@@ -7,7 +7,11 @@
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 @class SFAuthenticationSession;
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,10 +47,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 */
 @property (nonatomic, strong) BTPayPalRequest *payPalRequest;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 /**
  Exposed for testing, the safariAuthenticationSession instance used for the PayPal flow
  */
 @property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession;
+#pragma clang diagnostic pop
 
 /**
  Exposed for testing, for determining if SFAuthenticationSession was started
