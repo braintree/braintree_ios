@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
     s.weak_frameworks = "SafariServices"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/Card" # TODO: - is this dependency still required?
+    s.dependency "PayPalDataCollector"
   end
 
   s.subspec "ThreeDSecure" do |s|
