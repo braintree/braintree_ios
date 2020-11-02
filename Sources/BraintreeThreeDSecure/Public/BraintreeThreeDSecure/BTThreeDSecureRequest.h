@@ -1,5 +1,10 @@
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTPaymentFlowRequest.h>
+#import <Braintree/BTPaymentFlowDriver.h>
+#else
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#endif
 
 @class BTThreeDSecureRequest;
 @class BTThreeDSecureLookup;

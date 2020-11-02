@@ -1,29 +1,46 @@
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import "BTThreeDSecureV2Provider.h"
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTThreeDSecureResult_Internal.h"
+#import <SafariServices/SafariServices.h>
 
-#if SWIFT_PACKAGE
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#import <Braintree/BTThreeDSecureRequest.h>
+#import <Braintree/BTThreeDSecureResult.h>
+#import <Braintree/BTThreeDSecureLookup.h>
+#import <Braintree/BTConfiguration+ThreeDSecure.h>
+#import <Braintree/BraintreeCard.h>
+#import <Braintree/BTLogger_Internal.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/Braintree-Version.h>
+#import <Braintree/BTPaymentFlowDriver_Internal.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
+#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
+#import <BraintreeCard/BraintreeCard.h>
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/Braintree-Version.h"
 #import "../BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h"
-#else
+
+#else // Carthage
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
+#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
+#import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
 #import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
-#endif
 
-#import <BraintreeCard/BraintreeCard.h>
-#import <SafariServices/SafariServices.h>
+#endif
 
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>
 

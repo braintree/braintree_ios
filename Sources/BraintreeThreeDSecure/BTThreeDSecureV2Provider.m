@@ -1,19 +1,33 @@
 #import "BTThreeDSecureV2Provider.h"
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
+#import <CardinalMobile/CardinalMobile.h>
+
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#import <Braintree/BTConfiguration+ThreeDSecure.h>
+#import <Braintree/BTThreeDSecureRequest.h>
+#import <Braintree/BTThreeDSecureResult.h>
+#import <Braintree/BTThreeDSecureLookup.h>
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/BTAPIClient_Internal.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-
-#if SWIFT_PACKAGE
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#else
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#endif
-
 #import <BraintreeCore/BraintreeCore.h>
-#import <CardinalMobile/CardinalMobile.h>
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+
+#else // Carthage
+#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+
+#endif
 
 @interface BTThreeDSecureV2Provider() <CardinalValidationDelegate>
 

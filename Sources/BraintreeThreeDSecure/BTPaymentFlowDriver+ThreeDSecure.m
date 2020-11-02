@@ -1,20 +1,33 @@
-#import <BraintreeThreeDSecure/BTPaymentFlowDriver+ThreeDSecure.h>
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
-#import <BraintreeCore/BraintreeCore.h>
 
-#if SWIFT_PACKAGE
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#import <Braintree/BTPaymentFlowDriver+ThreeDSecure.h>
+#import <Braintree/BTThreeDSecureRequest.h>
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/BTPaymentFlowDriver_Internal.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/Braintree-Version.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeThreeDSecure/BTPaymentFlowDriver+ThreeDSecure.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/Braintree-Version.h"
-#else
+"
+#else // Carthage
+#import <BraintreeThreeDSecure/BTPaymentFlowDriver+ThreeDSecure.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
+
 #endif
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)

@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureAdditionalInformation.h>
+#else
 #import <BraintreeThreeDSecure/BTThreeDSecureAdditionalInformation.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
