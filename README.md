@@ -33,7 +33,7 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-<!--TODO: add note about missing 3DS support for SPM -->
+**Note:** The `BraintreeThreeDSecure` and `BraintreeDataCollector` frameworks do not currently support Swift Package Manager.
 
 #### CocoaPods
 ```
