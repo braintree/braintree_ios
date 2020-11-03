@@ -1,5 +1,7 @@
 # Braintree iOS SDK
 
+[![CocoaPods compatible](https://img.shields.io/cocoapods/p/Braintree)](https://cocoapods.org/)
+[![Swift Package Manager compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 <!--[![Travis CI build status](https://travis-ci.org/braintree/braintree_ios.svg?branch=master)](https://travis-ci.org/braintree/braintree_ios) -->
 
@@ -18,7 +20,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 ## Installation
 
-We recommend using either [CocoaPods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
+We recommend using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](https://github.com/CocoaPods/CocoaPods), or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 #### Swift Package Manager
 To add the `Braintree` package to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
@@ -33,7 +35,18 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-**Note:** The `BraintreeThreeDSecure` and `BraintreeDataCollector` frameworks do not currently support Swift Package Manager.
+**Note:** The `BraintreeThreeDSecure` and `BraintreeDataCollector` libraries do not currently support Swift Package Manager. These both rely on third party frameworks which we do not yet have in the `.xcframework` format.
+
+The following Braintree libraries offer Swift Package Manager support:
+* `BraintreeAmericanExpress`
+* `BraintreeApplePay`
+* `BraintreeCard`
+* `BraintreeCore`
+* `BraintreePaymentFlow`
+* `BraintreePayPal`
+* `BraintreeUnionPay`
+* `BraintreeVenmo`
+* `PayPalDataCollector`
 
 #### CocoaPods
 ```
