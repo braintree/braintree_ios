@@ -16,7 +16,12 @@
     * Remove use of `SFSafariViewController` from PayPal flow
     * Update `requestBillingAgreement` and `requestOneTimePayment` completion blocks to return an error when user cancels the PayPal flow
   * Update all methods on `BTAppSwitchDelegate` to be optional
-* Bump Kount to v4.0.4.1 (supports iOS 9.3+)
+  * Remove deprecated `Braintree3DSecure` module
+  * Remove deprecated `BraintreeUI` module
+  * Remove all deprecated methods and properties
+  * Replace `libPPRiskMagnesOC.a` with `PPRiskMagnes.xcframework` v5.0.1 (which requires Swift 5.1+)
+  * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h`
+* Bump Kount to v4.0.4.2 (supports iOS 9.3+)
 
 ## unreleased (v4)
 * Update CardinalMobile.framework to v2.2.4-1
