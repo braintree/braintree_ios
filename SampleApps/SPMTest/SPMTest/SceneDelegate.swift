@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  SPMTest
-//
-//  Created by Cannillo, Sammy on 11/3/20.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
