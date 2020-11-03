@@ -137,6 +137,14 @@ namespace :carthage do
   end
 end
 
+# desc `Build SPM demo app`
+# namespace :spm do
+#   task :build_demo do
+#     run! "swift package resolve"
+#     run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build"
+#   end
+# end
+
 desc 'Run all sanity checks'
 task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:carthage_test]
 
