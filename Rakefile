@@ -119,34 +119,48 @@ namespace :demo do
   end
 end
 
-desc 'Run Carthage update'
+desc 'Build Carthage demo app'
 namespace :carthage do
   def generate_cartfile
     File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
   end
 
   task :clean do
-    run! 'rm -rf Carthage && rm Cartfile.resolved && rm -rf ~/Library/Developers/Xcode/DerivedData'
-    run! 'git checkout SampleApps/CarthageTest/Cartfile'
+    run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
+    run! 'git checkout SampleApps/CarthageTest'
   end
 
-  task :test do
+  task :build_demo do
     generate_cartfile
-    run! "carthage update"
+    run! "cd SampleApps/CarthageTest && carthage update"
     run! "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
   end
 end
 
-# desc `Build SPM demo app`
-# namespace :spm do
-#   task :build_demo do
-#     run! "swift package resolve"
-#     run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build"
-#   end
-# end
+desc 'Build SPM demo app'
+namespace :spm do
+  def update_xcodeproj
+    project_file = "SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj"
+    proj = File.read(project_file)
+    proj.gsub!(/(repositoryURL = )(.*);/, "\\1\"file://#{Dir.pwd}/\";")
+    proj.gsub!(/(branch = )(.*);/, "\\1\"#{current_branch}\";")
+    File.open(project_file, "w") { |f| f.puts proj }
+  end
+
+  task :clean do
+    run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
+    run! 'git checkout SampleApps/SPMTest'
+  end
+
+  task :build_demo do
+    update_xcodeproj
+    run! "cd SampleApps/SPMTest && swift package resolve"
+    run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build"
+  end
+end
 
 desc 'Run all sanity checks'
-task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:carthage_test]
+task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:carthage_test sanity_checks:spm_test]
 
 namespace :sanity_checks do
   desc 'Check for pending tests'
@@ -168,7 +182,10 @@ namespace :sanity_checks do
   task :build_demo => 'demo:build'
 
   desc 'Verify that Carthage builds successfully'
-  task :carthage_test => %w[carthage:test carthage:clean]
+  task :carthage_test => %w[carthage:build_demo carthage:clean]
+
+  desc 'Verify that SPM builds successfully'
+  task :spm_test => %w[spm:build_demo spm:clean]
 end
 
 namespace :release do
@@ -214,8 +231,6 @@ namespace :release do
     end
     run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' '#{FRAMEWORKS_PLIST}' #{BRAINTREE_VERSION_FILE} #{PAYPAL_ONE_TOUCH_VERSION_FILE}"
   end
-
-  # TODO: include task to bump version for SPM
 
   desc  "Test."
   task :test => 'spec:all'
