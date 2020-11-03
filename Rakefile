@@ -266,16 +266,6 @@ namespace :publish do
 
 end
 
-namespace :gen do
-  task :strings do
-    ["Drop-In", "UI"].each do |subspec|
-      run! "genstrings -o Braintree/#{subspec}/Localization/en.lproj Braintree/#{subspec}/**/*.m && " +
-           "iconv -f utf-16 -t utf-8 Braintree/#{subspec}/Localization/en.lproj/Localizable.strings > Braintree/#{subspec}/Localization/en.lproj/#{subspec}.strings && " +
-           "rm -f Braintree/#{subspec}/Localization/en.lproj/Localizable.strings"
-    end
-  end
-end
-
 def jazzy_command
   %W[jazzy
       --objc
