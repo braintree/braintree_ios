@@ -122,19 +122,18 @@ end
 desc 'Run Carthage update'
 namespace :carthage do
   def generate_cartfile
-    run! 'mv Cartfile Cartfile.backup'
-    File.write("./Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
+    File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
   end
 
   task :clean do
-    run! 'rm -rf Carthage && rm Cartfile && rm Cartfile.resolved && rm -rf ~/Library/Developers/Xcode/DerivedData'
-    run! 'mv Cartfile.backup Cartfile'
+    run! 'rm -rf Carthage && rm Cartfile.resolved && rm -rf ~/Library/Developers/Xcode/DerivedData'
+    run! 'git checkout SampleApps/CarthageTest/Cartfile'
   end
 
   task :test do
     generate_cartfile
     run! "carthage update"
-    run! "xcodebuild -project 'Demo/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
+    run! "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
   end
 end
 
@@ -207,6 +206,8 @@ namespace :release do
     end
     run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' '#{FRAMEWORKS_PLIST}' #{BRAINTREE_VERSION_FILE} #{PAYPAL_ONE_TOUCH_VERSION_FILE}"
   end
+
+  # TODO: include task to bump version for SPM
 
   desc  "Test."
   task :test => 'spec:all'
