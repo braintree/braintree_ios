@@ -7,7 +7,7 @@ HighLine.color_scheme = HighLine::SampleColorScheme.new
 
 task :default => %w[sanity_checks spec]
 
-desc "Run default set of tasks"
+desc "Run all test tasks"
 task :spec => %w[spec:all]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
@@ -112,6 +112,7 @@ namespace :spec do
   task :all => %w[spec:unit spec:api:integration spec:ui]
 end
 
+desc 'Build Braintree proj demo app'
 namespace :demo do
   desc 'Verify that the demo app builds successfully'
   task :build do
@@ -178,13 +179,13 @@ namespace :sanity_checks do
     run! "! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
   end
 
-  desc 'Verify that all demo apps Build successfully'
+  desc 'Verify that Braintree demo app builds successfully'
   task :build_demo => 'demo:build'
 
-  desc 'Verify that Carthage builds successfully'
+  desc 'Verify that Carthage demo builds successfully'
   task :carthage_test => %w[carthage:build_demo carthage:clean]
 
-  desc 'Verify that SPM builds successfully'
+  desc 'Verify that SPM demo builds successfully'
   task :spm_test => %w[spm:build_demo spm:clean]
 end
 
@@ -231,9 +232,6 @@ namespace :release do
     end
     run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' '#{FRAMEWORKS_PLIST}' #{BRAINTREE_VERSION_FILE} #{PAYPAL_ONE_TOUCH_VERSION_FILE}"
   end
-
-  desc  "Test."
-  task :test => 'spec:all'
 
   desc  "Lint podspec."
   task :lint_podspec do
