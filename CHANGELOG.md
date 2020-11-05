@@ -15,6 +15,11 @@
     * Remove `viewControllerPresentingDelegate` property from `BTPayPalDriver`
     * Remove use of `SFSafariViewController` from PayPal flow
     * Update `requestBillingAgreement` and `requestOneTimePayment` completion blocks to return an error when user cancels the PayPal flow
+    * Remove custom URL scheme requirement for PayPal flow
+    * Update `BTPayPalDriverErrorType` enum
+      * Remove `BTPayPalDriverErrorTypeIntegrationReturnURLScheme`
+      * Remove `BTPayPalDriverErrorTypeAppSwitchFailed`
+      * Remove `BTPayPalDriverErrorTypeInvalidConfiguration`
   * Update all methods on `BTAppSwitchDelegate` to be optional
   * Remove deprecated `Braintree3DSecure` module
   * Remove deprecated `BraintreeUI` module

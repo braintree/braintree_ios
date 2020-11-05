@@ -19,17 +19,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
     /// PayPal is disabled in configuration
     BTPayPalDriverErrorTypeDisabled,
 
-    /// Browser switch is not configured appropriately. You must specify a
-    /// valid returnURLScheme via BTAppSwitch before attempting a browser switch
-    BTPayPalDriverErrorTypeIntegrationReturnURLScheme,
-
-    /// UIApplication failed to switch despite it being available.
-    /// `[UIApplication openURL:]` returned `NO` when `YES` was expected
-    BTPayPalDriverErrorTypeAppSwitchFailed,
-
-    /// Invalid configuration, e.g. bad CFBundleDisplayName
-    BTPayPalDriverErrorTypeInvalidConfiguration,
-
     /// Invalid request, e.g. missing PayPal request
     BTPayPalDriverErrorTypeInvalidRequest,
     

@@ -21,7 +21,6 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
                 "redirectUrl": "http://fakeURL.com"
             ] ])
         payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
-        payPalDriver.returnURLScheme = "foo"
     }
 
     func testBillingAgreement_whenAPIClientIsNil_callsBackWithError() {
@@ -62,8 +61,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             XCTFail()
             return
         }
-        XCTAssertEqual(lastPostParameters["return_url"] as? String, "foo://onetouch/v1/success")
-        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "foo://onetouch/v1/cancel")
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
     }
 

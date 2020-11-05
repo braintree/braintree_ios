@@ -14,11 +14,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 @interface BTPayPalDriver ()
 
 /**
- Exposed for testing to provide a convenient way to inject custom return URL schemes
-*/
-@property (nonatomic, copy) NSString *returnURLScheme;
-
-/**
  Exposed for testing the approvalURL construction
 */
 @property (nonatomic, strong) NSURL *approvalUrl;

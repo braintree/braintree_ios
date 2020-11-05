@@ -24,7 +24,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         ])
 
         payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
-        payPalDriver.returnURLScheme = "foo"
     }
 
     func testCheckout_whenAPIClientIsNil_callsBackWithError() {
@@ -75,8 +74,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         }
         XCTAssertEqual(lastPostParameters["amount"] as? String, "1")
         XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
-        XCTAssertEqual(lastPostParameters["return_url"] as? String, "foo://onetouch/v1/success")
-        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "foo://onetouch/v1/cancel")
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
     func testCheckout_byDefault_postsPaymentResourceWithNoShipping() {
@@ -321,7 +320,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                 "displayName": merchantName
             ]
         ])
-        payPalDriver.returnURLScheme = "foo://"
         let request = BTPayPalRequest(amount: "1")
         request.currencyCode = "GBP"
         request.displayName = merchantName

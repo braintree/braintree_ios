@@ -15,7 +15,8 @@
 #import <SafariServices/SafariServices.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
-NSString *const BTRedirectURLHostAndPath = @"onetouch/v1/";
+NSString *const BTCallbackURLHostAndPath = @"onetouch/v1/";
+NSString *const BTCallbackURLScheme = @"sdk.ios.braintree";
 
 /**
  This environment MUST be used for App Store submissions.
@@ -198,27 +199,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             parameters[@"line_items"] = lineItemsArray;
         }
 
-        NSString *returnURI;
-        NSString *cancelURI;
-
-        [self.class redirectURLsForCallbackURLScheme:self.returnURLScheme
-                                       withReturnURL:&returnURI
-                                       withCancelURL:&cancelURI];
-        if (!returnURI || !cancelURI) {
-            completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                                     code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
-                                                 userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application may not support One Touch callback URL scheme.",
-                                                            NSLocalizedRecoverySuggestionErrorKey: @"Check the return URL scheme" }]);
-            return;
-        }
-
-        if (returnURI) {
-            parameters[@"return_url"] = returnURI;
-        }
-        if (cancelURI) {
-            parameters[@"cancel_url"] = cancelURI;
-        }
-
+        parameters[@"return_url"] = [NSString stringWithFormat:@"%@://%@success", BTCallbackURLScheme, BTCallbackURLHostAndPath];
+        parameters[@"cancel_url"] = [NSString stringWithFormat:@"%@://%@cancel", BTCallbackURLScheme, BTCallbackURLHostAndPath];
         parameters[@"experience_profile"] = experienceProfile;
 
         self.payPalRequest = request;
@@ -326,7 +308,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
     urlComponents.query = queryForAuthSession;
     self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL
-                                                                  callbackURLScheme:self.returnURLScheme
+                                                                  callbackURLScheme:BTCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         if (error) {
             if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
@@ -571,36 +553,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         return NO;
     }
 
-    if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
-        NSString *recoverySuggestion = @"PayPal requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]. This custom URL scheme must also be registered with your app.";
-        [[BTLogger sharedLogger] critical:recoverySuggestion];
-
-        [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.nil-return-url-scheme"];
-        if (error != NULL) {
-            *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                         code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
-                                     userInfo:@{ NSLocalizedDescriptionKey: @"Missing returnURLScheme",
-                                                 NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion }];
-        }
-
-        return NO;
-    }
-
-    if (![self.class doesApplicationSupportOneTouchCallbackURLScheme:self.returnURLScheme]) {
-        NSString *recoverySuggestion = [NSString stringWithFormat:@"PayPal requires [BTAppSwitch setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@).", NSBundle.mainBundle.bundleIdentifier, self.returnURLScheme];
-        [[BTLogger sharedLogger] critical:recoverySuggestion];
-
-        [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
-        if (error != NULL) {
-            *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                         code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
-                                     userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application does not support One Touch callback URL scheme",
-                                                NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion }];
-        }
-
-        return NO;
-    }
-
     return YES;
 }
 
@@ -645,13 +597,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 - (void)sendAnalyticsEventForTokenizationFailureForPaymentType:(BTPayPalPaymentType)paymentType {
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.tokenize.failed", [self.class eventStringForPaymentType:paymentType]];
     [self.apiClient sendAnalyticsEvent:eventName];
-}
-
-- (NSString *)returnURLScheme {
-    if (!_returnURLScheme) {
-        _returnURLScheme = [[BTAppSwitch sharedInstance] returnURLScheme];
-    }
-    return _returnURLScheme;
 }
 
 #pragma mark - Internal
@@ -754,13 +699,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     }];
 }
 
-+ (BOOL)doesApplicationSupportOneTouchCallbackURLScheme:(NSString *)callbackURLScheme {
-    BOOL doesSupport = NO;
-    // checks the callbackURLScheme is present and app responds to it.
-    doesSupport = [self isCallbackURLSchemeValid:callbackURLScheme];
-    return doesSupport;
-}
-
 #pragma mark - Class Methods
 
 + (NSString *)userActionTypeToString:(BTPayPalRequestUserAction)userActionType {
@@ -800,18 +738,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     return dict;
 }
 
-+ (void)redirectURLsForCallbackURLScheme:(NSString *)callbackURLScheme
-                           withReturnURL:(NSString * __autoreleasing *)returnURL
-                           withCancelURL:(NSString * __autoreleasing *)cancelURL {
-    *returnURL = nil;
-    *cancelURL = nil;
-
-    if ([self isCallbackURLSchemeValid:callbackURLScheme]) {
-        *returnURL = [NSString stringWithFormat:@"%@://%@%@", callbackURLScheme, BTRedirectURLHostAndPath, @"success"];
-        *cancelURL = [NSString stringWithFormat:@"%@://%@%@", callbackURLScheme, BTRedirectURLHostAndPath, @"cancel"];
-    }
-}
-
 + (BOOL)isValidURLAction:(NSURL *)url {
     NSString *scheme = url.scheme;
     if (!scheme.length) {
@@ -825,7 +751,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if ([hostAndPath length]) {
         hostAndPath = [hostAndPath stringByAppendingString:@"/"];
     }
-    if (![hostAndPath isEqualToString:BTRedirectURLHostAndPath]) {
+    if (![hostAndPath isEqualToString:BTCallbackURLHostAndPath]) {
         return NO;
     }
 
@@ -854,38 +780,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         action = url.host;
     }
     return action;
-}
-
-+ (BOOL)isCallbackURLSchemeValid:(NSString *)callbackURLScheme {
-    NSString *bundleID = [[NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleIdentifier"] lowercaseString];
-
-    if ([bundleID isEqualToString:@"com.apple.dt.xctest.tool"]) {
-        return YES;
-    }
-
-    // There are issues returning to the app if the return URL begins with a `-`
-    // Allow callback URLs that remove the leading `-`
-    // Ex: An app with Bundle ID `-com.example.myapp` can use the callback URL `com.example.myapp.payments`
-    if (bundleID.length <= 1) {
-        return NO;
-    } else if ([[bundleID substringToIndex:1] isEqualToString:@"-"] && ![[callbackURLScheme lowercaseString] hasPrefix:bundleID]) {
-        bundleID = [bundleID substringFromIndex:1];
-    }
-
-    if (bundleID && ![[callbackURLScheme lowercaseString] hasPrefix:bundleID]) {
-        return NO;
-    }
-
-    // check the actual plist that the app is fully configured rather than just making canOpenURL call
-    NSArray *urlTypes = [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleURLTypes"];
-    for (NSDictionary *item in urlTypes) {
-        NSArray *bundleURLSchemes = item[@"CFBundleURLSchemes"];
-        if (NSNotFound != [bundleURLSchemes indexOfObject:callbackURLScheme]) {
-            return YES;
-        }
-    }
-
-    return NO;
 }
 
 @end
