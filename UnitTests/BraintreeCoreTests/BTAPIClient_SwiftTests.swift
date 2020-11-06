@@ -100,6 +100,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
 
     // MARK: - fetchOrReturnRemoteConfiguration
 
+    // TODO: - Investigate why this test often fails on the first run
     func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id", sendAnalyticsEvent: false)!
         let mockHTTP = FakeHTTP.fakeHTTP()

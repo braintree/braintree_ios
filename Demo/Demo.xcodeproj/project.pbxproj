@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
+		42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */; };
 		7A48CE2F1B02CBE14411EC11 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005293E786DD0B937662A6C1 /* Pods_Demo.framework */; };
 		80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A5D2553152A00006F53 /* Venmo_UITests.swift */; };
 		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
@@ -176,6 +177,8 @@
 		005293E786DD0B937662A6C1 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
+		42D47A132554679D0012BAF1 /* BraintreeDemoSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSceneDelegate.h; sourceTree = "<group>"; };
+		42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSceneDelegate.m; sourceTree = "<group>"; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		80581A5D2553152A00006F53 /* Venmo_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venmo_UITests.swift; sourceTree = "<group>"; };
 		A0988E4924DB43DC0095EEEE /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -471,6 +474,8 @@
 				A0988E8524DB44B10095EEEE /* BraintreeDemoAppDelegate.m */,
 				A0988E8924DB44B10095EEEE /* BraintreeDemoContainmentViewController.h */,
 				A0988E8624DB44B10095EEEE /* BraintreeDemoContainmentViewController.m */,
+				42D47A132554679D0012BAF1 /* BraintreeDemoSceneDelegate.h */,
+				42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */,
 				A0988E8A24DB44B10095EEEE /* BraintreeUI */,
 				A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */,
 				A0988E7D24DB44B10095EEEE /* Settings */,
@@ -1187,6 +1192,7 @@
 				A0988FB924DB44B20095EEEE /* BTUIVenmoMonogramCardView.m in Sources */,
 				A0988FD124DB44B20095EEEE /* BTMockApplePayPaymentAuthorizationView.m in Sources */,
 				A0988FC624DB44B20095EEEE /* BTUICoinbaseButton.m in Sources */,
+				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
 				A0988FCB24DB44B20095EEEE /* BTUICTAControl.m in Sources */,
 				A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
 				A0988FB324DB44B20095EEEE /* BTUIUnknownCardVectorArtView.m in Sources */,

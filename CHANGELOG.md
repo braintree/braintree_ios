@@ -14,6 +14,7 @@
     * Remove `requestOneTimePayment` and `requestBillingAgreement` overloads with custom `handler` parameters from `BTPayPalDriver`
     * Remove `viewControllerPresentingDelegate` property from `BTPayPalDriver`
     * Remove use of `SFSafariViewController` from PayPal flow
+    * Replace deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in PayPal flow
     * Update `requestBillingAgreement` and `requestOneTimePayment` completion blocks to return an error when user cancels the PayPal flow
     * Remove custom URL scheme requirement for PayPal flow
     * Update `BTPayPalDriverErrorType` enum

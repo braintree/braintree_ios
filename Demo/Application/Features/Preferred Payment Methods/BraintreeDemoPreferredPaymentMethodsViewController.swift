@@ -97,6 +97,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.isEnabled = false
         
         let paypalRequest = BTPayPalRequest()
+        paypalRequest.activeWindow = self.view.window
         paypalDriver.requestBillingAgreement(paypalRequest) { (nonce, error) in
             button.isEnabled = true
             

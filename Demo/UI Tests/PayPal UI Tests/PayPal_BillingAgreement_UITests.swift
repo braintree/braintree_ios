@@ -57,7 +57,7 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
         XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists)
     }
 
-    func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingSFAuthenticationSessionCancelButton() {
+    func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
         self.waitForElementToAppear(app.buttons["Cancel"])
 
         app.buttons["Cancel"].forceTapElement()

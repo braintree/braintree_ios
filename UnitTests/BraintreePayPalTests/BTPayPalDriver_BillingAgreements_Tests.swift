@@ -87,8 +87,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
 
         payPalDriver.requestBillingAgreement(request) { _,_  in }
 
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
 
         // Ensure the payment resource had the correct parameters
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
@@ -185,8 +185,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     func testBillingAgreement_whenSetupBillingAgreementCreationSuccessful_performsPayPalRequestAppSwitch() {
         payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _,_  -> Void in }
 
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
     }
 
     func testBillingAgreement_whenSetupBillingAgreementCreationFails_callsBackWithError() {
@@ -207,8 +207,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
 
         payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _,_ in }
 
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
 
         XCTAssertTrue(mockAppSwitchDelegate.appContextWillSwitchCalled)
         XCTAssertFalse(mockAppSwitchDelegate.appContextDidReturnCalled)
@@ -216,8 +216,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let returnURL = URL(string: "bar://hello/world")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
 
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
         XCTAssertTrue(mockAppSwitchDelegate.appContextDidReturnCalled)
     }
 

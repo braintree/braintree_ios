@@ -227,6 +227,7 @@
 
 #pragma mark - Progress and Completion Blocks
 
+// TODO: - We think storing the progress block statically is causing unexpected behavior when two scenes are in the foreground simulataneously. More specifically, the progress text appears on the wrong scene sometimes.
 - (void (^)(NSString *message))progressBlock {
     // This class is responsible for retaining the progress block
     static id block;

@@ -535,8 +535,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         payPalDriver.requestOneTimePayment(request) { _,_  in }
 
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
 
         // Ensure the payment resource had the correct parameters
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
@@ -556,8 +556,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let request = BTPayPalRequest(amount: "1")
         payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
-        XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
-        XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
 
         XCTAssertNotNil(payPalDriver.clientMetadataId)
     }

@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 @class BTPostalAddress; 
 @class BTPayPalLineItem;
 
@@ -176,6 +176,13 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  Optional: The line items for this transaction. It can include up to 249 line items.
 */
 @property (nonatomic, nullable, copy) NSArray<BTPayPalLineItem *> *lineItems;
+
+/**
+ Optional: The window used to present the ASWebAuthenticationSession.
+
+ @note If your app supports multitasking, you must set this property to ensure that the ASWebAuthentication session is presented on the correct window.
+ */
+@property (nonatomic, nullable, strong) UIWindow *activeWindow;
 
 @end
 

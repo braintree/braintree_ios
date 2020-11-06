@@ -170,7 +170,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 - (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher;
 
 /**
- Regardless of the method (e.g. app, Safari, SFSafariViewController, SFAuthenticationSession) events will be sent when the context will switch away from from the origin app.
+ Regardless of the method (e.g. app, Safari, SFSafariViewController, ASWebAuthenticationSession) events will be sent when the context will switch away from from the origin app.
 
  @note Use this method to update UI (e.g. displaying a loading indicator) before the switch takes place.
 

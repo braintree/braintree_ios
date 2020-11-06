@@ -9,7 +9,8 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
     override func setUp() {
         fakeApplication.cannedCanOpenURL = false
     }
-    
+
+    // TODO: - Investigate why this test often fails on the first run
     func testFetchPreferredPaymentMethods_sendsQueryToGraphQL() {
                 
         let expectation = self.expectation(description: "Sends query to GraphQL")

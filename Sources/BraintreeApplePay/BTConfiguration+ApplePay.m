@@ -38,9 +38,7 @@
         } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) {
             [supportedNetworks addObject:PKPaymentNetworkDiscover];
         } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"maestro"] == NSOrderedSame) {
-            if (@available(iOS 12.0, *)) {
-                [supportedNetworks addObject:PKPaymentNetworkMaestro];
-            }
+            [supportedNetworks addObject:PKPaymentNetworkMaestro];
         }
     }
     return [supportedNetworks copy];

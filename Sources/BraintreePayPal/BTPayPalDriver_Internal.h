@@ -1,8 +1,8 @@
 #import <BraintreePayPal/BTPayPalDriver.h>
+#import <AuthenticationServices/AuthenticationServices.h>
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;
-@class SFAuthenticationSession;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,14 +34,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 @property (nonatomic, strong) BTPayPalRequest *payPalRequest;
 
 /**
- Exposed for testing, the safariAuthenticationSession instance used for the PayPal flow
+ Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
  */
-@property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession;
+@property (nonatomic, strong, nullable) ASWebAuthenticationSession *authenticationSession;
 
 /**
- Exposed for testing, for determining if SFAuthenticationSession was started
+ Exposed for testing, for determining if ASWebAuthenticationSession was started
  */
-@property (nonatomic, assign) BOOL isSFAuthenticationSessionStarted;
+@property (nonatomic, assign) BOOL isAuthenticationSessionStarted;
 
 + (nullable BTPayPalCreditFinancingAmount *)creditFinancingAmountFromJSON:(BTJSON *)amountJSON;
 

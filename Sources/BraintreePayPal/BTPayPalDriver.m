@@ -12,8 +12,6 @@
 #import <PayPalDataCollector/PayPalDataCollector.h>
 #import <PayPalDataCollector/PPDataCollector_Internal.h>
 
-#import <SafariServices/SafariServices.h>
-
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 NSString *const BTCallbackURLHostAndPath = @"onetouch/v1/";
 NSString *const BTCallbackURLScheme = @"sdk.ios.braintree";
@@ -33,9 +31,9 @@ NSString * _Nonnull const PayPalEnvironmentSandbox = @"sandbox";
  */
 NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
-@interface BTPayPalDriver ()
+@interface BTPayPalDriver () <ASWebAuthenticationPresentationContextProviding>
 
-@property (nonatomic, assign) BOOL becameActiveAfterSFAuthenticationSessionModal;
+@property (nonatomic, assign) BOOL returnedToAppAfterPermissionAlert;
 
 @end
 
@@ -65,8 +63,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 }
 
 - (void)applicationDidBecomeActive:(__unused NSNotification *)notification {
-    if (self.isSFAuthenticationSessionStarted) {
-        self.becameActiveAfterSFAuthenticationSessionModal = YES;
+    if (self.isAuthenticationSessionStarted) {
+        self.returnedToAppAfterPermissionAlert = YES;
     }
 }
 
@@ -276,11 +274,11 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                        paymentType:(BTPayPalPaymentType)paymentType
                         completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!error) {
-        // Defensive programming in case PayPal One Touch returns a non-HTTP URL so that SFAuthenticationSession doesn't crash
+        // Defensive programming in case PayPal One Touch returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
         if (![url.scheme.lowercaseString hasPrefix:@"http"]) {
             NSError *urlError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                     code:BTPayPalDriverErrorTypeUnknown
-                                                userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in SFAuthenticationSession: %@://", url.scheme],
+                                                userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in ASWebAuthenticationSession: %@://", url.scheme],
                                                             NSLocalizedRecoverySuggestionErrorKey: @"Try again or contact Braintree Support." }];
 
             NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.error.safariviewcontrollerbadscheme.%@", [self.class eventStringForPaymentType:paymentType], url.scheme];
@@ -307,20 +305,25 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
     urlComponents.query = queryForAuthSession;
-    self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL
+
+    self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
                                                                   callbackURLScheme:BTCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         if (error) {
-            if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
-                if (self.becameActiveAfterSFAuthenticationSessionModal) {
-                    [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.web"];
+            if (error.domain == ASWebAuthenticationSessionErrorDomain && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                if (self.returnedToAppAfterPermissionAlert) {
+                    // User tapped system cancel button in browser
+                    NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.browser.cancel", [self.class eventStringForPaymentType:paymentType]];
+                    [self.apiClient sendAnalyticsEvent:eventName];
                 } else {
-                    [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.modal"];
+                    // User tapped system cancel button on permission alert
+                    NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.alert.cancel", [self.class eventStringForPaymentType:paymentType]];
+                    [self.apiClient sendAnalyticsEvent:eventName];
                 }
             }
-            
+
             // User cancelled by breaking out of the PayPal browser switch flow
-            // (e.g. "Cancel" button in SFAuthenticationSession)
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             NSError *err = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                code:BTPayPalDriverErrorTypeCanceled
                                            userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow was canceled by the user."}];
@@ -333,17 +336,22 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         [self handleBrowserSwitchReturnURL:callbackURL
                                paymentType:paymentType
                                 completion:completionBlock];
-        self.safariAuthenticationSession = nil;
+        self.authenticationSession = nil;
+
     }];
 
-    if (self.safariAuthenticationSession != nil) {
-        self.becameActiveAfterSFAuthenticationSessionModal = NO;
-        self.isSFAuthenticationSessionStarted = [self.safariAuthenticationSession start];
-        if (self.isSFAuthenticationSessionStarted) {
-            [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.succeeded"];
-        } else {
-            [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.failed"];
-        }
+    if (@available(iOS 13, *)) {
+        self.authenticationSession.presentationContextProvider = self;
+    }
+
+    self.returnedToAppAfterPermissionAlert = NO;
+    self.isAuthenticationSessionStarted = [self.authenticationSession start];
+    if (self.isAuthenticationSessionStarted) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.start.succeeded", [self.class eventStringForPaymentType:paymentType]];
+        [self.apiClient sendAnalyticsEvent:eventName];
+    } else {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.start.failed", [self.class eventStringForPaymentType:paymentType]];
+        [self.apiClient sendAnalyticsEvent:eventName];
     }
 }
 
@@ -513,6 +521,22 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         default:
             return nil;
     }
+}
+
+#pragma mark - ASWebAuthenticationPresentationContextProviding protocol
+
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13)) {
+    if (self.payPalRequest.activeWindow) {
+        return self.payPalRequest.activeWindow;
+    }
+
+    for (UIScene* scene in UIApplication.sharedApplication.connectedScenes) {
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            UIWindowScene *windowScene = (UIWindowScene *)scene;
+            return windowScene.windows.firstObject;
+        }
+    }
+    return UIApplication.sharedApplication.windows.firstObject;
 }
 
 #pragma mark - App Switch Delegate Informers
