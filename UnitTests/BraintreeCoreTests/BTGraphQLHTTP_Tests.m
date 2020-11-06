@@ -470,7 +470,4 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-
-// TODO - add test for getRequestSslCertificateSuccessful, getRequestBadCertificateCheck for sandbox/prod in integration tests
-
 @end

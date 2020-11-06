@@ -12,18 +12,6 @@ class BTConfiguration_Tests: XCTestCase {
         XCTAssertEqual(configuration.json, json)
     }
 
-    //TODO: Move this to PaymentFlow tests
-    // MARK: - PaymentFlow ThreeDSecure category methods
-
-//    func testIsCardinalAuthenticationJWTReturned_whenCardinalAuthenticationJWTIsPresent() {
-//        let configurationJSON = BTJSON(value: [
-//            "threeDSecure": [ "cardinalAuthenticationJWT" : "123"]
-//            ])
-//        let configuration = BTConfiguration(json: configurationJSON)
-//
-//        XCTAssertEqual(configuration.cardinalAuthenticationJWT, "123")
-//    }
-
     func testIsGraphQLEnabled_whenGraphQLURLExistsAndIsntEmpty_returnsTrue() {
         let configurationJSON = BTJSON(value: [
             "graphQL": [

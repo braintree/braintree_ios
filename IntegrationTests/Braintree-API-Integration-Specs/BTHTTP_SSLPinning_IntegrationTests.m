@@ -3,10 +3,10 @@
 #import <BraintreeCore/BTJSON.h>
 #import <XCTest/XCTest.h>
 
-@interface BTHTTPSSLPinning_IntegrationTests : XCTestCase
+@interface BTHTTP_SSLPinning_IntegrationTests : XCTestCase
 @end
 
-@implementation BTHTTPSSLPinning_IntegrationTests
+@implementation BTHTTP_SSLPinning_IntegrationTests
 
 // Will work when we comply with ATS
 - (void)testBTHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication {

@@ -50,9 +50,6 @@ NSString * const BTAppContextDidReturnNotification = @"com.braintreepayments.BTA
     return [[BTAppSwitch sharedInstance] handleOpenURL:URLContext.URL sourceApplication:URLContext.options.sourceApplication];
 }
 
-// TODO: Why do we want to keep using this internally?
-// NEXT_MAJOR_VERSION Remove this method from public header, but continue using it internally.
-// Once removed, delete the code to ignore deprecation warnings (above).
 - (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     for (Class<BTAppSwitchHandler> handlerClass in self.appSwitchHandlers) {
         if ([handlerClass canHandleAppSwitchReturnURL:url sourceApplication:sourceApplication]) {

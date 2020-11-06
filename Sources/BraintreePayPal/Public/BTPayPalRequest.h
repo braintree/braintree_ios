@@ -28,7 +28,8 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 */
 typedef NS_ENUM(NSInteger, BTPayPalRequestLandingPageType) {
     /// Default
-    /// NEXT_MAJOR_VERSION the other sdks do not pass a default value, so we should not as well
+    // Obj-C enums cannot be null; the first value of the Obj-C enum is used as the default if none is set
+    // We have this Default as a way to make the `landingPageType` an optional property for merchants
     BTPayPalRequestLandingPageTypeDefault = 1,
 
     /// Login

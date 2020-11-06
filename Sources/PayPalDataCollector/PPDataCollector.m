@@ -5,7 +5,6 @@
 @implementation PPDataCollector
 
 + (MagnesResult *)generateMagnesResultWithClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
-    // TODO: The doc comment for this method is incorrect. The build setting CLANG_WARN_DOCUMENTATION_COMMENTS was temporarily disabled for BraintreePaymentFlow, PayPalOneTouch, and PayPalDataCollector
     [[MagnesSDK shared] setUpWithSetEnviroment:EnvironmentLIVE
                             setOptionalAppGuid:[self appropriateIdentifier]
                            setOptionalAPNToken:@""
