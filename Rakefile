@@ -7,7 +7,7 @@ HighLine.color_scheme = HighLine::SampleColorScheme.new
 
 task :default => %w[sanity_checks spec]
 
-desc "Run default set of tasks"
+desc "Run all test tasks"
 task :spec => %w[spec:all]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
@@ -112,6 +112,7 @@ namespace :spec do
   task :all => %w[spec:unit spec:api:integration spec:ui]
 end
 
+desc 'Build Braintree proj demo app'
 namespace :demo do
   desc 'Verify that the demo app builds successfully'
   task :build do
@@ -119,27 +120,48 @@ namespace :demo do
   end
 end
 
-desc 'Run Carthage update'
+desc 'Build Carthage demo app'
 namespace :carthage do
   def generate_cartfile
-    run! 'mv Cartfile Cartfile.backup'
-    File.write("./Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
+    File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
   end
 
   task :clean do
-    run! 'rm -rf Carthage && rm Cartfile && rm Cartfile.resolved && rm -rf ~/Library/Developers/Xcode/DerivedData'
-    run! 'mv Cartfile.backup Cartfile'
+    run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
+    run! 'git checkout SampleApps/CarthageTest'
   end
 
-  task :test do
+  task :build_demo do
     generate_cartfile
-    run! "carthage update"
-    run! "xcodebuild -project 'Demo/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
+    run! "cd SampleApps/CarthageTest && carthage update"
+    run! "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
+  end
+end
+
+desc 'Build SPM demo app'
+namespace :spm do
+  def update_xcodeproj
+    project_file = "SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj"
+    proj = File.read(project_file)
+    proj.gsub!(/(repositoryURL = )(.*);/, "\\1\"file://#{Dir.pwd}/\";")
+    proj.gsub!(/(branch = )(.*);/, "\\1\"#{current_branch}\";")
+    File.open(project_file, "w") { |f| f.puts proj }
+  end
+
+  task :clean do
+    run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
+    run! 'git checkout SampleApps/SPMTest'
+  end
+
+  task :build_demo do
+    update_xcodeproj
+    run! "cd SampleApps/SPMTest && swift package resolve"
+    run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build"
   end
 end
 
 desc 'Run all sanity checks'
-task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:carthage_test]
+task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:carthage_test sanity_checks:spm_test]
 
 namespace :sanity_checks do
   desc 'Check for pending tests'
@@ -157,11 +179,14 @@ namespace :sanity_checks do
     run! "! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
   end
 
-  desc 'Verify that all demo apps Build successfully'
+  desc 'Verify that Braintree demo app builds successfully'
   task :build_demo => 'demo:build'
 
-  desc 'Verify that Carthage builds successfully'
-  task :carthage_test => %w[carthage:test carthage:clean]
+  desc 'Verify that Carthage demo builds successfully'
+  task :carthage_test => %w[carthage:build_demo carthage:clean]
+
+  desc 'Verify that SPM demo builds successfully'
+  task :spm_test => %w[spm:build_demo spm:clean]
 end
 
 namespace :release do
@@ -208,9 +233,6 @@ namespace :release do
     run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' '#{FRAMEWORKS_PLIST}' #{BRAINTREE_VERSION_FILE} #{PAYPAL_ONE_TOUCH_VERSION_FILE}"
   end
 
-  desc  "Test."
-  task :test => 'spec:all'
-
   desc  "Lint podspec."
   task :lint_podspec do
     run! "pod lib lint Braintree.podspec --allow-warnings"
@@ -240,16 +262,6 @@ namespace :publish do
     run! "pod trunk push --allow-warnings Braintree.podspec"
   end
 
-end
-
-namespace :gen do
-  task :strings do
-    ["Drop-In", "UI"].each do |subspec|
-      run! "genstrings -o Braintree/#{subspec}/Localization/en.lproj Braintree/#{subspec}/**/*.m && " +
-           "iconv -f utf-16 -t utf-8 Braintree/#{subspec}/Localization/en.lproj/Localizable.strings > Braintree/#{subspec}/Localization/en.lproj/#{subspec}.strings && " +
-           "rm -f Braintree/#{subspec}/Localization/en.lproj/Localizable.strings"
-    end
-  end
 end
 
 def jazzy_command

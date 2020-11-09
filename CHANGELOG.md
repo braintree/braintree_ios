@@ -33,7 +33,7 @@
     * Create a stand-alone 3DS module
   * PayPalDataCollector
     * Replace `libPPRiskMagnesOC.a` with `PPRiskMagnes.xcframework` v5.0.1 (which requires Swift 5.1+)
-    * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h
+    * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h`
 * Bump Kount to v4.0.4.2 (supports iOS 9.3+)
 
 ## unreleased (v4)

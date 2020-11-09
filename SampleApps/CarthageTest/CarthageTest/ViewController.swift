@@ -1,11 +1,14 @@
 import UIKit
-import Braintree3DSecure
+import BraintreeAmericanExpress
 import BraintreeApplePay
 import BraintreeCard
 import BraintreeCore
 import BraintreeDataCollector
+import BraintreePaymentFlow
 import BraintreePayPal
-import BraintreeUI
+import BraintreeUnionPay
+import BraintreeVenmo
+import PayPalDataCollector
 
 class ViewController: UIViewController {
 

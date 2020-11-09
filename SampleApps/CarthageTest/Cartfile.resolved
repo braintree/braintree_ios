@@ -1,0 +1,2 @@
+binary "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.json" "2.2.3-1"
+github "braintree/braintree_ios" "4.36.0"

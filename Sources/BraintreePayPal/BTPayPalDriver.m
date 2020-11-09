@@ -375,7 +375,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.start.failed", [self.class eventStringForPaymentType:paymentType]];
         [self.apiClient sendAnalyticsEvent:eventName];
     }
-#pragma clang diagnostic pop
 }
 
 - (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {

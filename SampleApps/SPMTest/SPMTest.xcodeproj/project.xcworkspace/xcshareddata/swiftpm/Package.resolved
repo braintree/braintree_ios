@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Braintree",
+        "repositoryURL": "/Users/scannillo/bt/braintree-ios/",
+        "state": {
+          "branch": "update-release-scripts",
+          "revision": "be8b98b4552ec3de30277a003de35296fa4ab60e",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
