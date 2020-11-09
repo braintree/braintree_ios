@@ -83,6 +83,10 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 
 A demo app is included in the project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode.
 
+## Contributing
+
+We welcome PRs to this repo. See our [development doc](DEVELOPMENT.md).
+
 ## Feedback
 
 The Braintree iOS SDK is in active development, we welcome your feedback!
