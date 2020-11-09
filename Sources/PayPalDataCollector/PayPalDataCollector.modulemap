@@ -1,3 +1,5 @@
+// This modulemap allows us to give BraintreeTestShared access to internal headers in PayPalDataCollector.
+
 framework module PayPalDataCollector {
     umbrella header "PayPalDataCollector.h"
 

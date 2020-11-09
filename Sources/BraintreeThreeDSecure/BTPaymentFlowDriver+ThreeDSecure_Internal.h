@@ -1,4 +1,9 @@
-#import "BTPaymentFlowDriver+ThreeDSecure.h"
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTPaymentFlowDriver+ThreeDSecure.h>
+#else
+#import <BraintreeThreeDSecure/BTPaymentFlowDriver+ThreeDSecure.h>
+#endif
+
 @class BTThreeDSecureResult;
 
 NS_ASSUME_NONNULL_BEGIN

@@ -1,12 +1,31 @@
-#import "BTCardClient+UnionPay.h"
-#import "BTConfiguration+UnionPay.h"
-#import "BTCardCapabilities.h"
+#if __has_include(<Braintree/BraintreeUnionPay.h>) // CocoaPods
+#import <Braintree/BTCardClient+UnionPay.h>
+#import <Braintree/BTConfiguration+UnionPay.h>
+#import <Braintree/BTCardCapabilities.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BTCardClient_Internal.h>
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCard.h>
 
-#import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeCard/BTCardClient_Internal.h>
-
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeUnionPay/BTCardClient+UnionPay.h>
+#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
+#import <BraintreeUnionPay/BTCardCapabilities.h>
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCard/BTCardClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCard/BraintreeCard.h>
+
+#else // Carthage
+#import <BraintreeUnionPay/BTCardClient+UnionPay.h>
+#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
+#import <BraintreeUnionPay/BTCardCapabilities.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCard/BTCardClient_Internal.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCard/BraintreeCard.h>
+
+#endif
 
 @implementation BTCardClient (UnionPay)
 

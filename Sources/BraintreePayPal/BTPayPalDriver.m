@@ -1,16 +1,38 @@
 #import "BTPayPalDriver_Internal.h"
-#import "BTConfiguration+PayPal.h"
-#import "BTPayPalLineItem.h"
 #import "BTPayPalAccountNonce_Internal.h"
-#import "BTPayPalRequest.h"
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 
+#if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BTLogger_Internal.h>
+#import <Braintree/PayPalDataCollector.h>
+#import <Braintree/PPDataCollector_Internal.h>
+#import <Braintree/BTPayPalRequest.h>
+#import <Braintree/BTConfiguration+PayPal.h>
+#import <Braintree/BTPayPalLineItem.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeCore/BraintreeCore.h>
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCore/BTLogger_Internal.h"
+#import <PayPalDataCollector/PayPalDataCollector.h>
+#import "../PayPalDataCollector/PPDataCollector_Internal.h"
+#import <BraintreePayPal/BTPayPalRequest.h>
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreePayPal/BTPayPalLineItem.h>
+
+#else // Carthage
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <PayPalDataCollector/PayPalDataCollector.h>
 #import <PayPalDataCollector/PPDataCollector_Internal.h>
+#import <BraintreePayPal/BTPayPalRequest.h>
+#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreePayPal/BTPayPalLineItem.h>
+#endif
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 NSString *const BTCallbackURLHostAndPath = @"onetouch/v1/";
@@ -353,6 +375,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.start.failed", [self.class eventStringForPaymentType:paymentType]];
         [self.apiClient sendAnalyticsEvent:eventName];
     }
+#pragma clang diagnostic pop
 }
 
 - (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {

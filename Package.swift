@@ -5,8 +5,12 @@ import PackageDescription
 
 let package = Package(
     name: "Braintree",
-    platforms: [.iOS(.v11)],
+    platforms: [.iOS(.v12)],
     products: [
+        .library(
+            name: "Braintree",
+            targets: ["BraintreeCard", "BraintreePayPal", "BraintreeCard"]
+        ),
         .library(
             name: "BraintreeAmericanExpress",
             targets: ["BraintreeAmericanExpress"]
@@ -24,17 +28,28 @@ let package = Package(
             targets: ["BraintreeCore"]
         ),
         .library(
+            name: "BraintreePaymentFlow",
+            targets: ["BraintreePaymentFlow"]
+        ),
+        .library(
+            name: "BraintreePayPal",
+            targets: ["BraintreePayPal"]
+        ),
+        .library(
             name: "BraintreeUnionPay",
             targets: ["BraintreeUnionPay"]
         ),
         .library(
+            name: "BraintreeVenmo",
+            targets: ["BraintreeVenmo"]
+        ),
+        .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
-        ),
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -43,74 +58,60 @@ let package = Package(
             name: "BraintreeAmericanExpress",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/")
-            ]
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeApplePay",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/")
-            ]
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeCard",
             dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                // TODO: This is currently necessary in a couple of modules because we are using project level
-                // headers to expose some Core functionality to Card. I haven't been able to find anything equivalent
-                // for SPM, so we may need to come up with a new strategy
-                .headerSearchPath("../BraintreeCore/")
-            ]
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeCore",
             dependencies: [],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
+            publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreePaymentFlow",
+            dependencies: ["BraintreeCore", "BraintreeCard", "PayPalDataCollector"],
+            exclude: ["Info.plist"],
+            publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreePayPal",
+            dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeUnionPay",
             dependencies: ["BraintreeCore", "BraintreeCard"],
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/"),
-                .headerSearchPath("../BraintreeCard/")
-            ]
+            publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreeVenmo",
+            dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            exclude: ["Info.plist"],
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "PayPalDataCollector",
             dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreePayPal/PayPalDataCollector",
+            path: "Sources/PayPalDataCollector",
             exclude: ["Info.plist"],
-            sources: nil,
-            resources: nil,
-            publicHeadersPath: "Public",
-            cSettings: [
-                .headerSearchPath("../BraintreeCore/"),
-                .headerSearchPath("../BraintreeCard/")
-            ]
+            publicHeadersPath: "Public"
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
             path: "Frameworks/PPRiskMagnes.xcframework"
-        ),
+        )
     ]
 )

@@ -1,4 +1,8 @@
-#import "BTURLUtils.h"
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTURLUtils.h>
+#else
+#import <BraintreeCore/BTURLUtils.h>
+#endif
 
 @implementation BTURLUtils
 

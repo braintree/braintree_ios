@@ -1,8 +1,18 @@
+#if __has_include(<Braintree/BraintreePayPal.h>)
+#import <Braintree/BTPayPalDriver.h>
+#else
 #import <BraintreePayPal/BTPayPalDriver.h>
+#endif
+
 #import <AuthenticationServices/AuthenticationServices.h>
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+@class SFAuthenticationSession;
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
 

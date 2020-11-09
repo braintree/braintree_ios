@@ -1,4 +1,9 @@
-#import "BTDataCollector.h"
+#if __has_include(<Braintree/BraintreeDataCollector.h>)
+#import <Braintree/BTDataCollector.h>
+#else
+#import <BraintreeDataCollector/BTDataCollector.h>
+#endif
+
 @class KDataCollector;
 
 @interface BTDataCollector ()

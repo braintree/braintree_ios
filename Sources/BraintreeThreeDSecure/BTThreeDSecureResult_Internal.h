@@ -1,4 +1,9 @@
-#import "BTThreeDSecureResult.h"
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureResult.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
+#endif
+
 @class BTJSON;
 
 NS_ASSUME_NONNULL_BEGIN

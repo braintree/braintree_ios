@@ -1,4 +1,8 @@
-#import "BTPostalAddress.h"
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTPostalAddress.h>
+#else
+#import <BraintreeCore/BTPostalAddress.h>
+#endif
 
 @implementation BTPostalAddress
 

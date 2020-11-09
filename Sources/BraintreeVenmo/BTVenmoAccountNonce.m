@@ -1,6 +1,10 @@
-#import "BTVenmoAccountNonce.h"
-
+#if __has_include(<Braintree/BraintreeVenmo.h>)
+#import <Braintree/BTVenmoAccountNonce.h>
+#import <Braintree/BraintreeCore.h>
+#else
+#import <BraintreeVenmo/BTVenmoAccountNonce.h>
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @interface BTVenmoAccountNonce ()
 @property (nonatomic, readwrite, copy) NSString *username;

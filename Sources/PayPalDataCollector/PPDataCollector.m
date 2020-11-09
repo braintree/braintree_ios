@@ -1,6 +1,13 @@
 #import "PPDataCollector_Internal.h"
 #import <PPRiskMagnes/PPRiskMagnes-Swift.h>
+
+#if __has_include(<Braintree/BraintreeCore.h>) // CocoaPods
+#import <Braintree/BTKeychain.h>
+#elif SWIFT_PACKAGE // SPM
+#import "../BraintreeCore/BTKeychain.h"
+#else // Carthage
 #import <BraintreeCore/BTKeychain.h>
+#endif
 
 @implementation PPDataCollector
 

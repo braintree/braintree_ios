@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreePayPal.h>)
+#import <Braintree/BTPayPalCreditFinancing.h>
+#else
 #import <BraintreePayPal/BTPayPalCreditFinancing.h>
+#endif
 
 @interface BTPayPalCreditFinancing ()
 

@@ -258,8 +258,6 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 ///
 /// \param apnToken Apple Push Notification token of the host app, if available
 ///
-/// \param isDisabled if loading Magnes remote configuration is going to be disabled
-///
 - (BOOL)setUpWithSetEnviroment:(enum Environment)env setOptionalAppGuid:(NSString * _Nonnull)appGuid setOptionalAPNToken:(NSString * _Nonnull)apnToken disableRemoteConfiguration:(BOOL)isRemoteConfigDisabled disableBeacon:(BOOL)isBeaconDisabled magnesSource:(enum MagnesSource)source error:(NSError * _Nullable * _Nullable)error;
 /// Collect Magnes Data
 /// A MagnesResult object is returned
@@ -619,8 +617,6 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 /// \param appGuid App Guid of the host app, if available
 ///
 /// \param apnToken Apple Push Notification token of the host app, if available
-///
-/// \param isDisabled if loading Magnes remote configuration is going to be disabled
 ///
 - (BOOL)setUpWithSetEnviroment:(enum Environment)env setOptionalAppGuid:(NSString * _Nonnull)appGuid setOptionalAPNToken:(NSString * _Nonnull)apnToken disableRemoteConfiguration:(BOOL)isRemoteConfigDisabled disableBeacon:(BOOL)isBeaconDisabled magnesSource:(enum MagnesSource)source error:(NSError * _Nullable * _Nullable)error;
 /// Collect Magnes Data
@@ -982,8 +978,6 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 ///
 /// \param apnToken Apple Push Notification token of the host app, if available
 ///
-/// \param isDisabled if loading Magnes remote configuration is going to be disabled
-///
 - (BOOL)setUpWithSetEnviroment:(enum Environment)env setOptionalAppGuid:(NSString * _Nonnull)appGuid setOptionalAPNToken:(NSString * _Nonnull)apnToken disableRemoteConfiguration:(BOOL)isRemoteConfigDisabled disableBeacon:(BOOL)isBeaconDisabled magnesSource:(enum MagnesSource)source error:(NSError * _Nullable * _Nullable)error;
 /// Collect Magnes Data
 /// A MagnesResult object is returned
@@ -1343,8 +1337,6 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 /// \param appGuid App Guid of the host app, if available
 ///
 /// \param apnToken Apple Push Notification token of the host app, if available
-///
-/// \param isDisabled if loading Magnes remote configuration is going to be disabled
 ///
 - (BOOL)setUpWithSetEnviroment:(enum Environment)env setOptionalAppGuid:(NSString * _Nonnull)appGuid setOptionalAPNToken:(NSString * _Nonnull)apnToken disableRemoteConfiguration:(BOOL)isRemoteConfigDisabled disableBeacon:(BOOL)isBeaconDisabled magnesSource:(enum MagnesSource)source error:(NSError * _Nullable * _Nullable)error;
 /// Collect Magnes Data

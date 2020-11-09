@@ -1,4 +1,8 @@
+#if __has_include(<Braintree/BraintreeVenmo.h>)
+#import <Braintree/BTVenmoAccountNonce.h>
+#else
 #import <BraintreeVenmo/BTVenmoAccountNonce.h>
+#endif
 
 @interface BTVenmoAccountNonce ()
 

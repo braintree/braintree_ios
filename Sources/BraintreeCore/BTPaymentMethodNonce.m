@@ -1,4 +1,8 @@
-#import "BTPaymentMethodNonce.h"
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTPaymentMethodNonce.h>
+#else
+#import <BraintreeCore/BTPaymentMethodNonce.h>
+#endif
 
 @interface BTPaymentMethodNonce ()
 

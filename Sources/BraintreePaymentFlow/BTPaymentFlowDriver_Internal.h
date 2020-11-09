@@ -1,4 +1,9 @@
-#import "BTPaymentFlowDriver.h"
+#if __has_include(<Braintree/BraintreePaymentFlow.h>)
+#import <Braintree/BTPaymentFlowDriver.h>
+#else
+#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#endif
+
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
 

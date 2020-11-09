@@ -1,4 +1,8 @@
-#import "BTPayPalRequest.h"
+#if __has_include(<Braintree/BraintreePayPal.h>)
+#import <Braintree/BTPayPalRequest.h>
+#else
+#import <BraintreePayPal/BTPayPalRequest.h>
+#endif
 
 @implementation BTPayPalRequest
 

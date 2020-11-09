@@ -1,13 +1,19 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased (v5)
+* Add support for Swift Package Manager (resolves #462)
+* Bump Kount to v4.0.4.1 (supports iOS 9.3+)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 12
-  * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
-  * Remove the `localizedDescription` property on `BTPaymentMethodNonce`.
-  * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
-  * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
-  * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
+  * Remove deprecated `BraintreeUI` module
+  * Remove all deprecated methods and properties
+  * Core
+    * Remove the `localizedDescription` property on `BTPaymentMethodNonce`.
+    * Update all methods on `BTAppSwitchDelegate` to be optional
+  * PaymentFlow
+    * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
+    * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
+    * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
   * PayPal
     * Remove PayPalOneTouch and PayPalUtils modules
     * Remove `authorizeAccountWithCompletion` and `authorizeAccountWithAdditionalScopes` methods from `BTPayPalDriver`
@@ -21,12 +27,13 @@
       * Remove `BTPayPalDriverErrorTypeIntegrationReturnURLScheme`
       * Remove `BTPayPalDriverErrorTypeAppSwitchFailed`
       * Remove `BTPayPalDriverErrorTypeInvalidConfiguration`
-  * Update all methods on `BTAppSwitchDelegate` to be optional
-  * Remove deprecated `Braintree3DSecure` module
-  * Remove deprecated `BraintreeUI` module
-  * Remove all deprecated methods and properties
-  * Replace `libPPRiskMagnesOC.a` with `PPRiskMagnes.xcframework` v5.0.1 (which requires Swift 5.1+)
-  * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h`
+  * ThreeDSecure
+    * Remove deprecated `Braintree3DSecure` module
+    * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
+    * Create a stand-alone 3DS module
+  * PayPalDataCollector
+    * Replace `libPPRiskMagnesOC.a` with `PPRiskMagnes.xcframework` v5.0.1 (which requires Swift 5.1+)
+    * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h
 * Bump Kount to v4.0.4.2 (supports iOS 9.3+)
 
 ## unreleased (v4)

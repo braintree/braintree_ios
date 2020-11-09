@@ -1,14 +1,22 @@
 #import "BTHTTP.h"
 #import "Braintree-Version.h"
 #import "BTAPIPinnedCertificates.h"
-#import "BTClientToken.h"
-#import "BTHTTPErrors.h"
-#import "BTJSON.h"
-#import "BTURLUtils.h"
 #import "BTLogger_Internal.h"
-#import "BTPayPalIDToken.h"
-
 #include <sys/sysctl.h>
+
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTClientToken.h>
+#import <Braintree/BTHTTPErrors.h>
+#import <Braintree/BTJSON.h>
+#import <Braintree/BTURLUtils.h>
+#import <Braintree/BTPayPalIDToken.h>
+#else
+#import <BraintreeCore/BTClientToken.h>
+#import <BraintreeCore/BTHTTPErrors.h>
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTURLUtils.h>
+#import <BraintreeCore/BTPayPalIDToken.h>
+#endif
 
 @interface BTHTTP () <NSURLSessionDelegate>
 

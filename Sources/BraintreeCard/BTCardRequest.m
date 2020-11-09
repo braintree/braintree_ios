@@ -1,4 +1,8 @@
-#import "BTCardRequest.h"
+#if __has_include(<Braintree/BraintreeCard.h>)
+#import <Braintree/BTCardRequest.h>
+#else
+#import <BraintreeCard/BTCardRequest.h>
+#endif
 
 @implementation BTCardRequest
 

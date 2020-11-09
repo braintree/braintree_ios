@@ -1,8 +1,20 @@
 #import "BTAmericanExpressClient_Internal.h"
-#import "BTAmericanExpressRewardsBalance.h"
 
+#if __has_include(<Braintree/BraintreeAmericanExpress.h>) // CocoaPods
+#import <Braintree/BTAmericanExpressRewardsBalance.h>
+#import <Braintree/BraintreeCore.h>
+#import <Braintree/BTAPIClient_Internal.h>
+
+#elif SWIFT_PACKAGE // SPM
+#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import "../BraintreeCore/BTAPIClient_Internal.h"
+
+#else // Carthage
+#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#endif
 
 NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmericanExpressErrorDomain";
 

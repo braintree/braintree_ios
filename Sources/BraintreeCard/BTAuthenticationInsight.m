@@ -1,6 +1,10 @@
 #import "BTAuthenticationInsight_Internal.h"
 
+#if __has_include(<Braintree/BraintreeCard.h>)
+#import <Braintree/BraintreeCore.h>
+#else
 #import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @implementation BTAuthenticationInsight
 

@@ -1,4 +1,9 @@
-#import "BTThreeDSecureRequest.h"
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureRequest.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
+#endif
+
 @class BTConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN

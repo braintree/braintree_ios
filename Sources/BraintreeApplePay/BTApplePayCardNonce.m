@@ -1,4 +1,8 @@
-#import "BTApplePayCardNonce.h"
+#if __has_include(<Braintree/BraintreeApplePay.h>)
+#import <Braintree/BTApplePayCardNonce.h>
+#else
+#import <BraintreeApplePay/BTApplePayCardNonce.h>
+#endif
 
 @implementation BTApplePayCardNonce
 
