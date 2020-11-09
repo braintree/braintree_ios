@@ -8,10 +8,6 @@ let package = Package(
     platforms: [.iOS(.v12)],
     products: [
         .library(
-            name: "Braintree",
-            targets: ["BraintreeCard", "BraintreePayPal", "BraintreeCard"]
-        ),
-        .library(
             name: "BraintreeAmericanExpress",
             targets: ["BraintreeAmericanExpress"]
         ),
