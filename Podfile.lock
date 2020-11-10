@@ -1,4 +1,4 @@
-  PODS:
+PODS:
   - Braintree/3D-Secure (4.36.0):
     - Braintree/Card
     - Braintree/Core
@@ -105,11 +105,11 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: fdabecae56ad26242b146a0b0bf889bba068b97d
+    :commit: f4db758f9c89d5151af48d8c75cfd415ccfda476
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
-  Braintree: dadfa168eb8541fa522b347662fb3d05b2ea4141
+  Braintree: 8299dfabe4097fceec5c03a681b6e5242d636ce6
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
