@@ -2,7 +2,7 @@
 
 ## unreleased (v5)
 * Add support for Swift Package Manager (resolves #462)
-* Bump Kount to v4.0.4.1 (supports iOS 9.3+)
+* Bump Kount to v4.0.4.2 (supports iOS 9.3+)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 12
   * Remove deprecated `BraintreeUI` module
@@ -34,9 +34,8 @@
   * PayPalDataCollector
     * Replace `libPPRiskMagnesOC.a` with `PPRiskMagnes.xcframework` v5.0.1 (which requires Swift 5.1+)
     * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h`
-* Bump Kount to v4.0.4.2 (supports iOS 9.3+)
 
-## unreleased (v4)
+## 4.36.1 (2020-11-10)
 * Update CardinalMobile.framework to v2.2.4-1
 * Exclude arm64 simulator architectures via Podspec (fixes [Drop-In #233](https://github.com/braintree/braintree-ios-drop-in/issues/233))
 
