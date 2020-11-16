@@ -9,6 +9,7 @@
 @property (nonatomic, strong) BTDataCollector *dataCollector;
 @property (nonatomic, strong) UILabel *dataLabel;
 @property (nonatomic, strong) BTAPIClient *apiClient;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -17,6 +18,7 @@
 - (instancetype)initWithAuthorization:(NSString *)authorization {
     if (self = [super initWithAuthorization:authorization]) {
         _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
+        _locationManager = [CLLocationManager new];
     }
 
     return self;
@@ -98,8 +100,15 @@
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {
-    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-    [locationManager requestWhenInUseAuthorization];
+    switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusNotDetermined:
+            [self.locationManager requestWhenInUseAuthorization];
+            break;
+
+        default:
+            self.progressBlock(@"Location authorization requested previously. Update authorization in Settings app.");
+            break;
+    }
 }
 
 #pragma mark - BTDataCollectorDelegate

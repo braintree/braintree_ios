@@ -59,7 +59,12 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     self.kount = [KDataCollector sharedCollector];
     self.kount.debug = debugLogging;
 
-    CLAuthorizationStatus locationStatus = [CLLocationManager authorizationStatus];
+    CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
+    if (@available(iOS 14, *)) {
+        locationStatus = [CLLocationManager new].authorizationStatus;
+    } else {
+        locationStatus = [CLLocationManager authorizationStatus];
+    }
 
     if ((locationStatus != kCLAuthorizationStatusAuthorizedWhenInUse && locationStatus != kCLAuthorizationStatusAuthorizedAlways) || ![CLLocationManager locationServicesEnabled]) {
         self.kount.locationCollectorConfig = KLocationCollectorConfigSkip;
