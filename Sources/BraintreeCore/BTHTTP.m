@@ -381,12 +381,11 @@
         NSArray *policies = @[(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)domain)];
         SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
         SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)self.pinnedCertificateData);
-        SecTrustResultType result;
 
-        OSStatus errorCode = SecTrustEvaluate(serverTrust, &result);
+        CFErrorRef error;
+        BOOL trusted = SecTrustEvaluateWithError(serverTrust, &error);
 
-        BOOL evaluatesAsTrusted = (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed);
-        if (errorCode == errSecSuccess && evaluatesAsTrusted) {
+        if (trusted && error == nil) {
             NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
         } else {
