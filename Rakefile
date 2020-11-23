@@ -11,7 +11,7 @@ desc "Run all test tasks"
 task :spec => %w[spec:all]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
-task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag release:push_private]
+task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries spm:create_binaries release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
 task :publish => %w[publish:push publish:push_pod docs_internal docs_external]
@@ -23,6 +23,8 @@ PAYPAL_ONE_TOUCH_VERSION_FILE = "BraintreePayPal/PayPalUtils/Public/PPOTVersion.
 DEMO_PLIST = "Demo/Supporting Files/Braintree-Demo-Info.plist"
 FRAMEWORKS_PLIST = "BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "public"
+
+bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector","BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo", "PayPalDataCollector"]
 
 class << self
   def run cmd
@@ -141,7 +143,7 @@ namespace :carthage do
   task :create_binaries do
     run! "rm -rf SampleApps/SPMTest" # Remove SPMTest app to prevent Carthage timeout
     run! "carthage.sh build --no-skip-current"
-    run! "carthage.sh archive BraintreeAmericanExpress BraintreeApplePay BraintreeCard BraintreeCore BraintreeDataCollector BraintreePaymentFlow BraintreePayPal BraintreeThreeDSecure BraintreeUnionPay BraintreeVenmo PayPalDataCollector --output Braintree.framework.zip"
+    run! "carthage.sh archive #{bt_modules.join(" ")} --output Braintree.framework.zip"
     run! "git co master SampleApps/SPMTest" # Restore SPMTest app
     say "Create binaries for Carthage complete."
   end
@@ -166,6 +168,24 @@ namespace :spm do
     update_xcodeproj
     run! "cd SampleApps/SPMTest && swift package resolve"
     run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build"
+  end
+
+  desc "Create xcframework for each Braintree module."
+  task :create_binaries do
+    run! "mkdir archive"
+
+    bt_modules.each do |module_name|
+      # build .framework for devices
+      run! "xcodebuild archive -workspace Braintree.xcworkspace -scheme #{module_name} -sdk iphoneos -archivePath 'archive/iphoneos' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      # build .framework for simulators
+      run! "xcodebuild archive -workspace Braintree.xcworkspace -scheme #{module_name} -sdk iphonesimulator -archivePath 'archive/iphonesimulator' SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+      # create xcframework
+      run! "xcodebuild -create-xcframework -framework archive/iphoneos.xcarchive/Products/Library/Frameworks/#{module_name}.framework -framework archive/iphonesimulator.xcarchive/Products/Library/Frameworks/#{module_name}.framework -output Braintree-xcframeworks/#{module_name}.xcframework"
+    end
+
+    run! "zip -r Braintree-xcframeworks.zip Braintree-xcframeworks/"
+    run! "rm -rf archive/ && rm -rf Braintree-xcframeworks/"
+    say "Create xcframeworks complete."
   end
 end
 
@@ -285,10 +305,10 @@ namespace :publish do
     lines
   end
 
-  desc "Create GitHub release & attach Carthage binaries."
+  desc "Create GitHub release & attach .framework and .xcframework binaries."
   task :create_github_release do
-    run! "gh release create #{current_version} Braintree.framework.zip -t #{current_version} -n #{changelog_entries}"
-    run! 'rm -rf Braintree.framework.zip'
+    run! "gh release create #{current_version} Braintree.framework.zip Braintree-xcframeworks.zip -t #{current_version} -n #{changelog_entries}"
+    run! "rm -rf Braintree.framework.zip && rm -rf Braintree-xcframeworks.zip"
   end
 
 end

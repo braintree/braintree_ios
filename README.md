@@ -39,9 +39,7 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-**Note:** The `BraintreeThreeDSecure` and `BraintreeDataCollector` libraries do not currently support Swift Package Manager. These both rely on third party frameworks which we do not yet have in the `.xcframework` format.
-
-The following Braintree libraries offer Swift Package Manager support:
+The following Braintree libraries offer official Swift Package Manager support:
 * `BraintreeAmericanExpress`
 * `BraintreeApplePay`
 * `BraintreeCard`
@@ -51,6 +49,25 @@ The following Braintree libraries offer Swift Package Manager support:
 * `BraintreeUnionPay`
 * `BraintreeVenmo`
 * `PayPalDataCollector`
+
+**Note:** The `BraintreeThreeDSecure` and `BraintreeDataCollector` libraries do not currently support Swift Package Manager. These both rely on third party frameworks which we do not yet have in the `.xcframework` format.
+
+If you would like to use SPM as your sole package manager, you can manually include the `.xcframework` versions of the `BraintreeThreeDSecure` or `BraintreeDataCollector` libraries. These are attached to recent [GitHub releases](https://github.com/braintree/braintree_ios/releases) as `Braintree-xcframeworks.zip`.
+
+In order to use the `BraintreeThreeDSecure.xcframework`, you must manually include the `CardinalMobile.framework` located in the `Frameworks` dir. You must also include `BraintreeCore`, `BraintreeCard`, and `BraintreePaymentFlow` either via SPM or via manual integration.
+
+#### Manually including a framework
+
+1. Drag and drop the framework from Finder into your Xcode project
+    * Select _Copy items if needed_
+    * Click _Finish_. 
+        The result should look like:
+        <br/><br/>
+        ![image](image_assets/include_frameworks_in_proj.png)
+1. Open your project's settings by selecting your app target in the General tab
+    * Under the _Frameworks, Libraries, and Embedded Content_ section, make sure each framework is set to “Embed & Sign”
+    ![image](image_assets/link_libraries.png)
+1. Go to the Build Phases tab. Under _Link Binary With Libraries_, make sure the frameworks are listed. This should be taken care of by step #2 above, but if not, add the frameworks manually via the `+` button.
 
 ### CocoaPods
 ```
