@@ -4,6 +4,7 @@
 * Add support for Swift Package Manager (resolves #462)
 * Bump Kount to v4.0.4.2 (supports iOS 9.3+)
 * Replace deprecated `SecTrustEvaluate` with `SecTrustEvaluateWithError` (fixes #536)
+* Only check if the Venmo app is installed if the BraintreeVenmo module is being used (resolves #231)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 12
   * Remove deprecated `BraintreeUI` module

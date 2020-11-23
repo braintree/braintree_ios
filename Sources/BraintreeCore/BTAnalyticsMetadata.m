@@ -171,6 +171,10 @@
     if ([self.class isAppExtension]) {
         return NO;
     }
+
+    if (!NSClassFromString(@"BTVenmoDriver")) {
+        return NO;
+    }
     
     UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
     static BOOL venmoInstalled;
