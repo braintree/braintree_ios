@@ -11,7 +11,7 @@ desc "Run all test tasks"
 task :spec => %w[spec:all]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
-task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec release:tag release:push_private]
+task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
 task :publish => %w[publish:push publish:push_pod docs_internal docs_external]
@@ -135,6 +135,15 @@ namespace :carthage do
     generate_cartfile
     run! "cd SampleApps/CarthageTest && carthage update"
     run! "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
+  end
+
+  desc "Create Braintree.framework.zip for Carthage."
+  task :create_binaries do
+    run! "rm -rf SampleApps/SPMTest" # Remove SPMTest app to prevent Carthage timeout
+    run! "carthage.sh build --no-skip-current"
+    run! "carthage.sh archive BraintreeAmericanExpress BraintreeApplePay BraintreeCard BraintreeCore BraintreeDataCollector BraintreePaymentFlow BraintreePayPal BraintreeThreeDSecure BraintreeUnionPay BraintreeVenmo PayPalDataCollector --output Braintree.framework.zip"
+    run! "git co master SampleApps/SPMTest" # Restore SPMTest app
+    say "Create binaries for Carthage complete."
   end
 end
 
@@ -260,6 +269,26 @@ namespace :publish do
   desc  "Pod push."
   task :push_pod do
     run! "pod trunk push --allow-warnings Braintree.podspec"
+  end
+
+  def changelog_entries
+    append_lines = false
+    lines = ""
+    File.read("CHANGELOG.md").each_line do |line|
+      if append_lines
+        break if line.include?("##") # break when we reach header for previous release
+        lines += line
+      elsif line.include?("##") # start appending after we find first header
+        append_lines = true
+      end
+    end
+    lines
+  end
+
+  desc "Create GitHub release & attach Carthage binaries."
+  task :create_github_release do
+    run! "gh release create #{current_version} Braintree.framework.zip -t #{current_version} -n #{changelog_entries}"
+    run! 'rm -rf Braintree.framework.zip'
   end
 
 end
