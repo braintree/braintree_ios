@@ -127,17 +127,6 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A9E5C1C424FD607900EE691F"
-               BuildableName = "PayPalOneTouchTests.xctest"
-               BlueprintName = "PayPalOneTouchTests"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "A9B241FB2507D156000FAA3F"
                BuildableName = "PayPalDataCollectorTests.xctest"
                BlueprintName = "PayPalDataCollectorTests"

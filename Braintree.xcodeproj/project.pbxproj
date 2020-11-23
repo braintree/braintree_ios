@@ -101,7 +101,6 @@
 		8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */; };
 		8018090A24A4C89C00FC8BD3 /* BTPayPalIDToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B9D0D32347EB770005F8D4 /* BTPayPalIDToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
-		80581A8D25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
 		80959CD92540CAB7000748C4 /* PayPalDataCollectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 80959CD72540CAB7000748C4 /* PayPalDataCollectorTests.m */; };
 		80AEE9E02540C3C2008CCA4F /* PPDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 80AEE9D92540C3C1008CCA4F /* PPDataCollector.m */; };
@@ -111,7 +110,6 @@
 		80BB0C86241937A5003C8BA9 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB0C84241937A5003C8BA9 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80BB0C87241937A5003C8BA9 /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BB0C85241937A5003C8BA9 /* BTURLUtils.m */; };
 		80DBE69523A931A600373230 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE69423A931A600373230 /* Helpers.swift */; };
-		9015AD745BF7C18C0381C220 /* Pods_Tests_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A5B69AC895DC704C6286A4 /* Pods_Tests_UnitTests.framework */; };
 		9E08257C063D6A7387549C13 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EAC5DF62E1F60260858683 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		A07FA48D21B5C54E0026FF0E /* BTPayPalLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A07FA48E21B5C54E0026FF0E /* BTPayPalLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */; };
@@ -1060,7 +1058,6 @@
 		A903E1A924F9D34000C314E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A903E1B524F9D37B00C314E1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A903E1C524F9D46200C314E1 /* BraintreeCore.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = BraintreeCore.modulemap; sourceTree = "<group>"; };
-		A91B06FE24FFFFE1006BD4C1 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91E1E8A24FEDD7F007540E5 /* BraintreePaymentFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreePaymentFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91E1E8E24FEDD7F007540E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A91E1EAB24FEEF21007540E5 /* BraintreeThreeDSecure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeThreeDSecure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1234,14 +1231,6 @@
 				A903E1B924F9D3F900C314E1 /* BraintreeCore.framework in Frameworks */,
 				A977A06C24FED2F1006049AB /* PayPalDataCollector.framework in Frameworks */,
 				A903E1B624F9D37B00C314E1 /* XCTest.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A91B06FB24FFFFE1006BD4C1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9015AD745BF7C18C0381C220 /* Pods_Tests_UnitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1822,7 +1811,6 @@
 				A91E1E8A24FEDD7F007540E5 /* BraintreePaymentFlowTests.xctest */,
 				A91E1EAB24FEEF21007540E5 /* BraintreeThreeDSecure.framework */,
 				A91E1EF224FEF2E3007540E5 /* BraintreeThreeDSecureTests.xctest */,
-				A91B06FE24FFFFE1006BD4C1 /* UnitTests.xctest */,
 				A9B241FC2507D156000FAA3F /* PayPalDataCollectorTests.xctest */,
 			);
 			name = Products;
@@ -2656,26 +2644,6 @@
 			productReference = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		A91B06FD24FFFFE1006BD4C1 /* UnitTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A91B070524FFFFE1006BD4C1 /* Build configuration list for PBXNativeTarget "UnitTests" */;
-			buildPhases = (
-				495841BDF4EBB418C6CFCF0B /* [CP] Check Pods Manifest.lock */,
-				A91B06FA24FFFFE1006BD4C1 /* Sources */,
-				A91B06FB24FFFFE1006BD4C1 /* Frameworks */,
-				A91B06FC24FFFFE1006BD4C1 /* Resources */,
-				61D5E24E759F9B92E18B8B64 /* ShellScript */,
-				C1918545D6B6B56BF0E7B88C /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = UnitTests;
-			productName = UnitTests;
-			productReference = A91B06FE24FFFFE1006BD4C1 /* UnitTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		A91E1E8924FEDD7F007540E5 /* BraintreePaymentFlowTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A91E1E9224FEDD7F007540E5 /* Build configuration list for PBXNativeTarget "BraintreePaymentFlowTests" */;
@@ -2954,10 +2922,6 @@
 					A903E1A524F9D34000C314E1 = {
 						CreatedOnToolsVersion = 12.0;
 					};
-					A91B06FD24FFFFE1006BD4C1 = {
-						CreatedOnToolsVersion = 12.0;
-						LastSwiftMigration = 1210;
-					};
 					A91E1E8924FEDD7F007540E5 = {
 						CreatedOnToolsVersion = 12.0;
 					};
@@ -3035,7 +2999,6 @@
 				A7B462E01C3D9C2200048423 /* PayPalDataCollector */,
 				A9B241FB2507D156000FAA3F /* PayPalDataCollectorTests */,
 				A7ABD6521B702FD800A1223C /* IntegrationTests */,
-				A91B06FD24FFFFE1006BD4C1 /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3139,13 +3102,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A91B06FC24FFFFE1006BD4C1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A91E1E8824FEDD7F007540E5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3233,28 +3189,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		495841BDF4EBB418C6CFCF0B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-UnitTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5DD84D1A956339FDAF419EC7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3275,31 +3209,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		61D5E24E759F9B92E18B8B64 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
-				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6525796B5ECBEF4D47A12798 /* [CP] Check Pods Manifest.lock */ = {
@@ -3368,30 +3277,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C1918545D6B6B56BF0E7B88C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
-				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D2400D69D1A49A0D367A46B0 /* [CP] Embed Pods Frameworks */ = {
@@ -3609,14 +3494,6 @@
 				A903E1B224F9D35500C314E1 /* MockDelegates.swift in Sources */,
 				A9A76CA724F9E92E0044EAEE /* TestClientTokenFactory.swift in Sources */,
 				A977A06B24FECFC3006049AB /* NonceValidator.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A91B06FA24FFFFE1006BD4C1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				80581A8D25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5550,90 +5427,6 @@
 			};
 			name = Release;
 		};
-		A91B070324FFFFE1006BD4C1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55BF6AC8D7291439E78C300F /* Pods-Tests-UnitTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 43253H4X22;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = UnitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.UnitTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A91B070424FFFFE1006BD4C1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 587BD47952A3B29E7950C52A /* Pods-Tests-UnitTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 43253H4X22;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = UnitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.UnitTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		A91E1E9324FEDD7F007540E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6814,15 +6607,6 @@
 			buildConfigurations = (
 				A903E1AB24F9D34000C314E1 /* Debug */,
 				A903E1AC24F9D34000C314E1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A91B070524FFFFE1006BD4C1 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A91B070324FFFFE1006BD4C1 /* Debug */,
-				A91B070424FFFFE1006BD4C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

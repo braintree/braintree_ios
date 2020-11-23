@@ -17,7 +17,6 @@ abstract_target 'Tests' do
   pod 'OHHTTPStubs'
   pod 'xcbeautify'
 
-  target 'UnitTests'
   target 'IntegrationTests'
   target 'BraintreeCoreTests'
   target 'BraintreeVenmoTests'
