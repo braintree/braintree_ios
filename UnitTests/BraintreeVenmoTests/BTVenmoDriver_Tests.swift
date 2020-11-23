@@ -526,32 +526,26 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertTrue(venmoDriver.isiOSAppAvailableForAppSwitch())
     }
 
-    let venmoProductionSourceApplication = "net.kortina.labs.Venmo"
-    let venmoDebugSourceApplication = "net.kortina.labs.Venmo.debug"
-    let fakeWalletSourceApplication = "com.paypal.PPClient.Debug"
-
-    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsVenmoDebugApp_returnsTrue() {
-        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake://fake")!, sourceApplication: venmoProductionSourceApplication))
+    func testCanHandleAppSwitchReturnURL_withValidHost_andValidPath_returnsTrue() {
+        let host = "x-callback-url"
+        let path = "/vzero/auth/venmo/"
+        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
     }
 
-    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsVenmoProductionApp_returnsTrue() {
-        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake://fake")!, sourceApplication: venmoDebugSourceApplication))
+    func testCanHandleAppSwitchReturnURL_withInvalidHost_andValidPath_returnsFalse() {
+        let host = "bad-host"
+        let path = "/vzero/auth/venmo/"
+        XCTAssertFalse(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
     }
 
-    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsMissing_andPathIsCorrect_returnsTrue() {
-        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "doesntmatter://x-callback-url/vzero/auth/venmo/stuffffff")!, sourceApplication: nil))
+    func testCanHandleAppSwitchReturnURL_withValidHost_andInvalidPath_returnsFalse() {
+        let host = "x-callback-url"
+        let path = "/bad/path/"
+        XCTAssertFalse(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
     }
 
-    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsMissing_andPathIsNotCorrect_returnsFalse() {
-        XCTAssertFalse(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake://fake")!, sourceApplication: nil))
-    }
-
-    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsFakeWalletAppAndURLIsValid_returnsTrue() {
-        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "doesntmatter://x-callback-url/vzero/auth/venmo/stuffffff")!, sourceApplication: fakeWalletSourceApplication))
-    }
-
-    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsNotVenmo_returnsFalse() {
-        XCTAssertFalse(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake://fake")!, sourceApplication: "invalid.source.application"))
+    func testCanHandleAppSwitchReturnURL_withNoHost_andNoPath_returnsFalse() {
+        XCTAssertFalse(BTVenmoDriver.canHandleAppSwitchReturn(URL(string: "fake-scheme://")!))
     }
 
     func testAuthorizeAccountWithTokenizationKey_vaultTrue_willNotAttemptToVault() {

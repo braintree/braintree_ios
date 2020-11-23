@@ -266,7 +266,7 @@
     return address;
 }
 
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
+- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
     return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment"];
 }
 

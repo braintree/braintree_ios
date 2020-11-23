@@ -17,14 +17,13 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
 @interface BTVenmoAppSwitchReturnURL : NSObject
 
 /**
- Evaluates whether the url-sourceApplication pair represents a valid Venmo Touch return.
+ Evaluates whether the url represents a valid Venmo Touch return.
 
  @param url               an app switch return URL
- @param sourceApplication an app switch source application
 
- @return YES if the url-sourceApplication pair likely represent a Venmo Touch app switch return
+ @return YES if the url represents a Venmo Touch app switch return
 */
-+ (BOOL)isValidURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
++ (BOOL)isValidURL:(NSURL *)url;
 
 /**
  Initializes a new BTVenmoAppSwitchReturnURL

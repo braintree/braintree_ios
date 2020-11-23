@@ -91,13 +91,12 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate;
 
 /**
- Check if this BTPaymentFlowRequestDelegate can handle the URL from the source application.
+ Check if this BTPaymentFlowRequestDelegate can handle the return URL
  
  @param url The URL to check.
- @param sourceApplication The source application to sent the URL.
  @return True if the BTPaymentFlowRequestDelegate can handle the URL. Otherwise return false.
  */
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url;
 
 /**
  Handles the return URL and completes and post processing.

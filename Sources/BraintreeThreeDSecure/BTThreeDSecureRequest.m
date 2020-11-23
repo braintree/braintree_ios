@@ -260,7 +260,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.completed"];
 }
 
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
+- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
     return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/threedsecure"];
 }
 

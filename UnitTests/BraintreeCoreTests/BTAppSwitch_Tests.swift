@@ -7,11 +7,10 @@ class BTAppSwitch_Tests: XCTestCase {
         super.setUp()
         appSwitch = BTAppSwitch.sharedInstance()
     }
-    
+
     override func tearDown() {
         MockAppSwitchHandler.cannedCanHandle = false
         MockAppSwitchHandler.lastCanHandleURL = nil
-        MockAppSwitchHandler.lastCanHandleSourceApplication = nil
         MockAppSwitchHandler.lastHandleAppSwitchReturnURL = nil
         super.tearDown()
     }
@@ -19,78 +18,76 @@ class BTAppSwitch_Tests: XCTestCase {
     func testHandleOpenURL_whenHandlerIsRegistered_invokesCanHandleAppSwitchReturnURL() {
         appSwitch.register(MockAppSwitchHandler.self)
         let expectedURL = URL(string: "fake://url")!
-        let expectedSourceApplication = "fakeSourceApplication"
 
-        BTAppSwitch.handleOpen(expectedURL, sourceApplication: expectedSourceApplication)
+        BTAppSwitch.handleOpen(expectedURL)
 
         XCTAssertEqual(MockAppSwitchHandler.lastCanHandleURL!, expectedURL)
-        XCTAssertEqual(MockAppSwitchHandler.lastCanHandleSourceApplication!, expectedSourceApplication)
     }
 
-    func testHandleOpenURL_whenHandlerCanHandleOpenURL_invokesHandleAppSwitchReturnURL() {
+    func testHandleOpenURL_whenHandlerCanHandleOpenURL_invokesHandleAppSwitchReturnURL_andReturnsTrue() {
         appSwitch.register(MockAppSwitchHandler.self)
         MockAppSwitchHandler.cannedCanHandle = true
         let expectedURL = URL(string: "fake://url")!
 
-        let handled = BTAppSwitch.handleOpen(expectedURL, sourceApplication: "not important")
-        
-        XCTAssert(handled)
+        let handled = BTAppSwitch.handleOpen(expectedURL)
+
+        XCTAssertTrue(handled)
         XCTAssertEqual(MockAppSwitchHandler.lastHandleAppSwitchReturnURL!, expectedURL)
     }
 
-    func testHandleOpenURL_whenHandlerCantHandleOpenURL_doesNotInvokeHandleAppSwitchReturnURL() {
+    func testHandleOpenURL_whenHandlerCantHandleOpenURL_doesNotInvokeHandleAppSwitchReturnURL_andReturnsFalse() {
         appSwitch.register(MockAppSwitchHandler.self)
         MockAppSwitchHandler.cannedCanHandle = false
 
-        BTAppSwitch.handleOpen(URL(string: "fake://url")!, sourceApplication: "not important")
+        let handled = BTAppSwitch.handleOpen(URL(string: "fake://url")!)
 
-        XCTAssertNil(MockAppSwitchHandler.lastHandleAppSwitchReturnURL)
-    }
-
-    func testHandleOpenURL_whenHandlerCantHandleOpenURL_returnsFalse() {
-        appSwitch.register(MockAppSwitchHandler.self)
-        MockAppSwitchHandler.cannedCanHandle = false
-
-        XCTAssertFalse(BTAppSwitch.handleOpen(URL(string: "fake://url")!, sourceApplication: "not important"))
-    }
-    
-    func testHandleOpenURL_acceptsOptionalSourceApplication() {
-        // This doesn't assert any behavior about nil source application. It only checks that the code will compile!
-        let sourceApplication : String? = nil
-        BTAppSwitch.handleOpen(URL(string: "fake://url")!, sourceApplication: sourceApplication)
-    }
-    
-    func testHandleOpenURL_withNoAppSwitching() {
-        let handled = BTAppSwitch.handleOpen(URL(string: "scheme://")!, sourceApplication: "com.yourcompany.hi")
         XCTAssertFalse(handled)
+        XCTAssertNil(MockAppSwitchHandler.lastHandleAppSwitchReturnURL)
     }
 
     func testHandleOpenURLContext_whenHandlerCanHandleOpenURL_invokesHandleAppSwitchReturnURL_andReturnsTrue() {
         guard #available(iOS 13.0, *) else { return }
-        
+
         appSwitch.register(MockAppSwitchHandler.self)
         MockAppSwitchHandler.cannedCanHandle = true
-        
-        let urlContext = MockOpenURLContext(url: URL(string: "my-url.com")!, options: MockOpenURLOptions(sourceApplication: "my-source-app"))
-        
+
+        let urlContext = MockOpenURLContext(url: URL(string: "my-url.com")!)
+
         let handled = BTAppSwitch.handleOpenURLContext(urlContext)
-        
+
         XCTAssertTrue(handled)
         XCTAssertEqual(MockAppSwitchHandler.lastCanHandleURL, URL(string: "my-url.com"))
-        XCTAssertEqual(MockAppSwitchHandler.lastCanHandleSourceApplication, "my-source-app")
         XCTAssertEqual(MockAppSwitchHandler.lastHandleAppSwitchReturnURL, URL(string: "my-url.com"))
     }
+
+    func testHandleOpenURLContext_whenHandlerCantHandleOpenURL_doesNotInvokeHandleAppSwitchReturnURL_andReturnsFalse() {
+        guard #available(iOS 13.0, *) else { return }
+
+        appSwitch.register(MockAppSwitchHandler.self)
+        MockAppSwitchHandler.cannedCanHandle = false
+
+        let urlContext = MockOpenURLContext(url: URL(string: "fake://url")!)
+
+        let handled = BTAppSwitch.handleOpenURLContext(urlContext)
+
+        XCTAssertFalse(handled)
+        XCTAssertNil(MockAppSwitchHandler.lastHandleAppSwitchReturnURL)
+    }
+
+    func testHandleOpenURL_withNoAppSwitching_returnsFalse() {
+        let handled = BTAppSwitch.handleOpen(URL(string: "scheme://")!)
+        XCTAssertFalse(handled)
+    }
+
 }
 
 class MockAppSwitchHandler: BTAppSwitchHandler {
     static var cannedCanHandle = false
     static var lastCanHandleURL : URL? = nil
-    static var lastCanHandleSourceApplication : String? = nil
     static var lastHandleAppSwitchReturnURL : URL? = nil
 
-    @objc static func canHandleAppSwitchReturn(_ url: URL, sourceApplication: String?) -> Bool {
+    static func canHandleAppSwitchReturn(_ url: URL) -> Bool {
         lastCanHandleURL = url
-        lastCanHandleSourceApplication = sourceApplication
         return cannedCanHandle
     }
 
@@ -103,32 +100,12 @@ class MockAppSwitchHandler: BTAppSwitchHandler {
 class MockOpenURLContext: UIOpenURLContext {
 
     private let _url: URL
-    private let _options: UIScene.OpenURLOptions
 
     override var url: URL {
         return _url
     }
 
-    override var options: UIScene.OpenURLOptions {
-        return _options
-    }
-
-    init(url: URL, options: UIScene.OpenURLOptions) {
+    init(url: URL) {
         self._url = url
-        self._options = options
-    }
-}
-
-@available(iOS 13.0, *)
-class MockOpenURLOptions: UIScene.OpenURLOptions {
-
-    private let _sourceApplication: String
-
-    override var sourceApplication: String? {
-        return _sourceApplication
-    }
-
-    init(sourceApplication: String) {
-        self._sourceApplication = sourceApplication
     }
 }

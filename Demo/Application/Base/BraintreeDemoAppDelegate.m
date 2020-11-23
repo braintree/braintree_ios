@@ -34,7 +34,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
         // handled by scene delegate
     } else {
         if ([[url.scheme lowercaseString] isEqualToString:[BraintreeDemoAppDelegatePaymentsURLScheme lowercaseString]]) {
-            return [BTAppSwitch handleOpenURL:url options:options];
+            return [BTAppSwitch handleOpenURL:url];
         }
     }
     return YES;

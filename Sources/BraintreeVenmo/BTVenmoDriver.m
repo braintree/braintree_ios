@@ -224,8 +224,8 @@ static BTVenmoDriver *appSwitchedDriver;
     appSwitchedDriver = nil;
 }
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:sourceApplication];
++ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
+    return [BTVenmoAppSwitchReturnURL isValidURL:url];
 }
 
 - (void)handleOpenURL:(NSURL *)url {

@@ -10,11 +10,12 @@
   * Remove deprecated `BraintreeUI` module
   * Remove all deprecated methods and properties
   * Core
-    * Remove the `localizedDescription` property on `BTPaymentMethodNonce`.
+    * Remove the `localizedDescription` property on `BTPaymentMethodNonce`
     * Update all methods on `BTAppSwitchDelegate` to be optional
+    * Remove `options` and `sourceApplication` params on `BTAppSwitch` methods
   * PaymentFlow
     * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
-    * Remove the `localizedDescription` property on `BTLocalPaymentResult`.
+    * Remove the `localizedDescription` property on `BTLocalPaymentResult`
     * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
   * PayPal
     * Remove PayPalOneTouch and PayPalUtils modules

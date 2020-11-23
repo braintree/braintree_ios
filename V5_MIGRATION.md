@@ -39,3 +39,20 @@ Code previously used to set your return URL scheme can be deleted. **Note:** Thi
 ```
 BTAppSwitch.setReturnURLScheme("com.your-company.your-app.payments")
 ```
+
+## App Switch
+
+v5 removes the `options` and `sourceApplication` params on methods in `BTAppSwitch`. 
+
+If you're using `UISceneDelegate`, you don't need to make any code changes. 
+
+If you aren't using `UISceneDelegate`, you will need to update the `handleOpenURL` method you call from within the `application:OpenURL:options` app delegate method.
+
+```
+func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    if url.scheme?.localizedCaseInsensitiveCompare("com.your-company.your-app.payments") == .orderedSame {
+        return BTAppSwitch.handleOpen(url)
+    }
+    return false
+}
+```

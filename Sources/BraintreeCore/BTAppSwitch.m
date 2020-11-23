@@ -42,21 +42,17 @@ NSString * const BTAppContextDidReturnNotification = @"com.braintreepayments.BTA
     [BTAppSwitch sharedInstance].returnURLScheme = returnURLScheme;
 }
 
-+ (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options {
-    return [[BTAppSwitch sharedInstance] handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
-}
-
-+ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [[BTAppSwitch sharedInstance] handleOpenURL:url sourceApplication:sourceApplication];
++ (BOOL)handleOpenURL:(NSURL *)url {
+    return [[BTAppSwitch sharedInstance] handleOpenURL:url];
 }
 
 + (BOOL)handleOpenURLContext:(UIOpenURLContext *)URLContext API_AVAILABLE(ios(13.0)) {
-    return [[BTAppSwitch sharedInstance] handleOpenURL:URLContext.URL sourceApplication:URLContext.options.sourceApplication];
+    return [[BTAppSwitch sharedInstance] handleOpenURL:URLContext.URL];
 }
 
-- (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+- (BOOL)handleOpenURL:(NSURL *)url {
     for (Class<BTAppSwitchHandler> handlerClass in self.appSwitchHandlers) {
-        if ([handlerClass canHandleAppSwitchReturnURL:url sourceApplication:sourceApplication]) {
+        if ([handlerClass canHandleAppSwitchReturnURL:url]) {
             [handlerClass handleAppSwitchReturnURL:url];
             return YES;
         }

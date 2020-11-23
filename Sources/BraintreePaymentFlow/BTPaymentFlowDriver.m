@@ -98,8 +98,8 @@ static BTPaymentFlowDriver *paymentFlowDriver;
     [paymentFlowDriver handleOpenURL:url];
 }
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [paymentFlowDriver.paymentFlowRequestDelegate canHandleAppSwitchReturnURL:url sourceApplication:sourceApplication];
++ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
+    return [paymentFlowDriver.paymentFlowRequestDelegate canHandleAppSwitchReturnURL:url];
 }
 
 - (void)handleOpenURL:(NSURL *)url {
