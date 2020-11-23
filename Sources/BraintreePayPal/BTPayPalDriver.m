@@ -7,31 +7,29 @@
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTLogger_Internal.h>
-#import <Braintree/PayPalDataCollector.h>
-#import <Braintree/PPDataCollector_Internal.h>
 #import <Braintree/BTPayPalRequest.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
+#import <Braintree/Braintree-Swift.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
-#import <PayPalDataCollector/PayPalDataCollector.h>
-#import "../PayPalDataCollector/PPDataCollector_Internal.h"
 #import <BraintreePayPal/BTPayPalRequest.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
+// Use @import for SPM support (see https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348)
+@import PayPalDataCollector;
 
 #else // Carthage
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTLogger_Internal.h>
-#import <PayPalDataCollector/PayPalDataCollector.h>
-#import <PayPalDataCollector/PPDataCollector_Internal.h>
 #import <BraintreePayPal/BTPayPalRequest.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
+#import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
@@ -252,9 +250,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             NSString *pairingId = [self.class tokenFromApprovalURL:self.approvalUrl];
 
-            self.clientMetadataId = [PPDataCollector generateClientMetadataID:pairingId
-                                                                disableBeacon:NO
-                                                                         data:nil];
+            self.clientMetadataId = [PPDataCollector clientMetadataID:pairingId];
 
             BOOL analyticsSuccess = error ? NO : YES;
             if (isBillingAgreement) {

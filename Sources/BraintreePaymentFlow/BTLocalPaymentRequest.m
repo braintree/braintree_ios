@@ -9,7 +9,7 @@
 #import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/PayPalDataCollector.h>
+#import <Braintree/Braintree-Swift.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
@@ -18,7 +18,8 @@
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
-#import <PayPalDataCollector/PayPalDataCollector.h>
+// Use @import for SPM support (see https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348)
+@import PayPalDataCollector;
 
 #else // Carthage
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
@@ -27,8 +28,7 @@
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <PayPalDataCollector/PayPalDataCollector.h>
-
+#import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 
 @interface BTLocalPaymentRequest ()

@@ -42,7 +42,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 
 + (void)load {
     if (self == [BTDataCollector class]) {
-        PayPalDataCollectorClass = NSClassFromString(@"PPDataCollector");
+        PayPalDataCollectorClass = NSClassFromString(@"PayPalDataCollector.PPDataCollector") ?: NSClassFromString(@"Braintree.PPDataCollector");
     }
 }
 
@@ -72,13 +72,6 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 }
 
 #pragma mark - Accessors
-
-+ (void)setPayPalDataCollectorClass:(Class)payPalDataCollectorClass {
-    // +load will always set PayPalDataCollectorClass
-    if ([payPalDataCollectorClass isSubclassOfClass:NSClassFromString(@"PPDataCollector")]) {
-        PayPalDataCollectorClass = payPalDataCollectorClass;
-    }
-}
 
 - (void)setCollectorEnvironment:(KEnvironment)environment {
     self.kount.environment = environment;

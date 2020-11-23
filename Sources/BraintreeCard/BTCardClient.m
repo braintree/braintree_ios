@@ -29,7 +29,6 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 @implementation BTCardClient
 
 static Class PayPalDataCollectorClass;
-static NSString *PayPalDataCollectorClassString = @"PPDataCollector";
 
 + (void)load {
     if (self == [BTCardClient class]) {
@@ -250,16 +249,12 @@ static NSString *PayPalDataCollectorClassString = @"PPDataCollector";
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
 }
 
-+ (void)setPayPalDataCollectorClassString:(NSString *)payPalDataCollectorClassString {
-    PayPalDataCollectorClassString = payPalDataCollectorClassString;
-}
-
 + (void)setPayPalDataCollectorClass:(Class)payPalDataCollectorClass {
     PayPalDataCollectorClass = payPalDataCollectorClass;
 }
 
 - (BOOL)isPayPalDataCollectorAvailable {
-    Class kPPDataCollector = NSClassFromString(PayPalDataCollectorClassString);
+    Class kPPDataCollector = [self getPPDataCollectorClass];
     SEL aSelector = NSSelectorFromString(@"generateClientMetadataIDWithoutBeacon:data:");
     return kPPDataCollector && [kPPDataCollector respondsToSelector:aSelector];
 }
@@ -306,7 +301,7 @@ static NSString *PayPalDataCollectorClassString = @"PPDataCollector";
     if (PayPalDataCollectorClass != nil) {
         return PayPalDataCollectorClass;
     }
-    return NSClassFromString(PayPalDataCollectorClassString);
+    return NSClassFromString(@"PayPalDataCollector.PPDataCollector") ?: NSClassFromString(@"Braintree.PPDataCollector");
 }
 
 @end

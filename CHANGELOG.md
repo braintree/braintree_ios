@@ -35,7 +35,7 @@
     * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
     * Create a stand-alone 3DS module
   * PayPalDataCollector
-    * Replace `libPPRiskMagnesOC.a` with `PPRiskMagnes.xcframework` v5.0.1 (which requires Swift 5.1+)
+    * Add `PPRiskMagnes.framework` and `PPRiskMagnes.xcframework` v5.0.1 (requires Swift 5.1+)
     * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h`
 
 ## 4.36.1 (2020-11-10)

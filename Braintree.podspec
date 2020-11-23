@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
   s.platform         = :ios, "12.0"
   s.requires_arc     = true
   s.compiler_flags = "-Wall -Werror -Wextra"
+  s.swift_version = "5.1"
 
   s.default_subspecs = %w[Core Card PayPal]
 
@@ -70,8 +71,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PayPalDataCollector" do |s|
-    s.source_files = "Sources/PayPalDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/PayPalDataCollector/Public/PayPalDataCollector/*.h"
+    s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
     s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
     s.dependency "Braintree/Core"

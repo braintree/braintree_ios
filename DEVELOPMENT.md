@@ -26,9 +26,9 @@ While SPM, Carthage, and manual integrations use the same import style (`#import
 
 Public headers for each module must live in the directory `Public/<MODULE_NAME>`. This allows SPM to use the same import syntax as Carthage (e.g., `<BraintreeCore/BraintreCore.h>`).
 
-We use if-else preprocessor directives to satisfy each dependency manager. See the below example for importing a public header file.
+We use if-else preprocessor directives to satisfy each dependency manager. See the below example for importing a **public header file**.
 
-```
+```objc
 #if __has_include(<Braintree/BraintreeCore.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #else // SPM or Carthage
@@ -36,8 +36,8 @@ We use if-else preprocessor directives to satisfy each dependency manager. See t
 #endif
 ```
 
-In general, we avoid importing internal headers from other modules, but occasionally it's necessary. See the below example for importing an internal header file from another module:
-```
+In general, we avoid importing **internal headers from other modules**, but occasionally it's necessary. See the below example for importing an internal header file from another module:
+```objc
 #if __has_include(<Braintree/BraintreeAmericanExpress.h>) // CocoaPods
 #import <Braintree/BTAPIClient_Internal.h>
 
@@ -46,5 +46,18 @@ In general, we avoid importing internal headers from other modules, but occasion
 
 #else // Carthage
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#endif
+```
+
+To import a Braintree framework written in **Swift** into an Objective-C file, use the following syntax:
+```objc
+#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE // SPM
+@import PayPalDataCollector;
+
+#else // Carthage
+#import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 ```

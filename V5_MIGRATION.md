@@ -4,9 +4,9 @@ See the [CHANGELOG](/CHANGELOG.md) for a complete list of changes. This migratio
 
 _Documentation for v5 will be published to https://developers.braintreepayments.com once it is available for general release._
 
-## Supported iOS versions
+## Supported versions
 
-v5 supports a minimum deployment target of iOS 12+. It requires the use of Xcode 12+.
+v5 supports a minimum deployment target of iOS 12+. It requires the use of Xcode 12+ and Swift 5+. If your application contains Objective-C code, the `Enable Modules` build setting must be set to `YES`.
 
 ## Swift Package Manager
 
