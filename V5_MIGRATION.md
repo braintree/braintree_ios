@@ -25,6 +25,10 @@ pod `Braintree/ThreeDSecure`
 ### Carthage
 You will need to add the `BraintreeThreeDSecure` framework to your project. See the Carthage docs for [integration instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
+*Note:* In v5, using the `--no-use-binaries` flag with `carthage update` may result in a timeout.
+
+*Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. Open a GitHub issue if there are concerns.
+
 ### Swift Package Manager
 
 The `BraintreeThreeDSecure` library does not currently support Swift Package Manager. It relies on a third party framework which we do not yet have in the `.xcframework` format.
