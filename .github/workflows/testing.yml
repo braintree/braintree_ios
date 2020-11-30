@@ -11,7 +11,7 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
         env:
           DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
       - name: Run UI Tests
