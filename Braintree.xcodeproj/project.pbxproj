@@ -99,7 +99,6 @@
 		42517321254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h in Headers */ = {isa = PBXBuildFile; fileRef = 42517320254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4255C5132565CF3D00A3CA78 /* PPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255C5122565CF3D00A3CA78 /* PPDataCollector.swift */; };
 		4255C5AD2565D29900A3CA78 /* FakePPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95C411D24FAF53400045045 /* FakePPDataCollector.swift */; };
-		4255C5EC2565D62400A3CA78 /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
 		42F41C7C25681F4C002402BE /* PPDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F41C7B25681F4C002402BE /* PPDataCollector_Tests.swift */; };
@@ -107,6 +106,8 @@
 		8018090A24A4C89C00FC8BD3 /* BTPayPalIDToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B9D0D32347EB770005F8D4 /* BTPayPalIDToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
+		808B0C182575A22300716457 /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; };
+		808B0C192575A22300716457 /* PPRiskMagnes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80BB0C86241937A5003C8BA9 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB0C84241937A5003C8BA9 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80BB0C87241937A5003C8BA9 /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BB0C85241937A5003C8BA9 /* BTURLUtils.m */; };
 		80DBE69523A931A600373230 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE69423A931A600373230 /* Helpers.swift */; };
@@ -684,6 +685,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		808B0C1A2575A22300716457 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				808B0C192575A22300716457 /* PPRiskMagnes.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A903E1B824F9D37B00C314E1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1190,7 +1202,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4255C5EC2565D62400A3CA78 /* PPRiskMagnes.framework in Frameworks */,
+				808B0C182575A22300716457 /* PPRiskMagnes.framework in Frameworks */,
 				A7B462EE1C3D9C2200048423 /* SystemConfiguration.framework in Frameworks */,
 				A7B462EF1C3D9C2200048423 /* UIKit.framework in Frameworks */,
 				A9EC71CC252BC27E00FF7D05 /* BraintreeCore.framework in Frameworks */,
@@ -2559,6 +2571,7 @@
 				A7B462ED1C3D9C2200048423 /* Frameworks */,
 				A7B462F31C3D9C2200048423 /* Headers */,
 				A7B463011C3D9C2200048423 /* Resources */,
+				808B0C1A2575A22300716457 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
