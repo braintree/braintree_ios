@@ -1,6 +1,8 @@
 name: CI
 on: [pull_request]
 jobs:
+  env:
+    DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
   unit_test_job:
     name: Unit Tests
     runs-on: macOS-latest
@@ -12,8 +14,6 @@ jobs:
         run: pod install
       - name: Run Unit Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
-        env:
-          DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
   ui_test_job:
     name: UI Tests
     runs-on: macOS-latest
@@ -25,8 +25,6 @@ jobs:
         run: pod install
       - name: Run UI Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
-        env:
-          DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
   integration_test_job:
     name: Integration Tests
     runs-on: macOS-latest
@@ -38,5 +36,3 @@ jobs:
         run: pod install
       - name: Run Integration Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
-        env:
-          DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
