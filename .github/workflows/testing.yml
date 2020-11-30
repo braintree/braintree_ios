@@ -1,0 +1,24 @@
+name: CI
+on: [pull_request]
+jobs:
+  test_job:
+    name: Tests
+    runs-on: macOS-latest
+    steps:
+      # Checks out a copy of your repository
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Install CocoaPod dependencies
+        run: pod install
+      - name: Run Unit Tests
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
+      - name: Run UI Tests
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
+      - name: Run Integration Tests
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
