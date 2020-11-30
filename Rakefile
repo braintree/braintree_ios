@@ -70,23 +70,23 @@ class << self
 end
 
 namespace :spec do
-  def run_test_scheme! scheme, ios_version = nil, output_redirect = nil
-    run! xcodebuild(scheme, 'test', 'Release', ios_version, {}, output_redirect)
+  def run_test_scheme! scheme, configuration, ios_version = nil, output_redirect = nil
+    run! xcodebuild(scheme, 'test', configuration, ios_version, {}, output_redirect)
   end
 
   desc 'Run unit tests'
   task :unit, [:ios_version] do |t, args|
     if args[:ios_version]
-      run_test_scheme! 'UnitTests', args[:ios_version]
+      run_test_scheme! 'UnitTests', 'Debug', args[:ios_version]
     else
-      run_test_scheme! 'UnitTests'
+      run_test_scheme! 'UnitTests', 'Debug'
     end
   end
 
   desc 'Run UI tests'
   task :ui do
     ENV['NSUnbufferedIO'] = 'YES' #Forces parallel test output to be printed after each test rather than on completion of all tests
-    run_test_scheme! 'UITests', nil, '2>&1'
+    run_test_scheme! 'UITests', 'Release', nil, '2>&1'
     ENV['NSUnbufferedIO'] = 'NO'
   end
 
@@ -105,7 +105,7 @@ namespace :spec do
     desc 'Run integration tests'
     task :integration do
       with_https_server do
-        run! xcodebuild('IntegrationTests', 'test', 'Release', nil, :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
+        run! xcodebuild('IntegrationTests', 'test', 'Debug', nil, :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
       end
     end
   end

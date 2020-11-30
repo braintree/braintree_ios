@@ -161,8 +161,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
     func testThreeDSecurePaymentFlowV1_timeout() {
         app.enterCardDetailsWith(cardNumber: "4000000000000044")
         app.tokenizeButton.tap()
-        sleep(8)
 
-        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
+        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout:30)
     }
 }
