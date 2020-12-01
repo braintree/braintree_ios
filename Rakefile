@@ -14,7 +14,7 @@ desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries spm:create_binaries release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
-task :publish => %w[publish:push publish:push_pod docs_internal docs_external]
+task :publish => %w[publish:push publish:push_pod publish:create_github_release docs_internal docs_external]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -310,7 +310,7 @@ namespace :publish do
 
   desc "Create GitHub release & attach .framework and .xcframework binaries."
   task :create_github_release do
-    run! "gh release create #{current_version} Braintree.framework.zip Braintree-xcframeworks.zip -t #{current_version} -n #{changelog_entries}"
+    run! "gh release create #{current_version} Braintree.framework.zip Braintree-xcframeworks.zip -t #{current_version} -n '#{changelog_entries}'"
     run! "rm -rf Braintree.framework.zip && rm -rf Braintree-xcframeworks.zip"
   end
 
