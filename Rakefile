@@ -19,7 +19,6 @@ task :publish => %w[publish:push publish:push_pod docs_internal docs_external]
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
 BRAINTREE_VERSION_FILE = "BraintreeCore/Braintree-Version.h"
-PAYPAL_ONE_TOUCH_VERSION_FILE = "BraintreePayPal/PayPalUtils/Public/PPOTVersion.h"
 DEMO_PLIST = "Demo/Supporting Files/Braintree-Demo-Info.plist"
 FRAMEWORKS_PLIST = "BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "public"
@@ -122,21 +121,29 @@ namespace :demo do
   end
 end
 
-desc 'Build Carthage demo app'
+desc 'Carthage tasks'
 namespace :carthage do
   def generate_cartfile
     File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
   end
 
-  task :clean do
-    run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
-    run! 'git checkout SampleApps/CarthageTest'
-  end
-
   task :build_demo do
+    # Remove SPMTest app to prevent Carthage timeout
+    run! "rm -rf SampleApps/SPMTest"
+    run! "git add SampleApps"
+    run! "git commit -m 'Remove SPMTest app to avoid Carthage timeout'"
+
+    # Build Carthage demo app
     generate_cartfile
     run! "cd SampleApps/CarthageTest && carthage update"
-    run! "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
+    success = run "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
+
+    # Clean up
+    run! "rm -rf ~/Library/Developers/Xcode/DerivedData"
+    run! "rm SampleApps/CarthageTest/Cartfile.resolved && rm -rf SampleApps/CarthageTest/Carthage"
+    run! "git checkout SampleApps/CarthageTest"
+    run! "git reset --hard HEAD^"
+    fail "xcodebuild command for CarthageTest app returned non-zero exit code" unless success
   end
 
   desc "Create Braintree.framework.zip for Carthage."
@@ -149,7 +156,7 @@ namespace :carthage do
   end
 end
 
-desc 'Build SPM demo app'
+desc 'SPM tasks'
 namespace :spm do
   def update_xcodeproj
     project_file = "SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj"
@@ -212,7 +219,7 @@ namespace :sanity_checks do
   task :build_demo => 'demo:build'
 
   desc 'Verify that Carthage demo builds successfully'
-  task :carthage_test => %w[carthage:build_demo carthage:clean]
+  task :carthage_test => %w[carthage:build_demo]
 
   desc 'Verify that SPM demo builds successfully'
   task :spm_test => %w[spm:build_demo spm:clean]
@@ -251,15 +258,11 @@ namespace :release do
     version_header.gsub!(SEMVER, version)
     File.open(BRAINTREE_VERSION_FILE, "w") { |f| f.puts version_header }
 
-    version_header = File.read(PAYPAL_ONE_TOUCH_VERSION_FILE)
-    version_header.gsub!(SEMVER, version)
-    File.open(PAYPAL_ONE_TOUCH_VERSION_FILE, "w") { |f| f.puts version_header }
-
     [DEMO_PLIST, FRAMEWORKS_PLIST].each do |plist|
       run! "plutil -replace CFBundleVersion -string #{current_version} -- '#{plist}'"
       run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- '#{plist}'"
     end
-    run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' '#{FRAMEWORKS_PLIST}' #{BRAINTREE_VERSION_FILE} #{PAYPAL_ONE_TOUCH_VERSION_FILE}"
+    run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' '#{FRAMEWORKS_PLIST}' #{BRAINTREE_VERSION_FILE}"
   end
 
   desc  "Lint podspec."
