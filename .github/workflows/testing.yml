@@ -8,8 +8,10 @@ jobs:
       # Checks out a copy of your repository
       - name: Checkout repository
         uses: actions/checkout@v1
+      - name: Install gems
+        run: bundle install
       - name: Install CocoaPod dependencies
-        run: pod install
+        run: bundle exec pod install
       - name: Run Unit Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
         env:
@@ -21,8 +23,10 @@ jobs:
       # Checks out a copy of your repository
       - name: Checkout repository
         uses: actions/checkout@v1
+      - name: Install gems
+        run: bundle install
       - name: Install CocoaPod dependencies
-        run: pod install
+        run: bundle exec pod install
       - name: Run UI Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 11,platform=iOS Simulator'  test  | ./Pods/xcbeautify/xcbeautify
         env:
@@ -34,9 +38,11 @@ jobs:
       # Checks out a copy of your repository
       - name: Checkout repository
         uses: actions/checkout@v1
+      - name: Install gems
+        run: bundle install
       - name: Install CocoaPod dependencies
-        run: pod install
+        run: bundle exec pod install
       - name: Run Integration Tests
-        run: rake spec:api:integration
+        run: bundle exec rake spec:api:integration
         env:
           DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
