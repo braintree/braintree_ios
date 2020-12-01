@@ -18,9 +18,9 @@ task :publish => %w[publish:push publish:push_pod docs_internal docs_external]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
-BRAINTREE_VERSION_FILE = "BraintreeCore/Braintree-Version.h"
-DEMO_PLIST = "Demo/Supporting Files/Braintree-Demo-Info.plist"
-FRAMEWORKS_PLIST = "BraintreeCore/Info.plist"
+BRAINTREE_VERSION_FILE = "Sources/BraintreeCore/Braintree-Version.h"
+DEMO_PLIST = "Demo/Application/Supporting Files/Braintree-Demo-Info.plist"
+FRAMEWORKS_PLIST = "Sources/BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "public"
 
 bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector","BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo", "PayPalDataCollector"]
