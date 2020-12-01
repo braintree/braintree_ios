@@ -98,7 +98,7 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |
-| 5.x.x | Beta | November 2020 | TBA | TBA |
+| 5.x.x | Beta | December 2020 | TBA | TBA |
 | 4.x.x | Active | November 2015 | TBA | TBA |
 
 ## Demo

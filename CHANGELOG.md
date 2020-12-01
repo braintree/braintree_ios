@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 5.0.0-beta1 (2020-11-24)
+## 5.0.0-beta1 (2020-12-01)
 * Add support for Swift Package Manager (resolves #462)
 * Bump Kount to v4.0.4.2 (supports iOS 9.3+)
 * Replace deprecated `SecTrustEvaluate` with `SecTrustEvaluateWithError` (fixes #536)
