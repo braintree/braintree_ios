@@ -89,28 +89,13 @@ namespace :spec do
     ENV['NSUnbufferedIO'] = 'NO'
   end
 
-  namespace :api do
-    def with_https_server &block
-      begin
-        pid = Process.spawn('ruby ./IntegrationTests/Braintree-API-Integration-Specs/SSL/https_server.rb')
-        puts "Started server (#{pid})"
-        yield
-        puts "Killing server (#{pid})"
-      ensure
-        Process.kill("INT", pid)
-      end
-    end
-
-    desc 'Run integration tests'
-    task :integration do
-      with_https_server do
-        run! xcodebuild('IntegrationTests', 'test', 'Release', nil, :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
-      end
-    end
+  desc 'Run integration tests'
+  task :integration do
+    run_test_scheme! 'IntegrationTests', 'Release'
   end
 
   desc 'Run all spec schemes'
-  task :all => %w[spec:unit spec:api:integration spec:ui]
+  task :all => %w[spec:unit spec:integration spec:ui]
 end
 
 desc 'Build Braintree proj demo app'
