@@ -101,6 +101,8 @@
 		4255C5AD2565D29900A3CA78 /* FakePPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95C411D24FAF53400045045 /* FakePPDataCollector.swift */; };
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
+		42F174F62576F4560092A66A /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; };
+		42F174F72576F4560092A66A /* PPRiskMagnes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		42F41C7C25681F4C002402BE /* PPDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F41C7B25681F4C002402BE /* PPDataCollector_Tests.swift */; };
 		8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */; };
 		8018090A24A4C89C00FC8BD3 /* BTPayPalIDToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B9D0D32347EB770005F8D4 /* BTPayPalIDToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -149,20 +151,6 @@
 		A78BF95D1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A78BF95C1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m */; };
 		A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */; };
 		A7ABD67C1B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD6611B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m */; };
-		A7ABD67E1B702FF000A1223C /* good_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6631B702FF000A1223C /* good_root_cert.der */; };
-		A7ABD67F1B702FF000A1223C /* evil_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6651B702FF000A1223C /* evil_root_cert.der */; };
-		A7ABD6801B702FF000A1223C /* evil_root_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6661B702FF000A1223C /* evil_root_cert.pem */; };
-		A7ABD6811B702FF000A1223C /* evil_root_key.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6671B702FF000A1223C /* evil_root_key.pem */; };
-		A7ABD6821B702FF000A1223C /* evil_site_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6681B702FF000A1223C /* evil_site_cert.pem */; };
-		A7ABD6831B702FF000A1223C /* evil_site_key.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6691B702FF000A1223C /* evil_site_key.pem */; };
-		A7ABD6841B702FF000A1223C /* evil_site_request.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66A1B702FF000A1223C /* evil_site_request.pem */; };
-		A7ABD6851B702FF000A1223C /* good_root_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66B1B702FF000A1223C /* good_root_cert.pem */; };
-		A7ABD6861B702FF000A1223C /* good_root_key.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66C1B702FF000A1223C /* good_root_key.pem */; };
-		A7ABD6871B702FF000A1223C /* good_site_cert.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66D1B702FF000A1223C /* good_site_cert.pem */; };
-		A7ABD6881B702FF000A1223C /* good_site_key.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66E1B702FF000A1223C /* good_site_key.pem */; };
-		A7ABD6891B702FF000A1223C /* good_site_request.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66F1B702FF000A1223C /* good_site_request.pem */; };
-		A7ABD68A1B702FF000A1223C /* https_server.rb in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6701B702FF000A1223C /* https_server.rb */; };
-		A7ABD68B1B702FF000A1223C /* make_certs.sh in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6711B702FF000A1223C /* make_certs.sh */; };
 		A7ABD68E1B702FF000A1223C /* BraintreeCard_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */; };
 		A7B1C1431B66B3D000ED063C /* BTConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = A7B1C1411B66B3D000ED063C /* BTConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7B1C1441B66B3D000ED063C /* BTConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B1C1421B66B3D000ED063C /* BTConfiguration.m */; };
@@ -685,13 +673,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		808B0C1A2575A22300716457 /* Embed Frameworks */ = {
+		42F174F82576F4560092A66A /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				808B0C192575A22300716457 /* PPRiskMagnes.framework in Embed Frameworks */,
+				42F174F72576F4560092A66A /* PPRiskMagnes.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -984,23 +972,6 @@
 		A7ABD6571B702FD800A1223C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTAPIClient_IntegrationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A7ABD6611B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTP_SSLPinning_IntegrationTests.m; sourceTree = "<group>"; };
-		A7ABD6631B702FF000A1223C /* good_root_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = good_root_cert.der; sourceTree = "<group>"; };
-		A7ABD6651B702FF000A1223C /* evil_root_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = evil_root_cert.der; sourceTree = "<group>"; };
-		A7ABD6661B702FF000A1223C /* evil_root_cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = evil_root_cert.pem; sourceTree = "<group>"; };
-		A7ABD6671B702FF000A1223C /* evil_root_key.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = evil_root_key.pem; sourceTree = "<group>"; };
-		A7ABD6681B702FF000A1223C /* evil_site_cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = evil_site_cert.pem; sourceTree = "<group>"; };
-		A7ABD6691B702FF000A1223C /* evil_site_key.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = evil_site_key.pem; sourceTree = "<group>"; };
-		A7ABD66A1B702FF000A1223C /* evil_site_request.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = evil_site_request.pem; sourceTree = "<group>"; };
-		A7ABD66B1B702FF000A1223C /* good_root_cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = good_root_cert.pem; sourceTree = "<group>"; };
-		A7ABD66C1B702FF000A1223C /* good_root_key.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = good_root_key.pem; sourceTree = "<group>"; };
-		A7ABD66D1B702FF000A1223C /* good_site_cert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = good_site_cert.pem; sourceTree = "<group>"; };
-		A7ABD66E1B702FF000A1223C /* good_site_key.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = good_site_key.pem; sourceTree = "<group>"; };
-		A7ABD66F1B702FF000A1223C /* good_site_request.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = good_site_request.pem; sourceTree = "<group>"; };
-		A7ABD6701B702FF000A1223C /* https_server.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = https_server.rb; sourceTree = "<group>"; };
-		A7ABD6711B702FF000A1223C /* make_certs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = make_certs.sh; sourceTree = "<group>"; };
-		A7ABD6731B702FF000A1223C /* braintree-api-integration-specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "braintree-api-integration-specs-Info.plist"; sourceTree = "<group>"; };
-		A7ABD6741B702FF000A1223C /* braintree-api-integration-specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "braintree-api-integration-specs-Prefix.pch"; sourceTree = "<group>"; };
-		A7ABD6761B702FF000A1223C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BraintreeCard_IntegrationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A7B1C1411B66B3D000ED063C /* BTConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTConfiguration.h; sourceTree = "<group>"; };
 		A7B1C1421B66B3D000ED063C /* BTConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTConfiguration.m; sourceTree = "<group>"; };
@@ -1202,7 +1173,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				808B0C182575A22300716457 /* PPRiskMagnes.framework in Frameworks */,
+				42F174F62576F4560092A66A /* PPRiskMagnes.framework in Frameworks */,
 				A7B462EE1C3D9C2200048423 /* SystemConfiguration.framework in Frameworks */,
 				A7B462EF1C3D9C2200048423 /* UIKit.framework in Frameworks */,
 				A9EC71CC252BC27E00FF7D05 /* BraintreeCore.framework in Frameworks */,
@@ -1892,41 +1863,8 @@
 				A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */,
 				80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */,
 				A7ABD6611B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m */,
-				A7ABD6631B702FF000A1223C /* good_root_cert.der */,
-				A7ABD6641B702FF000A1223C /* SSL */,
-				A7ABD6721B702FF000A1223C /* Supporting Files */,
 			);
 			path = "Braintree-API-Integration-Specs";
-			sourceTree = "<group>";
-		};
-		A7ABD6641B702FF000A1223C /* SSL */ = {
-			isa = PBXGroup;
-			children = (
-				A7ABD6651B702FF000A1223C /* evil_root_cert.der */,
-				A7ABD6661B702FF000A1223C /* evil_root_cert.pem */,
-				A7ABD6671B702FF000A1223C /* evil_root_key.pem */,
-				A7ABD6681B702FF000A1223C /* evil_site_cert.pem */,
-				A7ABD6691B702FF000A1223C /* evil_site_key.pem */,
-				A7ABD66A1B702FF000A1223C /* evil_site_request.pem */,
-				A7ABD66B1B702FF000A1223C /* good_root_cert.pem */,
-				A7ABD66C1B702FF000A1223C /* good_root_key.pem */,
-				A7ABD66D1B702FF000A1223C /* good_site_cert.pem */,
-				A7ABD66E1B702FF000A1223C /* good_site_key.pem */,
-				A7ABD66F1B702FF000A1223C /* good_site_request.pem */,
-				A7ABD6701B702FF000A1223C /* https_server.rb */,
-				A7ABD6711B702FF000A1223C /* make_certs.sh */,
-			);
-			path = SSL;
-			sourceTree = "<group>";
-		};
-		A7ABD6721B702FF000A1223C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A7ABD6751B702FF000A1223C /* InfoPlist.strings */,
-				A7ABD6731B702FF000A1223C /* braintree-api-integration-specs-Info.plist */,
-				A7ABD6741B702FF000A1223C /* braintree-api-integration-specs-Prefix.pch */,
-			);
-			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		A7C889751B5EF5DE007A0E9C /* BraintreeApplePay */ = {
@@ -2571,7 +2509,7 @@
 				A7B462ED1C3D9C2200048423 /* Frameworks */,
 				A7B462F31C3D9C2200048423 /* Headers */,
 				A7B463011C3D9C2200048423 /* Resources */,
-				808B0C1A2575A22300716457 /* Embed Frameworks */,
+				42F174F82576F4560092A66A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3058,20 +2996,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7ABD6881B702FF000A1223C /* good_site_key.pem in Resources */,
-				A7ABD6821B702FF000A1223C /* evil_site_cert.pem in Resources */,
-				A7ABD6891B702FF000A1223C /* good_site_request.pem in Resources */,
-				A7ABD6811B702FF000A1223C /* evil_root_key.pem in Resources */,
-				A7ABD6801B702FF000A1223C /* evil_root_cert.pem in Resources */,
-				A7ABD6851B702FF000A1223C /* good_root_cert.pem in Resources */,
-				A7ABD68A1B702FF000A1223C /* https_server.rb in Resources */,
-				A7ABD6861B702FF000A1223C /* good_root_key.pem in Resources */,
-				A7ABD6831B702FF000A1223C /* evil_site_key.pem in Resources */,
-				A7ABD6871B702FF000A1223C /* good_site_cert.pem in Resources */,
-				A7ABD68B1B702FF000A1223C /* make_certs.sh in Resources */,
-				A7ABD6841B702FF000A1223C /* evil_site_request.pem in Resources */,
-				A7ABD67E1B702FF000A1223C /* good_root_cert.der in Resources */,
-				A7ABD67F1B702FF000A1223C /* evil_root_cert.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3913,18 +3837,6 @@
 			targetProxy = A9EC71CE252BC27E00FF7D05 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		A7ABD6751B702FF000A1223C /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A7ABD6761B702FF000A1223C /* en */,
-			);
-			name = InfoPlist.strings;
-			path = .;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		03502C8D1E9C0A1800F15EE6 /* Debug */ = {
