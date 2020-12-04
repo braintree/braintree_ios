@@ -1,9 +1,0 @@
-language: objective-c
-osx_image: xcode11.3
-
-cache:
-  bundler: true
-  cocoapods: true
-
-script:
-  - set -o pipefail && xcodebuild -workspace Braintree.xcworkspace -scheme Demo -destination platform\=iOS\ Simulator,OS\=13.3,name\=iPhone\ 11 build test | bundle exec xcpretty -c
