@@ -29,7 +29,7 @@ class PayPal_OneTimePayment_UITests: XCTestCase {
             }
             return true
         }
-        app.tap()
+        app.coordinate(withNormalizedOffset: CGVector.zero).tap()
         sleep(1)
     }
 
