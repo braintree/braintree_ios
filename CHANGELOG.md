@@ -2,7 +2,8 @@
 
 ## unreleased
 * Add `dpanLastTwo` property to `BTApplePayCardNonce`
-* Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
+* Breaking Changes
+  * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
 
 ## 5.0.0-beta1 (2020-12-01)
 * Add support for Swift Package Manager (resolves #462)
