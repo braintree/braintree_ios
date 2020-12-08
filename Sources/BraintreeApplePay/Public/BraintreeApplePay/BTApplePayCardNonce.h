@@ -17,11 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) BTBinData *binData;
 
 /**
- The last two digits of the card associated with this nonce, if available.
- */
-@property (nonatomic, nullable, readonly, copy) NSString *dpanLastTwo;
-
-/**
  Used to initialize a `BTApplePayCardNonce` with parameters.
  */
 - (nullable instancetype)initWithJSON:(BTJSON *)json;

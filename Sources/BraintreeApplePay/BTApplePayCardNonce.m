@@ -12,7 +12,6 @@
     
     if (self) {
         _binData = [[BTBinData alloc] initWithJSON:json[@"binData"]];
-        _dpanLastTwo = [json[@"details"][@"dpanLastTwo"] asString];
     }
     return self;
 }

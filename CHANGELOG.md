@@ -1,7 +1,6 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Add `dpanLastTwo` property to `BTApplePayCardNonce`
 * Breaking Changes
   * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
 
