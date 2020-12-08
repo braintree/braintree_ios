@@ -17,6 +17,7 @@
     [client tokenizeApplePayPayment:[[PKPayment alloc] init]
                          completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         XCTAssertTrue(tokenizedApplePayPayment.nonce.isANonce);
+        XCTAssertNotNil(tokenizedApplePayPayment.dpanLastTwo);
         XCTAssertNil(error);
         [expectation fulfill];
     }];

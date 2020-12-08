@@ -6,7 +6,8 @@ class BTPaymentMethodNonceParser_ApplePay_Tests: XCTestCase {
         let applePayCard = BTJSON(value: [
             "consumed": false,
             "details": [
-                "cardType": "American Express"
+                "cardType": "American Express",
+                "dpanLastTwo": "11"
             ],
             "isLocked": false,
             "nonce": "a-nonce",
@@ -18,5 +19,6 @@ class BTPaymentMethodNonceParser_ApplePay_Tests: XCTestCase {
 
         XCTAssertEqual(applePayCardNonce?.nonce, "a-nonce")
         XCTAssertEqual(applePayCardNonce?.type, "American Express")
+        XCTAssertEqual(applePayCardNonce?.dpanLastTwo, "11")
     }
 }
