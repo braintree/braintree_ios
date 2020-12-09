@@ -25,7 +25,7 @@ let package = Package(
         ),
         .library(
         	name: "BraintreeDataCollector",
-        	targets: ["KountDataCollector"]
+        	targets: ["KountDataCollector", "BraintreeDataCollector"]
         ),
         .library(
             name: "BraintreePaymentFlow",
@@ -77,6 +77,11 @@ let package = Package(
             dependencies: [],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreeDataCollector",
+            dependencies: ["BraintreeCore"],
+            path: "Sources/BraintreeDataCollector"
         ),
         .target(
             name: "BraintreePaymentFlow",
