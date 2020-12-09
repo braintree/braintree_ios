@@ -5,8 +5,8 @@
         "package": "Braintree",
         "repositoryURL": "https://github.com/braintree/braintree_ios",
         "state": {
-          "branch": "5.0-development",
-          "revision": "d40d70573735f3ca20a3c7728c1e295f5b404ed3",
+          "branch": "kount-spm",
+          "revision": "b7003f358eb5a0b31f3764076b99a3fbc4277b2c",
           "version": null
         }
       }
