@@ -81,7 +81,8 @@ let package = Package(
         .target(
             name: "BraintreeDataCollector",
             dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreeDataCollector"
+            exclude: ["Kount"],
+            publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreePaymentFlow",

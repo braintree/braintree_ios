@@ -1,10 +1,6 @@
-#if __has_include(<Braintree/BraintreeDataCollector.h>) // CocoaPods
+#if __has_include(<Braintree/BraintreeDataCollector.h>)
 #import <Braintree/BTConfiguration+DataCollector.h>
-
-#elif SWIFT_PACKAGE // SPM
-#import "../BraintreeDataCollector/BTConfiguration+DataCollector.h"
-
-#else // Carthage
+#else
 #import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
 #endif
 
