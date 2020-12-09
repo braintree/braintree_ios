@@ -24,6 +24,10 @@ let package = Package(
             targets: ["BraintreeCore"]
         ),
         .library(
+        	name: "BraintreeDataCollector",
+        	targets: ["KountDataCollector"]
+        ),
+        .library(
             name: "BraintreePaymentFlow",
             targets: ["BraintreePaymentFlow"]
         ),
@@ -97,6 +101,10 @@ let package = Package(
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
+        ),
+        .binaryTarget(
+            name: "KountDataCollector",
+            path: "Frameworks/KountDataCollector.xcframework"
         ),
         .target(
             name: "PayPalDataCollector",
