@@ -124,6 +124,7 @@
         request.email = @"test@example.com";
         request.shippingMethod = @"01";
 
+        // TODO: - fix UiCustomization imports
 //        UiCustomization *ui = [UiCustomization new];
 //        ToolbarCustomization *toolbarCustomization = [ToolbarCustomization new];
 //        [toolbarCustomization setHeaderText:@"Braintree 3DS Checkout"];
@@ -173,11 +174,6 @@
 }
 
 #pragma mark BTThreeDSecureRequestDelegate
-
-- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {
-    // Optionally inspect the result and prepare UI if a challenge is required
-    next();
-}
 
 - (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request lookupResult:(__unused BTThreeDSecureResult *)result next:(void (^)(void))next {
     // Optionally inspect the result and prepare UI if a challenge is required
