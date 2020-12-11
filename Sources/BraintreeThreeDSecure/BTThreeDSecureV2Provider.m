@@ -29,8 +29,6 @@
 
 #endif
 
-
-
 typedef NS_ENUM(NSUInteger, BTProxyCardinalSessionEnvironment) {
     BTProxyCardinalSessionEnvironmentStaging,
     BTProxyCardinalSessionEnvironmentProduction
@@ -73,7 +71,13 @@ typedef void (^BTProxyCardinalSessionSetupDidValidateHandler)(id<BTProxyCardinal
 
 @end
 
-@interface BTThreeDSecureV2Provider()// <CardinalValidationDelegate>
+@protocol BTProxyCardinalValidationDelegate
+- (void)cardinalSession:(id<BTProxyCardinalSession>)session
+stepUpDidValidateWithResponse:(<BTProxyCardinalResponse>)validateResponse
+              serverJWT:(NSString *)serverJWT;
+@end
+
+@interface BTThreeDSecureV2Provider() <BTProxyCardinalValidationDelegate>
 
 @property (strong, nonatomic) id<BTProxyCardinalSession> cardinalSession;
 
@@ -122,9 +126,9 @@ typedef void (^BTProxyCardinalSessionSetupDidValidateHandler)(id<BTProxyCardinal
     self.lookupResult = lookupResult;
     self.successHandler = successHandler;
     self.failureHandler = failureHandler;
-//    [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionId
-//                                            payload:lookupResult.lookup.PAReq
-//                                didValidateDelegate:self];
+    [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionId
+                                            payload:lookupResult.lookup.PAReq
+                                didValidateDelegate:self];
 }
 
 - (void)callFailureHandlerWithErrorDomain:(NSErrorDomain)errorDomain
@@ -139,66 +143,66 @@ typedef void (^BTProxyCardinalSessionSetupDidValidateHandler)(id<BTProxyCardinal
 }
 
 #pragma mark - Cardinal Delegate
-//- (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT {
-//    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.cardinal-sdk.action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
-//    switch (validateResponse.actionCode) {
-//        case CardinalResponseActionCodeSuccess:
-//        case CardinalResponseActionCodeNoAction:
-//        case CardinalResponseActionCodeFailure: {
-//            [BTThreeDSecureAuthenticateJWT authenticateJWT:serverJWT
-//                                             withAPIClient:self.apiClient
-//                                           forLookupResult:self.lookupResult
-//                                                   success:self.successHandler
-//                                                   failure:self.failureHandler];
-//            break;
-//        }
-//        case CardinalResponseActionCodeError:
-//        case CardinalResponseActionCodeTimeout: {
-//            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-//            if (validateResponse.errorDescription) {
-//                userInfo[NSLocalizedDescriptionKey] = validateResponse.errorDescription;
-//            }
-//
-//            BTThreeDSecureFlowErrorType errorCode = BTThreeDSecureFlowErrorTypeUnknown;
-//            if (validateResponse.errorNumber == 1050) {
-//                errorCode = BTThreeDSecureFlowErrorTypeFailedAuthentication;
-//            }
-//
-//            [self callFailureHandlerWithErrorDomain:BTThreeDSecureFlowErrorDomain
-//                                          errorCode:errorCode
-//                                      errorUserInfo:userInfo
-//                                     failureHandler:self.failureHandler];
-//            break;
-//        }
-//        case CardinalResponseActionCodeCancel: {
-//            [self callFailureHandlerWithErrorDomain:BTPaymentFlowDriverErrorDomain
-//                                          errorCode:BTPaymentFlowDriverErrorTypeCanceled
-//                                      errorUserInfo:nil
-//                                     failureHandler:self.failureHandler];
-//            break;
-//        }
-//    }
-//
-//    self.lookupResult = nil;
-//    self.successHandler = nil;
-//    self.failureHandler = nil;
-//}
-//
-//- (NSString *)analyticsStringForActionCode:(CardinalResponseActionCode)actionCode {
-//    switch (actionCode) {
-//        case CardinalResponseActionCodeSuccess:
-//            return @"completed";
-//        case CardinalResponseActionCodeNoAction:
-//            return @"noaction";
-//        case CardinalResponseActionCodeFailure:
-//            return @"failure";
-//        case CardinalResponseActionCodeError:
-//            return @"failed";
-//        case CardinalResponseActionCodeCancel:
-//            return @"canceled";
-//        case CardinalResponseActionCodeTimeout:
-//            return @"timeout";
-//    }
-//}
+- (void)cardinalSession:(__unused id<BTProxyCardinalSession>)session stepUpDidValidateWithResponse:(id<BTProxyCardinalResponse>)validateResponse serverJWT:(__unused NSString *)serverJWT {
+    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.cardinal-sdk.action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
+    switch (validateResponse.actionCode) {
+        case BTProxyCardinalResponseActionCodeSuccess:
+        case BTProxyCardinalResponseActionCodeNoAction:
+        case BTProxyCardinalResponseActionCodeFailure: {
+            [BTThreeDSecureAuthenticateJWT authenticateJWT:serverJWT
+                                             withAPIClient:self.apiClient
+                                           forLookupResult:self.lookupResult
+                                                   success:self.successHandler
+                                                   failure:self.failureHandler];
+            break;
+        }
+        case BTProxyCardinalResponseActionCodeError:
+        case BTProxyCardinalResponseActionCodeTimeout: {
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+            if (validateResponse.errorDescription) {
+                userInfo[NSLocalizedDescriptionKey] = validateResponse.errorDescription;
+            }
+
+            BTThreeDSecureFlowErrorType errorCode = BTThreeDSecureFlowErrorTypeUnknown;
+            if (validateResponse.errorNumber == 1050) {
+                errorCode = BTThreeDSecureFlowErrorTypeFailedAuthentication;
+            }
+
+            [self callFailureHandlerWithErrorDomain:BTThreeDSecureFlowErrorDomain
+                                          errorCode:errorCode
+                                      errorUserInfo:userInfo
+                                     failureHandler:self.failureHandler];
+            break;
+        }
+        case BTProxyCardinalResponseActionCodeCancel: {
+            [self callFailureHandlerWithErrorDomain:BTPaymentFlowDriverErrorDomain
+                                          errorCode:BTPaymentFlowDriverErrorTypeCanceled
+                                      errorUserInfo:nil
+                                     failureHandler:self.failureHandler];
+            break;
+        }
+    }
+
+    self.lookupResult = nil;
+    self.successHandler = nil;
+    self.failureHandler = nil;
+}
+
+- (NSString *)analyticsStringForActionCode:(BTProxyCardinalResponseActionCode)actionCode {
+    switch (actionCode) {
+        case BTProxyCardinalResponseActionCodeSuccess:
+            return @"completed";
+        case BTProxyCardinalResponseActionCodeNoAction:
+            return @"noaction";
+        case BTProxyCardinalResponseActionCodeFailure:
+            return @"failure";
+        case BTProxyCardinalResponseActionCodeError:
+            return @"failed";
+        case BTProxyCardinalResponseActionCodeCancel:
+            return @"canceled";
+        case BTProxyCardinalResponseActionCodeTimeout:
+            return @"timeout";
+    }
+}
 
 @end
