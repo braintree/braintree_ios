@@ -53,6 +53,7 @@
                                             request:(BTThreeDSecureRequest *)request
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler {
 #ifdef BT_CARDINAL
+    NSLog(@"FOUND CARDINAL :)");
     BTThreeDSecureV2Provider *instance = [self new];
     instance.apiClient = apiClient;
     instance.cardinalSession = [CardinalSession new];
@@ -77,6 +78,7 @@
                                }];
     return instance;
 #else
+    NSLog(@"DID NOT FIND CARDINAL :(");
     return nil;
 #endif
 }
