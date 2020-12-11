@@ -1,7 +1,11 @@
 #import "BTThreeDSecureV2Provider.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
+
+#if __has_include(<CardinalMobile/CardinalMobile.h>)
+#define BT_CARDINAL
 #import <CardinalMobile/CardinalMobile.h>
+#endif
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTConfiguration+ThreeDSecure.h>
@@ -29,6 +33,7 @@
 
 #endif
 
+#ifdef BT_CARDINAL
 @interface BTThreeDSecureV2Provider() <CardinalValidationDelegate>
 
 @property (strong, nonatomic) CardinalSession *cardinalSession;
@@ -39,6 +44,7 @@
 @property (copy, nonatomic) BTThreeDSecureV2ProviderFailureHandler failureHandler;
 
 @end
+#endif
 
 @implementation BTThreeDSecureV2Provider
 
@@ -46,6 +52,7 @@
                                           apiClient:(BTAPIClient *)apiClient
                                             request:(BTThreeDSecureRequest *)request
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler {
+#ifdef BT_CARDINAL
     BTThreeDSecureV2Provider *instance = [self new];
     instance.apiClient = apiClient;
     instance.cardinalSession = [CardinalSession new];
@@ -69,17 +76,22 @@
                                    completionHandler(@{});
                                }];
     return instance;
+#else
+    return nil;
+#endif
 }
 
 - (void)processLookupResult:(BTThreeDSecureResult *)lookupResult
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
+#ifdef BT_CARDINAL
     self.lookupResult = lookupResult;
     self.successHandler = successHandler;
     self.failureHandler = failureHandler;
     [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionId
                                             payload:lookupResult.lookup.PAReq
                                 didValidateDelegate:self];
+#endif
 }
 
 - (void)callFailureHandlerWithErrorDomain:(NSErrorDomain)errorDomain
@@ -94,7 +106,7 @@
 }
 
 #pragma mark - Cardinal Delegate
-
+#ifdef BT_CARDINAL
 - (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT {
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.cardinal-sdk.action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
     switch (validateResponse.actionCode) {
@@ -156,5 +168,6 @@
             return @"timeout";
     }
 }
+#endif
 
 @end
