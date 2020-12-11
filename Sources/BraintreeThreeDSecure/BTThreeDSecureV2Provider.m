@@ -1,7 +1,7 @@
 #import "BTThreeDSecureV2Provider.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
-//#import <CardinalMobile/CardinalMobile.h>
+#import "BTProxyCardinal.h"
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTConfiguration+ThreeDSecure.h>
@@ -28,54 +28,6 @@
 #import <BraintreeCore/BTAPIClient_Internal.h>
 
 #endif
-
-typedef NS_ENUM(NSUInteger, BTProxyCardinalSessionEnvironment) {
-    BTProxyCardinalSessionEnvironmentStaging,
-    BTProxyCardinalSessionEnvironmentProduction
-};
-
-typedef NS_ENUM(NSUInteger, BTProxyCardinalResponseActionCode) {
-    BTProxyCardinalResponseActionCodeSuccess,
-    BTProxyCardinalResponseActionCodeNoAction,
-    BTProxyCardinalResponseActionCodeFailure,
-    BTProxyCardinalResponseActionCodeError,
-    BTProxyCardinalResponseActionCodeCancel,
-    BTProxyCardinalResponseActionCodeTimeout
-};
-
-@protocol BTProxyCardinalResponse <NSObject>
-@property (nonatomic, readonly) BTProxyCardinalResponseActionCode actionCode;
-@property (nonatomic, readonly) NSInteger errorNumber;
-@property (nonatomic, readonly) NSString *errorDescription;
-@end
-
-@protocol BTProxyCardinalSessionConfiguration <NSObject>
-@property (nonatomic, assign) BTProxyCardinalSessionEnvironment deploymentEnvironment;
-@end
-
-typedef void (^BTProxyCardinalSessionSetupDidCompleteHandler)(NSString *consumerSessionId);
-
-typedef void (^BTProxyCardinalSessionSetupDidValidateHandler)(id<BTProxyCardinalResponse> validateResponse);
-
-@protocol BTProxyCardinalSession <NSObject>
-
-- (void)configure:(id<BTProxyCardinalSessionConfiguration>)sessionConfig;
-
-- (void)setupWithJWT:(NSString*)jwtString
-         didComplete:(BTProxyCardinalSessionSetupDidCompleteHandler)didCompleteHandler
-         didValidate:(BTProxyCardinalSessionSetupDidValidateHandler)didValidateHandler;
-
-- (void)continueWithTransactionId:(nonnull NSString *)transactionId
-                          payload:(nonnull NSString *)payload
-              didValidateDelegate:(nonnull id)validationDelegate;
-
-@end
-
-@protocol BTProxyCardinalValidationDelegate
-- (void)cardinalSession:(id<BTProxyCardinalSession>)session
-stepUpDidValidateWithResponse:(<BTProxyCardinalResponse>)validateResponse
-              serverJWT:(NSString *)serverJWT;
-@end
 
 @interface BTThreeDSecureV2Provider() <BTProxyCardinalValidationDelegate>
 

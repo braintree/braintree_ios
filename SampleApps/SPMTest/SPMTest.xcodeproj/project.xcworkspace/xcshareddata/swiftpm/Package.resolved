@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Braintree",
-        "repositoryURL": "https://github.com/braintree/braintree_ios",
+        "repositoryURL": "/Users/sestevens/bt/braintree-ios",
         "state": {
-          "branch": "5.0-development",
-          "revision": "d40d70573735f3ca20a3c7728c1e295f5b404ed3",
+          "branch": null,
+          "revision": "e4baaed738502251397ab90b27b01dc5e5cee86b",
           "version": null
         }
       }
