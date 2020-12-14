@@ -6,6 +6,11 @@
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
 #endif
 
+#import <CardinalMobile/CardinalMobile.h>
+#import <CardinalMobile/ToolbarCustomization.h>
+#import <CardinalMobile/LabelCustomization.h>
+#import <CardinalMobile/ButtonCustomization.h>
+
 @class BTThreeDSecureRequest;
 @class BTThreeDSecureLookup;
 @class BTThreeDSecureResult;
