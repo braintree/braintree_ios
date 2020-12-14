@@ -1,15 +1,19 @@
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTPaymentFlowRequest.h>
 #import <Braintree/BTPaymentFlowDriver.h>
+#import <Braintree/BTThreeDSecureV2UICustomization.h>
 #else
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
 #endif
-
-#import <CardinalMobile/CardinalMobile.h>
-#import <CardinalMobile/ToolbarCustomization.h>
-#import <CardinalMobile/LabelCustomization.h>
-#import <CardinalMobile/ButtonCustomization.h>
+//
+//#import <CardinalMobile/CardinalMobile.h>
+//#import <CardinalMobile/ToolbarCustomization.h>
+//#import <CardinalMobile/LabelCustomization.h>
+//#import <CardinalMobile/ButtonCustomization.h>
+//#import <CardinalMobile/Customization.h>
+//#import <CardinalMobile/TextBoxCustomization.h>
 
 @class BTThreeDSecureRequest;
 @class BTThreeDSecureLookup;
@@ -103,7 +107,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
  
  @see https://cardinaldocs.atlassian.net/wiki/spaces/CMSDK/pages/873234760/iOS+UI+Customization
  */
-@property (nonatomic, nullable, strong) UiCustomization *uiCustomization;
+@property (nonatomic, nullable, strong) BTThreeDSecureV2UICustomization *uiCustomization;
 
 /**
  Optional. UI Customization for 3DS1 challenge views.

@@ -1,12 +1,11 @@
-//
-//  BTThreeDSecureV2BaseCustomization_Internal.h
-//  Braintree
-//
-//  Created by Cannillo, Sammy on 12/14/20.
-//
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureV2BaseCustomization.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureV2BaseCustomization.h>
+#endif
 
-#ifndef BTThreeDSecureV2BaseCustomization_Internal_h
-#define BTThreeDSecureV2BaseCustomization_Internal_h
+@interface BTThreeDSecureV2BaseCustomization ()
 
+@property (nonatomic, strong) id customization;
 
-#endif /* BTThreeDSecureV2BaseCustomization_Internal_h */
+@end

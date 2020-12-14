@@ -2,6 +2,7 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
 #import "BTProxyCardinal.h"
+#import "BTThreeDSecureV2UICustomization_Internal.h"
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTConfiguration+ThreeDSecure.h>
@@ -52,7 +53,7 @@
     instance.cardinalSession = (id<BTProxyCardinalSession>)[NSClassFromString(@"CardinalSession") new];
     id<BTProxyCardinalSessionConfiguration> cardinalConfiguration = (id<BTProxyCardinalSessionConfiguration>)[NSClassFromString(@"CardinalSessionConfiguration") new];
     if (request.uiCustomization) {
-        //cardinalConfiguration.uiCustomization = request.uiCustomization;
+        cardinalConfiguration.uiCustomization = request.uiCustomization.uiCustomization;
     }
     BTProxyCardinalSessionEnvironment cardinalEnvironment = BTProxyCardinalSessionEnvironmentStaging;
     if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {

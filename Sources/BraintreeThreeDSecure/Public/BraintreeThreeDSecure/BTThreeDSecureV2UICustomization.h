@@ -1,11 +1,24 @@
 #import <Foundation/Foundation.h>
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureV2UICustomization.h>
+#import <Braintree/BTThreeDSecureV2LabelCustomization.h>
+#import <Braintree/BTThreeDSecureV2ButtonCustomization.h>
+#import <Braintree/BTThreeDSecureV2TextBoxCustomization.h>
+#import <Braintree/BTThreeDSecureV2ToolbarCustomization.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2LabelCustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2ButtonCustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2TextBoxCustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2ToolbarCustomization.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  * The ButtonType enum defines the button type.
  */
-typedef enum{
+typedef NS_ENUM(NSInteger, BTThreeDSecureV2ButtonType) {
     /**ButtonTypeVerify Verify button.*/
     ButtonTypeVerify,
 
@@ -20,7 +33,7 @@ typedef enum{
 
     /**ButtonTypeResend Resend button.*/
     ButtonTypeResend
-}ButtonType;
+};
 
 /**
  * The UiCustomization class provides the functionality required to customize the 3DS SDK UI elements.
@@ -33,34 +46,26 @@ typedef enum{
  * @param buttonCustomization A ButtonCustomization object.
  * @param buttonType ButtonType enum.
  */
-- (void)setButtonCustomization:(ButtonCustomization *)buttonCustomization
-                     buttonType:(ButtonType)buttonType;
-
-/**
- * Set the attributes of a ButtonCustomization object for an implementer-specific button type.
- * @param buttonCustomization A ButtonCustomization object.
- * @param buttonType  Implementer-specific button type.
- */
-- (void)setButtonCustomization:(ButtonCustomization *)buttonCustomization
-               buttonTypeString:(NSString *)buttonType;
+- (void)setButtonCustomization:(BTThreeDSecureV2ButtonCustomization *)buttonCustomization
+                     buttonType:(BTThreeDSecureV2ButtonType)buttonType;
 
 /**
  * Sets the attributes of a ToolbarCustomization object.
  * @param toolbarCustomization A ToolbarCustomization object.
  */
-- (void)setToolbarCustomization:(ToolbarCustomization *)toolbarCustomization;
+@property (nonatomic, strong) BTThreeDSecureV2ToolbarCustomization *toolbarCustomization;
 
 /**
  * Sets the attributes of a LabelCustomization object.
  * @param labelCustomization A LabelCustomization object.
  */
-- (void)setLabelCustomization:(LabelCustomization *)labelCustomization;
+@property (nonatomic, strong) BTThreeDSecureV2LabelCustomization *labelCustomization;
 
 /**
  * Sets the attributes of a TextBoxCustomization object.
  * @param textBoxCustomization A TextBoxCustomization object.
  */
-- (void)setTextBoxCustomization:(TextBoxCustomization *)textBoxCustomization;
+@property (nonatomic, strong) BTThreeDSecureV2TextBoxCustomization *textBoxCustomization;
 
 @end
 

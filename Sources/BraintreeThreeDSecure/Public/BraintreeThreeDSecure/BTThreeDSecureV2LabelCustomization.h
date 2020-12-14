@@ -1,11 +1,17 @@
 #import <Foundation/Foundation.h>
 
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureV2BaseCustomization.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureV2BaseCustomization.h>
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  * The LabelCustomization class provides methods for the 3DS Requestor App to pass label customization parameters to the 3DS SDK.
  */
-@interface BTThreeDSecureV2LabelCustomization : NSObject
+@interface BTThreeDSecureV2LabelCustomization : BTThreeDSecureV2BaseCustomization
 
 /**
  * @property headingTextColor Colour code in Hex format. For example, the colour code can be “#999999”.
@@ -20,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * @property headingTextFontSize Font size for the heading label text.
  */
-@property int headingTextFontSize;
+@property (nonatomic) int headingTextFontSize;
 
 @end
 

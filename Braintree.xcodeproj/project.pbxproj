@@ -99,7 +99,7 @@
 		42517321254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h in Headers */ = {isa = PBXBuildFile; fileRef = 42517320254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4255C5132565CF3D00A3CA78 /* PPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255C5122565CF3D00A3CA78 /* PPDataCollector.swift */; };
 		4255C5AD2565D29900A3CA78 /* FakePPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95C411D24FAF53400045045 /* FakePPDataCollector.swift */; };
-		42C2D3272583E82B00E525AE /* BTProxyCardinal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42C2D3262583E82B00E525AE /* BTProxyCardinal.h */; };
+		42C2D3272583E82B00E525AE /* BTProxyCardinal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42C2D3262583E82B00E525AE /* BTProxyCardinal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
 		42F174F62576F4560092A66A /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; };
@@ -112,16 +112,20 @@
 		80BB0C86241937A5003C8BA9 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB0C84241937A5003C8BA9 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80BB0C87241937A5003C8BA9 /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BB0C85241937A5003C8BA9 /* BTURLUtils.m */; };
 		80DBE69523A931A600373230 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE69423A931A600373230 /* Helpers.swift */; };
-		80FF7B232587DBE1001C32EF /* BTThreeDSecureV2UICustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7B212587DBE1001C32EF /* BTThreeDSecureV2UICustomization.h */; };
+		80FF7B232587DBE1001C32EF /* BTThreeDSecureV2UICustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7B212587DBE1001C32EF /* BTThreeDSecureV2UICustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80FF7B242587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B222587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m */; };
-		80FF7B4B2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7B492587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.h */; };
+		80FF7B4B2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7B492587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80FF7B4C2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B4A2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m */; };
-		80FF7B732587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7B712587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h */; };
+		80FF7B732587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7B712587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80FF7B742587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B722587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.m */; };
-		80FF7BBF2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7BBD2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h */; };
+		80FF7BBF2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7BBD2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80FF7BC02587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7BBE2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.m */; };
-		80FF7BD52587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7BD32587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h */; };
+		80FF7BD52587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7BD32587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80FF7BD62587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7BD42587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.m */; };
+		80FF7C772587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7C752587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		80FF7C782587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7C762587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.m */; };
+		80FF7CB0258802ED001C32EF /* BTThreeDSecureV2BaseCustomization_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7C9D25880232001C32EF /* BTThreeDSecureV2BaseCustomization_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		80FF7D06258812BF001C32EF /* BTThreeDSecureV2UICustomization_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 80FF7D05258812BF001C32EF /* BTThreeDSecureV2UICustomization_Internal.h */; };
 		9E08257C063D6A7387549C13 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EAC5DF62E1F60260858683 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		A07FA48D21B5C54E0026FF0E /* BTPayPalLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A07FA48E21B5C54E0026FF0E /* BTPayPalLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */; };
@@ -911,6 +915,10 @@
 		80FF7BBE2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV2ButtonCustomization.m; sourceTree = "<group>"; };
 		80FF7BD32587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2TextBoxCustomization.h; sourceTree = "<group>"; };
 		80FF7BD42587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV2TextBoxCustomization.m; sourceTree = "<group>"; };
+		80FF7C752587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2BaseCustomization.h; sourceTree = "<group>"; };
+		80FF7C762587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV2BaseCustomization.m; sourceTree = "<group>"; };
+		80FF7C9D25880232001C32EF /* BTThreeDSecureV2BaseCustomization_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2BaseCustomization_Internal.h; sourceTree = "<group>"; };
+		80FF7D05258812BF001C32EF /* BTThreeDSecureV2UICustomization_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2UICustomization_Internal.h; sourceTree = "<group>"; };
 		842B68F01BCF083E0039634F /* BTAPIClient_SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAPIClient_SwiftTests.swift; sourceTree = "<group>"; };
 		844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDataCollector_Tests.swift; sourceTree = "<group>"; };
 		8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardClient_Internal.h; sourceTree = "<group>"; };
@@ -1648,6 +1656,7 @@
 				03800A541F045F5600068F53 /* BTThreeDSecureRequest.h */,
 				423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */,
 				BC20A8F4238596850077AF56 /* BTThreeDSecureV1UICustomization.h */,
+				80FF7C752587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.h */,
 				80FF7BBD2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h */,
 				80FF7B712587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h */,
 				80FF7BD32587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h */,
@@ -2008,7 +2017,10 @@
 				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
 				80FF7BD42587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.m */,
 				80FF7B4A2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m */,
+				80FF7C762587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.m */,
+				80FF7C9D25880232001C32EF /* BTThreeDSecureV2BaseCustomization_Internal.h */,
 				80FF7B222587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m */,
+				80FF7D05258812BF001C32EF /* BTThreeDSecureV2UICustomization_Internal.h */,
 				A91E1EAE24FEEF21007540E5 /* Info.plist */,
 				A91E1EBE24FEEF47007540E5 /* Public */,
 			);
@@ -2348,6 +2360,7 @@
 				80FF7BD52587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h in Headers */,
 				A91E1ECD24FEF047007540E5 /* BTThreeDSecureAdditionalInformation_Internal.h in Headers */,
 				A91E1ED324FEF052007540E5 /* BTThreeDSecureResult_Internal.h in Headers */,
+				80FF7C772587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.h in Headers */,
 				80FF7B732587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h in Headers */,
 				A91E1EC324FEF00A007540E5 /* BTConfiguration+ThreeDSecure.h in Headers */,
 				80FF7BBF2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h in Headers */,
@@ -2355,13 +2368,15 @@
 				A91E1ECC24FEF041007540E5 /* BTPaymentFlowDriver+ThreeDSecure_Internal.h in Headers */,
 				A91E1ED024FEF052007540E5 /* BTThreeDSecurePostalAddress_Internal.h in Headers */,
 				A91E1EC524FEF00A007540E5 /* BTThreeDSecureAdditionalInformation.h in Headers */,
-				42C2D3272583E82B00E525AE /* BTProxyCardinal.h in Headers */,
 				A91E1ED424FEF052007540E5 /* BTThreeDSecureV2Provider.h in Headers */,
 				A91E1EC624FEF00A007540E5 /* BTThreeDSecureLookup.h in Headers */,
 				A91E1EC724FEF00A007540E5 /* BTThreeDSecurePostalAddress.h in Headers */,
 				A91E1ECF24FEF052007540E5 /* BTThreeDSecureV1BrowserSwitchHelper.h in Headers */,
 				A91E1EC824FEF00A007540E5 /* BTThreeDSecureRequest.h in Headers */,
 				A91E1EC924FEF00A007540E5 /* BTThreeDSecureResult.h in Headers */,
+				80FF7D06258812BF001C32EF /* BTThreeDSecureV2UICustomization_Internal.h in Headers */,
+				42C2D3272583E82B00E525AE /* BTProxyCardinal.h in Headers */,
+				80FF7CB0258802ED001C32EF /* BTThreeDSecureV2BaseCustomization_Internal.h in Headers */,
 				80FF7B232587DBE1001C32EF /* BTThreeDSecureV2UICustomization.h in Headers */,
 				A91E1ECA24FEF00A007540E5 /* BTThreeDSecureV1UICustomization.h in Headers */,
 				A91E1ED124FEF052007540E5 /* BTThreeDSecureRequest_Internal.h in Headers */,
@@ -3475,6 +3490,7 @@
 				80FF7B242587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m in Sources */,
 				A91E1EB524FEEF3C007540E5 /* BTThreeDSecureRequest.m in Sources */,
 				A91E1EB624FEEF3C007540E5 /* BTConfiguration+ThreeDSecure.m in Sources */,
+				80FF7C782587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.m in Sources */,
 				80FF7B4C2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m in Sources */,
 				A91E1EB424FEEF3C007540E5 /* BTThreeDSecureLookup.m in Sources */,
 				A91E1EB924FEEF3C007540E5 /* BTThreeDSecureV2Provider.m in Sources */,

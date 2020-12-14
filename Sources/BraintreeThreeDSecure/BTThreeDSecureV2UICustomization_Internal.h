@@ -1,12 +1,11 @@
-//
-//  BTThreeDSecureV2UICustomization_Internal.h
-//  BraintreeThreeDSecure
-//
-//  Created by Cannillo, Sammy on 12/14/20.
-//
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureV2UICustomization.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
+#endif
 
-#ifndef BTThreeDSecureV2UICustomization_Internal_h
-#define BTThreeDSecureV2UICustomization_Internal_h
+@interface BTThreeDSecureV2UICustomization ()
 
+@property (nonatomic, strong) id uiCustomization;
 
-#endif /* BTThreeDSecureV2UICustomization_Internal_h */
+@end

@@ -19,6 +19,12 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>
 #import <Braintree/BTThreeDSecureV1UICustomization.h>
+#import <Braintree/BTThreeDSecureV2UICustomization.h>
+#import <Braintree/BTThreeDSecureV2ButtonCustomization.h>
+#import <Braintree/BTThreeDSecureV2LabelCustomization.h>
+#import <Braintree/BTThreeDSecureV2TextBoxCustomization.h>
+#import <Braintree/BTThreeDSecureV2ToolbarCustomization.h>
+#import <Braintree/BTThreeDSecureV2BaseCustomization.h>
 #else
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
 #import <BraintreeCard/BraintreeCard.h>
@@ -30,4 +36,10 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureV1UICustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2ButtonCustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2LabelCustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2TextBoxCustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2ToolbarCustomization.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureV2BaseCustomization.h>
 #endif
