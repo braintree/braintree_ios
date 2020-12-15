@@ -1668,12 +1668,7 @@
 				03800A541F045F5600068F53 /* BTThreeDSecureRequest.h */,
 				423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */,
 				BC20A8F4238596850077AF56 /* BTThreeDSecureV1UICustomization.h */,
-				80FF7C752587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.h */,
-				80FF7BBD2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h */,
-				80FF7B712587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h */,
-				80FF7BD32587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h */,
-				80FF7B492587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.h */,
-				80FF7B212587DBE1001C32EF /* BTThreeDSecureV2UICustomization.h */,
+				801A0A2A25890E3600DAF851 /* V2UICustomization */,
 			);
 			path = BraintreeThreeDSecure;
 			sourceTree = "<group>";
@@ -1701,6 +1696,34 @@
 				587BD47952A3B29E7950C52A /* Pods-Tests-UnitTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		801A0A1725890DF200DAF851 /* V2UICustomization */ = {
+			isa = PBXGroup;
+			children = (
+				80FF7C9D25880232001C32EF /* BTThreeDSecureV2BaseCustomization_Internal.h */,
+				80FF7C762587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.m */,
+				80FF7BBE2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.m */,
+				80FF7B722587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.m */,
+				80FF7BD42587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.m */,
+				80FF7B4A2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m */,
+				80FF7D05258812BF001C32EF /* BTThreeDSecureV2UICustomization_Internal.h */,
+				80FF7B222587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m */,
+			);
+			path = V2UICustomization;
+			sourceTree = "<group>";
+		};
+		801A0A2A25890E3600DAF851 /* V2UICustomization */ = {
+			isa = PBXGroup;
+			children = (
+				80FF7C752587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.h */,
+				80FF7BBD2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.h */,
+				80FF7B712587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.h */,
+				80FF7BD32587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.h */,
+				80FF7B492587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.h */,
+				80FF7B212587DBE1001C32EF /* BTThreeDSecureV2UICustomization.h */,
+			);
+			path = V2UICustomization;
 			sourceTree = "<group>";
 		};
 		80808913253E212E00C6E159 /* Recovered References */ = {
@@ -1778,15 +1801,16 @@
 			path = Public;
 			sourceTree = "<group>";
 		};
-		80FF7D9625882648001C32EF /* BTThreeDSecureV2Customization_Tests */ = {
+		80FF7D9625882648001C32EF /* ThreeDSecureV2Customization_Tests */ = {
 			isa = PBXGroup;
 			children = (
 				80FF7DAB25882768001C32EF /* BTThreeDSecureV2ButtonCustomization_Tests.swift */,
 				80FF7DBF25882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift */,
 				80FF7DD3258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift */,
 				80FF7D9725882669001C32EF /* BTThreeDSecureV2ToolbarCustomization_Tests.swift */,
+				80FF7D1925881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift */,
 			);
-			path = BTThreeDSecureV2Customization_Tests;
+			path = ThreeDSecureV2Customization_Tests;
 			sourceTree = "<group>";
 		};
 		A715593F1B729297007DE6F0 /* Helpers */ = {
@@ -2034,17 +2058,10 @@
 				421CBFD6239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.h */,
 				421CBFD7239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m */,
 				BC20A8F5238596850077AF56 /* BTThreeDSecureV1UICustomization.m */,
-				80FF7BBE2587DF10001C32EF /* BTThreeDSecureV2ButtonCustomization.m */,
-				80FF7B722587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.m */,
 				A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */,
 				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
-				80FF7BD42587DF73001C32EF /* BTThreeDSecureV2TextBoxCustomization.m */,
-				80FF7B4A2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m */,
-				80FF7C762587FFC5001C32EF /* BTThreeDSecureV2BaseCustomization.m */,
-				80FF7C9D25880232001C32EF /* BTThreeDSecureV2BaseCustomization_Internal.h */,
-				80FF7B222587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m */,
-				80FF7D05258812BF001C32EF /* BTThreeDSecureV2UICustomization_Internal.h */,
 				A91E1EAE24FEEF21007540E5 /* Info.plist */,
+				801A0A1725890DF200DAF851 /* V2UICustomization */,
 				A91E1EBE24FEEF47007540E5 /* Public */,
 			);
 			path = BraintreeThreeDSecure;
@@ -2061,7 +2078,7 @@
 		A91E1EF324FEF2E4007540E5 /* BraintreeThreeDSecureTests */ = {
 			isa = PBXGroup;
 			children = (
-				80FF7D9625882648001C32EF /* BTThreeDSecureV2Customization_Tests */,
+				80FF7D9625882648001C32EF /* ThreeDSecureV2Customization_Tests */,
 				A977A06924FECBAF006049AB /* BraintreeThreeDSecureTests-Bridging-Header.h */,
 				80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */,
 				42F75E5A24D48138007DC5E7 /* BTPaymentFlowDriver+ThreeDSecure_Tests.swift */,
@@ -2073,7 +2090,6 @@
 				03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */,
 				42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */,
 				423B921824D1E0BF0048B655 /* BTThreeDSecureResult_Tests.swift */,
-				80FF7D1925881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift */,
 				A91E1EF624FEF2E4007540E5 /* Info.plist */,
 				42D79395233A65EB001FDD89 /* MockDelegates.swift */,
 			);
