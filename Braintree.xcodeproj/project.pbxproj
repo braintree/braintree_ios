@@ -100,7 +100,6 @@
 		4255C5132565CF3D00A3CA78 /* PPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255C5122565CF3D00A3CA78 /* PPDataCollector.swift */; };
 		4255C5AD2565D29900A3CA78 /* FakePPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95C411D24FAF53400045045 /* FakePPDataCollector.swift */; };
 		428E3307258A9F9000C744DD /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; };
-		428E3330258AA06600C744DD /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; };
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
 		42F41C7C25681F4C002402BE /* PPDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F41C7B25681F4C002402BE /* PPDataCollector_Tests.swift */; };
@@ -584,13 +583,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = A77AA29B1B618C7700217B73;
 			remoteInfo = BraintreeVenmo;
-		};
-		A9C4E09324EC2F8B002F6FF2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7B462E01C3D9C2200048423;
-			remoteInfo = PayPalDataCollector;
 		};
 		A9E5C1A424FD5A7C00EE691F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1111,7 +1103,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				428E3330258AA06600C744DD /* PPRiskMagnes.framework in Frameworks */,
 				C05B393905EDF8E40560C2B1 /* Pods_Tests_IntegrationTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2485,7 +2476,6 @@
 				A9C4E08E24EC2F8B002F6FF2 /* PBXTargetDependency */,
 				A9C4E09024EC2F8B002F6FF2 /* PBXTargetDependency */,
 				A9C4E09224EC2F8B002F6FF2 /* PBXTargetDependency */,
-				A9C4E09424EC2F8B002F6FF2 /* PBXTargetDependency */,
 			);
 			name = IntegrationTests;
 			productName = BraintreeIntegrationTests;
@@ -3760,11 +3750,6 @@
 			isa = PBXTargetDependency;
 			target = A77AA29B1B618C7700217B73 /* BraintreeVenmo */;
 			targetProxy = A9C4E09124EC2F8B002F6FF2 /* PBXContainerItemProxy */;
-		};
-		A9C4E09424EC2F8B002F6FF2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7B462E01C3D9C2200048423 /* PayPalDataCollector */;
-			targetProxy = A9C4E09324EC2F8B002F6FF2 /* PBXContainerItemProxy */;
 		};
 		A9E5C1A524FD5A7C00EE691F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
