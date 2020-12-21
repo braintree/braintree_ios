@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
 * Breaking Changes
   * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
 
