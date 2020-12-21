@@ -64,7 +64,7 @@
         }];
     }];
 
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 - (void)testGetRewardsBalance_whenCardIsIneligible_returnsPayload_withError {
