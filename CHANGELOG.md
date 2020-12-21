@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
+* Breaking Changes
+  * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
+
 ## 5.0.0-beta1 (2020-12-01)
 * Add support for Swift Package Manager (resolves #462)
 * Bump Kount to v4.0.4.2 (supports iOS 9.3+)

@@ -29,10 +29,7 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 + (void)load {
     if (self == [BTApplePayClient class]) {
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
-            NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePayCard";
-            return [[BTApplePayCardNonce alloc] initWithNonce:[applePayCard[@"nonce"] asString]
-                                                         type:cardType
-                                                         json:applePayCard];
+            return [[BTApplePayCardNonce alloc] initWithJSON:applePayCard];
         }];
     }
 }
@@ -139,9 +136,7 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                 return;
             }
 
-            BTJSON *applePayCard = body[@"applePayCards"][0];
-            NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePayCard";
-            BTApplePayCardNonce *tokenized = [[BTApplePayCardNonce alloc] initWithNonce:[applePayCard[@"nonce"] asString] type:cardType json:applePayCard];
+            BTApplePayCardNonce *tokenized = [[BTApplePayCardNonce alloc] initWithJSON:body[@"applePayCards"][0]];
 
             completionBlock(tokenized, nil);
             [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.success"];
