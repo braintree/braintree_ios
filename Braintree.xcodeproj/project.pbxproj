@@ -965,7 +965,6 @@
 		A91E1E8E24FEDD7F007540E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A91E1EAB24FEEF21007540E5 /* BraintreeThreeDSecure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeThreeDSecure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91E1EAD24FEEF21007540E5 /* BraintreeThreeDSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeThreeDSecure.h; sourceTree = "<group>"; };
-		A91E1EAE24FEEF21007540E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A91E1EF224FEF2E3007540E5 /* BraintreeThreeDSecureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeThreeDSecureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91E1EF624FEF2E4007540E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A948D6C624FAB79B00F4F178 /* BraintreeAmericanExpressTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeAmericanExpressTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1903,7 +1902,6 @@
 				BC20A8F5238596850077AF56 /* BTThreeDSecureV1UICustomization.m */,
 				A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */,
 				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
-				A91E1EAE24FEEF21007540E5 /* Info.plist */,
 				A91E1EBE24FEEF47007540E5 /* Public */,
 			);
 			path = BraintreeThreeDSecure;
