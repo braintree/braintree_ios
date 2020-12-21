@@ -40,6 +40,7 @@
 }
 
 - (void)testGetRewardsBalance_whenCardHasInsufficientPoints_returnsPayload_withError {
+    NSLog(@"*&*&*&*&*&*&*&*&");
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN_VERSION_3];
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTAmericanExpressClient *amexClient = [[BTAmericanExpressClient alloc] initWithAPIClient:apiClient];
@@ -64,7 +65,7 @@
         }];
     }];
 
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:30 handler:nil];
 }
 
 - (void)testGetRewardsBalance_whenCardIsIneligible_returnsPayload_withError {
