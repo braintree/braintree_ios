@@ -2,6 +2,7 @@ import BraintreeAmericanExpress
 import BraintreeApplePay
 import BraintreeCard
 import BraintreeCore
+import BraintreeDataCollector
 import BraintreePaymentFlow
 import BraintreePayPal
 import BraintreeUnionPay

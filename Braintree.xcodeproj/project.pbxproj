@@ -106,6 +106,7 @@
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
 		42F41C7C25681F4C002402BE /* PPDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F41C7B25681F4C002402BE /* PPDataCollector_Tests.swift */; };
+		800E914D25813F35002CE60B /* libKountDataCollector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 800E914C25813F35002CE60B /* libKountDataCollector.a */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
 		8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */; };
 		8018090A24A4C89C00FC8BD3 /* BTPayPalIDToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B9D0D32347EB770005F8D4 /* BTPayPalIDToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -129,7 +130,6 @@
 		A76D7C201BB1CBD50000FA6A /* BraintreeDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A76D7C211BB1CBD50000FA6A /* BTDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A76D7C231BB1CBDC0000FA6A /* BTDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */; };
-		A76D7C2A1BB1D31A0000FA6A /* libDeviceCollectorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */; };
 		A76D7C341BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C331BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m */; };
 		A77346241B7AA4D50083EC8D /* BTErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = A77346231B7AA4D50083EC8D /* BTErrors.m */; };
 		A77346261B7AA4F10083EC8D /* BTErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = A77346251B7AA4F10083EC8D /* BTErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -799,6 +799,7 @@
 		80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+ThreeDSecure.h"; sourceTree = "<group>"; };
 		80036F7C21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTConfiguration+ThreeDSecure.m"; sourceTree = "<group>"; };
 		800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAuthenticateJWT_Tests.swift; sourceTree = "<group>"; };
+		800E914C25813F35002CE60B /* libKountDataCollector.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libKountDataCollector.a; sourceTree = "<group>"; };
 		800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayCardNonce_Tests.swift; sourceTree = "<group>"; };
 		8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentFlow_Tests.swift; sourceTree = "<group>"; };
 		8016A87E2509221F00DB5EF3 /* BraintreePaymentFlowTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreePaymentFlowTests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -859,7 +860,6 @@
 		A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDataCollector.h; sourceTree = "<group>"; };
 		A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDataCollector.h; sourceTree = "<group>"; };
 		A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDataCollector.m; sourceTree = "<group>"; };
-		A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDeviceCollectorLibrary.a; sourceTree = "<group>"; };
 		A76D7C2C1BB1D35A0000FA6A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A76D7C331BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDataCollector_IntegrationTests.m; sourceTree = "<group>"; };
 		A77346231B7AA4D50083EC8D /* BTErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTErrors.m; sourceTree = "<group>"; };
@@ -1082,8 +1082,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				800E914D25813F35002CE60B /* libKountDataCollector.a in Frameworks */,
 				41935DE61D528B25008D48FB /* BraintreeCore.framework in Frameworks */,
-				A76D7C2A1BB1D31A0000FA6A /* libDeviceCollectorLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1758,7 +1758,7 @@
 			isa = PBXGroup;
 			children = (
 				A51527321D9C3DC600FF3F77 /* KDataCollector.h */,
-				A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */,
+				800E914C25813F35002CE60B /* libKountDataCollector.a */,
 			);
 			path = Kount;
 			sourceTree = "<group>";
