@@ -2,6 +2,7 @@
 
 ## unreleased
 * Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
+* Add SPM support for `BraintreeThreeDSecure`
 * Breaking Changes
   * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
 
