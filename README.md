@@ -45,6 +45,7 @@ The following Braintree libraries offer official Swift Package Manager support:
 * `BraintreeApplePay`
 * `BraintreeCard`
 * `BraintreeCore`
+* `BraintreeDataCollector`
 * `BraintreePaymentFlow`
 * `BraintreePayPal`
 * `BraintreeThreeDSecure` **

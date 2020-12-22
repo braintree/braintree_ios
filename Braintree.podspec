@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
   s.subspec "DataCollector" do |s|
     s.source_files = "Sources/BraintreeDataCollector/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeDataCollector/Public/BraintreeDataCollector/*.h"
-    s.vendored_library = "Sources/BraintreeDataCollector/Kount/libDeviceCollectorLibrary.a"
+    s.vendored_frameworks = "Frameworks/KountDataCollector.xcframework"
     s.dependency "Braintree/Core"
   end
 
