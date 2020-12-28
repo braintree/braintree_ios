@@ -1,4 +1,4 @@
-name: test-package-managers
+name: Check package managers
 on: [pull_request]
 jobs:
   check_cocoapods:
@@ -24,7 +24,7 @@ jobs:
       - name: Remove SPMTest
         run: rm -rf SampleApps/SPMTest && git add . && git commit -m 'Remove SPMTest app to avoid Carthage timeout'
       - name: Update Cartfile
-        run: echo "git \"file://${PWD}\" \"$(git symbolic-ref --short HEAD)\"" > SampleApps/CarthageTest/Cartfile
+        run: echo "git \"file://${PWD}\" \"${{ github.head_ref }}\"" > SampleApps/CarthageTest/Cartfile
       - name: Run carthage update
         run: cd SampleApps/CarthageTest && carthage update
       - name: Build CarthageTest
