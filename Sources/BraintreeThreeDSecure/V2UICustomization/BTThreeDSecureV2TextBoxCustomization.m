@@ -6,6 +6,7 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureV2TextBoxCustomization.h>
 #endif
 
+// To support SPM without an xcframework version of Cardinal, we created wrappers for Cardinal classes which are substituted for the actual CardinalMobile classes at runtime.
 @implementation BTThreeDSecureV2TextBoxCustomization
 
 - (instancetype)init {

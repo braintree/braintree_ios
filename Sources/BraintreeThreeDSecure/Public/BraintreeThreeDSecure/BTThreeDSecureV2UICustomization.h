@@ -13,6 +13,8 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureV2ToolbarCustomization.h>
 #endif
 
+#import <CardinalMobile/LabelCustomization.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -51,19 +53,16 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureV2ButtonType) {
 
 /**
  * Sets the attributes of a ToolbarCustomization object.
- * @param toolbarCustomization A ToolbarCustomization object.
  */
 @property (nonatomic, strong) BTThreeDSecureV2ToolbarCustomization *toolbarCustomization;
 
 /**
  * Sets the attributes of a LabelCustomization object.
- * @param labelCustomization A LabelCustomization object.
  */
 @property (nonatomic, strong) BTThreeDSecureV2LabelCustomization *labelCustomization;
 
 /**
  * Sets the attributes of a TextBoxCustomization object.
- * @param textBoxCustomization A TextBoxCustomization object.
  */
 @property (nonatomic, strong) BTThreeDSecureV2TextBoxCustomization *textBoxCustomization;
 

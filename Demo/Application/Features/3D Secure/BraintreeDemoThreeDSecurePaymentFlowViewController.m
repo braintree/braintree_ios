@@ -133,7 +133,7 @@
         [toolbarCustomization setTextFontSize:18];
         [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
         [ui setToolbarCustomization:toolbarCustomization];
-        request.uiCustomization = ui;
+        request.v2UICustomization = ui;
 
         BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
         v1UICustomization.redirectButtonText = @"Return to Demo App";

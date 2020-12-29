@@ -1,6 +1,7 @@
 #import "BTThreeDSecureV2UICustomization_Internal.h"
 #import "BTThreeDSecureV2BaseCustomization_Internal.h"
 
+// To support SPM without an xcframework version of Cardinal, we created wrappers for Cardinal classes which are substituted for the actual CardinalMobile classes at runtime.
 @implementation BTThreeDSecureV2UICustomization
 
 - (instancetype)init {

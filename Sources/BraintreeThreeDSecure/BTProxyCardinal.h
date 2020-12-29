@@ -7,7 +7,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // https://flint.tools/blog/finding-a-weak-linking-solution.html
-// To support SPM without a Cardinal.xcframework version, we created proxy protocols for Cardinal classes which are substituted for the actual CardinalMobile classes at runtime.
+// To support SPM without an xcframework version of Cardinal, we created proxy protocols for Cardinal classes which are substituted for the actual CardinalMobile classes at runtime.
 
 typedef NS_ENUM(NSUInteger, BTProxyCardinalSessionEnvironment) {
     BTProxyCardinalSessionEnvironmentStaging,

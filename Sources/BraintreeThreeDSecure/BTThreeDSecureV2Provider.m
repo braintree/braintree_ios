@@ -52,8 +52,8 @@
 
     instance.cardinalSession = (id<BTProxyCardinalSession>)[NSClassFromString(@"CardinalSession") new];
     id<BTProxyCardinalSessionConfiguration> cardinalConfiguration = (id<BTProxyCardinalSessionConfiguration>)[NSClassFromString(@"CardinalSessionConfiguration") new];
-    if (request.uiCustomization) {
-        cardinalConfiguration.uiCustomization = request.uiCustomization.cardinalValue;
+    if (request.v2UICustomization) {
+        cardinalConfiguration.uiCustomization = request.v2UICustomization.cardinalValue;
     }
     BTProxyCardinalSessionEnvironment cardinalEnvironment = BTProxyCardinalSessionEnvironmentStaging;
     if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {
