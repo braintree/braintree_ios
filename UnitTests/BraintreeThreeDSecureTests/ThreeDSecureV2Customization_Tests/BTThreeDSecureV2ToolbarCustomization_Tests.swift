@@ -12,7 +12,7 @@ class BTThreeDSecureV2ToolbarCustomization_Tests: XCTestCase {
         toolbarCustomization.textFontSize = 12
         toolbarCustomization.textFontName = "Helvetica"
 
-        let cardinalToolbar = toolbarCustomization.customization as! ToolbarCustomization
+        let cardinalToolbar = toolbarCustomization.cardinalValue as! ToolbarCustomization
         XCTAssertEqual(cardinalToolbar.backgroundColor, "Blue")
         XCTAssertEqual(cardinalToolbar.headerText, "Rad Text")
         XCTAssertEqual(cardinalToolbar.buttonText, "Button")

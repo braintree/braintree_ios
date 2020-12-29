@@ -4,24 +4,24 @@
 
 - (void)setTextFontName:(NSString *)textFontName {
     _textFontName = textFontName;
-    if ([self.customization respondsToSelector:@selector(setTextFontName:)]) {
-        [self.customization performSelector:@selector(setTextFontName:) withObject:textFontName];
+    if ([self.cardinalValue respondsToSelector:@selector(setTextFontName:)]) {
+        [self.cardinalValue performSelector:@selector(setTextFontName:) withObject:textFontName];
     }
 }
 
 - (void)setTextColor:(NSString *)textColor {
     _textColor = textColor;
-    if ([self.customization respondsToSelector:@selector(setTextColor:)]) {
-        [self.customization performSelector:@selector(setTextColor:) withObject:textColor];
+    if ([self.cardinalValue respondsToSelector:@selector(setTextColor:)]) {
+        [self.cardinalValue performSelector:@selector(setTextColor:) withObject:textColor];
     }
 }
 
 - (void)setTextFontSize:(int)textFontSize {
     _textFontSize = textFontSize;
-    if ([self.customization respondsToSelector:@selector(setTextFontSize:)]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.customization methodSignatureForSelector:@selector(setTextFontSize:)]];
+    if ([self.cardinalValue respondsToSelector:@selector(setTextFontSize:)]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.cardinalValue methodSignatureForSelector:@selector(setTextFontSize:)]];
         [inv setSelector:@selector(setTextFontSize:)];
-        [inv setTarget:self.customization];
+        [inv setTarget:self.cardinalValue];
 
         [inv setArgument:&(textFontSize) atIndex:2];
         [inv invoke];

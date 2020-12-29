@@ -12,7 +12,7 @@ class BTThreeDSecureV2TextBoxCustomization_Tests: XCTestCase {
         textBoxCustomization.textFontSize = 5
         textBoxCustomization.textFontName = "Arial"
 
-        let cardinalTextBox = textBoxCustomization.customization as! TextBoxCustomization
+        let cardinalTextBox = textBoxCustomization.cardinalValue as! TextBoxCustomization
         XCTAssertEqual(cardinalTextBox.borderColor, "Orange")
         XCTAssertEqual(cardinalTextBox.borderWidth, 1)
         XCTAssertEqual(cardinalTextBox.cornerRadius, 7)

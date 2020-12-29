@@ -11,7 +11,7 @@ class BTThreeDSecureV2ButtonCustomization_Tests: XCTestCase {
         buttonCustomization.textFontSize = 11
         buttonCustomization.textFontName = "Times New Roman"
 
-        let cardinalButton = buttonCustomization.customization as! ButtonCustomization
+        let cardinalButton = buttonCustomization.cardinalValue as! ButtonCustomization
         XCTAssertEqual(cardinalButton.backgroundColor, "Green")
         XCTAssertEqual(cardinalButton.cornerRadius, 5)
         XCTAssertEqual(cardinalButton.textColor, "Red")

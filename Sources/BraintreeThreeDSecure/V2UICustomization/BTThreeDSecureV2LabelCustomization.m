@@ -6,7 +6,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.customization = [NSClassFromString(@"LabelCustomization") new];
+        self.cardinalValue = [NSClassFromString(@"LabelCustomization") new];
     }
 
     return self;
@@ -14,24 +14,24 @@
 
 - (void)setHeadingTextColor:(NSString *)headingTextColor {
     _headingTextColor = headingTextColor;
-    if ([self.customization respondsToSelector:@selector(setHeadingTextColor:)]) {
-        [self.customization performSelector:@selector(setHeadingTextColor:) withObject:headingTextColor];
+    if ([self.cardinalValue respondsToSelector:@selector(setHeadingTextColor:)]) {
+        [self.cardinalValue performSelector:@selector(setHeadingTextColor:) withObject:headingTextColor];
     }
 }
 
 - (void)setHeadingTextFontName:(NSString *)headingTextFontName {
     _headingTextFontName = headingTextFontName;
-    if ([self.customization respondsToSelector:@selector(setHeadingTextFontName:)]) {
-        [self.customization performSelector:@selector(setHeadingTextFontName:) withObject:headingTextFontName];
+    if ([self.cardinalValue respondsToSelector:@selector(setHeadingTextFontName:)]) {
+        [self.cardinalValue performSelector:@selector(setHeadingTextFontName:) withObject:headingTextFontName];
     }
 }
 
 - (void)setHeadingTextFontSize:(int)headingTextFontSize {
     _headingTextFontSize = headingTextFontSize;
-    if ([self.customization respondsToSelector:@selector(setHeadingTextFontSize:)]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.customization methodSignatureForSelector:@selector(setHeadingTextFontSize:)]];
+    if ([self.cardinalValue respondsToSelector:@selector(setHeadingTextFontSize:)]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.cardinalValue methodSignatureForSelector:@selector(setHeadingTextFontSize:)]];
         [inv setSelector:@selector(setHeadingTextFontSize:)];
-        [inv setTarget:self.customization];
+        [inv setTarget:self.cardinalValue];
 
         [inv setArgument:&(headingTextFontSize) atIndex:2];
         [inv invoke];

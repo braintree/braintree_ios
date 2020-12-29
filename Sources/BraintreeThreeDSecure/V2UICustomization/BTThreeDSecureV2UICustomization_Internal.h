@@ -6,6 +6,6 @@
 
 @interface BTThreeDSecureV2UICustomization ()
 
-@property (nonatomic, strong) id uiCustomization;
+@property (nonatomic, strong) id cardinalValue;
 
 @end

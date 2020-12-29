@@ -12,7 +12,7 @@ class BTThreeDSecureV2LabelCustomization_Tests: XCTestCase {
         labelCustomization.textFontSize = 19
         labelCustomization.textFontName = "Arial"
 
-        let cardinalLabel = labelCustomization.customization as! LabelCustomization
+        let cardinalLabel = labelCustomization.cardinalValue as! LabelCustomization
         XCTAssertEqual(cardinalLabel.headingTextColor, "Silver")
         XCTAssertEqual(cardinalLabel.headingTextFontName, "Comic Sans")
         XCTAssertEqual(cardinalLabel.headingTextFontSize, 12)

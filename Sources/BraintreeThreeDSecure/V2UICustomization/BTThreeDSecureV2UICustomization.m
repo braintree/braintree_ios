@@ -6,7 +6,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.uiCustomization = [NSClassFromString(@"UiCustomization") new];
+        self.cardinalValue = [NSClassFromString(@"UiCustomization") new];
     }
 
     return self;
@@ -14,10 +14,10 @@
 
 - (void)setButtonCustomization:(BTThreeDSecureV2ButtonCustomization *)buttonCustomization
                     buttonType:(BTThreeDSecureV2ButtonType)buttonType {
-    if ([self.uiCustomization respondsToSelector:@selector(setButtonCustomization:buttonType:)]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.uiCustomization methodSignatureForSelector:@selector(setButtonCustomization:buttonType:)]];
-        [inv setSelector:@selector(setButtonCustomization:buttonType::)];
-        [inv setTarget:self.uiCustomization];
+    if ([self.cardinalValue respondsToSelector:@selector(setButtonCustomization:buttonType:)]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.cardinalValue methodSignatureForSelector:@selector(setButtonCustomization:buttonType:)]];
+        [inv setSelector:@selector(setButtonCustomization:buttonType:)];
+        [inv setTarget:self.cardinalValue];
 
         [inv setArgument:&(buttonCustomization) atIndex:2];
         [inv setArgument:&(buttonType) atIndex:3];
@@ -27,22 +27,22 @@
 
 - (void)setToolbarCustomization:(BTThreeDSecureV2ToolbarCustomization *)toolbarCustomization {
     _toolbarCustomization = toolbarCustomization;
-    if ([self.uiCustomization respondsToSelector:@selector(setToolbarCustomization:)]) {
-        [self.uiCustomization performSelector:@selector(setToolbarCustomization:) withObject:toolbarCustomization.customization];
+    if ([self.cardinalValue respondsToSelector:@selector(setToolbarCustomization:)]) {
+        [self.cardinalValue performSelector:@selector(setToolbarCustomization:) withObject:toolbarCustomization.cardinalValue];
     }
 }
 
 - (void)setLabelCustomization:(BTThreeDSecureV2LabelCustomization *)labelCustomization {
     _labelCustomization = labelCustomization;
-    if ([self.uiCustomization respondsToSelector:@selector(setLabelCustomization:)]) {
-        [self.uiCustomization performSelector:@selector(setLabelCustomization:) withObject:labelCustomization.customization];
+    if ([self.cardinalValue respondsToSelector:@selector(setLabelCustomization:)]) {
+        [self.cardinalValue performSelector:@selector(setLabelCustomization:) withObject:labelCustomization.cardinalValue];
     }
 }
 
 - (void)setTextBoxCustomization:(BTThreeDSecureV2TextBoxCustomization *)textBoxCustomization {
     _textBoxCustomization = textBoxCustomization;
-    if ([self.uiCustomization respondsToSelector:@selector(setTextBoxCustomization:)]) {
-        [self.uiCustomization performSelector:@selector(setTextBoxCustomization:) withObject:textBoxCustomization.customization];
+    if ([self.cardinalValue respondsToSelector:@selector(setTextBoxCustomization:)]) {
+        [self.cardinalValue performSelector:@selector(setTextBoxCustomization:) withObject:textBoxCustomization.cardinalValue];
     }
 }
 
