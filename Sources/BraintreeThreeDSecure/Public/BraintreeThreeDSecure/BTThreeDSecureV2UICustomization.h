@@ -13,8 +13,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureV2ToolbarCustomization.h>
 #endif
 
-#import <CardinalMobile/LabelCustomization.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**

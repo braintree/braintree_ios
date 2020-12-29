@@ -7,13 +7,6 @@
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
 #endif
-//
-//#import <CardinalMobile/CardinalMobile.h>
-//#import <CardinalMobile/ToolbarCustomization.h>
-//#import <CardinalMobile/LabelCustomization.h>
-//#import <CardinalMobile/ButtonCustomization.h>
-//#import <CardinalMobile/Customization.h>
-//#import <CardinalMobile/TextBoxCustomization.h>
 
 @class BTThreeDSecureRequest;
 @class BTThreeDSecureLookup;
