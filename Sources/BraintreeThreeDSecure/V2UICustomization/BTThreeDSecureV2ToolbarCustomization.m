@@ -1,5 +1,10 @@
-#import "BTThreeDSecureV2ToolbarCustomization.h"
 #import "BTThreeDSecureV2BaseCustomization_Internal.h"
+
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureV2ToolbarCustomization.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureV2ToolbarCustomization.h>
+#endif
 
 @implementation BTThreeDSecureV2ToolbarCustomization
 

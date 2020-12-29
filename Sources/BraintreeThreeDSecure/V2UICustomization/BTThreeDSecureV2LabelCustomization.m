@@ -1,5 +1,10 @@
-#import "BTThreeDSecureV2LabelCustomization.h"
 #import "BTThreeDSecureV2BaseCustomization_Internal.h"
+
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureV2LabelCustomization.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureV2LabelCustomization.h>
+#endif
 
 @implementation BTThreeDSecureV2LabelCustomization
 

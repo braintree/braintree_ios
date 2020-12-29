@@ -1,5 +1,10 @@
-#import "BTThreeDSecureV2ButtonCustomization.h"
 #import "BTThreeDSecureV2BaseCustomization_Internal.h"
+
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#import <Braintree/BTThreeDSecureV2ButtonCustomization.h>
+#else
+#import <BraintreeThreeDSecure/BTThreeDSecureV2ButtonCustomization.h>
+#endif
 
 @implementation BTThreeDSecureV2ButtonCustomization
 
