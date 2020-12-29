@@ -16,22 +16,34 @@ v5 introduces support for Swift Package Manager. See the [README](/README.md#swi
 
 In v4, 3D Secure classes were housed in the `BraintreePaymentFlow` module. In v5, `BraintreeThreeDSecure` is a standalone module offering the same 3DS functionality. The `BraintreePaymentFlow` module still houses Local Payment functionality.
 
-### CocoaPods
+### Integration
+
+##### CocoaPods
 In your Podfile, add:
 ```
 pod `Braintree/ThreeDSecure`
 ```
 
-### Carthage
+##### Carthage
 You will need to add the `BraintreeThreeDSecure` framework to your project. See the Carthage docs for [integration instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
 *Note:* In v5, using the `--no-use-binaries` flag with `carthage update` may result in a timeout.
 
 *Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. Open a GitHub issue if there are concerns.
 
-### Swift Package Manager
+##### Swift Package Manager
 
 The `BraintreeThreeDSecure` library does not currently support Swift Package Manager. It relies on a third party framework which we do not yet have in the `.xcframework` format.
+
+### Additional Changes
+
+On `BTThreeDSecureRequest`, the `uiCustomization` property was replaced with `v2UICustomization` of type `BTThreeDSecureV2UICustomization`. For 3DS2 UI customization, use the following new classes:
+
+* `BTThreeDSecureV2UICustomization`
+* `BTThreeDSecureV2ButtonCustomization`
+* `BTThreeDSecureV2LabelCustomization`
+* `BTThreeDSecureV2TextBoxCustomization`
+* `BTThreeDSecureV2ToolbarCustomization`
 
 ## PayPal
 
