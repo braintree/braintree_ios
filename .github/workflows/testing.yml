@@ -8,8 +8,8 @@ jobs:
       # Checks out a copy of your repository
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: Use Xcode 12.2
-        run: sudo xcode-select -switch /Applications/Xcode_12.2.app
+      - name: Use Xcode 12.3
+        run: sudo xcode-select -switch /Applications/Xcode_12.3.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
@@ -21,8 +21,8 @@ jobs:
       # Checks out a copy of your repository
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: Use Xcode 12.2
-        run: sudo xcode-select -switch /Applications/Xcode_12.2.app
+      - name: Use Xcode 12.3
+        run: sudo xcode-select -switch /Applications/Xcode_12.3.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run UI Tests
@@ -34,8 +34,8 @@ jobs:
       # Checks out a copy of your repository
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: Use Xcode 12.2
-        run: sudo xcode-select -switch /Applications/Xcode_12.2.app
+      - name: Use Xcode 12.3
+        run: sudo xcode-select -switch /Applications/Xcode_12.3.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests

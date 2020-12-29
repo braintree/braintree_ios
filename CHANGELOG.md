@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased (5.0.0-beta2)
+* Add SPM support for `BraintreeDataCollector`
+* Bump Kount to v4.0.4.3 pre-release (provides an xcframework for SPM)
+* Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
+* Add SPM support for `BraintreeThreeDSecure`
+* Breaking Changes
+  * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
+
 ## 5.0.0-beta1 (2020-12-01)
 * Add support for Swift Package Manager (resolves #462)
 * Bump Kount to v4.0.4.2 (supports iOS 9.3+)

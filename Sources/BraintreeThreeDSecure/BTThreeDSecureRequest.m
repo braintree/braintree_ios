@@ -73,7 +73,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
         NSError *integrationError;
 
-        // TODO: test this
         if (!NSClassFromString(@"CardinalSession")) {
             [[BTLogger sharedLogger] critical:@"CardinalMobile framework is not included. For SPM integrations, you must manually include it."];
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain

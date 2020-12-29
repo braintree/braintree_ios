@@ -10,7 +10,7 @@ v5 supports a minimum deployment target of iOS 12+. It requires the use of Xcode
 
 ## Swift Package Manager
 
-v5 introduces limited support for Swift Package Manager. See the [README](/README.md#swift-package-manager-v5-beta) for more details.
+v5 introduces support for Swift Package Manager. See the [README](/README.md#swift-package-manager-v5-beta) for more details.
 
 ## 3D Secure
 
