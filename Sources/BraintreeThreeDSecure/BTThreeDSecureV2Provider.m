@@ -51,6 +51,7 @@
 
     instance.cardinalSession = (id<BTProxyCardinalSession>)[NSClassFromString(@"CardinalSession") new];
     id<BTProxyCardinalSessionConfiguration> cardinalConfiguration = (id<BTProxyCardinalSessionConfiguration>)[NSClassFromString(@"CardinalSessionConfiguration") new];
+    // TODO: Enable UI customization
 //    if (request.uiCustomization) {
 //        cardinalConfiguration.uiCustomization = request.uiCustomization;
 //    }
