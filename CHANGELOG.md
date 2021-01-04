@@ -3,6 +3,7 @@
 ## unreleased (5.0.0-beta2)
 * Add SPM support for `BraintreeDataCollector`
 * Bump Kount to v4.0.4.3 pre-release (provides an xcframework for SPM)
+* Bump PPRiskMagnes to v5.10.0 (resolves #564)
 * Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
 * Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
 * Breaking Changes
