@@ -4,6 +4,7 @@
 * Add SPM support for `BraintreeDataCollector`
 * Bump Kount to v4.0.4.3 pre-release (provides an xcframework for SPM)
 * Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
+* Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
 * Breaking Changes
   * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
 

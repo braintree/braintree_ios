@@ -48,7 +48,7 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
     func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let webviewElementsQuery = app.webViews.element.otherElements
 
-        self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
+        self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"], timeout: 20)
 
         webviewElementsQuery.links["Cancel Sandbox Purchase"].forceTapElement()
 
