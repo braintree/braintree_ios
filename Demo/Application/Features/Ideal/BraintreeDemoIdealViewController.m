@@ -53,6 +53,7 @@
 
     BTLocalPaymentRequest *request = [[BTLocalPaymentRequest alloc] init];
     request.paymentType = @"ideal";
+    request.paymentTypeCountryCode = @"NL";
     request.currencyCode = @"EUR";
     request.amount = @"1.01";
     request.givenName = @"Linh";
