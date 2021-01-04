@@ -51,7 +51,7 @@ The `BraintreeThreeDSecure` library does not currently support Swift Package Man
 
 #### BTThreeDSecureRequestDelegate
 
-The signature for the `BTThreeDSecureRequestDelegate` method `onLookupComplete` method has changed:
+The signature for the `BTThreeDSecureRequestDelegate` method `onLookupComplete` has changed:
 
 ```swift
 public func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult result: BTThreeDSecureResult, next: @escaping () -> Void) {
