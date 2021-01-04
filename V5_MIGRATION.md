@@ -16,7 +16,7 @@ v5 introduces limited support for Swift Package Manager. See the [README](/READM
 
 In v4, 3D Secure classes were housed in the `BraintreePaymentFlow` module. In v5, `BraintreeThreeDSecure` is a standalone module offering the same 3DS functionality. The `BraintreePaymentFlow` module still houses Local Payment functionality.
 
-### Integration
+#### Integration
 
 <details><summary>CocoaPods</summary>
 <p>
@@ -49,7 +49,7 @@ The `BraintreeThreeDSecure` library does not currently support Swift Package Man
 </p>
 </details>
 
-### BTThreeDSecureRequestDelegate
+#### BTThreeDSecureRequestDelegate
 
 The signature for the `BTThreeDSecureRequestDelegate` method `onLookupComplete` method has changed:
 
