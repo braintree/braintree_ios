@@ -1,10 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased (5.0.0-beta2)
-* Add SPM support for `BraintreeDataCollector`
+* Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
 * Bump Kount to v4.0.4.3 pre-release (provides an xcframework for SPM)
 * Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
-* Add SPM support for `BraintreeThreeDSecure`
+* Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
 * Breaking Changes
   * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
   * Replace `uiCustomization` with `v2UICustomization` on `BTThreeDSecureRequest`
