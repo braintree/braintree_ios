@@ -9,12 +9,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * The LabelCustomization class provides methods for the 3DS Requestor App to pass label customization parameters to the 3DS SDK.
+ * Label customization options for 3D Secure 2 flows.
  */
 @interface BTThreeDSecureV2LabelCustomization : BTThreeDSecureV2BaseCustomization
 
 /**
- * @property headingTextColor Colour code in Hex format. For example, the colour code can be “#999999”.
+ * @property headingTextColor Color code in Hex format. For example, the color code can be “#999999”.
  */
 @property (nonatomic, strong) NSString* headingTextColor;
 

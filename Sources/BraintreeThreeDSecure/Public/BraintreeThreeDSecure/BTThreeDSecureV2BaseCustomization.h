@@ -3,8 +3,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * The Customization class serves as a superclass for the ButtonCustomization class, ToolbarCustomization class, LabelCustomization class, and TextBoxCustomization class.
- * This class provides methods to pass UI customization parameters to the 3DS SDK.
+ * Base customization options for 3D Secure 2 flows.
  */
 @interface BTThreeDSecureV2BaseCustomization : NSObject
 

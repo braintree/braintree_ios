@@ -16,51 +16,50 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * The ButtonType enum defines the button type.
+ * Button types that can be customized in 3D Secure 2 flows.
  */
 typedef NS_ENUM(NSInteger, BTThreeDSecureV2ButtonType) {
-    /**ButtonTypeVerify Verify button.*/
+    /** Verify button.*/
     ButtonTypeVerify,
 
-    /**ButtonTypeContinue Continue button.*/
+    /** Continue button.*/
     ButtonTypeContinue,
 
-    /**ButtonTypeNext Next button.*/
+    /** Next button.*/
     ButtonTypeNext,
 
-    /**ButtonTypeCancel Cancel button.*/
+    /** Cancel button.*/
     ButtonTypeCancel,
 
-    /**ButtonTypeResend Resend button.*/
+    /** Resend button.*/
     ButtonTypeResend
 };
 
 /**
- * The UiCustomization class provides the functionality required to customize the 3DS SDK UI elements.
- * An object of this class holds various UI-related parameters.
+ * UI customization options for 3D Secure 2 flows.
  */
 @interface BTThreeDSecureV2UICustomization : NSObject
 
 /**
- * Set the attributes of a ButtonCustomization object for a particular predefined button type.
- * @param buttonCustomization A ButtonCustomization object.
- * @param buttonType ButtonType enum.
+ * Set button customization options for 3D Secure 2 flows.
+ * @param buttonCustomization Button customization options
+ * @param buttonType Button type
  */
 - (void)setButtonCustomization:(BTThreeDSecureV2ButtonCustomization *)buttonCustomization
                      buttonType:(BTThreeDSecureV2ButtonType)buttonType;
 
 /**
- * Sets the attributes of a ToolbarCustomization object.
+ * Toolbar customization options for 3D Secure 2 flows.
  */
 @property (nonatomic, strong) BTThreeDSecureV2ToolbarCustomization *toolbarCustomization;
 
 /**
- * Sets the attributes of a LabelCustomization object.
+ * Label customization options for 3D Secure 2 flows.
  */
 @property (nonatomic, strong) BTThreeDSecureV2LabelCustomization *labelCustomization;
 
 /**
- * Sets the attributes of a TextBoxCustomization object.
+ * Text box customization options for 3D Secure 2 flows.
  */
 @property (nonatomic, strong) BTThreeDSecureV2TextBoxCustomization *textBoxCustomization;
 

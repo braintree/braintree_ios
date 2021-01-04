@@ -9,12 +9,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * The ButtonCustomization class provides methods for the 3DS Requestor App to pass button customization parameters to the 3DS SDK.
+ * Button customization options for 3D Secure 2 flows.
  */
 @interface BTThreeDSecureV2ButtonCustomization : BTThreeDSecureV2BaseCustomization
 
 /**
- * @property backgroundColor Colour code in Hex format. For example, the colour code can be “#999999”.
+ * @property backgroundColor Color code in Hex format. For example, the color code can be “#999999”.
  */
 @property (nonatomic, strong) NSString* backgroundColor;
 

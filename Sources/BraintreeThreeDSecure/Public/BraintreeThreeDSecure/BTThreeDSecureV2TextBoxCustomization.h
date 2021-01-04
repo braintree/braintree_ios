@@ -9,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * The TextBoxCustomization class provides methods for the 3DS Requestor App to pass text box customization parameters to the 3DS SDK.
+ * Text box customization options for 3D Secure 2 flows.
  */
 @interface BTThreeDSecureV2TextBoxCustomization : BTThreeDSecureV2BaseCustomization
 
@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int borderWidth;
 
 /**
- * @property borderColor Colour code in Hex format. For example, the colour code can be “#999999”.
+ * @property borderColor Color code in Hex format. For example, the color code can be “#999999”.
  */
 @property (nonatomic, strong) NSString* borderColor;
 
