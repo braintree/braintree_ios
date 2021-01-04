@@ -40,6 +40,8 @@
 }
 
 - (void)testGetRewardsBalance_whenCardHasInsufficientPoints_returnsPayload_withError {
+    XCTSkip("pending investigation");
+
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN_VERSION_3];
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTAmericanExpressClient *amexClient = [[BTAmericanExpressClient alloc] initWithAPIClient:apiClient];
