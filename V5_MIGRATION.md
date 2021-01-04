@@ -58,7 +58,7 @@ public func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult resu
 
 }
 ```
-The lookup information, such as `requiresUserAuthentication` can be found on the result's `lookup` property:
+The lookup information, such as `requiresUserAuthentication`, can be found on the result's `lookup` property:
 
 ```swift
 result.lookup?.requiresUserAuthentication
