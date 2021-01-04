@@ -23,6 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *paymentType;
 
 /**
+ The country code of the local payment.
+
+ This value must be one of the supported country codes for a given local payment type listed at the link below. For local payments supported in multiple countries, this value may determine which banks are presented to the customer.
+
+ https://developers.braintreepayments.com/guides/local-payment-methods/client-side-custom/ios/v4#invoke-payment-flow
+ */
+@property (nonatomic, nullable, copy) NSString *paymentTypeCountryCode;
+
+/**
  Optional: A non-default merchant account to use for tokenization.
  */
 @property (nonatomic, nullable, copy) NSString *merchantAccountId;

@@ -116,6 +116,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         localPaymentRequest.merchantAccountId = "customer-nl-merchant-account"
         localPaymentRequest.paymentType = "ideal"
+        localPaymentRequest.paymentTypeCountryCode = "NL"
         localPaymentRequest.currencyCode = "EUR"
         localPaymentRequest.amount = "1.01"
         localPaymentRequest.givenName = "Linh"
@@ -138,6 +139,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
         XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["payment_type_country_code"] as? String, "NL")
         XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["currency_iso_code"] as? String, "EUR")
         XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? String, "1.01")
         XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["first_name"] as? String, "Linh")

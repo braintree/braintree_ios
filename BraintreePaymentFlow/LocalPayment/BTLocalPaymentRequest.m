@@ -80,6 +80,10 @@
         params[@"return_url"] = [NSString stringWithFormat:@"%@%@", [delegate returnURLScheme], @"://x-callback-url/braintree/local-payment/success"];
         params[@"cancel_url"] = [NSString stringWithFormat:@"%@%@", [delegate returnURLScheme], @"://x-callback-url/braintree/local-payment/cancel"];
 
+        if (localPaymentRequest.paymentTypeCountryCode) {
+            params[@"payment_type_country_code"] = localPaymentRequest.paymentTypeCountryCode;
+        }
+
         if (localPaymentRequest.address) {
             params[@"line1"] = localPaymentRequest.address.streetAddress;
             params[@"line2"] = localPaymentRequest.address.extendedAddress;

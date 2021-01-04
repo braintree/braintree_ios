@@ -1,5 +1,46 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
+
+## 5.0.0-beta1 (2020-12-01)
+* Add support for Swift Package Manager (resolves #462)
+* Bump Kount to v4.0.4.2 (supports iOS 9.3+)
+* Replace deprecated `SecTrustEvaluate` with `SecTrustEvaluateWithError` (fixes #536)
+* Only check if the Venmo app is installed if the BraintreeVenmo module is being used (resolves #231)
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 12
+  * Remove deprecated `BraintreeUI` module
+  * Remove all deprecated methods and properties
+  * Core
+    * Remove the `localizedDescription` property on `BTPaymentMethodNonce`
+    * Update all methods on `BTAppSwitchDelegate` to be optional
+    * Remove `options` and `sourceApplication` params on `BTAppSwitch` methods
+  * PaymentFlow
+    * Update dismiss button style from done to cancel for `SFSafariViewController`s presented via the `BTPaymentFlowDriver`. This update applies to both the 3D Secure and Local Payments payment flows.
+    * Remove the `localizedDescription` property on `BTLocalPaymentResult`
+    * Remove unused `BTPaymentFlowDriverErrorTypeInvalidRequestURL` option from `BTPaymentFlowDriverErrorDomain`
+  * PayPal
+    * Remove PayPalOneTouch and PayPalUtils modules
+    * Remove `authorizeAccountWithCompletion` and `authorizeAccountWithAdditionalScopes` methods from `BTPayPalDriver`
+    * Remove `requestOneTimePayment` and `requestBillingAgreement` overloads with custom `handler` parameters from `BTPayPalDriver`
+    * Remove `viewControllerPresentingDelegate` property from `BTPayPalDriver`
+    * Remove use of `SFSafariViewController` from PayPal flow
+    * Replace deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in PayPal flow
+    * Update `requestBillingAgreement` and `requestOneTimePayment` completion blocks to return an error when user cancels the PayPal flow
+    * Remove custom URL scheme requirement for PayPal flow
+    * Update `BTPayPalDriverErrorType` enum
+      * Remove `BTPayPalDriverErrorTypeIntegrationReturnURLScheme`
+      * Remove `BTPayPalDriverErrorTypeAppSwitchFailed`
+      * Remove `BTPayPalDriverErrorTypeInvalidConfiguration`
+  * ThreeDSecure
+    * Remove deprecated `Braintree3DSecure` module
+    * Restructure `BTThreeDSecureResult` and `BTThreeDSecureLookup`
+    * Create a stand-alone 3DS module
+  * PayPalDataCollector
+    * Add `PPRiskMagnes.framework` and `PPRiskMagnes.xcframework` v5.0.1 (requires Swift 5.1+)
+    * Remove `collectPayPalDeviceInfoWithClientMetadataID` method on `PayPalDataCollector.h`
+
 ## 4.36.1 (2020-11-10)
 * Update CardinalMobile.framework to v2.2.4-1
 * Exclude arm64 simulator architectures via Podspec (fixes [Drop-In #233](https://github.com/braintree/braintree-ios-drop-in/issues/233))
