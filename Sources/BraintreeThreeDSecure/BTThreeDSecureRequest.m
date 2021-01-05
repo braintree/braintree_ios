@@ -94,6 +94,12 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil or NaN."}];
         }
 
+        if (self.versionRequested == BTThreeDSecureVersion2 && self.threeDSecureRequestDelegate == nil) {
+            integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                   code:BTThreeDSecureFlowErrorTypeConfiguration
+                                               userInfo:@{NSLocalizedDescriptionKey: @"Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."}];
+        }
+
         if (integrationError != nil) {
             [delegate onPaymentComplete:nil error:integrationError];
             return;
@@ -143,16 +149,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:apiClient];
-
-    if (threeDSecureRequest.versionRequested == BTThreeDSecureVersion2) {
-        if (threeDSecureRequest.threeDSecureRequestDelegate == nil) {
-            NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
-                                                 code:BTThreeDSecureFlowErrorTypeConfiguration
-                                             userInfo:@{NSLocalizedDescriptionKey: @"Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."}];
-            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
-            return;
-        }
-    }
     
     if (threeDSecureRequest.versionRequested == BTThreeDSecureVersion1 && threeDSecureRequest.threeDSecureRequestDelegate == nil) {
         threeDSecureRequest.threeDSecureRequestDelegate = self;

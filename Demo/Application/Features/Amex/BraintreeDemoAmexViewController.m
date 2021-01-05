@@ -5,36 +5,73 @@
 
 @interface BraintreeDemoAmexViewController ()
 
+@property (nonatomic, strong) BTAPIClient *apiClient;
+@property (nonatomic, strong) BTCardClient *cardClient;
 @property (nonatomic, strong) BTAmericanExpressClient *amexClient;
 
 @end
 
 @implementation BraintreeDemoAmexViewController
 
+- (instancetype)initWithAuthorization:(NSString *)authorization {
+    self = [super initWithAuthorization:authorization];
+    if (self) {
+        _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
+        _amexClient = [[BTAmericanExpressClient alloc] initWithAPIClient:_apiClient];
+        _cardClient = [[BTCardClient alloc] initWithAPIClient:_apiClient];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.amexClient = [[BTAmericanExpressClient alloc] initWithAPIClient:self.apiClient];
     self.title = NSLocalizedString(@"Amex", nil);
+
+    UIButton *validCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [validCardButton setTitle:NSLocalizedString(@"Valid card", nil) forState:UIControlStateNormal];
+    [validCardButton addTarget:self action:@selector(tappedValidCard) forControlEvents:UIControlEventTouchUpInside];
+
+    UIButton *insufficientPointsCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [insufficientPointsCardButton setTitle:NSLocalizedString(@"Insufficient points card", nil) forState:UIControlStateNormal];
+    [insufficientPointsCardButton addTarget:self action:@selector(tappedInsufficientPointsCard) forControlEvents:UIControlEventTouchUpInside];
+
+    UIButton *ineligibleCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [ineligibleCardButton setTitle:NSLocalizedString(@"Ineligible card", nil) forState:UIControlStateNormal];
+    [ineligibleCardButton addTarget:self action:@selector(tappedIneligibleCard) forControlEvents:UIControlEventTouchUpInside];
+
+    UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[validCardButton, insufficientPointsCardButton, ineligibleCardButton]];
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.distribution = UIStackViewDistributionEqualSpacing;
+    stackView.spacing = 20;
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.view addSubview:stackView];
+    [NSLayoutConstraint activateConstraints:@[
+        [stackView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [stackView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+    ]];
 }
 
-- (UIView *)createPaymentButton {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:NSLocalizedString(@"Get rewards balance", nil) forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
-    [button setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
-    [button addTarget:self action:@selector(tapped) forControlEvents:UIControlEventTouchUpInside];
-    return button;
+- (void)tappedValidCard {
+    [self getRewardsForCardNumber:@"371260714673002"];
 }
 
-- (void)tapped {
-    BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
-    BTCard *card = [[BTCard alloc] initWithNumber:@"371260714673002"
+- (void)tappedInsufficientPointsCard {
+    [self getRewardsForCardNumber:@"371544868764018"];
+}
+
+- (void)tappedIneligibleCard {
+    [self getRewardsForCardNumber:@"378267515471109"];
+}
+
+- (void)getRewardsForCardNumber:(NSString *)cardNumber {
+    BTCard *card = [[BTCard alloc] initWithNumber:cardNumber
                                   expirationMonth:@"12"
-                                   expirationYear:@"2020"
+                                   expirationYear:@"2025"
                                               cvv:@"1234"];
-
     self.progressBlock(@"Tokenizing Card");
-    [cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
+
+    [self.cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
             NSLog(@"Error: %@", error);
@@ -42,15 +79,16 @@
         }
 
         self.progressBlock(@"Amex - getting rewards balance");
-        [self.amexClient getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(__unused BTAmericanExpressRewardsBalance * _Nullable rewardsBalance, NSError * _Nullable error) {
+        [self.amexClient getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance *rewardsBalance, NSError *error) {
             if (error) {
                 self.progressBlock(error.localizedDescription);
+            } else if (rewardsBalance.errorCode) {
+                self.progressBlock([NSString stringWithFormat:@"%@: %@", rewardsBalance.errorCode, rewardsBalance.errorMessage]);
             } else {
-                self.progressBlock(@"Amex - received rewards balance");
+                self.progressBlock([NSString stringWithFormat:@"%@ %@, %@ %@", rewardsBalance.rewardsAmount, rewardsBalance.rewardsUnit, rewardsBalance.currencyAmount, rewardsBalance.currencyIsoCode]);
             }
         }];
     }];
-
 }
 
 @end

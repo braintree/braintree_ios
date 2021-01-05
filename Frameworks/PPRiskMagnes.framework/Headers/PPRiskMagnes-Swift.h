@@ -222,6 +222,8 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
+
+
 /// MagnesResult is an object holding Magnes Device Info and PayPalClientMetaDataId
 SWIFT_CLASS("_TtC12PPRiskMagnes12MagnesResult")
 @interface MagnesResult : NSObject
@@ -262,7 +264,7 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 ///
 /// \param apnToken Apple Push Notification token of the host app, if available
 ///
-/// \param isDisabled if loading Magnes remote configuration is going to be disabled
+/// \param isRemoteConfigDisabled if loading Magnes remote configuration is going to be disabled
 ///
 - (BOOL)setUpWithSetEnviroment:(enum Environment)env setOptionalAppGuid:(NSString * _Nonnull)appGuid setOptionalAPNToken:(NSString * _Nonnull)apnToken disableRemoteConfiguration:(BOOL)isRemoteConfigDisabled disableBeacon:(BOOL)isBeaconDisabled magnesSource:(enum MagnesSource)source error:(NSError * _Nullable * _Nullable)error;
 /// Collect Magnes Data
@@ -271,36 +273,6 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 /// returns:
 /// MagnesResult
 - (MagnesResult * _Nonnull)collect SWIFT_WARN_UNUSED_RESULT;
-/// Registers UITextFields for Telemetry
-/// viewId: Has to be unique for each textField
-/// Nothing is returned
-///
-/// returns:
-/// Void
-- (void)registerTelemetryOn:(UITextField * _Nonnull)textField withViewId:(NSString * _Nonnull)viewId withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
-/// Removes Telemetry from UITextFields
-/// viewId: Has to be unique for each textField
-/// Nothing is returned
-///
-/// returns:
-/// Void
-- (void)unregisterTelemetryOn:(UITextField * _Nonnull)textField;
-/// Will be implemented in the ViewController where the UITextFieldDelegate protocol is being implemented
-/// Function invoked in UITextFieldDelegate method <code>textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool</code>
-/// Nothing is returned
-///
-/// returns:
-/// Void
-- (void)collectTelemetryDataWithTextField:(UITextField * _Nonnull)textField range:(NSRange)range replacementString:(NSString * _Nonnull)replacementString;
-/// Will be implemented in the ViewController where the Touch Data is to be collected
-/// Function invoked in 3 functions:
-/// touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?),
-/// touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?),
-/// touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
-///
-/// returns:
-/// Void
-- (void)collectTouchData:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event forTouchPhase:(enum UITouchPhase)phase withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
 /// Collect Magnes Data with an existing PayPalClientMetadataId and return it
 /// You can pass in any additional Key-Value pairs in the additionalData field
 /// \param cmid existing PayPalClientMetadataId: String
@@ -331,6 +303,36 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 /// returns:
 /// MagnesResult
 - (MagnesResult * _Nullable)collectAndSubmitWithPayPalClientMetadataId:(NSString * _Nonnull)cmid withAdditionalData:(NSDictionary<NSString *, NSString *> * _Nonnull)additionalData error:(NSError * _Nullable * _Nullable)error SWIFT_WARN_UNUSED_RESULT;
+/// Registers UITextFields for Telemetry
+/// viewId: Has to be unique for each textField
+/// Nothing is returned
+///
+/// returns:
+/// Void
+- (void)registerTelemetryOn:(UITextField * _Nonnull)textField withViewId:(NSString * _Nonnull)viewId withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
+/// Removes Telemetry from UITextFields
+/// viewId: Has to be unique for each textField
+/// Nothing is returned
+///
+/// returns:
+/// Void
+- (void)unregisterTelemetryOn:(UITextField * _Nonnull)textField;
+/// Will be implemented in the ViewController where the UITextFieldDelegate protocol is being implemented
+/// Function invoked in UITextFieldDelegate method <code>textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool</code>
+/// Nothing is returned
+///
+/// returns:
+/// Void
+- (void)collectTelemetryDataWithTextField:(UITextField * _Nonnull)textField range:(NSRange)range replacementString:(NSString * _Nonnull)replacementString;
+/// Will be implemented in the ViewController where the Touch Data is to be collected
+/// Function invoked in 3 functions:
+/// touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?),
+/// touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?),
+/// touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
+///
+/// returns:
+/// Void
+- (void)collectTouchData:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event forTouchPhase:(enum UITouchPhase)phase withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
 @end
 
 typedef SWIFT_ENUM(NSInteger, MagnesSource, open) {
@@ -582,6 +584,8 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 
 
+
+
 /// MagnesResult is an object holding Magnes Device Info and PayPalClientMetaDataId
 SWIFT_CLASS("_TtC12PPRiskMagnes12MagnesResult")
 @interface MagnesResult : NSObject
@@ -622,7 +626,7 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 ///
 /// \param apnToken Apple Push Notification token of the host app, if available
 ///
-/// \param isDisabled if loading Magnes remote configuration is going to be disabled
+/// \param isRemoteConfigDisabled if loading Magnes remote configuration is going to be disabled
 ///
 - (BOOL)setUpWithSetEnviroment:(enum Environment)env setOptionalAppGuid:(NSString * _Nonnull)appGuid setOptionalAPNToken:(NSString * _Nonnull)apnToken disableRemoteConfiguration:(BOOL)isRemoteConfigDisabled disableBeacon:(BOOL)isBeaconDisabled magnesSource:(enum MagnesSource)source error:(NSError * _Nullable * _Nullable)error;
 /// Collect Magnes Data
@@ -631,36 +635,6 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 /// returns:
 /// MagnesResult
 - (MagnesResult * _Nonnull)collect SWIFT_WARN_UNUSED_RESULT;
-/// Registers UITextFields for Telemetry
-/// viewId: Has to be unique for each textField
-/// Nothing is returned
-///
-/// returns:
-/// Void
-- (void)registerTelemetryOn:(UITextField * _Nonnull)textField withViewId:(NSString * _Nonnull)viewId withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
-/// Removes Telemetry from UITextFields
-/// viewId: Has to be unique for each textField
-/// Nothing is returned
-///
-/// returns:
-/// Void
-- (void)unregisterTelemetryOn:(UITextField * _Nonnull)textField;
-/// Will be implemented in the ViewController where the UITextFieldDelegate protocol is being implemented
-/// Function invoked in UITextFieldDelegate method <code>textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool</code>
-/// Nothing is returned
-///
-/// returns:
-/// Void
-- (void)collectTelemetryDataWithTextField:(UITextField * _Nonnull)textField range:(NSRange)range replacementString:(NSString * _Nonnull)replacementString;
-/// Will be implemented in the ViewController where the Touch Data is to be collected
-/// Function invoked in 3 functions:
-/// touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?),
-/// touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?),
-/// touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
-///
-/// returns:
-/// Void
-- (void)collectTouchData:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event forTouchPhase:(enum UITouchPhase)phase withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
 /// Collect Magnes Data with an existing PayPalClientMetadataId and return it
 /// You can pass in any additional Key-Value pairs in the additionalData field
 /// \param cmid existing PayPalClientMetadataId: String
@@ -691,6 +665,36 @@ SWIFT_CLASS("_TtC12PPRiskMagnes9MagnesSDK")
 /// returns:
 /// MagnesResult
 - (MagnesResult * _Nullable)collectAndSubmitWithPayPalClientMetadataId:(NSString * _Nonnull)cmid withAdditionalData:(NSDictionary<NSString *, NSString *> * _Nonnull)additionalData error:(NSError * _Nullable * _Nullable)error SWIFT_WARN_UNUSED_RESULT;
+/// Registers UITextFields for Telemetry
+/// viewId: Has to be unique for each textField
+/// Nothing is returned
+///
+/// returns:
+/// Void
+- (void)registerTelemetryOn:(UITextField * _Nonnull)textField withViewId:(NSString * _Nonnull)viewId withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
+/// Removes Telemetry from UITextFields
+/// viewId: Has to be unique for each textField
+/// Nothing is returned
+///
+/// returns:
+/// Void
+- (void)unregisterTelemetryOn:(UITextField * _Nonnull)textField;
+/// Will be implemented in the ViewController where the UITextFieldDelegate protocol is being implemented
+/// Function invoked in UITextFieldDelegate method <code>textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool</code>
+/// Nothing is returned
+///
+/// returns:
+/// Void
+- (void)collectTelemetryDataWithTextField:(UITextField * _Nonnull)textField range:(NSRange)range replacementString:(NSString * _Nonnull)replacementString;
+/// Will be implemented in the ViewController where the Touch Data is to be collected
+/// Function invoked in 3 functions:
+/// touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?),
+/// touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?),
+/// touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
+///
+/// returns:
+/// Void
+- (void)collectTouchData:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event forTouchPhase:(enum UITouchPhase)phase withPayPalClientMetadataId:(NSString * _Nonnull)cmid;
 @end
 
 typedef SWIFT_ENUM(NSInteger, MagnesSource, open) {
