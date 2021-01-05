@@ -18,22 +18,18 @@ class AmericanExpress_UITests: XCTestCase {
 
     func testValidCard_receivesRewardsBalance() {
         app.buttons["Valid card"].tap()
-        sleep(2)
-
-        XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].exists);
+        waitForElementToAppear(app.buttons["45256433 Points, 316795.03 USD"], timeout: 10)
     }
 
     func testInsufficientPointsCard_receivesErrorMessage() {
         app.buttons["Insufficient points card"].tap()
         sleep(2)
 
-        XCTAssertTrue(app.buttons["INQ2003: Not sufficient points in rewards account"].exists);
+        waitForElementToAppear(app.buttons["INQ2003: Not sufficient points in rewards account"], timeout: 10)
     }
 
     func testIneligibleCard_receivesErrorMessage() {
         app.buttons["Ineligible card"].tap()
-        sleep(2)
-
-        XCTAssertTrue(app.buttons["INQ2002: Card is not eligible for the Program"].exists);
+        waitForElementToAppear(app.buttons["INQ2002: Card is not eligible for the Program"], timeout: 10)
     }
 }
