@@ -4,6 +4,9 @@
  */
 
 import XCTest
+import BraintreeCore
+import BraintreePayPal
+import BraintreeCard
 
 class PayPal_BillingAgreement_UITests: XCTestCase {
     var app: XCUIApplication!
@@ -65,5 +68,20 @@ class PayPal_BillingAgreement_UITests: XCTestCase {
         self.waitForElementToAppear(app.buttons["Billing Agreement with PayPal"])
 
         XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists);
+    }
+
+    func test_runningIntegrationStyleTestsInUITestTarget() {
+        let apiClient = BTAPIClient.init(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        let cardClient = BTCardClient.init(apiClient: apiClient!)
+        let card = BTCard.init(number: "4111111111111111", expirationMonth: "12", expirationYear: "2023", cvv: "123")
+
+        let tokenizationExpectation = self.expectation(description: "Tokenize card")
+
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) in
+            XCTAssertNotNil(tokenizedCard)
+            tokenizationExpectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 5, handler: nil)
     }
 }
