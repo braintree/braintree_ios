@@ -103,15 +103,15 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
 
         // BTHTTP's default NSURLSession does not cache responses, but we want the BTHTTP instance that fetches configuration to cache aggressively
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        static NSURLCache *configurationCache;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            configurationCache = [[NSURLCache alloc] initWithMemoryCapacity:1 * 1024 * 1024 diskCapacity:0 diskPath:nil];
-        });
-        configuration.URLCache = configurationCache;
-        configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
-        _configurationHTTP.session = [NSURLSession sessionWithConfiguration:configuration];
+//        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+//        static NSURLCache *configurationCache;
+//        static dispatch_once_t onceToken;
+//        dispatch_once(&onceToken, ^{
+//            configurationCache = [[NSURLCache alloc] initWithMemoryCapacity:1 * 1024 * 1024 diskCapacity:0 diskPath:nil];
+//        });
+//        configuration.URLCache = configurationCache;
+//        configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+//        _configurationHTTP.session = [NSURLSession sessionWithConfiguration:configuration];
 
         // Kickoff the background request to fetch the config
         [self fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration * _Nullable configuration, __unused NSError * _Nullable error) {
