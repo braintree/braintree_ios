@@ -13,13 +13,27 @@ class AmericanExpress_UITests: XCTestCase {
         app.launchArguments.append("-Integration:BraintreeDemoAmexViewController")
         app.launch()
 
-        waitForElementToAppear(app.buttons["Get rewards balance"])
+        waitForElementToAppear(app.buttons["Valid card"])
     }
 
-    func testGetRewardsBalance_receivesRewardsBalance() {
-        app.buttons["Get rewards balance"].tap()
+    func testValidCard_receivesRewardsBalance() {
+        app.buttons["Valid card"].tap()
         sleep(2)
 
-        XCTAssertTrue(app.buttons["Amex - received rewards balance"].exists);
+        XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].exists);
+    }
+
+    func testInsufficientPointsCard_receivesErrorMessage() {
+        app.buttons["Insufficient points card"].tap()
+        sleep(2)
+
+        XCTAssertTrue(app.buttons["INQ2003: Not sufficient points in rewards account"].exists);
+    }
+
+    func testIneligibleCard_receivesErrorMessage() {
+        app.buttons["Ineligible card"].tap()
+        sleep(2)
+
+        XCTAssertTrue(app.buttons["INQ2002: Card is not eligible for the Program"].exists);
     }
 }
