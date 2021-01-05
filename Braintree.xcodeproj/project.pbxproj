@@ -23,7 +23,6 @@
 		0357C4901F96884F00E63851 /* BTAmericanExpressClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 0357C48D1F96882500E63851 /* BTAmericanExpressClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0357C4921F9690EB00E63851 /* BTAmericanExpressClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 0357C4911F9690A900E63851 /* BTAmericanExpressClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		0357C49A1F96A30700E63851 /* BraintreeAmericanExpress.h in Headers */ = {isa = PBXBuildFile; fileRef = 0357C4991F96A2F400E63851 /* BraintreeAmericanExpress.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0357C49E1F97F53D00E63851 /* BraintreeAmericanExpress_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357C49D1F97F53C00E63851 /* BraintreeAmericanExpress_IntegrationTests.m */; };
 		038C7FD21EA1648900241ABE /* BTPaymentFlowDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C7FBC1EA1648900241ABE /* BTPaymentFlowDriver.m */; };
 		038C7FD31EA1648900241ABE /* BTPaymentFlowDriver_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FBD1EA1648900241ABE /* BTPaymentFlowDriver_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		038C7FD51EA1648900241ABE /* BTPaymentFlowRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C7FBE1EA1648900241ABE /* BTPaymentFlowRequest.m */; };
@@ -725,7 +724,6 @@
 		0357C4911F9690A900E63851 /* BTAmericanExpressClient_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAmericanExpressClient_Internal.h; sourceTree = "<group>"; };
 		0357C4991F96A2F400E63851 /* BraintreeAmericanExpress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeAmericanExpress.h; sourceTree = "<group>"; };
 		0357C49B1F97ED1F00E63851 /* BTAmericanExpressClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressClient_Tests.swift; sourceTree = "<group>"; };
-		0357C49D1F97F53C00E63851 /* BraintreeAmericanExpress_IntegrationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeAmericanExpress_IntegrationTests.m; sourceTree = "<group>"; };
 		035A59D91EA5DE97002960C8 /* BTLocalPayment_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTLocalPayment_Tests.swift; sourceTree = "<group>"; };
 		03800A4D1F045F4B00068F53 /* BTThreeDSecureRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureRequest.m; sourceTree = "<group>"; };
 		03800A541F045F5600068F53 /* BTThreeDSecureRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureRequest.h; sourceTree = "<group>"; };
@@ -1857,7 +1855,6 @@
 			isa = PBXGroup;
 			children = (
 				A7ABD65D1B702FF000A1223C /* Braintree-API-Integration-Specs */,
-				0357C49D1F97F53C00E63851 /* BraintreeAmericanExpress_IntegrationTests.m */,
 				A71559471B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m */,
 				A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */,
 				A76D7C331BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m */,
@@ -3390,7 +3387,6 @@
 				A78BF95D1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m in Sources */,
 				A71559481B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m in Sources */,
 				A7ABD67C1B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m in Sources */,
-				0357C49E1F97F53D00E63851 /* BraintreeAmericanExpress_IntegrationTests.m in Sources */,
 				A76D7C341BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

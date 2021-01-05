@@ -52,13 +52,13 @@ import WebKit
   @objc public class func shared() -> PPRiskMagnes.MagnesSDK
   @objc public func setUp(setEnviroment env: PPRiskMagnes.MagnesSDK.Environment = Environment.LIVE, setOptionalAppGuid appGuid: Swift.String = "", setOptionalAPNToken apnToken: Swift.String = "", disableRemoteConfiguration isRemoteConfigDisabled: Swift.Bool = false, disableBeacon isBeaconDisabled: Swift.Bool = false, magnesSource source: PPRiskMagnes.MagnesSDK.MagnesSource = MagnesSource.DEFAULT) throws
   @objc public func collect() -> PPRiskMagnes.MagnesResult
+  @objc public func collect(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
+  @objc public func collectAndSubmit() -> PPRiskMagnes.MagnesResult
+  @objc public func collectAndSubmit(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
   @objc public func registerTelemetry(on textField: UIKit.UITextField, withViewId viewId: Swift.String, withPayPalClientMetadataId cmid: Swift.String)
   @objc public func unregisterTelemetry(on textField: UIKit.UITextField)
   @objc public func collectTelemetryData(textField: UIKit.UITextField, range: Foundation.NSRange, replacementString: Swift.String)
   @objc public func collectTouchData(_ touches: Swift.Set<UIKit.UITouch>, withEvent event: UIKit.UIEvent?, forTouchPhase phase: UIKit.UITouch.Phase, withPayPalClientMetadataId cmid: Swift.String)
-  @objc public func collect(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
-  @objc public func collectAndSubmit() -> PPRiskMagnes.MagnesResult
-  @objc public func collectAndSubmit(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
   @objc deinit
 }
 @_hasMissingDesignatedInitializers @objc public class MagnesResult : ObjectiveC.NSObject {
