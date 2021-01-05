@@ -64,6 +64,16 @@ The lookup information, such as `requiresUserAuthentication`, can be found on th
 result.lookup?.requiresUserAuthentication
 ```
 
+#### 3DS2 UI Customization
+
+On `BTThreeDSecureRequest`, the `uiCustomization` property was replaced with `v2UICustomization` of type `BTThreeDSecureV2UICustomization`. For 3DS2 UI customization, use the following new classes:
+
+* `BTThreeDSecureV2UICustomization`
+* `BTThreeDSecureV2ButtonCustomization`
+* `BTThreeDSecureV2LabelCustomization`
+* `BTThreeDSecureV2TextBoxCustomization`
+* `BTThreeDSecureV2ToolbarCustomization`
+
 ## Apple Pay
 
 For CocoaPods integrations, the Braintree Apple Pay subspec has been renamed from `Braintree/Apple-Pay` to `Braintree/ApplePay`.

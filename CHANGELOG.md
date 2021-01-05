@@ -8,6 +8,13 @@
 * Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
 * Breaking Changes
   * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
+  * Replace `uiCustomization` with `v2UICustomization` on `BTThreeDSecureRequest`
+  * Introduce new classes for 3DS2 UI customization:
+    * `BTThreeDSecureV2UICustomization`
+    * `BTThreeDSecureV2ButtonCustomization`
+    * `BTThreeDSecureV2LabelCustomization`
+    * `BTThreeDSecureV2TextBoxCustomization`
+    * `BTThreeDSecureV2ToolbarCustomization`
 
 ## 5.0.0-beta1 (2020-12-01)
 * Add support for Swift Package Manager (resolves #462)

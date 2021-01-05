@@ -104,7 +104,8 @@ let package = Package(
             name: "BraintreeThreeDSecure",
             dependencies: ["BraintreePaymentFlow", "BraintreeCard"],
             exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [.headerSearchPath("V2UICustomization")]
         ),
         .target(
             name: "BraintreeUnionPay",
