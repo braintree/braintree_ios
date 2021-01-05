@@ -124,18 +124,17 @@
         request.email = @"test@example.com";
         request.shippingMethod = @"01";
 
-        // TODO: - fix UiCustomization imports
-//        UiCustomization *ui = [UiCustomization new];
-//        ToolbarCustomization *toolbarCustomization = [ToolbarCustomization new];
-//        [toolbarCustomization setHeaderText:@"Braintree 3DS Checkout"];
-//        [toolbarCustomization setBackgroundColor:@"#FF5A5F"];
-//        [toolbarCustomization setButtonText:@"Close"];
-//        [toolbarCustomization setTextColor:@"#222222"];
-//        [toolbarCustomization setTextFontSize:18];
-//        [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
-//        [ui setToolbarCustomization:toolbarCustomization];
-//        request.uiCustomization = ui;
-        
+        BTThreeDSecureV2UICustomization *ui = [BTThreeDSecureV2UICustomization new];
+        BTThreeDSecureV2ToolbarCustomization *toolbarCustomization = [BTThreeDSecureV2ToolbarCustomization new];
+        [toolbarCustomization setHeaderText:@"Braintree 3DS Checkout"];
+        [toolbarCustomization setBackgroundColor:@"#FF5A5F"];
+        [toolbarCustomization setButtonText:@"Close"];
+        [toolbarCustomization setTextColor:@"#222222"];
+        [toolbarCustomization setTextFontSize:18];
+        [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
+        [ui setToolbarCustomization:toolbarCustomization];
+        request.v2UICustomization = ui;
+
         BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
         v1UICustomization.redirectButtonText = @"Return to Demo App";
         v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";

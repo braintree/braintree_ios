@@ -36,6 +36,10 @@ let package = Package(
             targets: ["BraintreePayPal"]
         ),
         .library(
+            name: "BraintreeThreeDSecure",
+            targets: ["BraintreeThreeDSecure"]
+        ),
+        .library(
             name: "BraintreeUnionPay",
             targets: ["BraintreeUnionPay"]
         ),
@@ -95,6 +99,13 @@ let package = Package(
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreeThreeDSecure",
+            dependencies: ["BraintreePaymentFlow", "BraintreeCard"],
+            exclude: ["Info.plist"],
+            publicHeadersPath: "Public",
+            cSettings: [.headerSearchPath("V2UICustomization")]
         ),
         .target(
             name: "BraintreeUnionPay",

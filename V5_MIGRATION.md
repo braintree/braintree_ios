@@ -10,7 +10,7 @@ v5 supports a minimum deployment target of iOS 12+. It requires the use of Xcode
 
 ## Swift Package Manager
 
-v5 introduces limited support for Swift Package Manager. See the [README](/README.md#swift-package-manager-v5-beta) for more details.
+v5 introduces support for Swift Package Manager. See the [README](/README.md#swift-package-manager-v5-beta) for more details.
 
 ## 3D Secure
 
@@ -44,7 +44,7 @@ You will need to add the `BraintreeThreeDSecure` framework to your project. See 
 <details><summary>Swift Package Manager</summary>
 <p>
 
-The `BraintreeThreeDSecure` library does not currently support Swift Package Manager. It relies on a third party framework which we do not yet have in the `.xcframework` format.
+Using the `BraintreeThreeDSecure` library with Swift Package Manager requires you to include the CardinalMobile framework. [See README](/README.md#swift-package-manager-v5-beta).
 
 </p>
 </details>
@@ -63,6 +63,16 @@ The lookup information, such as `requiresUserAuthentication`, can be found on th
 ```swift
 result.lookup?.requiresUserAuthentication
 ```
+
+#### 3DS2 UI Customization
+
+On `BTThreeDSecureRequest`, the `uiCustomization` property was replaced with `v2UICustomization` of type `BTThreeDSecureV2UICustomization`. For 3DS2 UI customization, use the following new classes:
+
+* `BTThreeDSecureV2UICustomization`
+* `BTThreeDSecureV2ButtonCustomization`
+* `BTThreeDSecureV2LabelCustomization`
+* `BTThreeDSecureV2TextBoxCustomization`
+* `BTThreeDSecureV2ToolbarCustomization`
 
 ## Apple Pay
 

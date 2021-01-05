@@ -73,6 +73,13 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
         NSError *integrationError;
 
+        if (!NSClassFromString(@"CardinalSession")) {
+            [[BTLogger sharedLogger] critical:@"CardinalMobile framework is not included. For SPM integrations, you must manually include it."];
+            integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                   code:BTThreeDSecureFlowErrorTypeConfiguration
+                                               userInfo:@{NSLocalizedDescriptionKey: @"CardinalMobile framework is not included. For SPM integrations, you must manually include it."}];
+        }
+
         if (self.versionRequested == BTThreeDSecureVersion2 && !configuration.cardinalAuthenticationJWT) {
             [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."];
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
