@@ -229,10 +229,11 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
             XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
+            XCTAssertEqual(error.localizedDescription, "Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2.")
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 4, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testStartPayment_successfulResult_callsCompletionBlock() {
