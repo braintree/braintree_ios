@@ -44,7 +44,7 @@ You will need to add the `BraintreeThreeDSecure` framework to your project. See 
 <details><summary>Swift Package Manager</summary>
 <p>
 
-The `BraintreeThreeDSecure` library does not currently support Swift Package Manager. It relies on a third party framework which we do not yet have in the `.xcframework` format.
+Using the `BraintreeThreeDSecure` library with Swift Package Manager requires you to include the CardinalMobile framework. [See README](/README.md#swift-package-manager-v5-beta).
 
 </p>
 </details>
