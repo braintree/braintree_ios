@@ -33,6 +33,20 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 };
 
 /**
+ :nodoc:
+*/
+typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
+    /// Use the Gateway
+    BTAPIClientHTTPTypeGateway = 0,
+
+    /// Use the Braintree API
+    BTAPIClientHTTPTypeBraintreeAPI,
+
+    /// Use the GraphQL API
+    BTAPIClientHTTPTypeGraphQLAPI,
+};
+
+/**
  This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 
  @note It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
@@ -91,6 +105,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
                       completion:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
 
 /**
+ :nodoc:
  Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
 
  @param path The endpoint URI path.
@@ -105,6 +120,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 /**
+ :nodoc:
  Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
 
  @param path The endpoint URI path.
@@ -116,6 +132,22 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 */
 - (void)POST:(NSString *)path
   parameters:(nullable NSDictionary *)parameters
+  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
+
+/**
+ :nodoc:
+*/
+- (void)GET:(NSString *)path
+ parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
+ httpType:(BTAPIClientHTTPType)httpType
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
+
+/**
+ :nodoc:
+*/
+- (void)POST:(NSString *)path
+  parameters:(nullable NSDictionary *)parameters
+  httpType:(BTAPIClientHTTPType)httpType
   completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 /**

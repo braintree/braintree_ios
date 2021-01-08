@@ -16,17 +16,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
-    /// Use the Gateway
-    BTAPIClientHTTPTypeGateway = 0,
-
-    /// Use the Braintree API
-    BTAPIClientHTTPTypeBraintreeAPI,
-
-    /// Use the GraphQL API
-    BTAPIClientHTTPTypeGraphQLAPI,
-};
-
 typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
     BTAPIClientAuthorizationTypeTokenizationKey = 0,
     BTAPIClientAuthorizationTypeClientToken,
@@ -68,16 +57,6 @@ typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
  This prevents copyWithSource:integration: from sending a duplicate event. It can also be used to suppress excessive network chatter during testing.
 */
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
-
-- (void)GET:(NSString *)path
- parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
- httpType:(BTAPIClientHTTPType)httpType
- completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
-
-- (void)POST:(NSString *)path
-  parameters:(nullable NSDictionary *)parameters
-  httpType:(BTAPIClientHTTPType)httpType
-  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 /**
  Gets base GraphQL URL
