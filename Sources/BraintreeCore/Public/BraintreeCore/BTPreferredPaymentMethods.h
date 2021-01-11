@@ -1,6 +1,10 @@
-#import <Foundation/Foundation.h>
-@class BTPreferredPaymentMethodsResult;
-@class BTAPIClient;
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTAPIClient.h>
+#import <Braintree/BTPreferredPaymentMethodsResult.h>
+#else
+#import <BraintreeCore/BTAPIClient.h>
+#import <BraintreeCore/BTPreferredPaymentMethodsResult.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
