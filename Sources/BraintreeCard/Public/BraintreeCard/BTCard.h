@@ -84,7 +84,7 @@ Designated initializer.
 @property (nonatomic, nullable, copy) NSString *locality;
 
 /**
- Optional: the state/province associated with the card's billing address
+ Optional: Either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
 */
 @property (nonatomic, nullable, copy) NSString *region;
 
