@@ -67,8 +67,6 @@ The `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, and `Bra
 
 To use the `BraintreeThreeDSecure` library via SPM, you must [manually include](#manually-including-a-framework) the `CardinalMobile.framework` located in the `Frameworks` dir.
 
-*Note:*
-
 ##### Manually including a framework
 
 1. Drag and drop the framework from Finder into your Xcode project
