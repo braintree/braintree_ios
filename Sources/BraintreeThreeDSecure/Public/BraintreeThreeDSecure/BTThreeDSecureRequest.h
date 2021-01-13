@@ -20,14 +20,28 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Error codes that describe errors that occur during 3D Secure.
+ 3D Secure version
  */
-typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
+typedef NS_ENUM(NSInteger, BTThreeDSecureVersion) {
     /// 3DS 1.0
     BTThreeDSecureVersion1,
 
     /// 3DS 2.0
     BTThreeDSecureVersion2
+};
+
+/**
+ The account type
+ */
+typedef NS_ENUM(NSInteger, BTThreeDSecureAccountType) {
+    /// Unspecified
+    BTThreeDSecureAccountTypeUnspecified,
+
+    /// Credit
+    BTThreeDSecureAccountTypeCredit,
+
+    /// Debit
+    BTThreeDSecureAccountTypeDebit
 };
 
 /**
@@ -44,6 +58,13 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
  The amount for the transaction
  */
 @property (nonatomic, copy) NSDecimalNumber *amount;
+
+/**
+ Optional. The account type selected by the cardholder
+
+ @note Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.
+ */
+@property (nonatomic, assign) BTThreeDSecureAccountType accountType;
 
 /**
  Optional. The billing address used for verification

@@ -52,6 +52,10 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             requestParameters[@"dfReferenceId"] = request.dfReferenceId;
         }
 
+        if (request.accountTypeAsString) {
+            requestParameters[@"accountType"] = request.accountTypeAsString;
+        }
+
         NSMutableDictionary *additionalInformation = [NSMutableDictionary dictionary];
         if (request.billingAddress) {
             [additionalInformation addEntriesFromDictionary:[request.billingAddress asParametersWithPrefix:@"billing"]];

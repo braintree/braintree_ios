@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *dfReferenceId;
 
 /**
+ The account type as a raw string.
+ */
+@property (nonatomic, readonly, nullable) NSString *accountTypeAsString;
+
+/**
  Prepare for a 3DS 2.0 flow.
 
  @param apiClient The API client.

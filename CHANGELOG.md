@@ -6,6 +6,7 @@
 * Bump PPRiskMagnes to v5.10.0 (resolves #564)
 * Fix Xcode 12.3 issue with building PPRiskMagnes.framework for iOS + iOS Simulator
 * Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
+* Add `accountType` to `BTThreeDSecureRequest`
 * Breaking Changes
   * Remove `type` and `nonce` params on `BTApplePayCardNone` initializer
   * Replace `uiCustomization` with `v2UICustomization` on `BTThreeDSecureRequest`

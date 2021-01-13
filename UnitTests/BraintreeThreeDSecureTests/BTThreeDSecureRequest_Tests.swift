@@ -2,7 +2,32 @@ import XCTest
 import BraintreeTestShared
 
 class BTThreeDSecureRequest_Tests: XCTestCase {
-    
+
+    // MARK: - accountTypeAsString
+
+    func testAccountTypeAsString_whenAccountTypeIsCredit_returnsCredit() {
+        let request = BTThreeDSecureRequest()
+        request.accountType = .credit
+        XCTAssertEqual(request.accountTypeAsString, "credit")
+    }
+
+    func testAccountTypeAsString_whenAccountTypeIsDebit_returnsDebit() {
+        let request = BTThreeDSecureRequest()
+        request.accountType = .debit
+        XCTAssertEqual(request.accountTypeAsString, "debit")
+    }
+
+    func testAccountTypeAsString_whenAccountTypeIsUnspecified_returnsNil() {
+        let request = BTThreeDSecureRequest()
+        request.accountType = .unspecified
+        XCTAssertEqual(request.accountTypeAsString, nil)
+    }
+
+    func testAccountTypeAsString_whenAccountTypeIsNotSet_returnsNil() {
+        let request = BTThreeDSecureRequest()
+        XCTAssertEqual(request.accountTypeAsString, nil)
+    }
+
     // MARK: - handleRequest
     
     func testHandleRequest_whenAmountIsNotANumber_throwsError() {
