@@ -46,12 +46,14 @@ The following Braintree libraries offer official Swift Package Manager support:
 * `BraintreeCard`
 * `BraintreeCore`
 * `BraintreeDataCollector`
+    * Requires `KountDataCollector`
 * `BraintreePaymentFlow`
 * `BraintreePayPal`
 * `BraintreeThreeDSecure` **
 * `BraintreeUnionPay`
 * `BraintreeVenmo`
 * `PayPalDataCollector`
+    * Requires `PPRiskMagnes`
 
 ** - To use the the `BraintreeThreeDSecure` library via SPM, you must [manually include](#manually-including-a-framework) the `CardinalMobile.framework` located in the `Frameworks` dir.
 
