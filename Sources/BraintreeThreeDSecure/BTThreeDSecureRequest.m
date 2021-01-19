@@ -58,6 +58,17 @@
     return self;
 }
 
+- (NSString *)accountTypeAsString {
+    switch (self.accountType) {
+        case BTThreeDSecureAccountTypeCredit:
+            return @"credit";
+        case BTThreeDSecureAccountTypeDebit:
+            return @"debit";
+        default:
+            return nil;
+    }
+}
+
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
