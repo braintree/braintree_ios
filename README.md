@@ -40,28 +40,13 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-The following Braintree libraries offer official Swift Package Manager support:
-* `BraintreeAmericanExpress`
-* `BraintreeApplePay`
-* `BraintreeCard`
-* `BraintreeCore`
-* `BraintreeDataCollector`
-    * `KountDataCollector`
-* `BraintreePaymentFlow`
-* `BraintreePayPal`
-* `BraintreeThreeDSecure`
-* `BraintreeUnionPay`
-* `BraintreeVenmo`
-* `PayPalDataCollector`
-    * `PPRiskMagnes`
+#### Binary Dependencies
 
-#### BraintreeDataCollector
+There is a known Xcode bug, reported in [this GitHub issue](https://github.com/braintree/braintree_ios/issues/576), on archiving apps that use binary dependencies via SPM. The workaround is to tick the checkbox to include these binary dependencies in your app.
 
 To use the `BraintreeDataCollector` library, you must also include the `KountDataCollector` library via SPM.
 
-#### PayPalDataCollector
-
-The `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, and `BraintreeVenmo` libraries all require both the `PayPalDataCollector` and `PPRiskMagnes` libraries be included via SPM.
+The `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, and `BraintreeVenmo` libraries all require the `PPRiskMagnes` library be included via SPM.
 
 #### BraintreeThreeDSecure
 
