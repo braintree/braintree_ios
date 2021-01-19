@@ -74,6 +74,10 @@ On `BTThreeDSecureRequest`, the `uiCustomization` property was replaced with `v2
 * `BTThreeDSecureV2TextBoxCustomization`
 * `BTThreeDSecureV2ToolbarCustomization`
 
+#### Default 3DS Version
+
+Previously, the `versionRequested` property on `BTThreeDSecureRequest` defaulted to `.version1`. It now defaults to `.version2`.
+
 ## Apple Pay
 
 For CocoaPods integrations, the Braintree Apple Pay subspec has been renamed from `Braintree/Apple-Pay` to `Braintree/ApplePay`.
