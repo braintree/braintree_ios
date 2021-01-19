@@ -16,6 +16,7 @@
     * `BTThreeDSecureV2LabelCustomization`
     * `BTThreeDSecureV2TextBoxCustomization`
     * `BTThreeDSecureV2ToolbarCustomization`
+  * Default `versionRequested` on `BTThreeDSecureRequest` to 3DS2 instead of 3DS1
 
 ## 5.0.0-beta1 (2020-12-01)
 * Add support for Swift Package Manager (resolves #462)

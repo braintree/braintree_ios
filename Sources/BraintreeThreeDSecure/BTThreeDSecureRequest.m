@@ -52,7 +52,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _versionRequested = BTThreeDSecureVersion1;
+        _versionRequested = BTThreeDSecureVersion2;
     }
 
     return self;

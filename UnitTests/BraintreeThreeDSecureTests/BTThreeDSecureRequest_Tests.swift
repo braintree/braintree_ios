@@ -28,6 +28,13 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         XCTAssertEqual(request.accountTypeAsString, nil)
     }
 
+    // MARK: - versionRequested
+
+    func testVersionRequested_defaultsToVersion2() {
+        let request = BTThreeDSecureRequest()
+        XCTAssertEqual(request.versionRequested, .version2)
+    }
+
     // MARK: - handleRequest
     
     func testHandleRequest_whenAmountIsNotANumber_throwsError() {
