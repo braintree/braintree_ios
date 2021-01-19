@@ -1,8 +1,8 @@
-name: Check package managers
+name: Build
 on: [pull_request]
 jobs:
-  check_cocoapods:
-    name: Check CocoaPods
+  cocoapods:
+    name: CocoaPods
     runs-on: macOS-latest
     steps:
       - name: Check out repository
@@ -13,8 +13,8 @@ jobs:
         run: pod install
       - name: Run pod lib lint
         run: pod lib lint --allow-warnings
-  check_carthage:
-    name: Check Carthage
+  carthage:
+    name: Carthage
     runs-on: macOS-latest
     steps:
       - name: Check out repository
