@@ -32,11 +32,6 @@ class MockPaymentFlowDriverDelegate: BTPaymentFlowDriverDelegate {
 class MockThreeDSecureRequestDelegate : NSObject, BTThreeDSecureRequestDelegate {
     var lookupCompleteExpectation : XCTestExpectation?
 
-    func onLookupComplete(_ request: BTThreeDSecureRequest, result: BTThreeDSecureLookup, next: @escaping () -> Void) {
-        lookupCompleteExpectation?.fulfill()
-        next()
-    }
-
     func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult: BTThreeDSecureResult, next: @escaping () -> Void) {
         lookupCompleteExpectation?.fulfill()
         next()
