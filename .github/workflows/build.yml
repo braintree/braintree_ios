@@ -1,0 +1,27 @@
+name: Build
+on: [pull_request]
+jobs:
+  cocoapods:
+    name: CocoaPods
+    runs-on: macOS-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v1
+      - name: Use Xcode 12.3
+        run: sudo xcode-select -switch /Applications/Xcode_12.3.app
+      - name: Install CocoaPod dependencies
+        run: pod install
+      - name: Run pod lib lint
+        run: pod lib lint --allow-warnings
+  carthage:
+    name: Carthage
+    runs-on: macOS-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v1
+      - name: Use Xcode 12.3
+        run: sudo xcode-select -switch /Applications/Xcode_12.3.app
+      - name: Remove SPMTest
+        run: rm -rf SampleApps/SPMTest && git add . && git commit -m 'Remove SPMTest app to avoid Carthage timeout'
+      - name: Carthage build
+        run: carthage build --no-skip-current

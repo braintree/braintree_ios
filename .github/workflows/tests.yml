@@ -1,8 +1,8 @@
-name: CI
+name: Tests
 on: [pull_request]
 jobs:
   unit_test_job:
-    name: Unit Tests
+    name: Unit
     runs-on: macOS-latest
     steps:
       # Checks out a copy of your repository
@@ -15,7 +15,7 @@ jobs:
       - name: Run Unit Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
-    name: UI Tests
+    name: UI
     runs-on: macOS-latest
     steps:
       # Checks out a copy of your repository
@@ -28,7 +28,7 @@ jobs:
       - name: Run UI Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   integration_test_job:
-    name: Integration Tests
+    name: Integration
     runs-on: macOS-latest
     steps:
       # Checks out a copy of your repository
