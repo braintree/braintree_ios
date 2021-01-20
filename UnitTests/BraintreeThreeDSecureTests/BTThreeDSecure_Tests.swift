@@ -15,6 +15,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest = BTThreeDSecureRequest()
         threeDSecureRequest.amount = 10.0
         threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.versionRequested = .version1
         mockAPIClient = MockAPIClient(authorization: tempClientToken)!
         mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
     }
@@ -23,14 +24,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         for observer in observers { NotificationCenter.default.removeObserver(observer) }
         super.tearDown()
     }
-
-    // MARK: - ThreeDSecure Request Tests
-
-    func testThreeDSecureRequest_defaultsToV1() {
-        XCTAssertEqual(threeDSecureRequest.versionRequested, .version1)
-    }
-
-
 
     // MARK: - ThreeDSecure Authentication Tests
 

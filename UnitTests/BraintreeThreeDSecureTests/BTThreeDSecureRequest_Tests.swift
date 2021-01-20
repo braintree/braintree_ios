@@ -40,6 +40,9 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     func testHandleRequest_whenAmountIsNotANumber_throwsError() {
         let request =  BTThreeDSecureRequest()
         request.amount = NSDecimalNumber.notANumber
+
+        let mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
+        request.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         
         let mockAPIClient = MockAPIClient(authorization: "development_client_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
