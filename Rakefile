@@ -10,18 +10,19 @@ task :default => %w[sanity_checks spec]
 desc "Run all test tasks"
 task :spec => %w[spec:all]
 
-desc "Run internal release process, pushing to internal GitHub Enterprise only"
-task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag release:push_private]
+desc "Run sanity checks; bump and tag new version"
+task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag]
 
-desc "Publish code and pod to public github.com"
-task :publish => %w[publish:push publish:push_pod publish:create_github_release docs_internal docs_external]
+desc "Push tags, docs, and Pod"
+task :publish => %w[publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_internal docs_external]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
 BRAINTREE_VERSION_FILE = "Sources/BraintreeCore/Braintree-Version.h"
 DEMO_PLIST = "Demo/Application/Supporting Files/Braintree-Demo-Info.plist"
 FRAMEWORKS_PLIST = "Sources/BraintreeCore/Info.plist"
-PUBLIC_REMOTE_NAME = "public"
+PUBLIC_REMOTE_NAME = "origin"
+GHE_REMOTE_NAME = "internal"
 
 bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector","BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo", "PayPalDataCollector"]
 
@@ -99,9 +100,9 @@ namespace :spec do
 end
 
 desc 'Build Braintree proj demo app'
-namespace :demo do
+namespace :demo_app do
   desc 'Verify that the demo app builds successfully'
-  task :build do
+  task :build_demo do
     run! xcodebuild('Demo', 'build', 'Release', nil)
   end
 end
@@ -147,15 +148,16 @@ namespace :spm do
     File.open(project_file, "w") { |f| f.puts proj }
   end
 
-  task :clean do
-    run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
-    run! 'git checkout SampleApps/SPMTest'
-  end
-
   task :build_demo do
     update_xcodeproj
+
+    # Build SPM demo app
     run! "cd SampleApps/SPMTest && swift package resolve"
     run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build"
+
+    # Clean up
+    run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
+    run! 'git checkout SampleApps/SPMTest'
   end
 
   desc "Create xcframework for each Braintree module."
@@ -177,34 +179,8 @@ namespace :spm do
   end
 end
 
-desc 'Run all sanity checks'
-task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:carthage_test sanity_checks:spm_test]
-
-namespace :sanity_checks do
-  desc 'Check for pending tests'
-  task :pending_specs do
-    begin
-      run! "which -s ack"
-    rescue => e
-      puts
-      say(HighLine.color("Please install ack before running", :red, :bold))
-      puts
-      raise
-    end
-
-    # ack returns 1 if no match is found, which is our success case
-    run! "! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
-  end
-
-  desc 'Verify that Braintree demo app builds successfully'
-  task :build_demo => 'demo:build'
-
-  desc 'Verify that Carthage demo builds successfully'
-  task :carthage_test => %w[carthage:build_demo]
-
-  desc 'Verify that SPM demo builds successfully'
-  task :spm_test => %w[spm:build_demo spm:clean]
-end
+desc 'Build demo apps per package manager'
+task :build_demo_apps => %w[demo_app:build_demo carthage:build_demo spm:build_demo]
 
 namespace :release do
   desc "Print out pre-release checklist"
@@ -265,8 +241,13 @@ end
 
 namespace :publish do
 
+  desc  "Push code and tag to GHE"
+  task :push_private do
+    run! "git push #{GHE_REMOTE_NAME} HEAD #{current_version}"
+  end
+
   desc  "Push code and tag to github.com"
-  task :push do
+  task :push_public do
     run! "git push #{PUBLIC_REMOTE_NAME} HEAD #{current_version}"
   end
 
