@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.37.0 (2021-01-20)
 * Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
 
 ## 5.0.0-beta1 (2020-12-01)
