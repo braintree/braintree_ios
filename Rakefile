@@ -10,11 +10,11 @@ task :default => %w[sanity_checks spec]
 desc "Run default set of tasks"
 task :spec => %w[spec:all]
 
-desc "Run internal release process, pushing to internal GitHub Enterprise only"
-task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec release:tag release:push_private]
+desc "Run sanity checks; bump and tag new version"
+task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec release:tag]
 
-desc "Publish code and pod to public github.com"
-task :publish => %w[publish:push publish:push_pod docs_internal docs_external]
+desc "Push tags, docs, and Pod"
+task :publish => %w[publish:push_private publish:push_public publish:push_pod docs_internal docs_external]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -22,7 +22,8 @@ BRAINTREE_VERSION_FILE = "BraintreeCore/Braintree-Version.h"
 PAYPAL_ONE_TOUCH_VERSION_FILE = "BraintreePayPal/PayPalUtils/Public/PPOTVersion.h"
 DEMO_PLIST = "Demo/Supporting Files/Braintree-Demo-Info.plist"
 FRAMEWORKS_PLIST = "BraintreeCore/Info.plist"
-PUBLIC_REMOTE_NAME = "public"
+PUBLIC_REMOTE_NAME = "origin"
+GHE_REMOTE_NAME = "internal"
 
 class << self
   def run cmd
@@ -221,17 +222,17 @@ namespace :release do
     run! "git tag #{current_version} -a -m 'Release #{current_version}'"
   end
 
-  desc  "Push tag to ghe."
-  task :push_private do
-    run! "git push origin HEAD #{current_version}"
-  end
-
 end
 
 namespace :publish do
 
+  desc  "Push code and tag to github.braintreeps.com"
+  task :push_public do
+    run! "git push #{GHE_REMOTE_NAME} HEAD #{current_version}"
+  end
+
   desc  "Push code and tag to github.com"
-  task :push do
+  task :push_private do
     run! "git push #{PUBLIC_REMOTE_NAME} HEAD #{current_version}"
   end
 
@@ -289,11 +290,11 @@ namespace :docs do
   end
 
   task:internal do
-    run! 'git push -f origin gh-pages:gh-pages'
+    run! "git push -f #{GHE_REMOTE_NAME} gh-pages:gh-pages"
   end
 
   task:external do
-    run! 'git push -f public gh-pages:gh-pages'
+    run! "git push -f #{PUBLIC_REMOTE_NAME} gh-pages:gh-pages"
   end
 
   task :clean do
