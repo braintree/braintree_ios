@@ -78,6 +78,16 @@ On `BTThreeDSecureRequest`, the `uiCustomization` property was replaced with `v2
 
 Previously, the `versionRequested` property on `BTThreeDSecureRequest` defaulted to `.version1`. It now defaults to `.version2`.
 
+#### Shipping Method
+
+The `shippingMethod` property on `BTThreeDSecureRequest` is now an enum rather than a string. Possible values:
+* `.sameDay`
+* `.expedited`
+* `.priority`
+* `.ground`
+* `.electronicDelivery`
+* `.shipToStore`
+
 ## Apple Pay
 
 For CocoaPods integrations, the Braintree Apple Pay subspec has been renamed from `Braintree/Apple-Pay` to `Braintree/ApplePay`.

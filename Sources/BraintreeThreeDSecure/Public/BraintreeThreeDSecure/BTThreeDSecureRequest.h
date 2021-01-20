@@ -45,6 +45,32 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureAccountType) {
 };
 
 /**
+ The shipping method
+ */
+typedef NS_ENUM(NSInteger, BTThreeDSecureShippingMethod) {
+    /// Unspecified
+    BTThreeDSecureShippingMethodUnspecified,
+
+    /// Same Day
+    BTThreeDSecureShippingMethodSameDay,
+
+    /// Overnight / Expedited
+    BTThreeDSecureShippingMethodExpedited,
+
+    /// Priority
+    BTThreeDSecureShippingMethodPriority,
+
+    /// Ground
+    BTThreeDSecureShippingMethodGround,
+
+    /// Electronic Delivery
+    BTThreeDSecureShippingMethodElectronicDelivery,
+
+    /// Ship to Store
+    BTThreeDSecureShippingMethodShipToStore
+};
+
+/**
  Used to initialize a 3D Secure payment flow
  */
 @interface BTThreeDSecureRequest : BTPaymentFlowRequest <BTPaymentFlowRequestDelegate>
@@ -84,16 +110,9 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureAccountType) {
 @property (nonatomic, nullable, copy) NSString *email;
 
 /**
- Optional. The 2-digit string indicating the shipping method chosen for the transaction
- Possible Values:
- 01 Same Day
- 02 Overnight / Expedited
- 03 Priority (2-3 Days)
- 04 Ground
- 05 Electronic Delivery
- 06 Ship to Store
+ Optional. The shipping method chosen for the transaction
  */
-@property (nonatomic, nullable, copy) NSString *shippingMethod;
+@property (nonatomic, assign) BTThreeDSecureShippingMethod shippingMethod;
 
 /**
  Optional. The additional information used for verification

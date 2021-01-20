@@ -26,6 +26,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSString *accountTypeAsString;
 
 /**
+ The shipping method as a two-digit code.
+ Possible Values:
+ 01 Same Day
+ 02 Overnight / Expedited
+ 03 Priority (2-3 Days)
+ 04 Ground
+ 05 Electronic Delivery
+ 06 Ship to Store
+ */
+@property (nonatomic, readonly, nullable) NSString *shippingMethodAsString;
+
+/**
  Prepare for a 3DS 2.0 flow.
 
  @param apiClient The API client.

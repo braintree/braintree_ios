@@ -28,6 +28,55 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         XCTAssertEqual(request.accountTypeAsString, nil)
     }
 
+    // MARK: - shippingMethodAsString
+
+    func testShippingMethodAsString_whenShippingMethodIsSameDay_returns01() {
+        let request = BTThreeDSecureRequest()
+        request.shippingMethod = .sameDay
+        XCTAssertEqual(request.shippingMethodAsString, "01")
+    }
+
+    func testShippingMethodAsString_whenShippingMethodIsExpedited_returns02() {
+        let request = BTThreeDSecureRequest()
+        request.shippingMethod = .expedited
+        XCTAssertEqual(request.shippingMethodAsString, "02")
+    }
+
+    func testShippingMethodAsString_whenShippingMethodIsPriority_returns03() {
+        let request = BTThreeDSecureRequest()
+        request.shippingMethod = .priority
+        XCTAssertEqual(request.shippingMethodAsString, "03")
+    }
+
+    func testShippingMethodAsString_whenShippingMethodIsGround_returns04() {
+        let request = BTThreeDSecureRequest()
+        request.shippingMethod = .ground
+        XCTAssertEqual(request.shippingMethodAsString, "04")
+    }
+
+    func testShippingMethodAsString_whenShippingMethodIsElectronicDelivery_returns05() {
+        let request = BTThreeDSecureRequest()
+        request.shippingMethod = .electronicDelivery
+        XCTAssertEqual(request.shippingMethodAsString, "05")
+    }
+
+    func testShippingMethodAsString_whenShippingMethodIsShipToStore_returns06() {
+        let request = BTThreeDSecureRequest()
+        request.shippingMethod = .shipToStore
+        XCTAssertEqual(request.shippingMethodAsString, "06")
+    }
+
+    func testShippingMethodAsString_whenShippingMethodIsUnspecified_returnsNil() {
+        let request = BTThreeDSecureRequest()
+        request.shippingMethod = .unspecified
+        XCTAssertEqual(request.shippingMethodAsString, nil)
+    }
+
+    func testShippingMethodAsString_whenShippingMethodIsNotSet_returnsNil() {
+        let request = BTThreeDSecureRequest()
+        XCTAssertEqual(request.shippingMethodAsString, nil)
+    }
+
     // MARK: - versionRequested
 
     func testVersionRequested_defaultsToVersion2() {

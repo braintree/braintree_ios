@@ -123,7 +123,7 @@
         billingAddress.phoneNumber = @"8101234567";
         request.billingAddress = billingAddress;
         request.email = @"test@example.com";
-        request.shippingMethod = @"01";
+        request.shippingMethod = BTThreeDSecureShippingMethodSameDay;
 
         BTThreeDSecureV2UICustomization *ui = [BTThreeDSecureV2UICustomization new];
         BTThreeDSecureV2ToolbarCustomization *toolbarCustomization = [BTThreeDSecureV2ToolbarCustomization new];
