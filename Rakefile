@@ -117,7 +117,7 @@ namespace :carthage do
 
     # Build Carthage demo app
     File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
-    sh "cd SampleApps/CarthageTest && sh carthage.sh update"
+    sh "cd SampleApps/CarthageTest && sh ../../carthage.sh update"
     success = run "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
 
     # Clean up
