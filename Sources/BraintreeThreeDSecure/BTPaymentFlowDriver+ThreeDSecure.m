@@ -69,8 +69,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             additionalInformation[@"email"] = request.email;
         }
 
-        if (request.shippingMethod) {
-            additionalInformation[@"shippingMethod"] = request.shippingMethod;
+        if (request.shippingMethodAsString) {
+            additionalInformation[@"shippingMethod"] = request.shippingMethodAsString;
         }
 
         if (request.additionalInformation) {

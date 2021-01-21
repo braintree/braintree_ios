@@ -69,6 +69,25 @@
     }
 }
 
+- (NSString *)shippingMethodAsString {
+    switch (self.shippingMethod) {
+        case BTThreeDSecureShippingMethodSameDay:
+            return @"01";
+        case BTThreeDSecureShippingMethodExpedited:
+            return @"02";
+        case BTThreeDSecureShippingMethodPriority:
+            return @"03";
+        case BTThreeDSecureShippingMethodGround:
+            return @"04";
+        case BTThreeDSecureShippingMethodElectronicDelivery:
+            return @"05";
+        case BTThreeDSecureShippingMethodShipToStore:
+            return @"06";
+        default:
+            return nil;
+    }
+}
+
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {

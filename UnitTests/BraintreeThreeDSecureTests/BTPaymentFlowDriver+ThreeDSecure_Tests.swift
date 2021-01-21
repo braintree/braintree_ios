@@ -24,7 +24,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         threeDSecureRequest.accountType = .credit
         threeDSecureRequest.mobilePhoneNumber = "5151234321"
         threeDSecureRequest.email = "tester@example.com"
-        threeDSecureRequest.shippingMethod = "03"
+        threeDSecureRequest.shippingMethod = .priority
 
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.givenName = "Joe"
