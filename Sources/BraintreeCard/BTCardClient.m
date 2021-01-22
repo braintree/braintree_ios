@@ -32,11 +32,6 @@ static Class PayPalDataCollectorClass;
 
 + (void)load {
     if (self == [BTCardClient class]) {
-        [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
-            BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-            [client tokenizeCard:[[BTCard alloc] initWithParameters:options] completion:completionBlock];
-        }];
-        
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
             return [BTCardNonce cardNonceWithJSON:creditCard];
         }];

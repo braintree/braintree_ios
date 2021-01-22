@@ -299,7 +299,6 @@
 		A977A04124FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04024FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift */; platformFilter = ios; };
 		A977A04324FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */; };
 		A977A04524FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */; };
-		A977A04724FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04624FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift */; };
 		A977A06B24FECFC3006049AB /* NonceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A06A24FECFC3006049AB /* NonceValidator.swift */; };
 		A977A06C24FED2F1006049AB /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B463051C3D9C2200048423 /* PayPalDataCollector.framework */; platformFilter = ios; };
 		A977CE4C24F820E2009D1A66 /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1038,7 +1037,6 @@
 		A977A04024FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_PayPal_Tests.swift; sourceTree = "<group>"; };
 		A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Venmo_Tests.swift; sourceTree = "<group>"; };
 		A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Card_Tests.swift; sourceTree = "<group>"; };
-		A977A04624FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTTokenizationService_Card_Tests.swift; sourceTree = "<group>"; };
 		A977A06924FECBAF006049AB /* BraintreeThreeDSecureTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeThreeDSecureTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A977A06A24FECFC3006049AB /* NonceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceValidator.swift; sourceTree = "<group>"; };
 		A9A76CA624F9E92E0044EAEE /* TestClientTokenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClientTokenFactory.swift; sourceTree = "<group>"; };
@@ -2067,7 +2065,6 @@
 				A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */,
 				A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */,
 				0301A42E22E2286C008A26BD /* BTThreeDSecureInfo_Tests.swift */,
-				A977A04624FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift */,
 				A95C411D24FAF53400045045 /* FakePPDataCollector.swift */,
 				A95C410C24FAEF2100045045 /* Info.plist */,
 			);
@@ -3526,7 +3523,6 @@
 			files = (
 				A95C411324FAEF5100045045 /* BTAuthenticationInsight_Tests.swift in Sources */,
 				A95C411424FAEF5100045045 /* BTCard_Internal_Tests.m in Sources */,
-				A977A04724FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift in Sources */,
 				A95C411524FAEF5100045045 /* BTCard_Tests.swift in Sources */,
 				A977A04524FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift in Sources */,
 				A95C411624FAEF5100045045 /* BTCardClient_Tests.swift in Sources */,
