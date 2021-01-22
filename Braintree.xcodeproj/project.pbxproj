@@ -105,14 +105,11 @@
 		4290C669259B9E2E00D2044C /* BTThreeDSecureV2TextBoxCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C663259B9E2E00D2044C /* BTThreeDSecureV2TextBoxCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4290C66A259B9E2E00D2044C /* BTThreeDSecureV2ButtonCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C664259B9E2E00D2044C /* BTThreeDSecureV2ButtonCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4290C66B259B9E2E00D2044C /* BTThreeDSecureV2ToolbarCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C665259B9E2E00D2044C /* BTThreeDSecureV2ToolbarCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4295E91E259149C400A5C373 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */; };
-		4295E93625914BCE00A5C373 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */; };
-		4295E94E25914C5600A5C373 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */; };
-		42C2D3272583E82B00E525AE /* BTProxyCardinal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42C2D3262583E82B00E525AE /* BTProxyCardinal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4290C7F2259BD2E800D2044C /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		4290C7F3259BD2E800D2044C /* PPRiskMagnes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4295E91E259149C400A5C373 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */; };
 		4295E93625914BCE00A5C373 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */; };
+		42C2D3272583E82B00E525AE /* BTProxyCardinal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42C2D3262583E82B00E525AE /* BTProxyCardinal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
 		42F41C7C25681F4C002402BE /* PPDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F41C7B25681F4C002402BE /* PPDataCollector_Tests.swift */; };
@@ -303,7 +300,6 @@
 		A977A04324FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */; };
 		A977A04524FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */; };
 		A977A04724FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04624FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift */; };
-		A977A04924FEC7D0006049AB /* BTTokenizationService_Venmo_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A04824FEC7D0006049AB /* BTTokenizationService_Venmo_Tests.swift */; };
 		A977A06B24FECFC3006049AB /* NonceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A977A06A24FECFC3006049AB /* NonceValidator.swift */; };
 		A977A06C24FED2F1006049AB /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B463051C3D9C2200048423 /* PayPalDataCollector.framework */; platformFilter = ios; };
 		A977CE4C24F820E2009D1A66 /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1043,7 +1039,6 @@
 		A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Venmo_Tests.swift; sourceTree = "<group>"; };
 		A977A04424FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Card_Tests.swift; sourceTree = "<group>"; };
 		A977A04624FEC6CB006049AB /* BTTokenizationService_Card_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTTokenizationService_Card_Tests.swift; sourceTree = "<group>"; };
-		A977A04824FEC7D0006049AB /* BTTokenizationService_Venmo_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTTokenizationService_Venmo_Tests.swift; sourceTree = "<group>"; };
 		A977A06924FECBAF006049AB /* BraintreeThreeDSecureTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeThreeDSecureTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A977A06A24FECFC3006049AB /* NonceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceValidator.swift; sourceTree = "<group>"; };
 		A9A76CA624F9E92E0044EAEE /* TestClientTokenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClientTokenFactory.swift; sourceTree = "<group>"; };
@@ -2054,7 +2049,6 @@
 				A948D70124FAC9B000F4F178 /* BraintreeVenmoTests-Bridging-Header.h */,
 				A9589DD924FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift */,
 				A977A04224FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift */,
-				A977A04824FEC7D0006049AB /* BTTokenizationService_Venmo_Tests.swift */,
 				4245D668256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift */,
 				A71F7DE61B6180A3005DA1B0 /* BTVenmoDriver_Tests.swift */,
 				A948D6F424FAC8F900F4F178 /* Info.plist */,
@@ -3519,7 +3513,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A977A04924FEC7D0006049AB /* BTTokenizationService_Venmo_Tests.swift in Sources */,
 				A977A04324FEC3C9006049AB /* BTPaymentMethodNonceParser_Venmo_Tests.swift in Sources */,
 				A9589DDA24FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift in Sources */,
 				4245D669256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift in Sources */,
