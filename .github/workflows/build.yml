@@ -38,4 +38,4 @@ jobs:
       - name: Swift package resolve
         run: cd Sample Apps/SPMTest && swift package resolve
       - name: Build SPMTest
-        run xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build
+        run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build
