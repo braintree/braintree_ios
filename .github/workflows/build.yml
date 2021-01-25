@@ -23,5 +23,19 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_12.3.app
       - name: Remove SPMTest
         run: rm -rf SampleApps/SPMTest && git add . && git commit -m 'Remove SPMTest app to avoid Carthage timeout'
-      - name: Carthage build
+      - name: Run carthage build
         run: carthage build --no-skip-current
+  spm:
+    name: SPM
+    runs-on: macOS-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v1
+      - name: Use Xcode 12.3
+        run: sudo xcode-select -switch /Applications/Xcode_12.3.app
+      - name: Use current branch
+        run: sed -i '' 's/branch = .*/branch = \"'"$GITHUB_HEAD_REF"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
+      - name: Run swift package resolve
+        run: cd SampleApps/SPMTest && swift package resolve
+      - name: Build SPMTest
+        run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build CODE_SIGNING_ALLOWED=NO
