@@ -29,20 +29,6 @@
 
 @implementation BTCardClient (UnionPay)
 
-+ (void)load {
-    if (self == [BTCardClient class]) {
-        [[BTTokenizationService sharedService] registerType:@"UnionPayCard" withTokenizationBlock:^(BTAPIClient * _Nonnull apiClient, NSDictionary * _Nullable options, void (^completion)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
-            BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-            BTCard *card = [[BTCard alloc] initWithParameters:options];
-            BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
-            request.mobileCountryCode = options[@"mobileCountryCode"];
-            request.smsCode = options[@"smsCode"];
-
-            [client tokenizeCard:request options:nil completion:completion];
-        }];
-    }
-}
-
 #pragma mark - Public methods
 
 - (void)fetchCapabilities:(NSString *)cardNumber

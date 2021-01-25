@@ -10,8 +10,8 @@
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
-		42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */; };
 		428D119725A3A834003D8552 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */; };
+		42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */; };
 		42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */; };
 		803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; };
 		803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -116,7 +116,6 @@
 		A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */; };
 		A0988FE924DB44B20095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m */; };
 		A0988FEA24DB44B20095EEEE /* BraintreeDemoIdealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */; };
-		A0988FEB24DB44B20095EEEE /* BraintreeDemoCustomMultiPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6624DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.m */; };
 		A0988FEC24DB44B20095EEEE /* BraintreeDemoPayPalCreditPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalCreditPaymentViewController.m */; };
 		A0988FED24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */; };
 		A0988FEE24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */; };
@@ -175,8 +174,8 @@
 /* Begin PBXFileReference section */
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
-		42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmericanExpress_UITests.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
+		42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmericanExpress_UITests.swift; sourceTree = "<group>"; };
 		42D47A132554679D0012BAF1 /* BraintreeDemoSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSceneDelegate.h; sourceTree = "<group>"; };
 		42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSceneDelegate.m; sourceTree = "<group>"; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -362,8 +361,6 @@
 		A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalOneTimePaymentViewController.m; sourceTree = "<group>"; };
 		A0988F6324DB44B10095EEEE /* BraintreeDemoIdealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIdealViewController.h; sourceTree = "<group>"; };
 		A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoIdealViewController.m; sourceTree = "<group>"; };
-		A0988F6624DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomMultiPayViewController.m; sourceTree = "<group>"; };
-		A0988F6724DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomMultiPayViewController.h; sourceTree = "<group>"; };
 		A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalCreditPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalCreditPaymentViewController.m; sourceTree = "<group>"; };
 		A0988F6A24DB44B10095EEEE /* BraintreeDemoPayPalCreditPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCreditPaymentViewController.h; sourceTree = "<group>"; };
 		A0988F6C24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCardTokenizationViewController.h; sourceTree = "<group>"; };
@@ -763,7 +760,6 @@
 				A0988F7824DB44B10095EEEE /* 3D Secure */,
 				A0988F7E24DB44B10095EEEE /* Amex */,
 				A0988F7224DB44B10095EEEE /* Apple Pay - PassKit */,
-				A0988F6524DB44B10095EEEE /* Combined Button - Custom Multi-Pay Button */,
 				A0988F6B24DB44B10095EEEE /* Credit Card Tokenization */,
 				A0988F5C24DB44B10095EEEE /* Fraud Protection - BTDataCollector */,
 				A0988F6224DB44B10095EEEE /* Ideal */,
@@ -810,15 +806,6 @@
 				A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */,
 			);
 			path = Ideal;
-			sourceTree = "<group>";
-		};
-		A0988F6524DB44B10095EEEE /* Combined Button - Custom Multi-Pay Button */ = {
-			isa = PBXGroup;
-			children = (
-				A0988F6724DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.h */,
-				A0988F6624DB44B10095EEEE /* BraintreeDemoCustomMultiPayViewController.m */,
-			);
-			path = "Combined Button - Custom Multi-Pay Button";
 			sourceTree = "<group>";
 		};
 		A0988F6824DB44B10095EEEE /* PayPal - Credit */ = {
@@ -1201,7 +1188,6 @@
 				A0988FCB24DB44B20095EEEE /* BTUICTAControl.m in Sources */,
 				A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
 				A0988FB324DB44B20095EEEE /* BTUIUnknownCardVectorArtView.m in Sources */,
-				A0988FEB24DB44B20095EEEE /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
 				A0988F9F24DB44B20095EEEE /* UIColor+BTUI.m in Sources */,
 				A0988FC524DB44B20095EEEE /* BTUIPayPalButton.m in Sources */,
 				A0988FE724DB44B20095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */,
