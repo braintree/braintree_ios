@@ -552,6 +552,30 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.credit.offered.started"))
     }
 
+    func testCheckout_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.offerPayLater = true
+
+        payPalDriver.requestOneTimePayment(request) { _,_  in }
+
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
+
+        // Ensure the payment resource had the correct parameters
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, true)
+
+        // Make sure analytics event was sent when switch occurred
+        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
+
+        XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.paylater.offered.started"))
+    }
+
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
         let request = BTPayPalRequest(amount: "1")
         payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }

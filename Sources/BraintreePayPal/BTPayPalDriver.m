@@ -158,6 +158,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
         parameters[@"offer_paypal_credit"] = @(request.offerCredit);
 
+        parameters[@"offer_pay_later"] = @(request.offerPayLater);
+
         experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);
 
         experienceProfile[@"brand_name"] = request.displayName ?: [configuration.json[@"paypal"][@"displayName"] asString];
@@ -618,6 +620,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeBillingAgreement) && self.payPalRequest.offerCredit) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
+    }
+
+    if (paymentType == BTPayPalPaymentTypeCheckout && self.payPalRequest.offerPayLater) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.paylater.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];
     }
