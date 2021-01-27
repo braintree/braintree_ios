@@ -159,7 +159,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             requestParameters[@"braintreeLibraryVersion"] = [NSString stringWithFormat:@"iOS-%@", BRAINTREE_VERSION];
 
             NSMutableDictionary *clientMetadata = [@{} mutableCopy];
-            clientMetadata[@"sdkVersion"] = BRAINTREE_VERSION;
+            clientMetadata[@"sdkVersion"] = [NSString stringWithFormat:@"iOS/%@", BRAINTREE_VERSION];
             clientMetadata[@"requestedThreeDSecureVersion"] = @"2";
             requestParameters[@"clientMetadata"] = clientMetadata;
 

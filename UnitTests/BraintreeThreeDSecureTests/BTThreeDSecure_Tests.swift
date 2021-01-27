@@ -554,7 +554,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
                 XCTAssertNotNil(json!["authorizationFingerprint"] as! String)
                 let clientMetadata = json!["clientMetadata"] as! [String: Any]
                 XCTAssertEqual(clientMetadata["requestedThreeDSecureVersion"] as! String, "2")
-                XCTAssertNotNil(clientMetadata["sdkVersion"] as! String)
+                XCTAssertEqual(clientMetadata["sdkVersion"] as! String, "iOS/\(BRAINTREE_VERSION)")
                 expectation.fulfill()
             }
         }
