@@ -77,11 +77,23 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         XCTAssertEqual(request.shippingMethodAsString, nil)
     }
 
-    // MARK: - versionRequested
+    // MARK: - versionRequested and versionRequestedAsString
 
     func testVersionRequested_defaultsToVersion2() {
         let request = BTThreeDSecureRequest()
         XCTAssertEqual(request.versionRequested, .version2)
+    }
+
+    func testVersionRequestedAsString_whenVersion1IsRequested_returns1() {
+        let request = BTThreeDSecureRequest()
+        request.versionRequested = .version1
+        XCTAssertEqual(request.versionRequestedAsString, "1")
+    }
+
+    func testVersionRequestedAsString_whenVersion2IsRequested_returns2() {
+        let request = BTThreeDSecureRequest()
+        request.versionRequested = .version2
+        XCTAssertEqual(request.versionRequestedAsString, "2")
     }
 
     // MARK: - handleRequest

@@ -88,6 +88,15 @@
     }
 }
 
+- (NSString *)versionRequestedAsString {
+    switch (self.versionRequested) {
+        case BTThreeDSecureVersion1:
+            return @"1";
+        default:
+            return @"2";
+    }
+}
+
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
