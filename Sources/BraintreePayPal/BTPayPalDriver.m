@@ -6,6 +6,7 @@
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BTPaymentMethodNonceParser.h>
 #import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTPayPalRequest.h>
 #import <Braintree/BTConfiguration+PayPal.h>
@@ -15,6 +16,7 @@
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import <BraintreePayPal/BTPayPalRequest.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
@@ -25,6 +27,7 @@
 #else // Carthage
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreePayPal/BTPayPalRequest.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>

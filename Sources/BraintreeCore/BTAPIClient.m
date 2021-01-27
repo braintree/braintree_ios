@@ -5,20 +5,19 @@
 #import "BTGraphQLHTTP.h"
 #import "BTHTTP.h"
 #import "BTLogger_Internal.h"
+#import "BTPaymentMethodNonceParser.h"
 
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>
 #import <Braintree/BTJSON.h>
 #import <Braintree/BTPaymentMethodNonce.h>
-#import <Braintree/BTPaymentMethodNonceParser.h>
 #import <Braintree/BTPayPalIDToken.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BTPayPalIDToken.h>
 #endif
 
