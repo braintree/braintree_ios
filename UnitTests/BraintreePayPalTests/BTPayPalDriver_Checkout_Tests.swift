@@ -363,6 +363,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertEqual(lastPostParameters["line2"] as? String, "Apt. 0")
@@ -395,6 +396,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertNil(lastPostParameters["line2"])
