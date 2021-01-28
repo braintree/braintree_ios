@@ -10,6 +10,7 @@
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
+		4269C4AF25C3275F00DAEE73 /* Card_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4269C4AE25C3275F00DAEE73 /* Card_UITests.swift */; };
 		428D119725A3A834003D8552 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */; };
 		42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */; };
 		42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */; };
@@ -174,6 +175,7 @@
 /* Begin PBXFileReference section */
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
+		4269C4AE25C3275F00DAEE73 /* Card_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card_UITests.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmericanExpress_UITests.swift; sourceTree = "<group>"; };
 		42D47A132554679D0012BAF1 /* BraintreeDemoSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSceneDelegate.h; sourceTree = "<group>"; };
@@ -431,6 +433,14 @@
 				42456E3D25474B620018374E /* DateGenerator.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		4269C4AD25C3274400DAEE73 /* Card UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				4269C4AE25C3275F00DAEE73 /* Card_UITests.swift */,
+			);
+			path = "Card UI Tests";
 			sourceTree = "<group>";
 		};
 		42C5BDD425A4CE2E00E8FF40 /* American Express UI Tests */ = {
@@ -914,6 +924,7 @@
 			isa = PBXGroup;
 			children = (
 				42C5BDD425A4CE2E00E8FF40 /* American Express UI Tests */,
+				4269C4AD25C3274400DAEE73 /* Card UI Tests */,
 				42456E3B25474B620018374E /* Helpers */,
 				A9B5ABE224EB2A2200A4E1C8 /* Info.plist */,
 				A9C4E07624EC2889002F6FF2 /* PayPal UI Tests */,
@@ -1236,6 +1247,7 @@
 				42456E3E25474B620018374E /* BTUITest.swift in Sources */,
 				42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */,
 				A9B5ABEE24EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift in Sources */,
+				4269C4AF25C3275F00DAEE73 /* Card_UITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,11 +3,13 @@
 
 @interface BraintreeDemoCardTokenizationViewController ()
 
-@property (nonatomic, strong) IBOutlet UITextField *cardNumberField;
-@property (nonatomic, strong) IBOutlet UITextField *expirationMonthField;
-@property (nonatomic, strong) IBOutlet UITextField *expirationYearField;
+@property (weak, nonatomic) IBOutlet UITextField *cardNumberField;
+@property (weak, nonatomic) IBOutlet UITextField *expirationMonthField;
+@property (weak, nonatomic) IBOutlet UITextField *expirationYearField;
+@property (weak, nonatomic) IBOutlet UISwitch *validateCardSwitch;
 
-@property (weak, nonatomic) IBOutlet UIButton *autofillButton;
+@property (weak, nonatomic) IBOutlet UIButton *autofillValidCardButton;
+@property (weak, nonatomic) IBOutlet UIButton *autofillInvalidCardButton;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
@@ -36,6 +38,7 @@
                                   expirationMonth:self.expirationMonthField.text
                                    expirationYear:self.expirationYearField.text
                                               cvv:nil];
+    card.shouldValidate = self.validateCardSwitch.isOn;
 
     [self setFieldsEnabled:NO];
     [cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
@@ -50,10 +53,16 @@
     }];
 }
 
-- (IBAction)setupDemoData {
-    self.cardNumberField.text = [@"4111111111111111" copy];
-    self.expirationMonthField.text = [@"12" copy];
-    self.expirationYearField.text = [@"2038" copy];
+- (IBAction)autofillValidCard {
+    self.cardNumberField.text = @"4111111111111111";
+    self.expirationMonthField.text = @"12";
+    self.expirationYearField.text = @"2038";
+}
+
+- (IBAction)autofillInvalidCard {
+    self.cardNumberField.text = @"123123";
+    self.expirationMonthField.text = @"XX";
+    self.expirationYearField.text = @"XXXX";
 }
 
 - (void)setFieldsEnabled:(BOOL)enabled {
@@ -61,7 +70,8 @@
     self.expirationMonthField.enabled = enabled;
     self.expirationYearField.enabled = enabled;
     self.submitButton.enabled = enabled;
-    self.autofillButton.enabled = enabled;
+    self.autofillValidCardButton.enabled = enabled;
+    self.autofillInvalidCardButton.enabled = enabled;
 }
 
 @end
