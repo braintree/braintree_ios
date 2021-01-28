@@ -42,4 +42,49 @@ class Card_UITests: XCTestCase {
         waitForElementToAppear(app.buttons["Input is invalid"])
         XCTAssertTrue(app.buttons["Input is invalid"].exists)
     }
+
+    func testTokenizeCard_whenCardHasValidationDisabled_andCardIsValid_tokenizesSuccessfully() {
+        app.launchArguments.append("-TokenizationKey")
+        app.launch()
+
+        waitForElementToAppear(app.buttons["Autofill Valid Card"])
+        app.buttons["Autofill Valid Card"].tap()
+
+        // Toggle "Validate card" off
+        app.switches.firstMatch.tap()
+
+        waitForElementToAppear(app.buttons["Submit"])
+        app.buttons["Submit"].tap()
+
+        waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
+        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists)
+    }
+
+    func testTokenizeCard_whenCardHasValidationEnabled_andUsingTokenizationKey_failsWithAuthorizationError() {
+        app.launchArguments.append("-TokenizationKey")
+        app.launch()
+
+        waitForElementToAppear(app.buttons["Autofill Valid Card"])
+        app.buttons["Autofill Valid Card"].tap()
+
+        waitForElementToAppear(app.buttons["Submit"])
+        app.buttons["Submit"].tap()
+
+        waitForElementToAppear(app.buttons["The operation couldn’t be completed. (com.braintreepayments.BTHTTPErrorDomain error 2.)"])
+        XCTAssertTrue(app.buttons["The operation couldn’t be completed. (com.braintreepayments.BTHTTPErrorDomain error 2.)"].exists)
+    }
+
+    func testTokenizeCard_whenCardHasValidationEnabled_andUsingClientToken_tokenizesSuccessfully() {
+        app.launchArguments.append("-ClientToken")
+        app.launch()
+
+        waitForElementToAppear(app.buttons["Autofill Valid Card"])
+        app.buttons["Autofill Valid Card"].tap()
+
+        waitForElementToAppear(app.buttons["Submit"])
+        app.buttons["Submit"].tap()
+
+        waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
+        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists)
+    }
 }
