@@ -5,6 +5,7 @@
   * Make `shippingMethod` property on `BTThreeDSecureRequest` an enum instead of a string
   * Remove `BTTokenizationService`
 * Fix memory leak in `BTPayPalDriver`
+* Add `offerPayLater` to `BTPayPalRequest`
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`

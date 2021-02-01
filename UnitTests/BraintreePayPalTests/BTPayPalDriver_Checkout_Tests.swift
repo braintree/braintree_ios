@@ -363,6 +363,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertEqual(lastPostParameters["line2"] as? String, "Apt. 0")
@@ -395,6 +396,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertNil(lastPostParameters["line2"])
@@ -550,6 +552,30 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
         XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.credit.offered.started"))
+    }
+
+    func testCheckout_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.offerPayLater = true
+
+        payPalDriver.requestOneTimePayment(request) { _,_  in }
+
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
+
+        // Ensure the payment resource had the correct parameters
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, true)
+
+        // Make sure analytics event was sent when switch occurred
+        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
+
+        XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.paylater.offered.started"))
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
