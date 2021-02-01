@@ -20,8 +20,8 @@
 		425089B525BDC8730033343D /* BraintreeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = 425089B425BDC8730033343D /* BraintreeApplePay */; };
 		425089B725BDC8730033343D /* BraintreeAmericanExpress in Frameworks */ = {isa = PBXBuildFile; productRef = 425089B625BDC8730033343D /* BraintreeAmericanExpress */; };
 		425089B925BDC8730033343D /* BraintreeThreeDSecure in Frameworks */ = {isa = PBXBuildFile; productRef = 425089B825BDC8730033343D /* BraintreeThreeDSecure */; };
-		42C2D3232583E52D00E525AE /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C2D2FA2583D7DC00E525AE /* CardinalMobile.framework */; };
-		42C2D3242583E52D00E525AE /* CardinalMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 42C2D2FA2583D7DC00E525AE /* CardinalMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4274809E25C88BA4006CE387 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4274809D25C88BA4006CE387 /* CardinalMobile.framework */; };
+		4274809F25C88BA4006CE387 /* CardinalMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4274809D25C88BA4006CE387 /* CardinalMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		800E917025814180002CE60B /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		80214E042551FB5A00695A6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E032551FB5A00695A6F /* AppDelegate.swift */; };
 		80214E062551FB5A00695A6F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E052551FB5A00695A6F /* SceneDelegate.swift */; };
@@ -38,7 +38,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				42C2D3242583E52D00E525AE /* CardinalMobile.framework in Embed Frameworks */,
+				4274809F25C88BA4006CE387 /* CardinalMobile.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -46,7 +46,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		42C2D2FA2583D7DC00E525AE /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CardinalMobile.framework; sourceTree = "<group>"; };
+		4274809D25C88BA4006CE387 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = SPMTest/Frameworks/CardinalMobile.framework; sourceTree = "<group>"; };
 		80214E002551FB5A00695A6F /* SPMTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPMTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80214E032551FB5A00695A6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80214E052551FB5A00695A6F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +63,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				425089A525BDC8730033343D /* KountDataCollector in Frameworks */,
-				42C2D3232583E52D00E525AE /* CardinalMobile.framework in Frameworks */,
 				425089A925BDC8730033343D /* BraintreeCore in Frameworks */,
 				425089AB25BDC8730033343D /* BraintreeCard in Frameworks */,
 				425089B725BDC8730033343D /* BraintreeAmericanExpress in Frameworks */,
@@ -74,6 +73,7 @@
 				425089AF25BDC8730033343D /* PPRiskMagnes in Frameworks */,
 				425089A325BDC8730033343D /* BraintreePayPal in Frameworks */,
 				425089AD25BDC8730033343D /* BraintreePaymentFlow in Frameworks */,
+				4274809E25C88BA4006CE387 /* CardinalMobile.framework in Frameworks */,
 				800E917025814180002CE60B /* (null) in Frameworks */,
 				425089B125BDC8730033343D /* BraintreeDataCollector in Frameworks */,
 				425089B325BDC8730033343D /* PayPalDataCollector in Frameworks */,
@@ -83,17 +83,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		42C2D2F62583D79500E525AE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				42C2D2FA2583D7DC00E525AE /* CardinalMobile.framework */,
-			);
-			path = Frameworks;
-			sourceTree = "<group>";
-		};
 		42C2D3002583D8CF00E525AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4274809D25C88BA4006CE387 /* CardinalMobile.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -118,7 +111,6 @@
 		80214E022551FB5A00695A6F /* SPMTest */ = {
 			isa = PBXGroup;
 			children = (
-				42C2D2F62583D79500E525AE /* Frameworks */,
 				80214E032551FB5A00695A6F /* AppDelegate.swift */,
 				80214E052551FB5A00695A6F /* SceneDelegate.swift */,
 				80214E072551FB5A00695A6F /* ViewController.swift */,
