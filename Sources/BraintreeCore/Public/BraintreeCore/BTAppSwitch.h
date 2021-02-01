@@ -67,16 +67,19 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Notification that an app switch will occur
  */
+// Remove in favor of BTAppContextWillSwitchNotification?
 extern NSString * const BTAppSwitchWillSwitchNotification;
 
 /**
  Notification that an app switch did occur
  */
+// Remove in favor of BTAppContextDidReturnNotification?
 extern NSString * const BTAppSwitchDidSwitchNotification;
 
 /**
  Notification that an app switch will process payment information
  */
+// Can we remove this?
 extern NSString * const BTAppSwitchWillProcessPaymentInfoNotification;
 
 /**
@@ -99,6 +102,7 @@ extern NSString * const BTAppContextDidReturnNotification;
 /**
  Specifies the destination of an app switch
 */
+// I think all app swtiching is now either/or - are there flows where this information is ambiguous?
 typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
     /// Unknown error
     BTAppSwitchTargetUnknown = 0,

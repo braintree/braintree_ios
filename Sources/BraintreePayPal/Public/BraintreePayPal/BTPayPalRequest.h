@@ -166,6 +166,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 /**
  Optional: Offers PayPal Credit if the customer qualifies. Defaults to false. Only available with PayPal Checkout and PayPal Billing Agreement.
  */
+// Can we remove this?
 @property (nonatomic) BOOL offerCredit;
 
 /**

@@ -3,6 +3,7 @@
 /**
  Braintree SDK Logging Levels
 */
+// Usage of this logger seems sparse
 typedef NS_ENUM(NSUInteger, BTLogLevel) {
     /// Suppress all log output
     BTLogLevelNone     = 0,

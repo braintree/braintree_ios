@@ -74,6 +74,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL *)appSwitchURL {
     if ([self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
+        // Why not ASWebAuthenticationSession here?
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
         self.safariViewController.delegate = self;
         self.safariViewController.dismissButtonStyle = SFSafariViewControllerDismissButtonStyleCancel;

@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Optional. Recipient name for shipping address.
 */
+// Maybe `fullName` (see graphql) with a note: Full name, (eg. recipient when shipping).
 @property (nonatomic, nullable, copy) NSString *recipientName;
 
 /**

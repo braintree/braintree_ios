@@ -12,6 +12,7 @@ import Security
      - Parameter pairingID: A pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
      - Returns: A client metadata ID to send as a header
      */
+    // Have we decided on Id or ID?
     @objc public class func clientMetadataID(_ pairingID: String?) -> String {
         return PPDataCollector.generateClientMetadataID(pairingID, disableBeacon: false, data: nil)
     }

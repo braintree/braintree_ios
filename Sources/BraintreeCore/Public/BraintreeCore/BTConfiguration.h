@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Contains information specific to a merchant's Braintree integration
  */
+// Would it make sense to collapse all of the Configuration+ categories into a single class here?
 @interface BTConfiguration : NSObject
 
 /**

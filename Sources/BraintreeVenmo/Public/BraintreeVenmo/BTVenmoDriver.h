@@ -67,6 +67,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
     On success, you will receive an instance of `BTVenmoAccountNonce`; on failure, an error; on user
     cancellation, you will receive `nil` for both parameters.
 */
+// We should rework this to use a `BTVenmoRequest` object and consolidate to a single authorization method. There are projects coming to move to Payment Context and add more customization to the experience
 - (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock;
 
 /**

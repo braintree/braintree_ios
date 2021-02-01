@@ -244,6 +244,7 @@ static Class PayPalDataCollectorClass;
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
 }
 
+// Remove all of this data collection for each tokenization, it has been removed from the gateway
 + (void)setPayPalDataCollectorClass:(Class)payPalDataCollectorClass {
     PayPalDataCollectorClass = payPalDataCollectorClass;
 }

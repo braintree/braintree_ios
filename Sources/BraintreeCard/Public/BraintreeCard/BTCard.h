@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  A convenience initializer for creating a card tokenization request.
 */
+// Consider removing this and just using the properties. Clarifies how to make cvv only nonces?
 - (instancetype)initWithNumber:(NSString *)number
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
@@ -18,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
 Designated initializer.
  */
+// Consider removing, the dictionary style of initialization isn't used elsewhere?
 - (instancetype)initWithParameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;
 
 /**

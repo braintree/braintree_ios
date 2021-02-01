@@ -321,9 +321,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
 
+    // Verify what bt_int_type does
     NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
     urlComponents.query = queryForAuthSession;
 
+    // Verify this URL matches v4 URLs
+    // Verify that RDA data is being sent correctly
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
                                                                   callbackURLScheme:BTCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {

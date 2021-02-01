@@ -54,6 +54,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 
  @param completion A completion block callback that returns a deviceData string that should be passed in to server-side calls, such as `Transaction.sale` This JSON serialized string contains the merchant ID and session ID.
 */
+// consider removing, kount will be collected by the other method if the merchant is setup for it
 - (void)collectCardFraudData:(void (^)(NSString *deviceData))completion;
 
 #pragma mark - Direct Integrations
@@ -72,6 +73,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /**
  Provides status updates from a BTDataCollector instance. At this time, updates will only be sent for card fraud data (from Kount).
 */
+// Do the other SDKs have this feature? Consider removing.
 @protocol BTDataCollectorDelegate <NSObject>
 
 /**
