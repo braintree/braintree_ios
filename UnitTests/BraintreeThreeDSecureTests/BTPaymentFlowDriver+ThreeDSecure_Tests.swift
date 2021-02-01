@@ -22,6 +22,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.accountType = .credit
+        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.mobilePhoneNumber = "5151234321"
         threeDSecureRequest.email = "tester@example.com"
         threeDSecureRequest.shippingMethod = .priority
@@ -42,6 +43,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["accountType"] as! String, "credit")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["requestedThreeDSecureVersion"] as! String, "2")
 
             let additionalInfo = self.mockAPIClient.lastPOSTParameters!["additionalInfo"] as! Dictionary<String, String>
             XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
