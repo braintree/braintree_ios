@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, readonly, strong) BTPostalAddress *billingAddress;
 
 /**
- Client Metadata Id associated with this transaction.
+ Client Metadata ID associated with this transaction.
  */
 @property (nonatomic, nullable, readonly, copy) NSString *clientMetadataID;
 
