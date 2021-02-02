@@ -31,7 +31,7 @@ To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure
 
 ### BraintreeDataCollector
 
-There is a known bug that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
+There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-spm-package-for-ios-executable/41245/13) that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
 
 
 ```sh
@@ -44,9 +44,9 @@ Make sure to select your app's target in the "Provide build settings from" drop-
 
 ### BraintreeThreeDSecure
 
-#### 1. Add CardinalMobile.framework
+Currently, to use the `BraintreeThreeDSecure` library via SPM, you must manually include `CardinalMobile.framework`. Once we receive an xcframework version of CardinalMobile, these steps will no longer be required.
 
-To use the `BraintreeThreeDSecure` library via SPM, you must manually include `CardinalMobile.framework`.
+#### 1. Add CardinalMobile.framework
 
 1. Once you've installed the Braintree Swift Package, find `CardinalMobile.framework` under the Frameworks directory in the Braintree package.
 1. Right click on `CardinalMobile.framework` and select _Show in Finder_.
@@ -57,9 +57,17 @@ To use the `BraintreeThreeDSecure` library via SPM, you must manually include `C
     * Under the _Frameworks, Libraries, and Embedded Content_ section, make sure `CardinalMobile.framework` is set to “Embed & Sign”
 1. Go to the Build Phases tab. Under _Link Binary With Libraries_, make sure the framework is listed. This should happen automatically, but if not, add the framework manually via the `+` button.
 
-#### 2. Add run script
+#### 2. Remove simulator slices
 
-CardinalMobile.framework contains architectures for both devices and simulators. When uploading to App Store Connect, Xcode will emit an error if the simulator slice has not been removed. To avoid this error, you must add the following run script that removes unneeded architectures:
+CardinalMobile.framework contains architectures for both devices and simulators. When uploading to App Store Connect, Xcode will emit an error if the simulator slices have not been removed.
+
+Option 1: Run the following command in the directory containing `CardinalMobile.framework` prior to archiving your app. You'll need to run this command each time you archive.
+
+```sh
+lipo -remove i386 -remove x86_64 -output CardinalMobile.framework/CardinalMobile CardinalMobile.framework/CardinalMobile
+```
+
+Option 2: Add the following run script to remove unneeded architectures.
 
 ```sh
 FRAMEWORK="CardinalMobile"
@@ -79,9 +87,6 @@ mv "$FRAMEWORK_EXECUTABLE_PATH-merged" "$FRAMEWORK_EXECUTABLE_PATH"
 
 ![image](image_assets/cardinal_run_script.png)
 
-Alternatively, you can run the following command in the directory containing `CardinalMobile.framework` prior to archiving your app.
 
-```sh
-lipo -remove i386 -remove x86_64 -output CardinalMobile.framework/CardinalMobile CardinalMobile.framework/CardinalMobile
-```
+
 
