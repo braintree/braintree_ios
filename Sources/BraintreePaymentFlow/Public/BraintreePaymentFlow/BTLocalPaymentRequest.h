@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
  Required delegate method which returns the payment ID before the flow starts.
  Use this to do any preprocessing and setup for webhooks. Use the `start()` callback to continue the flow.
  */
-- (void)localPaymentStarted:(BTLocalPaymentRequest *)request paymentId:(NSString *)paymentId start:(void(^)(void))start;;
+- (void)localPaymentStarted:(BTLocalPaymentRequest *)request paymentID:(NSString *)paymentID start:(void(^)(void))start;;
 
 @end
 

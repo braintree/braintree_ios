@@ -2,11 +2,11 @@ import XCTest
 import BraintreePaymentFlow
 
 class MockLocalPaymentRequestDelegate : NSObject, BTLocalPaymentRequestDelegate {
-    var paymentId: String?
+    var paymentID: String?
     var idExpectation : XCTestExpectation?
 
-    func localPaymentStarted(_ request: BTLocalPaymentRequest, paymentId: String, start: @escaping () -> Void) {
-        self.paymentId = paymentId
+    func localPaymentStarted(_ request: BTLocalPaymentRequest, paymentID: String, start: @escaping () -> Void) {
+        self.paymentID = paymentID
         idExpectation?.fulfill()
         start()
     }

@@ -16,7 +16,7 @@
         _acsURL = [json[@"acsUrl"] asURL];
         _termURL = [json[@"termUrl"] asURL];
         _threeDSecureVersion = [json[@"threeDSecureVersion"] asString];
-        _transactionId = [json[@"transactionId"] asString];
+        _transactionID = [json[@"transactionId"] asString];
     }
     return self;
 }

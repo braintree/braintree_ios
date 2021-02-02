@@ -107,9 +107,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Auto-generated UUID
- @param sessionId A string for the session
+ @param sessionID A string for the session
  */
-- (void)setSessionId:(NSString *)sessionId;
+- (void)setSessionID:(NSString *)sessionID;
 
 @end
 

@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Optional. The request ID used when fetching the rewards balance
  */
-@property (nonatomic, nullable, copy) NSString *requestId;
+@property (nonatomic, nullable, copy) NSString *requestID;
 
 /**
  Optional. The rewards amount associated with the rewards balance

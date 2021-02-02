@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  This a secondary unique 3DS identifier assigned by Braintree to track the 3DS call as it progresses.
  */
-@property (nonatomic, nullable, readonly, copy) NSString *transactionId;
+@property (nonatomic, nullable, readonly, copy) NSString *transactionID;
 
 /**
  Indicates that a 3DS challenge is required.

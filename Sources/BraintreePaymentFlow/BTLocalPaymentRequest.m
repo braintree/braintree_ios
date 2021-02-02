@@ -139,7 +139,7 @@
                  NSURL *url = [NSURL URLWithString:approvalUrl];
 
                  if (self.paymentId && url) {
-                     [self.localPaymentFlowDelegate localPaymentStarted:self paymentId:self.paymentId start:^{
+                     [self.localPaymentFlowDelegate localPaymentStarted:self paymentID:self.paymentId start:^{
                          [delegate onPaymentWithURL:url error:error];
                      }];
                  } else {

@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 @interface BTDataCollector ()
 
-@property (nonatomic, copy) NSString *fraudMerchantId;
+@property (nonatomic, copy) NSString *fraudMerchantID;
 @property (nonatomic, copy) BTAPIClient *apiClient;
 
 @end
@@ -77,9 +77,9 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     self.kount.environment = environment;
 }
 
-- (void)setFraudMerchantId:(NSString *)fraudMerchantId {
-    _fraudMerchantId = fraudMerchantId;
-    self.kount.merchantID = [fraudMerchantId integerValue];
+- (void)setFraudMerchantID:(NSString *)fraudMerchantID {
+    _fraudMerchantID = fraudMerchantID;
+    self.kount.merchantID = [fraudMerchantID integerValue];
 }
 
 #pragma mark - Public methods
@@ -105,7 +105,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
             BTDataCollectorEnvironment btEnvironment = [self environmentFromString:[configuration.json[@"environment"] asString]];
             [self setCollectorEnvironment:[self collectorEnvironment:btEnvironment]];
 
-            NSString *merchantId = self.fraudMerchantId ?: [configuration kountMerchantId];
+            NSString *merchantId = self.fraudMerchantID ?: [configuration kountMerchantId];
             self.kount.merchantID = [merchantId integerValue];
 
             NSString *deviceSessionId = [self sessionId];
@@ -161,7 +161,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     if (includeCard) {
         NSString *deviceSessionId = [self sessionId];
         dataDictionary[@"device_session_id"] = deviceSessionId;
-        dataDictionary[@"fraud_merchant_id"] = self.fraudMerchantId;
+        dataDictionary[@"fraud_merchant_id"] = self.fraudMerchantID;
 
         [self.kount collectForSession:deviceSessionId completion:^(__unused NSString * _Nonnull sessionID, BOOL success, NSError * _Nullable error) {
             if (success) {

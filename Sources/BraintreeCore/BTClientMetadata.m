@@ -36,7 +36,7 @@
     BTMutableClientMetadata *mutableMetadata = [[BTMutableClientMetadata allocWithZone:zone] init];
     mutableMetadata.integration = _integration;
     mutableMetadata.source = _source;
-    mutableMetadata.sessionId = [_sessionId copyWithZone:zone];
+    mutableMetadata.sessionID = [_sessionId copyWithZone:zone];
     return mutableMetadata;
 }
 
@@ -99,8 +99,8 @@
     _source = source;
 }
 
-- (void)setSessionId:(NSString *)sessionId {
-    _sessionId = sessionId;
+- (void)setSessionID:(NSString *)sessionID {
+    _sessionId = sessionID;
 }
 
 @end

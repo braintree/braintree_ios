@@ -97,7 +97,7 @@
 
 #pragma mark BTIdealRequestDelegate
 
-- (void)localPaymentStarted:(__unused BTLocalPaymentRequest *)request paymentId:(NSString *)paymentId start:(void (^)(void))start {
+- (void)localPaymentStarted:(__unused BTLocalPaymentRequest *)request paymentID:(NSString *)paymentId start:(void (^)(void))start {
     self.paymentIDLabel.text = [NSString stringWithFormat:@"LocalPayment ID: %@", paymentId];
     // Do preprocessing if necessary before calling start()
     start();
