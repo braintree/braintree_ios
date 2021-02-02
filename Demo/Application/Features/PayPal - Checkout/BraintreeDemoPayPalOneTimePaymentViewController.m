@@ -22,10 +22,9 @@
 
     [sender setTitle:NSLocalizedString(@"Processing...", nil) forState:UIControlStateDisabled];
     [sender setEnabled:NO];
-    self.apiClient = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_hcsh8ntd_t54vmb9mkw84cdtx"];
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.appSwitchDelegate = self;
-    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"124.30"];
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
     request.activeWindow = self.view.window;
     [driver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
         [sender setEnabled:YES];
