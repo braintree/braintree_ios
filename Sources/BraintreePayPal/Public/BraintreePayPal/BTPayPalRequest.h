@@ -137,7 +137,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic, nullable, strong) BTPostalAddress *shippingAddressOverride;
 
 /**
- Optional: Display a custom description to the user for a billing agreement.
+ Optional: Display a custom description to the user during billing agreement flows or when `requestBillingAgreement` is `true`.
 */
 @property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
 
@@ -189,6 +189,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  @note If your app supports multitasking, you must set this property to ensure that the ASWebAuthentication session is presented on the correct window.
  */
 @property (nonatomic, nullable, strong) UIWindow *activeWindow;
+
+/**
+ Optional: If `true`, the customer will be prompted to consent to a billing agreement during PayPal Checkout flows.
+ */
+@property (nonatomic) BOOL requestBillingAgreement;
 
 @end
 

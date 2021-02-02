@@ -14,6 +14,7 @@
         _offerCredit = NO;
         _offerPayLater = NO;
         _shippingAddressEditable = NO;
+        _requestBillingAgreement = NO;
         _intent = BTPayPalRequestIntentAuthorize;
         _userAction = BTPayPalRequestUserActionDefault;
         _landingPageType = BTPayPalRequestLandingPageTypeDefault;

@@ -735,6 +735,33 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertTrue(delegate.appContextDidReturnCalled)
     }
 
+    func testCheckout_postWithRequestBillingAgreement_withDescription() {
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.requestBillingAgreement = true
+        request.billingAgreementDescription = "ABC payments"
+
+        payPalDriver.requestOneTimePayment(request) { _,_  in }
+
+        XCTAssertNotNil(payPalDriver.authenticationSession)
+        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
+
+        // Ensure the payment resource had the correct parameters
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(lastPostParameters["request_billing_agreement"] as? Bool, true)
+
+        guard let billingAgreementDetails = lastPostParameters["billing_agreement_details"] as? [String:Any] else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(billingAgreementDetails["description"] as? String, "ABC payments")
+    }
+
     // MARK: - Tokenization
 
     func testTokenizedPayPalAccount_containsPayerInfo() {

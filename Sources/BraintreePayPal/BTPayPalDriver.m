@@ -152,6 +152,14 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             if (request.amount != nil) {
                 parameters[@"amount"] = request.amount;
             }
+            if (request.requestBillingAgreement) {
+                parameters[@"request_billing_agreement"] = @(request.requestBillingAgreement);
+                if (request.billingAgreementDescription.length > 0) {
+                    NSMutableDictionary *billingAgreementDetails = [NSMutableDictionary dictionary];
+                    billingAgreementDetails[@"description"] = request.billingAgreementDescription;
+                    parameters[@"billing_agreement_details"] = billingAgreementDetails;
+                }
+            }
         } else if (request.billingAgreementDescription.length > 0) {
             parameters[@"description"] = request.billingAgreementDescription;
         }
