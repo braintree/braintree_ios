@@ -26,44 +26,9 @@ A new major version of the SDK is available in beta. See the [v5 migration guide
 We recommend using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](https://github.com/CocoaPods/CocoaPods), or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 ### Swift Package Manager (v5 Beta)
-_This feature is only available in v5.0.0-beta1._
+_This feature is only available in v5.0.0-beta1 and v5.0.0-beta2._
 
-To add the `Braintree` package to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
-
-If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see General > Frameworks, Libraries, and Embedded Content).
-
-In your app's source code files, use the following import syntax to include Braintree's libraries. For example:
-```
-import BraintreeCore
-import BraintreeCard
-import BraintreeApplePay
-import BraintreePayPal
-```
-
-#### Binary Dependencies
-
-There is a known Xcode bug, reported in [this GitHub issue](https://github.com/braintree/braintree_ios/issues/576), on archiving apps that use binary dependencies via SPM. The workaround is to tick the checkbox to include these binary dependencies in your app.
-
-To use the `BraintreeDataCollector` library, you must also include the `KountDataCollector` library via SPM.
-
-The `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, and `BraintreeVenmo` libraries all require the `PPRiskMagnes` library be included via SPM.
-
-#### BraintreeThreeDSecure
-
-To use the `BraintreeThreeDSecure` library via SPM, you must [manually include](#manually-including-a-framework) the `CardinalMobile.framework` located in the `Frameworks` dir.
-
-##### Manually including a framework
-
-1. Drag and drop the framework from Finder into your Xcode project
-    * Select _Copy items if needed_
-    * Click _Finish_. 
-        The result should look like:
-        <br/><br/>
-        ![image](image_assets/include_frameworks_in_proj.png)
-1. Open your project's settings by selecting your app target in the General tab
-    * Under the _Frameworks, Libraries, and Embedded Content_ section, make sure each framework is set to “Embed & Sign”
-    ![image](image_assets/link_libraries.png)
-1. Go to the Build Phases tab. Under _Link Binary With Libraries_, make sure the frameworks are listed. This should be taken care of by step #2 above, but if not, add the frameworks manually via the `+` button.
+See our [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md] for instructions on integrating with SPM.
 
 ### CocoaPods
 ```
