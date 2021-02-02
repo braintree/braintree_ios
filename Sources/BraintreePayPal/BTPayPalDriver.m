@@ -255,7 +255,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             NSString *pairingId = [self.class tokenFromApprovalURL:self.approvalUrl];
 
-            self.clientMetadataId = [PPDataCollector clientMetadataID:pairingId];
+            self.clientMetadataID = [PPDataCollector clientMetadataID:pairingId];
 
             BOOL analyticsSuccess = error ? NO : YES;
             if (isBillingAgreement) {
@@ -480,7 +480,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     BTJSON *details = payPalAccount[@"details"];
     
     NSString *email = [details[@"email"] asString];
-    NSString *clientMetadataId = [details[@"correlationId"] asString];
+    NSString *clientMetadataID = [details[@"correlationId"] asString];
     // Allow email to be under payerInfo
     if ([details[@"payerInfo"][@"email"] isString]) {
         email = [details[@"payerInfo"][@"email"] asString];
@@ -489,7 +489,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     NSString *firstName = [details[@"payerInfo"][@"firstName"] asString];
     NSString *lastName = [details[@"payerInfo"][@"lastName"] asString];
     NSString *phone = [details[@"payerInfo"][@"phone"] asString];
-    NSString *payerId = [details[@"payerInfo"][@"payerId"] asString];
+    NSString *payerID = [details[@"payerInfo"][@"payerId"] asString];
     BOOL isDefault = [payPalAccount[@"default"] isTrue];
     
     BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
@@ -507,8 +507,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                                                                                          phone:phone
                                                                                 billingAddress:billingAddress
                                                                                shippingAddress:shippingAddress
-                                                                              clientMetadataId:clientMetadataId
-                                                                                       payerId:payerId
+                                                                              clientMetadataID:clientMetadataID
+                                                                                       payerID:payerID
                                                                                      isDefault:isDefault
                                                                                creditFinancing:creditFinancing];
     
@@ -714,8 +714,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             parameters[@"paypal_account"][@"intent"] = [self.class intentTypeToString:self.payPalRequest.intent];
         }
     }
-    if (self.clientMetadataId) {
-        parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataId;
+    if (self.clientMetadataID) {
+        parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataID;
     }
 
     if (self.payPalRequest != nil && self.payPalRequest.merchantAccountId != nil) {

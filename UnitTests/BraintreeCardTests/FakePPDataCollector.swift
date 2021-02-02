@@ -2,7 +2,7 @@ import PayPalDataCollector
 
 @objc public class FakePPDataCollector: NSObject {
     public static var didGetClientMetadataID = false
-    public static var lastClientMetadataId = ""
+    public static var lastClientMetadataID = ""
     public static var lastData: [AnyHashable: Any]? = [:]
     public static var lastBeaconState = false
 
@@ -25,19 +25,19 @@ import PayPalDataCollector
             lastData = nil
         }
         if (clientMetadataID != nil) {
-            lastClientMetadataId = clientMetadataID!
+            lastClientMetadataID = clientMetadataID!
         } else {
-            lastClientMetadataId = "fakeclientmetadataid"
+            lastClientMetadataID = "fakeclientmetadataid"
         }
         lastBeaconState = disableBeacon
         didGetClientMetadataID = true
-        return lastClientMetadataId
+        return lastClientMetadataID
     }
 
     class func resetState() -> Void {
         lastBeaconState = false
         didGetClientMetadataID = false
         lastData = nil
-        lastClientMetadataId = ""
+        lastClientMetadataID = ""
     }
 }

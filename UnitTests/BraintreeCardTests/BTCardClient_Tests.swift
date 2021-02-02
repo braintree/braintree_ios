@@ -254,7 +254,7 @@ class BTCardClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.custom.card.succeeded"))
     }
 
-    func testCollectsDeviceData_whenEnabled_withCorrectParams_usingNonceAsClientMetadataId_withoutCustomer() {
+    func testCollectsDeviceData_whenEnabled_withCorrectParams_usingNonceAsClientMetadataID_withoutCustomer() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "creditCards": [
@@ -287,7 +287,7 @@ class BTCardClient_Tests: XCTestCase {
 
         XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
         XCTAssertTrue(FakePPDataCollector.lastBeaconState)
-        XCTAssertEqual("cmid-nonce", FakePPDataCollector.lastClientMetadataId)
+        XCTAssertEqual("cmid-nonce", FakePPDataCollector.lastClientMetadataID)
         guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
         XCTAssertEqual("fake-merchant", data["mid"])
         XCTAssertEqual("bt_card", data["rda_tenant"])
@@ -332,7 +332,7 @@ class BTCardClient_Tests: XCTestCase {
 
         XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
         XCTAssertTrue(FakePPDataCollector.lastBeaconState)
-        XCTAssertEqual("cmid-nonce", FakePPDataCollector.lastClientMetadataId)
+        XCTAssertEqual("cmid-nonce", FakePPDataCollector.lastClientMetadataID)
         guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
         XCTAssertEqual("fake-merchant", data["mid"])
         XCTAssertEqual("bt_card", data["rda_tenant"])
@@ -468,7 +468,7 @@ class BTCardClient_Tests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testCollectsDeviceData_whenEnabledWithGraphQL_withCorrectParams_usingNonceAsClientMetadataId_withoutCustomer() {
+    func testCollectsDeviceData_whenEnabledWithGraphQL_withCorrectParams_usingNonceAsClientMetadataID_withoutCustomer() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "creditCards": [
@@ -528,7 +528,7 @@ class BTCardClient_Tests: XCTestCase {
 
         XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
         XCTAssertTrue(FakePPDataCollector.lastBeaconState)
-        XCTAssertEqual("abc-nonce", FakePPDataCollector.lastClientMetadataId)
+        XCTAssertEqual("abc-nonce", FakePPDataCollector.lastClientMetadataID)
         guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
         XCTAssertEqual("fake-merchant", data["mid"])
         XCTAssertEqual("bt_card", data["rda_tenant"])
@@ -600,7 +600,7 @@ class BTCardClient_Tests: XCTestCase {
 
         XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
         XCTAssertTrue(FakePPDataCollector.lastBeaconState)
-        XCTAssertEqual("abc-nonce", FakePPDataCollector.lastClientMetadataId)
+        XCTAssertEqual("abc-nonce", FakePPDataCollector.lastClientMetadataID)
         guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
         XCTAssertEqual("fake-merchant", data["mid"])
         XCTAssertEqual("bt_card", data["rda_tenant"])

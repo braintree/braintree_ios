@@ -585,7 +585,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertNotNil(payPalDriver.authenticationSession)
         XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
 
-        XCTAssertNotNil(payPalDriver.clientMetadataId)
+        XCTAssertNotNil(payPalDriver.clientMetadataID)
     }
 
     func testCheckout_whenBrowserSwitchCancels_callsBackWithNoResultAndError() {
@@ -786,7 +786,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                 XCTAssertEqual(tokenizedPayPalAccount!.lastName, "Dude")
                 XCTAssertEqual(tokenizedPayPalAccount!.phone, "867-5309")
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
-                XCTAssertEqual(tokenizedPayPalAccount!.payerId, "FAKE-PAYER-ID")
+                XCTAssertEqual(tokenizedPayPalAccount!.payerID, "FAKE-PAYER-ID")
                 let billingAddress = tokenizedPayPalAccount!.billingAddress!
                 let shippingAddress = tokenizedPayPalAccount!.shippingAddress!
                 XCTAssertEqual(billingAddress.recipientName, "Bar Foo")

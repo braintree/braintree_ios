@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Client Metadata Id associated with this transaction.
  */
-@property (nonatomic, nullable, readonly, copy) NSString *clientMetadataId;
+@property (nonatomic, nullable, readonly, copy) NSString *clientMetadataID;
 
 /**
  Payer's email address.
@@ -44,9 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, copy) NSString *nonce;
 
 /**
- Optional. Payer Id associated with this transaction.
+ Optional. Payer ID associated with this transaction.
  */
-@property (nonatomic, nullable, readonly, copy) NSString *payerId;
+@property (nonatomic, nullable, readonly, copy) NSString *payerID;
 
 /**
  Payer's phone number.
@@ -74,8 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param phone Payer's phone number.
  @param billingAddress The billing address.
  @param shippingAddress The shipping address.
- @param clientMetadataId Client Metadata Id associated with this transaction.
- @param payerId Payer Id associated with this transaction.
+ @param clientMetadataID Client Metadata ID associated with this transaction.
+ @param payerID Payer ID associated with this transaction.
  */
 - (instancetype)initWithNonce:(NSString *)nonce
                          type:(NSString *)type
@@ -85,8 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
                         phone:(NSString *)phone
                billingAddress:(BTPostalAddress *)billingAddress
               shippingAddress:(BTPostalAddress *)shippingAddress
-             clientMetadataId:(NSString *)clientMetadataId
-                      payerId:(NSString *)payerId;
+             clientMetadataID:(NSString *)clientMetadataID
+                      payerID:(NSString *)payerID;
 
 @end
 

@@ -364,9 +364,9 @@ class BTLocalPayment_UnitTests: XCTestCase {
             XCTAssertNotNil(result)
             guard let localPaymentResult = result as! BTLocalPaymentResult? else {return}
 
-            XCTAssertEqual(localPaymentResult.clientMetadataId, "89d377ae78244447a3f78ada7d01b270")
+            XCTAssertEqual(localPaymentResult.clientMetadataID, "89d377ae78244447a3f78ada7d01b270")
             XCTAssertEqual(localPaymentResult.type, "PayPalAccount")
-            XCTAssertEqual(localPaymentResult.payerId, "PCKXQCZ6J3YXU")
+            XCTAssertEqual(localPaymentResult.payerID, "PCKXQCZ6J3YXU")
             XCTAssertEqual(localPaymentResult.nonce, "f689056d-aee1-421e-9d10-f2c9b34d4d6f")
             paymentFinishedExpectation!.fulfill()
         }

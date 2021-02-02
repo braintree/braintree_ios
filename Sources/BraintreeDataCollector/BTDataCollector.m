@@ -122,9 +122,9 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
             }];
         }
         
-        NSString *payPalClientMetadataId = [BTDataCollector generatePayPalClientMetadataId];
-        if (payPalClientMetadataId) {
-            dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID];
+        if (payPalClientMetadataID) {
+            dataDictionary[@"correlation_id"] = payPalClientMetadataID;
         }
 
         dispatch_group_notify(collectorDispatchGroup, dispatch_get_main_queue(), ^{
@@ -173,9 +173,9 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     }
 
     if (includePayPal) {
-        NSString *payPalClientMetadataId = [BTDataCollector generatePayPalClientMetadataId];
-        if (payPalClientMetadataId) {
-            dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID];
+        if (payPalClientMetadataID) {
+            dataDictionary[@"correlation_id"] = payPalClientMetadataID;
         }
     }
     
@@ -196,7 +196,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-+ (NSString *)generatePayPalClientMetadataId {
++ (NSString *)generatePayPalClientMetadataID {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     if (PayPalDataCollectorClass && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {

@@ -203,7 +203,7 @@
                  BTJSON *details = payPalAccount[@"details"];
 
                  NSString *email = [details[@"email"] asString];
-                 NSString *clientMetadataId = [details[@"correlationId"] asString];
+                 NSString *clientMetadataID = [details[@"correlationId"] asString];
                  // Allow email to be under payerInfo
                  if ([details[@"payerInfo"][@"email"] isString]) {
                      email = [details[@"payerInfo"][@"email"] asString];
@@ -212,7 +212,7 @@
                  NSString *firstName = [details[@"payerInfo"][@"firstName"] asString];
                  NSString *lastName = [details[@"payerInfo"][@"lastName"] asString];
                  NSString *phone = [details[@"payerInfo"][@"phone"] asString];
-                 NSString *payerId = [details[@"payerInfo"][@"payerId"] asString];
+                 NSString *payerID = [details[@"payerInfo"][@"payerId"] asString];
 
                  BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
                  BTPostalAddress *billingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
@@ -228,8 +228,8 @@
                                                                                                       phone:phone
                                                                                              billingAddress:billingAddress
                                                                                             shippingAddress:shippingAddress
-                                                                                           clientMetadataId:clientMetadataId
-                                                                                                    payerId:payerId];
+                                                                                           clientMetadataID:clientMetadataID
+                                                                                                    payerID:payerID];
                  [self.paymentFlowDriverDelegate onPaymentComplete:tokenizedLocalPayment error:nil];
              }
          }];
