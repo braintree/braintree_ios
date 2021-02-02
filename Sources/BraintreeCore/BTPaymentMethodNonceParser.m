@@ -1,9 +1,9 @@
+#import "BTPaymentMethodNonceParser.h"
+
 #if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTPaymentMethodNonceParser.h>
 #import <Braintree/BTPaymentMethodNonce.h>
 #import <Braintree/BTJSON.h>
 #else
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>
 #import <BraintreeCore/BTJSON.h>
 #endif

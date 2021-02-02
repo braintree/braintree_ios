@@ -4,6 +4,7 @@
 * Breaking Changes
   * Make `shippingMethod` property on `BTThreeDSecureRequest` an enum instead of a string
   * Remove `BTTokenizationService`
+  * Make `BTPaymentMethodNonceParser` private
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
 
