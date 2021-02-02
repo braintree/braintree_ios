@@ -44,6 +44,8 @@ Make sure to select your app's target in the "Provide build settings from" drop-
 
 ### BraintreeThreeDSecure
 
+#### 1. Add CardinalMobile.framework
+
 To use the `BraintreeThreeDSecure` library via SPM, you must manually include `CardinalMobile.framework`.
 
 1. Once you've installed the Braintree Swift Package, find `CardinalMobile.framework` under the Frameworks directory in the Braintree package.
@@ -54,6 +56,8 @@ To use the `BraintreeThreeDSecure` library via SPM, you must manually include `C
 1. Open your project's settings by selecting your app target in the General tab
     * Under the _Frameworks, Libraries, and Embedded Content_ section, make sure `CardinalMobile.framework` is set to “Embed & Sign”
 1. Go to the Build Phases tab. Under _Link Binary With Libraries_, make sure the framework is listed. This should happen automatically, but if not, add the framework manually via the `+` button.
+
+#### 2. Add run script
 
 CardinalMobile.framework contains architectures for both devices and simulators. When uploading to App Store Connect, Xcode will emit an error if the simulator slice has not been removed. To avoid this error, you must add the following run script that removes unneeded architectures:
 
@@ -78,6 +82,6 @@ mv "$FRAMEWORK_EXECUTABLE_PATH-merged" "$FRAMEWORK_EXECUTABLE_PATH"
 Alternatively, you can run the following command in the directory containing `CardinalMobile.framework` prior to archiving your app.
 
 ```sh
-lipo -remove x86_64 -output CardinalMobile.framework/CardinalMobile CardinalMobile.framework/CardinalMobile
+lipo -remove i386 -remove x86_64 -output CardinalMobile.framework/CardinalMobile CardinalMobile.framework/CardinalMobile
 ```
 
