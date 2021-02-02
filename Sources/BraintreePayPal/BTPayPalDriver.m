@@ -161,6 +161,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
         parameters[@"offer_paypal_credit"] = @(request.offerCredit);
 
+        parameters[@"offer_pay_later"] = @(request.offerPayLater);
+
         experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);
 
         experienceProfile[@"brand_name"] = request.displayName ?: [configuration.json[@"paypal"][@"displayName"] asString];
@@ -330,6 +332,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
                                                                   callbackURLScheme:BTCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        // Required to avoid memory leak for BTPayPalDriver
+        self.authenticationSession = nil;
+
         if (error) {
             if (error.domain == ASWebAuthenticationSessionErrorDomain && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
                 if (self.returnedToAppAfterPermissionAlert) {
@@ -357,8 +362,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         [self handleBrowserSwitchReturnURL:callbackURL
                                paymentType:paymentType
                                 completion:completionBlock];
-        self.authenticationSession = nil;
-
     }];
 
     if (@available(iOS 13, *)) {
@@ -621,6 +624,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeBillingAgreement) && self.payPalRequest.offerCredit) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
+    }
+
+    if (paymentType == BTPayPalPaymentTypeCheckout && self.payPalRequest.offerPayLater) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.paylater.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];
     }

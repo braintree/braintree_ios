@@ -12,6 +12,7 @@
     if (self) {
         _shippingAddressRequired = NO;
         _offerCredit = NO;
+        _offerPayLater = NO;
         _shippingAddressEditable = NO;
         _intent = BTPayPalRequestIntentAuthorize;
         _userAction = BTPayPalRequestUserActionDefault;

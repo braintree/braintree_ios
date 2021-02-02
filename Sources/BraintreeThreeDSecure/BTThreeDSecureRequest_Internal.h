@@ -38,6 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSString *shippingMethodAsString;
 
 /**
+ The requested 3DS version as a raw string.
+ */
+@property (nonatomic, readonly) NSString *versionRequestedAsString;
+
+/**
  Prepare for a 3DS 2.0 flow.
 
  @param apiClient The API client.
