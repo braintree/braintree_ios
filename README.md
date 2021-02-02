@@ -28,7 +28,7 @@ We recommend using [Swift Package Manager](https://swift.org/package-manager/), 
 ### Swift Package Manager (v5 Beta)
 _This feature is only available in v5.0.0-beta1 and v5.0.0-beta2._
 
-See our [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md] for instructions on integrating with SPM.
+See our [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for instructions on integrating with SPM.
 
 ### CocoaPods
 ```
