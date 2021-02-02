@@ -47,7 +47,9 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         }
 
         NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
-        NSMutableDictionary *requestParameters = [@{ @"amount": request.amount, @"customer": customer } mutableCopy];
+        NSMutableDictionary *requestParameters = [@{ @"amount": request.amount,
+                                                     @"customer": customer,
+                                                     @"requestedThreeDSecureVersion": request.versionRequestedAsString } mutableCopy];
         if (request.dfReferenceId) {
             requestParameters[@"dfReferenceId"] = request.dfReferenceId;
         }
@@ -159,7 +161,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             requestParameters[@"braintreeLibraryVersion"] = [NSString stringWithFormat:@"iOS-%@", BRAINTREE_VERSION];
 
             NSMutableDictionary *clientMetadata = [@{} mutableCopy];
-            clientMetadata[@"sdkVersion"] = BRAINTREE_VERSION;
+            clientMetadata[@"sdkVersion"] = [NSString stringWithFormat:@"iOS/%@", BRAINTREE_VERSION];
             clientMetadata[@"requestedThreeDSecureVersion"] = @"2";
             requestParameters[@"clientMetadata"] = clientMetadata;
 

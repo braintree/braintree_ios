@@ -337,6 +337,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
                                                                   callbackURLScheme:BTCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        // Required to avoid memory leak for BTPayPalDriver
+        self.authenticationSession = nil;
+
         if (error) {
             if (error.domain == ASWebAuthenticationSessionErrorDomain && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
                 if (self.returnedToAppAfterPermissionAlert) {
@@ -364,8 +367,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         [self handleBrowserSwitchReturnURL:callbackURL
                                paymentType:paymentType
                                 completion:completionBlock];
-        self.authenticationSession = nil;
-
     }];
 
     if (@available(iOS 13, *)) {
