@@ -22,6 +22,7 @@
 
     [sender setTitle:NSLocalizedString(@"Processing...", nil) forState:UIControlStateDisabled];
     [sender setEnabled:NO];
+
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.appSwitchDelegate = self;
     BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
