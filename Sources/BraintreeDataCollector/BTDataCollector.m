@@ -33,7 +33,6 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 @implementation BTDataCollector
 
-static NSString *BTDataCollectorSharedMerchantId = @"600000";
 static Class PayPalDataCollectorClass;
 
 NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDataCollectorKountErrorDomain";
@@ -105,14 +104,14 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
             BTDataCollectorEnvironment btEnvironment = [self environmentFromString:[configuration.json[@"environment"] asString]];
             [self setCollectorEnvironment:[self collectorEnvironment:btEnvironment]];
 
-            NSString *merchantId = self.fraudMerchantID ?: [configuration kountMerchantId];
-            self.kount.merchantID = [merchantId integerValue];
+            NSString *merchantID = self.fraudMerchantID ?: [configuration kountMerchantID];
+            self.kount.merchantID = [merchantID integerValue];
 
-            NSString *deviceSessionId = [self sessionId];
-            dataDictionary[@"device_session_id"] = deviceSessionId;
-            dataDictionary[@"fraud_merchant_id"] = merchantId;
+            NSString *deviceSessionID = [self sessionID];
+            dataDictionary[@"device_session_id"] = deviceSessionID;
+            dataDictionary[@"fraud_merchant_id"] = merchantID;
             dispatch_group_enter(collectorDispatchGroup);
-            [self.kount collectForSession:deviceSessionId completion:^(__unused NSString * _Nonnull sessionID, __unused BOOL success, __unused NSError * _Nullable error) {
+            [self.kount collectForSession:deviceSessionID completion:^(__unused NSString * _Nonnull sessionID, __unused BOOL success, __unused NSError * _Nullable error) {
                 if (success) {
                     [self onCollectorSuccess];
                 } else {
@@ -159,11 +158,11 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     [self onCollectorStart];
     NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
     if (includeCard) {
-        NSString *deviceSessionId = [self sessionId];
-        dataDictionary[@"device_session_id"] = deviceSessionId;
+        NSString *deviceSessionID = [self sessionID];
+        dataDictionary[@"device_session_id"] = deviceSessionID;
         dataDictionary[@"fraud_merchant_id"] = self.fraudMerchantID;
 
-        [self.kount collectForSession:deviceSessionId completion:^(__unused NSString * _Nonnull sessionID, BOOL success, NSError * _Nullable error) {
+        [self.kount collectForSession:deviceSessionID completion:^(__unused NSString * _Nonnull sessionID, BOOL success, NSError * _Nullable error) {
             if (success) {
                 [self onCollectorSuccess];
             } else {
@@ -208,7 +207,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 }
 
 /// Generates a new session ID
-- (NSString *)sessionId {
+- (NSString *)sessionID {
     return [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
 }
 

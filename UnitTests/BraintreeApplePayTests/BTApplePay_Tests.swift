@@ -270,7 +270,7 @@ class BTApplePay_Tests: XCTestCase {
             XCTAssertEqual(tokenizedPayment!.binData.payroll, "No")
             XCTAssertEqual(tokenizedPayment!.binData.issuingBank, "US")
             XCTAssertEqual(tokenizedPayment!.binData.countryOfIssuance, "Something")
-            XCTAssertEqual(tokenizedPayment!.binData.productId, "123")
+            XCTAssertEqual(tokenizedPayment!.binData.productID, "123")
             expectation.fulfill()
         }
 

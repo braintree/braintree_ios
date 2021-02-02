@@ -134,7 +134,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
             "paymentToken": "123aaa-123-543-777",
             ] ])
 
-        localPaymentRequest.merchantAccountId = "customer-nl-merchant-account"
+        localPaymentRequest.merchantAccountID = "customer-nl-merchant-account"
         localPaymentRequest.paymentType = "ideal"
         localPaymentRequest.paymentTypeCountryCode = "NL"
         localPaymentRequest.currencyCode = "EUR"
@@ -245,7 +245,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
-    func testStartPayment_returnsPaymentId_inDelegateCallback() {
+    func testStartPayment_returnsPaymentID_inDelegateCallback() {
         mockLocalPaymentRequestDelegate.idExpectation = self.expectation(description: "Received payment ID")
 
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()

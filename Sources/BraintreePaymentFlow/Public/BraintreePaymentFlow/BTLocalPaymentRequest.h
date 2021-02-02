@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Optional: A non-default merchant account to use for tokenization.
  */
-@property (nonatomic, nullable, copy) NSString *merchantAccountId;
+@property (nonatomic, nullable, copy) NSString *merchantAccountID;
 
 /**
  Optional: The address of the customer. An error will occur if this address is not valid.

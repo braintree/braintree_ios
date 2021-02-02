@@ -71,7 +71,7 @@ class BraintreeDemoMerchantAPIClient: NSObject {
     }
     
     @objc
-    func makeTransaction(paymentMethodNonce: String, merchantAccountId: String? = nil, completion: @escaping (String?, Error?) -> Void) {
+    func makeTransaction(paymentMethodNonce: String, merchantAccountID: String? = nil, completion: @escaping (String?, Error?) -> Void) {
         NSLog("Creating a transaction with nonce: %@", paymentMethodNonce)
         
         guard var urlComponents = URLComponents(string: BraintreeDemoSettings.currentEnvironmentURLString + "/nonce/transaction") else { return }
@@ -84,7 +84,7 @@ class BraintreeDemoMerchantAPIClient: NSObject {
             queryItems += [URLQueryItem(name: "three_d_secure_required", value: "false")]
         }
         
-        if let id = merchantAccountId {
+        if let id = merchantAccountID {
             queryItems += [URLQueryItem(name: "merchant_account_id", value: id)]
         }
         

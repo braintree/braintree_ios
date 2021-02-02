@@ -112,7 +112,7 @@
 @interface BTAnalyticsService ()
 
 /// Dictionary of analytics sessions, keyed by session ID. The analytics service requires that batched events
-/// are sent from only one session. In practice, BTAPIClient.metadata.sessionId should never change, so this
+/// are sent from only one session. In practice, BTAPIClient.metadata.sessionID should never change, so this
 /// is defensive.
 @property (nonatomic, strong) NSMutableDictionary <NSString *, BTAnalyticsSession *> *analyticsSessions;
 

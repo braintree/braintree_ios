@@ -128,7 +128,7 @@ Designated initializer.
 @property (nonatomic, assign) BOOL shouldValidate;
 
 /**
- Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountId` must be provided. Defaults to false.
+ Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountID` must be provided. Defaults to false.
  */
 @property (nonatomic, assign) BOOL authenticationInsightRequested;
 

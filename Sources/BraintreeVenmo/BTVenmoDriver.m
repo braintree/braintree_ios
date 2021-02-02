@@ -99,7 +99,7 @@ static BTVenmoDriver *appSwitchedDriver;
     [self authorizeAccountWithProfileID:nil vault:vault completion:completionBlock];
 }
 
-- (void)authorizeAccountWithProfileID:(NSString *)profileId
+- (void)authorizeAccountWithProfileID:(NSString *)profileID
                                 vault:(BOOL)vault
                            completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *error))completionBlock
 {
@@ -138,8 +138,8 @@ static BTVenmoDriver *appSwitchedDriver;
         metadata.source = BTClientMetadataSourceVenmoApp;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
-        NSString *venmoProfileId = profileId ?: configuration.venmoMerchantID;
-        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:venmoProfileId
+        NSString *venmoProfileID = profileID ?: configuration.venmoMerchantID;
+        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:venmoProfileID
                                                                         accessToken:configuration.venmoAccessToken
                                                                     returnURLScheme:self.returnURLScheme
                                                                   bundleDisplayName:bundleDisplayName

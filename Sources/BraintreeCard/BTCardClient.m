@@ -257,11 +257,11 @@ static Class PayPalDataCollectorClass;
     return kPPDataCollector && [kPPDataCollector respondsToSelector:aSelector];
 }
 
-- (void)collectRiskData:(NSString *)correlationId configuration:(BTConfiguration *)configuration {
+- (void)collectRiskData:(NSString *)correlationID configuration:(BTConfiguration *)configuration {
     // Trim to 32 chars to ensure compatibility with PPDataCollector
-    NSString *trimmedCorrelationId = [correlationId copy];
-    if (trimmedCorrelationId && [trimmedCorrelationId length] > 32) {
-        trimmedCorrelationId = [trimmedCorrelationId substringToIndex:32];
+    NSString *trimmedCorrelationID = [correlationID copy];
+    if (trimmedCorrelationID && [trimmedCorrelationID length] > 32) {
+        trimmedCorrelationID = [trimmedCorrelationID substringToIndex:32];
     }
 
     NSMutableDictionary *data = [@{
@@ -274,9 +274,9 @@ static Class PayPalDataCollectorClass;
         NSArray *authorizationComponents = [authorizationFingerprint componentsSeparatedByString:@"&"];
         for (NSString *component in authorizationComponents) {
             if ([component hasPrefix:@"customer_id="]) {
-                NSArray *customerIdComponents = [component componentsSeparatedByString:@"="];
-                if ([customerIdComponents count] > 1) {
-                    data[@"cid"] = [customerIdComponents lastObject];
+                NSArray *customerIDComponents = [component componentsSeparatedByString:@"="];
+                if ([customerIDComponents count] > 1) {
+                    data[@"cid"] = [customerIDComponents lastObject];
                 }
             }
         }
@@ -289,7 +289,7 @@ static Class PayPalDataCollectorClass;
         [inv setSelector:aSelector];
         [inv setTarget:kPPDataCollector];
 
-        [inv setArgument:&(trimmedCorrelationId) atIndex:2];
+        [inv setArgument:&(trimmedCorrelationID) atIndex:2];
         [inv setArgument:&(data) atIndex:3];
         [inv invoke];
     }

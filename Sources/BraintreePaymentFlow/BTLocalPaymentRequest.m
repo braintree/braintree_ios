@@ -33,9 +33,9 @@
 
 @interface BTLocalPaymentRequest ()
 
-@property (nonatomic, copy, nullable) NSString *paymentId;
+@property (nonatomic, copy, nullable) NSString *paymentID;
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
-@property (nonatomic, strong) NSString *correlationId;
+@property (nonatomic, strong) NSString *correlationID;
 
 @end
 
@@ -44,7 +44,7 @@
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
     BTLocalPaymentRequest *localPaymentRequest = (BTLocalPaymentRequest *)request;
-    self.correlationId = [PPDataCollector clientMetadataID:nil];
+    self.correlationID = [PPDataCollector clientMetadataID:nil];
     [apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *configurationError) {
         if (configurationError) {
             [delegate onPaymentComplete:nil error:configurationError];
@@ -122,8 +122,8 @@
             params[@"phone"] = localPaymentRequest.phone;
         }
 
-        if (localPaymentRequest.merchantAccountId) {
-            params[@"merchant_account_id"] = localPaymentRequest.merchantAccountId;
+        if (localPaymentRequest.merchantAccountID) {
+            params[@"merchant_account_id"] = localPaymentRequest.merchantAccountID;
         }
 
         params[@"experience_profile"] = @{
@@ -134,12 +134,12 @@
                    parameters:params
                    completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
              if (!error) {
-                 self.paymentId = [body[@"paymentResource"][@"paymentToken"] asString];
+                 self.paymentID = [body[@"paymentResource"][@"paymentToken"] asString];
                  NSString *approvalUrl = [body[@"paymentResource"][@"redirectUrl"] asString];
                  NSURL *url = [NSURL URLWithString:approvalUrl];
 
-                 if (self.paymentId && url) {
-                     [self.localPaymentFlowDelegate localPaymentStarted:self paymentID:self.paymentId start:^{
+                 if (self.paymentID && url) {
+                     [self.localPaymentFlowDelegate localPaymentStarted:self paymentID:self.paymentID start:^{
                          [delegate onPaymentWithURL:url error:error];
                      }];
                  } else {
@@ -173,12 +173,12 @@
         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
         parameters[@"paypal_account"][@"intent"] = @"sale";
 
-        if (self.correlationId) {
-            parameters[@"paypal_account"][@"correlation_id"] = self.correlationId;
+        if (self.correlationID) {
+            parameters[@"paypal_account"][@"correlation_id"] = self.correlationID;
         }
 
-        if (self.merchantAccountId) {
-            parameters[@"merchant_account_id"] = self.merchantAccountId;
+        if (self.merchantAccountID) {
+            parameters[@"merchant_account_id"] = self.merchantAccountID;
         }
 
         BTClientMetadata *metadata =  self.paymentFlowDriverDelegate.apiClient.metadata;

@@ -50,8 +50,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         NSMutableDictionary *requestParameters = [@{ @"amount": request.amount,
                                                      @"customer": customer,
                                                      @"requestedThreeDSecureVersion": request.versionRequestedAsString } mutableCopy];
-        if (request.dfReferenceId) {
-            requestParameters[@"dfReferenceId"] = request.dfReferenceId;
+        if (request.dfReferenceID) {
+            requestParameters[@"dfReferenceId"] = request.dfReferenceID;
         }
 
         if (request.accountTypeAsString) {
@@ -153,8 +153,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             completionBlock(nil, error);
         } else {
             NSMutableDictionary *requestParameters = [@{} mutableCopy];
-            if (threeDSecureRequest.dfReferenceId) {
-                requestParameters[@"dfReferenceId"] = threeDSecureRequest.dfReferenceId;
+            if (threeDSecureRequest.dfReferenceID) {
+                requestParameters[@"dfReferenceId"] = threeDSecureRequest.dfReferenceID;
             }
             requestParameters[@"nonce"] = threeDSecureRequest.nonce;
             requestParameters[@"authorizationFingerprint"] = self.apiClient.clientToken.authorizationFingerprint;

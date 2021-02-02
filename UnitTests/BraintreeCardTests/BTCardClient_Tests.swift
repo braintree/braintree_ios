@@ -413,7 +413,7 @@ class BTCardClient_Tests: XCTestCase {
 
     // MARK: - GraphQL API
 
-    func testTokenization_whenAuthInsightRequestedIsTrue_andMerchantAccountIdIsNil_returnsError() {
+    func testTokenization_whenAuthInsightRequestedIsTrue_andMerchantAccountIDIsNil_returnsError() {
         let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
@@ -795,7 +795,7 @@ class BTCardClient_Tests: XCTestCase {
             XCTAssertEqual(tokenizedCard.binData.payroll, "No")
             XCTAssertEqual(tokenizedCard.binData.issuingBank, "US")
             XCTAssertEqual(tokenizedCard.binData.countryOfIssuance, "Something")
-            XCTAssertEqual(tokenizedCard.binData.productId, "123")
+            XCTAssertEqual(tokenizedCard.binData.productID, "123")
 
             expectation.fulfill()
         }

@@ -230,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Optional. Additional cardholder account information.
  */
-@property (nonatomic, nullable, copy) NSString *accountId;
+@property (nonatomic, nullable, copy) NSString *accountID;
 
 /**
  Optional. The IP address of the consumer. IPv4 and IPv6 are supported.

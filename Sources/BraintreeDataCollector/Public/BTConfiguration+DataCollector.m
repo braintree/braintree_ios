@@ -10,7 +10,7 @@
     return [self.json[@"kount"][@"kountMerchantId"] isString];
 }
 
--(NSString *)kountMerchantId {
+-(NSString *)kountMerchantID {
     return [self.json[@"kount"][@"kountMerchantId"] asString];
 }
 

@@ -176,8 +176,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             experienceProfile[@"locale_code"] = request.localeCode;
         }
 
-        if (request.merchantAccountId != nil) {
-            parameters[@"merchant_account_id"] = request.merchantAccountId;
+        if (request.merchantAccountID != nil) {
+            parameters[@"merchant_account_id"] = request.merchantAccountID;
         }
 
         // Currency code should only be used for Hermes Checkout (one-time payment).
@@ -253,9 +253,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             }
             self.approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
 
-            NSString *pairingId = [self.class tokenFromApprovalURL:self.approvalUrl];
+            NSString *pairingID = [self.class tokenFromApprovalURL:self.approvalUrl];
 
-            self.clientMetadataID = [PPDataCollector clientMetadataID:pairingId];
+            self.clientMetadataID = [PPDataCollector clientMetadataID:pairingID];
 
             BOOL analyticsSuccess = error ? NO : YES;
             if (isBillingAgreement) {
@@ -392,7 +392,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     }
 }
 
-- (NSString *)paypalClientIdWithRemoteConfiguration:(BTJSON *)configuration {
+- (NSString *)paypalClientIDWithRemoteConfiguration:(BTJSON *)configuration {
     if ([[configuration[@"paypal"][@"environment"] asString] isEqualToString:@"offline"] && ![configuration[@"paypal"][@"clientId"] isString]) {
         return @"mock-paypal-client-id";
     } else {
@@ -718,8 +718,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataID;
     }
 
-    if (self.payPalRequest != nil && self.payPalRequest.merchantAccountId != nil) {
-        parameters[@"merchant_account_id"] = self.payPalRequest.merchantAccountId;
+    if (self.payPalRequest != nil && self.payPalRequest.merchantAccountID != nil) {
+        parameters[@"merchant_account_id"] = self.payPalRequest.merchantAccountID;
     }
 
     BTClientMetadata *metadata = [self clientMetadata];
