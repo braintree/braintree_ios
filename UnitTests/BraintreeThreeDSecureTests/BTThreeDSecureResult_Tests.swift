@@ -31,7 +31,7 @@ class BTThreeDSecureResult_Tests: XCTestCase {
         XCTAssertEqual(result.lookup?.paReq, "somePareq")
         XCTAssertEqual(result.lookup?.termURL, URL(string: "www.someTermUrl.com")!)
         XCTAssertEqual(result.lookup?.threeDSecureVersion, "2.1.0")
-        XCTAssertEqual(result.lookup?.transactionId, "someTransactionId")
+        XCTAssertEqual(result.lookup?.transactionID, "someTransactionId")
         XCTAssertEqual(result.tokenizedCard?.nonce, "someLookupNonce")
         XCTAssertTrue(result.tokenizedCard!.threeDSecureInfo.liabilityShiftPossible)
         XCTAssertFalse(result.tokenizedCard!.threeDSecureInfo.liabilityShifted)

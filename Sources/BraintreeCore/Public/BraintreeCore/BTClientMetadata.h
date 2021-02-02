@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Auto-generated UUID
 */
-@property (nonatomic, copy, readonly) NSString *sessionId;
+@property (nonatomic, copy, readonly) NSString *sessionID;
 
 #pragma mark Derived Properties
 

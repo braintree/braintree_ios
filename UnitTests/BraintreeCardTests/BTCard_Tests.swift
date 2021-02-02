@@ -359,7 +359,7 @@ class BTCard_Tests: XCTestCase {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = true
-        card.merchantAccountId = "some id"
+        card.merchantAccountID = "some id"
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -382,7 +382,7 @@ class BTCard_Tests: XCTestCase {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = false
-        card.merchantAccountId = "some id"
+        card.merchantAccountID = "some id"
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -402,7 +402,7 @@ class BTCard_Tests: XCTestCase {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = true
-        card.merchantAccountId = nil
+        card.merchantAccountID = nil
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -423,7 +423,7 @@ class BTCard_Tests: XCTestCase {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = false
-        card.merchantAccountId = nil
+        card.merchantAccountID = nil
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",

@@ -19,7 +19,7 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
         card.cardholderName = "Brian Tree"
         card.authenticationInsightRequested = true
-        card.merchantAccountId = "some merchant account id"
+        card.merchantAccountID = "some merchant account id"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             guard let lastRequestEndpoint = fakeHTTP.lastRequestEndpoint,
@@ -236,7 +236,7 @@ class BTCardClient_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "unknown")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
     func testAnalyticsEvent_whenTokenizationSucceeds_isSent() {
@@ -425,7 +425,7 @@ class BTCardClient_Tests: XCTestCase {
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
         card.authenticationInsightRequested = true
-        card.merchantAccountId = nil
+        card.merchantAccountID = nil
         
         let expectation = self.expectation(description: "Returns an error")
         

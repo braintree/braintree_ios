@@ -273,7 +273,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
     uint64_t timestampInMilliseconds = ([[NSDate date] timeIntervalSince1970] * 1000);
     BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInMilliseconds];
 
-    BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
+    BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionID
                                                              source:self.apiClient.metadata.sourceString
                                                         integration:self.apiClient.metadata.integrationString];
     if (!session) {

@@ -39,7 +39,7 @@
     
     NSMutableDictionary *braintreeData = [@{@"_meta": @{
                                                     @"version": BRAINTREE_VERSION,
-                                                    @"sessionId": [metadata sessionId],
+                                                    @"sessionId": [metadata sessionID],
                                                     @"integration": [metadata integrationString],
                                                     @"platform": @"ios"
                                                     }

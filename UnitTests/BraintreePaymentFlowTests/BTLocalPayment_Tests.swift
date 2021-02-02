@@ -267,7 +267,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 4, handler: nil)
 
-        XCTAssertEqual(mockLocalPaymentRequestDelegate.paymentId, "123aaa-123-543-abv")
+        XCTAssertEqual(mockLocalPaymentRequestDelegate.paymentID, "123aaa-123-543-abv")
     }
 
     func testStartPayment_success_sendsAnalyticsEvents() {

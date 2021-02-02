@@ -726,7 +726,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     parameters[@"_meta"] = @{
         @"source" : metadata.sourceString,
         @"integration" : metadata.integrationString,
-        @"sessionId" : metadata.sessionId,
+        @"sessionId" : metadata.sessionID,
     };
 
     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"

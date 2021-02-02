@@ -306,7 +306,7 @@ class BTApplePay_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "unknown")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
     class MockPKPaymentToken : PKPaymentToken {

@@ -837,7 +837,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! [String:Any]
         XCTAssertEqual(metaParameters["source"] as? String, "paypal-browser")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
     // MARK: - Analytics
