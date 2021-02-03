@@ -17,4 +17,8 @@
     return self;
 }
 
+- (NSString *)environment {
+    return [self.json[@"environment"] asString];
+}
+
 @end

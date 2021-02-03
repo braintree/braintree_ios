@@ -1,5 +1,8 @@
-#import <Foundation/Foundation.h>
-@class BTJSON;
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTJSON.h>
+#else
+#import <BraintreeCore/BTJSON.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
  The merchant account's configuration as a `BTJSON` object
 */
 @property (nonatomic, readonly, strong) BTJSON *json;
+
+/**
+ The environment (production or sandbox)
+ */
+@property (nonatomic, readonly, strong) NSString *environment;
 
 #pragma mark - Undesignated initializers (do not use)
 
