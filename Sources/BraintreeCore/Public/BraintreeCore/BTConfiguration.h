@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The environment (production or sandbox)
  */
-@property (nonatomic, readonly, strong) NSString *environment;
+@property (nonatomic, nullable, readonly, copy) NSString *environment;
 
 #pragma mark - Undesignated initializers (do not use)
 
