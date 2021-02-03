@@ -2,7 +2,7 @@
 #import "BraintreeUI.h"
 @import BraintreeThreeDSecure;
 
-@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
+@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTThreeDSecureRequestDelegate>
 
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) BTUICardFormView *cardFormView;
@@ -102,7 +102,6 @@
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
         
         self.paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:self.apiClient];
-        self.paymentFlowDriver.viewControllerPresentingDelegate = self;
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;

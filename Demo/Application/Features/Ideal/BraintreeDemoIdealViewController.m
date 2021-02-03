@@ -2,7 +2,7 @@
 #import "UIColor+BTUI.h"
 @import BraintreePaymentFlow;
 
-@interface BraintreeDemoIdealViewController () <BTViewControllerPresentingDelegate, BTLocalPaymentRequestDelegate>
+@interface BraintreeDemoIdealViewController () <BTLocalPaymentRequestDelegate>
 
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, weak) UILabel *paymentIDLabel;
@@ -49,7 +49,6 @@
 - (void)startPaymentWithBank {
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_f252zhq7_hh4cpc39zq4rgjcg"];
     self.paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:client];
-    self.paymentFlowDriver.viewControllerPresentingDelegate = self;
 
     BTLocalPaymentRequest *request = [[BTLocalPaymentRequest alloc] init];
     request.paymentType = @"ideal";
