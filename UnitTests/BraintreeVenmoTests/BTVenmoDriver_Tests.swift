@@ -581,8 +581,10 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let expectation = self.expectation(description: "Callback invoked")
+        let venmoRequest = BTVenmoRequest()
+        venmoRequest.vault = true
 
-        venmoDriver.authorizeAccountAndVault(true) { (venmoAccount, error) -> Void in
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             XCTAssertNil(error)
 
             XCTAssertEqual(venmoAccount?.username, "venmotim")
