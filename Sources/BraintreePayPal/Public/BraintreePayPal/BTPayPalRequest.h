@@ -186,7 +186,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 /**
  Optional: The window used to present the ASWebAuthenticationSession.
 
- @note If your app supports multitasking, you must set this property to ensure that the ASWebAuthentication session is presented on the correct window.
+ @note If your app supports multitasking, you must set this property to ensure that the ASWebAuthenticationSession is presented on the correct window.
  */
 @property (nonatomic, nullable, strong) UIWindow *activeWindow;
 

@@ -103,6 +103,8 @@ Code previously used to set your return URL scheme can be deleted. **Note:** Thi
 BTAppSwitch.setReturnURLScheme("com.your-company.your-app.payments")
 ```
 
+If your app supports multi-tasking, you must set the `BTPayPalRequest.activeWindow` property to ensure that the PayPal flow launches from the correct window.
+
 ## App Switch
 
 v5 removes the `options` and `sourceApplication` params on methods in `BTAppSwitch`. 
