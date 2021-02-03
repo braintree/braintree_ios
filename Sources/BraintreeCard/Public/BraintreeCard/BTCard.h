@@ -16,11 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
                            cvv:(nullable NSString *)cvv;
 
 /**
-Designated initializer.
- */
-- (instancetype)initWithParameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;
-
-/**
  The card number
 */
 @property (nonatomic, nullable, copy) NSString *number;
