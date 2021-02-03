@@ -9,9 +9,9 @@ Support for Swift Package Manager was introduced in Braintree iOS v5.
 
 ### General Instructions
 
-To add the `Braintree` package to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
+To add the `Braintree` package to your Xcode project, select _File > Swift Packages > Add Package Dependency_ and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
 
-If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see General > Frameworks, Libraries, and Embedded Content).
+If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see _General > Frameworks, Libraries, and Embedded Content_).
 
 In your app's source code files, use the following import syntax to include Braintree's libraries:
 ```
@@ -38,7 +38,7 @@ There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-sp
 rm -rf "${TARGET_BUILD_DIR}/${TARGET_NAME}.app/Frameworks/libKountDataCollector.a"
 ```
 
-Make sure to select your app's target in the "Provide build settings from" drop-down.
+Make sure to select your app's target in the _Provide build settings from_ drop-down.
 
 ![image](image_assets/kount_post_action.png)
 
@@ -86,7 +86,3 @@ mv "$FRAMEWORK_EXECUTABLE_PATH-merged" "$FRAMEWORK_EXECUTABLE_PATH"
 ```
 
 ![image](image_assets/cardinal_run_script.png)
-
-
-
-
