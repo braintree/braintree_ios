@@ -7,6 +7,7 @@
   * Make `BTPaymentMethodNonceParser` private
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
+* Add `environment` to `BTConfiguration`
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
