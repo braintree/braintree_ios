@@ -50,11 +50,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 - (void)onPaymentWithURL:(NSURL * _Nullable) url error:(NSError * _Nullable)error;
 
 /**
- Use when the payment flow was cancelled.
- */
-- (void)onPaymentCancel;
-
-/**
  Use when the payment flow has completed or encountered an error.
  @param result The BTPaymentFlowResult of the payment flow.
  @param error NSError containing details of the error.
@@ -91,14 +86,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate;
 
 /**
- Check if this BTPaymentFlowRequestDelegate can handle the return URL
- 
- @param url The URL to check.
- @return True if the BTPaymentFlowRequestDelegate can handle the URL. Otherwise return false.
- */
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url;
-
-/**
  Handles the return URL and completes and post processing.
  
  @param url The URL to check.
@@ -119,7 +106,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
  
  Handles the app switching and shared logic for payment flows that use web or app switching.
  */
-@interface BTPaymentFlowDriver : NSObject <BTAppSwitchHandler, BTPaymentFlowDriverDelegate>
+@interface BTPaymentFlowDriver : NSObject <BTPaymentFlowDriverDelegate>
 
 /**
  Initialize a new BTPaymentFlowDriver instance.
@@ -140,18 +127,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
  */
 - (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)( BTPaymentFlowResult * _Nullable result,  NSError * _Nullable error))completionBlock;
-
-/**
- A required delegate to control the presentation and dismissal of view controllers.
- */
-@property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
-
-/**
- An optional delegate for receiving notifications about the lifecycle of a payment flow app/browser switch, as well as updating your UI
-
- @note BTPaymentFlowDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
- */
-@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
 @end
 

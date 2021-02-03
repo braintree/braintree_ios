@@ -4,6 +4,8 @@
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
 #endif
 
+#import <AuthenticationServices/AuthenticationServices.h>
+
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
 
@@ -18,8 +20,8 @@
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *_Nonnull)request completion:(void (^_Nullable)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock;
 
 /**
- Exposed for testing - instantiates the SFSafariViewController to be presented
-*/
-- (void)informDelegatePresentingViewControllerRequestPresent:(NSURL * _Nullable)appSwitchURL;
+ Exposed for testing, the ASWebAuthenticationSession instance used for the flow
+ */
+@property (nonatomic, strong, nullable) ASWebAuthenticationSession *authenticationSession;
 
 @end

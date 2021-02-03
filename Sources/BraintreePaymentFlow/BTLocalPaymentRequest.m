@@ -53,12 +53,7 @@
 
         NSError *integrationError;
 
-        if ([self.paymentFlowDriverDelegate returnURLScheme] == nil || [[self.paymentFlowDriverDelegate returnURLScheme] isEqualToString:@""]) {
-            [[BTLogger sharedLogger] critical:@"Local Payment requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]"];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                                 code:BTPaymentFlowDriverErrorTypeInvalidReturnURL
-                                             userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app or browser switch."}];
-        } else if (![configuration isLocalPaymentEnabled]) {
+        if (![configuration isLocalPaymentEnabled]) {
             [[BTLogger sharedLogger] critical:@"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."];
             integrationError = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
                                                  code:BTPaymentFlowDriverErrorTypeDisabled
@@ -268,10 +263,6 @@
     address.countryCodeAlpha2 = [addressJSON[@"countryCode"] asString];
 
     return address;
-}
-
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
-    return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment"];
 }
 
 - (NSString *)paymentFlowName {
