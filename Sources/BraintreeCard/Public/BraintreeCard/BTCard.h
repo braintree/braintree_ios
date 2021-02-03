@@ -8,14 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTCard : NSObject
 
 /**
- A convenience initializer for creating a card tokenization request.
-*/
-- (instancetype)initWithNumber:(NSString *)number
-               expirationMonth:(NSString *)expirationMonth
-                expirationYear:(NSString *)expirationYear
-                           cvv:(nullable NSString *)cvv;
-
-/**
  The card number
 */
 @property (nonatomic, nullable, copy) NSString *number;

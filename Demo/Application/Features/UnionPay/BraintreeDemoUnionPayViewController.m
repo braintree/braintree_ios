@@ -111,7 +111,11 @@
 - (void)enroll:(__unused UIButton *)button {
     self.progressBlock(@"Enrolling card");
 
-    BTCard *card = [[BTCard alloc] initWithNumber:self.cardForm.number expirationMonth:self.cardForm.expirationMonth expirationYear:self.cardForm.expirationYear cvv:self.cardForm.cvv];
+    BTCard *card = [BTCard new];
+    card.number = self.cardForm.number;
+    card.expirationMonth = self.cardForm.expirationMonth;
+    card.expirationYear = self.cardForm.expirationYear;
+    card.cvv = self.cardForm.cvv;
 //    card.shouldValidate = YES;
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
     request.mobileCountryCode = @"62";
@@ -170,7 +174,12 @@
 - (void)submit:(__unused UIButton *)button {
     self.progressBlock(@"Tokenizing card");
 
-    BTCard *card = [[BTCard alloc] initWithNumber:self.cardForm.number expirationMonth:self.cardForm.expirationMonth expirationYear:self.cardForm.expirationYear cvv:self.cardForm.cvv];
+    BTCard *card = [BTCard new];
+    card.number = self.cardForm.number;
+    card.expirationMonth = self.cardForm.expirationMonth;
+    card.expirationYear = self.cardForm.expirationYear;
+    card.cvv = self.cardForm.cvv;
+
     [self.cardClient tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error tokenizing card: %@", error.localizedDescription]);

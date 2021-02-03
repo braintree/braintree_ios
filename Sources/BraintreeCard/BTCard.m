@@ -14,20 +14,6 @@
 
 @implementation BTCard
 
-- (instancetype)initWithNumber:(NSString *)number
-               expirationMonth:(NSString *)expirationMonth
-                expirationYear:(NSString *)expirationYear
-                           cvv:(NSString *)cvv
-{
-    if (self = [super init]) {
-        _number = number;
-        _expirationMonth = expirationMonth;
-        _expirationYear = expirationYear;
-        _cvv = cvv;
-    }
-    return self;
-}
-
 #pragma mark -
 
 - (NSDictionary *)parameters {

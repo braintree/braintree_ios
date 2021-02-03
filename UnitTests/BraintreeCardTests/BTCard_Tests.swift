@@ -2,22 +2,6 @@ import XCTest
 
 // See also BTCard_Internal_Tests
 class BTCard_Tests: XCTestCase {
-    // MARK: - Initialization
-    
-    func testInitialization_savesStandardProperties() {
-        let card = BTCard(number: "4111111111111111", expirationMonth:"12", expirationYear:"2038", cvv: "123")
-
-        XCTAssertEqual(card.number, "4111111111111111")
-        XCTAssertEqual(card.expirationMonth, "12")
-        XCTAssertEqual(card.expirationYear, "2038")
-        XCTAssertNil(card.postalCode)
-        XCTAssertEqual(card.cvv, "123")
-    }
-
-    func testInitialization_acceptsNilCvv() {
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        XCTAssertNil(card.cvv)
-    }
 
     func testInitialization_withoutParameters() {
         let card = BTCard()
