@@ -122,9 +122,6 @@
     }
 
     NSMutableDictionary *billingAddressDictionary = [NSMutableDictionary new];
-    if ([cardDictionary[@"billingAddress"] isKindOfClass:[NSDictionary class]]) {
-        [billingAddressDictionary addEntriesFromDictionary:cardDictionary[@"billingAddress"]];
-    }
 
     if (self.firstName) {
         billingAddressDictionary[@"firstName"] = self.firstName;
