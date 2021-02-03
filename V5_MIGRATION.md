@@ -121,3 +121,16 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
     return false
 }
 ```
+
+## Card
+
+v5 removes the `initWithParameters` and `initWithNumber` initializers from `BTCard`. To construct a `BTCard`, set the properties directly:
+
+```
+let card = BTCard()
+card.number = "4111111111111111"
+card.expirationMonth = "12"
+card.expirationYear = "2025"
+card.cvv = "123"
+```
+
