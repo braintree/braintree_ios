@@ -202,8 +202,7 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - App switch
 
 - (BOOL)isiOSAppAvailableForAppSwitch {
-    BOOL isAtLeastIos9 = ([[self.device systemVersion] intValue] >= 9);
-    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]] && isAtLeastIos9;
+    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
 }
 
 + (void)handleAppSwitchReturnURL:(NSURL *)url {
