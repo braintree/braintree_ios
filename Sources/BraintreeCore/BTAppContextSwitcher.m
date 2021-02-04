@@ -8,7 +8,7 @@
 
 @interface BTAppContextSwitcher ()
 
-@property (nonatomic, strong) NSMutableSet *appSwitchHandlers;
+@property (nonatomic, strong) NSMutableSet *appContextSwitchDrivers;
 
 @end
 
@@ -26,7 +26,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _appSwitchHandlers = [NSMutableSet set];
+        _appContextSwitchDrivers = [NSMutableSet set];
     }
     return self;
 }
@@ -44,22 +44,18 @@
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    for (Class<BTAppContextSwitchDriver> handlerClass in self.appSwitchHandlers) {
-        if ([handlerClass canHandleAppSwitchReturnURL:url]) {
-            [handlerClass handleAppSwitchReturnURL:url];
+    for (Class<BTAppContextSwitchDriver> driverClass in self.appContextSwitchDrivers) {
+        if ([driverClass canHandleAppSwitchReturnURL:url]) {
+            [driverClass handleAppSwitchReturnURL:url];
             return YES;
         }
     }
     return NO;
 }
 
-- (void)registerAppContextSwitchDriver:(Class<BTAppContextSwitchDriver>)handler {
-    if (!handler) return;
-    [self.appSwitchHandlers addObject:handler];
-}
-
-- (void)unregisterAppContextSwitchHandler:(Class<BTAppContextSwitchDriver>)handler {
-    [self.appSwitchHandlers removeObject:handler];
+- (void)registerAppContextSwitchDriver:(Class<BTAppContextSwitchDriver>)driver {
+    if (!driver) return;
+    [self.appContextSwitchDrivers addObject:driver];
 }
 
 @end

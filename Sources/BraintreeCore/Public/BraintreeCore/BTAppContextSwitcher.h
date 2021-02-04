@@ -53,12 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Registers a class that knows how to handle a return from app switch
 */
-- (void)registerAppContextSwitchDriver:(Class<BTAppContextSwitchDriver>)handler;
-
-/**
- Unregisters a class that knows how to handle a return from app switch
-*/
-- (void)unregisterAppContextSwitchHandler:(Class<BTAppContextSwitchDriver>)handler;
+- (void)registerAppContextSwitchDriver:(Class<BTAppContextSwitchDriver>)driver;
 
 @end
 
