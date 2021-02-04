@@ -18,14 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
  @param url the URL you receive in  `scene:openURLContexts:` (or `application:openURL:options:` if iOS 12) when returning to your app
  @return `YES` when the SDK can process the return URL
 */
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url;
++ (BOOL)canHandleReturnURL:(NSURL *)url NS_SWIFT_NAME(canHandleReturnURL(_:));
 
 /**
  Complete payment flow after returning from app or browser switch.
 
  @param url The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if iOS 12)
 */
-+ (void)handleAppSwitchReturnURL:(NSURL *)url;
++ (void)handleReturnURL:(NSURL *)url NS_SWIFT_NAME(handleReturnURL(_:));
 
 @end
 

@@ -45,8 +45,8 @@
 
 - (BOOL)handleOpenURL:(NSURL *)url {
     for (Class<BTAppContextSwitchDriver> driverClass in self.appContextSwitchDrivers) {
-        if ([driverClass canHandleAppSwitchReturnURL:url]) {
-            [driverClass handleAppSwitchReturnURL:url];
+        if ([driverClass canHandleReturnURL:url]) {
+            [driverClass handleReturnURL:url];
             return YES;
         }
     }

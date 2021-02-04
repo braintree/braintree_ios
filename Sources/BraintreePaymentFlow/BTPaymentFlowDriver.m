@@ -93,11 +93,11 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 #pragma mark - App switch
 
-+ (void)handleAppSwitchReturnURL:(NSURL *)url {
++ (void)handleReturnURL:(NSURL *)url {
     [paymentFlowDriver handleOpenURL:url];
 }
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
++ (BOOL)canHandleReturnURL:(NSURL *)url {
     return [paymentFlowDriver.paymentFlowRequestDelegate canHandleAppSwitchReturnURL:url];
 }
 

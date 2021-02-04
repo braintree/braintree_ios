@@ -371,7 +371,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -401,7 +401,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -432,7 +432,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }

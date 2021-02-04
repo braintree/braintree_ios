@@ -205,12 +205,12 @@ static BTVenmoDriver *appSwitchedDriver;
     return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
 }
 
-+ (void)handleAppSwitchReturnURL:(NSURL *)url {
++ (void)handleReturnURL:(NSURL *)url {
     [appSwitchedDriver handleOpenURL:url];
     appSwitchedDriver = nil;
 }
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
++ (BOOL)canHandleReturnURL:(NSURL *)url {
     return [BTVenmoAppSwitchReturnURL isValidURL:url];
 }
 
