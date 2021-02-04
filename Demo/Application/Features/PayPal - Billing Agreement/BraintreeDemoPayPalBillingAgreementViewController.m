@@ -45,7 +45,7 @@
    self.progressBlock(@"appContextSwitchHandlerWillStartSwitch:");
 }
 
-- (void)appContextSwitchDriverDidCompleteSwitch:(__unused id<BTAppContextSwitchDriver)driver {
+- (void)appContextSwitchDriverDidCompleteSwitch:(__unused id<BTAppContextSwitchDriver>)driver {
     self.progressBlock(@"appContextSwitchDriverDidCompleteSwitch:");
 }
 
