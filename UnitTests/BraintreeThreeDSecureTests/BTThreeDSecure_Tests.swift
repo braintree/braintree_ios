@@ -30,7 +30,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     func testStartPayment_displaysSafariViewControllerWhenAvailable_andRequiresAuthentication() {
         BTAppContextSwitcher.setReturnURLScheme("com.braintreepayments.Demo.payments")
         
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
         
@@ -127,7 +127,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_v2_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
@@ -182,7 +182,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
@@ -204,7 +204,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         threeDSecureRequest.versionRequested = .version2
 
         let expectation = self.expectation(description: "willCallCompletion")
@@ -234,7 +234,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "assetsUrl": "http://assets.example.com",
         ])
         
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
         
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -262,7 +262,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "assetsUrl": "http://assets.example.com",
             ])
         
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
         
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -293,7 +293,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "assetsUrl": "http://assets.example.com",
             ])
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -327,7 +327,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "assetsUrl": "http://assets.example.com",
             ])
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -361,7 +361,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "assetsUrl": "http://assets.example.com",
             ])
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -425,7 +425,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     // MARK: - Analytic Event Tests
 
     func testStartPayment_success_sendsAnalyticsEvents() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 

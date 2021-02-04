@@ -1,7 +1,7 @@
 import XCTest
 import BraintreeCore
 
-@objc public class MockViewControllerPresentationDelegate : NSObject, BTViewControllerPresentingDelegate {
+@objc public class MockViewControllerPresentingDelegate : NSObject, BTViewControllerPresentingDelegate {
     public var requestsPresentationOfViewControllerExpectation : XCTestExpectation? = nil
     public var requestsDismissalOfViewControllerExpectation : XCTestExpectation? = nil
     public var lastViewController : UIViewController? = nil

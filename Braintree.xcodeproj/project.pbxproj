@@ -205,7 +205,7 @@
 		A903E1AA24F9D34000C314E1 /* BraintreeTestShared.h in Headers */ = {isa = PBXBuildFile; fileRef = A903E1A824F9D34000C314E1 /* BraintreeTestShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A903E1AE24F9D35500C314E1 /* FakeBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ED470123A3E9DB00B889A8 /* FakeBundle.swift */; };
 		A903E1B124F9D35500C314E1 /* FakeApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ED46FF23A3E9AE00B889A8 /* FakeApplication.swift */; };
-		A903E1B224F9D35500C314E1 /* MockViewControllerPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D6746C1B84073300ED6C00 /* MockViewControllerPresentationDelegate.swift */; };
+		A903E1B224F9D35500C314E1 /* MockViewControllerPresentingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D6746C1B84073300ED6C00 /* MockViewControllerPresentingDelegate.swift */; };
 		A903E1B324F9D35500C314E1 /* FakeDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ED470323A3E9F600B889A8 /* FakeDevice.swift */; };
 		A903E1B424F9D35500C314E1 /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */; };
 		A903E1B624F9D37B00C314E1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1B524F9D37B00C314E1 /* XCTest.framework */; platformFilter = ios; };
@@ -989,7 +989,7 @@
 		A7D4630B1B4B16C100A09C46 /* BTHTTPTestProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHTTPTestProtocol.h; sourceTree = "<group>"; };
 		A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPTestProtocol.m; sourceTree = "<group>"; };
 		A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTApplePay_Tests.swift; sourceTree = "<group>"; };
-		A7D6746C1B84073300ED6C00 /* MockViewControllerPresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockViewControllerPresentationDelegate.swift; sourceTree = "<group>"; };
+		A7D6746C1B84073300ED6C00 /* MockViewControllerPresentingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockViewControllerPresentingDelegate.swift; sourceTree = "<group>"; };
 		A7D674711B84FDB400ED6C00 /* BTClientToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTClientToken.h; sourceTree = "<group>"; };
 		A7D674721B84FDB400ED6C00 /* BTClientToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientToken.m; sourceTree = "<group>"; };
 		A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTURLUtils_Tests.swift; sourceTree = "<group>"; };
@@ -1922,7 +1922,7 @@
 				A948D70224FACF4E00F4F178 /* FakeHTTP.swift */,
 				A903E1A924F9D34000C314E1 /* Info.plist */,
 				A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */,
-				A7D6746C1B84073300ED6C00 /* MockViewControllerPresentationDelegate.swift */,
+				A7D6746C1B84073300ED6C00 /* MockViewControllerPresentingDelegate.swift */,
 				A977A06A24FECFC3006049AB /* NonceValidator.swift */,
 				A9A76CA624F9E92E0044EAEE /* TestClientTokenFactory.swift */,
 			);
@@ -3412,7 +3412,7 @@
 				A903E1B324F9D35500C314E1 /* FakeDevice.swift in Sources */,
 				A903E1B424F9D35500C314E1 /* MockAPIClient.swift in Sources */,
 				A903E1B124F9D35500C314E1 /* FakeApplication.swift in Sources */,
-				A903E1B224F9D35500C314E1 /* MockViewControllerPresentationDelegate.swift in Sources */,
+				A903E1B224F9D35500C314E1 /* MockViewControllerPresentingDelegate.swift in Sources */,
 				A9A76CA724F9E92E0044EAEE /* TestClientTokenFactory.swift in Sources */,
 				A977A06B24FECFC3006049AB /* NonceValidator.swift in Sources */,
 			);
