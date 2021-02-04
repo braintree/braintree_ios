@@ -54,7 +54,7 @@
         NSError *integrationError;
 
         if ([self.paymentFlowDriverDelegate returnURLScheme] == nil || [[self.paymentFlowDriverDelegate returnURLScheme] isEqualToString:@""]) {
-            [[BTLogger sharedLogger] critical:@"Local Payment requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]"];
+            [[BTLogger sharedLogger] critical:@"Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"];
             integrationError = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
                                                  code:BTPaymentFlowDriverErrorTypeInvalidReturnURL
                                              userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app or browser switch."}];

@@ -119,7 +119,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
  
  Handles the app switching and shared logic for payment flows that use web or app switching.
  */
-@interface BTPaymentFlowDriver : NSObject <BTAppSwitchHandler, BTPaymentFlowDriverDelegate>
+@interface BTPaymentFlowDriver : NSObject <BTAppContextSwitchHandler, BTPaymentFlowDriverDelegate>
 
 /**
  Initialize a new BTPaymentFlowDriver instance.
@@ -151,7 +151,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 
  @note BTPaymentFlowDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
  */
-@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
+@property (nonatomic, weak, nullable) id<BTAppContextSwitchDelegate> appContextSwitchDelegate;
 
 @end
 

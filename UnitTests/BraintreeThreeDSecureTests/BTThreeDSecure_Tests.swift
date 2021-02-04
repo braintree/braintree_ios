@@ -28,7 +28,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     // MARK: - ThreeDSecure Authentication Tests
 
     func testStartPayment_displaysSafariViewControllerWhenAvailable_andRequiresAuthentication() {
-        BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
+        BTAppContextSwitcher.setReturnURLScheme("com.braintreepayments.Demo.payments")
         
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         
@@ -298,8 +298,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
+        let appContextSwitchDelegate = MockAppContextSwitchDelegate()
+        driver.appContextSwitchDelegate = appContextSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
 
@@ -313,8 +313,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
 
-        XCTAssertTrue(appSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertTrue(appSwitchDelegate.appContextDidReturnCalled)
+        XCTAssertTrue(appContextSwitchDelegate.appContextWillSwitchCalled)
+        XCTAssertTrue(appContextSwitchDelegate.appContextDidReturnCalled)
     }
 
     func testStartPayment_missingAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {

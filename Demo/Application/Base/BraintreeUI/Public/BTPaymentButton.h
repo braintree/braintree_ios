@@ -2,7 +2,7 @@
 #import "BTUIThemedView.h"
 #import <UIKit/UIKit.h>
 
-@protocol BTAppSwitchDelegate, BTViewControllerPresentingDelegate;
+@protocol BTAppContextSwitchDelegate, BTViewControllerPresentingDelegate;
 @class BTAPIClient, BTPaymentMethodNonce;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Optional delegate for receiving payment lifecycle messages from a payment option that may initiate an app or browser switch to authorize payments.
 */
-@property (nonatomic, weak, nullable) id <BTAppSwitchDelegate> appSwitchDelegate;
+@property (nonatomic, weak, nullable) id <BTAppContextSwitchDelegate> appContextSwitchDelegate;
 
 /**
  Optional delegate for receiving payment lifecycle messages from a payment driverthat requires presentation of a view controller to authorize a payment.

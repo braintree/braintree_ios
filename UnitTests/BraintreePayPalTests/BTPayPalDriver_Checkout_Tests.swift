@@ -722,9 +722,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenBrowserSwitchSucceeds_makesDelegateCallback() {
-        let delegate = MockAppSwitchDelegate()
+        let delegate = MockAppContextSwitchDelegate()
         delegate.appContextDidReturnExpectation = expectation(description: "appContextDidReturn called")
-        payPalDriver.appSwitchDelegate = delegate
+        payPalDriver.appContextSwitchDelegate = delegate
 
         let returnURL = URL(string: "bar://hello/world")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }

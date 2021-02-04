@@ -566,14 +566,14 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 #pragma mark - App Switch Delegate Informers
 
 - (void)informDelegateAppContextWillSwitch {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
-        [self.appSwitchDelegate appContextWillSwitch:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
+        [self.appContextSwitchDelegate appContextWillSwitch:self];
     }
 }
 
 - (void)informDelegateAppContextDidReturn {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
-        [self.appSwitchDelegate appContextDidReturn:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
+        [self.appContextSwitchDelegate appContextDidReturn:self];
     }
 }
 

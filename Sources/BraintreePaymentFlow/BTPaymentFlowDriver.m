@@ -39,14 +39,14 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 + (void)load {
     if (self == [BTPaymentFlowDriver class]) {
-        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchHandler:self];
     }
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         _apiClient = apiClient;
-        _returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
+        _returnURLScheme = [BTAppContextSwitcher sharedInstance].returnURLScheme;
     }
     return self;
 }
@@ -143,14 +143,14 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)informDelegateAppContextWillSwitch {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
-        [self.appSwitchDelegate appContextWillSwitch:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
+        [self.appContextSwitchDelegate appContextWillSwitch:self];
     }
 }
 
 - (void)informDelegateAppContextDidReturn {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
-        [self.appSwitchDelegate appContextDidReturn:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
+        [self.appContextSwitchDelegate appContextDidReturn:self];
     }
 }
 

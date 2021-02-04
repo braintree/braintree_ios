@@ -18,7 +18,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         localPaymentRequest.paymentType = "ideal"
         mockAPIClient = MockAPIClient(authorization: tempClientToken)!
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
-        BTAppSwitch.setReturnURLScheme("com.my-return-url-scheme")
+        BTAppContextSwitcher.setReturnURLScheme("com.my-return-url-scheme")
     }
 
     override func tearDown() {
@@ -27,7 +27,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenReturnURLInvalid() {
-        BTAppSwitch.setReturnURLScheme("")
+        BTAppContextSwitcher.setReturnURLScheme("")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         let expectation = self.expectation(description: "Start payment fails with error")
@@ -320,8 +320,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
+        let appContextSwitchDelegate = MockAppContextSwitchDelegate()
+        driver.appContextSwitchDelegate = appContextSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
             "redirectUrl": "https://www.somebankurl.com",
@@ -338,8 +338,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertTrue(appSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertTrue(appSwitchDelegate.appContextDidReturnCalled)
+        XCTAssertTrue(appContextSwitchDelegate.appContextWillSwitchCalled)
+        XCTAssertTrue(appContextSwitchDelegate.appContextDidReturnCalled)
     }
 
     func testStartPayment_successfulResult_callsCompletionBlock() {
@@ -350,8 +350,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
+        let appContextSwitchDelegate = MockAppContextSwitchDelegate()
+        driver.appContextSwitchDelegate = appContextSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
             "redirectUrl": "https://www.somebankurl.com",
@@ -416,8 +416,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
+        let appContextSwitchDelegate = MockAppContextSwitchDelegate()
+        driver.appContextSwitchDelegate = appContextSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
             "redirectUrl": "https://www.somebankurl.com",
@@ -448,8 +448,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
+        let appContextSwitchDelegate = MockAppContextSwitchDelegate()
+        driver.appContextSwitchDelegate = appContextSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
             "redirectUrl": "https://www.somebankurl.com",

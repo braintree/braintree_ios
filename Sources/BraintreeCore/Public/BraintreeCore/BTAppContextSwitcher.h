@@ -1,16 +1,16 @@
 #import <UIKit/UIKit.h>
 
-@protocol BTAppSwitchHandler;
+@protocol BTAppContextSwitchHandler;
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark - BTAppSwitch
+#pragma mark - BTAppContextSwitcher
 
 /**
  Handles return URLs when returning from app switch and routes the return URL to the correct app switch handler class.
  @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundleID. When your app returns from app switch, the app delegate should call `handleOpenURL:` or `handleOpenURLContext:`
 */
-@interface BTAppSwitch : NSObject
+@interface BTAppContextSwitcher : NSObject
 
 /**
  The URL scheme to return to this app after switching to another app. 
@@ -53,50 +53,23 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Registers a class that knows how to handle a return from app switch
 */
-- (void)registerAppSwitchHandler:(Class<BTAppSwitchHandler>)handler;
+- (void)registerAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler;
 
 /**
  Unregisters a class that knows how to handle a return from app switch
 */
-- (void)unregisterAppSwitchHandler:(Class<BTAppSwitchHandler>)handler;
+- (void)unregisterAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler;
 
 @end
 
-#pragma mark - BTAppSwitchDelegate
-
-/**
- Specifies the destination of an app switch
-*/
-typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
-    /// Unknown error
-    BTAppSwitchTargetUnknown = 0,
-
-    /// Native app
-    BTAppSwitchTargetNativeApp,
-
-    /// Browser (i.e. Mobile Safari)
-    BTAppSwitchTargetWebBrowser,
-};
+#pragma mark - BTAppContextSwitchDelegate
 
 /**
  Protocol for receiving payment lifecycle messages from a payment option that may initiate an app or browser switch event to authorize payments.
 */
-@protocol BTAppSwitchDelegate <NSObject>
+@protocol BTAppContextSwitchDelegate <NSObject>
 
 @optional
-
-/**
- The app switcher will perform an app switch in order to obtain user payment authorization.
-
- Your implementation of this method may set your app to the state
- it should be in if the user manually app-switches back to your app.
- For example, re-enable any controls that are disabled.
-
- @note Use `appContextWillSwitch:` to receive events for all types of context switching from the origin app to apps/browsers.
-
- @param appSwitcher The app switcher
-*/
-- (void)appSwitcherWillPerformAppSwitch:(id)appSwitcher;
 
 /**
  Delegates receive this message when the app switcher has successfully performed an app switch.
@@ -107,25 +80,8 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
  @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
 
  @param appSwitcher The app switcher instance performing user authentication
- @param target The destination that was actually used for this app switch
 */
-- (void)appSwitcher:(id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target;
-
-/**
- The app switcher has obtained user payment details and/or user authorization and will process the results.
-
- This typically indicates asynchronous network activity.
- When you receive this message, your UI should indicate activity.
-
- In the case of an app switch, this message indicates that the user has returned to this app;
- this is usually after handleAppSwitchReturnURL: is called in your UIApplicationDelegate.
- You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
-
- @note Use `appContextDidReturn:` to receive events for all types of context switching from apps/browsers back to the origin app.
-
- @param appSwitcher The app switcher
-*/
-- (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher;
+- (void)appSwitcherDidPerformAppSwitch:(id)appSwitcher;
 
 /**
  Regardless of the method (e.g. app, Safari, SFSafariViewController, ASWebAuthenticationSession) events will be sent when the context will switch away from from the origin app.
@@ -139,7 +95,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 /**
  The context switch has returned.
 
- @note This is not guaranteed to be called. Example: A user leaves an app or Safari switch and manually returns to the origin app.
+ @note This is not guaranteed to be called. Example: A user leaves an app manually returns to the origin app.
 
  @param appSwitcher The app switcher
  */
@@ -147,13 +103,13 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 
 @end
 
-#pragma mark - BTAppSwitchHandler protocol
+#pragma mark - BTAppContextSwitchHandler protocol
 
 /**
  A protocol for handling the return from switching out of an app to gather payment information.
  @note The app may switch out to SFSafariViewController or to a native app.
 */
-@protocol BTAppSwitchHandler
+@protocol BTAppContextSwitchHandler
 
 @required
 

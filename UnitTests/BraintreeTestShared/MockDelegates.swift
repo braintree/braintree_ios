@@ -1,7 +1,7 @@
 import XCTest
 import BraintreeCore
 
-@objc public class MockAppSwitchDelegate : NSObject, BTAppSwitchDelegate {
+@objc public class MockAppContextSwitchDelegate : NSObject, BTAppContextSwitchDelegate {
     var willPerformAppSwitchExpectation : XCTestExpectation? = nil
     var didPerformAppSwitchExpectation : XCTestExpectation? = nil
     var willProcessAppSwitchExpectation : XCTestExpectation? = nil
@@ -22,13 +22,7 @@ import BraintreeCore
         didPerformAppSwitchExpectation = didPerform
     }
 
-    @objc public func appSwitcherWillPerformAppSwitch(_ appSwitcher: Any) {
-        lastAppSwitcher = appSwitcher as AnyObject?
-        willPerformAppSwitchExpectation?.fulfill()
-        willPerformAppSwitchCalled = true
-    }
-
-    @objc public func appSwitcher(_ appSwitcher: Any, didPerformSwitchTo target: BTAppSwitchTarget) {
+    @objc public func appSwitcherDidPerformAppSwitch(_ appSwitcher: Any) {
         lastAppSwitcher = appSwitcher as AnyObject?
         didPerformAppSwitchExpectation?.fulfill()
         didPerformAppSwitchCalled = true

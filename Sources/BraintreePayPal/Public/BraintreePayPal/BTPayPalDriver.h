@@ -120,7 +120,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
  @note BTPayPalDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
 */
-@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
+@property (nonatomic, weak, nullable) id<BTAppContextSwitchDelegate> appContextSwitchDelegate;
 
 @end
 

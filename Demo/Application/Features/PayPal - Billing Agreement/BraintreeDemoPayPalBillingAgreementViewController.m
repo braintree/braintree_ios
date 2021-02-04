@@ -1,7 +1,7 @@
 #import "BraintreeDemoPayPalBillingAgreementViewController.h"
 @import BraintreePayPal;
 
-@interface BraintreeDemoPayPalBillingAgreementViewController () <BTAppSwitchDelegate>
+@interface BraintreeDemoPayPalBillingAgreementViewController () <BTAppContextSwitchDelegate>
 
 @end
 
@@ -23,7 +23,7 @@
     [sender setEnabled:NO];
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
-    driver.appSwitchDelegate = self;
+    driver.appContextSwitchDelegate = self;
     BTPayPalRequest *checkout = [[BTPayPalRequest alloc] init];
     checkout.activeWindow = self.view.window;
     [driver requestBillingAgreement:checkout completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
@@ -39,7 +39,7 @@
     }];
 }
 
-#pragma mark BTAppSwitchDelegate
+#pragma mark BTAppContextSwitchDelegate
 
 - (void)appContextWillSwitch:(__unused id)appSwitcher {
    self.progressBlock(@"appContextWillSwitch:");

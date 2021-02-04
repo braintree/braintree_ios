@@ -41,7 +41,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 + (void)load {
     if (self == [BTVenmoDriver class]) {
-        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchHandler:self];
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
             return [BTVenmoAccountNonce venmoAccountWithJSON:venmoJSON];
         }];
@@ -84,7 +84,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 - (NSString *)returnURLScheme {
     if (!_returnURLScheme) {
-        _returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
+        _returnURLScheme = [BTAppContextSwitcher sharedInstance].returnURLScheme;
     }
     return _returnURLScheme;
 }
@@ -112,14 +112,14 @@ static BTVenmoDriver *appSwitchedDriver;
     }
 
     if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
-        [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]"];
+        [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"];
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeAppNotAvailable
                                          userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
         completionBlock(nil, error);
         return;
     } else if (!self.bundle.bundleIdentifier || ![self.returnURLScheme hasPrefix:self.bundle.bundleIdentifier]) {
-        [[BTLogger sharedLogger] critical:@"Venmo requires [BTAppSwitch setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];
+        [[BTLogger sharedLogger] critical:@"Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];
     }
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {
@@ -154,7 +154,6 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
 
-        [self informDelegateWillPerformAppSwitch];
         [self informDelegateAppContextWillSwitch];
 
         [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
@@ -191,8 +190,6 @@ static BTVenmoDriver *appSwitchedDriver;
     [self.apiClient POST:@"v1/payment_methods/venmo_accounts"
               parameters:params
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-                  [self informDelegateWillProcessAppSwitchReturn];
-                  
                   if (error) {
                       [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.vault.failure"];
                       self.appSwitchCompletionBlock(nil, error);
@@ -247,8 +244,6 @@ static BTVenmoDriver *appSwitchedDriver;
             if (self.shouldVault && self.apiClient.clientToken != nil) {
                 [self vaultVenmoAccountNonce:returnURL.nonce];
             } else {
-                [self informDelegateWillProcessAppSwitchReturn];
-                
                 BTJSON *json = [[BTJSON alloc] initWithValue:@{
                                                                @"nonce": returnURL.nonce,
                                                                @"details": @{@"username": returnURL.username},
@@ -327,33 +322,21 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - Delegate Informers
 
-- (void)informDelegateWillPerformAppSwitch {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
-        [self.appSwitchDelegate appSwitcherWillPerformAppSwitch:self];
-    }
-}
-
 - (void)informDelegateDidPerformAppSwitch {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
-        [self.appSwitchDelegate appSwitcher:self didPerformSwitchToTarget:BTAppSwitchTargetNativeApp];
-    }
-}
-
-- (void)informDelegateWillProcessAppSwitchReturn {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
-        [self.appSwitchDelegate appSwitcherWillProcessPaymentInfo:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appSwitcherDidPerformAppSwitch:)]) {
+        [self.appContextSwitchDelegate appSwitcherDidPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateAppContextWillSwitch {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
-        [self.appSwitchDelegate appContextWillSwitch:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
+        [self.appContextSwitchDelegate appContextWillSwitch:self];
     }
 }
 
 - (void)informDelegateAppContextDidReturn {
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
-        [self.appSwitchDelegate appContextDidReturn:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
+        [self.appContextSwitchDelegate appContextDidReturn:self];
     }
 }
 
