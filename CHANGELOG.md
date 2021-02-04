@@ -5,6 +5,11 @@
   * Make `shippingMethod` property on `BTThreeDSecureRequest` an enum instead of a string
   * Remove `BTTokenizationService`
   * Make `BTPaymentMethodNonceParser` private
+  * Remove `BTAppSwitchDelegate`
+  * Rename `BTAppSwitch` to `BTAppContextSwitcher`
+    * Rename `handleAppSwitchReturnURL()` to `handleReturnURL()`
+    * Rename `canHandleAppSwitchReturnURL()` to `canHandleReturnURL()`
+    * Remove `unregisterAppSwitchHandler()`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
 
