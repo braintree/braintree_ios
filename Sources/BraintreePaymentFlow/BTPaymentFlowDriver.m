@@ -39,7 +39,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 + (void)load {
     if (self == [BTPaymentFlowDriver class]) {
-        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchHandler:self];
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchDriver:self];
     }
 }
 
@@ -103,7 +103,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)handleOpenURL:(NSURL *)url {
-    [self informDelegateAppContextDidReturn];
+    [self informDelegateAppContextDidComplete];
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
     if (self.safariViewController) {
         [self informDelegatePresentingViewControllerNeedsDismissal];
@@ -143,14 +143,14 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)informDelegateAppContextWillSwitch {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
-        [self.appContextSwitchDelegate appContextWillSwitch:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverWillStartSwitch:)]) {
+        [self.appContextSwitchDelegate appContextSwitchDriverWillStartSwitch:self];
     }
 }
 
-- (void)informDelegateAppContextDidReturn {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
-        [self.appContextSwitchDelegate appContextDidReturn:self];
+- (void)informDelegateAppContextDidComplete {
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverDidCompleteSwitch:)]) {
+        [self.appContextSwitchDelegate appContextSwitchDriverDidCompleteSwitch:self];
     }
 }
 

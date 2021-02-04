@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /**
  An optional delegate for receiving notifications about the lifecycle of a PayPal browser switch for updating your UI
 
- @note BTPayPalDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
+ @note BTPayPalDriver will only send notifications for `appContextSwitchDriverWillStartSwitch:` and `appContextSwitchDriverDidCompleteSwitch:`.
 */
 @property (nonatomic, weak, nullable) id<BTAppContextSwitchDelegate> appContextSwitchDelegate;
 

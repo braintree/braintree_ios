@@ -42,12 +42,12 @@
 
 #pragma mark BTAppContextSwitchDelegate
 
-- (void)appContextWillSwitch:(__unused id)appSwitcher {
-   self.progressBlock(@"appContextWillSwitch:");
+- (void)appContextSwitchHandlerWillStartSwitch:(__unused id<BTAppContextSwitchDriver>)driver {
+   self.progressBlock(@"appContextSwitchHandlerWillStartSwitch:");
 }
 
-- (void)appContextDidReturn:(__unused id)appSwitcher {
-    self.progressBlock(@"appContextDidReturn:");
+- (void)appContextSwitchDriverDidCompleteSwitch:(__unused id<BTAppContextSwitchDriver>)driver {
+    self.progressBlock(@"appContextSwitchDriverDidCompleteSwitch:");
 }
 
 @end

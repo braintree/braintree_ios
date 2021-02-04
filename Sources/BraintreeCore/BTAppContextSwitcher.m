@@ -44,7 +44,7 @@
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url {
-    for (Class<BTAppContextSwitchHandler> handlerClass in self.appSwitchHandlers) {
+    for (Class<BTAppContextSwitchDriver> handlerClass in self.appSwitchHandlers) {
         if ([handlerClass canHandleAppSwitchReturnURL:url]) {
             [handlerClass handleAppSwitchReturnURL:url];
             return YES;
@@ -53,12 +53,12 @@
     return NO;
 }
 
-- (void)registerAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler {
+- (void)registerAppContextSwitchDriver:(Class<BTAppContextSwitchDriver>)handler {
     if (!handler) return;
     [self.appSwitchHandlers addObject:handler];
 }
 
-- (void)unregisterAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler {
+- (void)unregisterAppContextSwitchHandler:(Class<BTAppContextSwitchDriver>)handler {
     [self.appSwitchHandlers removeObject:handler];
 }
 

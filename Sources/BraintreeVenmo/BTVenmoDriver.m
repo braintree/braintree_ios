@@ -41,7 +41,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 + (void)load {
     if (self == [BTVenmoDriver class]) {
-        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchHandler:self];
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchDriver:self];
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
             return [BTVenmoAccountNonce venmoAccountWithJSON:venmoJSON];
         }];
@@ -219,7 +219,7 @@ static BTVenmoDriver *appSwitchedDriver;
 }
 
 - (void)handleOpenURL:(NSURL *)url {
-    [self informDelegateAppContextDidReturn];
+    [self informDelegateAppContextDidComplete];
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     
     switch (returnURL.state) {
@@ -323,20 +323,20 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Delegate Informers
 
 - (void)informDelegateDidPerformAppSwitch {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchHandlerDidStartSwitch:)]) {
-        [self.appContextSwitchDelegate appContextSwitchHandlerDidStartSwitch:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverDidStartSwitch:)]) {
+        [self.appContextSwitchDelegate appContextSwitchDriverDidStartSwitch:self];
     }
 }
 
 - (void)informDelegateAppContextWillSwitch {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
-        [self.appContextSwitchDelegate appContextWillSwitch:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverWillStartSwitch:)]) {
+        [self.appContextSwitchDelegate appContextSwitchDriverWillStartSwitch:self];
     }
 }
 
-- (void)informDelegateAppContextDidReturn {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
-        [self.appContextSwitchDelegate appContextDidReturn:self];
+- (void)informDelegateAppContextDidComplete {
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverDidCompleteSwitch:)]) {
+        [self.appContextSwitchDelegate appContextSwitchDriverDidCompleteSwitch:self];
     }
 }
 

@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@protocol BTAppContextSwitchHandler;
+@protocol BTAppContextSwitchDriver;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,12 +53,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Registers a class that knows how to handle a return from app switch
 */
-- (void)registerAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler;
+- (void)registerAppContextSwitchDriver:(Class<BTAppContextSwitchDriver>)handler;
 
 /**
  Unregisters a class that knows how to handle a return from app switch
 */
-- (void)unregisterAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler;
+- (void)unregisterAppContextSwitchHandler:(Class<BTAppContextSwitchDriver>)handler;
 
 @end
 
@@ -79,20 +79,18 @@ NS_ASSUME_NONNULL_BEGIN
 
  @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
 
- @param appSwitcher The app switcher instance performing user authentication
+ @param driver The app switcher instance performing user authentication
 */
-- (void)appContextSwitchHandlerDidStartSwitch:(id<BTAppContextSwitchHandler>)appSwitcher;
-// appContextSwitchHandlerDidStartSwitch:(BTAppContextSwitchHandler)switchHandler
+- (void)appContextSwitchDriverDidStartSwitch:(id<BTAppContextSwitchDriver>)driver;
 
 /**
  Regardless of the method (e.g. app, Safari, SFSafariViewController, ASWebAuthenticationSession) events will be sent when the context will switch away from from the origin app.
 
  @note Use this method to update UI (e.g. displaying a loading indicator) before the switch takes place.
 
- @param appSwitcher The app switcher
+ @param driver The app switcher
  */
-- (void)appContextWillSwitch:(id)appSwitcher;
-// appContextSwitchHandlerWillStartSwitch:(BTAppContextSwitchHandler)switchHandler
+- (void)appContextSwitchDriverWillStartSwitch:(id<BTAppContextSwitchDriver>)driver;
 
 /**
  The context switch has returned.
@@ -101,18 +99,17 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param appSwitcher The app switcher
  */
-- (void)appContextDidReturn:(id)appSwitcher;
-// appContextSwitchHandlerDidCompleteSwitch:(BTAppContextSwitchHandler)switchHandler
+- (void)appContextSwitchDriverDidCompleteSwitch:(id<BTAppContextSwitchDriver>)driver;
 
 @end
 
-#pragma mark - BTAppContextSwitchHandler protocol
+#pragma mark - BTAppContextSwitchDriver protocol
 
 /**
  A protocol for handling the return from switching out of an app to gather payment information.
  @note The app may switch out to SFSafariViewController or to a native app.
 */
-@protocol BTAppContextSwitchHandler
+@protocol BTAppContextSwitchDriver
 
 @required
 

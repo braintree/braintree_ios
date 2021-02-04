@@ -339,7 +339,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertTrue(appContextSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertTrue(appContextSwitchDelegate.appContextDidReturnCalled)
+        XCTAssertTrue(appContextSwitchDelegate.appContextDidCompleteSwitchCalled)
     }
 
     func testStartPayment_successfulResult_callsCompletionBlock() {

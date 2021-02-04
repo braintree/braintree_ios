@@ -723,7 +723,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
     func testCheckout_whenBrowserSwitchSucceeds_makesDelegateCallback() {
         let delegate = MockAppContextSwitchDelegate()
-        delegate.appContextDidReturnExpectation = expectation(description: "appContextDidReturn called")
+        delegate.appContextDidCompleteSwitchExpectation = expectation(description: "appContextSwitchDriverDidCompleteSwitch called")
         payPalDriver.appContextSwitchDelegate = delegate
 
         let returnURL = URL(string: "bar://hello/world")!
@@ -731,8 +731,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         waitForExpectations(timeout: 1)
 
-        XCTAssertTrue(delegate.lastAppSwitcher is BTPayPalDriver)
-        XCTAssertTrue(delegate.appContextDidReturnCalled)
+        XCTAssertTrue(delegate.driver is BTPayPalDriver)
+        XCTAssertTrue(delegate.appContextDidCompleteSwitchCalled)
     }
 
     // MARK: - Tokenization

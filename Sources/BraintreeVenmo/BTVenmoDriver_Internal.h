@@ -24,7 +24,7 @@
 @property (nonatomic, strong) UIDevice *device;
 
 /**
- Defaults to use [BTAppContextSwitchHandler sharedInstance].returnURLScheme, but exposed for unit tests to stub returnURLScheme.
+ Defaults to use [BTAppContextSwitchDriver sharedInstance].returnURLScheme, but exposed for unit tests to stub returnURLScheme.
 */
 @property (nonatomic, copy) NSString *returnURLScheme;
 

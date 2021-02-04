@@ -314,7 +314,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 3, handler: nil)
 
         XCTAssertTrue(appContextSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertTrue(appContextSwitchDelegate.appContextDidReturnCalled)
+        XCTAssertTrue(appContextSwitchDelegate.appContextDidCompleteSwitchCalled)
     }
 
     func testStartPayment_missingAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {

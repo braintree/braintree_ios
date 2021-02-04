@@ -81,7 +81,7 @@ class BTAppContextSwitch_Tests: XCTestCase {
 
 }
 
-class MockAppContextSwitchHandler: BTAppContextSwitchHandler {
+class MockAppContextSwitchHandler: BTAppContextSwitchDriver {
     static var cannedCanHandle = false
     static var lastCanHandleURL : URL? = nil
     static var lastHandleAppSwitchReturnURL : URL? = nil

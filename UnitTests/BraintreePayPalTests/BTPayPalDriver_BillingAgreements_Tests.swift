@@ -211,14 +211,14 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
 
         XCTAssertTrue(mockAppContextSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertFalse(mockAppContextSwitchDelegate.appContextDidReturnCalled)
+        XCTAssertFalse(mockAppContextSwitchDelegate.appContextDidCompleteSwitchCalled)
 
         let returnURL = URL(string: "bar://hello/world")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
 
         XCTAssertNotNil(payPalDriver.authenticationSession)
         XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
-        XCTAssertTrue(mockAppContextSwitchDelegate.appContextDidReturnCalled)
+        XCTAssertTrue(mockAppContextSwitchDelegate.appContextDidCompleteSwitchCalled)
     }
 
     func testBillingAgreement_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {
