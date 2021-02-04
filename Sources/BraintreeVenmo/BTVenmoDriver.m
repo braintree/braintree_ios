@@ -323,8 +323,8 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Delegate Informers
 
 - (void)informDelegateDidPerformAppSwitch {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appSwitcherDidPerformAppSwitch:)]) {
-        [self.appContextSwitchDelegate appSwitcherDidPerformAppSwitch:self];
+    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchHandlerDidStartSwitch:)]) {
+        [self.appContextSwitchDelegate appContextSwitchHandlerDidStartSwitch:self];
     }
 }
 

@@ -53,7 +53,7 @@
     return NO;
 }
 
--(void)registerAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler {
+- (void)registerAppContextSwitchHandler:(Class<BTAppContextSwitchHandler>)handler {
     if (!handler) return;
     [self.appSwitchHandlers addObject:handler];
 }

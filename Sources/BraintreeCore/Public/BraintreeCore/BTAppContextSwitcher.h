@@ -81,7 +81,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param appSwitcher The app switcher instance performing user authentication
 */
-- (void)appSwitcherDidPerformAppSwitch:(id)appSwitcher;
+- (void)appContextSwitchHandlerDidStartSwitch:(id<BTAppContextSwitchHandler>)appSwitcher;
+// appContextSwitchHandlerDidStartSwitch:(BTAppContextSwitchHandler)switchHandler
 
 /**
  Regardless of the method (e.g. app, Safari, SFSafariViewController, ASWebAuthenticationSession) events will be sent when the context will switch away from from the origin app.
@@ -91,6 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param appSwitcher The app switcher
  */
 - (void)appContextWillSwitch:(id)appSwitcher;
+// appContextSwitchHandlerWillStartSwitch:(BTAppContextSwitchHandler)switchHandler
 
 /**
  The context switch has returned.
@@ -100,6 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param appSwitcher The app switcher
  */
 - (void)appContextDidReturn:(id)appSwitcher;
+// appContextSwitchHandlerDidCompleteSwitch:(BTAppContextSwitchHandler)switchHandler
 
 @end
 
@@ -133,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Indicates whether an iOS app is installed and available for app switch.
 */
-- (BOOL)isiOSAppAvailableForAppSwitch;
+- (BOOL)isiOSAppAvailableForAppSwitch; // TODO: - make static?
 
 @end
 
