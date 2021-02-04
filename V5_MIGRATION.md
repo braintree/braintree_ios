@@ -96,7 +96,7 @@ For CocoaPods integrations, the Braintree Apple Pay subspec has been renamed fro
 
 Implementing the `BTViewControllerPresentingDelegate` is no longer required.
 
-Registering a custom URL scheme in your Xcode project is also no longer required. 
+Registering a custom URL scheme in your Xcode project is also no longer required.
 
 Code previously used to set your return URL scheme can be deleted. **Note:** This only applies to the PayPal flow. Other payment methods (ex: Venmo, Local Payment Methods, 3DS) still require a custom URL scheme.
 ```
@@ -107,9 +107,13 @@ If your app supports multi-tasking, you must set the `BTPayPalRequest.activeWind
 
 ## App Switch
 
-v5 removes the `options` and `sourceApplication` params on methods in `BTAppSwitch`. 
+// TODO: reword/ reorganize
 
-If you're using `UISceneDelegate`, you don't need to make any code changes. 
+v5 renames the `BTAppSwitch` class with `BTAppContextSwitcher`. It also removes the `BTAppSwitchDelegate`.
+
+v5 removes the `options` and `sourceApplication` params on methods in `BTAppContextSwitcher`.
+
+If you're using `UISceneDelegate`, you don't need to make any code changes.
 
 If you aren't using `UISceneDelegate`, you will need to update the `handleOpenURL` method you call from within the `application:OpenURL:options` app delegate method.
 
