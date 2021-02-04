@@ -322,8 +322,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 }
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL paymentType:(BTPayPalPaymentType)paymentType completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
-    [self informDelegateAppContextWillSwitch];
-
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
 
     NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
@@ -563,20 +561,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     return UIApplication.sharedApplication.windows.firstObject;
 }
 
-#pragma mark - App Switch Delegate Informers
-
-- (void)informDelegateAppContextWillSwitch {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverWillStartSwitch:)]) {
-        [self.appContextSwitchDelegate appContextSwitchDriverWillStartSwitch:self];
-    }
-}
-
-- (void)informDelegateAppContextDidComplete {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverDidCompleteSwitch:)]) {
-        [self.appContextSwitchDelegate appContextSwitchDriverDidCompleteSwitch:self];
-    }
-}
-
 #pragma mark - Preflight check
 
 - (BOOL)verifyAppSwitchWithRemoteConfiguration:(BTJSON *)configuration error:(NSError * __autoreleasing *)error {
@@ -667,8 +651,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 - (void)handleBrowserSwitchReturnURL:(NSURL *)url
                          paymentType:(BTPayPalPaymentType)paymentType
                           completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self informDelegateAppContextDidComplete];
-
     if (![self.class isValidURLAction: url]) {
         NSError *responseError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                      code:BTPayPalDriverErrorTypeUnknown

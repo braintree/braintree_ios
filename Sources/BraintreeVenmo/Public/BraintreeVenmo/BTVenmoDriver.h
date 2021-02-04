@@ -90,11 +90,6 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
  */
 - (void)openVenmoAppPageInAppStore;
 
-/**
- An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating your UI
-*/
-@property (nonatomic, weak, nullable) id<BTAppContextSwitchDelegate> appContextSwitchDelegate;
-
 @end
 
 NS_ASSUME_NONNULL_END

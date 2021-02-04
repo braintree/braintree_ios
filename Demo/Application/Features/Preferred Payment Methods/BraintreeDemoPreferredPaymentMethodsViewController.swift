@@ -17,8 +17,6 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
 
         super.init(authorization: authorization)
         
-        paypalDriver.appContextSwitchDelegate = self
-        
         title = "Preferred Payment Methods"
         view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
@@ -131,17 +129,3 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
     }
 }
 
-// MARK: - BTAppContextSwitchDelegate
-extension BraintreeDemoPreferredPaymentMethodsViewController: BTAppContextSwitchDelegate {
-    func appSwitcherWillPerformAppSwitch(_ appSwitcher: Any) {
-        self.progressBlock("paymentDriverWillPerformAppSwitch:")
-    }
-
-    func appSwitcherDidPerformAppSwitch(_ appSwitcher: Any) {
-        self.progressBlock("paymentDriverDidPerformAppSwitch:")
-    }
-    
-    func appSwitcherWillProcessPaymentInfo(_ appSwitcher: Any) {
-        self.progressBlock("paymentDriverWillProcessPaymentInfo:")
-    }
-}

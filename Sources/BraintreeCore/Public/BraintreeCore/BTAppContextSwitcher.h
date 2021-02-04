@@ -57,47 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark - BTAppContextSwitchDelegate
-
-/**
- Protocol for receiving payment lifecycle messages from a payment option that may initiate an app or browser switch event to authorize payments.
-*/
-@protocol BTAppContextSwitchDelegate <NSObject>
-
-@optional
-
-/**
- Delegates receive this message when the app switcher has successfully performed an app switch.
-
- You may use this hook to prepare your UI for app switch return. Keep in mind that
- users may manually switch back to your app via the iOS task manager.
-
- @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
-
- @param driver The app switcher instance performing user authentication
-*/
-- (void)appContextSwitchDriverDidStartSwitch:(id<BTAppContextSwitchDriver>)driver;
-
-/**
- Regardless of the method (e.g. app, Safari, SFSafariViewController, ASWebAuthenticationSession) events will be sent when the context will switch away from from the origin app.
-
- @note Use this method to update UI (e.g. displaying a loading indicator) before the switch takes place.
-
- @param driver The app switcher
- */
-- (void)appContextSwitchDriverWillStartSwitch:(id<BTAppContextSwitchDriver>)driver;
-
-/**
- The context switch has returned.
-
- @note This is not guaranteed to be called. Example: A user leaves an app manually returns to the origin app.
-
- @param appSwitcher The app switcher
- */
-- (void)appContextSwitchDriverDidCompleteSwitch:(id<BTAppContextSwitchDriver>)driver;
-
-@end
-
 #pragma mark - BTAppContextSwitchDriver protocol
 
 /**

@@ -146,13 +146,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
  */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
-/**
- An optional delegate for receiving notifications about the lifecycle of a payment flow app/browser switch, as well as updating your UI
-
- @note BTPaymentFlowDriver will only send notifications for `appContextSwitchDriverWillStartSwitch:` and `appContextSwitchDriverDidCompleteSwitch:`.
- */
-@property (nonatomic, weak, nullable) id<BTAppContextSwitchDelegate> appContextSwitchDelegate;
-
 @end
 
 NS_ASSUME_NONNULL_END

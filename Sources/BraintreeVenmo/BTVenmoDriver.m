@@ -154,8 +154,6 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
 
-        [self informDelegateAppContextWillSwitch];
-
         [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
             [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
         }];
@@ -166,7 +164,6 @@ static BTVenmoDriver *appSwitchedDriver;
     self.shouldVault = success && vault;
     
     if (success) {
-        [self informDelegateDidPerformAppSwitch];
         self.appSwitchCompletionBlock = completionBlock;
         appSwitchedDriver = self;
         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.success"];
@@ -219,7 +216,6 @@ static BTVenmoDriver *appSwitchedDriver;
 }
 
 - (void)handleOpenURL:(NSURL *)url {
-    [self informDelegateAppContextDidComplete];
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     
     switch (returnURL.state) {
@@ -318,26 +314,6 @@ static BTVenmoDriver *appSwitchedDriver;
     }
     
     return YES;
-}
-
-#pragma mark - Delegate Informers
-
-- (void)informDelegateDidPerformAppSwitch {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverDidStartSwitch:)]) {
-        [self.appContextSwitchDelegate appContextSwitchDriverDidStartSwitch:self];
-    }
-}
-
-- (void)informDelegateAppContextWillSwitch {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverWillStartSwitch:)]) {
-        [self.appContextSwitchDelegate appContextSwitchDriverWillStartSwitch:self];
-    }
-}
-
-- (void)informDelegateAppContextDidComplete {
-    if ([self.appContextSwitchDelegate respondsToSelector:@selector(appContextSwitchDriverDidCompleteSwitch:)]) {
-        [self.appContextSwitchDelegate appContextSwitchDriverDidCompleteSwitch:self];
-    }
 }
 
 @end
