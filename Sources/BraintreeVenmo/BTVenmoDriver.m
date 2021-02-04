@@ -328,45 +328,30 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Delegate Informers
 
 - (void)informDelegateWillPerformAppSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillSwitchNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
     if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
         [self.appSwitchDelegate appSwitcherWillPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateDidPerformAppSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchDidSwitchNotification object:self userInfo:@{ BTAppSwitchNotificationTargetKey : @(BTAppSwitchTargetNativeApp) } ];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
     if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
         [self.appSwitchDelegate appSwitcher:self didPerformSwitchToTarget:BTAppSwitchTargetNativeApp];
     }
 }
 
 - (void)informDelegateWillProcessAppSwitchReturn {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillProcessPaymentInfoNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
     if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
         [self.appSwitchDelegate appSwitcherWillProcessPaymentInfo:self];
     }
 }
 
 - (void)informDelegateAppContextWillSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextWillSwitchNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
     if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
         [self.appSwitchDelegate appContextWillSwitch:self];
     }
 }
 
 - (void)informDelegateAppContextDidReturn {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextDidReturnNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
     if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
         [self.appSwitchDelegate appContextDidReturn:self];
     }

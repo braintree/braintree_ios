@@ -143,18 +143,12 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)informDelegateAppContextWillSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextWillSwitchNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
     if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
         [self.appSwitchDelegate appContextWillSwitch:self];
     }
 }
 
 - (void)informDelegateAppContextDidReturn {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextDidReturnNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
     if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
         [self.appSwitchDelegate appContextDidReturn:self];
     }

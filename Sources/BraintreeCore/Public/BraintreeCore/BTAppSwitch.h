@@ -65,38 +65,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - BTAppSwitchDelegate
 
 /**
- Notification that an app switch will occur
- */
-extern NSString * const BTAppSwitchWillSwitchNotification;
-
-/**
- Notification that an app switch did occur
- */
-extern NSString * const BTAppSwitchDidSwitchNotification;
-
-/**
- Notification that an app switch will process payment information
- */
-extern NSString * const BTAppSwitchWillProcessPaymentInfoNotification;
-
-/**
- Key for the target of an app switch notification
- 
- @see BTAppSwitchTarget
- */
-extern NSString * const BTAppSwitchNotificationTargetKey;
-
-/**
- Notification that context will switch away from from the origin app
- */
-extern NSString * const BTAppContextWillSwitchNotification;
-
-/**
- Notification that the context switch has returned
- */
-extern NSString * const BTAppContextDidReturnNotification;
-
-/**
  Specifies the destination of an app switch
 */
 typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
