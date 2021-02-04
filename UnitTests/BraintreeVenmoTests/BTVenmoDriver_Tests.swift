@@ -128,24 +128,6 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "sandbox"));
     }
-    
-    func testAuthorizeAccount_beforeAppSwitch_informsDelegate() {
-        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
-        let delegate = MockAppContextSwitchDelegate()
-        delegate.appContextWillSwitchExpectation =  self.expectation(description: "Delegate received appContextSwitchDriverWillStartSwitch")
-        delegate.appContextDidSwitchExpectation = self.expectation(description: "Delegate received appContextSwitchDriverDidCompleteSwitch")
-        venmoDriver.appContextSwitchDelegate = delegate
-        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
-        let fakeApplication = FakeApplication()
-        venmoDriver.application = fakeApplication
-        venmoDriver.bundle = FakeBundle()
-
-        venmoDriver.authorizeAccountAndVault(false) { _,_  -> Void in
-            XCTAssertEqual(delegate.driver as? BTVenmoDriver, venmoDriver)
-        }
-
-        waitForExpectations(timeout: 2, handler: nil)
-    }
 
     func testAuthorizeAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
@@ -193,26 +175,6 @@ class BTVenmoDriver_Tests: XCTestCase {
         }
         BTVenmoDriver.handleAppSwitchReturn(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         
-        self.waitForExpectations(timeout: 2, handler: nil)
-    }
-
-    func testAuthorizeAccount_whenAppSwitchSucceeds_makesDelegateCallbacks() {
-        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
-        let delegate = MockAppContextSwitchDelegate()
-        delegate.appContextWillSwitchExpectation =  self.expectation(description: "Delegate received appContextSwitchDriverWillStartSwitch")
-        delegate.appContextDidSwitchExpectation = self.expectation(description: "Delegate received appContextSwitchDriverDidCompleteSwitch")
-        venmoDriver.appContextSwitchDelegate = delegate
-        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
-        venmoDriver.application = FakeApplication()
-        venmoDriver.bundle = FakeBundle()
-
-        let expectation = self.expectation(description: "Callback")
-        venmoDriver.authorizeAccountAndVault(false) { _,_  -> Void in
-            XCTAssertEqual(delegate.driver as? BTVenmoDriver, venmoDriver)
-            expectation.fulfill()
-        }
-        BTVenmoDriver.handleAppSwitchReturn(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-
         self.waitForExpectations(timeout: 2, handler: nil)
     }
 

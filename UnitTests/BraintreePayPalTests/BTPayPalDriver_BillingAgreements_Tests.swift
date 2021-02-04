@@ -201,26 +201,6 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
-    func testBillingAgreement_makesContextSwitchDelegateCallbacks() {
-        let mockAppContextSwitchDelegate = MockAppContextSwitchDelegate()
-        payPalDriver.appContextSwitchDelegate = mockAppContextSwitchDelegate
-
-        payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _,_ in }
-
-        XCTAssertNotNil(payPalDriver.authenticationSession)
-        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
-
-        XCTAssertTrue(mockAppContextSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertFalse(mockAppContextSwitchDelegate.appContextDidCompleteSwitchCalled)
-
-        let returnURL = URL(string: "bar://hello/world")!
-        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
-
-        XCTAssertNotNil(payPalDriver.authenticationSession)
-        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
-        XCTAssertTrue(mockAppContextSwitchDelegate.appContextDidCompleteSwitchCalled)
-    }
-
     func testBillingAgreement_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [ "paypalAccounts":
             [
