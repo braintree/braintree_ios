@@ -67,9 +67,9 @@
 - (void)getRewardsForCardNumber:(NSString *)cardNumber {
     BTCard *card = [BTCard new];
     card.number = cardNumber;
-    card.expirationMonth = "12";
-    card.expirationYear = "2025";
-    card.cvv = "1234";
+    card.expirationMonth = @"12";
+    card.expirationYear = @"2025";
+    card.cvv = @"1234";
     
     self.progressBlock(@"Tokenizing Card");
 
