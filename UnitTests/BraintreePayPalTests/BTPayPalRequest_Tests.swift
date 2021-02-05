@@ -218,4 +218,40 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
+
+    func testParametersWithConfiguration_whenIsBillingAgreement_doesNotReturnIntent() {
+        let request = BTPayPalRequest()
+        request.intent = .authorize
+
+        let parameters = request.parameters(with: configuration, isBillingAgreement: true)
+
+        XCTAssertNil(parameters["intent"])
+    }
+
+    func testParametersWithConfiguration_whenIsBillingAgreement_andConfigurationHasCurrency_doesNotReturnCurrency() {
+        let json = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline",
+                "currencyIsoCode": "GBP",
+            ] ])
+
+        configuration = BTConfiguration(json: json)
+
+        let request = BTPayPalRequest()
+
+        let parameters = request.parameters(with: configuration, isBillingAgreement: true)
+
+        XCTAssertNil(parameters["currency_iso_code"])
+    }
+
+    func testParametersWithConfiguration_whenIsBillingAgreement_andRequestHasCurrency_doesNotReturnCurrency() {
+        let request = BTPayPalRequest()
+        request.currencyCode = "GBP"
+
+        let parameters = request.parameters(with: configuration, isBillingAgreement: true)
+
+        XCTAssertNil(parameters["currency_iso_code"])
+        XCTAssertNil(parameters["intent"])
+    }
 }
