@@ -58,6 +58,18 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             requestParameters[@"accountType"] = request.accountTypeAsString;
         }
 
+        if (request.challengeRequested) {
+            requestParameters[@"challengeRequested"] = @(request.challengeRequested);
+        }
+
+        if (request.exemptionRequested) {
+            requestParameters[@"exemptionRequested"] = @(request.exemptionRequested);
+        }
+
+        if (request.dataOnlyRequested) {
+            requestParameters[@"dataOnlyRequested"] = @(request.dataOnlyRequested);
+        }
+
         NSMutableDictionary *additionalInformation = [NSMutableDictionary dictionary];
         if (request.billingAddress) {
             [additionalInformation addEntriesFromDictionary:[request.billingAddress asParametersWithPrefix:@"billing"]];
@@ -81,14 +93,6 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 
         if (additionalInformation.count) {
             requestParameters[@"additionalInfo"] = additionalInformation;
-        }
-
-        if (request.challengeRequested) {
-            requestParameters[@"challengeRequested"] = @(request.challengeRequested);
-        }
-
-        if (request.exemptionRequested) {
-            requestParameters[@"exemptionRequested"] = @(request.exemptionRequested);
         }
 
         NSString *urlSafeNonce = [request.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
