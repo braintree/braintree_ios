@@ -27,7 +27,8 @@
 
 - (void)tappedCustomVenmo {
     self.progressBlock(@"Tapped Venmo - initiating Venmo auth");
-    [self.venmoDriver authorizeAccountAndVault:NO completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
+    BTVenmoRequest *venmoRequest = [[BTVenmoRequest alloc] init];
+    [self.venmoDriver tokenizeVenmoAccountWithVenmoRequest:venmoRequest completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
         if (venmoAccount) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [venmoAccount debugDescription]);

@@ -91,18 +91,15 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - Tokenization
 
-- (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *error))completionBlock {
-    [self authorizeAccountAndVault:NO completion:completionBlock];
-}
+- (void)tokenizeVenmoAccountWithVenmoRequest:(BTVenmoRequest *)venmoRequest completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
+    if (!venmoRequest) {
+        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                             code:BTVenmoDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTVenmoDriver failed because BTVenmoRequest is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
 
-- (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *error))completionBlock {
-    [self authorizeAccountWithProfileID:nil vault:vault completion:completionBlock];
-}
-
-- (void)authorizeAccountWithProfileID:(NSString *)profileId
-                                vault:(BOOL)vault
-                           completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *error))completionBlock
-{
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeIntegration
@@ -138,7 +135,7 @@ static BTVenmoDriver *appSwitchedDriver;
         metadata.source = BTClientMetadataSourceVenmoApp;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
-        NSString *venmoProfileId = profileId ?: configuration.venmoMerchantID;
+        NSString *venmoProfileId = venmoRequest.profileID ?: configuration.venmoMerchantID;
         NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:venmoProfileId
                                                                         accessToken:configuration.venmoAccessToken
                                                                     returnURLScheme:self.returnURLScheme
@@ -155,7 +152,7 @@ static BTVenmoDriver *appSwitchedDriver;
         }
 
         [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-            [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
+            [self invokedOpenURLSuccessfully:success shouldVault:venmoRequest.vault completion:completionBlock];
         }];
     }];
 }

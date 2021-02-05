@@ -351,7 +351,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                     }
                 }
                 if (!self.graphQL) {
-                    NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:[configuration.json[@"environment"] asString]];
+                    NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:configuration.environment];
                     if (self.clientToken) {
                         self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
                     } else if (self.tokenizationKey) {
