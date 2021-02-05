@@ -8,6 +8,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString *const BTPayPalCallbackURLHostAndPath;
+extern NSString *const BTPayPalCallbackURLScheme;
+
 @interface BTPayPalRequest ()
 
 - (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration  isBillingAgreement:(BOOL)isBillingAgreement;

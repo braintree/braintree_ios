@@ -34,8 +34,6 @@
 #endif
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
-NSString *const BTCallbackURLHostAndPath = @"onetouch/v1/";
-NSString *const BTCallbackURLScheme = @"sdk.ios.braintree";
 
 /**
  This environment MUST be used for App Store submissions.
@@ -250,7 +248,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     urlComponents.query = queryForAuthSession;
 
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
-                                                                  callbackURLScheme:BTCallbackURLScheme
+                                                                  callbackURLScheme:BTPayPalCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         // Required to avoid memory leak for BTPayPalDriver
         self.authenticationSession = nil;
@@ -714,7 +712,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if ([hostAndPath length]) {
         hostAndPath = [hostAndPath stringByAppendingString:@"/"];
     }
-    if (![hostAndPath isEqualToString:BTCallbackURLHostAndPath]) {
+    if (![hostAndPath isEqualToString:BTPayPalCallbackURLHostAndPath]) {
         return NO;
     }
 
