@@ -102,7 +102,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
         [self onCollectorStart];
 
         if (configuration.isKountEnabled && includeCard) {
-            BTDataCollectorEnvironment btEnvironment = [self environmentFromString:[configuration.json[@"environment"] asString]];
+            BTDataCollectorEnvironment btEnvironment = [self environmentFromString:configuration.environment];
             [self setCollectorEnvironment:[self collectorEnvironment:btEnvironment]];
 
             NSString *merchantId = self.fraudMerchantId ?: [configuration kountMerchantId];
