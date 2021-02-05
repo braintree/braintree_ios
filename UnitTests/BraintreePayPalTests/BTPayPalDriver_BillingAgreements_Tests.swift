@@ -53,6 +53,63 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsAllParams() {
+        let request = BTPayPalRequest()
+        request.billingAgreementDescription = "description"
+        request.offerCredit = true
+        request.offerPayLater = true
+        request.isShippingAddressRequired = true
+        request.displayName = "Display Name"
+        request.landingPageType = .login
+        request.localeCode = "locale-code"
+        request.merchantAccountId = "merchant-account-id"
+
+        let shippingAddressOverride = BTPostalAddress()
+        shippingAddressOverride.streetAddress = "123 Main"
+        shippingAddressOverride.extendedAddress = "Unit 1"
+        shippingAddressOverride.locality = "Chicago"
+        shippingAddressOverride.region = "IL"
+        shippingAddressOverride.postalCode = "11111"
+        shippingAddressOverride.countryCodeAlpha2 = "US"
+        shippingAddressOverride.recipientName = "Recipient"
+        request.shippingAddressOverride = shippingAddressOverride
+        request.isShippingAddressEditable = true
+
+        request.lineItems = [BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)]
+
+        payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters,
+              let experienceProfile = lastPostParameters["experience_profile"] as? [String : Any],
+              let shippingAddress = lastPostParameters["shipping_address"] as? [String : Any]
+        else { XCTFail(); return }
+
+        XCTAssertEqual(lastPostParameters["description"] as? String, "description")
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, true)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, true)
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
+        XCTAssertEqual(experienceProfile["brand_name"] as? String, "Display Name")
+        XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
+        XCTAssertEqual(experienceProfile["locale_code"] as? String, "locale-code")
+        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, "merchant-account-id")
+        XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
+        XCTAssertEqual(shippingAddress["line1"] as? String, "123 Main")
+        XCTAssertEqual(shippingAddress["line2"] as? String, "Unit 1")
+        XCTAssertEqual(shippingAddress["city"] as? String, "Chicago")
+        XCTAssertEqual(shippingAddress["state"] as? String, "IL")
+        XCTAssertEqual(shippingAddress["postal_code"] as? String, "11111")
+        XCTAssertEqual(shippingAddress["country_code"] as? String, "US")
+        XCTAssertEqual(shippingAddress["recipient_name"] as? String, "Recipient")
+        XCTAssertEqual(lastPostParameters["line_items"] as? [[String : String]], [["quantity" : "1",
+                                                                                   "unit_amount": "1",
+                                                                                   "name": "item",
+                                                                                   "kind": "credit"]])
+
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+    }
+
     func testBillingAgreement_whenRemoteConfigurationFetchSucceeds_postsSetupBillingAgreement() {
         payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _,_  -> Void in }
 
