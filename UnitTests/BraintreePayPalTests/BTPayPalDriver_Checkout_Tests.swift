@@ -62,6 +62,81 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
     // MARK: - POST request to Hermes endpoint
 
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsAllParams() {
+        let request = BTPayPalRequest(amount: "1")
+        request.intent = .sale
+        request.offerCredit = true
+        request.offerPayLater = true
+        request.isShippingAddressRequired = true
+        request.displayName = "Display Name"
+        request.landingPageType = .login
+        request.localeCode = "locale-code"
+        request.merchantAccountId = "merchant-account-id"
+        request.currencyCode = "currency-code"
+
+        let shippingAddress = BTPostalAddress()
+        shippingAddress.streetAddress = "123 Main"
+        shippingAddress.extendedAddress = "Unit 1"
+        shippingAddress.locality = "Chicago"
+        shippingAddress.region = "IL"
+        shippingAddress.postalCode = "11111"
+        shippingAddress.countryCodeAlpha2 = "US"
+        shippingAddress.recipientName = "Recipient"
+        request.shippingAddressOverride = shippingAddress
+        request.isShippingAddressEditable = true
+
+        request.lineItems = [BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)]
+
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters,
+              let experienceProfile = lastPostParameters["experience_profile"] as? [String : Any]
+        else { XCTFail(); return }
+
+        XCTAssertEqual(lastPostParameters["intent"] as? String, "sale")
+        XCTAssertEqual(lastPostParameters["amount"] as? String, "1")
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, true)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, true)
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
+        XCTAssertEqual(experienceProfile["brand_name"] as? String, "Display Name")
+        XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
+        XCTAssertEqual(experienceProfile["locale_code"] as? String, "locale-code")
+        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, "merchant-account-id")
+        XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "currency-code")
+        XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["line1"] as? String, "123 Main")
+        XCTAssertEqual(lastPostParameters["line2"] as? String, "Unit 1")
+        XCTAssertEqual(lastPostParameters["city"] as? String, "Chicago")
+        XCTAssertEqual(lastPostParameters["state"] as? String, "IL")
+        XCTAssertEqual(lastPostParameters["postal_code"] as? String, "11111")
+        XCTAssertEqual(lastPostParameters["country_code"] as? String, "US")
+        XCTAssertEqual(lastPostParameters["recipient_name"] as? String, "Recipient")
+        XCTAssertEqual(lastPostParameters["line_items"] as? [[String : String]], [["quantity" : "1",
+                                                                                   "unit_amount": "1",
+                                                                                   "name": "item",
+                                                                                   "kind": "credit"]])
+
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+    }
+
+    func testCheckout_whenCurrencyCodeNotSet_usesConfigurationCurrencyCode() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "currencyIsoCode": "currency-code"
+            ]
+        ])
+
+        let request = BTPayPalRequest(amount: "1")
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
+
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
+
+        XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "currency-code")
+    }
+
     func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResource() {
         let request = BTPayPalRequest(amount: "1")
         request.currencyCode = "GBP"
@@ -113,6 +188,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         }
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
     }
+
+    // MARK: - intentTypeToString
 
     func testCheckout_whenIntentIsNotSpecified_postsPaymentResourceWithAuthorizeIntent() {
         let request = BTPayPalRequest(amount: "1")
@@ -178,6 +255,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["intent"] as? String, "order")
     }
 
+    // MARK: - landingPageTypeToString
+
     func testCheckout_whenLandingPageTypeIsNotSpecified_doesNotPostPaymentResourceWithLandingPageType() {
         let request = BTPayPalRequest(amount: "1")
         request.currencyCode = "GBP"
@@ -237,6 +316,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         }
         XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
     }
+
+    // MARK: -
 
     func testCheckout_whenPaymentResourceCreationFails_callsBackWithError() {
         mockAPIClient.cannedResponseError = NSError(domain: "", code: 0, userInfo: nil)
