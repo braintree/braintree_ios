@@ -76,7 +76,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalRequest(amount: "4.30")
+        let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
         paypalDriver.requestOneTimePayment(paypalRequest) { (nonce, error) in
             button.isEnabled = true
             

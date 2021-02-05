@@ -50,7 +50,7 @@
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.appSwitchDelegate = self;
-    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
+    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:@"4.30"];
     request.activeWindow = self.view.window;
 
     request.offerCredit = YES;

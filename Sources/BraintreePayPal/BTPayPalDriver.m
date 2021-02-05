@@ -102,7 +102,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 #pragma mark - Express Checkout (One-Time Payments)
 
-- (void)requestOneTimePayment:(BTPayPalRequest *)request
+- (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     [self requestPayPalCheckout:request
              isBillingAgreement:NO
