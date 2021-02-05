@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param url The URL that was opened to return to your app
  @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
 */
-+ (BOOL)handleOpenURL:(NSURL *)url; // TODO: implement proper swift name
++ (BOOL)handleOpenURL:(NSURL *)url NS_SWIFT_NAME(handleOpenURL(_:));
 
 /**
  Handles a return from app context switch

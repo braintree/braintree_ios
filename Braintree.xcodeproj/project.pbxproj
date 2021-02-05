@@ -212,7 +212,7 @@
 		A903E1B624F9D37B00C314E1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1B524F9D37B00C314E1 /* XCTest.framework */; platformFilter = ios; };
 		A903E1B924F9D3F900C314E1 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; platformFilter = ios; };
 		A908436124FD771A004134CA /* BTAPIClient_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */; };
-		A908436224FD82A9004134CA /* BTAppContextSwitch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitch_Tests.swift */; };
+		A908436224FD82A9004134CA /* BTAppContextSwitcher_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */; };
 		A908436324FD82C0004134CA /* BTBinData_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */; };
 		A908436424FD82E1004134CA /* BTClientMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AF9F21B56DB54007B1DF1 /* BTClientMetadataSpec.m */; };
 		A908436524FD8315004134CA /* BTClientTokenSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A98D1B8797FD00D2461B /* BTClientTokenSpec.m */; };
@@ -986,7 +986,7 @@
 		A7C889FA1B5F0C00007A0E9C /* BTVenmoDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoDriver.h; sourceTree = "<group>"; };
 		A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoDriver.m; sourceTree = "<group>"; };
 		A7CB42D21B73E629002CCFDD /* BraintreePayPal_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BraintreePayPal_IntegrationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitch_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAppContextSwitch_Tests.swift; sourceTree = "<group>"; };
+		A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAppContextSwitcher_Tests.swift; sourceTree = "<group>"; };
 		A7D4630B1B4B16C100A09C46 /* BTHTTPTestProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHTTPTestProtocol.h; sourceTree = "<group>"; };
 		A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPTestProtocol.m; sourceTree = "<group>"; };
 		A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTApplePay_Tests.swift; sourceTree = "<group>"; };
@@ -2104,7 +2104,7 @@
 				A74BF1C71C57FBED0049E149 /* BTAnalyticsService_Tests.m */,
 				842B68F01BCF083E0039634F /* BTAPIClient_SwiftTests.swift */,
 				A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */,
-				A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitch_Tests.swift */,
+				A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */,
 				030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */,
 				A79AF9F21B56DB54007B1DF1 /* BTClientMetadataSpec.m */,
 				A734A98D1B8797FD00D2461B /* BTClientTokenSpec.m */,
@@ -3576,7 +3576,7 @@
 				A95229C424FD8EEE006F7D25 /* BTURLUtils_Tests.swift in Sources */,
 				A908436324FD82C0004134CA /* BTBinData_Tests.swift in Sources */,
 				A908436F24FD8AE6004134CA /* PayPalIDTokenTestHelper.swift in Sources */,
-				A908436224FD82A9004134CA /* BTAppContextSwitch_Tests.swift in Sources */,
+				A908436224FD82A9004134CA /* BTAppContextSwitcher_Tests.swift in Sources */,
 				A908436C24FD8A20004134CA /* BTLogger_Internal_Tests.m in Sources */,
 				A908436824FD88BF004134CA /* BTHTTPTestProtocol.m in Sources */,
 				A908436A24FD8978004134CA /* BTHTTPSpec.m in Sources */,
