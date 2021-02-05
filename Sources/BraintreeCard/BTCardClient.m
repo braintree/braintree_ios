@@ -31,8 +31,6 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 @implementation BTCardClient
 
-static Class PayPalDataCollectorClass;
-
 + (void)load {
     if (self == [BTCardClient class]) {
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
@@ -114,11 +112,6 @@ static Class PayPalDataCollectorClass;
                  [self sendGraphQLAnalyticsEventWithSuccess:YES];
 
                  BTCardNonce *cardNonce = [BTCardNonce cardNonceWithGraphQLJSON:cardJSON];
-
-                 if (cardNonce && [self isPayPalDataCollectorAvailable] && [configuration collectFraudData]) {
-                     [self collectRiskData:cardNonce.nonce configuration:configuration];
-                 }
-
                  completionBlock(cardNonce, cardJSON.asError);
              }];
         } else {
@@ -157,11 +150,6 @@ static Class PayPalDataCollectorClass;
 
                  // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
                  BTCardNonce *cardNonce = [BTCardNonce cardNonceWithJSON:cardJSON];
-
-                 if (cardNonce && [self isPayPalDataCollectorAvailable] && [configuration collectFraudData]) {
-                     [self collectRiskData:cardNonce.nonce configuration:configuration];
-                 }
-
                  completionBlock(cardNonce, cardJSON.asError);
              }];
         }
@@ -245,61 +233,6 @@ static Class PayPalDataCollectorClass;
     NSArray *graphQLFeatures = [configuration.json[@"graphQL"][@"features"] asArray];
 
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
-}
-
-+ (void)setPayPalDataCollectorClass:(Class)payPalDataCollectorClass {
-    PayPalDataCollectorClass = payPalDataCollectorClass;
-}
-
-- (BOOL)isPayPalDataCollectorAvailable {
-    Class kPPDataCollector = [self getPPDataCollectorClass];
-    SEL aSelector = NSSelectorFromString(@"generateClientMetadataIDWithoutBeacon:data:");
-    return kPPDataCollector && [kPPDataCollector respondsToSelector:aSelector];
-}
-
-- (void)collectRiskData:(NSString *)correlationId configuration:(BTConfiguration *)configuration {
-    // Trim to 32 chars to ensure compatibility with PPDataCollector
-    NSString *trimmedCorrelationId = [correlationId copy];
-    if (trimmedCorrelationId && [trimmedCorrelationId length] > 32) {
-        trimmedCorrelationId = [trimmedCorrelationId substringToIndex:32];
-    }
-
-    NSMutableDictionary *data = [@{
-                           @"mid":[configuration.json[@"merchantId"] asString],
-                           @"rda_tenant": @"bt_card"
-                           } mutableCopy];
-
-    if (self.apiClient.clientToken != nil) {
-        NSString *authorizationFingerprint = self.apiClient.clientToken.authorizationFingerprint;
-        NSArray *authorizationComponents = [authorizationFingerprint componentsSeparatedByString:@"&"];
-        for (NSString *component in authorizationComponents) {
-            if ([component hasPrefix:@"customer_id="]) {
-                NSArray *customerIdComponents = [component componentsSeparatedByString:@"="];
-                if ([customerIdComponents count] > 1) {
-                    data[@"cid"] = [customerIdComponents lastObject];
-                }
-            }
-        }
-    }
-
-    Class kPPDataCollector = [self getPPDataCollectorClass];
-    SEL aSelector = NSSelectorFromString(@"generateClientMetadataIDWithoutBeacon:data:");
-    if(kPPDataCollector != nil && [kPPDataCollector respondsToSelector:aSelector]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[kPPDataCollector methodSignatureForSelector:aSelector]];
-        [inv setSelector:aSelector];
-        [inv setTarget:kPPDataCollector];
-
-        [inv setArgument:&(trimmedCorrelationId) atIndex:2];
-        [inv setArgument:&(data) atIndex:3];
-        [inv invoke];
-    }
-}
-
-- (Class)getPPDataCollectorClass {
-    if (PayPalDataCollectorClass != nil) {
-        return PayPalDataCollectorClass;
-    }
-    return NSClassFromString(@"PayPalDataCollector.PPDataCollector") ?: NSClassFromString(@"Braintree.PPDataCollector");
 }
 
 @end

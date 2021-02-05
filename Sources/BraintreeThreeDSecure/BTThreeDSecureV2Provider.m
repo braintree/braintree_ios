@@ -56,7 +56,7 @@
         cardinalConfiguration.uiCustomization = request.v2UICustomization.cardinalValue;
     }
     BTProxyCardinalSessionEnvironment cardinalEnvironment = BTProxyCardinalSessionEnvironmentStaging;
-    if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {
+    if ([configuration.environment isEqualToString:@"production"]) {
         cardinalEnvironment = BTProxyCardinalSessionEnvironmentProduction;
     }
     cardinalConfiguration.deploymentEnvironment = cardinalEnvironment;

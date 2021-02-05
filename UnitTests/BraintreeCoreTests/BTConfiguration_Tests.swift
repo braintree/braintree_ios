@@ -31,4 +31,12 @@ class BTConfiguration_Tests: XCTestCase {
         let configuration = BTConfiguration(json: configurationJSON)
         XCTAssertFalse(configuration.isGraphQLEnabled)
     }
+
+    func testEnvironment_returnsEnvironment() {
+        let configurationJSON = BTJSON(value: [
+            "environment": "sandbox"
+        ])
+        let configuration = BTConfiguration(json: configurationJSON)
+        XCTAssertEqual(configuration.environment, "sandbox")
+    }
 }
