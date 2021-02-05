@@ -136,9 +136,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureShippingMethod) {
 @property (nonatomic) BOOL exemptionRequested;
 
 /**
- Optional. If set to true, a data-only 3DS call will be requested.
-
- @note Data-only 3DS calls are special 3DS calls that only collect data from cardholders and never present a popup/challenge. There is no liability shift when used.
+ :nodoc:
  */
 @property (nonatomic) BOOL dataOnlyRequested;
 

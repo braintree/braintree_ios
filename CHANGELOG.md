@@ -11,7 +11,6 @@
 * Add `offerPayLater` to `BTPayPalRequest`
 * Add `environment` to `BTConfiguration`
 * Add `BTVenmoRequest`
-* Add `dataOnlyRequested` to `BTThreeDSecureRequest`
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
