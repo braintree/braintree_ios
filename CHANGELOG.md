@@ -10,6 +10,7 @@
     * Rename `handleAppSwitchReturnURL()` to `handleReturnURL()`
     * Rename `canHandleAppSwitchReturnURL()` to `canHandleReturnURL()`
     * Remove `unregisterAppSwitchHandler()`
+  * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
