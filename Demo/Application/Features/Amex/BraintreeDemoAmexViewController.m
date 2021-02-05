@@ -65,10 +65,12 @@
 }
 
 - (void)getRewardsForCardNumber:(NSString *)cardNumber {
-    BTCard *card = [[BTCard alloc] initWithNumber:cardNumber
-                                  expirationMonth:@"12"
-                                   expirationYear:@"2025"
-                                              cvv:@"1234"];
+    BTCard *card = [BTCard new];
+    card.number = cardNumber;
+    card.expirationMonth = @"12";
+    card.expirationYear = @"2025";
+    card.cvv = @"1234";
+    
     self.progressBlock(@"Tokenizing Card");
 
     [self.cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {

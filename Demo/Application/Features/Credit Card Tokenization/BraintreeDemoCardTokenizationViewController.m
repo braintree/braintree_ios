@@ -32,11 +32,10 @@
     self.progressBlock(@"Tokenizing card details!");
 
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
-    BTCard *card = [[BTCard alloc] initWithNumber:self.cardNumberField.text
-                                  expirationMonth:self.expirationMonthField.text
-                                   expirationYear:self.expirationYearField.text
-                                              cvv:nil];
-
+    BTCard *card = [BTCard new];
+    card.number = self.cardNumberField.text;
+    card.expirationMonth = self.expirationMonthField.text;
+    card.expirationYear = self.expirationYearField.text;
     [self setFieldsEnabled:NO];
     [cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
         [self setFieldsEnabled:YES];

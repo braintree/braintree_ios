@@ -27,6 +27,7 @@
   * Rename methods to use `ID` instead of `Id`:
     * `BTLocalPaymentRequest.localPaymentStarted(request:paymentID:start:)`
     * `BTVenmoDriver.authorizeAccount(profileID:vault:completion:)`
+  * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`

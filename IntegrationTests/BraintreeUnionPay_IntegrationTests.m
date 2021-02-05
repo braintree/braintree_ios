@@ -37,8 +37,14 @@
 }
 
 - (void)pendEnrollCard_whenSuccessful_returnsEnrollmentID {
+    BTCard *card = [BTCard new];
+    card.number = @"6222821234560017";
+    card.expirationMonth = @"12";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
+    card.cvv = @"123";
+
     BTCardRequest *request = [[BTCardRequest alloc] init];
-    request.card = [[BTCard alloc] initWithNumber:@"6222821234560017" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:@"123"];
+    request.card = card;
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
 
@@ -53,8 +59,14 @@
 }
 
 - (void)pendEnrollCard_whenCardDoesNotRequireEnrollment_returnsError {
+    BTCard *card = [BTCard new];
+    card.number = @"6212345678900085";
+    card.expirationMonth = @"12";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
+    card.cvv = @"123";
+
     BTCardRequest *request = [[BTCardRequest alloc] init];
-    request.card = [[BTCard alloc] initWithNumber:@"6212345678900085" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:@"123"];
+    request.card = card;
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
 
@@ -70,8 +82,14 @@
 }
 
 - (void)pendTokenizeCard_withEnrolledUnionPayCard_isSuccessful {
+    BTCard *card = [BTCard new];
+    card.number = @"6212345678901232";
+    card.expirationMonth = @"12";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
+    card.cvv = @"123";
+
     BTCardRequest *request = [[BTCardRequest alloc] init];
-    request.card = [[BTCard alloc] initWithNumber:@"6212345678901232" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:@"123"];
+    request.card = card;
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
 

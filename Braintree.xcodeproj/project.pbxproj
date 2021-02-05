@@ -286,7 +286,6 @@
 		A9589DDA24FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9589DD924FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift */; };
 		A95C410D24FAEF2100045045 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; platformFilter = ios; };
 		A95C411324FAEF5100045045 /* BTAuthenticationInsight_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */; };
-		A95C411424FAEF5100045045 /* BTCard_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */; };
 		A95C411524FAEF5100045045 /* BTCard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79033971B45C968004C8234 /* BTCard_Tests.swift */; };
 		A95C411624FAEF5100045045 /* BTCardClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */; };
 		A95C411724FAEF5100045045 /* BTCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */; };
@@ -919,7 +918,6 @@
 		A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoDriver_Internal.h; sourceTree = "<group>"; };
 		A78BF95C1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeUnionPay_IntegrationTests.m; sourceTree = "<group>"; };
 		A79033971B45C968004C8234 /* BTCard_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCard_Tests.swift; sourceTree = "<group>"; };
-		A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCard_Internal_Tests.m; sourceTree = "<group>"; };
 		A79033A51B4AF360004C8234 /* BTJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTJSON.h; sourceTree = "<group>"; };
 		A79033A61B4AF360004C8234 /* BTJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTJSON.m; sourceTree = "<group>"; };
 		A79AF9F21B56DB54007B1DF1 /* BTClientMetadataSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientMetadataSpec.m; sourceTree = "<group>"; };
@@ -2055,7 +2053,6 @@
 			children = (
 				A95C411924FAEFCC00045045 /* BraintreeCardTests-Bridging-Header.h */,
 				42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */,
-				A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */,
 				A79033971B45C968004C8234 /* BTCard_Tests.swift */,
 				A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */,
 				A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */,
@@ -3516,7 +3513,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A95C411324FAEF5100045045 /* BTAuthenticationInsight_Tests.swift in Sources */,
-				A95C411424FAEF5100045045 /* BTCard_Internal_Tests.m in Sources */,
 				A95C411524FAEF5100045045 /* BTCard_Tests.swift in Sources */,
 				A977A04524FEC40D006049AB /* BTPaymentMethodNonceParser_Card_Tests.swift in Sources */,
 				A95C411624FAEF5100045045 /* BTCardClient_Tests.swift in Sources */,

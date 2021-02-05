@@ -29,7 +29,11 @@
 - (void)testTokenizeCard_whenCardIsInvalidAndValidationIsEnabled_failsWithExpectedValidationError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-    BTCard *card = [[BTCard alloc] initWithNumber:@"123" expirationMonth:@"12" expirationYear:Helpers.sharedInstance.futureYear cvv:nil];
+    
+    BTCard *card = [BTCard new];
+    card.number = @"123";
+    card.expirationMonth = @"12";
+    card.expirationYear = Helpers.sharedInstance.futureYear;
     card.shouldValidate = YES;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
