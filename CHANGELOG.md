@@ -5,6 +5,7 @@
   * Make `shippingMethod` property on `BTThreeDSecureRequest` an enum instead of a string
   * Remove `BTTokenizationService`
   * Make `BTPaymentMethodNonceParser` private
+  * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`

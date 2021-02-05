@@ -16,7 +16,11 @@ class BTCardClient_Tests: XCTestCase {
 
         let cardClient = BTCardClient(apiClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
         card.cardholderName = "Brian Tree"
         card.authenticationInsightRequested = true
         card.merchantAccountId = "some merchant account id"
@@ -62,8 +66,12 @@ class BTCardClient_Tests: XCTestCase {
         apiClient.configurationHTTP = mockConfigurationHTTP
         
         let cardClient = BTCardClient(apiClient: apiClient)
-        
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
         card.authenticationInsightRequested = false
         
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
@@ -104,7 +112,10 @@ class BTCardClient_Tests: XCTestCase {
 
         let cardClient = BTCardClient(apiClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
@@ -135,7 +146,10 @@ class BTCardClient_Tests: XCTestCase {
 
         let cardClient = BTCardClient(apiClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
@@ -171,8 +185,15 @@ class BTCardClient_Tests: XCTestCase {
         ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: stubAPIClient)
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "123"
+
         let request = BTCardRequest()
-        request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+        request.card = card
 
         let expectation = self.expectation(description: "Callback invoked with error")
         cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
@@ -199,8 +220,15 @@ class BTCardClient_Tests: XCTestCase {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: nil)
         let cardClient = BTCardClient(apiClient: stubAPIClient)
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "123"
+
         let request = BTCardRequest()
-        request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+        request.card = card
         request.smsCode = "12345"
         request.enrollmentID = "fake-enrollment-id"
 
@@ -219,7 +247,10 @@ class BTCardClient_Tests: XCTestCase {
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let cardClient = BTCardClient(apiClient: mockAPIClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
         
         let expectation = self.expectation(description: "Tokenized card")
         cardClient.tokenizeCard(card) { _,_  -> Void in
@@ -242,7 +273,10 @@ class BTCardClient_Tests: XCTestCase {
     func testAnalyticsEvent_whenTokenizationSucceeds_isSent() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let cardClient = BTCardClient(apiClient: mockAPIClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
 
         let expectation = self.expectation(description: "Tokenized card")
         cardClient.tokenizeCard(card) { _, _ -> Void in
@@ -279,7 +313,11 @@ class BTCardClient_Tests: XCTestCase {
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
 
         let expectation = self.expectation(description: "Tokenized card")
         cardClient.tokenizeCard(card) { _, _ -> Void in
@@ -304,7 +342,12 @@ class BTCardClient_Tests: XCTestCase {
         ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
         card.authenticationInsightRequested = true
         card.merchantAccountId = nil
         
@@ -330,7 +373,12 @@ class BTCardClient_Tests: XCTestCase {
         ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
         card.cardholderName = "Brian Tree"
 
         let expectation = self.expectation(description: "Tokenize Card")
@@ -355,7 +403,11 @@ class BTCardClient_Tests: XCTestCase {
         ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
         card.cardholderName = "Brian Tree"
         
         let expectation = self.expectation(description: "Tokenize Card")
@@ -378,7 +430,11 @@ class BTCardClient_Tests: XCTestCase {
         ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
         card.cardholderName = "Brian Tree"
         
         let expectation = self.expectation(description: "Tokenize Card")
@@ -402,8 +458,14 @@ class BTCardClient_Tests: XCTestCase {
         ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
         card.cardholderName = "Brian Tree"
+
         let cardRequest = BTCardRequest(card: card)
         cardRequest.enrollmentID = "enrollment-id"
         cardRequest.mobileCountryCode = "1"
@@ -454,7 +516,12 @@ class BTCardClient_Tests: XCTestCase {
         ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
 
         let expectation = self.expectation(description: "Tokenize Card")
 
@@ -517,7 +584,12 @@ class BTCardClient_Tests: XCTestCase {
         ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "1234"
 
         let expectation = self.expectation(description: "Tokenize Card")
 
@@ -561,7 +633,11 @@ class BTCardClient_Tests: XCTestCase {
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
 
         let expectation = self.expectation(description: "Tokenized card")
         cardClient.tokenizeCard(card) { _, _ -> Void in
