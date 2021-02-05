@@ -433,27 +433,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     return tokenizedPayPalAccount;
 }
 
-+ (NSString *)intentTypeToString:(BTPayPalRequestIntent)intentType {
-    NSString *result = nil;
-
-    switch(intentType) {
-        case BTPayPalRequestIntentAuthorize:
-            result = @"authorize";
-            break;
-        case BTPayPalRequestIntentSale:
-            result = @"sale";
-            break;
-        case BTPayPalRequestIntentOrder:
-            result = @"order";
-            break;
-        default:
-            result = @"authorize";
-            break;
-    }
-
-    return result;
-}
-
 #pragma mark - ASWebAuthenticationPresentationContextProviding protocol
 
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13)) {
@@ -617,8 +596,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if (paymentType == BTPayPalPaymentTypeCheckout) {
         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
-        if (self.payPalRequest) {
-            parameters[@"paypal_account"][@"intent"] = [self.class intentTypeToString:self.payPalRequest.intent];
+        if (self.payPalRequest.intentAsString) {
+            parameters[@"paypal_account"][@"intent"] = self.payPalRequest.intentAsString;
         }
     }
     if (self.clientMetadataId) {

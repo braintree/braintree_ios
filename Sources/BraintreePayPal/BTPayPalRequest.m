@@ -42,8 +42,8 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
 
     if (!isBillingAgreement) {
-        parameters[@"intent"] = [self intentTypeToString:self.intent];
-        if (self.amount != nil) {
+        parameters[@"intent"] = self.intentAsString;
+        if (self.amount) {
             parameters[@"amount"] = self.amount;
         }
     } else if (self.billingAgreementDescription.length > 0) {
@@ -58,16 +58,15 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
 
     experienceProfile[@"brand_name"] = self.displayName ?: [configuration.json[@"paypal"][@"displayName"] asString];
 
-    NSString *landingPageTypeValue = [self landingPageTypeToString:self.landingPageType];
-    if (landingPageTypeValue != nil) {
-        experienceProfile[@"landing_page_type"] = landingPageTypeValue;
+    if (self.landingPageTypeAsString) {
+        experienceProfile[@"landing_page_type"] = self.landingPageTypeAsString;
     }
 
-    if (self.localeCode != nil) {
+    if (self.localeCode) {
         experienceProfile[@"locale_code"] = self.localeCode;
     }
 
-    if (self.merchantAccountId != nil) {
+    if (self.merchantAccountId) {
         parameters[@"merchant_account_id"] = self.merchantAccountId;
     }
 
@@ -78,7 +77,7 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
         parameters[@"currency_iso_code"] = currencyCode;
     }
 
-    if (self.shippingAddressOverride != nil) {
+    if (self.shippingAddressOverride) {
         experienceProfile[@"address_override"] = @(!self.isShippingAddressEditable);
         BTPostalAddress *shippingAddress = self.shippingAddressOverride;
         if (isBillingAgreement) {
@@ -120,29 +119,19 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     return parameters;
 }
 
-- (NSString *)intentTypeToString:(BTPayPalRequestIntent)intentType {
-    NSString *result = nil;
-
-    switch(intentType) {
-        case BTPayPalRequestIntentAuthorize:
-            result = @"authorize";
-            break;
+- (NSString *)intentAsString {
+    switch(self.intent) {
         case BTPayPalRequestIntentSale:
-            result = @"sale";
-            break;
+            return @"sale";
         case BTPayPalRequestIntentOrder:
-            result = @"order";
-            break;
+            return @"order";
         default:
-            result = @"authorize";
-            break;
+            return @"authorize";
     }
-
-    return result;
 }
 
-- (NSString *)landingPageTypeToString:(BTPayPalRequestLandingPageType)landingPageType {
-    switch(landingPageType) {
+- (NSString *)landingPageTypeAsString {
+    switch(self.landingPageType) {
         case BTPayPalRequestLandingPageTypeLogin:
             return @"login";
         case BTPayPalRequestLandingPageTypeBilling:

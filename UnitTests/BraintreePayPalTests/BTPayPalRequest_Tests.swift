@@ -17,6 +17,50 @@ class BTPayPalRequest_Tests: XCTestCase {
         configuration = BTConfiguration(json: json)
     }
 
+    // MARK: - intentAsString
+
+    func testIntentAsString_whenIntentIsNotSpecified_returnsAuthorize() {
+        let request = BTPayPalRequest(amount: "1")
+        XCTAssertEqual(request.intentAsString, "authorize")
+    }
+
+    func testIntentAsString_whenIntentIsAuthorize_returnsAuthorize() {
+        let request = BTPayPalRequest(amount: "1")
+        request.intent = .authorize
+        XCTAssertEqual(request.intentAsString, "authorize")
+    }
+
+    func testIntentAsString_whenIntentIsSale_returnsSale() {
+        let request = BTPayPalRequest(amount: "1")
+        request.intent = .sale
+        XCTAssertEqual(request.intentAsString, "sale")
+    }
+
+    func testIntentAsString_whenIntentIsOrder_returnsOrder() {
+        let request = BTPayPalRequest(amount: "1")
+        request.intent = .order
+        XCTAssertEqual(request.intentAsString, "order")
+    }
+
+    // MARK: - landingPageTypeAsString
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsNotSpecified_returnNil() {
+        let request = BTPayPalRequest(amount: "1")
+        XCTAssertNil(request.landingPageTypeAsString)
+    }
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsBilling_returnsBilling() {
+        let request = BTPayPalRequest(amount: "1")
+        request.landingPageType = .billing
+        XCTAssertEqual(request.landingPageTypeAsString, "billing")
+    }
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsLogin_returnsLogin() {
+        let request = BTPayPalRequest(amount: "1")
+        request.landingPageType = .login
+        XCTAssertEqual(request.landingPageTypeAsString, "login")
+    }
+
     // MARK: - parametersWithConfiguration (checkout flow)
 
     func testParametersWithConfiguration_whenIsNotBillingAgreement_returnsAllParams() {
@@ -109,59 +153,6 @@ class BTPayPalRequest_Tests: XCTestCase {
         let parameters = request.parameters(with: configuration, isBillingAgreement: false)
         guard let experienceProfile = parameters["experience_profile"] as? [String:Any] else { XCTFail(); return }
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
-    }
-
-    func testParametersWithConfiguration_whenIsNotBillingAgreement_andIntentIsNotSpecified_returnsAuthorizeIntent() {
-        let request = BTPayPalRequest(amount: "1")
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
-        XCTAssertEqual(parameters["intent"] as? String, "authorize")
-    }
-
-    func testParametersWithConfiguration_whenIsNotBillingAgreement_andIntentIsSetToAuthorize_returnsAuthorizeIntent() {
-        let request = BTPayPalRequest(amount: "1")
-        request.intent = .authorize
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
-        XCTAssertEqual(parameters["intent"] as? String, "authorize")
-    }
-
-    func testParametersWithConfiguration_whenIsNotBillingAgreement_andIntentIsSetToSale_returnsSaleIntent() {
-        let request = BTPayPalRequest(amount: "1")
-        request.intent = .sale
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
-        XCTAssertEqual(parameters["intent"] as? String, "sale")
-    }
-
-    func testParametersWithConfiguration_whenIsNotBillingAgreement_andIntentIsSetToOrder_returnsOrderIntent() {
-        let request = BTPayPalRequest(amount: "1")
-        request.intent = .order
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
-        XCTAssertEqual(parameters["intent"] as? String, "order")
-    }
-
-    func testParametersWithConfiguration_whenIsNotBillingAgreement_andLandingPageTypeIsNotSpecified_doesNotReturnLandingPageType() {
-        let request = BTPayPalRequest(amount: "1")
-
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
-        guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
-        XCTAssertNil(experienceProfile["landing_page_type"])
-    }
-
-    func testParametersWithConfiguration_whenIsNotBillingAgreement_andLandingPageTypeIsBilling_returnsBillingLandingPageType() {
-        let request = BTPayPalRequest(amount: "1")
-        request.landingPageType = .billing
-
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
-        guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
-        XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "billing")
-    }
-
-    func testParametersWithConfiguration_whenIsNotBillingAgreement_andLandingPageTypeIsLogin_returnsLoginLandingPageType() {
-        let request = BTPayPalRequest(amount: "1")
-        request.landingPageType = .login
-
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
-        guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
-        XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
     }
 
     // MARK: - parametersWithConfiguration (vault flow)
