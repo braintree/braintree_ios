@@ -39,10 +39,6 @@ import Security
         return result?.getPayPalClientMetaDataId() ?? ""
     }
 
-    @objc class func generateClientMetadataIDWithoutBeacon(_ clientMetadataID: String?, data: [String : String]?) -> String {
-        return PPDataCollector.generateClientMetadataID(clientMetadataID, disableBeacon: true, data: data)
-    }
-
     @objc class func generateClientMetadataID() -> String {
         return PPDataCollector.generateClientMetadataID("", disableBeacon: false, data: nil)
     }

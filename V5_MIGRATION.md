@@ -103,6 +103,8 @@ Code previously used to set your return URL scheme can be deleted. **Note:** Thi
 BTAppSwitch.setReturnURLScheme("com.your-company.your-app.payments")
 ```
 
+If your app supports multi-tasking, you must set the `BTPayPalRequest.activeWindow` property to ensure that the PayPal flow launches from the correct window.
+
 ## App Switch
 
 v5 removes the `options` and `sourceApplication` params on methods in `BTAppSwitch`. 
@@ -117,5 +119,23 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
         return BTAppSwitch.handleOpen(url)
     }
     return false
+}
+```
+
+## Venmo
+
+The `authorizeAccount` methods on `BTVenmoDriver` have been replaced with a `tokenizeVenmoAccount` method.
+
+```
+let venmoRequest = BTVenmoRequest()
+venmoRequest.profileID = "my-profile-id"
+venmoRequest.vault = true
+
+venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccountNonce, error) -> Void in
+  if (error != nil) {
+    // handle error
+  }
+
+  // transact with nonce on server
 }
 ```
