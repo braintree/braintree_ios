@@ -5,9 +5,11 @@
   * Make `shippingMethod` property on `BTThreeDSecureRequest` an enum instead of a string
   * Remove `BTTokenizationService`
   * Make `BTPaymentMethodNonceParser` private
+  * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
 * Add `environment` to `BTConfiguration`
+* Add `BTVenmoRequest`
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
