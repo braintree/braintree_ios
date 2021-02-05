@@ -121,3 +121,21 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
     return false
 }
 ```
+
+## Venmo
+
+The `authorizeAccount` methods on `BTVenmoDriver` have been replaced with a `tokenizeVenmoAccount` method.
+
+```
+let venmoRequest = BTVenmoRequest()
+venmoRequest.profileID = "my-profile-id"
+venmoRequest.vault = true
+
+venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccountNonce, error) -> Void in
+  if (error != nil) {
+    // handle error
+  }
+
+  // transact with nonce on server
+}
+```
