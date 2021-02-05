@@ -116,7 +116,6 @@
     card.expirationMonth = self.cardForm.expirationMonth;
     card.expirationYear = self.cardForm.expirationYear;
     card.cvv = self.cardForm.cvv;
-//    card.shouldValidate = YES;
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = self.cardForm.phoneNumber;

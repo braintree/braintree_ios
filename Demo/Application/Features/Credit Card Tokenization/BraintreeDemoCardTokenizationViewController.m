@@ -36,7 +36,6 @@
     card.number = self.cardNumberField.text;
     card.expirationMonth = self.expirationMonthField.text;
     card.expirationYear = self.expirationYearField.text;
-    
     [self setFieldsEnabled:NO];
     [cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
         [self setFieldsEnabled:YES];
