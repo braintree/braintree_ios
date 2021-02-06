@@ -17,22 +17,9 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     if (self) {
         _shippingAddressRequired = NO;
         _offerCredit = NO;
-        _offerPayLater = NO;
         _shippingAddressEditable = NO;
-        _intent = BTPayPalRequestIntentAuthorize;
         _userAction = BTPayPalRequestUserActionDefault;
         _landingPageType = BTPayPalRequestLandingPageTypeDefault;
-    }
-    return self;
-}
-
-- (instancetype)initWithAmount:(NSString *)amount {
-    if (amount == nil) {
-        return nil;
-    }
-
-    if (self = [self init]) {
-        _amount = amount;
     }
     return self;
 }
@@ -41,18 +28,11 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
 
-    if (!isBillingAgreement) {
-        parameters[@"intent"] = self.intentAsString;
-        if (self.amount) {
-            parameters[@"amount"] = self.amount;
-        }
-    } else if (self.billingAgreementDescription.length > 0) {
+    if (self.billingAgreementDescription.length > 0) {
         parameters[@"description"] = self.billingAgreementDescription;
     }
 
     parameters[@"offer_paypal_credit"] = @(self.offerCredit);
-
-    parameters[@"offer_pay_later"] = @(self.offerPayLater);
 
     experienceProfile[@"no_shipping"] = @(!self.isShippingAddressRequired);
 
@@ -70,13 +50,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
         parameters[@"merchant_account_id"] = self.merchantAccountId;
     }
 
-    // Currency code should only be used for Hermes Checkout (one-time payment).
-    // For BA, currency should not be used.
-    NSString *currencyCode = self.currencyCode ?: [configuration.json[@"paypal"][@"currencyIsoCode"] asString];
-    if (!isBillingAgreement && currencyCode) {
-        parameters[@"currency_iso_code"] = currencyCode;
-    }
-
     if (self.shippingAddressOverride) {
         experienceProfile[@"address_override"] = @(!self.isShippingAddressEditable);
         BTPostalAddress *shippingAddress = self.shippingAddressOverride;
@@ -90,14 +63,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
             shippingAddressParams[@"country_code"] = shippingAddress.countryCodeAlpha2;
             shippingAddressParams[@"recipient_name"] = shippingAddress.recipientName;
             parameters[@"shipping_address"] = shippingAddressParams;
-        } else {
-            parameters[@"line1"] = shippingAddress.streetAddress;
-            parameters[@"line2"] = shippingAddress.extendedAddress;
-            parameters[@"city"] = shippingAddress.locality;
-            parameters[@"state"] = shippingAddress.region;
-            parameters[@"postal_code"] = shippingAddress.postalCode;
-            parameters[@"country_code"] = shippingAddress.countryCodeAlpha2;
-            parameters[@"recipient_name"] = shippingAddress.recipientName;
         }
     } else {
         experienceProfile[@"address_override"] = @NO;
@@ -117,17 +82,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     parameters[@"experience_profile"] = experienceProfile;
 
     return parameters;
-}
-
-- (NSString *)intentAsString {
-    switch(self.intent) {
-        case BTPayPalRequestIntentSale:
-            return @"sale";
-        case BTPayPalRequestIntentOrder:
-            return @"order";
-        default:
-            return @"authorize";
-    }
 }
 
 - (NSString *)landingPageTypeAsString {

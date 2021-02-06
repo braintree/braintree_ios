@@ -3,6 +3,7 @@
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 #import "BTPayPalRequest_Internal.h"
+#import "BTPayPalCheckoutRequest_Internal.h"
 
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
@@ -123,7 +124,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         return;
     }
 
-    if (!request || (!isBillingAgreement && !request.amount)) {
+    if (!request) {
         completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
         return;
     }
@@ -514,7 +515,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         [self.apiClient sendAnalyticsEvent:eventName];
     }
 
-    if (paymentType == BTPayPalPaymentTypeCheckout && self.payPalRequest.offerPayLater) {
+    if ([self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class] && ((BTPayPalCheckoutRequest *)self.payPalRequest).offerPayLater) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.paylater.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];
@@ -596,10 +597,11 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if (paymentType == BTPayPalPaymentTypeCheckout) {
         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
-        if (self.payPalRequest.intentAsString) {
-            parameters[@"paypal_account"][@"intent"] = self.payPalRequest.intentAsString;
+        if ([self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class] && ((BTPayPalCheckoutRequest *) self.payPalRequest).intentAsString) {
+            parameters[@"paypal_account"][@"intent"] = ((BTPayPalCheckoutRequest *) self.payPalRequest).intentAsString;
         }
     }
+
     if (self.clientMetadataId) {
         parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataId;
     }

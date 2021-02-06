@@ -26,7 +26,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     func testBillingAgreement_whenAPIClientIsNil_callsBackWithError() {
         payPalDriver.apiClient = nil
 
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalRequest()
         let expectation = self.expectation(description: "Billing Agreement fails with error")
         payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
@@ -153,7 +153,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let mockAppSwitchDelegate = MockAppSwitchDelegate()
         payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
 
-        payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _,_ in }
+        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _,_ in }
 
         XCTAssertNotNil(payPalDriver.authenticationSession)
         XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)

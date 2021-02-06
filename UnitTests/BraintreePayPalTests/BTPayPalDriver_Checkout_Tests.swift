@@ -239,8 +239,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenBrowserSwitchSucceeds_intentShouldExistAsPayPalAccountParameter() {
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
-        payPalDriver.payPalRequest.intent = .sale
+        let payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
+        payPalRequest.intent = .sale
+        payPalDriver.payPalRequest = payPalRequest
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
@@ -257,7 +258,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
     func testCheckout_whenBrowserSwitchSucceeds_merchantAccountIdIsSet() {
         let merchantAccountId = "alternate-merchant-account-id"
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+        payPalDriver.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
         payPalDriver.payPalRequest.merchantAccountId = merchantAccountId
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
@@ -281,7 +282,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                     ]
                 ]
         ])
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+        payPalDriver.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
@@ -319,7 +320,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                 ]
             ]
         ])
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+        payPalDriver.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
