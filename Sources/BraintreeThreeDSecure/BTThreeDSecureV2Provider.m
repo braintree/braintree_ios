@@ -79,7 +79,7 @@
     self.lookupResult = lookupResult;
     self.successHandler = successHandler;
     self.failureHandler = failureHandler;
-    [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionID
+    [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionId
                                             payload:lookupResult.lookup.PAReq
                                 didValidateDelegate:self];
 }

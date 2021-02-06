@@ -42,7 +42,7 @@ typedef void (^BTProxyCardinalSessionSetupDidValidateHandler)(id<BTProxyCardinal
 - (void)setupWithJWT:(NSString*)jwtString
          didComplete:(BTProxyCardinalSessionSetupDidCompleteHandler)didCompleteHandler
          didValidate:(BTProxyCardinalSessionSetupDidValidateHandler)didValidateHandler;
-- (void)continueWithTransactionId:(nonnull NSString *)transactionID
+- (void)continueWithTransactionId:(nonnull NSString *)transactionId
                           payload:(nonnull NSString *)payload
               didValidateDelegate:(nonnull id)validationDelegate;
 @end
