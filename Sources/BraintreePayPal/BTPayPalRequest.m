@@ -28,7 +28,7 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
 
-    if (self.billingAgreementDescription.length > 0) {
+    if (isBillingAgreement && self.billingAgreementDescription.length > 0) {
         parameters[@"description"] = self.billingAgreementDescription;
     }
 
