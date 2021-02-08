@@ -109,7 +109,7 @@ If your app supports multi-tasking, you must set the `BTPayPalRequest.activeWind
 
 v5 renames the `BTAppSwitch` class to `BTAppContextSwitcher` to clarify that it is used for flows that requiring switching contexts, either by opening an `SFSafariViewController` or by opening a different app (specifically, Venmo).
 
-`BTAppSwitchDelegate` was removed in v5. If you were using these delegate methods to determine when control switched between your app and the Venmo app, we recommend using app or scene delegate methods instead. If you were `BTAppSwitchDelegate` to determine when an `SFSafariViewController` was presented or dismissed, we recommend using the `BTViewControllerPresentingDelegate` methods instead.
+`BTAppSwitchDelegate` was removed in v5. If you were using these delegate methods to determine when control switched between your app and the Venmo app, we recommend using app or scene delegate methods instead. If you were using `BTAppSwitchDelegate` to determine when an `SFSafariViewController` was presented or dismissed, we recommend using the `BTViewControllerPresentingDelegate` methods instead.
 
 Register your app's custom URL scheme with `BTAppContextSwitcher` in your app delegate:
 ```swift
@@ -124,7 +124,7 @@ If you're using `UISceneDelegate`, use the following code to pass a return URL t
 ```swift
 func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
   URLContexts.forEach { context in
-    if context.url.scheme?.localizedCaseInsensitiveCompare("com.my-app.your-app.payments") == .orderedSame {
+    if context.url.scheme?.localizedCaseInsensitiveCompare("com.your-company.your-app.payments") == .orderedSame {
       BTAppContextSwitcher.handleOpenURLContext(urlContext)
     }
   }
