@@ -141,10 +141,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
         self.payPalRequest = request;
 
-        NSDictionary *parameters = [request parametersWithConfiguration:configuration];
-
-        [self.apiClient POST:[NSString stringWithFormat:@"v1/paypal_hermes/%@", request.hermesPath]
-                  parameters:parameters
+        [self.apiClient POST:request.hermesPath
+                  parameters:[request parametersWithConfiguration:configuration]
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
                 NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;

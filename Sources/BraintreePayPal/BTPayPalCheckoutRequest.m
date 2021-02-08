@@ -28,7 +28,7 @@
 }
 
 - (NSString *)hermesPath {
-    return @"create_payment_resource";
+    return @"v1/paypal_hermes/create_payment_resource";
 }
 
 - (BTPayPalPaymentType)paymentType {
