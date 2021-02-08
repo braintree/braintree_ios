@@ -1,7 +1,7 @@
 #import "BraintreeDemoPayPalCreditPaymentViewController.h"
 @import BraintreePayPal;
 
-@interface BraintreeDemoPayPalCreditPaymentViewController () <BTAppSwitchDelegate>
+@interface BraintreeDemoPayPalCreditPaymentViewController ()
 
 @property (nonatomic, strong) UISegmentedControl *paypalTypeSwitch;
 
@@ -49,7 +49,6 @@
     [sender setEnabled:NO];
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
-    driver.appSwitchDelegate = self;
 
     if (self.paypalTypeSwitch.selectedSegmentIndex == 0) {
         BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:@"4.30"];
@@ -84,16 +83,6 @@
             }
         }];
     }
-}
-
-#pragma mark BTAppSwitchDelegate
-
-- (void)appContextWillSwitch:(__unused id)appSwitcher {
-   self.progressBlock(@"appContextWillSwitch:");
-}
-
-- (void)appContextDidReturn:(__unused id)appSwitcher {
-    self.progressBlock(@"appContextDidReturn:");
 }
 
 @end

@@ -96,7 +96,7 @@ For CocoaPods integrations, the Braintree Apple Pay subspec has been renamed fro
 
 #### Custom URL Scheme
 
-Registering a custom URL scheme in your Xcode project is also no longer required. 
+Registering a custom URL scheme in your Xcode project is also no longer required.
 
 Code previously used to set your return URL scheme can be deleted. **Note:** This only applies to the PayPal flow. Other payment methods (ex: Venmo, Local Payment Methods, 3DS) still require a custom URL scheme.
 ```
@@ -127,18 +127,38 @@ If your app supports multi-tasking, you must set the `BTPayPalRequest.activeWind
 
 Implementing the `BTViewControllerPresentingDelegate` is no longer required for the PayPal flow.
 
-## App Switch
+## App Context Switching
 
-v5 removes the `options` and `sourceApplication` params on methods in `BTAppSwitch`. 
+v5 renames the `BTAppSwitch` class to `BTAppContextSwitcher` to clarify that it is used for flows that requiring switching contexts, either by opening an `SFSafariViewController` or by opening a different app (specifically, Venmo).
 
-If you're using `UISceneDelegate`, you don't need to make any code changes. 
+`BTAppSwitchDelegate` was removed in v5. If you were using these delegate methods to determine when control switched between your app and the Venmo app, we recommend using app or scene delegate methods instead. If you were using `BTAppSwitchDelegate` to determine when an `SFSafariViewController` was presented or dismissed, we recommend using the `BTViewControllerPresentingDelegate` methods instead.
 
-If you aren't using `UISceneDelegate`, you will need to update the `handleOpenURL` method you call from within the `application:OpenURL:options` app delegate method.
-
+Register your app's custom URL scheme with `BTAppContextSwitcher` in your app delegate:
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+  BTAppContextSwitcher.setReturnURLScheme("com.your-company.your-app.payments")
+  return true
+}
 ```
+
+If you're using `UISceneDelegate`, use the following code to pass a return URL to `BTAppContextSwitcher`:
+
+```swift
+func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+  URLContexts.forEach { context in
+    if context.url.scheme?.localizedCaseInsensitiveCompare("com.your-company.your-app.payments") == .orderedSame {
+      BTAppContextSwitcher.handleOpenURLContext(urlContext)
+    }
+  }
+}
+```
+
+If you aren't using `UISceneDelegate`, you will need to update the `handleOpenURL` method you call from within the `application:OpenURL:options` app delegate method. Note that v5 removes the `options` and `sourceApplication` params.
+
+```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     if url.scheme?.localizedCaseInsensitiveCompare("com.your-company.your-app.payments") == .orderedSame {
-        return BTAppSwitch.handleOpen(url)
+        return BTAppContextSwitcher.handleOpenURL(url)
     }
     return false
 }

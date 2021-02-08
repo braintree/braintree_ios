@@ -436,20 +436,6 @@ class BTPayPalDriver_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
     }
 
-    func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_makesDelegateCallback() {
-        let delegate = MockAppSwitchDelegate()
-        delegate.appContextDidReturnExpectation = expectation(description: "appContextDidReturn called")
-        payPalDriver.appSwitchDelegate = delegate
-
-        let returnURL = URL(string: "bar://hello/world")!
-        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
-
-        waitForExpectations(timeout: 1)
-
-        XCTAssertTrue(delegate.lastAppSwitcher is BTPayPalDriver)
-        XCTAssertTrue(delegate.appContextDidReturnCalled)
-    }
-
     // MARK: - Tokenization
 
     func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_sendsCorrectParameters() {

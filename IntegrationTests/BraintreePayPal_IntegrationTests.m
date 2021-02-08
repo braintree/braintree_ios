@@ -18,7 +18,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testOneTimePayment_withTokenizationKey_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+    [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
     XCTestExpectation *tokenizationExpectation = [self expectationWithDescription:@"Tokenize one-time payment"];
 
@@ -39,7 +39,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
 
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+    [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
     XCTestExpectation *tokenizationExpectation = [self expectationWithDescription:@"Tokenize one-time payment"];
 
@@ -62,7 +62,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
 
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+    [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
     XCTestExpectation *tokenizationExpectation = [self expectationWithDescription:@"Tokenize billing agreement payment"];
 
@@ -83,7 +83,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
 
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+    [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
     XCTestExpectation *tokenizationExpectation = [self expectationWithDescription:@"Tokenize billing agreement payment"];
 
