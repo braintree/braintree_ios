@@ -117,15 +117,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
-#pragma mark - Delegate
-
-/**
- An optional delegate for receiving notifications about the lifecycle of a PayPal browser switch for updating your UI
-
- @note BTPayPalDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
-*/
-@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
-
 @end
 
 NS_ASSUME_NONNULL_END

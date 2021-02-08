@@ -1,10 +1,6 @@
 #import "BraintreeDemoPayPalBillingAgreementViewController.h"
 @import BraintreePayPal;
 
-@interface BraintreeDemoPayPalBillingAgreementViewController () <BTAppSwitchDelegate>
-
-@end
-
 @implementation BraintreeDemoPayPalBillingAgreementViewController
 
 - (UIView *)createPaymentButton {
@@ -23,7 +19,6 @@
     [sender setEnabled:NO];
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
-    driver.appSwitchDelegate = self;
     BTPayPalVaultRequest *request = [[BTPayPalVaultRequest alloc] init];
     request.activeWindow = self.view.window;
     [driver requestBillingAgreement:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
@@ -37,16 +32,6 @@
             self.progressBlock(@"Cancelled");
         }
     }];
-}
-
-#pragma mark BTAppSwitchDelegate
-
-- (void)appContextWillSwitch:(__unused id)appSwitcher {
-   self.progressBlock(@"appContextWillSwitch:");
-}
-
-- (void)appContextDidReturn:(__unused id)appSwitcher {
-    self.progressBlock(@"appContextDidReturn:");
 }
 
 @end

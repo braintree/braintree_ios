@@ -1,10 +1,6 @@
 #import "BraintreeDemoPayPalOneTimePaymentViewController.h"
 @import BraintreePayPal;
 
-@interface BraintreeDemoPayPalOneTimePaymentViewController () <BTAppSwitchDelegate>
-
-@end
-
 @implementation BraintreeDemoPayPalOneTimePaymentViewController
 
 - (UIView *)createPaymentButton {
@@ -24,7 +20,6 @@
     [sender setEnabled:NO];
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
-    driver.appSwitchDelegate = self;
     BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:@"4.30"];
     request.activeWindow = self.view.window;
     [driver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
@@ -38,16 +33,6 @@
             self.progressBlock(@"Cancelled");
         }
     }];
-}
-
-#pragma mark BTAppSwitchDelegate
-
-- (void)appContextWillSwitch:(__unused id)appSwitcher {
-   self.progressBlock(@"appContextWillSwitch:");
-}
-
-- (void)appContextDidReturn:(__unused id)appSwitcher {
-    self.progressBlock(@"appContextDidReturn:");
 }
 
 @end
