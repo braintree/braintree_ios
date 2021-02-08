@@ -19,10 +19,15 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
     func testPerformThreeDSecureLookup_sendsAllParameters() {
         let expectation = self.expectation(description: "willCallCompletion")
 
-        threeDSecureRequest.amount = 9.97
         threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.accountType = .credit
+        threeDSecureRequest.amount = 9.97
         threeDSecureRequest.versionRequested = .version2
+        threeDSecureRequest.dfReferenceId = "df-reference-id"
+        threeDSecureRequest.accountType = .credit
+        threeDSecureRequest.challengeRequested = true
+        threeDSecureRequest.exemptionRequested = true
+        threeDSecureRequest.dataOnlyRequested = true
+
         threeDSecureRequest.mobilePhoneNumber = "5151234321"
         threeDSecureRequest.email = "tester@example.com"
         threeDSecureRequest.shippingMethod = .priority
@@ -42,8 +47,12 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
-            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["accountType"] as! String, "credit")
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["requestedThreeDSecureVersion"] as! String, "2")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as! String, "df-reference-id")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["accountType"] as! String, "credit")
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["challengeRequested"] as! Bool)
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["exemptionRequested"] as! Bool)
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["dataOnlyRequested"] as! Bool)
 
             let additionalInfo = self.mockAPIClient.lastPOSTParameters!["additionalInfo"] as! Dictionary<String, String>
             XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
