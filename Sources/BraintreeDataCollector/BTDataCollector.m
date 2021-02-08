@@ -35,8 +35,6 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 static Class PayPalDataCollectorClass;
 
-NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDataCollectorKountErrorDomain";
-
 #pragma mark - Initialization and setup
 
 + (void)load {

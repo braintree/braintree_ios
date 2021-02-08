@@ -4,11 +4,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Domain for Kount errors.
- */
-extern NSString * const BTDataCollectorKountErrorDomain;
-
-/**
  Braintree's advanced fraud protection solution
 */
 @interface BTDataCollector : NSObject
