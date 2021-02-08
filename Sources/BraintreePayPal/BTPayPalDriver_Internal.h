@@ -34,9 +34,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 @property (nonatomic, strong, nullable) BTAPIClient *apiClient;
 
 /**
- Exposed for testing the clientMetadataId associated with this request
+ Exposed for testing the clientMetadataID associated with this request
 */
-@property (nonatomic, strong) NSString *clientMetadataId;
+@property (nonatomic, strong) NSString *clientMetadataID;
 
 /**
  Exposed for testing the intent associated with this request

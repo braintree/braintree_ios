@@ -23,7 +23,7 @@ class BTCardClient_Tests: XCTestCase {
         card.cvv = "1234"
         card.cardholderName = "Brian Tree"
         card.authenticationInsightRequested = true
-        card.merchantAccountId = "some merchant account id"
+        card.merchantAccountID = "some merchant account id"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             guard let lastRequestEndpoint = fakeHTTP.lastRequestEndpoint,
@@ -267,7 +267,7 @@ class BTCardClient_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "unknown")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
     func testAnalyticsEvent_whenTokenizationSucceeds_isSent() {
@@ -332,7 +332,7 @@ class BTCardClient_Tests: XCTestCase {
 
     // MARK: - GraphQL API
 
-    func testTokenization_whenAuthInsightRequestedIsTrue_andMerchantAccountIdIsNil_returnsError() {
+    func testTokenization_whenAuthInsightRequestedIsTrue_andMerchantAccountIDIsNil_returnsError() {
         let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
@@ -349,7 +349,7 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
         card.cvv = "1234"
         card.authenticationInsightRequested = true
-        card.merchantAccountId = nil
+        card.merchantAccountID = nil
         
         let expectation = self.expectation(description: "Returns an error")
         
@@ -543,7 +543,7 @@ class BTCardClient_Tests: XCTestCase {
             XCTAssertEqual(tokenizedCard.binData.payroll, "No")
             XCTAssertEqual(tokenizedCard.binData.issuingBank, "US")
             XCTAssertEqual(tokenizedCard.binData.countryOfIssuance, "Something")
-            XCTAssertEqual(tokenizedCard.binData.productId, "123")
+            XCTAssertEqual(tokenizedCard.binData.productID, "123")
 
             expectation.fulfill()
         }

@@ -67,9 +67,9 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     }
 
     func testBillingAgreement_whenMerchantAccountIdIsSet_postsPaymentResourceWithMerchantAccountId() {
-        let merchantAccountId = "alternate-merchant-account-id"
+        let merchantAccountID = "alternate-merchant-account-id"
         let request = BTPayPalRequest()
-        request.merchantAccountId = merchantAccountId
+        request.merchantAccountID = merchantAccountID
 
         payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
 
@@ -78,7 +78,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             XCTFail()
             return
         }
-        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, merchantAccountId)
+        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, merchantAccountID)
     }
 
     func testBillingAgreement_whenPayPalCreditOffered_performsSwitchCorrectly() {

@@ -15,7 +15,7 @@
         _conversionRate = [json[@"conversionRate"] asString];
         _currencyAmount = [json[@"currencyAmount"] asString];
         _currencyIsoCode = [json[@"currencyIsoCode"] asString];
-        _requestId = [json[@"requestId"] asString];
+        _requestID = [json[@"requestId"] asString];
         _rewardsAmount = [json[@"rewardsAmount"] asString];
         _rewardsUnit = [json[@"rewardsUnit"] asString];
     }

@@ -8,8 +8,8 @@
 @property (nonatomic, readwrite, copy) NSString *phone;
 @property (nonatomic, readwrite, strong) BTPostalAddress *billingAddress;
 @property (nonatomic, readwrite, strong) BTPostalAddress *shippingAddress;
-@property (nonatomic, readwrite, copy) NSString *clientMetadataId;
-@property (nonatomic, readwrite, copy) NSString *payerId;
+@property (nonatomic, readwrite, copy) NSString *clientMetadataID;
+@property (nonatomic, readwrite, copy) NSString *payerID;
 @property (nonatomic, readwrite, strong) BTPayPalCreditFinancing *creditFinancing;
 
 @end
@@ -23,8 +23,8 @@
                         phone:(NSString *)phone
                billingAddress:(BTPostalAddress *)billingAddress
               shippingAddress:(BTPostalAddress *)shippingAddress
-             clientMetadataId:(NSString *)clientMetadataId
-                      payerId:(NSString *)payerId
+             clientMetadataID:(NSString *)clientMetadataID
+                      payerID:(NSString *)payerID
                     isDefault:(BOOL)isDefault
               creditFinancing:(BTPayPalCreditFinancing *)creditFinancing {
     if (self = [super initWithNonce:nonce type:@"PayPal" isDefault:isDefault]) {
@@ -34,8 +34,8 @@
         _phone = phone;
         _billingAddress = [billingAddress copy];
         _shippingAddress = [shippingAddress copy];
-        _clientMetadataId = clientMetadataId;
-        _payerId = payerId;
+        _clientMetadataID = clientMetadataID;
+        _payerID = payerID;
         _creditFinancing = creditFinancing;
     }
     return self;

@@ -294,11 +294,11 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenMerchantAccountIdIsSet_postsPaymentResourceWithMerchantAccountId() {
-        let merchantAccountId = "alternate-merchant-account-id"
+        let merchantAccountID = "alternate-merchant-account-id"
 
         let request = BTPayPalRequest(amount: "1")
         request.currencyCode = "GBP"
-        request.merchantAccountId = merchantAccountId
+        request.merchantAccountID = merchantAccountID
 
         payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
@@ -308,7 +308,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, merchantAccountId)
+        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, merchantAccountID)
     }
 
     func testCheckout_whenDisplayNameIsSetInConfiguration_postsPaymentResourceWithConfigurationBrandName() {
@@ -585,7 +585,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertNotNil(payPalDriver.authenticationSession)
         XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
 
-        XCTAssertNotNil(payPalDriver.clientMetadataId)
+        XCTAssertNotNil(payPalDriver.clientMetadataID)
     }
 
     func testCheckout_whenBrowserSwitchCancels_callsBackWithNoResultAndError() {
@@ -649,17 +649,17 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertFalse(options["validate"] as! Bool)
     }
 
-    func testCheckout_whenBrowserSwitchSucceeds_merchantAccountIdIsSet() {
-        let merchantAccountId = "alternate-merchant-account-id"
+    func testCheckout_whenBrowserSwitchSucceeds_merchantAccountIDIsSet() {
+        let merchantAccountID = "alternate-merchant-account-id"
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
-        payPalDriver.payPalRequest.merchantAccountId = merchantAccountId
+        payPalDriver.payPalRequest.merchantAccountID = merchantAccountID
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         let lastPostParameters = mockAPIClient.lastPOSTParameters!
-        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, merchantAccountId)
+        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, merchantAccountID)
     }
 
     func testCheckout_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {
@@ -772,7 +772,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                 XCTAssertEqual(tokenizedPayPalAccount!.lastName, "Dude")
                 XCTAssertEqual(tokenizedPayPalAccount!.phone, "867-5309")
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
-                XCTAssertEqual(tokenizedPayPalAccount!.payerId, "FAKE-PAYER-ID")
+                XCTAssertEqual(tokenizedPayPalAccount!.payerID, "FAKE-PAYER-ID")
                 let billingAddress = tokenizedPayPalAccount!.billingAddress!
                 let shippingAddress = tokenizedPayPalAccount!.shippingAddress!
                 XCTAssertEqual(billingAddress.recipientName, "Bar Foo")
@@ -823,7 +823,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! [String:Any]
         XCTAssertEqual(metaParameters["source"] as? String, "paypal-browser")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
     // MARK: - Analytics

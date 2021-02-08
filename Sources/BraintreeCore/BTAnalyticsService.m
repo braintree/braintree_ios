@@ -112,7 +112,7 @@
 @interface BTAnalyticsService ()
 
 /// Dictionary of analytics sessions, keyed by session ID. The analytics service requires that batched events
-/// are sent from only one session. In practice, BTAPIClient.metadata.sessionId should never change, so this
+/// are sent from only one session. In practice, BTAPIClient.metadata.sessionID should never change, so this
 /// is defensive.
 @property (nonatomic, strong) NSMutableDictionary <NSString *, BTAnalyticsSession *> *analyticsSessions;
 
@@ -273,7 +273,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
     uint64_t timestampInMilliseconds = ([[NSDate date] timeIntervalSince1970] * 1000);
     BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInMilliseconds];
 
-    BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
+    BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionID
                                                              source:self.apiClient.metadata.sourceString
                                                         integration:self.apiClient.metadata.integrationString];
     if (!session) {

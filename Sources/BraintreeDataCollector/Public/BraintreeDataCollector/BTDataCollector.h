@@ -63,9 +63,9 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 
  @note If you do not call this method, a generic Braintree value will be used.
 
- @param fraudMerchantId The fraudMerchantId you have established with your Braintree account manager.
+ @param fraudMerchantID The fraudMerchantID you have established with your Braintree account manager.
 */
-- (void)setFraudMerchantId:(NSString *)fraudMerchantId;
+- (void)setFraudMerchantID:(NSString *)fraudMerchantID;
 
 @end
 

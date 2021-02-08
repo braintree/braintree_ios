@@ -176,8 +176,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             experienceProfile[@"locale_code"] = request.localeCode;
         }
 
-        if (request.merchantAccountId != nil) {
-            parameters[@"merchant_account_id"] = request.merchantAccountId;
+        if (request.merchantAccountID != nil) {
+            parameters[@"merchant_account_id"] = request.merchantAccountID;
         }
 
         // Currency code should only be used for Hermes Checkout (one-time payment).
@@ -253,9 +253,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             }
             self.approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
 
-            NSString *pairingId = [self.class tokenFromApprovalURL:self.approvalUrl];
+            NSString *pairingID = [self.class tokenFromApprovalURL:self.approvalUrl];
 
-            self.clientMetadataId = [PPDataCollector clientMetadataID:pairingId];
+            self.clientMetadataID = [PPDataCollector clientMetadataID:pairingID];
 
             BOOL analyticsSuccess = error ? NO : YES;
             if (isBillingAgreement) {
@@ -390,7 +390,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     }
 }
 
-- (NSString *)paypalClientIdWithRemoteConfiguration:(BTJSON *)configuration {
+- (NSString *)paypalClientIDWithRemoteConfiguration:(BTJSON *)configuration {
     if ([[configuration[@"paypal"][@"environment"] asString] isEqualToString:@"offline"] && ![configuration[@"paypal"][@"clientId"] isString]) {
         return @"mock-paypal-client-id";
     } else {
@@ -478,7 +478,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     BTJSON *details = payPalAccount[@"details"];
     
     NSString *email = [details[@"email"] asString];
-    NSString *clientMetadataId = [details[@"correlationId"] asString];
+    NSString *clientMetadataID = [details[@"correlationId"] asString];
     // Allow email to be under payerInfo
     if ([details[@"payerInfo"][@"email"] isString]) {
         email = [details[@"payerInfo"][@"email"] asString];
@@ -487,7 +487,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     NSString *firstName = [details[@"payerInfo"][@"firstName"] asString];
     NSString *lastName = [details[@"payerInfo"][@"lastName"] asString];
     NSString *phone = [details[@"payerInfo"][@"phone"] asString];
-    NSString *payerId = [details[@"payerInfo"][@"payerId"] asString];
+    NSString *payerID = [details[@"payerInfo"][@"payerId"] asString];
     BOOL isDefault = [payPalAccount[@"default"] isTrue];
     
     BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
@@ -505,8 +505,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                                                                                          phone:phone
                                                                                 billingAddress:billingAddress
                                                                                shippingAddress:shippingAddress
-                                                                              clientMetadataId:clientMetadataId
-                                                                                       payerId:payerId
+                                                                              clientMetadataID:clientMetadataID
+                                                                                       payerID:payerID
                                                                                      isDefault:isDefault
                                                                                creditFinancing:creditFinancing];
     
@@ -686,19 +686,19 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             parameters[@"paypal_account"][@"intent"] = [self.class intentTypeToString:self.payPalRequest.intent];
         }
     }
-    if (self.clientMetadataId) {
-        parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataId;
+    if (self.clientMetadataID) {
+        parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataID;
     }
 
-    if (self.payPalRequest != nil && self.payPalRequest.merchantAccountId != nil) {
-        parameters[@"merchant_account_id"] = self.payPalRequest.merchantAccountId;
+    if (self.payPalRequest != nil && self.payPalRequest.merchantAccountID != nil) {
+        parameters[@"merchant_account_id"] = self.payPalRequest.merchantAccountID;
     }
 
     BTClientMetadata *metadata = [self clientMetadata];
     parameters[@"_meta"] = @{
         @"source" : metadata.sourceString,
         @"integration" : metadata.integrationString,
-        @"sessionId" : metadata.sessionId,
+        @"sessionId" : metadata.sessionID,
     };
 
     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"

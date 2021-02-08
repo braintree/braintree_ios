@@ -10,6 +10,28 @@
     * Rename `handleAppSwitchReturnURL()` to `handleReturnURL()`
     * Rename `canHandleAppSwitchReturnURL()` to `canHandleReturnURL()`
     * Remove `unregisterAppSwitchHandler()`
+  * Rename properties to use `ID` instead of `Id`:
+    * `BTAmericanExpressRewardsBalance.requestID`
+    * `BTCard.merchantAccountID`
+    * `BTThreeDSecureInfo.acsTransactionID`
+    * `BTThreeDSecureInfo.dsTransactionID`
+    * `BTThreeDSecureInfo.threeDSecureAuthenticationID`
+    * `BTThreeDSecureInfo.threeDSecureServerTransactionID`
+    * `BTBinData.productID`
+    * `BTClientMetadata.sessionID`
+    * `BTConfiguration+DataCollector.kountMerchantID`
+    * `BTDataCollector.fraudMerchantID`
+    * `BTPayPalAccountNonce.clientMetadataID`
+    * `BTPayPalAccountNonce.payerID`
+    * `BTPayPalRequest.merchantAccountID`
+    * `BTLocalPaymentRequest.merchantAccountID`
+    * `BTLocalPaymentResult.clientMetadataID`
+    * `BTLocalPaymentResult.payerID`
+    * `BTThreeDSecureAdditionalInformation.accountID`
+    * `BTThreeDSecureLookup.transactionID`
+  * Rename methods to use `ID` instead of `Id`:
+    * `BTLocalPaymentRequest.localPaymentStarted(request:paymentID:start:)`
+    * `BTVenmoDriver.authorizeAccount(profileID:vault:completion:)`
   * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
 * Fix memory leak in `BTPayPalDriver`
