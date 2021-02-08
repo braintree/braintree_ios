@@ -29,7 +29,7 @@ class BTDataCollector_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testCollectDeviceData_whenMerchantHasKountConfiguration_collectsAllData() {
+    func testCollectDeviceData_whenMerchantConfiguredForKount_collectsAllData() {
         let config = [
             "environment": "development" as AnyObject,
             "kount": [
@@ -51,7 +51,7 @@ class BTDataCollector_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testCollectDeviceData_whenMerchantHasKountConfiguration_setsMerchantIDOnKount() {
+    func testCollectDeviceData_whenMerchantConfiguredForKount_setsMerchantIDOnKount() {
         let config = [
             "environment": "sandbox",
             "kount": [
@@ -74,7 +74,7 @@ class BTDataCollector_Tests: XCTestCase {
         XCTAssertEqual(KEnvironment.test, stubKount.environment)
     }
 
-    func testCollectDeviceData_doesNotCollectKountDataIfDisabledInConfiguration() {
+    func testCollectDeviceData_whenMerchantNotConfiguredForKount_doesNotCollectKountData() {
         let config = [
             "environment": "development",
             "kount": [

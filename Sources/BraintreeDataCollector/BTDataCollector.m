@@ -81,9 +81,6 @@ static Class PayPalDataCollectorClass;
 
 #pragma mark - Public methods
 
-
-#pragma mark - Helper methods
-
 - (void)collectDeviceData:(void (^)(NSString * _Nonnull))completion {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable __unused _) {
         NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
@@ -130,6 +127,8 @@ static Class PayPalDataCollectorClass;
         });
     }];
 }
+
+#pragma mark - Helper methods
 
 + (NSString *)generatePayPalClientMetadataID {
 #pragma clang diagnostic push
