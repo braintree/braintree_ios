@@ -122,6 +122,14 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         return;
     }
 
+    if (!([request isKindOfClass:BTPayPalCheckoutRequest.class] || [request isKindOfClass:BTPayPalVaultRequest.class])) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalDriver failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."}];
+        completionBlock(nil, error);
+        return;
+    }
+
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         if (error) {
             if (completionBlock) {
@@ -284,27 +292,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     } else {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.start.failed", [self.class eventStringForPaymentType:paymentType]];
         [self.apiClient sendAnalyticsEvent:eventName];
-    }
-}
-
-- (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {
-    NSString *btPayPalEnvironmentName = [configuration[@"paypal"][@"environment"] asString];
-    if ([btPayPalEnvironmentName isEqualToString:@"offline"]) {
-        return PayPalEnvironmentMock;
-    } else if ([btPayPalEnvironmentName isEqualToString:@"live"]) {
-        return PayPalEnvironmentProduction;
-    } else {
-        // Fall back to mock when configuration has an unsupported value for environment, e.g. "custom"
-        // Instead of returning btPayPalEnvironmentName
-        return PayPalEnvironmentMock;
-    }
-}
-
-- (NSString *)paypalClientIDWithRemoteConfiguration:(BTJSON *)configuration {
-    if ([[configuration[@"paypal"][@"environment"] asString] isEqualToString:@"offline"] && ![configuration[@"paypal"][@"clientId"] isString]) {
-        return @"mock-paypal-client-id";
-    } else {
-        return [configuration[@"paypal"][@"clientId"] asString];
     }
 }
 
