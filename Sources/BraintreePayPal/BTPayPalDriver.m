@@ -241,8 +241,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 }
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL paymentType:(BTPayPalPaymentType)paymentType completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
-    [self informDelegateAppContextWillSwitch];
-
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
 
     NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
@@ -450,30 +448,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     return UIApplication.sharedApplication.windows.firstObject;
 }
 
-#pragma mark - App Switch Delegate Informers
-
-- (void)informDelegateAppContextWillSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextWillSwitchNotification
-                                                                 object:self
-                                                               userInfo:nil];
-    [NSNotificationCenter.defaultCenter postNotification:notification];
-
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
-        [self.appSwitchDelegate appContextWillSwitch:self];
-    }
-}
-
-- (void)informDelegateAppContextDidReturn {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextDidReturnNotification
-                                                                 object:self
-                                                               userInfo:nil];
-    [NSNotificationCenter.defaultCenter postNotification:notification];
-
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
-        [self.appSwitchDelegate appContextDidReturn:self];
-    }
-}
-
 #pragma mark - Preflight check
 
 - (BOOL)verifyAppSwitchWithRemoteConfiguration:(BTJSON *)configuration error:(NSError * __autoreleasing *)error {
@@ -564,8 +538,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 - (void)handleBrowserSwitchReturnURL:(NSURL *)url
                          paymentType:(BTPayPalPaymentType)paymentType
                           completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self informDelegateAppContextDidReturn];
-
     if (![self.class isValidURLAction: url]) {
         NSError *responseError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                      code:BTPayPalDriverErrorTypeUnknown
