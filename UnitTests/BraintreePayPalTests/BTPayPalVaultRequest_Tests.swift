@@ -21,7 +21,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
 
     func testHermesPath_returnCorrectPath() {
         let request = BTPayPalVaultRequest()
-        XCTAssertEqual(request.hermesPath, "setup_billing_agreement")
+        XCTAssertEqual(request.hermesPath, "v1/paypal_hermes/setup_billing_agreement")
     }
 
     // MARK: - paymentType

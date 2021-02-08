@@ -21,7 +21,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
     func testHermesPath_returnCorrectPath() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        XCTAssertEqual(request.hermesPath, "create_payment_resource")
+        XCTAssertEqual(request.hermesPath, "v1/paypal_hermes/create_payment_resource")
     }
 
     // MARK: - paymentType

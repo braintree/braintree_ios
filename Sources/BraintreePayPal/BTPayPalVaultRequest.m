@@ -9,7 +9,7 @@
 @implementation BTPayPalVaultRequest
 
 - (NSString *)hermesPath {
-    return @"setup_billing_agreement";
+    return @"v1/paypal_hermes/setup_billing_agreement";
 }
 
 - (BTPayPalPaymentType)paymentType {
