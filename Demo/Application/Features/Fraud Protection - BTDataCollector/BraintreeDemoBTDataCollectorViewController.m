@@ -3,7 +3,7 @@
 @import PayPalDataCollector;
 @import CoreLocation;
 
-@interface BraintreeDemoBTDataCollectorViewController () <BTDataCollectorDelegate>
+@interface BraintreeDemoBTDataCollectorViewController ()
 
 /// Retain BTDataCollector for entire lifecycle of view controller
 @property (nonatomic, strong) BTDataCollector *dataCollector;
@@ -34,12 +34,6 @@
     [collectButton addTarget:self
                       action:@selector(tappedCollect)
             forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *collectKountButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [collectKountButton setTitle:NSLocalizedString(@"Collect Kount Data", nil) forState:UIControlStateNormal];
-    [collectKountButton addTarget:self
-                           action:@selector(tappedCollectKount)
-                 forControlEvents:UIControlEventTouchUpInside];
 
     UIButton *collectPayPalButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [collectPayPalButton setTitle:NSLocalizedString(@"Collect PayPal Data", nil) forState:UIControlStateNormal];
@@ -52,7 +46,6 @@
     self.dataLabel.numberOfLines = 0;
 
     UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[collectButton,
-                                                                             collectKountButton,
                                                                              collectPayPalButton,
                                                                              self.dataLabel]];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -77,20 +70,13 @@
     ]];
     
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
-    self.dataCollector.delegate = self;
 }
 
 - (IBAction)tappedCollect {
     self.progressBlock(@"Started collecting all data...");
     [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
         self.dataLabel.text = deviceData;
-    }];
-}
-
-- (IBAction)tappedCollectKount {
-    self.progressBlock(@"Started collecting Kount data...");
-    [self.dataCollector collectCardFraudData:^(NSString * _Nonnull deviceData) {
-        self.dataLabel.text = deviceData;
+        self.progressBlock(@"Collected all device data!");
     }];
 }
 
