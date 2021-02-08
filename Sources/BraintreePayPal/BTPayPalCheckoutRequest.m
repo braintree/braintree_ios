@@ -16,6 +16,25 @@
     return self;
 }
 
+- (NSString *)intentAsString {
+    switch(self.intent) {
+        case BTPayPalRequestIntentSale:
+            return @"sale";
+        case BTPayPalRequestIntentOrder:
+            return @"order";
+        default:
+            return @"authorize";
+    }
+}
+
+- (NSString *)hermesPath {
+    return @"create_payment_resource";
+}
+
+- (BTPayPalPaymentType)paymentType {
+    return BTPayPalPaymentTypeCheckout;
+}
+
 - (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
     NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration] mutableCopy];
 
@@ -39,17 +58,6 @@
     }
 
     return parameters;
-}
-
-- (NSString *)intentAsString {
-    switch(self.intent) {
-        case BTPayPalRequestIntentSale:
-            return @"sale";
-        case BTPayPalRequestIntentOrder:
-            return @"order";
-        default:
-            return @"authorize";
-    }
 }
 
 @end

@@ -17,6 +17,20 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         configuration = BTConfiguration(json: json)
     }
 
+    // MARK: - hermesPath
+
+    func testHermesPath_returnCorrectPath() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        XCTAssertEqual(request.hermesPath, "create_payment_resource")
+    }
+
+    // MARK: - paymentType
+
+    func testPaymentType_returnCheckout() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        XCTAssertEqual(request.paymentType, .checkout)
+    }
+
     // MARK: - intentAsString
 
     func testIntentAsString_whenIntentIsNotSpecified_returnsAuthorize() {

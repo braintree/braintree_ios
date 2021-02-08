@@ -17,6 +17,20 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         configuration = BTConfiguration(json: json)
     }
 
+    // MARK: - hermesPath
+
+    func testHermesPath_returnCorrectPath() {
+        let request = BTPayPalVaultRequest()
+        XCTAssertEqual(request.hermesPath, "setup_billing_agreement")
+    }
+
+    // MARK: - paymentType
+
+    func testPaymentType_returnsBillingAgreement() {
+        let request = BTPayPalVaultRequest()
+        XCTAssertEqual(request.paymentType, .billingAgreement)
+    }
+
     // MARK: - parametersWithConfiguration
 
     func testParametersWithConfiguration_returnsAllParams() {

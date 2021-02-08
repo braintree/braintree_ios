@@ -96,25 +96,20 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request
-             isBillingAgreement:YES
-                     completion:completionBlock];
+    [self requestPayPalCheckout:request completion:completionBlock];
 }
 
 #pragma mark - Express Checkout (One-Time Payments)
 
 - (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request
-             isBillingAgreement:NO
-                     completion:completionBlock];
+    [self requestPayPalCheckout:request completion:completionBlock];
 }
 
 #pragma mark - Helpers
 
 /// A "Hermes checkout" is used by both Billing Agreements (Vault) and One-Time Payments (Checkout)
 - (void)requestPayPalCheckout:(BTPayPalRequest *)request
-           isBillingAgreement:(BOOL)isBillingAgreement
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
@@ -146,10 +141,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
         self.payPalRequest = request;
 
-        NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
         NSDictionary *parameters = [request parametersWithConfiguration:configuration];
 
-        [self.apiClient POST:[NSString stringWithFormat:@"v1/paypal_hermes/%@", url]
+        [self.apiClient POST:[NSString stringWithFormat:@"v1/paypal_hermes/%@", request.hermesPath]
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
@@ -177,15 +171,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             self.clientMetadataID = [PPDataCollector clientMetadataID:pairingID];
 
             BOOL analyticsSuccess = error ? NO : YES;
-            if (isBillingAgreement) {
-                [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:BTPayPalPaymentTypeBillingAgreement withSuccess:analyticsSuccess];
-            } else {
-                [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:BTPayPalPaymentTypeCheckout withSuccess:analyticsSuccess];
-            }
+
+            [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:request.paymentType withSuccess:analyticsSuccess];
 
             [self handlePayPalRequestWithURL:approvalUrl
                                        error:error
-                                 paymentType:isBillingAgreement ? BTPayPalPaymentTypeBillingAgreement : BTPayPalPaymentTypeCheckout
+                                 paymentType:request.paymentType
                                   completion:completionBlock];
         }];
     }];

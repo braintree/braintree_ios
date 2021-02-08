@@ -24,6 +24,17 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     return self;
 }
 
+- (NSString *)landingPageTypeAsString {
+    switch(self.landingPageType) {
+        case BTPayPalRequestLandingPageTypeLogin:
+            return @"login";
+        case BTPayPalRequestLandingPageTypeBilling:
+            return @"billing";
+        default:
+            return nil;
+    }
+}
+
 - (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
@@ -66,17 +77,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     parameters[@"experience_profile"] = experienceProfile;
 
     return parameters;
-}
-
-- (NSString *)landingPageTypeAsString {
-    switch(self.landingPageType) {
-        case BTPayPalRequestLandingPageTypeLogin:
-            return @"login";
-        case BTPayPalRequestLandingPageTypeBilling:
-            return @"billing";
-        default:
-            return nil;
-    }
 }
 
 @end

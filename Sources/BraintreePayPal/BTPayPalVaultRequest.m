@@ -8,6 +8,14 @@
 
 @implementation BTPayPalVaultRequest
 
+- (NSString *)hermesPath {
+    return @"setup_billing_agreement";
+}
+
+- (BTPayPalPaymentType)paymentType {
+    return BTPayPalPaymentTypeBillingAgreement;
+}
+
 - (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
     NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration] mutableCopy];
 

@@ -5,6 +5,8 @@
 #endif
 
 #import <AuthenticationServices/AuthenticationServices.h>
+#import <BraintreePayPal/BTPayPalRequest_Internal.h>
+
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;
@@ -15,11 +17,6 @@
 #pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
-
-typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
-    BTPayPalPaymentTypeCheckout,
-    BTPayPalPaymentTypeBillingAgreement
-};
 
 @interface BTPayPalDriver ()
 
