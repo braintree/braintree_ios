@@ -85,7 +85,7 @@
     [self.paymentFlowDriver startPaymentFlow:request completion:paymentFlowCompletionBlock];
 }
 
-#pragma mark BTAppSwitchDelegate
+#pragma mark BTViewControllerPresentingDelegate
 
 - (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];

@@ -119,7 +119,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
  
  Handles the app switching and shared logic for payment flows that use web or app switching.
  */
-@interface BTPaymentFlowDriver : NSObject <BTAppSwitchHandler, BTPaymentFlowDriverDelegate>
+@interface BTPaymentFlowDriver : NSObject <BTAppContextSwitchDriver, BTPaymentFlowDriverDelegate>
 
 /**
  Initialize a new BTPaymentFlowDriver instance.
@@ -145,13 +145,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
  A required delegate to control the presentation and dismissal of view controllers.
  */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
-
-/**
- An optional delegate for receiving notifications about the lifecycle of a payment flow app/browser switch, as well as updating your UI
-
- @note BTPaymentFlowDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
- */
-@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
 @end
 

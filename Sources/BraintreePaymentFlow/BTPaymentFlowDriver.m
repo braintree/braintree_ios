@@ -39,14 +39,14 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 + (void)load {
     if (self == [BTPaymentFlowDriver class]) {
-        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchDriver:self];
     }
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         _apiClient = apiClient;
-        _returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
+        _returnURLScheme = [BTAppContextSwitcher sharedInstance].returnURLScheme;
     }
     return self;
 }
@@ -68,7 +68,6 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL {
-    [self informDelegateAppContextWillSwitch];
     [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
 }
 
@@ -94,16 +93,15 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 #pragma mark - App switch
 
-+ (void)handleAppSwitchReturnURL:(NSURL *)url {
++ (void)handleReturnURL:(NSURL *)url {
     [paymentFlowDriver handleOpenURL:url];
 }
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
++ (BOOL)canHandleReturnURL:(NSURL *)url {
     return [paymentFlowDriver.paymentFlowRequestDelegate canHandleAppSwitchReturnURL:url];
 }
 
 - (void)handleOpenURL:(NSURL *)url {
-    [self informDelegateAppContextDidReturn];
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
     if (self.safariViewController) {
         [self informDelegatePresentingViewControllerNeedsDismissal];
@@ -142,23 +140,4 @@ static BTPaymentFlowDriver *paymentFlowDriver;
     paymentFlowDriver = nil;
 }
 
-- (void)informDelegateAppContextWillSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextWillSwitchNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
-        [self.appSwitchDelegate appContextWillSwitch:self];
-    }
-}
-
-- (void)informDelegateAppContextDidReturn {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextDidReturnNotification object:self userInfo:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-
-    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
-        [self.appSwitchDelegate appContextDidReturn:self];
-    }
-}
-
 @end
-

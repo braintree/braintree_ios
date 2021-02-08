@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 /**
  Used to process Venmo payments
  */
-@interface BTVenmoDriver : NSObject <BTAppSwitchHandler>
+@interface BTVenmoDriver : NSObject <BTAppContextSwitchDriver>
 
 /**
  Initialize a new Venmo driver instance.
@@ -80,11 +80,6 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
  Switches to the iTunes App Store to download the Venmo app.
  */
 - (void)openVenmoAppPageInAppStore;
-
-/**
- An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating your UI
-*/
-@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
 @end
 
