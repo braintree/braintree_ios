@@ -94,7 +94,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 #pragma mark - Billing Agreement
 
-- (void)requestBillingAgreement:(BTPayPalRequest *)request
+- (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     [self requestPayPalCheckout:request
              isBillingAgreement:YES

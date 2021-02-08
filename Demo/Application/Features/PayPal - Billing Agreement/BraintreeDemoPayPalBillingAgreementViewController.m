@@ -24,9 +24,9 @@
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.appSwitchDelegate = self;
-    BTPayPalRequest *checkout = [[BTPayPalRequest alloc] init];
-    checkout.activeWindow = self.view.window;
-    [driver requestBillingAgreement:checkout completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
+    BTPayPalVaultRequest *request = [[BTPayPalVaultRequest alloc] init];
+    request.activeWindow = self.view.window;
+    [driver requestBillingAgreement:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
         [sender setEnabled:YES];
 
         if (error) {

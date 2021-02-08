@@ -26,7 +26,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     func testBillingAgreement_whenAPIClientIsNil_callsBackWithError() {
         payPalDriver.apiClient = nil
 
-        let request = BTPayPalRequest()
+        let request = BTPayPalVaultRequest()
         let expectation = self.expectation(description: "Billing Agreement fails with error")
         payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
@@ -43,7 +43,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = nil
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
 
-        let request = BTPayPalRequest()
+        let request = BTPayPalVaultRequest()
         let expectation = self.expectation(description: "Checkout fails with error")
         payPalDriver.requestBillingAgreement(request) { (_, error) -> Void in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
@@ -68,7 +68,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     }
 
     func testBillingAgreement_whenPayPalCreditOffered_performsSwitchCorrectly() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalVaultRequest()
         request.offerCredit = true
 
         payPalDriver.requestBillingAgreement(request) { _,_  in }
@@ -131,7 +131,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     }
 
     func testBillingAgreement_whenSetupBillingAgreementCreationSuccessful_performsPayPalRequestAppSwitch() {
-        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _,_  -> Void in }
+        payPalDriver.requestBillingAgreement(BTPayPalVaultRequest()) { _,_  -> Void in }
 
         XCTAssertNotNil(payPalDriver.authenticationSession)
         XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
@@ -142,7 +142,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Checkout fails with error")
 
-        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { (_, error) -> Void in
+        payPalDriver.requestBillingAgreement(BTPayPalVaultRequest()) { (_, error) -> Void in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
             expectation.fulfill()
         }
@@ -153,7 +153,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let mockAppSwitchDelegate = MockAppSwitchDelegate()
         payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
 
-        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _,_ in }
+        payPalDriver.requestBillingAgreement(BTPayPalVaultRequest()) { _,_ in }
 
         XCTAssertNotNil(payPalDriver.authenticationSession)
         XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
@@ -182,7 +182,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
                     ]
             ]
             ])
-        payPalDriver.payPalRequest = BTPayPalRequest()
+        payPalDriver.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: "bar://hello/world")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
@@ -221,7 +221,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             ]
             ])
 
-        payPalDriver.payPalRequest = BTPayPalRequest()
+        payPalDriver.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
