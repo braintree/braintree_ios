@@ -94,7 +94,7 @@ For CocoaPods integrations, the Braintree Apple Pay subspec has been renamed fro
 
 ## PayPal
 
-Implementing the `BTViewControllerPresentingDelegate` is no longer required.
+#### Custom URL Scheme
 
 Registering a custom URL scheme in your Xcode project is also no longer required. 
 
@@ -103,7 +103,29 @@ Code previously used to set your return URL scheme can be deleted. **Note:** Thi
 BTAppSwitch.setReturnURLScheme("com.your-company.your-app.payments")
 ```
 
+#### PayPal Request
+
+v5 introduces two subclasses of `BTPayPalRequest`: 
+* `BTPayPalCheckoutRequest`, for checkout flows
+* `BTPayPalVaultRequest`, for vault flows. 
+
+The `requestOneTimePayment` and `requestBillingAgreement` methods on `BTPayPalDriver` have been updated to expect instances of `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`, respectively.
+
+However, `requestOneTimePayment` and `requestBillingAgreement` have been deprecated in favor of `tokenizePayPalAccount`:
+
+```swift
+let request = BTPayPalCheckoutRequest(amount: "10.00")
+payPalDriver.tokenizePayPalAccount(with: request) { nonce, error in
+  // handle errors or send nonce to server to transact
+}
+
+```
+
 If your app supports multi-tasking, you must set the `BTPayPalRequest.activeWindow` property to ensure that the PayPal flow launches from the correct window.
+
+#### Other Changes
+
+Implementing the `BTViewControllerPresentingDelegate` is no longer required for the PayPal flow.
 
 ## App Switch
 
