@@ -71,7 +71,7 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     }
 
     // Currency code should only be used for Hermes Checkout (one-time payment).
-    // For BA, currency should not be used.
+    // For Billing Agreements (vault), currency should not be used.
     NSString *currencyCode = self.currencyCode ?: [configuration.json[@"paypal"][@"currencyIsoCode"] asString];
     if (!isBillingAgreement && currencyCode) {
         parameters[@"currency_iso_code"] = currencyCode;
