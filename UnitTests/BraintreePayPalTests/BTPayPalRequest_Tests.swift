@@ -50,7 +50,7 @@ class BTPayPalRequest_Tests: XCTestCase {
 
         request.lineItems = [BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)]
 
-        let parameters = request.parameters(with: configuration, isBillingAgreement: true)
+        let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
 
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
@@ -73,7 +73,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         let request = BTPayPalRequest()
         // no_shipping = true should be the default.
 
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
+        let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
 
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, true)
@@ -83,7 +83,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         let request = BTPayPalRequest()
         request.isShippingAddressRequired = true
 
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
+        let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String:Any] else { XCTFail(); return }
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
     }

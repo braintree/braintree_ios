@@ -24,7 +24,7 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     return self;
 }
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration isBillingAgreement:(BOOL)isBillingAgreement {
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
 

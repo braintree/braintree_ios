@@ -16,8 +16,8 @@
     return self;
 }
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration isBillingAgreement:(BOOL)isBillingAgreement {
-    NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration isBillingAgreement:NO] mutableCopy];
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
+    NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration] mutableCopy];
 
     parameters[@"intent"] = self.intentAsString;
     parameters[@"amount"] = self.amount;

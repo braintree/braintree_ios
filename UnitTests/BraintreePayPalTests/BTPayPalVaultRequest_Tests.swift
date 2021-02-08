@@ -34,7 +34,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
 
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
+        let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["description"] as? String, "desc")
 

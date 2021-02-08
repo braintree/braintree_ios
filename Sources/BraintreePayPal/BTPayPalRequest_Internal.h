@@ -15,7 +15,7 @@ extern NSString *const BTPayPalCallbackURLScheme;
 
 @property (nonatomic, nullable, copy, readonly) NSString *landingPageTypeAsString;
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration  isBillingAgreement:(BOOL)isBillingAgreement;
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration;
 
 @end
 

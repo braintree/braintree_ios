@@ -8,8 +8,8 @@
 
 @implementation BTPayPalVaultRequest
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration isBillingAgreement:(BOOL)isBillingAgreement {
-    NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration isBillingAgreement:NO] mutableCopy];
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
+    NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration] mutableCopy];
 
     if (self.billingAgreementDescription.length > 0) {
         parameters[@"description"] = self.billingAgreementDescription;

@@ -61,7 +61,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
 
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
+        let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["intent"] as? String, "sale")
         XCTAssertEqual(parameters["amount"] as? String, "1")
@@ -79,7 +79,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_returnsMinimumParams() {
         let request = BTPayPalCheckoutRequest(amount: "1")
 
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
+        let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["intent"] as? String, "authorize")
         XCTAssertEqual(parameters["amount"] as? String, "1")
@@ -97,7 +97,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         configuration = BTConfiguration(json: json)
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        let parameters = request.parameters(with: configuration, isBillingAgreement: false)
+        let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["currency_iso_code"] as? String, "currency-code")
     }

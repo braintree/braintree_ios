@@ -147,7 +147,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         self.payPalRequest = request;
 
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
-        NSDictionary *parameters = [request parametersWithConfiguration:configuration isBillingAgreement:isBillingAgreement];
+        NSDictionary *parameters = [request parametersWithConfiguration:configuration];
 
         [self.apiClient POST:[NSString stringWithFormat:@"v1/paypal_hermes/%@", url]
                   parameters:parameters
