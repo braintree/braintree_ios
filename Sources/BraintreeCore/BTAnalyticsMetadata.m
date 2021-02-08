@@ -27,7 +27,6 @@
     [self setObject:[m iosDeploymentTarget] forKey:@"iosDeploymentTarget" inDictionary:data];
     [self setObject:[m iosIdentifierForVendor] forKey:@"iosIdentifierForVendor" inDictionary:data];
     [self setObject:@([m iosIsCocoapods]) forKey:@"iosIsCocoapods" inDictionary:data];
-    [self setObject:@([m iosIsSwiftPackageManager]) forKey:@"iosIsSwiftPackageManager" inDictionary:data];
     [self setObject:[m deviceAppGeneratedPersistentUuid] forKey:@"deviceAppGeneratedPersistentUuid" inDictionary:data];
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
@@ -114,14 +113,6 @@
 
 - (BOOL)iosIsCocoapods {
 #ifdef COCOAPODS
-    return YES;
-#else
-    return NO;
-#endif
-}
-
-- (BOOL)iosIsSwiftPackageManager {
-#ifdef SWIFT_PACKAGE
     return YES;
 #else
     return NO;
