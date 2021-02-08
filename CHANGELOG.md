@@ -34,6 +34,8 @@
     * `BTVenmoDriver.authorizeAccount(profileID:vault:completion:)`
   * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
+  * Remove `BTDataCollectorDelegate`
+  * Remove `BTDataCollector.collectCardFraudData()`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
 * Add `environment` to `BTConfiguration`
