@@ -56,7 +56,7 @@
         request.activeWindow = self.view.window;
         request.offerCredit = YES;
 
-        [driver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
+        [driver tokenizePayPalAccountWithPayPalRequest:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
             [sender setEnabled:YES];
             
             if (error) {
@@ -72,7 +72,7 @@
         request.activeWindow = self.view.window;
         request.offerCredit = YES;
 
-        [driver requestBillingAgreement:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
+        [driver tokenizePayPalAccountWithPayPalRequest:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
             [sender setEnabled:YES];
             
             if (error) {

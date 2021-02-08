@@ -101,7 +101,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
  */
 - (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
-                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
+                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use tokenizePayPalAccount instead.");
 
 /**
  Create a PayPal Billing Agreement for repeat purchases.
@@ -115,9 +115,19 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
 */
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
-                     completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
+                     completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use tokenizePayPalAccount instead.");
 
-// TODO: - doc string
+/**
+ Tokenize a PayPal account for vault or checkout.
+
+ @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+ server when this method completes without any additional user interaction.
+
+ On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
+
+ @param request Either a BTPayPalCheckoutRequest or a BTPayPalVaultRequest
+ @param completionBlock This completion will be invoked exactly once when tokenization is complete or an error occurs.
+*/
 - (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request
                                     completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
