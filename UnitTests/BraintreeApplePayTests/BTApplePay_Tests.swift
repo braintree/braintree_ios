@@ -270,7 +270,7 @@ class BTApplePay_Tests: XCTestCase {
             XCTAssertEqual(tokenizedPayment!.binData.payroll, "No")
             XCTAssertEqual(tokenizedPayment!.binData.issuingBank, "US")
             XCTAssertEqual(tokenizedPayment!.binData.countryOfIssuance, "Something")
-            XCTAssertEqual(tokenizedPayment!.binData.productId, "123")
+            XCTAssertEqual(tokenizedPayment!.binData.productID, "123")
             expectation.fulfill()
         }
 
@@ -306,7 +306,7 @@ class BTApplePay_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "unknown")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
     class MockPKPaymentToken : PKPaymentToken {

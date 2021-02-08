@@ -68,7 +68,7 @@
         expect(tokenizedCard.binData.payroll).toNot.beNil();
         expect(tokenizedCard.binData.issuingBank).toNot.beNil();
         expect(tokenizedCard.binData.countryOfIssuance).toNot.beNil();
-        expect(tokenizedCard.binData.productId).toNot.beNil();
+        expect(tokenizedCard.binData.productID).toNot.beNil();
         expect(tokenizedCard.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
         expect(tokenizedCard.threeDSecureInfo.liabilityShifted).to.beFalsy();
         expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();

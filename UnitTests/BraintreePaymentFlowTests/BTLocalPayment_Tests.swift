@@ -134,7 +134,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
             "paymentToken": "123aaa-123-543-777",
             ] ])
 
-        localPaymentRequest.merchantAccountId = "customer-nl-merchant-account"
+        localPaymentRequest.merchantAccountID = "customer-nl-merchant-account"
         localPaymentRequest.paymentType = "ideal"
         localPaymentRequest.paymentTypeCountryCode = "NL"
         localPaymentRequest.currencyCode = "EUR"
@@ -245,7 +245,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
-    func testStartPayment_returnsPaymentId_inDelegateCallback() {
+    func testStartPayment_returnsPaymentID_inDelegateCallback() {
         mockLocalPaymentRequestDelegate.idExpectation = self.expectation(description: "Received payment ID")
 
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
@@ -267,7 +267,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 4, handler: nil)
 
-        XCTAssertEqual(mockLocalPaymentRequestDelegate.paymentId, "123aaa-123-543-abv")
+        XCTAssertEqual(mockLocalPaymentRequestDelegate.paymentID, "123aaa-123-543-abv")
     }
 
     func testStartPayment_success_sendsAnalyticsEvents() {
@@ -364,9 +364,9 @@ class BTLocalPayment_UnitTests: XCTestCase {
             XCTAssertNotNil(result)
             guard let localPaymentResult = result as! BTLocalPaymentResult? else {return}
 
-            XCTAssertEqual(localPaymentResult.clientMetadataId, "89d377ae78244447a3f78ada7d01b270")
+            XCTAssertEqual(localPaymentResult.clientMetadataID, "89d377ae78244447a3f78ada7d01b270")
             XCTAssertEqual(localPaymentResult.type, "PayPalAccount")
-            XCTAssertEqual(localPaymentResult.payerId, "PCKXQCZ6J3YXU")
+            XCTAssertEqual(localPaymentResult.payerID, "PCKXQCZ6J3YXU")
             XCTAssertEqual(localPaymentResult.nonce, "f689056d-aee1-421e-9d10-f2c9b34d4d6f")
             paymentFinishedExpectation!.fulfill()
         }

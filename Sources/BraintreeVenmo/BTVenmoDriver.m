@@ -135,8 +135,8 @@ static BTVenmoDriver *appSwitchedDriver;
         metadata.source = BTClientMetadataSourceVenmoApp;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
-        NSString *venmoProfileId = venmoRequest.profileID ?: configuration.venmoMerchantID;
-        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:venmoProfileId
+        NSString *venmoProfileID = venmoRequest.profileID ?: configuration.venmoMerchantID;
+        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:venmoProfileID
                                                                         accessToken:configuration.venmoAccessToken
                                                                     returnURLScheme:self.returnURLScheme
                                                                   bundleDisplayName:bundleDisplayName

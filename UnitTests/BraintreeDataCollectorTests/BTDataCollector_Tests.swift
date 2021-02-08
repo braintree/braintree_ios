@@ -43,7 +43,7 @@ class BTDataCollector_Tests: XCTestCase {
         let apiClient = clientThatReturnsConfiguration(config as [String : AnyObject])
         
         let dataCollector = BTDataCollector(apiClient: apiClient)
-        dataCollector.setFraudMerchantId("500001")
+        dataCollector.setFraudMerchantID("500001")
         let expectation = self.expectation(description: "Returns fraud data")
         
         dataCollector.collectDeviceData { (deviceData: String) in

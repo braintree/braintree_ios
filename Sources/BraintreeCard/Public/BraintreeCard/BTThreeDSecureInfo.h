@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Unique transaction identifier assigned by the Access Control Server (ACS) to identify a single transaction.
  */
-@property (nonatomic, readonly, nullable) NSString *acsTransactionId;
+@property (nonatomic, readonly, nullable) NSString *acsTransactionID;
 
 /**
  On authentication, the transaction status result identifier.
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Directory Server Transaction ID is an ID used by the card brand's 3DS directory server.
  */
-@property (nonatomic, readonly, nullable) NSString *dsTransactionId;
+@property (nonatomic, readonly, nullable) NSString *dsTransactionID;
 
 /**
  The ecommerce indicator flag indicates the outcome of the 3DS authentication. Possible values are 00, 01, and 02 for Mastercard 05, 06, and 07 for all other cardbrands.
@@ -90,12 +90,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Unique identifier assigned to the 3D Secure authentication performed for this transaction.
 */
-@property (nonatomic, readonly, nullable) NSString *threeDSecureAuthenticationId;
+@property (nonatomic, readonly, nullable) NSString *threeDSecureAuthenticationID;
 
 /**
  Unique transaction identifier assigned by the 3DS Server to identify a single transaction.
  */
-@property (nonatomic, readonly, nullable) NSString *threeDSecureServerTransactionId;
+@property (nonatomic, readonly, nullable) NSString *threeDSecureServerTransactionID;
 
 /**
  The 3DS version used in the authentication, example "1.0.2" or "2.1.0".

@@ -541,7 +541,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         let expectation = self.expectation(description: "willCallCompletion")
 
         threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.dfReferenceId = "fake-df-reference-id"
+        threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
 
         driver.prepareLookup(threeDSecureRequest) { (clientData, error) in
             XCTAssertNil(error)
