@@ -136,6 +136,11 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureShippingMethod) {
 @property (nonatomic) BOOL exemptionRequested;
 
 /**
+ :nodoc:
+ */
+@property (nonatomic) BOOL dataOnlyRequested;
+
+/**
  Optional. UI Customization for 3DS2 challenge views.
  */
 @property (nonatomic, nullable, strong) BTThreeDSecureV2UICustomization *v2UICustomization;

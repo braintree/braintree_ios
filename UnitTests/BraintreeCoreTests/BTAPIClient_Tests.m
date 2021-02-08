@@ -8,7 +8,7 @@
 
 @property (nonatomic, assign) BTClientMetadataIntegrationType integration;
 @property (nonatomic, assign) BTClientMetadataSourceType source;
-@property (nonatomic, copy) NSString *sessionId;
+@property (nonatomic, copy) NSString *sessionID;
 
 @end
 
@@ -16,7 +16,7 @@
 
 @synthesize integration = _integration;
 @synthesize source = _source;
-@synthesize sessionId = _sessionId;
+@synthesize sessionID = _sessionID;
 
 @end
 
@@ -237,7 +237,7 @@
     [apiClient POST:@"/" parameters:@{} httpType:BTAPIClientHTTPTypeGateway completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
         XCTAssertEqualObjects(mockHTTP.lastRequestParameters[@"_meta"][@"integration"], metadata.integrationString);
         XCTAssertEqualObjects(mockHTTP.lastRequestParameters[@"_meta"][@"source"], metadata.sourceString);
-        XCTAssertEqualObjects(mockHTTP.lastRequestParameters[@"_meta"][@"sessionId"], metadata.sessionId);
+        XCTAssertEqualObjects(mockHTTP.lastRequestParameters[@"_meta"][@"sessionId"], metadata.sessionID);
         [expectation fulfill];
     }];
 

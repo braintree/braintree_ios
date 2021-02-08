@@ -115,14 +115,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL shouldValidate;
 
 /**
- Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountId` must be provided. Defaults to false.
+ Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountID` must be provided. Defaults to false.
  */
 @property (nonatomic, assign) BOOL authenticationInsightRequested;
 
 /**
- Optional: The merchant account id.
+ Optional: The merchant account ID.
  */
-@property (nonatomic, nullable, copy) NSString *merchantAccountId;
+@property (nonatomic, nullable, copy) NSString *merchantAccountID;
 
 @end
 

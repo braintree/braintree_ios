@@ -22,7 +22,7 @@ class BTAmericanExpressRewardsBalance_Tests: XCTestCase {
         XCTAssertEqual(rewardsBalance.conversionRate, "0.0070")
         XCTAssertEqual(rewardsBalance.currencyAmount, "316795.03")
         XCTAssertEqual(rewardsBalance.currencyIsoCode, "USD")
-        XCTAssertEqual(rewardsBalance.requestId, "715f4712-8690-49ed-8cc5-d7fb1c2d")
+        XCTAssertEqual(rewardsBalance.requestID, "715f4712-8690-49ed-8cc5-d7fb1c2d")
         XCTAssertEqual(rewardsBalance.rewardsAmount, "45256433")
         XCTAssertEqual(rewardsBalance.rewardsUnit, "Points")
         XCTAssertNil(rewardsBalance.errorCode)
@@ -48,7 +48,7 @@ class BTAmericanExpressRewardsBalance_Tests: XCTestCase {
         XCTAssertNil(rewardsBalance.conversionRate)
         XCTAssertNil(rewardsBalance.currencyAmount)
         XCTAssertNil(rewardsBalance.currencyIsoCode)
-        XCTAssertNil(rewardsBalance.requestId)
+        XCTAssertNil(rewardsBalance.requestID)
         XCTAssertNil(rewardsBalance.rewardsAmount)
         XCTAssertNil(rewardsBalance.rewardsUnit)
     }

@@ -19,7 +19,7 @@
             _payroll = [json[@"payroll"] asString] ? [json[@"payroll"] asString] : @"Unknown";
             _issuingBank = [json[@"issuingBank"] asString] ? [json[@"issuingBank"] asString] : @"";
             _countryOfIssuance = [json[@"countryOfIssuance"] asString] ? [json[@"countryOfIssuance"] asString] : @"";
-            _productId = [json[@"productId"] asString] ? [json[@"productId"] asString] : @"";
+            _productID = [json[@"productId"] asString] ? [json[@"productId"] asString] : @"";
         }
     }
     return self;

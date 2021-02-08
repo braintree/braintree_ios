@@ -91,7 +91,7 @@
 
 // Test is failing because Kount is no longer async and doesn't return errors
 - (void)pendCollectCardFraudData_whenMerchantIDIsInvalid_invokesErrorCallback {
-    [self.dataCollector setFraudMerchantId:@"-1"];
+    [self.dataCollector setFraudMerchantID:@"-1"];
     XCTestExpectation *expectation = [self expectationWithDescription:@"Error callback invoked"];
     
     [self.dataCollector collectCardFraudData:^(NSString * _Nonnull deviceData) {

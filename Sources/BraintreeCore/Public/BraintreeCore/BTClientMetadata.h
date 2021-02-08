@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  In general, this data may evolve and be used in different ways by different
  integrations in a single app. For example, if both Apple Pay and drop in are
  used. In this case, the source and integration may change over time, while
- the sessionId should remain constant. To achieve this, users of this class
+ the sessionID should remain constant. To achieve this, users of this class
  should use `mutableCopy` to create a new copy based on the existing session
  and then update the object as needed.
 */
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Auto-generated UUID
 */
-@property (nonatomic, copy, readonly) NSString *sessionId;
+@property (nonatomic, copy, readonly) NSString *sessionID;
 
 #pragma mark Derived Properties
 
@@ -107,9 +107,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Auto-generated UUID
- @param sessionId A string for the session
+ @param sessionID A string for the session
  */
-- (void)setSessionId:(NSString *)sessionId;
+- (void)setSessionID:(NSString *)sessionID;
 
 @end
 

@@ -8,7 +8,7 @@
     @protected
     BTClientMetadataIntegrationType _integration;
     BTClientMetadataSourceType _source;
-    NSString *_sessionId;
+    NSString *_sessionID;
 }
 @end
 
@@ -19,7 +19,7 @@
     if (self) {
         _integration = BTClientMetadataIntegrationCustom;
         _source = BTClientMetadataSourceUnknown;
-        _sessionId = [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        _sessionID = [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
     }
     return self;
 }
@@ -28,7 +28,7 @@
     BTClientMetadata *copiedMetadata = [[BTClientMetadata allocWithZone:zone] init];
     copiedMetadata->_integration = _integration;
     copiedMetadata->_source = _source;
-    copiedMetadata->_sessionId = [_sessionId copyWithZone:zone];
+    copiedMetadata->_sessionID = [_sessionID copyWithZone:zone];
     return copiedMetadata;
 }
 
@@ -36,7 +36,7 @@
     BTMutableClientMetadata *mutableMetadata = [[BTMutableClientMetadata allocWithZone:zone] init];
     mutableMetadata.integration = _integration;
     mutableMetadata.source = _source;
-    mutableMetadata.sessionId = [_sessionId copyWithZone:zone];
+    mutableMetadata.sessionID = [_sessionID copyWithZone:zone];
     return mutableMetadata;
 }
 
@@ -52,7 +52,7 @@
     return @{
              @"integration": self.integrationString,
              @"source": self.sourceString,
-             @"sessionId": self.sessionId
+             @"sessionId": self.sessionID
              };
 }
 
@@ -99,8 +99,8 @@
     _source = source;
 }
 
-- (void)setSessionId:(NSString *)sessionId {
-    _sessionId = sessionId;
+- (void)setSessionID:(NSString *)sessionID {
+    _sessionID = sessionID;
 }
 
 @end
