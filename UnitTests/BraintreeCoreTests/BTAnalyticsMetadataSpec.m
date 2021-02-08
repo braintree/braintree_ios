@@ -109,6 +109,11 @@ describe(@"metadata", ^{
             expect([BTAnalyticsMetadata metadata][@"iosIsCocoapods"]).to.beKindOf([NSNumber class]);
         });
     });
+    describe(@"iosIsSwiftPackageManager", ^{
+        it(@"is present", ^{
+            expect([BTAnalyticsMetadata metadata][@"iosIsSwiftPackageManager"]).to.beKindOf([NSNumber class]);
+        });
+    });
     describe(@"isSimulator", ^{
         it(@"returns true for ios simulators", ^{
             expect([BTAnalyticsMetadata metadata][@"isSimulator"]).to.beTruthy();
