@@ -171,7 +171,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                                                                 request:self
                                                                                              completion:^(NSDictionary *lookupParameters) {
                                                                                                  if (lookupParameters[@"dfReferenceId"]) {
-                                                                                                     self.dfReferenceId = lookupParameters[@"dfReferenceId"];
+                                                                                                     self.dfReferenceID = lookupParameters[@"dfReferenceId"];
                                                                                                  }
                                                                                                  completionBlock(nil);
                                                                                              }];

@@ -26,14 +26,13 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 @interface BTDataCollector ()
 
-@property (nonatomic, copy) NSString *fraudMerchantId;
+@property (nonatomic, copy) NSString *fraudMerchantID;
 @property (nonatomic, copy) BTAPIClient *apiClient;
 
 @end
 
 @implementation BTDataCollector
 
-static NSString *BTDataCollectorSharedMerchantId = @"600000";
 static Class PayPalDataCollectorClass;
 
 NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDataCollectorKountErrorDomain";
@@ -77,9 +76,9 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     self.kount.environment = environment;
 }
 
-- (void)setFraudMerchantId:(NSString *)fraudMerchantId {
-    _fraudMerchantId = fraudMerchantId;
-    self.kount.merchantID = [fraudMerchantId integerValue];
+- (void)setFraudMerchantID:(NSString *)fraudMerchantID {
+    _fraudMerchantID = fraudMerchantID;
+    self.kount.merchantID = [fraudMerchantID integerValue];
 }
 
 #pragma mark - Public methods
@@ -105,14 +104,14 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
             BTDataCollectorEnvironment btEnvironment = [self environmentFromString:configuration.environment];
             [self setCollectorEnvironment:[self collectorEnvironment:btEnvironment]];
 
-            NSString *merchantId = self.fraudMerchantId ?: [configuration kountMerchantId];
-            self.kount.merchantID = [merchantId integerValue];
+            NSString *merchantID = self.fraudMerchantID ?: [configuration kountMerchantID];
+            self.kount.merchantID = [merchantID integerValue];
 
-            NSString *deviceSessionId = [self sessionId];
-            dataDictionary[@"device_session_id"] = deviceSessionId;
-            dataDictionary[@"fraud_merchant_id"] = merchantId;
+            NSString *deviceSessionID = [self sessionID];
+            dataDictionary[@"device_session_id"] = deviceSessionID;
+            dataDictionary[@"fraud_merchant_id"] = merchantID;
             dispatch_group_enter(collectorDispatchGroup);
-            [self.kount collectForSession:deviceSessionId completion:^(__unused NSString * _Nonnull sessionID, __unused BOOL success, __unused NSError * _Nullable error) {
+            [self.kount collectForSession:deviceSessionID completion:^(__unused NSString * _Nonnull sessionID, __unused BOOL success, __unused NSError * _Nullable error) {
                 if (success) {
                     [self onCollectorSuccess];
                 } else {
@@ -122,9 +121,9 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
             }];
         }
         
-        NSString *payPalClientMetadataId = [BTDataCollector generatePayPalClientMetadataId];
-        if (payPalClientMetadataId) {
-            dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID];
+        if (payPalClientMetadataID) {
+            dataDictionary[@"correlation_id"] = payPalClientMetadataID;
         }
 
         dispatch_group_notify(collectorDispatchGroup, dispatch_get_main_queue(), ^{
@@ -159,11 +158,11 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     [self onCollectorStart];
     NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
     if (includeCard) {
-        NSString *deviceSessionId = [self sessionId];
-        dataDictionary[@"device_session_id"] = deviceSessionId;
-        dataDictionary[@"fraud_merchant_id"] = self.fraudMerchantId;
+        NSString *deviceSessionID = [self sessionID];
+        dataDictionary[@"device_session_id"] = deviceSessionID;
+        dataDictionary[@"fraud_merchant_id"] = self.fraudMerchantID;
 
-        [self.kount collectForSession:deviceSessionId completion:^(__unused NSString * _Nonnull sessionID, BOOL success, NSError * _Nullable error) {
+        [self.kount collectForSession:deviceSessionID completion:^(__unused NSString * _Nonnull sessionID, BOOL success, NSError * _Nullable error) {
             if (success) {
                 [self onCollectorSuccess];
             } else {
@@ -173,9 +172,9 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     }
 
     if (includePayPal) {
-        NSString *payPalClientMetadataId = [BTDataCollector generatePayPalClientMetadataId];
-        if (payPalClientMetadataId) {
-            dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID];
+        if (payPalClientMetadataID) {
+            dataDictionary[@"correlation_id"] = payPalClientMetadataID;
         }
     }
     
@@ -196,7 +195,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-+ (NSString *)generatePayPalClientMetadataId {
++ (NSString *)generatePayPalClientMetadataID {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     if (PayPalDataCollectorClass && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
@@ -208,7 +207,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 }
 
 /// Generates a new session ID
-- (NSString *)sessionId {
+- (NSString *)sessionID {
     return [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
 }
 

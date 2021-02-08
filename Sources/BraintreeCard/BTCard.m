@@ -179,7 +179,7 @@
 
     NSMutableDictionary *variables = [@{ @"input": [inputDictionary copy] } mutableCopy];
     if (self.authenticationInsightRequested) {
-        variables[@"authenticationInsightInput"] = self.merchantAccountId ? @{ @"merchantAccountId": self.merchantAccountId } : @{};
+        variables[@"authenticationInsightInput"] = self.merchantAccountID ? @{ @"merchantAccountId": self.merchantAccountID } : @{};
     }
     
     return @{

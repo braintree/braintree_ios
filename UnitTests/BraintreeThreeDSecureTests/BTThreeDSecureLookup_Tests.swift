@@ -22,7 +22,7 @@ class BTThreeDSecureLookup_Tests: XCTestCase {
         XCTAssertEqual(lookup.paReq, "somePareq")
         XCTAssertEqual(lookup.termURL, URL(string: "www.someTermUrl.com"))
         XCTAssertEqual(lookup.threeDSecureVersion, "2.1.0")
-        XCTAssertEqual(lookup.transactionId, "someTransactionId")
+        XCTAssertEqual(lookup.transactionID, "someTransactionId")
         XCTAssertTrue(lookup.isThreeDSecureVersion2)
         XCTAssertTrue(lookup.requiresUserAuthentication)
     }
@@ -38,7 +38,7 @@ class BTThreeDSecureLookup_Tests: XCTestCase {
         XCTAssertNil(lookup.paReq)
         XCTAssertNil(lookup.termURL)
         XCTAssertNil(lookup.threeDSecureVersion)
-        XCTAssertNil(lookup.transactionId)
+        XCTAssertNil(lookup.transactionID)
         XCTAssertFalse(lookup.isThreeDSecureVersion2)
         XCTAssertFalse(lookup.requiresUserAuthentication)
     }

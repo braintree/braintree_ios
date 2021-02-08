@@ -46,8 +46,8 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
         experienceProfile[@"locale_code"] = self.localeCode;
     }
 
-    if (self.merchantAccountId) {
-        parameters[@"merchant_account_id"] = self.merchantAccountId;
+    if (self.merchantAccountID) {
+        parameters[@"merchant_account_id"] = self.merchantAccountID;
     }
 
     if (self.shippingAddressOverride) {

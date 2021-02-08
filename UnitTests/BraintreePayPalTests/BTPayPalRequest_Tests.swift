@@ -46,7 +46,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.displayName = "Display Name"
         request.landingPageType = .login
         request.localeCode = "locale-code"
-        request.merchantAccountId = "merchant-account-id"
+        request.merchantAccountID = "merchant-account-id"
 
         let shippingAddressOverride = BTPostalAddress()
         shippingAddressOverride.streetAddress = "123 Main"

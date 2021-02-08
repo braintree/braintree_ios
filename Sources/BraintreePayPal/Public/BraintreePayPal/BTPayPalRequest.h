@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 /**
  Optional: A non-default merchant account to use for tokenization.
 */
-@property (nonatomic, nullable, copy) NSString *merchantAccountId;
+@property (nonatomic, nullable, copy) NSString *merchantAccountID;
 
 /**
  Optional: The line items for this transaction. It can include up to 249 line items.

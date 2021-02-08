@@ -78,7 +78,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
         // Union Pay tokenization requests should not go through the GraphQL API
         if ([self isGraphQLEnabledForCardTokenization:configuration] && !request.enrollmentID) {
             
-            if (request.card.authenticationInsightRequested && !request.card.merchantAccountId) {
+            if (request.card.authenticationInsightRequested && !request.card.merchantAccountID) {
                 NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                                      code:BTCardClientErrorTypeIntegration
                                                  userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true."}];
@@ -215,7 +215,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     parameters[@"_meta"] = @{
                              @"source" : self.apiClient.metadata.sourceString,
                              @"integration" : self.apiClient.metadata.integrationString,
-                             @"sessionId" : self.apiClient.metadata.sessionId,
+                             @"sessionId" : self.apiClient.metadata.sessionID,
                              };
     if (options) {
         parameters[@"options"] = options;
@@ -223,7 +223,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     
     if (request.card.authenticationInsightRequested) {
         parameters[@"authenticationInsight"] = @YES;
-        parameters[@"merchantAccountId"] = request.card.merchantAccountId;
+        parameters[@"merchantAccountId"] = request.card.merchantAccountID;
     }
 
     return [parameters copy];

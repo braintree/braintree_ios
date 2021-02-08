@@ -72,17 +72,17 @@
         NSString *nonce = self.latestTokenizedPayment.nonce;
         [self updateStatus:@"Creating Transaction…"];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        NSString *merchantAccountId = ([self.latestTokenizedPayment.type isEqualToString:@"UnionPay"]) ? @"fake_switch_usd" : nil;
+        NSString *merchantAccountID = ([self.latestTokenizedPayment.type isEqualToString:@"UnionPay"]) ? @"fake_switch_usd" : nil;
         
         [BraintreeDemoMerchantAPIClient.shared makeTransactionWithPaymentMethodNonce:nonce
-                                                                   merchantAccountId:merchantAccountId
-                                                                          completion:^(NSString *transactionId, NSError *error) {
+                                                                   merchantAccountID:merchantAccountID
+                                                                          completion:^(NSString *transactionID, NSError *error) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             self.latestTokenizedPayment = nil;
             if (error) {
                 [self updateStatus:error.localizedDescription];
             } else {
-                [self updateStatus:transactionId];
+                [self updateStatus:transactionID];
             }
         }];
     }

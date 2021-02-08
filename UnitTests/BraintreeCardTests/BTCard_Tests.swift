@@ -200,11 +200,11 @@ class BTCard_Tests: XCTestCase {
         ] as NSObject)
     }
     
-    func testGraphQLParameters_whenMerchantAccountIdIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
+    func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = true
-        card.merchantAccountId = "some id"
+        card.merchantAccountID = "some id"
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -223,11 +223,11 @@ class BTCard_Tests: XCTestCase {
         ] as NSObject)
     }
     
-    func testGraphQLParameters_whenMerchantAccountIdIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
+    func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = false
-        card.merchantAccountId = "some id"
+        card.merchantAccountID = "some id"
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -243,11 +243,11 @@ class BTCard_Tests: XCTestCase {
             ] as NSObject)
     }
     
-    func testGraphQLParameters_whenMerchantAccountIdIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
+    func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = true
-        card.merchantAccountId = nil
+        card.merchantAccountID = nil
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -264,11 +264,11 @@ class BTCard_Tests: XCTestCase {
             ] as NSObject)
     }
     
-    func testGraphQLParameters_whenMerchantAccountIdIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
+    func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard()
         card.number = "4111111111111111"
         card.authenticationInsightRequested = false
-        card.merchantAccountId = nil
+        card.merchantAccountID = nil
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
