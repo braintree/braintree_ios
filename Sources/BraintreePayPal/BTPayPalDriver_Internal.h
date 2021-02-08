@@ -5,7 +5,7 @@
 #endif
 
 #import <AuthenticationServices/AuthenticationServices.h>
-#import <BraintreePayPal/BTPayPalRequest_Internal.h>
+#import "BTPayPalRequest_Internal.h"
 
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
