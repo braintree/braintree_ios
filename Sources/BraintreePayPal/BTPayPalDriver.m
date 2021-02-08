@@ -96,21 +96,19 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request completion:completionBlock];
+    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
 }
 
 #pragma mark - Express Checkout (One-Time Payments)
 
 - (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request completion:completionBlock];
+    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
 }
 
 #pragma mark - Helpers
 
-/// A "Hermes checkout" is used by both Billing Agreements (Vault) and One-Time Payments (Checkout)
-- (void)requestPayPalCheckout:(BTPayPalRequest *)request
-                   completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+- (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration

@@ -117,6 +117,10 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
+// TODO: - doc string
+- (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request
+                                    completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
+
 #pragma mark - Delegate
 
 /**
