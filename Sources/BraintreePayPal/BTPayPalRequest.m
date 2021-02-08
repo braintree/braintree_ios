@@ -28,10 +28,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
 
-    if (isBillingAgreement && self.billingAgreementDescription.length > 0) {
-        parameters[@"description"] = self.billingAgreementDescription;
-    }
-
     parameters[@"offer_paypal_credit"] = @(self.offerCredit);
 
     experienceProfile[@"no_shipping"] = @(!self.isShippingAddressRequired);
@@ -52,18 +48,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
 
     if (self.shippingAddressOverride) {
         experienceProfile[@"address_override"] = @(!self.isShippingAddressEditable);
-        BTPostalAddress *shippingAddress = self.shippingAddressOverride;
-        if (isBillingAgreement) {
-            NSMutableDictionary *shippingAddressParams = [NSMutableDictionary dictionary];
-            shippingAddressParams[@"line1"] = shippingAddress.streetAddress;
-            shippingAddressParams[@"line2"] = shippingAddress.extendedAddress;
-            shippingAddressParams[@"city"] = shippingAddress.locality;
-            shippingAddressParams[@"state"] = shippingAddress.region;
-            shippingAddressParams[@"postal_code"] = shippingAddress.postalCode;
-            shippingAddressParams[@"country_code"] = shippingAddress.countryCodeAlpha2;
-            shippingAddressParams[@"recipient_name"] = shippingAddress.recipientName;
-            parameters[@"shipping_address"] = shippingAddressParams;
-        }
     } else {
         experienceProfile[@"address_override"] = @NO;
     }

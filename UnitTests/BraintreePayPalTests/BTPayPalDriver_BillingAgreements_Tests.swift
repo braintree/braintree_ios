@@ -54,7 +54,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     }
 
     func testBillingAgreement_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalVaultRequest()
         request.billingAgreementDescription = "description"
 
         payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }

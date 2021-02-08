@@ -97,11 +97,6 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic, nullable, strong) BTPostalAddress *shippingAddressOverride;
 
 /**
- Optional: Display a custom description to the user for a billing agreement.
-*/
-@property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
-
-/**
  Optional: Changes the call-to-action in the PayPal flow. This option works for both checkout and vault flows. Defaults to `BTPayPalRequestUserActionDefault`.
 */
 @property (nonatomic) BTPayPalRequestUserAction userAction;
