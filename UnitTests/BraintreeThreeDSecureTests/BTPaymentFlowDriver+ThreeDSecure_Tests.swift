@@ -22,7 +22,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.versionRequested = .version2
-        threeDSecureRequest.dfReferenceId = "df-reference-id"
+        threeDSecureRequest.dfReferenceID = "df-reference-id"
         threeDSecureRequest.accountType = .credit
         threeDSecureRequest.challengeRequested = true
         threeDSecureRequest.exemptionRequested = true

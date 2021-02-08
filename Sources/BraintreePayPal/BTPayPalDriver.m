@@ -2,13 +2,13 @@
 #import "BTPayPalAccountNonce_Internal.h"
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
+#import "BTPayPalRequest_Internal.h"
 
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
 #import <Braintree/BTLogger_Internal.h>
-#import <Braintree/BTPayPalRequest.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
 #import <Braintree/Braintree-Swift.h>
@@ -18,7 +18,6 @@
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
-#import <BraintreePayPal/BTPayPalRequest.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 // Use @import for SPM support (see https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348)
@@ -29,15 +28,12 @@
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreePayPal/BTPayPalRequest.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
-NSString *const BTCallbackURLHostAndPath = @"onetouch/v1/";
-NSString *const BTCallbackURLScheme = @"sdk.ios.braintree";
 
 /**
  This environment MUST be used for App Store submissions.
@@ -147,88 +143,10 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             return;
         }
 
-        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-        NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
-
-        if (!isBillingAgreement) {
-            parameters[@"intent"] = [self.class intentTypeToString:request.intent];
-            if (request.amount != nil) {
-                parameters[@"amount"] = request.amount;
-            }
-        } else if (request.billingAgreementDescription.length > 0) {
-            parameters[@"description"] = request.billingAgreementDescription;
-        }
-
-        parameters[@"offer_paypal_credit"] = @(request.offerCredit);
-
-        parameters[@"offer_pay_later"] = @(request.offerPayLater);
-
-        experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);
-
-        experienceProfile[@"brand_name"] = request.displayName ?: [configuration.json[@"paypal"][@"displayName"] asString];
-
-        NSString *landingPageTypeValue = [self.class landingPageTypeToString:request.landingPageType];
-        if (landingPageTypeValue != nil) {
-            experienceProfile[@"landing_page_type"] = landingPageTypeValue;
-        }
-
-        if (request.localeCode != nil) {
-            experienceProfile[@"locale_code"] = request.localeCode;
-        }
-
-        if (request.merchantAccountID != nil) {
-            parameters[@"merchant_account_id"] = request.merchantAccountID;
-        }
-
-        // Currency code should only be used for Hermes Checkout (one-time payment).
-        // For BA, currency should not be used.
-        NSString *currencyCode = request.currencyCode ?: [configuration.json[@"paypal"][@"currencyIsoCode"] asString];
-        if (!isBillingAgreement && currencyCode) {
-            parameters[@"currency_iso_code"] = currencyCode;
-        }
-
-        if (request.shippingAddressOverride != nil) {
-            experienceProfile[@"address_override"] = @(!request.isShippingAddressEditable);
-            BTPostalAddress *shippingAddress = request.shippingAddressOverride;
-            if (isBillingAgreement) {
-                NSMutableDictionary *shippingAddressParams = [NSMutableDictionary dictionary];
-                shippingAddressParams[@"line1"] = shippingAddress.streetAddress;
-                shippingAddressParams[@"line2"] = shippingAddress.extendedAddress;
-                shippingAddressParams[@"city"] = shippingAddress.locality;
-                shippingAddressParams[@"state"] = shippingAddress.region;
-                shippingAddressParams[@"postal_code"] = shippingAddress.postalCode;
-                shippingAddressParams[@"country_code"] = shippingAddress.countryCodeAlpha2;
-                shippingAddressParams[@"recipient_name"] = shippingAddress.recipientName;
-                parameters[@"shipping_address"] = shippingAddressParams;
-            } else {
-                parameters[@"line1"] = shippingAddress.streetAddress;
-                parameters[@"line2"] = shippingAddress.extendedAddress;
-                parameters[@"city"] = shippingAddress.locality;
-                parameters[@"state"] = shippingAddress.region;
-                parameters[@"postal_code"] = shippingAddress.postalCode;
-                parameters[@"country_code"] = shippingAddress.countryCodeAlpha2;
-                parameters[@"recipient_name"] = shippingAddress.recipientName;
-            }
-        } else {
-            experienceProfile[@"address_override"] = @NO;
-        }
-
-        if (request.lineItems.count > 0) {
-            NSMutableArray *lineItemsArray = [NSMutableArray arrayWithCapacity:request.lineItems.count];
-            for (BTPayPalLineItem *lineItem in request.lineItems) {
-                [lineItemsArray addObject:[lineItem requestParameters]];
-            }
-
-            parameters[@"line_items"] = lineItemsArray;
-        }
-
-        parameters[@"return_url"] = [NSString stringWithFormat:@"%@://%@success", BTCallbackURLScheme, BTCallbackURLHostAndPath];
-        parameters[@"cancel_url"] = [NSString stringWithFormat:@"%@://%@cancel", BTCallbackURLScheme, BTCallbackURLHostAndPath];
-        parameters[@"experience_profile"] = experienceProfile;
-
         self.payPalRequest = request;
 
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
+        NSDictionary *parameters = [request parametersWithConfiguration:configuration isBillingAgreement:isBillingAgreement];
 
         [self.apiClient POST:[NSString stringWithFormat:@"v1/paypal_hermes/%@", url]
                   parameters:parameters
@@ -328,7 +246,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     urlComponents.query = queryForAuthSession;
 
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
-                                                                  callbackURLScheme:BTCallbackURLScheme
+                                                                  callbackURLScheme:BTPayPalCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         // Required to avoid memory leak for BTPayPalDriver
         self.authenticationSession = nil;
@@ -513,38 +431,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     return tokenizedPayPalAccount;
 }
 
-+ (NSString *)intentTypeToString:(BTPayPalRequestIntent)intentType {
-    NSString *result = nil;
-
-    switch(intentType) {
-        case BTPayPalRequestIntentAuthorize:
-            result = @"authorize";
-            break;
-        case BTPayPalRequestIntentSale:
-            result = @"sale";
-            break;
-        case BTPayPalRequestIntentOrder:
-            result = @"order";
-            break;
-        default:
-            result = @"authorize";
-            break;
-    }
-
-    return result;
-}
-
-+ (NSString *)landingPageTypeToString:(BTPayPalRequestLandingPageType)landingPageType {
-    switch(landingPageType) {
-        case BTPayPalRequestLandingPageTypeLogin:
-            return @"login";
-        case BTPayPalRequestLandingPageTypeBilling:
-            return @"billing";
-        default:
-            return nil;
-    }
-}
-
 #pragma mark - ASWebAuthenticationPresentationContextProviding protocol
 
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13)) {
@@ -682,8 +568,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if (paymentType == BTPayPalPaymentTypeCheckout) {
         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
-        if (self.payPalRequest) {
-            parameters[@"paypal_account"][@"intent"] = [self.class intentTypeToString:self.payPalRequest.intent];
+        if (self.payPalRequest.intentAsString) {
+            parameters[@"paypal_account"][@"intent"] = self.payPalRequest.intentAsString;
         }
     }
     if (self.clientMetadataID) {
@@ -777,7 +663,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if ([hostAndPath length]) {
         hostAndPath = [hostAndPath stringByAppendingString:@"/"];
     }
-    if (![hostAndPath isEqualToString:BTCallbackURLHostAndPath]) {
+    if (![hostAndPath isEqualToString:BTPayPalCallbackURLHostAndPath]) {
         return NO;
     }
 
