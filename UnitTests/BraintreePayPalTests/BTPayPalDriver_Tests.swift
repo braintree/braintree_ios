@@ -438,7 +438,7 @@ class BTPayPalDriver_Tests: XCTestCase {
 
     // MARK: - Tokenization
 
-    func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_sendsCorrectParameters() {
+    func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_sendsCorrectParametersForTokenization() {
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (_, _) in }
 
