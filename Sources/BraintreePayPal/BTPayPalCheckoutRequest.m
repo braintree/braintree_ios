@@ -37,7 +37,6 @@
 
 - (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
     NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration] mutableCopy];
-
     parameters[@"intent"] = self.intentAsString;
     parameters[@"amount"] = self.amount;
     parameters[@"offer_pay_later"] = @(self.offerPayLater);
