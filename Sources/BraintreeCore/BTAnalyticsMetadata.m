@@ -2,14 +2,6 @@
 #import "Braintree-Version.h"
 #import "BTKeychain.h"
 
-#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
-#import <Braintree/BTLogger_Internal.h>
-#elif SWIFT_PACKAGE // SPM
-#import "../BraintreeCore/BTLogger_Internal.h"
-#else // Carthage
-#import <BraintreeCore/BTLogger_Internal.h>
-#endif
-
 #import <UIKit/UIKit.h>
 #import <sys/utsname.h>
 
@@ -97,13 +89,10 @@
 
 - (NSString *)iosPackageManager {
 #ifdef COCOAPODS
-    [[BTLogger sharedLogger] critical:@"Analytics found CocoaPods]"];
     return @"CocoaPods";
 #elif SWIFT_PACKAGE
-    [[BTLogger sharedLogger] critical:@"Analytics found SPM]"];
     return @"Swift Package Manager";
 #else
-    [[BTLogger sharedLogger] critical:@"Analytics found Carthage/Other]"];
     return @"Carthage or Other";
 #endif
 }
