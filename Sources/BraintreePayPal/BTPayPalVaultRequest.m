@@ -13,7 +13,7 @@
 }
 
 - (BTPayPalPaymentType)paymentType {
-    return BTPayPalPaymentTypeBillingAgreement;
+    return BTPayPalPaymentTypeVault;
 }
 
 - (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {

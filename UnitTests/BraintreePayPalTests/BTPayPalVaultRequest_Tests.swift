@@ -26,9 +26,9 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
 
     // MARK: - paymentType
 
-    func testPaymentType_returnsBillingAgreement() {
+    func testPaymentType_returnsVault() {
         let request = BTPayPalVaultRequest()
-        XCTAssertEqual(request.paymentType, .billingAgreement)
+        XCTAssertEqual(request.paymentType, .vault)
     }
 
     // MARK: - parametersWithConfiguration
