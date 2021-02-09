@@ -96,21 +96,19 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request completion:completionBlock];
+    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
 }
 
 #pragma mark - Express Checkout (One-Time Payments)
 
 - (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request completion:completionBlock];
+    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
 }
 
 #pragma mark - Helpers
 
-/// A "Hermes checkout" is used by both Billing Agreements (Vault) and One-Time Payments (Checkout)
-- (void)requestPayPalCheckout:(BTPayPalRequest *)request
-                   completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+- (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration
@@ -121,6 +119,14 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if (!request) {
         completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
+        return;
+    }
+
+    if (!([request isKindOfClass:BTPayPalCheckoutRequest.class] || [request isKindOfClass:BTPayPalVaultRequest.class])) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalDriver failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."}];
+        completionBlock(nil, error);
         return;
     }
 
@@ -279,27 +285,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     } else {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.start.failed", [self.class eventStringForPaymentType:paymentType]];
         [self.apiClient sendAnalyticsEvent:eventName];
-    }
-}
-
-- (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {
-    NSString *btPayPalEnvironmentName = [configuration[@"paypal"][@"environment"] asString];
-    if ([btPayPalEnvironmentName isEqualToString:@"offline"]) {
-        return PayPalEnvironmentMock;
-    } else if ([btPayPalEnvironmentName isEqualToString:@"live"]) {
-        return PayPalEnvironmentProduction;
-    } else {
-        // Fall back to mock when configuration has an unsupported value for environment, e.g. "custom"
-        // Instead of returning btPayPalEnvironmentName
-        return PayPalEnvironmentMock;
-    }
-}
-
-- (NSString *)paypalClientIDWithRemoteConfiguration:(BTJSON *)configuration {
-    if ([[configuration[@"paypal"][@"environment"] asString] isEqualToString:@"offline"] && ![configuration[@"paypal"][@"clientId"] isString]) {
-        return @"mock-paypal-client-id";
-    } else {
-        return [configuration[@"paypal"][@"clientId"] asString];
     }
 }
 

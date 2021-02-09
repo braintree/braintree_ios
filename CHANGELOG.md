@@ -34,18 +34,20 @@
     * `BTVenmoDriver.authorizeAccount(profileID:vault:completion:)`
   * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
-  * Update `BTPayPalDriver.requestOneTimePayment` to expect a `BTPayPalCheckoutRequest` as the first param
-  * Update `BTPayPalDriver.requestBillingAgreement` to expect a `BTPayPalVaultRequest` as the first param
+  * Update `BTPayPalDriver.requestOneTimePayment` to expect a `BTPayPalCheckoutRequest` and deprecate method
+  * Update `BTPayPalDriver.requestBillingAgreement` to expect a `BTPayPalVaultRequest` and deprecate method
   * BraintreeDataCollector
     * Remove `BTDataCollectorDelegate`
     * Remove `BTDataCollector.collectCardFraudData()`
     * Remove `BTDataCollectorKountErrorDomain`
-* Fix memory leak in `BTPayPalDriver`
-* Add `offerPayLater` to `BTPayPalRequest`
 * Add `environment` to `BTConfiguration`
 * Add `BTVenmoRequest`
-* Add `BTPayPalCheckoutRequest`
-* Add `BTPayPalVaultRequest`
+* PayPal
+  * Fix memory leak in `BTPayPalDriver`
+  * Add `offerPayLater` to `BTPayPalRequest`
+  * Add `BTPayPalCheckoutRequest`
+  * Add `BTPayPalVaultRequest`
+  * Add `tokenizePayPalAccount` method to `BTPayPalDriver`
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
