@@ -172,7 +172,7 @@ venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccountNonce, error
 }
 ```
 
-## BraintreeDataCollector
+## Data Collector
 
 v5 removes the `BTDataCollector.collectCardFraudData()` method. You should instead use `BTDataCollector.collectDeviceData()` which will collect Kount data if your merchant account is properly setup for a Kount integration.
 
