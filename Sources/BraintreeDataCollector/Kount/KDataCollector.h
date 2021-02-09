@@ -86,6 +86,8 @@ typedef NS_ENUM(NSInteger, KEnvironment) {
 @property NSInteger timeoutInMS;
 // The Kount environment
 @property KEnvironment environment;
+// Device Data Sending to Analytics SDK
+@property NSDictionary *deviceDataForAnalytics;
 
 //
 // Collection
