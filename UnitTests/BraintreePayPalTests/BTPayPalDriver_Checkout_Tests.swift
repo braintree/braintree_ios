@@ -29,7 +29,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     func testCheckout_whenAPIClientIsNil_callsBackWithError() {
         payPalDriver.apiClient = nil
 
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         let expectation = self.expectation(description: "Checkout fails with error")
 
         payPalDriver.requestOneTimePayment(request) { (nonce, error) in
@@ -47,7 +47,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = nil
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
 
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         let expectation = self.expectation(description: "Checkout fails with error")
 
         payPalDriver.requestOneTimePayment(request) { (nonce, error) in
@@ -63,7 +63,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     // MARK: - POST request to Hermes endpoint
 
     func testCheckout_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .sale
 
         payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
@@ -80,7 +80,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     func testCheckout_whenPaymentResourceCreationFails_callsBackWithError() {
         mockAPIClient.cannedResponseError = NSError(domain: "", code: 0, userInfo: nil)
 
-        let dummyRequest = BTPayPalRequest(amount: "1")
+        let dummyRequest = BTPayPalCheckoutRequest(amount: "1")
         let expectation = self.expectation(description: "Checkout fails with error")
         payPalDriver.requestOneTimePayment(dummyRequest) { (_, error) -> Void in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
@@ -98,7 +98,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             ]
         ])
 
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         payPalDriver.requestOneTimePayment(request) { (_, _) in }
 
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalDriver.approvalUrl.absoluteString)
@@ -111,7 +111,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             ]
         ])
 
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.default
 
         payPalDriver.requestOneTimePayment(request) { (_, _) in }
@@ -126,7 +126,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             ]
         ])
 
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.commit
 
         payPalDriver.requestOneTimePayment(request) { (_, _) in }
@@ -137,7 +137,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     // MARK: - Browser switch
 
     func testCheckout_whenPayPalCreditOffered_performsSwitchCorrectly() {
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         request.currencyCode = "GBP"
         request.offerCredit = true
 
@@ -161,7 +161,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         request.currencyCode = "GBP"
         request.offerPayLater = true
 
@@ -185,7 +185,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1")
         payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertNotNil(payPalDriver.authenticationSession)
@@ -239,8 +239,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenBrowserSwitchSucceeds_intentShouldExistAsPayPalAccountParameter() {
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
-        payPalDriver.payPalRequest.intent = .sale
+        let payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
+        payPalRequest.intent = .sale
+        payPalDriver.payPalRequest = payPalRequest
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
@@ -255,9 +256,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertFalse(options["validate"] as! Bool)
     }
 
-    func testCheckout_whenBrowserSwitchSucceeds_merchantAccountIDIsSet() {
+    func testCheckout_whenBrowserSwitchSucceeds_merchantAccountIdIsSet() {
         let merchantAccountID = "alternate-merchant-account-id"
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+        payPalDriver.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
         payPalDriver.payPalRequest.merchantAccountID = merchantAccountID
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
@@ -281,7 +282,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                     ]
                 ]
         ])
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+        payPalDriver.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
@@ -319,7 +320,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                 ]
             ]
         ])
-        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+        payPalDriver.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }

@@ -1,7 +1,9 @@
 #if __has_include(<Braintree/BraintreePayPal.h>)
 #import <Braintree/BraintreeCore.h>
+#import <Braintree/BTPayPalCheckoutRequest.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>
+#import <BraintreePayPal/BTPayPalCheckoutRequest.h>
 #endif
 
 @class BTPayPalAccountNonce;
@@ -96,7 +98,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  @param request A PayPal request
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
  */
-- (void)requestOneTimePayment:(BTPayPalRequest *)request
+- (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 /**

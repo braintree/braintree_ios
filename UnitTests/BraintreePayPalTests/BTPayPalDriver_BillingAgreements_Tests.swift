@@ -26,7 +26,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     func testBillingAgreement_whenAPIClientIsNil_callsBackWithError() {
         payPalDriver.apiClient = nil
 
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalRequest()
         let expectation = self.expectation(description: "Billing Agreement fails with error")
         payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
