@@ -36,6 +36,7 @@
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
   * Remove `BTDataCollectorDelegate`
   * Remove `BTDataCollector.collectCardFraudData()`
+  * Remove `BTDataCollectorKountErrorDomain`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
 * Add `environment` to `BTConfiguration`
