@@ -193,3 +193,9 @@ venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccountNonce, error
   // transact with nonce on server
 }
 ```
+
+## Data Collector
+
+v5 removes the `BTDataCollector.collectCardFraudData()` method. You should instead use `BTDataCollector.collectDeviceData()` which will collect Kount data if your merchant account is properly setup for a Kount integration.
+
+v5 also removes the `BTDataCollectorDelegate`. You should call `collectDeviceData()` as early as possible, e.g. at app launch. If that's too early, calling it when the customer initiates checkout is also fine.
