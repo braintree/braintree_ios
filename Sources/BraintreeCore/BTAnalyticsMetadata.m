@@ -2,6 +2,14 @@
 #import "Braintree-Version.h"
 #import "BTKeychain.h"
 
+#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#import <Braintree/BTLogger_Internal.h>
+#elif SWIFT_PACKAGE // SPM
+#import "../BraintreeCore/BTLogger_Internal.h"
+#else // Carthage
+#import <BraintreeCore/BTLogger_Internal.h>
+#endif
+
 #import <UIKit/UIKit.h>
 #import <sys/utsname.h>
 
@@ -26,8 +34,7 @@
     [self setObject:[m iosBaseSDK] forKey:@"iosBaseSDK" inDictionary:data];
     [self setObject:[m iosDeploymentTarget] forKey:@"iosDeploymentTarget" inDictionary:data];
     [self setObject:[m iosIdentifierForVendor] forKey:@"iosIdentifierForVendor" inDictionary:data];
-    [self setObject:@([m iosIsCocoapods]) forKey:@"iosIsCocoapods" inDictionary:data];
-    [self setObject:@([m iosIsSwiftPackageManager]) forKey:@"iosIsSwiftPackageManager" inDictionary:data];
+    [self setObject:[m iosPackageManager] forKey:@"iosPackageManager" inDictionary:data];
     [self setObject:[m deviceAppGeneratedPersistentUuid] forKey:@"deviceAppGeneratedPersistentUuid" inDictionary:data];
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
@@ -88,6 +95,19 @@
     return UIDevice.currentDevice.identifierForVendor.UUIDString;
 }
 
+- (NSString *)iosPackageManager {
+#ifdef COCOAPODS
+    [[BTLogger sharedLogger] critical:@"Analytics found CocoaPods]"];
+    return @"CocoaPods";
+#elif SWIFT_PACKAGE
+    [[BTLogger sharedLogger] critical:@"Analytics found SPM]"];
+    return @"Swift Package Manager";
+#else
+    [[BTLogger sharedLogger] critical:@"Analytics found Carthage/Other]"];
+    return @"Carthage or Other";
+#endif
+}
+
 - (NSString *)iosDeploymentTarget {
     NSString *rawVersionString = NSBundle.mainBundle.infoDictionary[@"MinimumOSVersion"];
     NSArray<NSString *> *rawVersionArray = [rawVersionString componentsSeparatedByString:@"."];
@@ -110,22 +130,6 @@
 
 - (NSString *)iosSystemName {
     return UIDevice.currentDevice.systemName;
-}
-
-- (BOOL)iosIsCocoapods {
-#ifdef COCOAPODS
-    return YES;
-#else
-    return NO;
-#endif
-}
-
-- (BOOL)iosIsSwiftPackageManager {
-#ifdef SWIFT_PACKAGE
-    return YES;
-#else
-    return NO;
-#endif
 }
 
 - (NSString *)deviceAppGeneratedPersistentUuid {

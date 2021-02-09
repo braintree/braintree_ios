@@ -104,14 +104,9 @@ describe(@"metadata", ^{
             [mock stopMocking];
         });
     });
-    describe(@"iosIsCocoaPods", ^{
-        it(@"is present", ^{
-            expect([BTAnalyticsMetadata metadata][@"iosIsCocoapods"]).to.beKindOf([NSNumber class]);
-        });
-    });
-    describe(@"iosIsSwiftPackageManager", ^{
-        it(@"is present", ^{
-            expect([BTAnalyticsMetadata metadata][@"iosIsSwiftPackageManager"]).to.beKindOf([NSNumber class]);
+    describe(@"iosPackageManager", ^{
+        it(@"returns some string value", ^{
+            expect([BTAnalyticsMetadata metadata][@"iosPackageManager"]).to.beTruthy();
         });
     });
     describe(@"isSimulator", ^{
