@@ -97,7 +97,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
 
- @param request A PayPal checkout request
+ @param request A PayPal Checkout request
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
  */
 - (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
@@ -111,7 +111,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
 
- @param request A PayPal vault request
+ @param request A PayPal Vault request
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
 */
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
