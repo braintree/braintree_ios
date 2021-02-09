@@ -96,7 +96,7 @@ For CocoaPods integrations, the Braintree Apple Pay subspec has been renamed fro
 
 #### Custom URL Scheme
 
-Registering a custom URL scheme in your Xcode project is also no longer required.
+Registering a custom URL scheme in your Xcode project is no longer required for the PayPal flow.
 
 Code previously used to set your return URL scheme can be deleted. **Note:** This only applies to the PayPal flow. Other payment methods (ex: Venmo, Local Payment Methods, 3DS) still require a custom URL scheme.
 ```
