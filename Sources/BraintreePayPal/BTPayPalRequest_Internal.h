@@ -13,7 +13,7 @@ extern NSString *const BTPayPalCallbackURLScheme;
 
 typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     BTPayPalPaymentTypeCheckout,
-    BTPayPalPaymentTypeBillingAgreement
+    BTPayPalPaymentTypeVault
 };
 
 @interface BTPayPalRequest ()

@@ -455,7 +455,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 + (NSString *)eventStringForPaymentType:(BTPayPalPaymentType)paymentType {
     switch (paymentType) {
-        case BTPayPalPaymentTypeBillingAgreement:
+        case BTPayPalPaymentTypeVault:
             return @"paypal-ba";
         case BTPayPalPaymentTypeCheckout:
             return @"paypal-single-payment";
@@ -469,7 +469,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.initiate.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
     [self.apiClient sendAnalyticsEvent:eventName];
 
-    if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeBillingAgreement) && self.payPalRequest.offerCredit) {
+    if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeVault) && self.payPalRequest.offerCredit) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];

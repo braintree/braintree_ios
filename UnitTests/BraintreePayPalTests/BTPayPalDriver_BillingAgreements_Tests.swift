@@ -92,7 +92,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
 
     func testBillingAgreement_whenBrowserSwitchSucceeds_tokenizesPayPalAccount() {
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (_, _) in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -120,7 +120,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "completion block called")
         
-        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (nonce, error) in
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (nonce, error) in
             XCTAssertNil(nonce)
             XCTAssertEqual((error! as NSError).domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual((error! as NSError).code, BTPayPalDriverErrorType.canceled.rawValue)
@@ -165,7 +165,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: "bar://hello/world")!
-        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (_, _) in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
@@ -204,7 +204,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .billingAgreement) { (_, _) in }
+        payPalDriver.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (_, _) in }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
