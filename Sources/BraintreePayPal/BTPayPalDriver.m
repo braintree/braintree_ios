@@ -232,9 +232,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 - (void)performSwitchRequest:(NSURL *)appSwitchURL paymentType:(BTPayPalPaymentType)paymentType completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
 
-    NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
-    urlComponents.query = queryForAuthSession;
-
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
                                                                   callbackURLScheme:BTPayPalCallbackURLScheme
                                                                   completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {

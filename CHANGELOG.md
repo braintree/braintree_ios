@@ -36,6 +36,10 @@
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
   * Update `BTPayPalDriver.requestOneTimePayment` to expect a `BTPayPalCheckoutRequest` as the first param
   * Update `BTPayPalDriver.requestBillingAgreement` to expect a `BTPayPalVaultRequest` as the first param
+  * BraintreeDataCollector
+    * Remove `BTDataCollectorDelegate`
+    * Remove `BTDataCollector.collectCardFraudData()`
+    * Remove `BTDataCollectorKountErrorDomain`
 * Fix memory leak in `BTPayPalDriver`
 * Add `offerPayLater` to `BTPayPalRequest`
 * Add `environment` to `BTConfiguration`
