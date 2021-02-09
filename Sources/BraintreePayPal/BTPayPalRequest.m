@@ -24,13 +24,20 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     return self;
 }
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration isBillingAgreement:(BOOL)isBillingAgreement {
+- (NSString *)landingPageTypeAsString {
+    switch(self.landingPageType) {
+        case BTPayPalRequestLandingPageTypeLogin:
+            return @"login";
+        case BTPayPalRequestLandingPageTypeBilling:
+            return @"billing";
+        default:
+            return nil;
+    }
+}
+
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
-
-    if (isBillingAgreement && self.billingAgreementDescription.length > 0) {
-        parameters[@"description"] = self.billingAgreementDescription;
-    }
 
     parameters[@"offer_paypal_credit"] = @(self.offerCredit);
 
@@ -52,18 +59,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
 
     if (self.shippingAddressOverride) {
         experienceProfile[@"address_override"] = @(!self.isShippingAddressEditable);
-        BTPostalAddress *shippingAddress = self.shippingAddressOverride;
-        if (isBillingAgreement) {
-            NSMutableDictionary *shippingAddressParams = [NSMutableDictionary dictionary];
-            shippingAddressParams[@"line1"] = shippingAddress.streetAddress;
-            shippingAddressParams[@"line2"] = shippingAddress.extendedAddress;
-            shippingAddressParams[@"city"] = shippingAddress.locality;
-            shippingAddressParams[@"state"] = shippingAddress.region;
-            shippingAddressParams[@"postal_code"] = shippingAddress.postalCode;
-            shippingAddressParams[@"country_code"] = shippingAddress.countryCodeAlpha2;
-            shippingAddressParams[@"recipient_name"] = shippingAddress.recipientName;
-            parameters[@"shipping_address"] = shippingAddressParams;
-        }
     } else {
         experienceProfile[@"address_override"] = @NO;
     }
@@ -82,17 +77,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     parameters[@"experience_profile"] = experienceProfile;
 
     return parameters;
-}
-
-- (NSString *)landingPageTypeAsString {
-    switch(self.landingPageType) {
-        case BTPayPalRequestLandingPageTypeLogin:
-            return @"login";
-        case BTPayPalRequestLandingPageTypeBilling:
-            return @"billing";
-        default:
-            return nil;
-    }
 }
 
 @end

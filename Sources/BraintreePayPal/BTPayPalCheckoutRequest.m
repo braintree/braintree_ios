@@ -16,9 +16,27 @@
     return self;
 }
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration isBillingAgreement:(BOOL)isBillingAgreement {
-    NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration isBillingAgreement:NO] mutableCopy];
+- (NSString *)intentAsString {
+    switch(self.intent) {
+        case BTPayPalRequestIntentSale:
+            return @"sale";
+        case BTPayPalRequestIntentOrder:
+            return @"order";
+        default:
+            return @"authorize";
+    }
+}
 
+- (NSString *)hermesPath {
+    return @"v1/paypal_hermes/create_payment_resource";
+}
+
+- (BTPayPalPaymentType)paymentType {
+    return BTPayPalPaymentTypeCheckout;
+}
+
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
+    NSMutableDictionary *parameters = [[super parametersWithConfiguration:configuration] mutableCopy];
     parameters[@"intent"] = self.intentAsString;
     parameters[@"amount"] = self.amount;
     parameters[@"offer_pay_later"] = @(self.offerPayLater);
@@ -39,17 +57,6 @@
     }
 
     return parameters;
-}
-
-- (NSString *)intentAsString {
-    switch(self.intent) {
-        case BTPayPalRequestIntentSale:
-            return @"sale";
-        case BTPayPalRequestIntentOrder:
-            return @"order";
-        default:
-            return @"authorize";
-    }
 }
 
 @end
