@@ -42,7 +42,7 @@
 * Add `offerPayLater` to `BTPayPalRequest`
 * Add `environment` to `BTConfiguration`
 * Add `BTVenmoRequest`
-* Update Kount SDK to v4.1.3 (includes support for Apple silicon - arm64 - simulator architecture)
+* Update Kount SDK to v4.1.3 (includes arm64 simulator architecture for Apple silicon)
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
