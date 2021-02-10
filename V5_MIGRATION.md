@@ -4,6 +4,18 @@ See the [CHANGELOG](/CHANGELOG.md) for a complete list of changes. This migratio
 
 _Documentation for v5 will be published to https://developers.braintreepayments.com once it is available for general release._
 
+## Table of Contents
+
+1. [Supported versions](#supported-versions)
+1. [Swift Package Manager](#swift-package-manager)
+1. [3D Secure](#3d-secure)
+1. [Apple Pay](#apple-pay)
+1. [PayPal](#paypal)
+1. [App Context Switching](#app-context-switching)
+1. [Card](#card)
+1. [Venmo](#venmo)
+1. [Data Collector](#data-collector)
+
 ## Supported versions
 
 v5 supports a minimum deployment target of iOS 12+. It requires the use of Xcode 12+ and Swift 5+. If your application contains Objective-C code, the `Enable Modules` build setting must be set to `YES`.
