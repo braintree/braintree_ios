@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Payment intent.
 
- @note Must be set to sale for immediate payment, authorize to authorize a payment for capture later, or order to create an order. Defaults to authorize. Only works in the checkout (one-time payment) flow.
+ @note Must be set to BTPayPalRequestIntentSale for immediate payment, BTPayPalRequestIntentAuthorize to authorize a payment for capture later, or BTPayPalRequestIntentOrder to create an order. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
 
  @see https://developer.paypal.com/docs/integration/direct/payments/capture-payment/ Capture payments later
  @see https://developer.paypal.com/docs/integration/direct/payments/create-process-order/ Create and process orders
@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
  Initialize a PayPal request with an amount for a one-time payment.
 
  @param amount Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', and is limited to 7 digits before the decimal point.
- @return A PayPal request.
+ @return A PayPal Checkout request.
 */
 - (instancetype)initWithAmount:(NSString *)amount;
 
@@ -50,13 +50,14 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 @property (nonatomic, readonly, strong) NSString *amount;
 
 /**
- Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
- @note This is only used for one-time payments.
+ Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
+
+ @note See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
 */
 @property (nonatomic, nullable, copy) NSString *currencyCode;
 
 /**
- Optional: Payment intent. Only applies when using checkout flow. Defaults to `BTPayPalRequestIntentAuthorize`.
+ Optional: Payment intent. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
 */
 @property (nonatomic) BTPayPalRequestIntent intent;
 
