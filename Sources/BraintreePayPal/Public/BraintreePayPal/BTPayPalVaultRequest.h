@@ -8,11 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTPayPalVaultRequest : BTPayPalRequest
 
-/**
- Optional: Display a custom description to the user for a billing agreement.
-*/
-@property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
-
 @end
 
 NS_ASSUME_NONNULL_END

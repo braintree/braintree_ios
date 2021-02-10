@@ -129,6 +129,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic, nullable, copy) NSArray<BTPayPalLineItem *> *lineItems;
 
 /**
+ Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set requestBillingAgreement to true on your BTPayPalCheckoutRequest.
+*/
+@property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
+
+/**
  Optional: The window used to present the ASWebAuthenticationSession.
 
  @note If your app supports multitasking, you must set this property to ensure that the ASWebAuthenticationSession is presented on the correct window.
