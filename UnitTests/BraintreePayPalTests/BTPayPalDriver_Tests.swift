@@ -196,6 +196,21 @@ class BTPayPalDriver_Tests: XCTestCase {
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value&useraction=commit", payPalDriver.approvalUrl.absoluteString)
     }
 
+    func testTokenizePayPalAccount_whenUserActionIsSetToCommit_andNoQueryParamsArePresent_approvalUrlIsModified() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.paypal.com/checkout"
+            ]
+        ])
+
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.userAction = BTPayPalRequestUserAction.commit
+
+        payPalDriver.tokenizePayPalAccount(with: request) { (_, _) in }
+
+        XCTAssertEqual("https://www.paypal.com/checkout?useraction=commit", payPalDriver.approvalUrl.absoluteString)
+    }
+
     func testTokenizePayPalAccount_whenApprovalUrlIsNotHTTP_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
@@ -218,53 +233,6 @@ class BTPayPalDriver_Tests: XCTestCase {
     }
 
     // MARK: - Browser switch
-
-    func testTokenizePayPalAccount_checkout_whenPayPalCreditOffered_performsSwitchCorrectly() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.currencyCode = "GBP"
-        request.offerCredit = true
-
-        payPalDriver.tokenizePayPalAccount(with: request) { _,_  in }
-
-        XCTAssertNotNil(payPalDriver.authenticationSession)
-        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
-
-        // Ensure the payment resource had the correct parameters
-        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
-        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, true)
-
-        // Make sure analytics event was sent when switch occurred
-        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
-
-        XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.credit.offered.started"))
-    }
-
-    func testTokenizePayPalAccount_vault_whenPayPalCreditOffered_performsSwitchCorrectly() {
-        let request = BTPayPalVaultRequest()
-        request.offerCredit = true
-
-        payPalDriver.tokenizePayPalAccount(with: request) { _,_  in }
-
-        XCTAssertNotNil(payPalDriver.authenticationSession)
-        XCTAssertTrue(payPalDriver.isAuthenticationSessionStarted)
-
-        // Ensure the payment resource had the correct parameters
-        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
-        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, true)
-
-        // Make sure analytics event was sent when switch occurred
-        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
-
-        XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-ba.webswitch.credit.offered.started"))
-    }
 
     func testTokenizePayPalAccount_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
         let request = BTPayPalCheckoutRequest(amount: "1")

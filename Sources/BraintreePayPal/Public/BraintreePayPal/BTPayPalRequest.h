@@ -19,21 +19,6 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestLandingPageType) {
 };
 
 /**
- The call-to-action in the PayPal one-time payment checkout flow.
-
- @note By default the final button will show the localized word for "Continue" and implies that the final amount billed is not yet known.
-             Setting the BTPayPalRequest's userAction to `BTPayPalRequestUserActionCommit` changes the button text to "Pay Now", conveying to
-             the user that billing will take place immediately.
-*/
-typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
-    /// Default
-    BTPayPalRequestUserActionDefault = 1,
-
-    /// Commit
-    BTPayPalRequestUserActionCommit,
-};
-
-/**
  Base options for PayPal Checkout and PayPal Vault flows.
 
  @note Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
@@ -93,11 +78,6 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic, nullable, strong) BTPostalAddress *shippingAddressOverride;
 
 /**
- Optional: Changes the call-to-action in the PayPal flow. This option works for both checkout and vault flows. Defaults to `BTPayPalRequestUserActionDefault`.
-*/
-@property (nonatomic) BTPayPalRequestUserAction userAction;
-
-/**
  Optional: Landing page type. Defaults to `BTPayPalRequestLandingPageTypeDefault`.
 
  @note Setting the BTPayPalRequest's landingPageType changes the PayPal page to display when a user lands on the PayPal site to complete the payment. BTPayPalRequestLandingPageTypeLogin specifies a PayPal account login page is used. BTPayPalRequestLandingPageTypeBilling specifies a non-PayPal account landing page is used.
@@ -108,11 +88,6 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
 */
 @property (nonatomic, nullable, copy) NSString *displayName;
-
-/**
- Optional: Offers PayPal Credit if the customer qualifies. Defaults to false. Only available with PayPal Checkout and PayPal Vault.
- */
-@property (nonatomic) BOOL offerCredit;
 
 /**
  Optional: A non-default merchant account to use for tokenization.
