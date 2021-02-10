@@ -51,6 +51,7 @@
   * Add `BTPayPalCheckoutRequest`
   * Add `BTPayPalVaultRequest`
   * Add `tokenizePayPalAccount` method to `BTPayPalDriver`
+* Update CardinalMobile.framework to v2.2.5
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
