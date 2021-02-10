@@ -40,7 +40,6 @@ class BTPayPalRequest_Tests: XCTestCase {
 
     func testParametersWithConfiguration_returnsAllParams() {
         let request = BTPayPalRequest()
-        request.offerCredit = true
         request.isShippingAddressRequired = true
         request.displayName = "Display Name"
         request.landingPageType = .login
@@ -53,7 +52,6 @@ class BTPayPalRequest_Tests: XCTestCase {
         let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
 
-        XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
         XCTAssertEqual(experienceProfile["brand_name"] as? String, "Display Name")
         XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")

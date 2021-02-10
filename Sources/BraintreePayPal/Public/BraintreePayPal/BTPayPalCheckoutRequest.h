@@ -25,6 +25,21 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
     BTPayPalRequestIntentOrder,
 };
 
+/**
+ The call-to-action in the PayPal Checkout flow.
+
+ @note By default the final button will show the localized word for "Continue" and implies that the final amount billed is not yet known.
+             Setting the BTPayPalRequest's userAction to `BTPayPalRequestUserActionCommit` changes the button text to "Pay Now", conveying to
+             the user that billing will take place immediately.
+*/
+typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
+    /// Default
+    BTPayPalRequestUserActionDefault = 1,
+
+    /// Commit
+    BTPayPalRequestUserActionCommit,
+};
+
 @interface BTPayPalCheckoutRequest : BTPayPalRequest
 
 + (instancetype)new __attribute__((unavailable("Please use initWithAmount:")));
@@ -60,6 +75,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
  Optional: Payment intent. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
 */
 @property (nonatomic) BTPayPalRequestIntent intent;
+
+/**
+ Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `BTPayPalRequestUserActionDefault`.
+*/
+@property (nonatomic) BTPayPalRequestUserAction userAction;
 
 /**
  Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to false. Only available with PayPal Checkout.

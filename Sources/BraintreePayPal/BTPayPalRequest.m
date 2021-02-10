@@ -16,9 +16,7 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
     self = [super init];
     if (self) {
         _shippingAddressRequired = NO;
-        _offerCredit = NO;
         _shippingAddressEditable = NO;
-        _userAction = BTPayPalRequestUserActionDefault;
         _landingPageType = BTPayPalRequestLandingPageTypeDefault;
     }
     return self;
@@ -38,8 +36,6 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
 - (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
-
-    parameters[@"offer_paypal_credit"] = @(self.offerCredit);
 
     experienceProfile[@"no_shipping"] = @(!self.isShippingAddressRequired);
 

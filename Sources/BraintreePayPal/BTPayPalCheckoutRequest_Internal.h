@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTPayPalCheckoutRequest ()
 
 @property (nonatomic, copy, readonly) NSString *intentAsString;
+@property (nonatomic, copy, readonly) NSString *userActionAsString;
 
 @end
 

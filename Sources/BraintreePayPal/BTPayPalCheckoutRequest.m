@@ -12,6 +12,7 @@
         _amount = amount;
         _offerPayLater = NO;
         _intent = BTPayPalRequestIntentAuthorize;
+        _userAction = BTPayPalRequestUserActionDefault;
     }
     return self;
 }
@@ -24,6 +25,15 @@
             return @"order";
         default:
             return @"authorize";
+    }
+}
+
+- (NSString *)userActionAsString {
+    switch(self.userAction) {
+        case BTPayPalRequestUserActionCommit:
+            return @"commit";
+        default:
+            return @"";
     }
 }
 

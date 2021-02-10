@@ -454,12 +454,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.initiate.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
     [self.apiClient sendAnalyticsEvent:eventName];
 
-    if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeVault) && self.payPalRequest.offerCredit) {
-        NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
-
-        [self.apiClient sendAnalyticsEvent:eventName];
-    }
-
     if ([self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class] && ((BTPayPalCheckoutRequest *)self.payPalRequest).offerPayLater) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.paylater.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
@@ -488,17 +482,16 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 #pragma mark - Internal
 
 - (NSURL *)decorateApprovalURL:(NSURL*)approvalURL forRequest:(BTPayPalRequest *)paypalRequest {
-    if (approvalURL != nil && paypalRequest.userAction != BTPayPalRequestUserActionDefault) {
+    if (approvalURL != nil && [paypalRequest isKindOfClass:BTPayPalCheckoutRequest.class]) {
         NSURLComponents* approvalURLComponents = [[NSURLComponents alloc] initWithURL:approvalURL resolvingAgainstBaseURL:NO];
         if (approvalURLComponents != nil) {
-            NSString *userActionValue = [BTPayPalDriver userActionTypeToString:paypalRequest.userAction];
-            if ([userActionValue length] > 0) {
-                NSString *query = [approvalURLComponents query];
-                NSString *delimiter = [query length] == 0 ? @"" : @"&";
-                query = [NSString stringWithFormat:@"%@%@useraction=%@", query, delimiter, userActionValue];
-                approvalURLComponents.query = query;
+            NSString *userActionValue = ((BTPayPalCheckoutRequest *)paypalRequest).userActionAsString;
+            if (userActionValue.length > 0) {
+                NSURLQueryItem *userActionQueryItem = [[NSURLQueryItem alloc] initWithName:@"useraction" value:userActionValue];
+                NSArray<NSURLQueryItem *> *queryItems = approvalURLComponents.queryItems ?: @[];
+                approvalURLComponents.queryItems = [queryItems arrayByAddingObject:userActionQueryItem];
             }
-            return [approvalURLComponents URL];
+            return approvalURLComponents.URL;
         }
     }
     return approvalURL;
@@ -585,21 +578,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 }
 
 #pragma mark - Class Methods
-
-+ (NSString *)userActionTypeToString:(BTPayPalRequestUserAction)userActionType {
-    NSString *result = nil;
-
-    switch(userActionType) {
-        case BTPayPalRequestUserActionCommit:
-            result = @"commit";
-            break;
-        default:
-            result = @"";
-            break;
-    }
-
-    return result;
-}
 
 + (NSString *)tokenFromApprovalURL:(NSURL *)approvalURL {
     NSDictionary *queryDictionary = [self parseQueryString:[approvalURL query]];
