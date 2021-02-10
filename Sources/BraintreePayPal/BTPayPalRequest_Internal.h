@@ -11,12 +11,18 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *const BTPayPalCallbackURLHostAndPath;
 extern NSString *const BTPayPalCallbackURLScheme;
 
+typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
+    BTPayPalPaymentTypeCheckout,
+    BTPayPalPaymentTypeVault
+};
+
 @interface BTPayPalRequest ()
 
-@property (nonatomic, copy, readonly) NSString *intentAsString;
 @property (nonatomic, nullable, copy, readonly) NSString *landingPageTypeAsString;
+@property (nonatomic, nullable, copy, readonly) NSString *hermesPath;
+@property (nonatomic, readonly) BTPayPalPaymentType paymentType;
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration  isBillingAgreement:(BOOL)isBillingAgreement;
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration;
 
 @end
 

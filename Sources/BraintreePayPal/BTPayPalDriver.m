@@ -3,6 +3,7 @@
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 #import "BTPayPalRequest_Internal.h"
+#import "BTPayPalCheckoutRequest_Internal.h"
 
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
@@ -91,30 +92,23 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-#pragma mark - Billing Agreement
+#pragma mark - Billing Agreement (Vault)
 
-- (void)requestBillingAgreement:(BTPayPalRequest *)request
+- (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request
-             isBillingAgreement:YES
-                     completion:completionBlock];
+    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
 }
 
-#pragma mark - Express Checkout (One-Time Payments)
+#pragma mark - One-Time Payment (Checkout)
 
-- (void)requestOneTimePayment:(BTPayPalRequest *)request
+- (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestPayPalCheckout:request
-             isBillingAgreement:NO
-                     completion:completionBlock];
+    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
 }
 
 #pragma mark - Helpers
 
-/// A "Hermes checkout" is used by both Billing Agreements (Vault) and One-Time Payments (Checkout)
-- (void)requestPayPalCheckout:(BTPayPalRequest *)request
-           isBillingAgreement:(BOOL)isBillingAgreement
-                   completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+- (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration
@@ -123,8 +117,16 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         return;
     }
 
-    if (!request || (!isBillingAgreement && !request.amount)) {
+    if (!request) {
         completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
+        return;
+    }
+
+    if (!([request isKindOfClass:BTPayPalCheckoutRequest.class] || [request isKindOfClass:BTPayPalVaultRequest.class])) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalDriver failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."}];
+        completionBlock(nil, error);
         return;
     }
 
@@ -145,11 +147,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
         self.payPalRequest = request;
 
-        NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
-        NSDictionary *parameters = [request parametersWithConfiguration:configuration isBillingAgreement:isBillingAgreement];
-
-        [self.apiClient POST:[NSString stringWithFormat:@"v1/paypal_hermes/%@", url]
-                  parameters:parameters
+        [self.apiClient POST:request.hermesPath
+                  parameters:[request parametersWithConfiguration:configuration]
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
                 NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;
@@ -176,15 +175,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             self.clientMetadataID = [PPDataCollector clientMetadataID:pairingID];
 
             BOOL analyticsSuccess = error ? NO : YES;
-            if (isBillingAgreement) {
-                [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:BTPayPalPaymentTypeBillingAgreement withSuccess:analyticsSuccess];
-            } else {
-                [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:BTPayPalPaymentTypeCheckout withSuccess:analyticsSuccess];
-            }
+
+            [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:request.paymentType withSuccess:analyticsSuccess];
 
             [self handlePayPalRequestWithURL:approvalUrl
                                        error:error
-                                 paymentType:isBillingAgreement ? BTPayPalPaymentTypeBillingAgreement : BTPayPalPaymentTypeCheckout
+                                 paymentType:request.paymentType
                                   completion:completionBlock];
         }];
     }];
@@ -289,27 +285,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     } else {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.start.failed", [self.class eventStringForPaymentType:paymentType]];
         [self.apiClient sendAnalyticsEvent:eventName];
-    }
-}
-
-- (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {
-    NSString *btPayPalEnvironmentName = [configuration[@"paypal"][@"environment"] asString];
-    if ([btPayPalEnvironmentName isEqualToString:@"offline"]) {
-        return PayPalEnvironmentMock;
-    } else if ([btPayPalEnvironmentName isEqualToString:@"live"]) {
-        return PayPalEnvironmentProduction;
-    } else {
-        // Fall back to mock when configuration has an unsupported value for environment, e.g. "custom"
-        // Instead of returning btPayPalEnvironmentName
-        return PayPalEnvironmentMock;
-    }
-}
-
-- (NSString *)paypalClientIDWithRemoteConfiguration:(BTJSON *)configuration {
-    if ([[configuration[@"paypal"][@"environment"] asString] isEqualToString:@"offline"] && ![configuration[@"paypal"][@"clientId"] isString]) {
-        return @"mock-paypal-client-id";
-    } else {
-        return [configuration[@"paypal"][@"clientId"] asString];
     }
 }
 
@@ -465,7 +440,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 + (NSString *)eventStringForPaymentType:(BTPayPalPaymentType)paymentType {
     switch (paymentType) {
-        case BTPayPalPaymentTypeBillingAgreement:
+        case BTPayPalPaymentTypeVault:
             return @"paypal-ba";
         case BTPayPalPaymentTypeCheckout:
             return @"paypal-single-payment";
@@ -479,13 +454,13 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.initiate.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
     [self.apiClient sendAnalyticsEvent:eventName];
 
-    if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeBillingAgreement) && self.payPalRequest.offerCredit) {
+    if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeVault) && self.payPalRequest.offerCredit) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];
     }
 
-    if (paymentType == BTPayPalPaymentTypeCheckout && self.payPalRequest.offerPayLater) {
+    if ([self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class] && ((BTPayPalCheckoutRequest *)self.payPalRequest).offerPayLater) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.paylater.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];
@@ -565,10 +540,11 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if (paymentType == BTPayPalPaymentTypeCheckout) {
         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
-        if (self.payPalRequest.intentAsString) {
-            parameters[@"paypal_account"][@"intent"] = self.payPalRequest.intentAsString;
+        if ([self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class] && ((BTPayPalCheckoutRequest *) self.payPalRequest).intentAsString) {
+            parameters[@"paypal_account"][@"intent"] = ((BTPayPalCheckoutRequest *) self.payPalRequest).intentAsString;
         }
     }
+
     if (self.clientMetadataID) {
         parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataID;
     }

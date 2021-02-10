@@ -49,13 +49,13 @@
     [sender setEnabled:NO];
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
-    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
-    request.activeWindow = self.view.window;
-
-    request.offerCredit = YES;
 
     if (self.paypalTypeSwitch.selectedSegmentIndex == 0) {
-        [driver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
+        BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:@"4.30"];
+        request.activeWindow = self.view.window;
+        request.offerCredit = YES;
+
+        [driver tokenizePayPalAccountWithPayPalRequest:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
             [sender setEnabled:YES];
             
             if (error) {
@@ -67,7 +67,11 @@
             }
         }];
     } else {
-        [driver requestBillingAgreement:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
+        BTPayPalVaultRequest *request = [[BTPayPalVaultRequest alloc] init];
+        request.activeWindow = self.view.window;
+        request.offerCredit = YES;
+
+        [driver tokenizePayPalAccountWithPayPalRequest:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
             [sender setEnabled:YES];
             
             if (error) {

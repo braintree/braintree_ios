@@ -1,7 +1,11 @@
 #if __has_include(<Braintree/BraintreePayPal.h>)
 #import <Braintree/BraintreeCore.h>
+#import <Braintree/BTPayPalCheckoutRequest.h>
+#import <Braintree/BTPayPalVaultRequest.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>
+#import <BraintreePayPal/BTPayPalCheckoutRequest.h>
+#import <BraintreePayPal/BTPayPalVaultRequest.h>
 #endif
 
 @class BTPayPalAccountNonce;
@@ -93,11 +97,11 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
 
- @param request A PayPal request
+ @param request A PayPal Checkout request
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
  */
-- (void)requestOneTimePayment:(BTPayPalRequest *)request
-                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
+- (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
+                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use tokenizePayPalAccount instead.");
 
 /**
  Create a PayPal Billing Agreement for repeat purchases.
@@ -107,11 +111,25 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
 
- @param request A PayPal request
+ @param request A PayPal Vault request
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
 */
-- (void)requestBillingAgreement:(BTPayPalRequest *)request
-                     completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
+- (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
+                     completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use tokenizePayPalAccount instead.");
+
+/**
+ Tokenize a PayPal account for vault or checkout.
+
+ @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+ server when this method completes without any additional user interaction.
+
+ On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
+
+ @param request Either a BTPayPalCheckoutRequest or a BTPayPalVaultRequest
+ @param completionBlock This completion will be invoked exactly once when tokenization is complete or an error occurs.
+*/
+- (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request
+                                    completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 @end
 

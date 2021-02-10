@@ -74,10 +74,10 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalRequest(amount: "4.30")
-        paypalDriver.requestOneTimePayment(paypalRequest) { (nonce, error) in
+        let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
+        paypalDriver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
             button.isEnabled = true
-            
+
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
@@ -94,9 +94,9 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalRequest()
+        let paypalRequest = BTPayPalVaultRequest()
         paypalRequest.activeWindow = self.view.window
-        paypalDriver.requestBillingAgreement(paypalRequest) { (nonce, error) in
+        paypalDriver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {
