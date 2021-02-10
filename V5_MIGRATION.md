@@ -1,4 +1,4 @@
-# Braintree iOS v5 (Beta) Migration Guide
+# Braintree iOS v5 Migration Guide
 
 See the [CHANGELOG](/CHANGELOG.md) for a complete list of changes. This migration guide outlines the basics for updating your client integration from v4 to v5.
 
