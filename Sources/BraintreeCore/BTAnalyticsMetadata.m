@@ -26,7 +26,7 @@
     [self setObject:[m iosBaseSDK] forKey:@"iosBaseSDK" inDictionary:data];
     [self setObject:[m iosDeploymentTarget] forKey:@"iosDeploymentTarget" inDictionary:data];
     [self setObject:[m iosIdentifierForVendor] forKey:@"iosIdentifierForVendor" inDictionary:data];
-    [self setObject:@([m iosIsCocoapods]) forKey:@"iosIsCocoapods" inDictionary:data];
+    [self setObject:[m iosPackageManager] forKey:@"iosPackageManager" inDictionary:data];
     [self setObject:[m deviceAppGeneratedPersistentUuid] forKey:@"deviceAppGeneratedPersistentUuid" inDictionary:data];
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
@@ -87,6 +87,16 @@
     return UIDevice.currentDevice.identifierForVendor.UUIDString;
 }
 
+- (NSString *)iosPackageManager {
+#ifdef COCOAPODS
+    return @"CocoaPods";
+#elif SWIFT_PACKAGE
+    return @"Swift Package Manager";
+#else
+    return @"Carthage or Other";
+#endif
+}
+
 - (NSString *)iosDeploymentTarget {
     NSString *rawVersionString = NSBundle.mainBundle.infoDictionary[@"MinimumOSVersion"];
     NSArray<NSString *> *rawVersionArray = [rawVersionString componentsSeparatedByString:@"."];
@@ -109,14 +119,6 @@
 
 - (NSString *)iosSystemName {
     return UIDevice.currentDevice.systemName;
-}
-
-- (BOOL)iosIsCocoapods {
-#ifdef COCOAPODS
-    return YES;
-#else
-    return NO;
-#endif
 }
 
 - (NSString *)deviceAppGeneratedPersistentUuid {
