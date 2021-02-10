@@ -42,6 +42,7 @@
     * Remove `BTDataCollectorKountErrorDomain`
 * Add `environment` to `BTConfiguration`
 * Add `BTVenmoRequest`
+* Update Kount SDK to v4.1.3 (includes arm64 simulator architecture for Apple silicon)
 * PayPal
   * Fix memory leak in `BTPayPalDriver`
   * Add `offerPayLater` to `BTPayPalRequest`
