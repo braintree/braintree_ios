@@ -90,6 +90,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestLandingPageType) {
 @property (nonatomic, nullable, copy) NSString *displayName;
 
 /**
+
  Optional: A non-default merchant account to use for tokenization.
 */
 @property (nonatomic, nullable, copy) NSString *merchantAccountID;
