@@ -123,6 +123,8 @@ payPalDriver.tokenizePayPalAccount(with: request) { nonce, error in
 
 If your app supports multi-tasking, you must set the `BTPayPalRequest.activeWindow` property to ensure that the PayPal flow launches from the correct window.
 
+The `offerCredit` property has been removed in favor of `offerPayLater`.
+
 #### Other Changes
 
 Implementing the `BTViewControllerPresentingDelegate` is no longer required for the PayPal flow.

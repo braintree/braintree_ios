@@ -34,8 +34,10 @@
     * `BTVenmoDriver.authorizeAccount(profileID:vault:completion:)`
   * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
   * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
-  * Update `BTPayPalDriver.requestOneTimePayment` to expect a `BTPayPalCheckoutRequest` and deprecate method
-  * Update `BTPayPalDriver.requestBillingAgreement` to expect a `BTPayPalVaultRequest` and deprecate method
+  * PayPal
+    * Update `BTPayPalDriver.requestOneTimePayment` to expect a `BTPayPalCheckoutRequest` and deprecate method
+    * Update `BTPayPalDriver.requestBillingAgreement` to expect a `BTPayPalVaultRequest` and deprecate method
+    * Remove `offerCredit` from `BTPayPalRequest` (`offerPayLater` should be used instead)
   * BraintreeDataCollector
     * Remove `BTDataCollectorDelegate`
     * Remove `BTDataCollector.collectCardFraudData()`
