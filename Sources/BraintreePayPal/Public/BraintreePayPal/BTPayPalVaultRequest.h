@@ -6,6 +6,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Options for the PayPal Vault flow.
+ */
 @interface BTPayPalVaultRequest : BTPayPalRequest
 
 /**

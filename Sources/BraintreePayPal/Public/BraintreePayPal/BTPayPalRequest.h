@@ -9,9 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 typedef NS_ENUM(NSInteger, BTPayPalRequestLandingPageType) {
     /// Default
-    // Obj-C enums cannot be null; the first value of the Obj-C enum is used as the default if none is set
-    // We have this Default as a way to make the `landingPageType` an optional property for merchants
-    BTPayPalRequestLandingPageTypeDefault = 1,
+    BTPayPalRequestLandingPageTypeDefault = 1, // Obj-C enums cannot be nil; this default option is used to make `landingPageType` optional for merchants
 
     /// Login
     BTPayPalRequestLandingPageTypeLogin,
@@ -36,11 +34,9 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 };
 
 /**
- A PayPal request specifies options that control the PayPal flow.
+ Base options for PayPal Checkout and PayPal Vault flows.
 
- @note For a one-time payment, the request must specify a transaction amount.
-
- @see BTPayPalDriver
+ @note Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
 */
 @interface BTPayPalRequest : NSObject
 
@@ -114,7 +110,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic, nullable, copy) NSString *displayName;
 
 /**
- Optional: Offers PayPal Credit if the customer qualifies. Defaults to false. Only available with PayPal Checkout and PayPal Billing Agreement.
+ Optional: Offers PayPal Credit if the customer qualifies. Defaults to false. Only available with PayPal Checkout and PayPal Vault.
  */
 @property (nonatomic) BOOL offerCredit;
 

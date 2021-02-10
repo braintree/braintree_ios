@@ -92,14 +92,14 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-#pragma mark - Billing Agreement
+#pragma mark - Billing Agreement (Vault)
 
 - (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
 }
 
-#pragma mark - Express Checkout (One-Time Payments)
+#pragma mark - One-Time Payment (Checkout)
 
 - (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
