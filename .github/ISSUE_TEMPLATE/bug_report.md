@@ -9,8 +9,8 @@ about: Create a report to help us improve
  - SDK/Library Version: [e.g. 5.0.0]
  - Environment: [e.g. Sandbox or Production]
  - iOS Version: [e.g. iOS 14.0]
- - Device [e.g. iPhone 12]
- - Integration type & version [e.g. CocoaPods 1.1.1, Carthage 0.18.1, Swift Package Manager 5.2.0]
+ - Device: [e.g. iPhone 12]
+ - Integration type & version: [e.g. CocoaPods 1.1.1, Carthage 0.18.1, Swift Package Manager 5.2.0]
 
 **Describe the bug**
 Description of what the bug is. Please include as many details as possible.
