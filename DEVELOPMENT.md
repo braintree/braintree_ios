@@ -15,7 +15,7 @@ It's a good idea to run `rake`, which runs all unit tests, before committing.
 Use the following commands to run tests:
 * UI tests: `bundle && rake spec:ui`
 * Unit tests: `bundle && rake spec:unit`
-* Integration tests: `bundle && rake spec:api:integration`
+* Integration tests: `bundle && rake spec:integration`
 * All tests: `bundle && rake spec:all`
 
 ## Importing Header Files
