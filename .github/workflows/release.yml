@@ -1,0 +1,80 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release"
+        required: true
+jobs:
+  release:
+    name: Release
+    runs-on: macOS-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Use Xcode 12.4
+        run: sudo xcode-select -switch /Applications/Xcode_12.4.app
+
+      # Update the version number
+      - name: Update version
+        run: |
+          today=$(date +'%Y-%m-%d')
+          sed -i '' 's/## unreleased.*/## '"${{ github.event.inputs.version }}"' ('"$today"')/' CHANGELOG.md
+          sed -i '' 's/\(s\.version *= *\).*/\1"'"${{ github.event.inputs.version }}"'\"/' Braintree.podspec
+          sed -i '' 's/\(#define BRAINTREE_VERSION (@\).*/\1"'"${{ github.event.inputs.version }}"'\")/' Sources/BraintreeCore/Braintree-Version.h
+          plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
+          plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
+
+      # Tag the new version and push changes
+      - name: Tag and push new version
+        run: |
+          git config user.name braintreeps
+          git config user.email code@getbraintree.com
+          git add .
+          git commit -m 'Bump version to ${{ github.event.inputs.version }}'
+          git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
+          git push
+
+      # Save changelog entries to a file
+      - name: Extract changelog entries
+        run: |
+          sed -e '1,/##/d' -e '/##/,$d' CHANGELOG.md > changelog_entries.md
+
+      # Create the release on GitHub
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: ${{ github.event.inputs.version }}
+          body_path: changelog_entries.md
+          draft: false
+          prerelease: false
+
+      # Create pre-built binaries for Carthage
+      - name: Create Carthage binaries
+        run: |
+          rm -rf SampleApps/SPMTest
+          carthage build --no-skip-current
+          carthage archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
+          git checkout SampleApps/SPMTest
+
+      # Add binaries to the GitHub release
+      - name: Upload Carthage binaries
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Braintree.framework.zip
+          asset_name: Braintree.framework.zip
+          asset_content_type: application/zip
+
+      # Publish to CocoaPods
+      - name: Publish to CocoaPods
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: pod trunk push Braintree.podspec
