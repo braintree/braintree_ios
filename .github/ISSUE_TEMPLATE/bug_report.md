@@ -6,7 +6,7 @@ about: Create a report to help us improve
 <!-- Only open an issue here if you think you've found an issue with our SDK. If you need help troubleshooting your integration, reach out to Braintree Support at https://help.braintreepayments.com. -->
 
 **Integration Details (please complete the following information):**
- - SDK/Library Version: [e.g. 5.0.0]
+ - Braintree SDK Version: [e.g. 5.0.0]
  - Environment: [e.g. Sandbox or Production]
  - iOS Version: [e.g. iOS 14.0]
  - Device: [e.g. iPhone 12]
