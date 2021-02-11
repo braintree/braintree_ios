@@ -86,6 +86,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  */
 @property (nonatomic) BOOL offerPayLater;
 
+/**
+ Optional: If set to true, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
+ */
+@property (nonatomic) BOOL requestBillingAgreement;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -56,6 +56,14 @@
         parameters[@"currency_iso_code"] = currencyCode;
     }
 
+    if (self.requestBillingAgreement) {
+        parameters[@"request_billing_agreement"] = @(self.requestBillingAgreement);
+    }
+
+    if (self.requestBillingAgreement && self.billingAgreementDescription) {
+        parameters[@"billing_agreement_details"] = @{@"description": self.billingAgreementDescription};
+    }
+
     if (self.shippingAddressOverride) {
         parameters[@"line1"] = self.shippingAddressOverride.streetAddress;
         parameters[@"line2"] = self.shippingAddressOverride.extendedAddress;

@@ -47,10 +47,10 @@
 * Update Kount SDK to v4.1.3 (includes arm64 simulator architecture for Apple silicon)
 * PayPal
   * Fix memory leak in `BTPayPalDriver`
-  * Add `offerPayLater` to `BTPayPalRequest`
   * Add `BTPayPalCheckoutRequest`
   * Add `BTPayPalVaultRequest`
   * Add `tokenizePayPalAccount` method to `BTPayPalDriver`
+  * Add `offerPayLater` and `requestBillingAgreement` to `BTPayPalCheckoutRequest`
 * Update CardinalMobile.framework to v2.2.5
 
 ## 5.0.0-beta2 (2021-01-20)

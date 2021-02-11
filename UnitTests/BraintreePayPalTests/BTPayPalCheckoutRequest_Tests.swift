@@ -82,6 +82,8 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.intent = .sale
         request.offerPayLater = true
         request.currencyCode = "currency-code"
+        request.requestBillingAgreement = true
+        request.billingAgreementDescription = "description"
 
         let shippingAddress = BTPostalAddress()
         shippingAddress.streetAddress = "123 Main"
@@ -107,6 +109,14 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["postal_code"] as? String, "11111")
         XCTAssertEqual(parameters["country_code"] as? String, "US")
         XCTAssertEqual(parameters["recipient_name"] as? String, "Recipient")
+        XCTAssertEqual(parameters["request_billing_agreement"] as? Bool, true)
+
+        guard let billingAgreementDetails = parameters["billing_agreement_details"] as? [String : String] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(billingAgreementDetails["description"], "description")
     }
 
     func testParametersWithConfiguration_returnsMinimumParams() {
@@ -133,5 +143,15 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["currency_iso_code"] as? String, "currency-code")
+    }
+
+    func testParametersWithConfiguration_whenRequestBillingAgreementIsFalse_andBillingAgreementDescriptionIsSet_doesNotReturnDescription() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.billingAgreementDescription = "description"
+
+        let parameters = request.parameters(with: configuration)
+
+        XCTAssertNil(parameters["request_billing_agreement"])
+        XCTAssertNil(parameters["billing_agreement_details"])
     }
 }
