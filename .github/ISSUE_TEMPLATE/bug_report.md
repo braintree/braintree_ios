@@ -6,11 +6,11 @@ about: Create a report to help us improve
 <!-- Only open an issue here if you think you've found an issue with our SDK. If you need help troubleshooting your integration, reach out to Braintree Support at https://help.braintreepayments.com. -->
 
 **Integration Details (please complete the following information):**
- - SDK/Library Version: [e.g. 4.33.0]
+ - SDK/Library Version: [e.g. 5.0.0]
  - Environment: [e.g. Sandbox or Production]
- - iOS Version: [e.g. iOS 13.0]
- - Device [e.g. iPhone 6s]
- - Integration type & version [e.g. CocoaPods 1.1.1, Carthage 0.18.1]
+ - iOS Version: [e.g. iOS 14.0]
+ - Device [e.g. iPhone 12]
+ - Integration type & version [e.g. CocoaPods 1.1.1, Carthage 0.18.1, Swift Package Manager 5.2.0]
 
 **Describe the bug**
 Description of what the bug is. Please include as many details as possible.
