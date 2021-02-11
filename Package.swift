@@ -48,10 +48,6 @@ let package = Package(
             targets: ["BraintreeVenmo"]
         ),
         .library(
-            name: "KountDataCollector",
-            targets: ["KountDataCollector"]
-        ),
-        .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector"]
         ),
