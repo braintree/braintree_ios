@@ -56,7 +56,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5.0.0-beta2</string>
+	<string>5.0.0</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>com.braintreepayments.Demo.payments</string>
