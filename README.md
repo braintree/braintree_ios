@@ -4,7 +4,7 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-![GitHub Actions CI](https://github.com/braintree/braintree_ios/workflows/CI/badge.svg)
+![GitHub Actions Tests](https://github.com/braintree/braintree_ios/workflows/Tests/badge.svg)
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
