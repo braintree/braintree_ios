@@ -15,6 +15,10 @@ jobs:
       - name: Use Xcode 12.4
         run: sudo xcode-select -switch /Applications/Xcode_12.4.app
 
+      # Check for unreleased section in changelog
+      - name: Check for unreleased section in changelog
+        run: grep "## unreleased" CHANGELOG.md || echo "::error::No unreleased section found in CHANGELOG"
+
       # Update the version number
       - name: Update version
         run: |
