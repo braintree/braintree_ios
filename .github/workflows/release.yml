@@ -33,7 +33,7 @@ jobs:
           git add .
           git commit -m 'Bump version to ${{ github.event.inputs.version }}'
           git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
-          git push
+          git push origin tag ${{ github.event.inputs.version }}
 
       # Save changelog entries to a file
       - name: Extract changelog entries
