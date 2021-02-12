@@ -17,7 +17,7 @@ jobs:
 
       # Check for unreleased section in changelog
       - name: Check for unreleased section in changelog
-        run: grep "## unreleased" CHANGELOG.md || echo "::error::No unreleased section found in CHANGELOG"
+        run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
 
       # Update the version number
       - name: Update version
