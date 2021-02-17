@@ -11,10 +11,11 @@ class BTDataCollector_Tests: XCTestCase {
                 "kountMerchantId": "500000"
             ]
         ] as [String : Any]
-        
-        let apiClient = clientThatReturnsConfiguration(config as [String : AnyObject])
-        
-        let dataCollector = BTDataCollector(apiClient: apiClient)
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
         dataCollector.setFraudMerchantID("500001")
         let expectation = self.expectation(description: "Returns fraud data")
         
@@ -36,8 +37,11 @@ class BTDataCollector_Tests: XCTestCase {
                 "kountMerchantId": "500000"
             ]
         ] as [String : Any]
-        let apiClient = clientThatReturnsConfiguration(config as [String : AnyObject])
-        let dataCollector = BTDataCollector(apiClient: apiClient)
+        
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
 
         let expectation = self.expectation(description: "Returns fraud data")
         dataCollector.collectDeviceData { deviceData in
@@ -58,8 +62,11 @@ class BTDataCollector_Tests: XCTestCase {
                 "kountMerchantId": "500000"
             ]
         ] as [String : Any]
-        let apiClient = clientThatReturnsConfiguration(config as [String : AnyObject])
-        let dataCollector = BTDataCollector(apiClient: apiClient)
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
         let stubKount = FakeDeviceCollectorSDK()
         dataCollector.kount = stubKount
 
@@ -81,9 +88,11 @@ class BTDataCollector_Tests: XCTestCase {
                 "kountMerchantId": nil
             ]
         ] as [String : Any]
-        let apiClient = clientThatReturnsConfiguration(config as [String : AnyObject])
-        
-        let dataCollector = BTDataCollector(apiClient: apiClient)
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
         let expectation = self.expectation(description: "Returns fraud data")
         dataCollector.collectDeviceData { deviceData in
             let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
@@ -95,17 +104,6 @@ class BTDataCollector_Tests: XCTestCase {
         
         waitForExpectations(timeout: 2, handler: nil)
     }
-}
-
-func clientThatReturnsConfiguration(_ configuration: [String:AnyObject]) -> BTAPIClient {
-    let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
-    let fakeHttp = FakeHTTP.fakeHTTP()
-    let cannedConfig = BTJSON(value: configuration)
-    fakeHttp.cannedConfiguration = cannedConfig
-    fakeHttp.cannedStatusCode = 200
-    apiClient.configurationHTTP = fakeHttp
-    
-    return apiClient
 }
 
 class FakeDeviceCollectorSDK: KDataCollector {

@@ -5,9 +5,11 @@ public class MockAPIClient : BTAPIClient {
     public var lastPOSTPath = ""
     public var lastPOSTParameters = [:] as [AnyHashable: Any]?
     public var lastPOSTAPIClientHTTPType: BTAPIClientHTTPType?
-    var lastGETPath = ""
-    var lastGETParameters = [:] as [String : String]?
-    var lastGETAPIClientHTTPType: BTAPIClientHTTPType?
+
+    public var lastGETPath = ""
+    public var lastGETParameters = [:] as [String : String]?
+    public var lastGETAPIClientHTTPType: BTAPIClientHTTPType?
+
     public var postedAnalyticsEvents : [String] = []
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
