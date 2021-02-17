@@ -30,8 +30,7 @@ jobs:
           git add SampleApps/SPMTest
           git commit -m 'Remove SPMTest app to avoid Carthage timeout'
       - name: Use current branch
-        run: |
-          echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
+        run: echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
       - name: Run carthage update
         run: cd SampleApps/CarthageTest && carthage update
       - name: Build CarthageTest
