@@ -338,19 +338,19 @@ namespace :docs do
   end
 
   task :publish do
-    run! 'git branch -D gh-pages'
-    run! 'git add docs_output'
-    run! 'git commit -m "Publish docs to github pages"'
+    run! "git branch -D gh-pages"
+    run! "git add docs_output"
+    run! "git commit -m 'Publish docs to github pages'"
     puts "Generating git subtree, this will take a moment..."
-    run! 'git subtree split --prefix docs_output -b gh-pages'
-    run! 'git push -f #{PUBLIC_REMOTE_NAME} gh-pages:gh-pages'
+    run! "git subtree split --prefix docs_output -b gh-pages"
+    run! "git push -f #{PUBLIC_REMOTE_NAME} gh-pages:gh-pages"
   end
 
   task :clean do
-    run! 'git reset HEAD~'
-    run! 'git branch -D gh-pages'
+    run! "git reset HEAD~"
+    run! "git branch -D gh-pages"
     puts "Published docs to gh-pages branch"
-    run! 'rm -rf docs_output'
+    run! "rm -rf docs_output"
   end
 
 end
