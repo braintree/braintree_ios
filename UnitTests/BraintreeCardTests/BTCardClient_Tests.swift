@@ -7,14 +7,11 @@ class BTCardClient_Tests: XCTestCase {
     
     func testTokenization_postsCardDataToClientAPI() {
         let expectation = self.expectation(description: "Tokenize Card")
-        let fakeHTTP = FakeHTTP.fakeHTTP()
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        apiClient.http = fakeHTTP
-        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
-        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
-        apiClient.configurationHTTP = mockConfigurationHTTP
 
-        let cardClient = BTCardClient(apiClient: apiClient)
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
 
         let card = BTCard()
         card.number = "4111111111111111"
@@ -26,17 +23,11 @@ class BTCardClient_Tests: XCTestCase {
         card.merchantAccountID = "some merchant account id"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            guard let lastRequestEndpoint = fakeHTTP.lastRequestEndpoint,
-                  let lastRequestMethod = fakeHTTP.lastRequestMethod,
-                  let lastRequestParameters = fakeHTTP.lastRequestParameters else {
-                XCTFail()
-                return
-            }
             
-            XCTAssertEqual(lastRequestEndpoint, "v1/payment_methods/credit_cards")
-            XCTAssertEqual(lastRequestMethod, "POST")
+            XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
+            XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .gateway)
 
-            let params = lastRequestParameters
+            guard let params = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
             XCTAssertEqual(params["authenticationInsight"] as? Bool, true)
             XCTAssertEqual(params["merchantAccountId"] as? String, "some merchant account id")
             
@@ -58,14 +49,11 @@ class BTCardClient_Tests: XCTestCase {
     
     func testTokenization_whenAuthInsightIsNotRequested_postsCardDataWithoutAuthInsight() {
         let expectation = self.expectation(description: "Tokenize Card")
-        let fakeHTTP = FakeHTTP.fakeHTTP()
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        apiClient.http = fakeHTTP
-        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
-        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
-        apiClient.configurationHTTP = mockConfigurationHTTP
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
         
-        let cardClient = BTCardClient(apiClient: apiClient)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
 
         let card = BTCard()
         card.number = "4111111111111111"
@@ -75,7 +63,10 @@ class BTCardClient_Tests: XCTestCase {
         card.authenticationInsightRequested = false
         
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            guard let params = fakeHTTP.lastRequestParameters else {
+            XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
+            XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .gateway)
+
+            guard let params = mockAPIClient.lastPOSTParameters else {
                 XCTFail()
                 return
             }
@@ -91,8 +82,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientSucceeds_returnsTokenizedCard() {
         let expectation = self.expectation(description: "Tokenize Card")
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAPIClientHTTP = FakeHTTP.fakeHTTP()
+
         let mockTokenizeResponse = [
             "creditCards": [
                 [
@@ -103,14 +93,12 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ]
-        mockAPIClientHTTP.stubRequest(withMethod: "POST", toEndpoint: "v1/payment_methods/credit_cards", respondWith: mockTokenizeResponse, statusCode: 202)
-        apiClient.http = mockAPIClientHTTP
 
-        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
-        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
-        apiClient.configurationHTTP = mockConfigurationHTTP
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        mockAPIClient.cannedResponseBody = BTJSON(value: mockTokenizeResponse)
 
-        let cardClient = BTCardClient(apiClient: apiClient)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
 
         let card = BTCard()
         card.number = "4111111111111111"
@@ -134,17 +122,14 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientFails_returnsError() {
         let expectation = self.expectation(description: "Tokenize Card")
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let apiErrorHTTP = FakeHTTP.fakeHTTP()
+
         let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
-        apiErrorHTTP.stubRequest(withMethod: "POST", toEndpoint: "v1/payment_methods/credit_cards", respondWithError: mockError)
-        apiClient.http = apiErrorHTTP
 
-        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
-        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
-        apiClient.configurationHTTP = mockConfigurationHTTP
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        mockAPIClient.cannedResponseError = mockError
 
-        let cardClient = BTCardClient(apiClient: apiClient)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
 
         let card = BTCard()
         card.number = "4111111111111111"

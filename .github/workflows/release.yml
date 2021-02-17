@@ -15,6 +15,10 @@ jobs:
       - name: Use Xcode 12.4
         run: sudo xcode-select -switch /Applications/Xcode_12.4.app
 
+      # Check for unreleased section in changelog
+      - name: Check for unreleased section in changelog
+        run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
+
       # Update the version number
       - name: Update version
         run: |
@@ -33,7 +37,7 @@ jobs:
           git add .
           git commit -m 'Bump version to ${{ github.event.inputs.version }}'
           git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
-          git push
+          git push origin tag ${{ github.event.inputs.version }}
 
       # Save changelog entries to a file
       - name: Extract changelog entries

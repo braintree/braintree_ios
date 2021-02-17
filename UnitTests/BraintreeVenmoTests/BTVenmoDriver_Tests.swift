@@ -486,26 +486,7 @@ class BTVenmoDriver_Tests: XCTestCase {
 
     // Note: testing of handleReturnURL is done implicitly while testing authorizeAccountWithCompletion
 
-    // MARK: - Drop-in
-
-    /// Helper
-    func client(_ configurationDictionary: Dictionary<String, String>) -> BTAPIClient {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let fakeHttp = FakeHTTP.fakeHTTP()
-        fakeHttp.cannedResponse = BTJSON(value: configurationDictionary)
-        fakeHttp.cannedStatusCode = 200
-        apiClient.configurationHTTP = fakeHttp
-        return apiClient
-    }
-    
-    func clientWithJson(_ configurationJson: BTJSON) -> BTAPIClient {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let fakeHttp = FakeHTTP.fakeHTTP()
-        fakeHttp.cannedResponse = configurationJson
-        fakeHttp.cannedStatusCode = 200
-        apiClient.configurationHTTP = fakeHttp
-        return apiClient
-    }
+    // MARK: - openVenmoAppPageInAppStore
 
     func testGotoVenmoInAppStore_opensVenmoAppStoreURL_andSendsAnalyticsEvent() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
