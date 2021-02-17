@@ -338,7 +338,7 @@ namespace :docs do
   end
 
   task :publish do
-    run! "git branch -D gh-pages"
+    run "git branch -D gh-pages"
     run! "git add docs_output"
     run! "git commit -m 'Publish docs to github pages'"
     puts "Generating git subtree, this will take a moment..."
@@ -351,6 +351,7 @@ namespace :docs do
     run! "git branch -D gh-pages"
     puts "Published docs to gh-pages branch"
     run! "rm -rf docs_output"
+    run! "rm swiftDoc.json && rm objcDoc.json"
   end
 
 end
