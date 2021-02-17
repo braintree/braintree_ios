@@ -14,7 +14,7 @@ desc "Run sanity checks; bump and tag new version"
 task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag]
 
 desc "Push tags, docs, and Pod"
-task :publish => %w[publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_external]
+task :publish => %w[publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_publish]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -317,7 +317,7 @@ def sourcekitten_swift_command
 end
 
 desc "Generate documentation via jazzy and push to GH"
-task :docs_external => %w[docs:generate docs:publish docs:clean]
+task :docs_publish => %w[docs:generate docs:publish docs:clean]
 
 namespace :docs do
 
