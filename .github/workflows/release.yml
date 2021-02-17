@@ -82,3 +82,37 @@ jobs:
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: pod trunk push Braintree.podspec
+
+      # Publish reference docs
+      - name: Publish reference docs
+        run: gem install jazzy
+        run: brew install sourcekitten
+        run: sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
+        run: |
+          sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
+            -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \
+            -I $(pwd)/Sources/BraintreeAmericanExpress/Public \
+            -I $(pwd)/Sources/BraintreeApplePay/Public \
+            -I $(pwd)/Sources/BraintreeCard/Public \
+            -I $(pwd)/Sources/BraintreeCore/Public \
+            -I $(pwd)/Sources/BraintreeDataCollector/Public \
+            -I $(pwd)/Sources/BraintreePaymentFlow/Public \
+            -I $(pwd)/Sources/BraintreePayPal/Public \
+            -I $(pwd)/Sources/BraintreeThreeDSecure/Public \
+            -I $(pwd)/Sources/BraintreeUnionPay/Public \
+            -I $(pwd)/Sources/BraintreeVenmo/Public \
+            > objcDoc.json
+        run: |
+          jazzy \
+            --sourcekitten-sourcefile swiftDoc.json,objcDoc.json \
+            --author Braintree \
+            --author_url http://braintreepayments.com \
+            --github_url https://github.com/braintree/braintree_ios \
+            --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version} \
+            --theme fullwidth \
+            --output docs_output
+        run: |
+          git add docs_output
+          git commit -m "Publish docs to github pages"
+          git subtree split --prefix docs_output -b gh-pages
+          git push -f origin gh-pages:gh-pages
