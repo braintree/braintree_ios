@@ -92,7 +92,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeDataCollector",
-            dependencies: ["BraintreeCore", "KountDataCollector"],
+            dependencies: ["BraintreeCore"],
             exclude: ["Kount"],
             publicHeadersPath: "Public"
         ),
@@ -133,7 +133,7 @@ let package = Package(
         ),
         .target(
             name: "PayPalDataCollector",
-            dependencies: ["BraintreeCore", "PPRiskMagnes"],
+            dependencies: ["BraintreeCore"],
             path: "Sources/PayPalDataCollector"
         ),
         .binaryTarget(

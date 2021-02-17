@@ -151,9 +151,9 @@ namespace :spm do
   task :build_demo do
     update_xcodeproj
 
-    # Build SPM demo app
+    # Build & archive SPM demo app
     run! "cd SampleApps/SPMTest && swift package resolve"
-    run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build"
+    run! "xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive"
 
     # Clean up
     run! 'rm -rf ~/Library/Developers/Xcode/DerivedData'
