@@ -14,7 +14,7 @@ desc "Run sanity checks; bump and tag new version"
 task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag]
 
 desc "Push tags, docs, and Pod"
-task :publish => %w[publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_internal docs_external]
+task :publish => %w[publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_publish]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -24,7 +24,7 @@ FRAMEWORKS_PLIST = "Sources/BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "origin"
 GHE_REMOTE_NAME = "internal"
 
-bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector","BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo", "PayPalDataCollector"]
+bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector", "BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo", "PayPalDataCollector"]
 
 class << self
   def run cmd
@@ -280,53 +280,78 @@ end
 
 def jazzy_command
   %W[jazzy
-      --objc
+      --sourcekitten-sourcefile swiftDoc.json,objcDoc.json
       --author Braintree
       --author_url http://braintreepayments.com
       --github_url https://github.com/braintree/braintree_ios
       --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version}
       --theme fullwidth
       --output docs_output
-      --xcodebuild-arguments --objc,Docs/Braintree-Umbrella-Header.h,--,-x,objective-c,-isysroot,$(xcrun --sdk iphonesimulator --show-sdk-path),-I,$(pwd)
   ].join(' ')
 end
 
-desc "Generate documentation via jazzy and push to GHE"
-task :docs_internal => %w[docs:generate docs:publish docs:internal docs:clean]
+def sourcekitten_objc_command
+  %W[sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h --
+      -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator)
+      -I $(pwd)/Sources/BraintreeAmericanExpress/Public
+      -I $(pwd)/Sources/BraintreeApplePay/Public
+      -I $(pwd)/Sources/BraintreeCard/Public
+      -I $(pwd)/Sources/BraintreeCore/Public
+      -I $(pwd)/Sources/BraintreeDataCollector/Public
+      -I $(pwd)/Sources/BraintreePaymentFlow/Public
+      -I $(pwd)/Sources/BraintreePayPal/Public
+      -I $(pwd)/Sources/BraintreeThreeDSecure/Public
+      -I $(pwd)/Sources/BraintreeUnionPay/Public
+      -I $(pwd)/Sources/BraintreeVenmo/Public
+      > objcDoc.json
+  ].join(' ')
+end
+
+def sourcekitten_swift_command
+  %W[sourcekitten doc --
+      -workspace Braintree.xcworkspace
+      -scheme PayPalDataCollector
+      -destination 'name=iPhone 11,platform=iOS Simulator'
+      > swiftDoc.json
+  ].join(' ')
+end
 
 desc "Generate documentation via jazzy and push to GH"
-task :docs_external => %w[docs:generate docs:publish docs:external docs:clean]
+task :docs_publish => %w[docs:generate docs:publish docs:clean]
 
 namespace :docs do
 
   desc "Generate docs with jazzy"
   task :generate do
-    run! 'rm -rf docs_output'
+    begin
+      run! "sourcekitten --version"
+    rescue => e
+      say(HighLine.color("Please run `brew install sourcekitten`", :red, :bold))
+      raise
+    end
+
+    run! "rm -rf docs_output"
+    run(sourcekitten_swift_command)
+    run(sourcekitten_objc_command)
     run(jazzy_command)
     puts "Generated HTML documentation at docs_output"
   end
 
   task :publish do
-    run 'git branch -D gh-pages'
-    run! 'git add docs_output'
-    run! 'git commit -m "Publish docs to github pages"'
+    run "git branch -D gh-pages"
+    run! "git add docs_output"
+    run! "git commit -m 'Publish docs to github pages'"
     puts "Generating git subtree, this will take a moment..."
-    run! 'git subtree split --prefix docs_output -b gh-pages'
-  end
-
-  task:internal do
-    run! 'git push -f origin gh-pages:gh-pages'
-  end
-
-  task:external do
-    run! 'git push -f public gh-pages:gh-pages'
+    run! "git subtree split --prefix docs_output -b gh-pages"
+    run! "git push -f #{PUBLIC_REMOTE_NAME} gh-pages:gh-pages"
   end
 
   task :clean do
-    run! 'git reset HEAD~'
-    run! 'git branch -D gh-pages'
+    run! "git reset HEAD~"
+    run! "git branch -D gh-pages"
     puts "Published docs to gh-pages branch"
-    run! 'rm -rf docs_output'
+    run! "rm -rf docs_output"
+    run! "rm swiftDoc.json && rm objcDoc.json"
   end
 
 end
