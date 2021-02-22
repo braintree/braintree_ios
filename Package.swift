@@ -50,6 +50,14 @@ let package = Package(
         .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
+        ),
+        .library(
+            name: "KountDataCollector",
+            targets: ["KountDataCollector"]
+        ),
+        .library(
+            name: "PPRiskMagnes",
+            targets: ["PPRiskMagnes"]
         )
     ],
     dependencies: [
