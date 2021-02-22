@@ -28,7 +28,7 @@ We recommend using [Swift Package Manager](https://swift.org/package-manager/), 
 ### Swift Package Manager
 _This feature is only available in v5._
 
-See our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SWIFT_PACKAGE_MANAGER.md) for instructions on integrating with SPM.
+See our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SWIFT_PACKAGE_MANAGER.md) for instructions on integrating with SPM. Using Braintree with SPM requires Xcode 12.5+.
 
 ### CocoaPods
 ```

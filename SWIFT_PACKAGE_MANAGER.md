@@ -1,6 +1,6 @@
 # Swift Package Manager Instructions
 
-Support for Swift Package Manager was introduced in Braintree iOS v5.
+Support for Swift Package Manager was introduced in Braintree iOS v5. It requires Xcode 12.5+.
 
 * [General Instructions](#general-instructions)
 * [Binary Dependencies](#binary-dependencies)
@@ -20,27 +20,6 @@ import BraintreeCard
 import BraintreeApplePay
 import BraintreePayPal
 ```
-
-### Binary Dependencies
-
-There is a known Xcode bug, reported in [this GitHub issue](https://github.com/braintree/braintree_ios/issues/576), that occurs when archiving apps that include binary dependencies via SPM. The workaround is to tick the checkboxes to explicitly include these binary dependencies in your app.
-
-To use the `BraintreeDataCollector` library, you must also check the box for `KountDataCollector`.
-
-To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
-
-### BraintreeDataCollector
-
-There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-spm-package-for-ios-executable/41245/13) that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
-
-
-```sh
-rm -rf "${TARGET_BUILD_DIR}/${TARGET_NAME}.app/Frameworks/libKountDataCollector.a"
-```
-
-Make sure to select your app's target in the _Provide build settings from_ drop-down.
-
-![image](image_assets/kount_post_action.png)
 
 ### BraintreeThreeDSecure
 
