@@ -109,12 +109,16 @@ end
 
 desc 'Carthage tasks'
 namespace :carthage do
-  # Remove SPMTest app to prevent Carthage timeout
-  task :remove_spm_test_app do
-    run! "mkdir temp"
+  def remove_spm_test_app
     run! "mv SampleApps/SPMTest/ temp/"
     run! "git add SampleApps/SPMTest"
     run! "git commit -m 'Remove SPMTest app to avoid Carthage timeout'"
+  end
+
+  # Remove SPMTest app to prevent Carthage timeout
+  task :remove_spm_test_app do
+    run! "mkdir temp"
+    remove_spm_test_app
   end
 
   # Restore SPMTest app to prevent Carthage timeout
@@ -126,10 +130,7 @@ namespace :carthage do
   end
 
   task :build_demo do
-    # Remove SPMTest app to prevent Carthage timeout
-    run! "rm -rf SampleApps/SPMTest"
-    run! "git add SampleApps/SPMTest"
-    run! "git commit -m 'Remove SPMTest app to avoid Carthage timeout'"
+    remove_spm_test_app
 
     # Build Carthage demo app
     File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
