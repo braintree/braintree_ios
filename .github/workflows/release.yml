@@ -29,6 +29,14 @@ jobs:
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
 
+      # Remove the SPMTest app to prevent Carthage timeout; store SPMTest app in temp dir
+      - name: Remove SPMTest demo app
+        run: |
+          echo "TEMP_DIR=$(mktemp -d)" >> $GITHUB_ENV
+          mv SampleApps/SPMTest/ ${{ env.TEMP_DIR }}/
+          git add SampleApps/SPMTest
+          git commit -m 'Remove SPMTest app to avoid Carthage timeout'
+
       # Tag the new version and push changes
       - name: Tag and push new version
         run: |
@@ -38,6 +46,14 @@ jobs:
           git commit -m 'Bump version to ${{ github.event.inputs.version }}'
           git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
           git push origin tag ${{ github.event.inputs.version }}
+
+      # Restore the SPMTest app for development purposes
+      - name: Restore SPMTest demo app
+        run: |
+          mv ${{ env.TEMP_DIR }}/SPMTest/ SampleApps/
+          git add SampleApps/SPMTest
+          git commit -m 'Restore SPMTest app for development'
+          git push origin
 
       # Save changelog entries to a file
       - name: Extract changelog entries
