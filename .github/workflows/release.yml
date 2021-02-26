@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Use Xcode 12.4
         run: sudo xcode-select -switch /Applications/Xcode_12.4.app
 
@@ -108,11 +110,12 @@ jobs:
             --author Braintree \
             --author_url http://braintreepayments.com \
             --github_url https://github.com/braintree/braintree_ios \
-            --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version} \
+            --github-file-prefix https://github.com/braintree/braintree_ios/tree/${{ github.event.inputs.version }} \
             --theme fullwidth \
-            --output docs_output
+            --output ${{ github.event.inputs.version }}
         run: |
-          git add docs_output
-          git commit -m "Publish docs to github pages"
-          git subtree split --prefix docs_output -b gh-pages
-          git push -f origin gh-pages:gh-pages
+          git checkout gh-pages
+          ls -sfn ${{ github.event.inputs.version }} current
+          git add current ${{ github.event.inputs.version }}
+          git commit -m "Publish ${{ github.event.inputs.version }} docs to github pages"
+          git push
