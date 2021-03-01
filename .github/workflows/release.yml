@@ -103,10 +103,10 @@ jobs:
 
       # Publish reference docs
       - name: Publish reference docs
-        run: gem install jazzy
-        run: brew install sourcekitten
-        run: sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
         run: |
+          gem install jazzy
+          brew install sourcekitten
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
           sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
             -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \
             -I $(pwd)/Sources/BraintreeAmericanExpress/Public \
@@ -120,7 +120,6 @@ jobs:
             -I $(pwd)/Sources/BraintreeUnionPay/Public \
             -I $(pwd)/Sources/BraintreeVenmo/Public \
             > objcDoc.json
-        run: |
           jazzy \
             --sourcekitten-sourcefile swiftDoc.json,objcDoc.json \
             --author Braintree \
@@ -129,7 +128,6 @@ jobs:
             --github-file-prefix https://github.com/braintree/braintree_ios/tree/${{ github.event.inputs.version }} \
             --theme fullwidth \
             --output ${{ github.event.inputs.version }}
-        run: |
           git checkout gh-pages
           ls -sfn ${{ github.event.inputs.version }} current
           git add current ${{ github.event.inputs.version }}
