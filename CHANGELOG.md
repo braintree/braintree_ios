@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.0.1 (2021-03-01)
 * SPM
   * Remove `KountDataCollector` binary dependency from `BraintreeDataCollector` target (fixes #624)
   * Remove `PPRiskMagnes` binary dependency from `PayPalDataCollector` target (fixes #624)
