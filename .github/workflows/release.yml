@@ -17,19 +17,20 @@ jobs:
       - name: Use Xcode 12.4
         run: sudo xcode-select -switch /Applications/Xcode_12.4.app
 
-      # Check for unreleased section in changelog
       - name: Check for unreleased section in changelog
         run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
 
-      # Remove the SPMTest app to prevent Carthage timeout; store SPMTest app in temp dir
-      - name: Remove SPMTest demo app
+      - name: Set git username and email
         run: |
-          echo "TEMP_DIR=$(mktemp -d)" >> $GITHUB_ENV
-          mv SampleApps/SPMTest/ ${{ env.TEMP_DIR }}/
-          git add SampleApps/SPMTest
-          git commit -m 'Pre-release: remove SPMTest app to avoid Carthage timeout'
+          git config user.name braintreeps
+          git config user.email code@getbraintree.com
 
-      # Update the version number
+      - name: Remove SPMTest app to prevent Carthage timeout
+        run: |
+          rm -rf SampleApps/SPMTest
+          git add SampleApps/SPMTest
+          git commit -m 'Remove SPMTest app to avoid Carthage timeout'
+
       - name: Update version
         run: |
           today=$(date +'%Y-%m-%d')
@@ -39,31 +40,22 @@ jobs:
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
 
-      # Tag the new version and push changes
-      - name: Tag and push new version
-        run: |
-          git config user.name braintreeps
-          git config user.email code@getbraintree.com
           git add .
           git commit -m 'Bump version to ${{ github.event.inputs.version }}'
           git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
+
+      - name: Restore SPMTest app for development purposes
+        run: |
+          git revert $(git rev-parse HEAD^1) --no-edit
+      
+      - name: Push commits and tag
           git push origin tag ${{ github.event.inputs.version }}
 
-      # Restore the SPMTest app for development purposes
-      - name: Restore SPMTest demo app
-        run: |
-          mv ${{ env.TEMP_DIR }}/SPMTest/ SampleApps/
-          git add SampleApps/SPMTest
-          git commit -m 'Post-release: restore SPMTest app for development'
-          git push origin
-
-      # Save changelog entries to a file
-      - name: Extract changelog entries
+      - name: Save changelog entries to a file
         run: |
           sed -e '1,/##/d' -e '/##/,$d' CHANGELOG.md > changelog_entries.md
 
-      # Create the release on GitHub
-      - name: Create GitHub Release
+      - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -75,16 +67,14 @@ jobs:
           draft: false
           prerelease: false
 
-      # Create pre-built binaries for Carthage
-      - name: Create Carthage binaries
+      - name: Create Carthage pre-built binaries
         run: |
           rm -rf SampleApps/SPMTest
           carthage build --no-skip-current
           carthage archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
           git checkout SampleApps/SPMTest
 
-      # Add binaries to the GitHub release
-      - name: Upload Carthage binaries
+      - name: Upload Carthage pre-built binaries to GitHub release
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
@@ -95,13 +85,11 @@ jobs:
           asset_name: Braintree.framework.zip
           asset_content_type: application/zip
 
-      # Publish to CocoaPods
       - name: Publish to CocoaPods
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: pod trunk push Braintree.podspec
 
-      # Publish reference docs
       - name: Publish reference docs
         run: |
           gem install jazzy
