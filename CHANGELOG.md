@@ -4,6 +4,8 @@
 * SPM
   * Remove `KountDataCollector` binary dependency from `BraintreeDataCollector` target (fixes #624)
   * Remove `PPRiskMagnes` binary dependency from `PayPalDataCollector` target (fixes #624)
+* Carthage
+  * Fix timeout when building from source using --no-use-binaries or --use-xcframeworks flags
 
 ## 5.0.0 (2021-02-11)
 * Breaking Changes

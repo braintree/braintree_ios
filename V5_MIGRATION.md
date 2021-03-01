@@ -80,8 +80,6 @@ pod `Braintree/ThreeDSecure`
 
 You will need to add the `BraintreeThreeDSecure` framework to your project. See the Carthage docs for [integration instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
-*Note:* In v5, using the `--no-use-binaries` flag with `carthage update` may result in a timeout.
-
 *Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. Open a GitHub issue if there are concerns.
 
 </p>
