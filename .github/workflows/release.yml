@@ -50,7 +50,7 @@ jobs:
           git revert $(git rev-parse HEAD^1) --no-edit
       
       - name: Push commits and tag
-        run: git push origin tag ${{ github.event.inputs.version }}
+        run: git push origin HEAD ${{ github.event.inputs.version }}
 
       - name: Save changelog entries to a file
         run: |
