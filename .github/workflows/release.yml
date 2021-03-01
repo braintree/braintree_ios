@@ -118,7 +118,7 @@ jobs:
             --theme fullwidth \
             --output ${{ github.event.inputs.version }}
           git checkout gh-pages
-          ls -sfn ${{ github.event.inputs.version }} current
+          ln -sfn ${{ github.event.inputs.version }} current
           git add current ${{ github.event.inputs.version }}
           git commit -m "Publish ${{ github.event.inputs.version }} docs to github pages"
           git push
