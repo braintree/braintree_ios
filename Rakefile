@@ -286,7 +286,7 @@ def jazzy_command
       --github_url https://github.com/braintree/braintree_ios
       --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version}
       --theme fullwidth
-      --output docs_output
+      --output #{current_version}
   ].join(' ')
 end
 
@@ -317,7 +317,7 @@ def sourcekitten_swift_command
 end
 
 desc "Generate documentation via jazzy and push to GH"
-task :docs_publish => %w[docs:generate docs:publish docs:clean]
+task :docs_publish => %w[docs:generate docs:publish]
 
 namespace :docs do
 
@@ -334,24 +334,17 @@ namespace :docs do
     run(sourcekitten_swift_command)
     run(sourcekitten_objc_command)
     run(jazzy_command)
-    puts "Generated HTML documentation at docs_output"
+    run! "rm swiftDoc.json && rm objcDoc.json"
+    puts "Generated HTML documentation"
   end
 
   task :publish do
-    run "git branch -D gh-pages"
-    run! "git add docs_output"
-    run! "git commit -m 'Publish docs to github pages'"
-    puts "Generating git subtree, this will take a moment..."
-    run! "git subtree split --prefix docs_output -b gh-pages"
-    run! "git push -f #{PUBLIC_REMOTE_NAME} gh-pages:gh-pages"
+    run! "git checkout gh-pages"
+    run! "ln -sfn #{current_version} current" # update symlink to current version
+    run! "git add current #{current_version}"
+    run! "git commit -m 'Publish #{current_version} docs to github pages'"
+    run! "git push"
+    run! "git checkout -"
+    puts "Published docs to github pages"
   end
-
-  task :clean do
-    run! "git reset HEAD~"
-    run! "git branch -D gh-pages"
-    puts "Published docs to gh-pages branch"
-    run! "rm -rf docs_output"
-    run! "rm swiftDoc.json && rm objcDoc.json"
-  end
-
 end
