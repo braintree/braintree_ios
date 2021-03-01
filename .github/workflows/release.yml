@@ -39,7 +39,9 @@ jobs:
           sed -i '' 's/\(s\.version *= *\).*/\1"'"${{ github.event.inputs.version }}"'\"/' Braintree.podspec
           sed -i '' 's/\(#define BRAINTREE_VERSION (@\).*/\1"'"${{ github.event.inputs.version }}"'\")/' Sources/BraintreeCore/Braintree-Version.h
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
+          plutil -replace CFBundleShortVersionString -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
+          plutil -replace CFBundleShortVersionString -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
 
           git add .
           git commit -m 'Bump version to ${{ github.event.inputs.version }}'
