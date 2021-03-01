@@ -11,10 +11,10 @@ desc "Run all test tasks"
 task :spec => %w[spec:all]
 
 desc "Run sanity checks; bump and tag new version"
-task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag]
+task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries carthage:remove_spm_test_app release:tag]
 
 desc "Push tags, docs, and Pod"
-task :publish => %w[publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_publish]
+task :publish => %w[carthage:restore_spm_test_app publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_publish]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -109,11 +109,28 @@ end
 
 desc 'Carthage tasks'
 namespace :carthage do
-  task :build_demo do
-    # Remove SPMTest app to prevent Carthage timeout
-    run! "rm -rf SampleApps/SPMTest"
-    run! "git add SampleApps"
+  def remove_spm_test_app
+    run! "mv SampleApps/SPMTest/ temp/"
+    run! "git add SampleApps/SPMTest"
     run! "git commit -m 'Remove SPMTest app to avoid Carthage timeout'"
+  end
+
+  # Remove SPMTest app to prevent Carthage timeout
+  task :remove_spm_test_app do
+    run! "mkdir temp"
+    remove_spm_test_app
+  end
+
+  # Restore SPMTest app to prevent Carthage timeout
+  task :restore_spm_test_app do
+    run! "mv temp/SPMTest/ SampleApps/"
+    run! "rm -rf temp/"
+    run! "git add SampleApps/SPMTest"
+    run! "git commit -m 'Restore SPMTest app for development'"
+  end
+
+  task :build_demo do
+    remove_spm_test_app
 
     # Build Carthage demo app
     File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")

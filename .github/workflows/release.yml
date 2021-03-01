@@ -21,6 +21,14 @@ jobs:
       - name: Check for unreleased section in changelog
         run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
 
+      # Remove the SPMTest app to prevent Carthage timeout; store SPMTest app in temp dir
+      - name: Remove SPMTest demo app
+        run: |
+          echo "TEMP_DIR=$(mktemp -d)" >> $GITHUB_ENV
+          mv SampleApps/SPMTest/ ${{ env.TEMP_DIR }}/
+          git add SampleApps/SPMTest
+          git commit -m 'Pre-release: remove SPMTest app to avoid Carthage timeout'
+
       # Update the version number
       - name: Update version
         run: |
@@ -40,6 +48,14 @@ jobs:
           git commit -m 'Bump version to ${{ github.event.inputs.version }}'
           git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
           git push origin tag ${{ github.event.inputs.version }}
+
+      # Restore the SPMTest app for development purposes
+      - name: Restore SPMTest demo app
+        run: |
+          mv ${{ env.TEMP_DIR }}/SPMTest/ SampleApps/
+          git add SampleApps/SPMTest
+          git commit -m 'Post-release: restore SPMTest app for development'
+          git push origin
 
       # Save changelog entries to a file
       - name: Extract changelog entries
