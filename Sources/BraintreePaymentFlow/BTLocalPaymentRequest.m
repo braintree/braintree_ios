@@ -126,6 +126,10 @@
             params[@"merchant_account_id"] = localPaymentRequest.merchantAccountID;
         }
 
+        if (localPaymentRequest.bic) {
+            params[@"bic"] = localPaymentRequest.bic;
+        }
+
         params[@"experience_profile"] = @{
                                           @"no_shipping": @(!localPaymentRequest.isShippingAddressRequired)
                                           };
