@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+# unreleased
+* Add support for `PKPaymentNetworkElo` to Apple Pay configuration
+
 ## 5.0.1 (2021-03-01)
 * SPM
   * Remove `KountDataCollector` binary dependency from `BraintreeDataCollector` target (fixes #624)
