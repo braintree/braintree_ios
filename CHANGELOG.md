@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Local Payment Methods
+  * Add `bic` (Bank Identification Code) to `BTLocalPaymentRequest`
+
 ## 5.0.1 (2021-03-01)
 * SPM
   * Remove `KountDataCollector` binary dependency from `BraintreeDataCollector` target (fixes #624)

@@ -97,6 +97,8 @@
 		4245D669256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245D668256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift */; };
 		42517321254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h in Headers */ = {isa = PBXBuildFile; fileRef = 42517320254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4255C5132565CF3D00A3CA78 /* PPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255C5122565CF3D00A3CA78 /* PPDataCollector.swift */; };
+		4258677425EECEE100D5F160 /* BTLocalPaymentRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4258677325EECEE100D5F160 /* BTLocalPaymentRequest_Tests.swift */; };
+		425867A225EED15600D5F160 /* MockPaymentFlowDriverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425867A125EED15600D5F160 /* MockPaymentFlowDriverDelegate.swift */; };
 		427F324B25D19E5E00435294 /* BTPayPalVaultRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 427F324925D19E5E00435294 /* BTPayPalVaultRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		427F324C25D19E5E00435294 /* BTPayPalVaultRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 427F324A25D19E5E00435294 /* BTPayPalVaultRequest.m */; };
 		427F329025D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427F328F25D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift */; };
@@ -808,6 +810,8 @@
 		42517320254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalCreditFinancingAmount.h; sourceTree = "<group>"; };
 		4255C5122565CF3D00A3CA78 /* PPDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPDataCollector.swift; sourceTree = "<group>"; };
 		4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PPRiskMagnes.framework; path = Frameworks/PPRiskMagnes.framework; sourceTree = "<group>"; };
+		4258677325EECEE100D5F160 /* BTLocalPaymentRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentRequest_Tests.swift; sourceTree = "<group>"; };
+		425867A125EED15600D5F160 /* MockPaymentFlowDriverDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPaymentFlowDriverDelegate.swift; sourceTree = "<group>"; };
 		427F324925D19E5E00435294 /* BTPayPalVaultRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalVaultRequest.h; sourceTree = "<group>"; };
 		427F324A25D19E5E00435294 /* BTPayPalVaultRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalVaultRequest.m; sourceTree = "<group>"; };
 		427F328F25D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalVaultRequest_Tests.swift; sourceTree = "<group>"; };
@@ -1968,9 +1972,11 @@
 			children = (
 				8016A87E2509221F00DB5EF3 /* BraintreePaymentFlowTests-Bridging-Header.h */,
 				035A59D91EA5DE97002960C8 /* BTLocalPayment_Tests.swift */,
+				4258677325EECEE100D5F160 /* BTLocalPaymentRequest_Tests.swift */,
 				8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */,
 				A91E1E8E24FEDD7F007540E5 /* Info.plist */,
 				A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */,
+				425867A125EED15600D5F160 /* MockPaymentFlowDriverDelegate.swift */,
 			);
 			path = BraintreePaymentFlowTests;
 			sourceTree = "<group>";
@@ -3456,7 +3462,9 @@
 			files = (
 				8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */,
 				A91E1E9F24FEDD96007540E5 /* BTLocalPayment_Tests.swift in Sources */,
+				4258677425EECEE100D5F160 /* BTLocalPaymentRequest_Tests.swift in Sources */,
 				A9E80AA324FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift in Sources */,
+				425867A225EED15600D5F160 /* MockPaymentFlowDriverDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
