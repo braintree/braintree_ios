@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.1.0 (2021-03-08)
 * Local Payment Methods
   * Add `bic` (Bank Identification Code) to `BTLocalPaymentRequest`
 * Apple Pay
