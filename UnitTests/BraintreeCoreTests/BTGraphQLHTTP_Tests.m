@@ -451,6 +451,50 @@
     }
 }
 
+- (void)testErrorResponse_whenErrorIsMissingLegacyCode_doesNotSetCodeNumber {
+    id stubGraphQLErrorResponse = @{
+                                    @"data": @{@"tokenizeCreditCard": NSNull.null},
+                                    @"errors": @[
+                                            @{
+                                                @"message": @"Expiration month is invalid",
+                                                @"path": @[@"tokenizeCreditCard"],
+                                                @"extensions": @{
+                                                        @"errorType": @"user_error",
+                                                        @"inputPath": @[@"input", @"creditCard", @"expirationMonth"]
+                                                        }
+                                                }
+                                            ],
+                                    };
+    id expectedErrorBody = @{
+                                 @"error": @{@"message": @"Input is invalid"},
+                                 @"fieldErrors": @[
+                                         @{
+                                             @"field": @"creditCard",
+                                             @"fieldErrors": @[
+                                                     @{
+                                                         @"field": @"expirationMonth",
+                                                         @"message": @"Expiration month is invalid"
+                                                         }
+                                                     ]
+                                             }
+                                         ]
+                                 };
+
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        return YES;
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+    }];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
+    [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
 - (void)testNetworkError_returnsError {
     [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;
