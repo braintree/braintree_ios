@@ -464,7 +464,6 @@
                                                         }
                                                 }
                                             ],
-                                    @"extensions": @{@"requestId": @"de1f7c67-4861-455f-89bb-1d208915f270"}
                                     };
     id expectedErrorBody = @{
                                  @"error": @{@"message": @"Input is invalid"},
