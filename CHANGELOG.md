@@ -1,7 +1,10 @@
 # Braintree iOS SDK Release Notes
 
-# unreleased
-* Add support for `PKPaymentNetworkElo` to Apple Pay configuration
+## unreleased
+* Local Payment Methods
+  * Add `bic` (Bank Identification Code) to `BTLocalPaymentRequest`
+* Apple Pay
+  * Add support for `PKPaymentNetworkElo` to Apple Pay configuration
 
 ## 5.0.1 (2021-03-01)
 * SPM
