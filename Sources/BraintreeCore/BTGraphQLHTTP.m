@@ -189,11 +189,14 @@ static NSString *BraintreeVersion = @"2018-03-06";
     NSString *field = [inputPath firstObject];
 
     if (inputPath.count == 1) {
-        [errors addObject:@{
-                            @"field": field,
-                            @"message": errorJSON[@"message"],
-                            @"code": errorJSON[@"extensions"][@"legacyCode"]
-                            }];
+        NSMutableDictionary *errorsBody = [NSMutableDictionary new];
+        [errorsBody setObject:field forKey:@"field"];
+        [errorsBody setObject:errorJSON[@"message"] forKey:@"message"];
+        if (errorJSON[@"extensions"][@"legacyCode"]) { // prevent crash if missing from GraphQL response
+            [errorsBody setObject:errorJSON[@"extensions"][@"legacyCode"] forKey:@"code"];
+        }
+
+        [errors addObject:errorsBody];
         return;
     }
 
