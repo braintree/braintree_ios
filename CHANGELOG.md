@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Fix potential crash if `legacyCode` param missing from GraphQL error response
+
 ## 5.1.0 (2021-03-08)
 * Local Payment Methods
   * Add `bic` (Bank Identification Code) to `BTLocalPaymentRequest`
