@@ -459,6 +459,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
         [self.apiClient sendAnalyticsEvent:eventName];
     }
+
+    if ([self.payPalRequest isKindOfClass:BTPayPalVaultRequest.class] && ((BTPayPalVaultRequest *)self.payPalRequest).offerCredit) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
+    }
 }
 
 - (void)sendAnalyticsEventIfCreditFinancingInNonce:(BTPayPalAccountNonce *)payPalAccountNonce forPaymentType:(BTPayPalPaymentType)paymentType {
