@@ -2,6 +2,8 @@
 
 ## unreleased
 * Fix potential crash if `legacyCode` param missing from GraphQL error response
+* PayPal
+  * Add `offerCredit` to `BTPayPalVaultRequest`
 
 ## 5.1.0 (2021-03-08)
 * Local Payment Methods
