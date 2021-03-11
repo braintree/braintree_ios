@@ -12,7 +12,9 @@ jobs:
       - name: Setup provisioning profile
         env:
           TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE: ${{ secrets.TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE }}
-        run: ./.github/secrets/decrypt_certs.sh
+        run: |
+          gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE }} --output ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE }} --output ./.github/secrets/apple_distribution_key.p12 ./.github/secrets/apple_distribution_key.p12.gpg
       - name: Archive project
         # env:
         #   PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
