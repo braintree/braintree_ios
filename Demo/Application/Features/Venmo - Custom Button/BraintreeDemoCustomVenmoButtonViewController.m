@@ -36,7 +36,7 @@
         } else if (error) {
             self.progressBlock(error.localizedDescription);
         } else {
-            self.progressBlock(@"Canceled 🔰");
+            self.progressBlock(@"Cancelled 🔰");
         }
     }];
 }
