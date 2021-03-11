@@ -30,7 +30,7 @@ jobs:
       - name: make build directory
         run: mkdir $PWD/build
       - name: Archive project
-        run: xcodebuild -workspace Braintree.xcworkspace -scheme Demo -sdk iphoneos -configuration Release archive -archivePath $PWD/build/Demo.xcarchive | xcpretty
+        run: xcodebuild -workspace -allowProvisioningUpdates Braintree.xcworkspace -scheme Demo -sdk iphoneos -configuration Release archive -archivePath $PWD/build/Demo.xcarchive | xcpretty
       - name: Export .ipa
         run: xcodebuild -exportArchive -allowProvisioningUpdates -archivePath $PWD/build/Demo.xcarchive -exportOptionsPlist Demo/Application/Supporting\ Files/exportOptions.plist -exportPath $PWD/build/Demo.ipa | xcpretty
       - name: Upload app
