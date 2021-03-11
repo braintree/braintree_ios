@@ -1,0 +1,43 @@
+name: TestFlight
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Upload Demo to TestFlight
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Install gpg
+        run: brew install gnupg
+      - name: Setup provisioning profile
+        env:
+          DECRYPT_PASSPHRASE: ${{ secrets.TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE }}
+        run: ./.github/secrets/decrypt_certs.sh
+      - name: Archive project
+        # env:
+        #   PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        run: |
+          xcodebuild \
+            -workspace Braintree.xcworkspace \
+            -scheme Demo \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $PWD/build/Demo.xcarchive \
+            clean archive | xcpretty
+      - name: Export .ipa
+        run: |
+          xcodebuild \
+            -archivePath $PWD/build/Demo.xcarchive \
+            -exportOptionsPlist Demo/Application/Supporting\ Files/exportOptions.plist \
+            -exportPath $PWD/build \
+            -allowProvisioningUpdates -exportArchive | xcpretty
+      - name: Upload app
+        if: success()
+        env:
+          USERNAME: ${{ secrets.APPLEID_TEAM_SDK_USERNAME }}
+          PASSWORD: ${{ secrets.APPLEID_TEAM_SDK_PASSWORD }}
+        run: |
+          xcrun altool --upload-app -t ios -f $PWD/build/Demo.ipa -u "$USERNAME" -p "$PASSWORD" --verbose
