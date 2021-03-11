@@ -20,7 +20,7 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/BTDemo_Base_SDK__App_Store.mobileprovision
           security create-keychain -p "" build.keychain
-          security import ./.github/secrets/apple_distribution_key.p12 -t agg -k ~/Library/Keychains/build.keychain -P "" -A
+          security import ./.github/secrets/apple_distribution_key.p12 -t agg -k ~/Library/Keychains/build.keychain -P braintree123!! -A
           security list-keychains -s ~/Library/Keychains/build.keychain
           security default-keychain -s ~/Library/Keychains/build.keychain
           security unlock-keychain -p "" ~/Library/Keychains/build.keychain
