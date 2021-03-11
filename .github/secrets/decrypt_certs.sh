@@ -1,16 +1,16 @@
 #!/bin/sh
 set -eo pipefail
 
-gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPT_PASSPHRASE" --output ./.github/secrets/match_AppStore_comtiagosantocalculatorIOS.mobileprovision.mobileprovision ./.github/secrets/match_AppStore_comtiagosantocalculatorIOS.mobileprovision.gpg
-gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPT_PASSPHRASE" --output ./.github/secrets/Certificates.p12 ./.github/secrets/Certificates.p12.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPT_PASSPHRASE" --output ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPT_PASSPHRASE" --output ./.github/secrets/apple_distribution_key.p12 ./.github/secrets/apple_distribution_key.p12.gpg
 
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 
-cp ./.github/secrets/match_AppStore_comtiagosantocalculatorIOS.mobileprovision.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/match_AppStore_comtiagosantocalculatorIOS.mobileprovision.mobileprovision
+cp ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/BTDemo_Base_SDK__App_Store.mobileprovision
 
 
 security create-keychain -p "" build.keychain
-security import ./.github/secrets/Certificates.p12 -t agg -k ~/Library/Keychains/build.keychain -P "" -A
+security import ./.github/secrets/apple_distribution_key.p12 -t agg -k ~/Library/Keychains/build.keychain -P "" -A
 
 security list-keychains -s ~/Library/Keychains/build.keychain
 security default-keychain -s ~/Library/Keychains/build.keychain
