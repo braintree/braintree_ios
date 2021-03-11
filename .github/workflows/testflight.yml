@@ -9,15 +9,17 @@ jobs:
         uses: actions/checkout@v1
       - name: Install gpg
         run: brew install gnupg
-      - name: Setup provisioning profile
+      - name: Decrypt certs
         env:
           TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE: ${{ secrets.TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE }}
         run: |
           gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE }} --output ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision ./.github/secrets/BTDemo_Base_SDK__App_Store.mobileprovision.gpg
           gpg --quiet --batch --yes --decrypt --passphrase=${{ secrets.TESTFLIGHT_CERTS_DECRYPT_PASSPHRASE }} --output ./.github/secrets/apple_distribution_key.p12 ./.github/secrets/apple_distribution_key.p12.gpg
+      - name: Set up signing & profiles
+        run: ./.github/secrets/decrypt_certs.sh
+      - name: Install pods
+        run: pod install
       - name: Archive project
-        # env:
-        #   PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         run: |
           xcodebuild \
             -workspace Braintree.xcworkspace \
