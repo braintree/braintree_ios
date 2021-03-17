@@ -47,7 +47,7 @@ class Venmo_UITests: XCTestCase {
         waitForElementToAppear(mockVenmo.buttons["Cancel"])
         mockVenmo.buttons["Cancel"].tap()
 
-        waitForElementToAppear(demoApp.buttons["Cancelled 🔰"])
-        XCTAssertTrue(demoApp.buttons["Cancelled 🔰"].exists);
+        waitForElementToAppear(demoApp.buttons["Canceled 🔰"])
+        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].exists);
     }
 }
