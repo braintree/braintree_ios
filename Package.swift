@@ -40,6 +40,10 @@ let package = Package(
             targets: ["BraintreeThreeDSecure"]
         ),
         .library(
+            name: "CardinalMobile",
+            targets: ["CardinalMobile"]
+        ),
+        .library(
             name: "BraintreeUnionPay",
             targets: ["BraintreeUnionPay"]
         ),
@@ -114,6 +118,10 @@ let package = Package(
             exclude: ["Info.plist"],
             publicHeadersPath: "Public",
             cSettings: [.headerSearchPath("V2UICustomization")]
+        ),
+        .binaryTarget(
+            name: "CardinalMobile",
+            path: "Frameworks/CardinalMobile.xcframework"
         ),
         .target(
             name: "BraintreeUnionPay",
