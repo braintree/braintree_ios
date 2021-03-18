@@ -46,7 +46,7 @@ Make sure to select your app's target in the _Provide build settings from_ drop-
 
 ### BraintreeThreeDSecure
 
-~Currently, to use the `BraintreeThreeDSecure` library via SPM, you must manually include `CardinalMobile.framework`. Once we receive an xcframework version of CardinalMobile, these steps will no longer be required.~ These steps are only required for versions 5.0.0 to 5.2.0. For versions _greater than_ 5.2.0, you can include CardinalMobile via Swift Package Manager.
+If you are using versions 5.0.0 to 5.2.0, in order to use the `BraintreeThreeDSecure` library with SPM, you must manually include `CardinalMobile.framework`. For versions _greater than_ 5.2.0, you can include CardinalMobile via Swift Package Manager.
 
 #### 1. Add CardinalMobile.framework
 
