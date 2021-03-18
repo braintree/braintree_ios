@@ -29,6 +29,8 @@ To use the `BraintreeDataCollector` library, you must also check the box for `Ko
 
 To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
 
+To use the `BraintreeThreeDSecure` library, you must also check the box for `CardinalMobile`. (Only applies to versions _greater than_ 5.2.0. See [instructions below](#braintreethreedsecure) if you are using version 5.0.0 to 5.2.0.)
+
 ### BraintreeDataCollector
 
 There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-spm-package-for-ios-executable/41245/13) that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
@@ -44,7 +46,7 @@ Make sure to select your app's target in the _Provide build settings from_ drop-
 
 ### BraintreeThreeDSecure
 
-Currently, to use the `BraintreeThreeDSecure` library via SPM, you must manually include `CardinalMobile.framework`. Once we receive an xcframework version of CardinalMobile, these steps will no longer be required.
+~Currently, to use the `BraintreeThreeDSecure` library via SPM, you must manually include `CardinalMobile.framework`. Once we receive an xcframework version of CardinalMobile, these steps will no longer be required.~ These steps are only required for versions 5.0.0 to 5.2.0. For versions _greater than_ 5.2.0, you can include CardinalMobile via Swift Package Manager.
 
 #### 1. Add CardinalMobile.framework
 
