@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Update Kount SDK to v4.1.4
+
 ## 5.2.0 (2021-03-15)
 * Fix potential crash if `legacyCode` param missing from GraphQL error response
 * PayPal
