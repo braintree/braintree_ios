@@ -27,9 +27,9 @@ There is a known Xcode bug, reported in [this GitHub issue](https://github.com/b
 
 To use the `BraintreeDataCollector` library, you must also check the box for `KountDataCollector`.
 
-To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
+To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
 
-To use the `BraintreeThreeDSecure` library, you must also check the box for `CardinalMobile`. _(This only applies to versions greater than 5.2.0. See [instructions below](#braintreethreedsecure) if you are using versions 5.0.0 to 5.2.0.)_
+To use the `BraintreeThreeDSecure` library, you must also check the boxes for `CardinalMobile` and `PPRiskMagnes`. _(This only applies to versions greater than 5.2.0. See [instructions below](#braintreethreedsecure) if you are using versions 5.0.0 to 5.2.0.)_
 
 ### BraintreeDataCollector
 
@@ -48,7 +48,7 @@ Make sure to select your app's target in the _Provide build settings from_ drop-
 
 #### Versions 5.3.0+
 
-If you are using `BraintreeThreeDSecure`, you must also include `CardinalMobile`. In versions 5.3.0+, `CardinalMobile` can be included via SPM.
+If you are using `BraintreeThreeDSecure`, you must also explicitly include `CardinalMobile` and `PPRiskMagnes`, both of which can be included through SPM.
 
 If you were previously using versions 5.0.0 to 5.2.0 and you're upgrading to version 5.3.0 or above, you should delete `CardinalMobile.framework` from your project and remove the run script used to remove simulator slices before archiving (if applicable).
 
