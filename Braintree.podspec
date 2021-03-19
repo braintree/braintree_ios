@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/*.h"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PaymentFlow"
-    s.vendored_frameworks = "Frameworks/CardinalMobile.framework"
+    s.vendored_frameworks = "Frameworks/CardinalMobile.xcframework"
   end
 
   s.subspec "UnionPay" do |s|

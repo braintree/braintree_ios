@@ -1,7 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Add CardinalMobile.xcframework version 2.2.5-1
 * Update Kount SDK to v4.1.4
+
+**NOTE:** For Swift Package Manager integrations using `BraintreeThreeDSecure`, manually including `CardinalMobile.framework` is no longer required. You should delete it from your project and add `CardinalMobile` via SPM. If you added the run script to remove simulator architectures from `CardinalMobile.framework`, you should remove this as well. See the [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for more information.
 
 ## 5.2.0 (2021-03-15)
 * Fix potential crash if `legacyCode` param missing from GraphQL error response

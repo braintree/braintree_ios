@@ -29,6 +29,8 @@ To use the `BraintreeDataCollector` library, you must also check the box for `Ko
 
 To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
 
+To use the `BraintreeThreeDSecure` library, you must also check the box for `CardinalMobile`. _(This only applies to versions greater than 5.2.0. See [instructions below](#braintreethreedsecure) if you are using versions 5.0.0 to 5.2.0.)_
+
 ### BraintreeDataCollector
 
 There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-spm-package-for-ios-executable/41245/13) that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
@@ -44,9 +46,17 @@ Make sure to select your app's target in the _Provide build settings from_ drop-
 
 ### BraintreeThreeDSecure
 
-Currently, to use the `BraintreeThreeDSecure` library via SPM, you must manually include `CardinalMobile.framework`. Once we receive an xcframework version of CardinalMobile, these steps will no longer be required.
+#### Versions 5.3.0+
 
-#### 1. Add CardinalMobile.framework
+If you are using `BraintreeThreeDSecure`, you must also include `CardinalMobile`. In versions 5.3.0+, `CardinalMobile` can be included via SPM.
+
+If you were previously using versions 5.0.0 to 5.2.0 and you're upgrading to version 5.3.0 or above, you should delete `CardinalMobile.framework` from your project and remove the run script used to remove simulator slices before archiving (if applicable).
+
+#### Versions 5.0.0 to 5.2.0
+
+If you are using versions 5.0.0 to 5.2.0, in order to use the `BraintreeThreeDSecure` library with SPM, you must manually include `CardinalMobile.framework`. The following steps are required:
+
+##### 1. Add CardinalMobile.framework
 
 1. Once you've installed the Braintree Swift Package, find `CardinalMobile.framework` under the Frameworks directory in the Braintree package.
 1. Right click on `CardinalMobile.framework` and select _Show in Finder_.
@@ -57,7 +67,7 @@ Currently, to use the `BraintreeThreeDSecure` library via SPM, you must manually
     * Under the _Frameworks, Libraries, and Embedded Content_ section, make sure `CardinalMobile.framework` is set to “Embed & Sign”
 1. Go to the Build Phases tab. Under _Link Binary With Libraries_, make sure the framework is listed. This should happen automatically, but if not, add the framework manually via the `+` button.
 
-#### 2. Remove simulator slices
+##### 2. Remove simulator slices
 
 CardinalMobile.framework contains architectures for both devices and simulators. When uploading to App Store Connect, Xcode will emit an error if the simulator slices have not been removed.
 

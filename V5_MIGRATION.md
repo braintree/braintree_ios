@@ -64,34 +64,22 @@ In v4, 3D Secure classes were housed in the `BraintreePaymentFlow` module. In v5
 
 #### Integration
 
-<details><summary>CocoaPods</summary>
-<p>
+##### CocoaPods
 
 In your Podfile, add:
 ```
 pod `Braintree/ThreeDSecure`
 ```
 
-</p>
-</details>
-
-<details><summary>Carthage</summary>
-<p>
+##### Carthage
 
 You will need to add the `BraintreeThreeDSecure` framework to your project. See the Carthage docs for [integration instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
 *Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. Open a GitHub issue if there are concerns.
 
-</p>
-</details>
+##### Swift Package Manager
 
-<details><summary>Swift Package Manager</summary>
-<p>
-
-Using the `BraintreeThreeDSecure` library with Swift Package Manager requires you to include the CardinalMobile framework. [See README](/README.md#swift-package-manager-v5-beta).
-
-</p>
-</details>
+Include `BraintreeThreeDSecure` and `CardinalMobile`. [See the Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for additional instructions.
 
 #### BTThreeDSecureRequestDelegate
 
