@@ -417,7 +417,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braintree/braintree_ios.git";
 			requirement = {
-				branch = "cardinal-xcframework";
+				branch = master;
 				kind = branch;
 			};
 		};
