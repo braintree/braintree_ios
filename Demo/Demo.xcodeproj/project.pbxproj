@@ -8,9 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
+		423B451025FFB5E500EF563F /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */; };
+		423B451125FFB5E500EF563F /* PPRiskMagnes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
-		428D119725A3A834003D8552 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */; };
+		42C574AE25FA66F9008B3681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574AD25FA66F9008B3681 /* AppDelegate.swift */; };
+		42C574B025FA66F9008B3681 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574AF25FA66F9008B3681 /* SceneDelegate.swift */; };
+		42C574B225FA66F9008B3681 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574B125FA66F9008B3681 /* ViewController.swift */; };
+		42C574B525FA66F9008B3681 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42C574B325FA66F9008B3681 /* Main.storyboard */; };
+		42C574B725FA66FB008B3681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42C574B625FA66FB008B3681 /* Assets.xcassets */; };
+		42C574BA25FA66FB008B3681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42C574B825FA66FB008B3681 /* LaunchScreen.storyboard */; };
+		42C574D525FA6CAC008B3681 /* AppSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574D425FA6CAC008B3681 /* AppSwitcher.swift */; };
 		42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */; };
 		42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */; };
 		42F3F6DC2603B83100401B0D /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */; };
@@ -137,6 +145,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		42C574C125FA673B008B3681 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0988E4124DB43DC0095EEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42C574AA25FA66F9008B3681;
+			remoteInfo = MockVenmo;
+		};
 		A9B5ABE324EB2A2200A4E1C8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A0988E4124DB43DC0095EEEE /* Project object */;
@@ -158,6 +173,7 @@
 				803D650A256DAF9A00ACE692 /* PayPalDataCollector.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
 				803D64FE256DAF9A00ACE692 /* BraintreeDataCollector.framework in Embed Frameworks */,
+				423B451125FFB5E500EF563F /* PPRiskMagnes.xcframework in Embed Frameworks */,
 				803D64FC256DAF9A00ACE692 /* BraintreeCore.framework in Embed Frameworks */,
 				803D6504256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Embed Frameworks */,
 				803D6500256DAF9A00ACE692 /* BraintreePaymentFlow.framework in Embed Frameworks */,
@@ -175,6 +191,15 @@
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
+		42C574AB25FA66F9008B3681 /* MockVenmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MockVenmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42C574AD25FA66F9008B3681 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		42C574AF25FA66F9008B3681 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		42C574B125FA66F9008B3681 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		42C574B425FA66F9008B3681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		42C574B625FA66FB008B3681 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		42C574B925FA66FB008B3681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		42C574BB25FA66FB008B3681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42C574D425FA6CAC008B3681 /* AppSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSwitcher.swift; sourceTree = "<group>"; };
 		42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmericanExpress_UITests.swift; sourceTree = "<group>"; };
 		42D47A132554679D0012BAF1 /* BraintreeDemoSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSceneDelegate.h; sourceTree = "<group>"; };
 		42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSceneDelegate.m; sourceTree = "<group>"; };
@@ -393,6 +418,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		42C574A825FA66F9008B3681 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0988E4624DB43DC0095EEEE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -401,7 +433,7 @@
 				42F3F6DC2603B83100401B0D /* CardinalMobile.xcframework in Frameworks */,
 				803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */,
 				803D6501256DAF9A00ACE692 /* BraintreePayPal.framework in Frameworks */,
-				428D119725A3A834003D8552 /* PPRiskMagnes.xcframework in Frameworks */,
+				423B451025FFB5E500EF563F /* PPRiskMagnes.xcframework in Frameworks */,
 				803D64FD256DAF9A00ACE692 /* BraintreeDataCollector.framework in Frameworks */,
 				803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */,
 				803D6509256DAF9A00ACE692 /* PayPalDataCollector.framework in Frameworks */,
@@ -433,6 +465,21 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		42C574AC25FA66F9008B3681 /* MockVenmo */ = {
+			isa = PBXGroup;
+			children = (
+				42C574AD25FA66F9008B3681 /* AppDelegate.swift */,
+				42C574AF25FA66F9008B3681 /* SceneDelegate.swift */,
+				42C574D425FA6CAC008B3681 /* AppSwitcher.swift */,
+				42C574B125FA66F9008B3681 /* ViewController.swift */,
+				42C574B325FA66F9008B3681 /* Main.storyboard */,
+				42C574B625FA66FB008B3681 /* Assets.xcassets */,
+				42C574B825FA66FB008B3681 /* LaunchScreen.storyboard */,
+				42C574BB25FA66FB008B3681 /* Info.plist */,
+			);
+			path = MockVenmo;
+			sourceTree = "<group>";
+		};
 		42C5BDD425A4CE2E00E8FF40 /* American Express UI Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,6 +500,7 @@
 			isa = PBXGroup;
 			children = (
 				A9C4E08024EC2A70002F6FF2 /* Application */,
+				42C574AC25FA66F9008B3681 /* MockVenmo */,
 				A0988FFB24DB44D60095EEEE /* Frameworks */,
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
 				A0988E4A24DB43DC0095EEEE /* Products */,
@@ -465,6 +513,7 @@
 			children = (
 				A0988E4924DB43DC0095EEEE /* Demo.app */,
 				A9B5ABDE24EB2A2200A4E1C8 /* UITests.xctest */,
+				42C574AB25FA66F9008B3681 /* MockVenmo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -968,6 +1017,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		42C574AA25FA66F9008B3681 /* MockVenmo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42C574BE25FA66FB008B3681 /* Build configuration list for PBXNativeTarget "MockVenmo" */;
+			buildPhases = (
+				42C574A725FA66F9008B3681 /* Sources */,
+				42C574A825FA66F9008B3681 /* Frameworks */,
+				42C574A925FA66F9008B3681 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MockVenmo;
+			productName = MockVenmo;
+			productReference = 42C574AB25FA66F9008B3681 /* MockVenmo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A0988E4824DB43DC0095EEEE /* Demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A0988E6224DB43DF0095EEEE /* Build configuration list for PBXNativeTarget "Demo" */;
@@ -999,6 +1065,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				42C574C225FA673B008B3681 /* PBXTargetDependency */,
 				A9B5ABE424EB2A2200A4E1C8 /* PBXTargetDependency */,
 			);
 			name = UITests;
@@ -1012,10 +1079,13 @@
 		A0988E4124DB43DC0095EEEE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1160;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = braintree;
 				TargetAttributes = {
+					42C574AA25FA66F9008B3681 = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					A0988E4824DB43DC0095EEEE = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -1060,11 +1130,22 @@
 			targets = (
 				A0988E4824DB43DC0095EEEE /* Demo */,
 				A9B5ABDD24EB2A2200A4E1C8 /* UITests */,
+				42C574AA25FA66F9008B3681 /* MockVenmo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		42C574A925FA66F9008B3681 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42C574BA25FA66FB008B3681 /* LaunchScreen.storyboard in Resources */,
+				42C574B725FA66FB008B3681 /* Assets.xcassets in Resources */,
+				42C574B525FA66F9008B3681 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0988E4724DB43DC0095EEEE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1143,6 +1224,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		42C574A725FA66F9008B3681 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42C574B225FA66F9008B3681 /* ViewController.swift in Sources */,
+				42C574AE25FA66F9008B3681 /* AppDelegate.swift in Sources */,
+				42C574D525FA6CAC008B3681 /* AppSwitcher.swift in Sources */,
+				42C574B025FA66F9008B3681 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0988E4524DB43DC0095EEEE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1242,6 +1334,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		42C574C225FA673B008B3681 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42C574AA25FA66F9008B3681 /* MockVenmo */;
+			targetProxy = 42C574C125FA673B008B3681 /* PBXContainerItemProxy */;
+		};
 		A9B5ABE424EB2A2200A4E1C8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A0988E4824DB43DC0095EEEE /* Demo */;
@@ -1250,6 +1347,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		42C574B325FA66F9008B3681 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42C574B425FA66F9008B3681 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		42C574B825FA66FB008B3681 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42C574B925FA66FB008B3681 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		A0988F3824DB44B10095EEEE /* UI.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1297,6 +1410,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		42C574BC25FA66FB008B3681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				INFOPLIST_FILE = MockVenmo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.MockVenmo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42C574BD25FA66FB008B3681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				INFOPLIST_FILE = MockVenmo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.MockVenmo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		A0988E6024DB43DF0095EEEE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1520,6 +1676,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		42C574BE25FA66FB008B3681 /* Build configuration list for PBXNativeTarget "MockVenmo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42C574BC25FA66FB008B3681 /* Debug */,
+				42C574BD25FA66FB008B3681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A0988E4424DB43DC0095EEEE /* Build configuration list for PBXProject "Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

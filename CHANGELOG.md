@@ -2,6 +2,7 @@
 
 ## unreleased
 * Add CardinalMobile.xcframework version 2.2.5-1
+* Update Kount SDK to v4.1.4
 
 ## 5.2.0 (2021-03-15)
 * Fix potential crash if `legacyCode` param missing from GraphQL error response
