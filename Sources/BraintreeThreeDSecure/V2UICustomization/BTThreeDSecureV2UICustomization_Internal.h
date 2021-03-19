@@ -4,8 +4,10 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
 #endif
 
+#import <CardinalMobile/CardinalMobile.h>
+
 @interface BTThreeDSecureV2UICustomization ()
 
-@property (nonatomic, strong) id cardinalValue;
+@property (nonatomic, strong) UiCustomization *cardinalValue;
 
 @end
