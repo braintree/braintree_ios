@@ -27,7 +27,7 @@ There is a known Xcode bug, reported in [this GitHub issue](https://github.com/b
 
 To use the `BraintreeDataCollector` library, you must also check the box for `KountDataCollector`.
 
-To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
+To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
 
 To use the `BraintreeThreeDSecure` library, you must also check the boxes for `CardinalMobile` and `PPRiskMagnes`. _(This only applies to versions greater than 5.2.0. See [instructions below](#braintreethreedsecure) if you are using versions 5.0.0 to 5.2.0.)_
 
