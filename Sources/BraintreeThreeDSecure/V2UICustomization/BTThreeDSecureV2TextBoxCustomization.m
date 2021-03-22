@@ -6,13 +6,12 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureV2TextBoxCustomization.h>
 #endif
 
-// To support SPM without an xcframework version of Cardinal, we created wrappers for Cardinal classes which are substituted for the actual CardinalMobile classes at runtime.
 @implementation BTThreeDSecureV2TextBoxCustomization
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.cardinalValue = [NSClassFromString(@"TextBoxCustomization") new];
+        self.cardinalValue = [TextBoxCustomization new];
     }
 
     return self;
@@ -20,33 +19,17 @@
 
 - (void)setBorderWidth:(int)borderWidth {
     _borderWidth = borderWidth;
-    if ([self.cardinalValue respondsToSelector:@selector(setBorderWidth:)]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.cardinalValue methodSignatureForSelector:@selector(setBorderWidth:)]];
-        [inv setSelector:@selector(setBorderWidth:)];
-        [inv setTarget:self.cardinalValue];
-
-        [inv setArgument:&(borderWidth) atIndex:2];
-        [inv invoke];
-    }
+    ((TextBoxCustomization *)self.cardinalValue).borderWidth = borderWidth;
 }
 
 - (void)setBorderColor:(NSString *)borderColor {
     _borderColor = borderColor;
-    if ([self.cardinalValue respondsToSelector:@selector(setBorderColor:)]) {
-        [self.cardinalValue performSelector:@selector(setBorderColor:) withObject:borderColor];
-    }
+    ((TextBoxCustomization *)self.cardinalValue).borderColor = borderColor;
 }
 
 - (void)setCornerRadius:(int)cornerRadius {
     _cornerRadius = cornerRadius;
-    if ([self.cardinalValue respondsToSelector:@selector(setCornerRadius:)]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.cardinalValue methodSignatureForSelector:@selector(setCornerRadius:)]];
-        [inv setSelector:@selector(setCornerRadius:)];
-        [inv setTarget:self.cardinalValue];
-
-        [inv setArgument:&(cornerRadius) atIndex:2];
-        [inv invoke];
-    }
+    ((TextBoxCustomization *)self.cardinalValue).cornerRadius = cornerRadius;
 }
 
 @end
