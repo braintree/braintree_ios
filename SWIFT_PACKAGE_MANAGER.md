@@ -54,7 +54,7 @@ If you were previously using versions 5.0.0 to 5.2.0 and you're upgrading to ver
 
 #### Versions 5.0.0 to 5.2.0
 
-If you are using versions 5.0.0 to 5.2.0, in order to use the `BraintreeThreeDSecure` library with SPM, you must manually include `CardinalMobile.framework`. The following steps are required:
+If you are using versions 5.0.0 to 5.2.0, include `BraintreeThreeDSecure` and `PPRiskMagnes` with Swift Package Manager. In addition, you must manually include `CardinalMobile.framework`. The following steps are required:
 
 ##### 1. Add CardinalMobile.framework
 
