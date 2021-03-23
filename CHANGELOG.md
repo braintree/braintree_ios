@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.3.0 (2021-03-23)
 * Add CardinalMobile.xcframework version 2.2.5-1
 * Update Kount SDK to v4.1.4
 
