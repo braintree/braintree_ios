@@ -29,7 +29,7 @@
         } else if (tokenizedPayPalCheckout) {
             self.completionBlock(tokenizedPayPalCheckout);
         } else {
-            self.progressBlock(@"Cancelled");
+            self.progressBlock(@"Canceled");
         }
     }];
 }

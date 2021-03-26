@@ -257,7 +257,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                 }
             }
 
-            // User cancelled by breaking out of the PayPal browser switch flow
+            // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             NSError *err = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                code:BTPayPalDriverErrorTypeCanceled

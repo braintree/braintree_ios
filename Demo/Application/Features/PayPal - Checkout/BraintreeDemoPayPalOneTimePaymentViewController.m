@@ -30,7 +30,7 @@
         } else if (payPalAccount) {
             self.completionBlock(payPalAccount);
         } else {
-            self.progressBlock(@"Cancelled");
+            self.progressBlock(@"Canceled");
         }
     }];
 }
