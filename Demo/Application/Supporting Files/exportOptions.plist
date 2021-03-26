@@ -2,11 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>method</key>
-    <string>app-store</string>
-    <key>destination</key>
-    <string>upload</string>
-    <key>teamName</key>
-    <string>Braintree Payment Solutions, LLC</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.braintreepayments.Demo</key>
+		<string>BTDemo (Base SDK) - App Store</string>
+	</dict>
+	<key>method</key>
+	<string>app-store</string>
+	<key>destination</key>
+	<string>upload</string>
+	<key>teamName</key>
+	<string>Braintree Payment Solutions, LLC</string>
 </dict>
 </plist>
