@@ -124,7 +124,7 @@
 		A0988FE624DB44B20095EEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5824DB44B10095EEEE /* main.m */; };
 		A0988FE724DB44B20095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */; };
 		A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */; };
-		A0988FE924DB44B20095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m */; };
+		A0988FE924DB44B20095EEEE /* BraintreeDemoPayPalCheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.m */; };
 		A0988FEA24DB44B20095EEEE /* BraintreeDemoIdealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */; };
 		A0988FEC24DB44B20095EEEE /* BraintreeDemoPayPalPayLaterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalPayLaterViewController.m */; };
 		A0988FED24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */; };
@@ -138,7 +138,7 @@
 		A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0988F8D24DB44B10095EEEE /* Images.xcassets */; };
 		A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */; };
 		A9B5ABEE24EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */; };
-		A9C4E07924EC28F7002F6FF2 /* PayPal_OneTimePayment_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07824EC28F7002F6FF2 /* PayPal_OneTimePayment_UITests.swift */; };
+		A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */; };
 		A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07A24EC290F002F6FF2 /* PayPal_Vault_UITests.swift */; };
 		A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */; };
 		A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */; };
@@ -383,8 +383,8 @@
 		A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPreferredPaymentMethodsViewController.swift; sourceTree = "<group>"; };
 		A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTDataCollectorViewController.m; sourceTree = "<group>"; };
 		A0988F5E24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTDataCollectorViewController.h; sourceTree = "<group>"; };
-		A0988F6024DB44B10095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalOneTimePaymentViewController.h; sourceTree = "<group>"; };
-		A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalOneTimePaymentViewController.m; sourceTree = "<group>"; };
+		A0988F6024DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCheckoutViewController.h; sourceTree = "<group>"; };
+		A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalCheckoutViewController.m; sourceTree = "<group>"; };
 		A0988F6324DB44B10095EEEE /* BraintreeDemoIdealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIdealViewController.h; sourceTree = "<group>"; };
 		A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoIdealViewController.m; sourceTree = "<group>"; };
 		A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalPayLaterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalPayLaterViewController.m; sourceTree = "<group>"; };
@@ -410,7 +410,7 @@
 		A9B5ABDE24EB2A2200A4E1C8 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9B5ABE224EB2A2200A4E1C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V1_UITests.swift; sourceTree = "<group>"; };
-		A9C4E07824EC28F7002F6FF2 /* PayPal_OneTimePayment_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_OneTimePayment_UITests.swift; sourceTree = "<group>"; };
+		A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Checkout_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07A24EC290F002F6FF2 /* PayPal_Vault_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Vault_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V2_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
@@ -842,8 +842,8 @@
 		A0988F5F24DB44B10095EEEE /* PayPal - Checkout */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F6024DB44B10095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.h */,
-				A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m */,
+				A0988F6024DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.h */,
+				A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.m */,
 			);
 			path = "PayPal - Checkout";
 			sourceTree = "<group>";
@@ -976,7 +976,7 @@
 			isa = PBXGroup;
 			children = (
 				A9C4E07A24EC290F002F6FF2 /* PayPal_Vault_UITests.swift */,
-				A9C4E07824EC28F7002F6FF2 /* PayPal_OneTimePayment_UITests.swift */,
+				A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */,
 			);
 			path = "PayPal UI Tests";
 			sourceTree = "<group>";
@@ -1305,7 +1305,7 @@
 				A0988FBC24DB44B20095EEEE /* BTUICVVFrontVectorArtView.m in Sources */,
 				A0988FCA24DB44B20095EEEE /* BTUIPayPalCompactButton.m in Sources */,
 				A0988FAD24DB44B20095EEEE /* BTUICardNumberField.m in Sources */,
-				A0988FE924DB44B20095EEEE /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */,
+				A0988FE924DB44B20095EEEE /* BraintreeDemoPayPalCheckoutViewController.m in Sources */,
 				A0988FD324DB44B20095EEEE /* BTUITextField.m in Sources */,
 				A0988FCF24DB44B20095EEEE /* BTUIHorizontalButtonStackCollectionViewFlowLayout.m in Sources */,
 				A0988FBF24DB44B20095EEEE /* BTUIUnionPayVectorArtView.m in Sources */,
@@ -1321,7 +1321,7 @@
 			files = (
 				A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */,
 				42456E3F25474B620018374E /* DateGenerator.swift in Sources */,
-				A9C4E07924EC28F7002F6FF2 /* PayPal_OneTimePayment_UITests.swift in Sources */,
+				A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */,
 				80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */,
 				A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */,
 				A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */,

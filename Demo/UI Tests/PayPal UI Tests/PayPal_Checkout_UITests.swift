@@ -5,7 +5,7 @@
 
 import XCTest
 
-class PayPal_OneTimePayment_UITests: XCTestCase {
+class PayPal_Checkout_UITests: XCTestCase {
     var app: XCUIApplication!
 
     override func setUp() {
@@ -14,11 +14,11 @@ class PayPal_OneTimePayment_UITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-TokenizationKey")
-        app.launchArguments.append("-Integration:BraintreeDemoPayPalOneTimePaymentViewController")
+        app.launchArguments.append("-Integration:BraintreeDemoPayPalCheckoutViewController")
         app.launch()
         sleep(1)
-        self.waitForElementToBeHittable(app.buttons["PayPal one-time payment"])
-        app.buttons["PayPal one-time payment"].tap()
+        self.waitForElementToBeHittable(app.buttons["PayPal Checkout"])
+        app.buttons["PayPal Checkout"].tap()
         sleep(2)
 
         // Tap "Continue" on alert
@@ -33,7 +33,7 @@ class PayPal_OneTimePayment_UITests: XCTestCase {
         sleep(1)
     }
 
-    func testPayPal_oneTimePayment_receivesNonce() {
+    func testPayPal_checkout_receivesNonce() {
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
@@ -45,24 +45,24 @@ class PayPal_OneTimePayment_UITests: XCTestCase {
         XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
     }
 
-    func testPayPal_oneTimePayment_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
+    func testPayPal_checkout_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"], timeout: 20)
 
         webviewElementsQuery.links["Cancel Sandbox Purchase"].forceTapElement()
 
-        self.waitForElementToAppear(app.buttons["PayPal one-time payment"])
+        self.waitForElementToAppear(app.buttons["PayPal Checkout"])
 
         XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists);
     }
 
-    func testPayPal_oneTimePayment_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
+    func testPayPal_checkout_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
         self.waitForElementToAppear(app.buttons["Cancel"])
 
         app.buttons["Cancel"].forceTapElement()
 
-        self.waitForElementToAppear(app.buttons["PayPal one-time payment"])
+        self.waitForElementToAppear(app.buttons["PayPal Checkout"])
 
         XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].exists);
     }
