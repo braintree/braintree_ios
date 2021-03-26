@@ -4,8 +4,8 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
     private let preferredPaymentMethods: BTPreferredPaymentMethods
     private let paypalDriver: BTPayPalDriver
     private let venmoDriver: BTVenmoDriver
-    private let checkoutButton = UIButton(type: .system)
-    private let vaultButton = UIButton(type: .system)
+    private let payPalCheckoutButton = UIButton(type: .system)
+    private let payPalVaultButton = UIButton(type: .system)
     private let venmoButton = UIButton(type: .system)
     
     override init?(authorization: String!) {
@@ -26,17 +26,17 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         preferredPaymentMethodsButton.addTarget(self, action: #selector(preferredPaymentMethodsButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(preferredPaymentMethodsButton)
         
-        checkoutButton.setTitle("PayPal Checkout", for: .normal)
-        checkoutButton.translatesAutoresizingMaskIntoConstraints = false
-        checkoutButton.addTarget(self, action: #selector(checkoutButtonTapped(_:)), for: .touchUpInside)
-        checkoutButton.isEnabled = false
-        view.addSubview(checkoutButton)
+        payPalCheckoutButton.setTitle("PayPal Checkout", for: .normal)
+        payPalCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
+        payPalCheckoutButton.addTarget(self, action: #selector(payPalCheckoutButtonTapped(_:)), for: .touchUpInside)
+        payPalCheckoutButton.isEnabled = false
+        view.addSubview(payPalCheckoutButton)
         
-        vaultButton.setTitle("PayPal Vault", for: .normal)
-        vaultButton.translatesAutoresizingMaskIntoConstraints = false
-        vaultButton.addTarget(self, action: #selector(vaultButtonTapped(_:)), for: .touchUpInside)
-        vaultButton.isEnabled = false
-        view.addSubview(vaultButton)
+        payPalVaultButton.setTitle("PayPal Vault", for: .normal)
+        payPalVaultButton.translatesAutoresizingMaskIntoConstraints = false
+        payPalVaultButton.addTarget(self, action: #selector(payPalVaultButtonTapped(_:)), for: .touchUpInside)
+        payPalVaultButton.isEnabled = false
+        view.addSubview(payPalVaultButton)
         
         venmoButton.setTitle("Venmo", for: .normal)
         venmoButton.translatesAutoresizingMaskIntoConstraints = false
@@ -46,10 +46,10 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         
         view.addConstraints([preferredPaymentMethodsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                              preferredPaymentMethodsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                             vaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             vaultButton.bottomAnchor.constraint(equalTo: checkoutButton.bottomAnchor, constant: -40),
-                             checkoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             checkoutButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
+                             payPalVaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             payPalVaultButton.bottomAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: -40),
+                             payPalCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             payPalCheckoutButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
                              venmoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                              venmoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)])
     }
@@ -62,13 +62,13 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         self.progressBlock("Fetching preferred payment methods...")
         preferredPaymentMethods.fetch { (result) in
             self.progressBlock("PayPal Preferred: \(result.isPayPalPreferred)\nVenmo Preferred: \(result.isVenmoPreferred)")
-            self.checkoutButton.isEnabled = result.isPayPalPreferred
-            self.vaultButton.isEnabled = result.isPayPalPreferred
+            self.payPalCheckoutButton.isEnabled = result.isPayPalPreferred
+            self.payPalVaultButton.isEnabled = result.isPayPalPreferred
             self.venmoButton.isEnabled = result.isVenmoPreferred
         }
     }
     
-    @objc func checkoutButtonTapped(_ button: UIButton) {
+    @objc func payPalCheckoutButtonTapped(_ button: UIButton) {
         self.progressBlock("Tapped PayPal Checkout")
         
         button.setTitle("Processing...", for: .disabled)
@@ -88,7 +88,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         }
     }
     
-    @objc func vaultButtonTapped(_ button: UIButton) {
+    @objc func payPalVaultButtonTapped(_ button: UIButton) {
         self.progressBlock("Tapped PayPal Vault")
         
         button.setTitle("Processing...", for: .disabled)
