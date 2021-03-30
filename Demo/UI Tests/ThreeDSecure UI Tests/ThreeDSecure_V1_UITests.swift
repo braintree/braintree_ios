@@ -131,7 +131,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
 
         app.buttons["Cancel"].forceTapElement()
 
-        waitForElementToAppear(app.buttons["Cancelled🎲"])
+        waitForElementToAppear(app.buttons["Canceled 🎲"])
     }
 
     func testThreeDSecurePaymentFlowV1_bypassedAuthentication() {

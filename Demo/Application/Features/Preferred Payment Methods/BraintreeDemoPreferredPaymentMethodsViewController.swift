@@ -83,7 +83,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             } else if let n = nonce {
                 self.completionBlock(n)
             } else {
-                self.progressBlock("Cancelled")
+                self.progressBlock("Canceled")
             }
         }
     }
@@ -104,7 +104,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             } else if let n = nonce {
                 self.completionBlock(n)
             } else {
-                self.progressBlock("Cancelled")
+                self.progressBlock("Canceled")
             }
         }
     }
@@ -123,7 +123,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             } else if let n = nonce {
                 self.completionBlock(n)
             } else {
-                self.progressBlock("Cancelled")
+                self.progressBlock("Canceled")
             }
         }
     }

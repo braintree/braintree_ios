@@ -338,7 +338,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.vault.failure")
     }
 
-    func testTokenizeVenmoAccount_whenAppSwitchCancelled_callsBackWithNoError() {
+    func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithNoError() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         venmoDriver.application = FakeApplication()
         venmoDriver.bundle = FakeBundle()

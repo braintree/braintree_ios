@@ -37,6 +37,9 @@ class Venmo_UITests: XCTestCase {
         waitForElementToAppear(mockVenmo.buttons["ERROR"])
         mockVenmo.buttons["ERROR"].tap()
 
+        // Add check for Settings button to debug error message not being found in CI
+        waitForElementToAppear(demoApp.buttons["Settings"])
+
         waitForElementToAppear(demoApp.buttons["An error occurred during the Venmo flow"])
         XCTAssertTrue(demoApp.buttons["An error occurred during the Venmo flow"].exists);
     }
