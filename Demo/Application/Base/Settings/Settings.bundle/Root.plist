@@ -17,8 +17,8 @@
 			<string>BraintreeDemoCardTokenizationViewController</string>
 			<key>Titles</key>
 			<array>
-				<string>PayPal - Billing Agreement</string>
-				<string>PayPal - One-Time Payment</string>
+				<string>PayPal - Vault</string>
+				<string>PayPal - Checkout</string>
 				<string>PayPal - Pay Later</string>
 				<string>Credit Card Tokenization</string>
 				<string>Venmo - Custom Button</string>
@@ -32,8 +32,8 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>BraintreeDemoPayPalBillingAgreementViewController</string>
-				<string>BraintreeDemoPayPalOneTimePaymentViewController</string>
+				<string>BraintreeDemoPayPalVaultViewController</string>
+				<string>BraintreeDemoPayPalCheckoutViewController</string>
 				<string>BraintreeDemoPayPalPayLaterViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
