@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
+
 ## 4.37.0 (2021-01-20)
 * Add `paymentTypeCountryCode` to `BTLocalPaymentRequest`
 

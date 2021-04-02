@@ -1,38 +1,38 @@
 PODS:
-  - Braintree/3D-Secure (4.36.1):
+  - Braintree/3D-Secure (4.37.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/AmericanExpress (4.36.1):
+  - Braintree/AmericanExpress (4.37.0):
     - Braintree/Core
-  - Braintree/Apple-Pay (4.36.1):
+  - Braintree/Apple-Pay (4.37.0):
     - Braintree/Core
-  - Braintree/Card (4.36.1):
+  - Braintree/Card (4.37.0):
     - Braintree/Core
-  - Braintree/Core (4.36.1)
-  - Braintree/DataCollector (4.36.1):
+  - Braintree/Core (4.37.0)
+  - Braintree/DataCollector (4.37.0):
     - Braintree/Core
-  - Braintree/PaymentFlow (4.36.1):
+  - Braintree/PaymentFlow (4.37.0):
     - Braintree/Card
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPal (4.36.1):
+  - Braintree/PayPal (4.37.0):
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.36.1):
+  - Braintree/PayPalDataCollector (4.37.0):
     - Braintree/Core
     - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.36.1):
+  - Braintree/PayPalOneTouch (4.37.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
     - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.36.1)
-  - Braintree/UI (4.36.1):
+  - Braintree/PayPalUtils (4.37.0)
+  - Braintree/UI (4.37.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/UnionPay (4.36.1):
+  - Braintree/UnionPay (4.37.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/Venmo (4.36.1):
+  - Braintree/Venmo (4.37.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
   - BraintreeDropIn (99.99.99-github-master):
@@ -105,11 +105,11 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: 96a7e365c5a0771e19f6d05bcbf8d076964942d3
+    :commit: 33f0609929d2ef4bee684986d1f03fe7988f0887
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
-  Braintree: f7e0e9a5030e22b8ad77e617f27ac9327d7bc004
+  Braintree: e1f291d24a909bfbed88e86a0c3db76f26af9697
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
