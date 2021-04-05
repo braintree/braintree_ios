@@ -19,7 +19,7 @@ _Documentation for v5 will be published to https://developers.braintreepayments.
 
 ## Supported Versions
 
-v5 supports a minimum deployment target of iOS 12+. It requires the use of Xcode 12+ and Swift 5+. If your application contains Objective-C code, the `Enable Modules` build setting must be set to `YES`.
+v5 supports a minimum deployment target of iOS 12+. It requires the use of Xcode 12+ and Swift 5.1+. If your application contains Objective-C code, the `Enable Modules` build setting must be set to `YES`.
 
 ## App Context Switching
 
