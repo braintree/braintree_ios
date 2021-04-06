@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.37.1 (2021-04-06)
 * Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
 
 ## 4.37.0 (2021-01-20)
