@@ -271,11 +271,13 @@ namespace :docs do
   end
 
   task :publish do
-    run 'git branch -D gh-pages'
-    run! 'git add docs_output'
-    run! 'git commit -m "Publish docs to github pages"'
-    puts "Generating git subtree, this will take a moment..."
-    run! 'git subtree split --prefix docs_output -b gh-pages'
+    run! "git checkout gh-pages"
+    # run! "ln -sfn #{current_version} current" # update symlink to current version
+    run! "git add current #{current_version}"
+    run! "git commit -m 'Publish #{current_version} docs to github pages'"
+    run! "git push"
+    run! "git checkout -"
+    puts "Published docs to github pages"
   end
 
   task:internal do
