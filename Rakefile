@@ -14,7 +14,7 @@ desc "Run sanity checks; bump and tag new version"
 task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec release:tag]
 
 desc "Push tags, docs, and Pod"
-task :publish => %w[publish:push_private publish:push_public publish:push_pod docs_internal docs_external]
+task :publish => %w[publish:push_private publish:push_public publish:push_pod docs_external]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -250,13 +250,10 @@ def jazzy_command
       --github_url https://github.com/braintree/braintree_ios
       --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version}
       --theme fullwidth
-      --output docs_output
+      --output #{current_version}
       --xcodebuild-arguments --objc,Docs/Braintree-Umbrella-Header.h,--,-x,objective-c,-isysroot,$(xcrun --sdk iphonesimulator --show-sdk-path),-I,$(pwd)
   ].join(' ')
 end
-
-desc "Generate documentation via jazzy and push to GHE"
-task :docs_internal => %w[docs:generate docs:publish docs:internal docs:clean]
 
 desc "Generate documentation via jazzy and push to GH"
 task :docs_external => %w[docs:generate docs:publish docs:external docs:clean]
@@ -279,10 +276,6 @@ namespace :docs do
     run! "git push"
     run! "git checkout -"
     puts "Published docs to github pages"
-  end
-
-  task:internal do
-    run! "git push -f #{GHE_REMOTE_NAME} gh-pages:gh-pages"
   end
 
   task:external do
