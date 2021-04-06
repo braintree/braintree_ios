@@ -271,10 +271,11 @@ namespace :docs do
   end
 
   task :publish do
+    version = current_version
     run! "git checkout gh-pages"
     # run! "ln -sfn #{current_version} current" # update symlink to current version
-    run! "git add current #{current_version}"
-    run! "git commit -m 'Publish #{current_version} docs to github pages'"
+    run! "git add current #{version}"
+    run! "git commit -m 'Publish #{version} docs to github pages'"
     run! "git push"
     run! "git checkout -"
     puts "Published docs to github pages"
