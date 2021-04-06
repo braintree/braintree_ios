@@ -317,7 +317,6 @@
 		421CBFD9239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 421CBFD7239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m */; };
 		421CBFDB239ED6960044C448 /* BTThreeDSecureBrowserSwitchHelper_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421CBFDA239ED6960044C448 /* BTThreeDSecureBrowserSwitchHelper_Tests.swift */; };
 		423B6D8623390F8D00646742 /* BTThreeDSecureResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B6D8523390F8D00646742 /* BTThreeDSecureResult_Tests.swift */; };
-		428483DD261767030093461D /* libPPRiskMagnesOC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 428483DC261767030093461D /* libPPRiskMagnesOC.a */; };
 		429917AD261CC30B000D916D /* libPPRiskMagnesOC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034CF87B214C5A13003C0616 /* libPPRiskMagnesOC.a */; };
 		42A37F1A23EB65E8005A5BF7 /* BTPayPalIDTokenTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A37F1923EB65E8005A5BF7 /* BTPayPalIDTokenTestHelper.swift */; };
 		42C54B382375CF13006104C9 /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C54B372375CF13006104C9 /* BraintreeDemoMerchantAPIClient.swift */; };
@@ -1784,7 +1783,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				428483DD261767030093461D /* libPPRiskMagnesOC.a in Frameworks */,
 				2D941D5B1B5D5F170016EFB4 /* BraintreeCore.framework in Frameworks */,
 				A50C3BCF1C1B453500612D90 /* PayPalOneTouch.framework in Frameworks */,
 			);
