@@ -105,12 +105,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: 33f0609929d2ef4bee684986d1f03fe7988f0887
+    :commit: c5238edf35be53bdc68b1908cfef39dcdd68fe3f
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
   Braintree: e1f291d24a909bfbed88e86a0c3db76f26af9697
-  BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
+  BraintreeDropIn: fde15b17f6520e8be5dd9797f7cc87772509f345
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: f1ed0e0642ee5dc6af025450f4b44ecd0c15193e
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236

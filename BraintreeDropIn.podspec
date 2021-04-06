@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.screenshots      = "https://raw.githubusercontent.com/braintree/braintree_ios/master/Docs/screenshot.png"
   s.license          = "MIT"
   s.author           = { "Braintree" => "code@getbraintree.com" }
-  s.source           = { :git => "https://github.com/braintree/braintree-ios-drop-in.git", :branch => 'master' }
+  s.source           = { :git => "https://github.com/braintree/braintree-ios-drop-in.git", :tag => '8.1.4' }
   s.social_media_url = "https://twitter.com/braintree"
 
   s.platform         = :ios, "9.0"
