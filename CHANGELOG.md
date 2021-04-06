@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## 4.37.1 (2021-04-06)
+* Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
+
 ## 5.3.0 (2021-03-23)
 * Add CardinalMobile.xcframework version 2.2.5-1
 * Update Kount SDK to v4.1.4
