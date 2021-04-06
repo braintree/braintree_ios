@@ -120,22 +120,11 @@ namespace :demo do
   end
 end
 
-desc 'Run Carthage update'
+desc 'Run Carthage build'
 namespace :carthage do
-  def generate_cartfile
-    run! 'mv Cartfile Cartfile.backup'
-    File.write("./Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
-  end
-
-  task :clean do
-    run! 'rm -rf Carthage && rm Cartfile && rm Cartfile.resolved && rm -rf ~/Library/Developers/Xcode/DerivedData'
-    run! 'mv Cartfile.backup Cartfile'
-  end
-
-  task :test do
-    generate_cartfile
-    run! "carthage update"
-    run! "xcodebuild -project 'Demo/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
+  task :build do
+    run! "carthage build --no-skip-current"
+    run! 'rm -rf Carthage'
   end
 end
 
@@ -162,7 +151,7 @@ namespace :sanity_checks do
   task :build_demo => 'demo:build'
 
   desc 'Verify that Carthage builds successfully'
-  task :carthage_test => %w[carthage:test carthage:clean]
+  task :carthage_test => %w[carthage:build]
 end
 
 namespace :release do
