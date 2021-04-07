@@ -73,6 +73,8 @@
 		2DE12F581B59C36900EA1BCF /* BTPostalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = A72E134B1B44630C002703DD /* BTPostalAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F591B59C36900EA1BCF /* BTPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = A72E134C1B44630C002703DD /* BTPostalAddress.m */; };
 		2DE12F5A1B59C36900EA1BCF /* BTPaymentMethodNonce.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D061B3DE3B40024F9AB /* BTPaymentMethodNonce.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D9DAC44261DF6D1005CF301 /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9DAC43261DF6D1005CF301 /* PayPalCheckout.xcframework */; };
+		3D9DAC45261DF6D1005CF301 /* PayPalCheckout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9DAC43261DF6D1005CF301 /* PayPalCheckout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		41211EF81BA0E45300DB1705 /* BTPaymentMethodNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 41211EF61BA0E45300DB1705 /* BTPaymentMethodNonce.m */; };
 		412A51B0201FD0A500A5B302 /* BTGraphQLHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */; };
 		412A51B2201FD0C400A5B302 /* BTGraphQLHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 412A51B1201FD0C400A5B302 /* BTGraphQLHTTP.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -682,6 +684,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3D9DAC46261DF6D1005CF301 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3D9DAC45261DF6D1005CF301 /* PayPalCheckout.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4290C7F4259BD2E800D2044C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -775,6 +788,8 @@
 		2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DE12F0B1B59BE0100EA1BCF /* BraintreeCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BraintreeCore.h; sourceTree = "<group>"; };
 		2DE12F0D1B59BE0100EA1BCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3D9DAC27261DF63A005CF301 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = "../../../3P-Release/0.42.0/PayPalCheckout.xcframework"; sourceTree = "<group>"; };
+		3D9DAC43261DF6D1005CF301 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = Frameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		41211EF61BA0E45300DB1705 /* BTPaymentMethodNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentMethodNonce.m; sourceTree = "<group>"; };
 		412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTGraphQLHTTP.m; sourceTree = "<group>"; };
 		412A51B1201FD0C400A5B302 /* BTGraphQLHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTGraphQLHTTP.h; sourceTree = "<group>"; };
@@ -834,7 +849,6 @@
 		42ED470123A3E9DB00B889A8 /* FakeBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeBundle.swift; sourceTree = "<group>"; };
 		42ED470323A3E9F600B889A8 /* FakeDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDevice.swift; sourceTree = "<group>"; };
 		42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAuthenticationInsight_Tests.swift; sourceTree = "<group>"; };
-		42F3F6DA2603B81C00401B0D /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		42F3F6392603AB8D00401B0D /* KountDataCollector.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KountDataCollector.xcframework; path = Frameworks/KountDataCollector.xcframework; sourceTree = "<group>"; };
 		42F3F63A2603AC0900401B0D /* KDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDataCollector.h; sourceTree = "<group>"; };
 		42F3F63B2603AC0A00401B0D /* libKountDataCollector.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libKountDataCollector.a; sourceTree = "<group>"; };
@@ -1122,6 +1136,7 @@
 			files = (
 				2D941D5B1B5D5F170016EFB4 /* BraintreeCore.framework in Frameworks */,
 				A9EC7192252BC14000FF7D05 /* PayPalDataCollector.framework in Frameworks */,
+				3D9DAC44261DF6D1005CF301 /* PayPalCheckout.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1816,6 +1831,8 @@
 		A75DA3531921394200D997A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3D9DAC27261DF63A005CF301 /* PayPalCheckout.xcframework */,
+				3D9DAC43261DF6D1005CF301 /* PayPalCheckout.xcframework */,
 				42F3F6DA2603B81C00401B0D /* CardinalMobile.xcframework */,
 				42F3F6392603AB8D00401B0D /* KountDataCollector.xcframework */,
 				4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */,
@@ -2423,6 +2440,7 @@
 				2D941D341B59C76A0016EFB4 /* Frameworks */,
 				2D941D351B59C76A0016EFB4 /* Headers */,
 				2D941D361B59C76A0016EFB4 /* Resources */,
+				3D9DAC46261DF6D1005CF301 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
