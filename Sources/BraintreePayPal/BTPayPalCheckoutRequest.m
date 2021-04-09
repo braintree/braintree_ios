@@ -13,6 +13,7 @@
         _offerPayLater = NO;
         _intent = BTPayPalRequestIntentAuthorize;
         _userAction = BTPayPalRequestUserActionDefault;
+        _shouldUseNativePayPalCheckout = false;
     }
     return self;
 }

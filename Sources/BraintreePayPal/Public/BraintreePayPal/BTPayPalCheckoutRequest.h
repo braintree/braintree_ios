@@ -91,6 +91,16 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  */
 @property (nonatomic) BOOL requestBillingAgreement;
 
+
+/**
+ Indicates if PayPal checkout experiences should use the Native PayPal Checkout SDK.
+ Requires a PayPal return URL to be set in the PayPal develop dashboard, and to pass a return
+ URL value to the BTAppContextSwitcher singleton.
+
+ Defaults to `FALSE`
+ */
+@property (nonatomic) BOOL shouldUseNativePayPalCheckout;
+
 @end
 
 NS_ASSUME_NONNULL_END
