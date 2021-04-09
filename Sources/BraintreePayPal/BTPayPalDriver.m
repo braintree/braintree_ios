@@ -5,6 +5,8 @@
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 
+@import PayPalCheckout;
+
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
@@ -108,6 +110,61 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 #pragma mark - Helpers
 
+- (void)startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)request
+                    configuration:(BTConfiguration *)configuration
+                        pairingId:(NSString *)payToken
+                       completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+
+  NSString *payPalClientID = [configuration.json[@"paypal"][@"clientId"] asString];
+
+  if (!payPalClientID) {
+    NSLog(@"Invalid PayPal ClientID");
+      payPalClientID = @"FAKE-PAYPAL-CLIENT-ID"; // Throw an error?
+  }
+
+  NSInteger environment;
+  if (configuration.environment == PayPalEnvironmentProduction) {
+    environment = PPCEnvironmentLive;
+  }
+  else if (configuration.environment == PayPalEnvironmentSandbox) {
+    environment = PPCEnvironmentSandbox;
+  } else {
+    NSLog(@"Invalid Environment");
+    // Throw an error?
+    environment = 999;
+  }
+
+  if (![BTAppContextSwitcher sharedInstance].payPalReturnURL) {
+    NSLog(@"No provided return URL");
+    // Log an error
+  }
+
+  PPCheckoutConfig * config = [[PPCheckoutConfig alloc] initWithClientID: payPalClientID
+                                                               returnUrl:[BTAppContextSwitcher sharedInstance].payPalReturnURL
+                                                             createOrder:nil
+                                                               onApprove:nil
+                                                                onCancel:nil
+                                                                 onError:nil
+                                                             environment: environment]; // Corresponds to .sandbox
+
+  [PPCheckout setConfig: config];
+
+  [PPCheckout
+   startWithPresentingViewController:(UIViewController *)self.viewControllerPresentingDelegate;
+   createOrder:^(PPCCreateOrderAction * action) {
+    [action setWithOrderId:payToken];
+  }
+   onApprove:^(PPCApproval * approval) {
+    // Retrieve nonce using BT API
+  }
+   onCancel:^{
+    // cancellation is treated like an error for BT
+  }
+   onError:^(PPCErrorInfo *  error) {
+    completionBlock(nil, error.error);
+  }];
+}
+
 - (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
@@ -178,10 +235,26 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:request.paymentType withSuccess:analyticsSuccess];
 
-            [self handlePayPalRequestWithURL:approvalUrl
-                                       error:error
-                                 paymentType:request.paymentType
-                                  completion:completionBlock];
+            BOOL isPayPalCheckoutRequest = [self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class];
+            BOOL shouldUseNativeCheckout = ((BTPayPalCheckoutRequest *)self.payPalRequest).shouldUseNativePayPalCheckout;
+
+            if (isPayPalCheckoutRequest && shouldUseNativeCheckout) {
+
+              [self startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)self.payPalRequest
+                                configuration:configuration
+                                    pairingId:pairingID
+                                   completion:^(BTPayPalAccountNonce *tokenizedCheckout, NSError *error) {
+                NSLog(@"Finished");
+              }];
+            }
+
+            else {
+
+              [self handlePayPalRequestWithURL:approvalUrl
+                                         error:error
+                                   paymentType:request.paymentType
+                                    completion:completionBlock];
+            }
         }];
     }];
 }
