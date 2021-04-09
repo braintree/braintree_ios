@@ -36,7 +36,7 @@
 }
 
 + (void)setPayPalReturnURL:(NSString * _Nullable)returnURL {
-    [BTAppContextSwitcher sharedInstance].payPalReturnURL = returnURL
+    [BTAppContextSwitcher sharedInstance].payPalReturnURL = returnURL;
 }
 
 + (BOOL)handleOpenURL:(NSURL *)url {
