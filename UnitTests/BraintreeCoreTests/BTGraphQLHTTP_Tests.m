@@ -487,7 +487,7 @@
     }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
-    [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+    [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
         [expectation fulfill];
     }];
