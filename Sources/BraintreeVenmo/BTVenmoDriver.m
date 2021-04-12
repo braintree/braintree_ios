@@ -131,28 +131,46 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
 
-        BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
-        metadata.source = BTClientMetadataSourceVenmoApp;
-        NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+        NSString *merchantProfileID = venmoRequest.profileID ?: configuration.venmoMerchantID;
 
-        NSString *venmoProfileID = venmoRequest.profileID ?: configuration.venmoMerchantID;
-        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:venmoProfileID
-                                                                        accessToken:configuration.venmoAccessToken
-                                                                    returnURLScheme:self.returnURLScheme
-                                                                  bundleDisplayName:bundleDisplayName
-                                                                        environment:configuration.venmoEnvironment
-                                                                           metadata:[self.apiClient metadata]];
+        NSDictionary *params = @{
+            @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
+            @"variables": @{
+                    @"input": @{
+                            @"paymentMethodUsage": venmoRequest.vault ? @"MULTI_USE" : @"SINGLE_USE",
+                            @"merchantProfileId": merchantProfileID,
+                            @"customerClient": @"MOBILE_APP",
+                            @"intent": @"CONTINUE"
+                    }
+            }
+        };
 
-        if (!appSwitchURL) {
-            error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                        code:BTVenmoDriverErrorTypeInvalidRequestURL
-                                    userInfo:@{NSLocalizedDescriptionKey: @"Failed to create Venmo app switch request URL."}];
-            completionBlock(nil, error);
-            return;
-        }
+        [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
 
-        [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-            [self invokedOpenURLSuccessfully:success shouldVault:venmoRequest.vault completion:completionBlock];
+            BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
+            metadata.source = BTClientMetadataSourceVenmoApp;
+            NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+            NSString *paymentContextID = [body[@"data"][@"createVenmoPaymentContext"][@"venmoPaymentContext"][@"id"] asString];
+
+            NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
+                                                                            accessToken:configuration.venmoAccessToken
+                                                                        returnURLScheme:self.returnURLScheme
+                                                                      bundleDisplayName:bundleDisplayName
+                                                                            environment:configuration.venmoEnvironment
+                                                                       paymentContextID:paymentContextID
+                                                                               metadata:[self.apiClient metadata]];
+
+            if (!appSwitchURL) {
+                error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                            code:BTVenmoDriverErrorTypeInvalidRequestURL
+                                        userInfo:@{NSLocalizedDescriptionKey: @"Failed to create Venmo app switch request URL."}];
+                completionBlock(nil, error);
+                return;
+            }
+
+            [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
+                [self invokedOpenURLSuccessfully:success shouldVault:venmoRequest.vault completion:completionBlock];
+            }];
         }];
     }];
 }
@@ -216,7 +234,30 @@ static BTVenmoDriver *appSwitchedDriver;
     
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
-            
+            if (returnURL.paymentContextId) {
+                NSDictionary *params = @{
+                    @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName } } }",
+                    @"variables": @{ @"id": venmoContextID }
+                };
+
+                [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                    if (error) {
+                        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.client-failure"]; // TODO: - what should this be?
+                        self.appSwitchCompletionBlock(nil, error);
+                        self.appSwitchCompletionBlock = nil;
+                        return;
+                    }
+
+                    // TODO: - add an initializer that can parse a GraphQL payment context response
+                    // TODO: - handle error if response can't be parsed
+                    BTVenmoAccountNonce *nonce = [BTVenmoAccountNonce venmoAccountWithJSON:body];
+                    self.appSwitchCompletionBlock(nonce, nil);
+                    self.appSwitchCompletionBlock = nil;
+                }];
+
+                return;
+            }
+
             NSError *error = nil;
             if (!returnURL.nonce) {
                 error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];

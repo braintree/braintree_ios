@@ -14,12 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Create an app switch URL
 
- @param merchantID      The merchant ID
- @param accessToken     The access token used by the venmo app to tokenize on behalf of the merchant
- @param scheme          The return URL scheme, e.g. "com.yourcompany.Your-App.payments"
- @param bundleName      The bundle display name for the current app
- @param environment     The environment, e.g. "production" or "sandbox"
- @param metadata        Additional braintree metadata
+ @param merchantID       The merchant ID
+ @param accessToken      The access token used by the venmo app to tokenize on behalf of the merchant
+ @param scheme           The return URL scheme, e.g. "com.yourcompany.Your-App.payments"
+ @param bundleName       The bundle display name for the current app
+ @param environment      The environment, e.g. "production" or "sandbox"
+ @param paymentContextID The Venmo payment context ID
+ @param metadata         Additional braintree metadata
 
  @return The resulting URL, or `nil` if any of the parameters are `nil`.
 */
@@ -28,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
                               returnURLScheme:(NSString *)scheme
                             bundleDisplayName:(NSString *)bundleName
                                   environment:(NSString *)environment
+                             paymentContextID:(NSString *)paymentContextID
                                      metadata:(BTClientMetadata *)metadata;
 
 @end

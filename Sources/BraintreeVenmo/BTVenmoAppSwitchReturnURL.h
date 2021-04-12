@@ -49,6 +49,8 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
 */
 @property (nonatomic, copy, readonly) NSString *username;
 
+@property (nonatomic, copy, readonly) NSString *paymentContextId;
+
 /**
  If the return URL's state is BTVenmoAppSwitchReturnURLStateFailed, the error returned from Venmo via the app switch.
 */

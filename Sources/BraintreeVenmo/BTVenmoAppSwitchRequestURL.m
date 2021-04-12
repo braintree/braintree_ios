@@ -28,6 +28,7 @@
                     returnURLScheme:(NSString *)scheme
                   bundleDisplayName:(NSString *)bundleName
                         environment:(NSString *)environment
+                   paymentContextID:(NSString *)paymentContextID
                            metadata:(BTClientMetadata *)metadata
 {
     NSURL *successReturnURL = [self returnURLWithScheme:scheme result:@"success"];
@@ -56,6 +57,7 @@
                                                   @"braintree_access_token": accessToken,
                                                   @"braintree_environment": environment,
                                                   @"braintree_sdk_data": base64EncodedBraintreeData,
+                                                  @"resource_id": paymentContextID
                                                   } mutableCopy];
 
     NSURLComponents *components = [self appSwitchBaseURLComponents];

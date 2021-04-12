@@ -22,6 +22,7 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
             _state = BTVenmoAppSwitchReturnURLStateSucceeded;
             _nonce = parameters[@"paymentMethodNonce"];
             _username = parameters[@"username"];
+            _paymentContextId = parameters[@"resource_id"];
         } else if ([url.path isEqualToString:@"/vzero/auth/venmo/error"]) {
             _state = BTVenmoAppSwitchReturnURLStateFailed;
             NSString *errorMessage = parameters[@"errorMessage"];
