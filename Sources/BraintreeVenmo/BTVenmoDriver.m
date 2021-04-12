@@ -248,14 +248,20 @@ static BTVenmoDriver *appSwitchedDriver;
                     return;
                 }
 
+                BTVenmoAccountNonce *venmoAccountNonce = [[BTVenmoAccountNonce alloc] initWithPaymentContextJSON:body];
                 [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.success"];
-                BTVenmoAccountNonce *nonce = [[BTVenmoAccountNonce alloc] initWithPaymentContextJSON:body];
-                self.appSwitchCompletionBlock(nonce, nil);
-                self.appSwitchCompletionBlock = nil;
+
+                if (self.shouldVault && self.apiClient.clientToken != nil) {
+                    [self vaultVenmoAccountNonce:venmoAccountNonce.nonce];
+                } else {
+                    self.appSwitchCompletionBlock(venmoAccountNonce, nil);
+                    self.appSwitchCompletionBlock = nil;
+                }
             }];
             break;
         }
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
+
             NSError *error = nil;
             if (!returnURL.nonce) {
                 error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];

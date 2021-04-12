@@ -90,7 +90,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testAuthorization_whenReturnURLSchemeIsNil_logsCriticalMessageAndCallsBackWithError() {
+    func testTokenizeVenmoAccount_whenReturnURLSchemeIsNil_logsCriticalMessageAndCallsBackWithError() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance().returnURLScheme = ""
 
@@ -118,7 +118,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testAuthorization_createsPaymentContext() {
+    func testTokenizeVenmoAccount_createsPaymentContext() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
@@ -141,7 +141,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         ] as NSObject)
     }
 
-    func testAuthorization_whenCreatePaymentContextFails_opensVenmoURLWithoutPaymentContextID() {
+    func testTokenizeVenmoAccount_whenCreatePaymentContextFails_opensVenmoURLWithoutPaymentContextID() {
         mockAPIClient.cannedResponseBody = nil // create payment context fails
 
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
@@ -167,7 +167,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertNil(queryItems.first(where: { $0.name == "resource_id" })) // no payment context id
     }
 
-    func testAuthorization_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURL() {
+    func testTokenizeVenmoAccount_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURL() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
