@@ -3,6 +3,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ Usage for the tokenized Venmo account: either multi-use or single use
+ */
+typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
+    /// Multi-use
+    BTVenmoPaymentMethodUsageMultiUse = 0,
+    /// Single use
+    BTVenmoPaymentMethodUsageSingleUse = 1
+};
+
+/**
  A BTVenmoRequest specifies options that contribute to the Venmo flow
 */
 @interface BTVenmoRequest : NSObject
@@ -16,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
  Whether to automatically vault the Venmo Account. Vaulting will only occur if a client token with a customer_id is being used. Defaults to false.
  */
 @property (nonatomic) BOOL vault;
+
+/**
+ Whether the resulting payment method may be used to make a one time payment (`.singleUse`) or to create a multi-use payment token (`.multiUse`). Defaults to `.multiUse`.
+ */
+@property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
 
 @end
 

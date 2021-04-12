@@ -2,6 +2,7 @@
 #import "BTVenmoAccountNonce_Internal.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
+#import "BTVenmoRequest_Internal.h"
 
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BTConfiguration+Venmo.h>
@@ -137,7 +138,7 @@ static BTVenmoDriver *appSwitchedDriver;
             @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
             @"variables": @{
                     @"input": @{
-                            @"paymentMethodUsage": venmoRequest.vault ? @"MULTI_USE" : @"SINGLE_USE",
+                            @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
                             @"merchantProfileId": merchantProfileID,
                             @"customerClient": @"MOBILE_APP",
                             @"intent": @"CONTINUE"
