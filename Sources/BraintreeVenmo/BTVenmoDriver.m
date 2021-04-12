@@ -234,7 +234,7 @@ static BTVenmoDriver *appSwitchedDriver;
     
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
-            if (returnURL.paymentContextId) {
+            if (returnURL.paymentContextId) { // Payment context flow
                 NSDictionary *params = @{
                     @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName } } }",
                     @"variables": @{ @"id": returnURL.paymentContextId }
@@ -248,41 +248,40 @@ static BTVenmoDriver *appSwitchedDriver;
                         return;
                     }
 
+                    [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.success"];
                     BTVenmoAccountNonce *nonce = [[BTVenmoAccountNonce alloc] initWithPaymentContextJSON:body];
                     self.appSwitchCompletionBlock(nonce, nil);
                     self.appSwitchCompletionBlock = nil;
                 }];
+            } else { // Legacy flow
+                NSError *error = nil;
+                if (!returnURL.nonce) {
+                    error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];
+                } else if (!returnURL.username) {
+                    error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing username"}];
+                }
 
-                return;
-            }
+                if (error) {
+                    [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.client-failure"];
+                    self.appSwitchCompletionBlock(nil, error);
+                    self.appSwitchCompletionBlock = nil;
+                    return;
+                }
 
-            NSError *error = nil;
-            if (!returnURL.nonce) {
-                error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];
-            } else if (!returnURL.username) {
-                error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing username"}];
-            }
-            
-            if (error) {
-                [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.client-failure"];
-                self.appSwitchCompletionBlock(nil, error);
-                self.appSwitchCompletionBlock = nil;
-                return;
-            }
-            
-            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.success"];
-            
-            if (self.shouldVault && self.apiClient.clientToken != nil) {
-                [self vaultVenmoAccountNonce:returnURL.nonce];
-            } else {
-                BTJSON *json = [[BTJSON alloc] initWithValue:@{
-                                                               @"nonce": returnURL.nonce,
-                                                               @"details": @{@"username": returnURL.username},
-                                                               @"description": returnURL.username
-                                                               }];
-                BTVenmoAccountNonce *card = [BTVenmoAccountNonce venmoAccountWithJSON:json];
-                self.appSwitchCompletionBlock(card, nil);
-                self.appSwitchCompletionBlock = nil;
+                [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.success"];
+
+                if (self.shouldVault && self.apiClient.clientToken != nil) {
+                    [self vaultVenmoAccountNonce:returnURL.nonce];
+                } else {
+                    BTJSON *json = [[BTJSON alloc] initWithValue:@{
+                        @"nonce": returnURL.nonce,
+                        @"details": @{@"username": returnURL.username},
+                        @"description": returnURL.username
+                    }];
+                    BTVenmoAccountNonce *card = [BTVenmoAccountNonce venmoAccountWithJSON:json];
+                    self.appSwitchCompletionBlock(card, nil);
+                    self.appSwitchCompletionBlock = nil;
+                }
             }
             break;
         }
