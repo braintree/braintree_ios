@@ -135,7 +135,7 @@ class BTVenmoDriver_Tests: XCTestCase {
                     "customerClient": "MOBILE_APP",
                     "intent": "CONTINUE",
                     "merchantProfileId": "venmo_merchant_id",
-                    "paymentMethodUsage": "SINGLE_USE"
+                    "paymentMethodUsage": "MULTI_USE"
                 ]
             ]
         ] as NSObject)

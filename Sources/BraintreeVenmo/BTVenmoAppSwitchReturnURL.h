@@ -3,6 +3,7 @@
 extern NSString *const BTVenmoAppSwitchReturnURLErrorDomain;
 
 typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
+    BTVenmoAppSwitchReturnURLStateSucceededWithPaymentContext,
     BTVenmoAppSwitchReturnURLStateSucceeded,
     BTVenmoAppSwitchReturnURLStateFailed,
     BTVenmoAppSwitchReturnURLStateCanceled,
@@ -49,7 +50,10 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
 */
 @property (nonatomic, copy, readonly) NSString *username;
 
-@property (nonatomic, copy, readonly) NSString *paymentContextId;
+/**
+ The payment context ID from the return URL.
+ */
+@property (nonatomic, copy, readonly) NSString *paymentContextID;
 
 /**
  If the return URL's state is BTVenmoAppSwitchReturnURLStateFailed, the error returned from Venmo via the app switch.
