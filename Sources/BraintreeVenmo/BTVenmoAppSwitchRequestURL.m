@@ -57,8 +57,11 @@
                                                   @"braintree_access_token": accessToken,
                                                   @"braintree_environment": environment,
                                                   @"braintree_sdk_data": base64EncodedBraintreeData,
-                                                  @"resource_id": paymentContextID
                                                   } mutableCopy];
+
+    if (paymentContextID) {
+        appSwitchParameters[@"resource_id"] = paymentContextID;
+    }
 
     NSURLComponents *components = [self appSwitchBaseURLComponents];
     components.percentEncodedQuery = [BTURLUtils queryStringWithDictionary:appSwitchParameters];

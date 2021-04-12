@@ -19,17 +19,17 @@ NS_ASSUME_NONNULL_BEGIN
  @param scheme           The return URL scheme, e.g. "com.yourcompany.Your-App.payments"
  @param bundleName       The bundle display name for the current app
  @param environment      The environment, e.g. "production" or "sandbox"
- @param paymentContextID The Venmo payment context ID
+ @param paymentContextID The Venmo payment context ID (optional)
  @param metadata         Additional braintree metadata
 
- @return The resulting URL, or `nil` if any of the parameters are `nil`.
+ @return The resulting URL, or `nil` if any of the required parameters are `nil`.
 */
 + (nullable NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID
                                   accessToken:(NSString *)accessToken
                               returnURLScheme:(NSString *)scheme
                             bundleDisplayName:(NSString *)bundleName
                                   environment:(NSString *)environment
-                             paymentContextID:(NSString *)paymentContextID
+                             paymentContextID:(NSString * _Nullable)paymentContextID
                                      metadata:(BTClientMetadata *)metadata;
 
 @end

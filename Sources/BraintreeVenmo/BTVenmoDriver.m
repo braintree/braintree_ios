@@ -145,7 +145,7 @@ static BTVenmoDriver *appSwitchedDriver;
             }
         };
 
-        [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
 
             BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
             metadata.source = BTClientMetadataSourceVenmoApp;
@@ -237,20 +237,18 @@ static BTVenmoDriver *appSwitchedDriver;
             if (returnURL.paymentContextId) {
                 NSDictionary *params = @{
                     @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName } } }",
-                    @"variables": @{ @"id": venmoContextID }
+                    @"variables": @{ @"id": returnURL.paymentContextId }
                 };
 
-                [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                     if (error) {
-                        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.client-failure"]; // TODO: - what should this be?
+                        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.client-failure"];
                         self.appSwitchCompletionBlock(nil, error);
                         self.appSwitchCompletionBlock = nil;
                         return;
                     }
 
-                    // TODO: - add an initializer that can parse a GraphQL payment context response
-                    // TODO: - handle error if response can't be parsed
-                    BTVenmoAccountNonce *nonce = [BTVenmoAccountNonce venmoAccountWithJSON:body];
+                    BTVenmoAccountNonce *nonce = [[BTVenmoAccountNonce alloc] initWithPaymentContextJSON:body];
                     self.appSwitchCompletionBlock(nonce, nil);
                     self.appSwitchCompletionBlock = nil;
                 }];

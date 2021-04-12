@@ -10,7 +10,7 @@ class BTThreeDSecureV2UICustomization_Tests: XCTestCase {
         uiCustomization.textBoxCustomization = BTThreeDSecureV2TextBoxCustomization()
         uiCustomization.toolbarCustomization = BTThreeDSecureV2ToolbarCustomization()
 
-        let cardinalUICustomization = uiCustomization.cardinalValue as! UiCustomization
+        let cardinalUICustomization = uiCustomization.cardinalValue!
         XCTAssertNotNil(cardinalUICustomization.getButtonCustomization(ButtonType(3)))
         XCTAssertNotNil(cardinalUICustomization.getLabel())
         XCTAssertNotNil(cardinalUICustomization.getTextBox())

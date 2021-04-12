@@ -22,6 +22,12 @@
     return self;
 }
 
+- (instancetype)initWithPaymentContextJSON:(BTJSON *)paymentContextJSON {
+    return [[self.class alloc] initWithPaymentMethodNonce:[paymentContextJSON[@"node"][@"paymentMethodId"] asString]
+                                                 username:[paymentContextJSON[@"node"][@"userName"] asString]
+                                                isDefault:NO]; // TODO: - what should we pass here?
+}
+
 + (instancetype)venmoAccountWithJSON:(BTJSON *)venmoAccountJSON {
     return [[[self class] alloc] initWithPaymentMethodNonce:[venmoAccountJSON[@"nonce"] asString]
                                                    username:[venmoAccountJSON[@"details"][@"username"] asString]
