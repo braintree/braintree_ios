@@ -18,17 +18,23 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
 @interface BTVenmoRequest : NSObject
 
 /**
- The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile, and it will show up in the Venmo app as a "Connected Merchant". Venmo profile IDs can be found in the Braintree Control Panel. Leaving this `nil` will use the default Venmo profile.
+ The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile, and it may show up in the Venmo app as a "Connected Merchant". Venmo profile IDs can be found in the Braintree Control Panel. Leaving this `nil` will use the default Venmo profile.
  */
 @property (nonatomic, nullable, copy) NSString *profileID;
 
 /**
- Whether to automatically vault the Venmo Account. Vaulting will only occur if a client token with a customer_id is being used. Defaults to false.
+ * Whether to automatically vault the Venmo account on the client. For client-side vaulting, you must initialize BTAPIClient with a client token that was created with a customer ID. Also, `paymentMethodUsage` on the BTVenmoRequest must be set to `.multiUse`.
+ *
+ * If this property is set to false, you can still vault the Venmo account on your server, provided that `paymentMethodUsage` is set to `.multiUse`.
+ *
+ * Defaults to false.
  */
 @property (nonatomic) BOOL vault;
 
 /**
- Whether the resulting payment method may be used to make a one time payment (`.singleUse`) or to create a multi-use payment token (`.multiUse`). Defaults to `.multiUse`.
+ * If set to `.multiUse`, the resulting payment method will be authorized for future payments and can be vaulted. If set to `.singleUse`, the resulting payment method will be authorized for a one-time payment and cannot be vaulted.
+ *
+ * Defaults to `.multiUse`.
  */
 @property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
 

@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Venmo
+  * Add `paymentMethodUsage` to `BTVenmoRequest`
+
 ## 4.37.1 (2021-04-06)
 * Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
 
