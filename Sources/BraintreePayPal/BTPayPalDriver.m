@@ -38,8 +38,6 @@
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
-NSString *const BTPayPalNativeCheckoutErrorDomain = @"com.braintreepayments.BTPayPalNativeCheckoutErrorDomain";
-
 /**
  This environment MUST be used for App Store submissions.
  */
@@ -115,12 +113,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 - (void)startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)request
                     configuration:(BTConfiguration *)configuration
                         pairingId:(NSString *)payToken
-                       completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+                       completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
 
     NSString *payPalClientID = [configuration.json[@"paypal"][@"clientId"] asString];
 
     if (!payPalClientID) {
-      NSError *error = [NSError errorWithDomain:BTPayPalNativeCheckoutErrorDomain
+      NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                            code:BTPayPalDriverErrorTypeIntegration
                                        userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because an empty or nil Client ID was retrieved from the configuration."}];
       completionBlock(nil, error);
@@ -134,7 +132,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     else if ([configuration.environment isEqualToString: PayPalEnvironmentSandbox]) {
       environment = PPCEnvironmentSandbox;
     } else {
-      NSError *error = [NSError errorWithDomain:BTPayPalNativeCheckoutErrorDomain
+      NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                            code:BTPayPalDriverErrorTypeIntegration
                                        userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because an invalid environment identifier was retrieved from the configuration."}];
       completionBlock(nil, error);
@@ -142,7 +140,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     }
 
     if (![BTAppContextSwitcher sharedInstance].payPalReturnURL) {
-      NSError *error = [NSError errorWithDomain:BTPayPalNativeCheckoutErrorDomain
+      NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                            code:BTPayPalDriverErrorTypeIntegration
                                        userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because no payPalReturnURL was found on the BTAppContextSwitcher singleton"}];
       completionBlock(nil, error);
@@ -171,13 +169,13 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     }
      onCancel:^{
       // User initiated cancel - user either tapepd outside the paysheet, or canceled the authentication webview
-      NSError *error = [NSError errorWithDomain:BTPayPalNativeCheckoutErrorDomain
+      NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                          code:BTPayPalDriverErrorTypeCanceled
                                      userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout flow was canceled by the user."}];
       completionBlock(nil, error);
     }
      onError:^(PPCErrorInfo *  errorInfo) {
-      NSError *error = [NSError errorWithDomain:BTPayPalNativeCheckoutErrorDomain
+      NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                            code:BTPayPalDriverErrorTypeUnknown
                                        userInfo:@{
                                          NSLocalizedDescriptionKey: errorInfo.reason,
