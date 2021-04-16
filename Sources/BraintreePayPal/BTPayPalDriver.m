@@ -145,7 +145,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
       NSError *error = [NSError errorWithDomain:BTPayPalNativeCheckoutErrorDomain
                                            code:BTPayPalDriverErrorTypeIntegration
                                        userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because no payPalReturnURL was found on the BTAppContextSwitcher singleton"}];
-      completion(nil, error);
+      completionBlock(nil, error);
       return;
     }
 
