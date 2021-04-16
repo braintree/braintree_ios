@@ -255,11 +255,10 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:request.paymentType withSuccess:analyticsSuccess];
 
-            BOOL isPayPalCheckoutRequest = [self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class];
-            BOOL shouldUseNativeCheckout = ((BTPayPalCheckoutRequest *)self.payPalRequest).shouldUseNativePayPalCheckout;
+            BOOL isPayPalCheckoutRequest = [request isKindOfClass:BTPayPalCheckoutRequest.class];
 
-            if (isPayPalCheckoutRequest && shouldUseNativeCheckout) {
-              [self startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)self.payPalRequest
+            if (isPayPalCheckoutRequest && ((BTPayPalCheckoutRequest *)request).shouldUseNativePayPalCheckout) {
+              [self startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)request
                                 configuration:configuration
                                     pairingId:pairingID
                                    completion:completionBlock];
