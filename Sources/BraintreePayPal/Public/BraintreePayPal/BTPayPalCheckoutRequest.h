@@ -93,13 +93,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 
 
 /**
- Indicates if PayPal checkout experiences should use the Native PayPal Checkout SDK.
- Requires a PayPal return URL to be set in the PayPal develop dashboard, and to pass a return
- URL value to the BTAppContextSwitcher singleton.
+ Optional: If set to true, the PayPal Checkout flow will launch via a Native UI experience, instead of an `ASWebAuthenticationSession`. It requires a returnURL be set in your PayPal developer dashboard (https://developer.paypal.com) and on `BTAppContextSwitcher.sharedInstance.payPalReturnURL`. Defaults to `false`.
 
- Defaults to `FALSE`
+ @note The native PayPal UI experience is not available for the PayPal Vault flow.
  */
-@property (nonatomic) BOOL shouldUseNativePayPalCheckout;
+@property (nonatomic) BOOL useNativeUI;
 
 @end
 

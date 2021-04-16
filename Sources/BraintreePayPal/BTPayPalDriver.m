@@ -142,7 +142,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if (![BTAppContextSwitcher sharedInstance].payPalReturnURL) {
       NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                            code:BTPayPalDriverErrorTypeIntegration
-                                       userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because no payPalReturnURL was found on the BTAppContextSwitcher singleton"}];
+                                       userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because the payPalReturnURL on BTAppContextSwitcher is nil. This value cannot be nil."}];
       completionBlock(nil, error);
       return;
     }
@@ -257,7 +257,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             BOOL isPayPalCheckoutRequest = [request isKindOfClass:BTPayPalCheckoutRequest.class];
 
-            if (isPayPalCheckoutRequest && ((BTPayPalCheckoutRequest *)request).shouldUseNativePayPalCheckout) {
+            if (isPayPalCheckoutRequest && ((BTPayPalCheckoutRequest *)request).useNativeUI) {
               [self startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)request
                                 configuration:configuration
                                     pairingId:pairingID
