@@ -69,9 +69,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setReturnURLScheme:(NSString *)returnURLScheme;
 
 /**
- Sets the PayPal return URL for your app.
+ Optional: Sets the PayPal return URL for the PayPal Checkout Native UI experience.
 
- This must be configured if your app integrates with PayPal, and you would like to use the native PayPal Checkout SDK.
+ If you are using the PayPal Checkout Native UI, this value must be set and must match the value set in the `Return URLs` section of your application's dashboard on your [PayPal developer account (https://developer.paypal.com). You must also set the `BTPayPalCheckoutRequest.useNativeUI` property to `YES` to enable this flow.
  @param returnURL The PayPal return URL
  */
 + (void)setPayPalReturnURL:(NSString * _Nullable)returnURL;
