@@ -146,21 +146,19 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         return;
     }
 
-    PPCheckoutConfig * config = [[PPCheckoutConfig alloc] initWithClientID: payPalClientID
-                                                                 returnUrl: [BTAppContextSwitcher sharedInstance].payPalReturnURL
-                                                               createOrder: nil
-                                                                 onApprove: nil
-                                                                  onCancel: nil
-                                                                   onError: nil
-                                                               environment: environment];
+    PPCheckoutConfig *config = [[PPCheckoutConfig alloc] initWithClientID:payPalClientID
+                                                                 returnUrl:[BTAppContextSwitcher sharedInstance].payPalReturnURL
+                                                               createOrder:nil
+                                                                 onApprove:nil
+                                                                  onCancel:nil
+                                                                   onError:nil
+                                                               environment:environment];
 
-    [PPCheckout setConfig: config];
+    [PPCheckout setConfig:config];
 
-    [PPCheckout
-     startWithPresentingViewController: nil
-     createOrder:^(PPCCreateOrderAction * action) {
+    [PPCheckout startWithPresentingViewController:nil createOrder:^(PPCCreateOrderAction *action) {
         [action setWithOrderId:payToken];
-    } onApprove:^(PPCApproval * approval) {
+    } onApprove:^(PPCApproval *approval) {
         [self handleBrowserSwitchReturnURL:approval.data.returnURL
                                paymentType:BTPayPalPaymentTypeCheckout
                                 completion:completionBlock];
@@ -170,7 +168,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                                              code:BTPayPalDriverErrorTypeCanceled
                                          userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout flow was canceled by the user."}];
         completionBlock(nil, error);
-    } onError:^(PPCErrorInfo *  errorInfo) {
+    } onError:^(PPCErrorInfo *errorInfo) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeUnknown
                                          userInfo:@{
