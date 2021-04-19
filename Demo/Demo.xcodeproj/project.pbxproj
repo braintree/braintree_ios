@@ -46,6 +46,7 @@
 		803D6509256DAF9A00ACE692 /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */; };
 		803D650A256DAF9A00ACE692 /* PayPalDataCollector.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A5D2553152A00006F53 /* Venmo_UITests.swift */; };
+		809A7249262DE6AF0024BE72 /* BraintreeDemoPayPalNativeUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809A7248262DE6AF0024BE72 /* BraintreeDemoPayPalNativeUIViewController.swift */; };
 		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
 		A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */; };
 		A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7F24DB44B10095EEEE /* Settings.bundle */; };
@@ -218,6 +219,7 @@
 		803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeVenmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PayPalDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80581A5D2553152A00006F53 /* Venmo_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venmo_UITests.swift; sourceTree = "<group>"; };
+		809A7248262DE6AF0024BE72 /* BraintreeDemoPayPalNativeUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPayPalNativeUIViewController.swift; sourceTree = "<group>"; };
 		A0988E4924DB43DC0095EEEE /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0988E7B24DB44B10095EEEE /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSettings.swift; sourceTree = "<group>"; };
@@ -494,6 +496,14 @@
 				80581A5D2553152A00006F53 /* Venmo_UITests.swift */,
 			);
 			path = "Venmo UI Tests";
+			sourceTree = "<group>";
+		};
+		809A7247262DE6520024BE72 /* PayPal - Checkout (Native UI) */ = {
+			isa = PBXGroup;
+			children = (
+				809A7248262DE6AF0024BE72 /* BraintreeDemoPayPalNativeUIViewController.swift */,
+			);
+			path = "PayPal - Checkout (Native UI)";
 			sourceTree = "<group>";
 		};
 		A0988E4024DB43DC0095EEEE = {
@@ -814,6 +824,7 @@
 				A0988F6224DB44B10095EEEE /* Ideal */,
 				A0988F7B24DB44B10095EEEE /* PayPal - Vault */,
 				A0988F5F24DB44B10095EEEE /* PayPal - Checkout */,
+				809A7247262DE6520024BE72 /* PayPal - Checkout (Native UI) */,
 				A0988F6824DB44B10095EEEE /* PayPal - Pay Later */,
 				A0988F5A24DB44B10095EEEE /* Preferred Payment Methods */,
 				A0988F8724DB44B10095EEEE /* UnionPay */,
@@ -1271,6 +1282,7 @@
 				A0988FAF24DB44B20095EEEE /* BTUICardExpiryField.m in Sources */,
 				A0988FEA24DB44B20095EEEE /* BraintreeDemoIdealViewController.m in Sources */,
 				A0988FC724DB44B20095EEEE /* BTUISummaryView.m in Sources */,
+				809A7249262DE6AF0024BE72 /* BraintreeDemoPayPalNativeUIViewController.swift in Sources */,
 				A0988FEC24DB44B20095EEEE /* BraintreeDemoPayPalPayLaterViewController.m in Sources */,
 				A0988FEE24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				A0988FB924DB44B20095EEEE /* BTUIVenmoMonogramCardView.m in Sources */,
