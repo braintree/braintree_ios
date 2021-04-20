@@ -5,8 +5,6 @@
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 
-@import PayPalCheckout;
-
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
@@ -15,6 +13,7 @@
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
 #import <Braintree/Braintree-Swift.h>
+#import <PayPalCheckout/PayPalCheckout-Swift.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCore/BraintreeCore.h>
@@ -25,6 +24,7 @@
 #import <BraintreePayPal/BTPayPalLineItem.h>
 // Use @import for SPM support (see https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348)
 @import PayPalDataCollector;
+@import PayPalCheckout;
 
 #else // Carthage
 #import <BraintreeCore/BraintreeCore.h>
@@ -34,6 +34,7 @@
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
+#import <PayPalCheckout/PayPalCheckout-Swift.h>
 #endif
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
