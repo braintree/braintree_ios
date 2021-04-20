@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		806CE9F3262F88CA0057854E /* PayPalCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 806CE9F2262F88CA0057854E /* PayPalCheckout.framework */; };
 		80C9FCEA25DEC0BD005F4DC4 /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C9FCDE25DEC0BD005F4DC4 /* PayPalDataCollector.framework */; };
 		80C9FCEC25DEC0BD005F4DC4 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C9FCDF25DEC0BD005F4DC4 /* BraintreeDataCollector.framework */; };
 		80C9FCEE25DEC0BD005F4DC4 /* BraintreeAmericanExpress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C9FCE025DEC0BD005F4DC4 /* BraintreeAmericanExpress.framework */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		806CE9F2262F88CA0057854E /* PayPalCheckout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PayPalCheckout.framework; path = Carthage/Build/iOS/PayPalCheckout.framework; sourceTree = "<group>"; };
 		80C9FCDE25DEC0BD005F4DC4 /* PayPalDataCollector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PayPalDataCollector.framework; path = Carthage/Build/iOS/PayPalDataCollector.framework; sourceTree = "<group>"; };
 		80C9FCDF25DEC0BD005F4DC4 /* BraintreeDataCollector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BraintreeDataCollector.framework; path = Carthage/Build/iOS/BraintreeDataCollector.framework; sourceTree = "<group>"; };
 		80C9FCE025DEC0BD005F4DC4 /* BraintreeAmericanExpress.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BraintreeAmericanExpress.framework; path = Carthage/Build/iOS/BraintreeAmericanExpress.framework; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				80C9FCEE25DEC0BD005F4DC4 /* BraintreeAmericanExpress.framework in Frameworks */,
 				80C9FCFC25DEC0BE005F4DC4 /* BraintreeThreeDSecure.framework in Frameworks */,
 				80C9FCFE25DEC0BE005F4DC4 /* CardinalMobile.framework in Frameworks */,
+				806CE9F3262F88CA0057854E /* PayPalCheckout.framework in Frameworks */,
 				80C9FCF625DEC0BD005F4DC4 /* BraintreePaymentFlow.framework in Frameworks */,
 				80C9FCEC25DEC0BD005F4DC4 /* BraintreeDataCollector.framework in Frameworks */,
 				80C9FD0025DEC0BE005F4DC4 /* BraintreeCore.framework in Frameworks */,
@@ -75,6 +78,7 @@
 		03BFA5C81FB2F0BB0003ABCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				806CE9F2262F88CA0057854E /* PayPalCheckout.framework */,
 				80C9FD0425DEC18C005F4DC4 /* PPRiskMagnes.framework */,
 				80C9FCE025DEC0BD005F4DC4 /* BraintreeAmericanExpress.framework */,
 				80C9FCE525DEC0BD005F4DC4 /* BraintreeApplePay.framework */,
