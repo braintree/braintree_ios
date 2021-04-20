@@ -38,20 +38,8 @@
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
-/**
- This environment MUST be used for App Store submissions.
- */
-NSString * _Nonnull const PayPalEnvironmentProduction = @"live";
-
-/**
- Sandbox: Uses the PayPal sandbox for transactions. Useful for development.
- */
-NSString * _Nonnull const PayPalEnvironmentSandbox = @"sandbox";
-
-/**
- Mock: Mock mode. Does not submit transactions to PayPal. Fakes successful responses. Useful for unit tests.
- */
-NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
+NSString *_Nonnull const PayPalEnvironmentProduction = @"production";
+NSString *_Nonnull const PayPalEnvironmentSandbox = @"sandbox";
 
 @interface BTPayPalDriver () <ASWebAuthenticationPresentationContextProviding>
 

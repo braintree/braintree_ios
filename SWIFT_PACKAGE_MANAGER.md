@@ -31,6 +31,8 @@ To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure
 
 To use the `BraintreeThreeDSecure` library, you must also check the boxes for `CardinalMobile` and `PPRiskMagnes`. _(This only applies to versions greater than 5.2.0. See [instructions below](#braintreethreedsecure) if you are using versions 5.0.0 to 5.2.0.)_
 
+If your app uses app extensions, there is a [known SPM issue](https://forums.swift.org/t/swift-package-binary-framework-issue/41922) while using SPM packages with binaries. The issue occurs when uploading a build to App Store Connect. You can read the report on Swift Forums and follow [this workaround](https://github.com/braintree/braintree-ios-drop-in/issues/317#issuecomment-815005747).
+
 ### BraintreeDataCollector
 
 There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-spm-package-for-ios-executable/41245/13) that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
