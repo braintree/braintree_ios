@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "PayPalCheckout",
+        "repositoryURL": "https://github.com/paypal/paypalcheckout-ios",
+        "state": {
+          "branch": null,
+          "revision": "6b870dcd81f385f3d0e3fefbcd9a6ef92a405781",
+          "version": "0.44.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

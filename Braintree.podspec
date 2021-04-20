@@ -66,13 +66,13 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreePayPal/Public/BraintreePayPal/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
+    s.dependency "PayPalCheckout"
   end
 
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
     s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
-    s.dependency "Braintree/Core"
   end
 
   s.subspec "ThreeDSecure" do |s|

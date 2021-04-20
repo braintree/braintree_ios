@@ -66,6 +66,8 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
+        //.package(name: "PayPalCheckout", url: "file:///Users/scannillo/pp/paypalcheckout-ios", .revision("120ae1fc763b4a5fec51cc9bc94a6b39cae53c10"))
+        .package(name: "PayPalCheckout", url: "https://github.com/paypal/paypalcheckout-ios", from: "0.44.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -141,7 +143,6 @@ let package = Package(
         ),
         .target(
             name: "PayPalDataCollector",
-            dependencies: ["BraintreeCore"],
             path: "Sources/PayPalDataCollector"
         ),
         .binaryTarget(
