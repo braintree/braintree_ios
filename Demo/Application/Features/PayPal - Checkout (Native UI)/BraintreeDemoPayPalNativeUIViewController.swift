@@ -42,7 +42,7 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
         request.useNativeUI = true
         BTAppContextSwitcher.sharedInstance().payPalReturnURL = "tacocats://paypalpay"
         request.activeWindow = view.window
-        driver.tokenizePayPalAccount(with: request) { [self] payPalAccount, error in
+        driver.tokenizePayPalAccount(with: request) { [weak self] payPalAccount, error in
             sender?.isEnabled = true
 
             if let error = error {
