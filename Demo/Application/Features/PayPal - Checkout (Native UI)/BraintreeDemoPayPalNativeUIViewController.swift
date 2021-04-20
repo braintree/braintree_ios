@@ -27,7 +27,7 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
         return button
     }
 
-    @objc func tappedPayPalCheckout(_ sender: UIButton?) {
+    @objc func tappedPayPalCheckout(_ button: UIButton?) {
         self.progressBlock("Tapped PayPal Checkout (Native UI) - using BTPayPalDriver")
 
         sender?.setTitle(NSLocalizedString("Processing...", comment: ""), for: .disabled)
