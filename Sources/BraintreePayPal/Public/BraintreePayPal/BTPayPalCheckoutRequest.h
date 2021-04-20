@@ -91,6 +91,14 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  */
 @property (nonatomic) BOOL requestBillingAgreement;
 
+
+/**
+ Optional: If set to true, the PayPal Checkout flow will launch via a Native UI experience, instead of an `ASWebAuthenticationSession`. It requires a returnURL be set in your PayPal developer dashboard (https://developer.paypal.com) and on `BTAppContextSwitcher.sharedInstance.payPalReturnURL`. Defaults to `false`.
+
+ @note The native PayPal UI experience is not available for the PayPal Vault flow.
+ */
+@property (nonatomic) BOOL useNativeUI;
+
 @end
 
 NS_ASSUME_NONNULL_END

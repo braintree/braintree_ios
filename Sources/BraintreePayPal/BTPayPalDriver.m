@@ -5,6 +5,8 @@
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 
+@import PayPalCheckout;
+
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
@@ -36,20 +38,8 @@
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
-/**
- This environment MUST be used for App Store submissions.
- */
-NSString * _Nonnull const PayPalEnvironmentProduction = @"live";
-
-/**
- Sandbox: Uses the PayPal sandbox for transactions. Useful for development.
- */
-NSString * _Nonnull const PayPalEnvironmentSandbox = @"sandbox";
-
-/**
- Mock: Mock mode. Does not submit transactions to PayPal. Fakes successful responses. Useful for unit tests.
- */
-NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
+NSString *_Nonnull const PayPalEnvironmentProduction = @"production";
+NSString *_Nonnull const PayPalEnvironmentSandbox = @"sandbox";
 
 @interface BTPayPalDriver () <ASWebAuthenticationPresentationContextProviding>
 
@@ -107,6 +97,75 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 }
 
 #pragma mark - Helpers
+
+- (void)startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)request
+                    configuration:(BTConfiguration *)configuration
+                        pairingId:(NSString *)payToken
+                       completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
+
+    NSString *payPalClientID = [configuration.json[@"paypal"][@"clientId"] asString];
+
+    if (!payPalClientID) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because an empty or nil Client ID was retrieved from the configuration."}];
+        completionBlock(nil, error);
+        return;
+    }
+
+    NSInteger environment;
+    if ([configuration.environment isEqualToString: PayPalEnvironmentProduction]) {
+        environment = PPCEnvironmentLive;
+    } else if ([configuration.environment isEqualToString: PayPalEnvironmentSandbox]) {
+        environment = PPCEnvironmentSandbox;
+    } else {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because an invalid environment identifier was retrieved from the configuration."}];
+        completionBlock(nil, error);
+        return;
+    }
+
+    if (![BTAppContextSwitcher sharedInstance].payPalReturnURL) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout failed because the payPalReturnURL on BTAppContextSwitcher is nil. This value cannot be nil."}];
+        completionBlock(nil, error);
+        return;
+    }
+
+    PPCheckoutConfig *config = [[PPCheckoutConfig alloc] initWithClientID:payPalClientID
+                                                                 returnUrl:[BTAppContextSwitcher sharedInstance].payPalReturnURL
+                                                               createOrder:nil
+                                                                 onApprove:nil
+                                                                  onCancel:nil
+                                                                   onError:nil
+                                                               environment:environment];
+
+    [PPCheckout setConfig:config];
+
+    [PPCheckout startWithPresentingViewController:nil createOrder:^(PPCCreateOrderAction *action) {
+        [action setWithOrderId:payToken];
+    } onApprove:^(PPCApproval *approval) {
+        [self handleBrowserSwitchReturnURL:approval.data.returnURL
+                               paymentType:BTPayPalPaymentTypeCheckout
+                                completion:completionBlock];
+    } onCancel:^{
+        // User initiated cancel - user either tapepd outside the paysheet, or canceled the authentication webview
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeCanceled
+                                         userInfo:@{NSLocalizedDescriptionKey: @"PayPal Native Checkout flow was canceled by the user."}];
+        completionBlock(nil, error);
+    } onError:^(PPCErrorInfo *errorInfo) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeUnknown
+                                         userInfo:@{
+                                             NSLocalizedDescriptionKey: errorInfo.reason,
+                                             NSUnderlyingErrorKey: errorInfo.error,
+                                         }];
+        completionBlock(nil, error);
+    }];
+}
 
 - (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
@@ -178,10 +237,19 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:request.paymentType withSuccess:analyticsSuccess];
 
-            [self handlePayPalRequestWithURL:approvalUrl
-                                       error:error
-                                 paymentType:request.paymentType
-                                  completion:completionBlock];
+            BOOL isPayPalCheckoutRequest = [request isKindOfClass:BTPayPalCheckoutRequest.class];
+
+            if (isPayPalCheckoutRequest && ((BTPayPalCheckoutRequest *)request).useNativeUI) {
+                [self startPayPalNativeCheckout:(BTPayPalCheckoutRequest *)request
+                                  configuration:configuration
+                                      pairingId:pairingID
+                                     completion:completionBlock];
+            } else {
+                [self handlePayPalRequestWithURL:approvalUrl
+                                           error:error
+                                     paymentType:request.paymentType
+                                      completion:completionBlock];
+            }
         }];
     }];
 }

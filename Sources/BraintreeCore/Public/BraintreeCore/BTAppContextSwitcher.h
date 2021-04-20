@@ -45,6 +45,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *returnURLScheme;
 
 /**
+ Optional: The return URL provided to the PayPal Checkout Native UI experience.
+
+ Used as part of the authentication process to identify your application.
+ 
+ This value should match the one set in the `Return URLs` section of your application's dashboard on your [PayPal developer account](https://developer.paypal.com).
+ */
+@property (nonatomic, copy) NSString * _Nullable payPalReturnURL;
+
+/**
  The singleton instance
 */
 + (instancetype)sharedInstance;
@@ -58,6 +67,14 @@ NS_ASSUME_NONNULL_BEGIN
  @param returnURLScheme The return URL scheme
 */
 + (void)setReturnURLScheme:(NSString *)returnURLScheme;
+
+/**
+ Optional: Sets the PayPal return URL for the PayPal Checkout Native UI experience.
+
+ If you are using the PayPal Checkout Native UI, this value must be set and must match the value set in the `Return URLs` section of your application's dashboard on your [PayPal developer account (https://developer.paypal.com). You must also set the `BTPayPalCheckoutRequest.useNativeUI` property to `YES` to enable this flow.
+ @param returnURL The PayPal return URL
+ */
++ (void)setPayPalReturnURL:(NSString * _Nullable)returnURL;
 
 /**
  Handles a return from app context switch
