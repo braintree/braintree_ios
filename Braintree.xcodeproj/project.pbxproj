@@ -82,7 +82,6 @@
 		41472F971CB6D53400AFA75C /* BTConfiguration+UnionPay.h in Headers */ = {isa = PBXBuildFile; fileRef = 41472F961CB6D53400AFA75C /* BTConfiguration+UnionPay.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		415924B21BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 415924B01BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m */; };
 		415924B41BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 415924B31BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		4164B99E1C9B658E006AE861 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		4164B9B01C9B6690006AE861 /* BraintreeUnionPay.h in Headers */ = {isa = PBXBuildFile; fileRef = 4164B9AF1C9B6690006AE861 /* BraintreeUnionPay.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4164B9B11C9B68CC006AE861 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
 		4164B9BA1C9B6988006AE861 /* BTCardClient+UnionPay.h in Headers */ = {isa = PBXBuildFile; fileRef = 4164B9B81C9B6988006AE861 /* BTCardClient+UnionPay.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -135,6 +134,8 @@
 		80A79DD725CA04CB00A9E9A2 /* BTVenmoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A79DD525CA04CB00A9E9A2 /* BTVenmoRequest.m */; };
 		80BB0C86241937A5003C8BA9 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB0C84241937A5003C8BA9 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80BB0C87241937A5003C8BA9 /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BB0C85241937A5003C8BA9 /* BTURLUtils.m */; };
+		80CC038A263210D700C4E6E0 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
+		80CC038B263210D700C4E6E0 /* BraintreeCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80DBE69523A931A600373230 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE69423A931A600373230 /* Helpers.swift */; };
 		80FF7B242587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B222587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m */; };
 		80FF7B4C2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B4A2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m */; };
@@ -178,8 +179,6 @@
 		A77AA2AC1B618CFB00217B73 /* BTVenmoDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */; };
 		A77AA2AD1B618CFB00217B73 /* BTVenmoAccountNonce.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D061B6043B7005A4A09 /* BTVenmoAccountNonce.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77AA2AE1B618CFB00217B73 /* BTVenmoAccountNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D071B6043B7005A4A09 /* BTVenmoAccountNonce.m */; };
-		A77AA2B31B618D6200217B73 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
-		A77AA2B41B618D6200217B73 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		A77AA2B61B61936A00217B73 /* BTVenmoDriver_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A78BF95D1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A78BF95C1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m */; };
 		A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */; };
@@ -342,7 +341,6 @@
 		A9E80AA124FEF45E00196BD3 /* CardinalMobile.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A9E80AA324FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */; };
 		A9EC7192252BC14000FF7D05 /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B463051C3D9C2200048423 /* PayPalDataCollector.framework */; };
-		A9EC71CC252BC27E00FF7D05 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; platformFilter = ios; };
 		B61F67801CE4C20F0051A3BD /* BTConfiguration+DataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B61F67811CE4C20F0051A3BD /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
 		B6D950061EA0212C00BB42F2 /* BTAPIHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = B6D950041EA0212C00BB42F2 /* BTAPIHTTP.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -371,13 +369,6 @@
 			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
 			remoteInfo = BraintreeCore;
 		};
-		4164B9971C9B658E006AE861 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
-			remoteInfo = BraintreeCore;
-		};
 		4164B9B21C9B68D2006AE861 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -392,14 +383,7 @@
 			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
 			remoteInfo = BraintreeCore;
 		};
-		A77AA2AF1B618D5000217B73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
-			remoteInfo = BraintreeCard;
-		};
-		A77AA2B11B618D5000217B73 /* PBXContainerItemProxy */ = {
+		80CC038C263210D700C4E6E0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -672,13 +656,6 @@
 			remoteGlobalIDString = A7B462E01C3D9C2200048423;
 			remoteInfo = PayPalDataCollector;
 		};
-		A9EC71CE252BC27E00FF7D05 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
-			remoteInfo = BraintreeCore;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -689,6 +666,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4290C7F3259BD2E800D2044C /* PPRiskMagnes.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80CC038E263210D700C4E6E0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				80CC038B263210D700C4E6E0 /* BraintreeCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -834,7 +822,6 @@
 		42ED470123A3E9DB00B889A8 /* FakeBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeBundle.swift; sourceTree = "<group>"; };
 		42ED470323A3E9F600B889A8 /* FakeDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDevice.swift; sourceTree = "<group>"; };
 		42F2FF2E2333D2B20083CA10 /* BTAuthenticationInsight_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAuthenticationInsight_Tests.swift; sourceTree = "<group>"; };
-		42F3F6DA2603B81C00401B0D /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		42F3F6392603AB8D00401B0D /* KountDataCollector.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KountDataCollector.xcframework; path = Frameworks/KountDataCollector.xcframework; sourceTree = "<group>"; };
 		42F3F63A2603AC0900401B0D /* KDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDataCollector.h; sourceTree = "<group>"; };
 		42F3F63B2603AC0A00401B0D /* libKountDataCollector.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libKountDataCollector.a; sourceTree = "<group>"; };
@@ -1137,7 +1124,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4164B9B11C9B68CC006AE861 /* BraintreeCard.framework in Frameworks */,
-				4164B99E1C9B658E006AE861 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1154,8 +1140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A77AA2B31B618D6200217B73 /* BraintreeCard.framework in Frameworks */,
-				A77AA2B41B618D6200217B73 /* BraintreeCore.framework in Frameworks */,
+				80CC038A263210D700C4E6E0 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,7 +1149,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				428E3307258A9F9000C744DD /* PPRiskMagnes.framework in Frameworks */,
-				A9EC71CC252BC27E00FF7D05 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2466,7 +2450,6 @@
 			);
 			dependencies = (
 				4164B9B31C9B68D2006AE861 /* PBXTargetDependency */,
-				4164B9961C9B658E006AE861 /* PBXTargetDependency */,
 			);
 			name = BraintreeUnionPay;
 			productName = BraintreeCard;
@@ -2500,12 +2483,12 @@
 				A77AA2981B618C7700217B73 /* Frameworks */,
 				A77AA2991B618C7700217B73 /* Headers */,
 				A77AA29A1B618C7700217B73 /* Resources */,
+				80CC038E263210D700C4E6E0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A77AA2B01B618D5000217B73 /* PBXTargetDependency */,
-				A77AA2B21B618D5000217B73 /* PBXTargetDependency */,
+				80CC038D263210D700C4E6E0 /* PBXTargetDependency */,
 			);
 			name = BraintreeVenmo;
 			productName = BraintreeVenmo;
@@ -2552,7 +2535,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				A9EC71CF252BC27E00FF7D05 /* PBXTargetDependency */,
 			);
 			name = PayPalDataCollector;
 			productName = PayPalRisk;
@@ -3643,11 +3625,6 @@
 			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
 			targetProxy = 2D941D591B5D5F140016EFB4 /* PBXContainerItemProxy */;
 		};
-		4164B9961C9B658E006AE861 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
-			targetProxy = 4164B9971C9B658E006AE861 /* PBXContainerItemProxy */;
-		};
 		4164B9B31C9B68D2006AE861 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
@@ -3658,15 +3635,10 @@
 			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
 			targetProxy = 41935DE71D528B2C008D48FB /* PBXContainerItemProxy */;
 		};
-		A77AA2B01B618D5000217B73 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
-			targetProxy = A77AA2AF1B618D5000217B73 /* PBXContainerItemProxy */;
-		};
-		A77AA2B21B618D5000217B73 /* PBXTargetDependency */ = {
+		80CC038D263210D700C4E6E0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
-			targetProxy = A77AA2B11B618D5000217B73 /* PBXContainerItemProxy */;
+			targetProxy = 80CC038C263210D700C4E6E0 /* PBXContainerItemProxy */;
 		};
 		A7F5701E1C1611AA0007D018 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3874,12 +3846,6 @@
 			isa = PBXTargetDependency;
 			target = A7B462E01C3D9C2200048423 /* PayPalDataCollector */;
 			targetProxy = A9EC7194252BC14000FF7D05 /* PBXContainerItemProxy */;
-		};
-		A9EC71CF252BC27E00FF7D05 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
-			targetProxy = A9EC71CE252BC27E00FF7D05 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
