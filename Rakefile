@@ -11,7 +11,7 @@ desc "Run default set of tasks"
 task :spec => %w[spec:all]
 
 desc "Run sanity checks; bump and tag new version"
-task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec release:tag]
+task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag]
 
 desc "Push tags, docs, and Pod"
 task :publish => %w[publish:push_private publish:push_public publish:push_pod docs_external]
@@ -125,6 +125,11 @@ namespace :carthage do
   task :build do
     run! "carthage build --no-skip-current"
     run! 'rm -rf Carthage'
+  end
+
+  task :create_binaries do
+    run! "carthage archive BraintreeAmericanExpress BraintreeApplePay BraintreeCard BraintreeCore BraintreeDataCollector BraintreePaymentFlow BraintreePayPal BraintreeUI BraintreeUnionPay Braintree3DSecure BraintreeVenmo PayPalDataCollector PayPalOneTouch PayPalUtils --output Braintree.framework.zip"
+    say "Create binaries for Carthage complete."
   end
 end
 
