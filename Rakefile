@@ -128,6 +128,7 @@ namespace :carthage do
   end
 
   task :create_binaries do
+    run! "carthage build --no-skip-current"
     run! "carthage archive BraintreeAmericanExpress BraintreeApplePay BraintreeCard BraintreeCore BraintreeDataCollector BraintreePaymentFlow BraintreePayPal BraintreeUI BraintreeUnionPay Braintree3DSecure BraintreeVenmo PayPalDataCollector PayPalOneTouch PayPalUtils --output Braintree.framework.zip"
     say "Create binaries for Carthage complete."
   end
