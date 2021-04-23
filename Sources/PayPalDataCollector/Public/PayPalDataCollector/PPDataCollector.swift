@@ -1,6 +1,9 @@
 import PPRiskMagnes
 import Security
 
+/**
+ Enables you to collect data about a customer's device and correlate it with a session identifier on your server.
+ */
 @objc public class PPDataCollector: NSObject {
 
     /**
@@ -17,9 +20,9 @@ import Security
     }
 
     /**
-     Collects device data for PayPal.
+     Collects device data.
 
-     - Returns: A deviceData string that should be passed into server-side calls, such as `Transaction.sale`. This JSON serialized string contains a PayPal fraud ID.
+     - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`. This JSON serialized string contains a PayPal fraud ID.
     */
     @objc public class func collectPayPalDeviceData() -> String {
         return "{\"correlation_id\":\"\(PPDataCollector.generateClientMetadataID())\"}"
