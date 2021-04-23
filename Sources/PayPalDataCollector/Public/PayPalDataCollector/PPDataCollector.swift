@@ -19,8 +19,7 @@ import Security
     /**
      Collects device data for PayPal.
 
-     This should be used when the user is paying with PayPal or Venmo only.
-     - Returns: A deviceData string that should be passed into server-side calls, such as `Transaction.sale`, for PayPal transactions. This JSON serialized string contains a PayPal fraud ID.
+     - Returns: A deviceData string that should be passed into server-side calls, such as `Transaction.sale`. This JSON serialized string contains a PayPal fraud ID.
     */
     @objc public class func collectPayPalDeviceData() -> String {
         return "{\"correlation_id\":\"\(PPDataCollector.generateClientMetadataID())\"}"
