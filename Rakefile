@@ -134,7 +134,7 @@ namespace :carthage do
 
     # Build Carthage demo app
     File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
-    sh "cd SampleApps/CarthageTest && sh ../../carthage.sh update"
+    run! "cd SampleApps/CarthageTest && carthage update"
     success = run "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
 
     # Clean up
@@ -148,8 +148,8 @@ namespace :carthage do
   desc "Create Braintree.framework.zip for Carthage."
   task :create_binaries do
     run! "rm -rf SampleApps/SPMTest" # Remove SPMTest app to prevent Carthage timeout
-    sh "sh carthage.sh build --no-skip-current"
-    sh "sh carthage.sh archive #{bt_modules.join(" ")} --output Braintree.framework.zip"
+    run! "carthage build --no-skip-current"
+    run! "carthage archive #{bt_modules.join(" ")} --output Braintree.framework.zip"
     run! "git co master SampleApps/SPMTest" # Restore SPMTest app
     say "Create binaries for Carthage complete."
   end
