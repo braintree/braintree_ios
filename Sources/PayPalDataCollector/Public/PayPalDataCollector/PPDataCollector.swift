@@ -22,7 +22,7 @@ import Security
     /**
      Collects device data.
 
-     - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`. This JSON serialized string contains a PayPal fraud ID.
+     - Returns: A JSON string containing a device data identifier that should be passed into server-side calls, such as `Transaction.sale`.
     */
     @objc public class func collectPayPalDeviceData() -> String {
         return "{\"correlation_id\":\"\(PPDataCollector.generateClientMetadataID())\"}"
