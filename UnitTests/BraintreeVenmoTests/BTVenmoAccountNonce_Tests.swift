@@ -5,9 +5,11 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
 
     func testVenmoAccountWithPaymentContext() {
         let paymentContextJSON = BTJSON(value: [
-            "node": [
-                "paymentMethodId": "some-nonce",
-                "userName": "some-venmo-username"
+            "data": [
+                "node": [
+                    "paymentMethodId": "some-nonce",
+                    "userName": "some-venmo-username"
+                ]
             ]
         ])
 
