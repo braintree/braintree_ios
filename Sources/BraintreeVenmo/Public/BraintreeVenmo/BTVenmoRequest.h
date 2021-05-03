@@ -6,10 +6,12 @@ NS_ASSUME_NONNULL_BEGIN
  Usage for the tokenized Venmo account: either multi-use or single use
  */
 typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
+    /// None
+    BTVenmoPaymentMethodUsageNone = 0,
     /// Multi-use
-    BTVenmoPaymentMethodUsageMultiUse = 0,
+    BTVenmoPaymentMethodUsageMultiUse = 1,
     /// Single use
-    BTVenmoPaymentMethodUsageSingleUse = 1
+    BTVenmoPaymentMethodUsageSingleUse = 2
 };
 
 /**
@@ -34,7 +36,7 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
 /**
  * If set to `.multiUse`, the resulting payment method will be authorized for future payments and can be vaulted. If set to `.singleUse`, the resulting payment method will be authorized for a one-time payment and cannot be vaulted.
  *
- * Defaults to `.multiUse`.
+ * Defaults to `.none`.
  */
 @property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
 

@@ -38,4 +38,9 @@
  */
 @property (nonatomic, assign) BOOL shouldVault;
 
+/**
+ Exposed for testing the payment method usage associated with this request
+*/
+@property (nonatomic, strong) BTVenmoRequest *venmoRequest;
+
 @end

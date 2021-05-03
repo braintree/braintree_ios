@@ -118,8 +118,9 @@ class BTVenmoDriver_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testTokenizeVenmoAccount_createsPaymentContext() {
+    func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_createsPaymentContext() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        venmoRequest.paymentMethodUsage = .multiUse
         BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
         venmoDriver.application = fakeApplication
@@ -141,34 +142,24 @@ class BTVenmoDriver_Tests: XCTestCase {
         ] as NSObject)
     }
 
-    func testTokenizeVenmoAccount_whenCreatePaymentContextFails_opensVenmoURLWithoutPaymentContextID() {
-        mockAPIClient.cannedResponseBody = nil // create payment context fails
-
+    func testTokenizeVenmoAccount_whenPaymentMethodUsageNotSet_doesNotCreatePaymentContext() {
+        let initialPOSTS = mockAPIClient.lastPOSTParameters?.count
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+
         BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
         venmoDriver.application = fakeApplication
         venmoDriver.bundle = FakeBundle()
 
-        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _,_  -> Void in }
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
 
-        XCTAssertTrue(fakeApplication.openURLWasCalled)
-
-        guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
-              let queryItems = urlComponents.queryItems else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
-        XCTAssertNil(queryItems.first(where: { $0.name == "resource_id" })) // no payment context id
+        let resultingPOSTS = mockAPIClient.lastPOSTParameters?.count
+        XCTAssertEqual(initialPOSTS, resultingPOSTS)
     }
 
-    func testTokenizeVenmoAccount_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURL() {
+    func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_opensVenmoURLWithPaymentContextID() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        venmoRequest.paymentMethodUsage = .singleUse
         BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
         venmoDriver.application = fakeApplication
@@ -189,6 +180,72 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "resource_id", value: "some-resource-id")))
+
+    }
+
+    func testTokenizeVenmoAccount_whenPaymentMethodUsageNotSet_opensVenmoURLWithoutPaymentContextID() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _,_  -> Void in }
+
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+
+        guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
+              let queryItems = urlComponents.queryItems else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertNil(queryItems.first(where: { $0.name == "resource_id" })) // no payment context id
+    }
+
+    func testTokenizeVenmoAccount_whenCreatePaymentContextFails_opensVenmoURLWithoutPaymentContextID() {
+        mockAPIClient.cannedResponseBody = nil // create payment context fails
+
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _,_  -> Void in }
+
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+
+        guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
+              let queryItems = urlComponents.queryItems else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertNil(queryItems.first(where: { $0.name == "resource_id" })) // no payment context id
+    }
+
+    func testTokenizeVenmoAccount_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURLWithParams() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _,_  -> Void in }
+
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+
+        guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
+              let queryItems = urlComponents.queryItems else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
+        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
+        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
+        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
     }
 
     func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_getsResultFromPaymentContext() {
@@ -206,9 +263,11 @@ class BTVenmoDriver_Tests: XCTestCase {
         }
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "node": [
-                "paymentMethodId": "fake-venmo-nonce",
-                "userName": "fake-venmo-username"
+            "data": [
+                "node": [
+                    "paymentMethodId": "fake-venmo-nonce",
+                    "userName": "fake-venmo-username"
+                ]
             ]
         ])
 
