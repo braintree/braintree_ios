@@ -140,7 +140,7 @@ static BTVenmoDriver *appSwitchedDriver;
         BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
         metadata.source = BTClientMetadataSourceVenmoApp;
 
-        if (venmoRequest.paymentMethodUsage != BTVenmoPaymentMethodUsageNone) { // Venmo Context flow
+        if (venmoRequest.paymentMethodUsage != BTVenmoPaymentMethodUsageNone) {
             NSDictionary *params = @{
                 @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
                 @"variables": @{
@@ -169,12 +169,12 @@ static BTVenmoDriver *appSwitchedDriver;
             }];
         } else {
             NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
-                                                                     accessToken:configuration.venmoAccessToken
-                                                                 returnURLScheme:self.returnURLScheme
-                                                               bundleDisplayName:bundleDisplayName
-                                                                     environment:configuration.venmoEnvironment
-                                                                paymentContextID:nil
-                                                                        metadata:self.apiClient.metadata];
+                                                                            accessToken:configuration.venmoAccessToken
+                                                                        returnURLScheme:self.returnURLScheme
+                                                                      bundleDisplayName:bundleDisplayName
+                                                                            environment:configuration.venmoEnvironment
+                                                                       paymentContextID:nil
+                                                                               metadata:self.apiClient.metadata];
             [self performAppSwitch:appSwitchURL completion:completionBlock];
         }
     }];
@@ -206,7 +206,6 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - App switch
 
 - (void)performAppSwitch:(NSURL *)appSwitchURL  completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
-
     if (!appSwitchURL) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeInvalidRequestURL
