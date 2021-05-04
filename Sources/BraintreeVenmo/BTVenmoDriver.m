@@ -132,8 +132,6 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
 
-        self.venmoRequest = venmoRequest;
-
         NSString *merchantProfileID = venmoRequest.profileID ?: configuration.venmoMerchantID;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
@@ -165,7 +163,7 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                                 environment:configuration.venmoEnvironment
                                                                            paymentContextID:paymentContextID
                                                                                    metadata:self.apiClient.metadata];
-                [self performAppSwitch:appSwitchURL completion:completionBlock];
+                [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
             }];
         } else {
             NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
@@ -175,7 +173,7 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                             environment:configuration.venmoEnvironment
                                                                        paymentContextID:nil
                                                                                metadata:self.apiClient.metadata];
-            [self performAppSwitch:appSwitchURL completion:completionBlock];
+            [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
         }
     }];
 }
@@ -205,7 +203,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - App switch
 
-- (void)performAppSwitch:(NSURL *)appSwitchURL completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
+- (void)performAppSwitch:(NSURL *)appSwitchURL shouldVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
     if (!appSwitchURL) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeInvalidRequestURL
@@ -215,7 +213,7 @@ static BTVenmoDriver *appSwitchedDriver;
     }
 
     [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-        [self invokedOpenURLSuccessfully:success shouldVault:self.venmoRequest.vault completion:completionBlock];
+        [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
     }];
 }
 
