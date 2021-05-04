@@ -138,7 +138,7 @@ static BTVenmoDriver *appSwitchedDriver;
         BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
         metadata.source = BTClientMetadataSourceVenmoApp;
 
-        if (venmoRequest.paymentMethodUsage != BTVenmoPaymentMethodUsageNone) {
+        if (venmoRequest.paymentMethodUsage != BTVenmoPaymentMethodUsageUnspecified) {
             NSDictionary *params = @{
                 @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
                 @"variables": @{
