@@ -34,10 +34,13 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
 @property (nonatomic) BOOL vault;
 
 /**
- * If set to `.multiUse`, the resulting payment method will be authorized for future payments and can be vaulted. If set to `.singleUse`, the resulting payment method will be authorized for a one-time payment and cannot be vaulted.
+ * If set to `.multiUse`, the Venmo payment will be authorized for future payments and can be vaulted.
+ * If set to `.singleUse`, the Venmo payment will be authorized for a one-time payment and cannot be vaulted.
+ * If set to `.unspecified`, the legacy Venmo UI flow will launch. It is recommended to use `.multiUse` or `.singleUse` for the best customer experience.
  *
- * Defaults to `.none`.
+ * Defaults to `.unspecified`.
  */
+
 @property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
 
 @end
