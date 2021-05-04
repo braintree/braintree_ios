@@ -205,7 +205,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - App switch
 
-- (void)performAppSwitch:(NSURL *)appSwitchURL  completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
+- (void)performAppSwitch:(NSURL *)appSwitchURL completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
     if (!appSwitchURL) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeInvalidRequestURL
@@ -378,4 +378,3 @@ static BTVenmoDriver *appSwitchedDriver;
 }
 
 @end
-
