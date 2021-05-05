@@ -38,5 +38,4 @@
  */
 @property (nonatomic, assign) BOOL shouldVault;
 
-
 @end
