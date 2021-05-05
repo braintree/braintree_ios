@@ -40,7 +40,6 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
  *
  * Defaults to `.unspecified`.
  */
-
 @property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
 
 @end
