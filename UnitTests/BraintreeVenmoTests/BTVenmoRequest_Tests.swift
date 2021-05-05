@@ -14,4 +14,9 @@ class BTVenmoRequest_Tests: XCTestCase {
         request.paymentMethodUsage = .singleUse
         XCTAssertEqual(request.paymentMethodUsageAsString, "SINGLE_USE")
     }
+
+    func testPaymentMethodUsageAsString_whenPaymentMethodUsageIsDefault_returnsNil() {
+        let request = BTVenmoRequest()
+        XCTAssertEqual(request.paymentMethodUsageAsString, nil)
+    }
 }

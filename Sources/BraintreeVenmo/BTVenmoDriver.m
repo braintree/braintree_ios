@@ -133,63 +133,49 @@ static BTVenmoDriver *appSwitchedDriver;
         }
 
         NSString *merchantProfileID = venmoRequest.profileID ?: configuration.venmoMerchantID;
+        NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
-        NSDictionary *params = @{
-            @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
-            @"variables": @{
-                    @"input": @{
-                            @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
-                            @"merchantProfileId": merchantProfileID,
-                            @"customerClient": @"MOBILE_APP",
-                            @"intent": @"CONTINUE"
-                    }
-            }
-        };
+        BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
+        metadata.source = BTClientMetadataSourceVenmoApp;
 
-        [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+        if (venmoRequest.paymentMethodUsage != BTVenmoPaymentMethodUsageUnspecified) {
+            NSDictionary *params = @{
+                @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
+                @"variables": @{
+                        @"input": @{
+                                @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
+                                @"merchantProfileId": merchantProfileID,
+                                @"customerClient": @"MOBILE_APP",
+                                @"intent": @"CONTINUE"
+                        }
+                }
+            };
 
-            BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
-            metadata.source = BTClientMetadataSourceVenmoApp;
-            NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-            NSString *paymentContextID = [body[@"data"][@"createVenmoPaymentContext"][@"venmoPaymentContext"][@"id"] asString];
+            [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *err) {
+                // TODO add handling for `err` and if parsing `venmoPaymentContext id` fails.
 
+                NSString *paymentContextID = [body[@"data"][@"createVenmoPaymentContext"][@"venmoPaymentContext"][@"id"] asString];
+
+                NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
+                                                                                accessToken:configuration.venmoAccessToken
+                                                                            returnURLScheme:self.returnURLScheme
+                                                                          bundleDisplayName:bundleDisplayName
+                                                                                environment:configuration.venmoEnvironment
+                                                                           paymentContextID:paymentContextID
+                                                                                   metadata:self.apiClient.metadata];
+                [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
+            }];
+        } else {
             NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
                                                                             accessToken:configuration.venmoAccessToken
                                                                         returnURLScheme:self.returnURLScheme
                                                                       bundleDisplayName:bundleDisplayName
                                                                             environment:configuration.venmoEnvironment
-                                                                       paymentContextID:paymentContextID
-                                                                               metadata:[self.apiClient metadata]];
-
-            if (!appSwitchURL) {
-                error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                            code:BTVenmoDriverErrorTypeInvalidRequestURL
-                                        userInfo:@{NSLocalizedDescriptionKey: @"Failed to create Venmo app switch request URL."}];
-                completionBlock(nil, error);
-                return;
-            }
-
-            [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-                [self invokedOpenURLSuccessfully:success shouldVault:venmoRequest.vault completion:completionBlock];
-            }];
-        }];
+                                                                       paymentContextID:nil
+                                                                               metadata:self.apiClient.metadata];
+            [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
+        }
     }];
-}
-
-- (void)invokedOpenURLSuccessfully:(BOOL)success shouldVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
-    self.shouldVault = success && vault;
-    
-    if (success) {
-        self.appSwitchCompletionBlock = completionBlock;
-        appSwitchedDriver = self;
-        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.success"];
-    } else {
-        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.failure"];
-        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                    code:BTVenmoDriverErrorTypeAppSwitchFailed
-                                userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
-        completionBlock(nil, error);
-    }
 }
 
 #pragma mark - Vaulting
@@ -217,9 +203,41 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - App switch
 
+- (void)performAppSwitch:(NSURL *)appSwitchURL shouldVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
+    if (!appSwitchURL) {
+        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                             code:BTVenmoDriverErrorTypeInvalidRequestURL
+                                         userInfo:@{NSLocalizedDescriptionKey: @"Failed to create Venmo app switch request URL."}];
+        completionBlock(nil, error);
+        return;
+    }
+
+    [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
+        [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
+    }];
+}
+
+- (void)invokedOpenURLSuccessfully:(BOOL)success shouldVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
+    self.shouldVault = success && vault;
+
+    if (success) {
+        self.appSwitchCompletionBlock = completionBlock;
+        appSwitchedDriver = self;
+        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.success"];
+    } else {
+        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.failure"];
+        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                    code:BTVenmoDriverErrorTypeAppSwitchFailed
+                                userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+        completionBlock(nil, error);
+    }
+}
+
 - (BOOL)isiOSAppAvailableForAppSwitch {
     return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
 }
+
+#pragma mark - App switch return
 
 + (void)handleReturnURL:(NSURL *)url {
     [appSwitchedDriver handleOpenURL:url];
@@ -358,4 +376,3 @@ static BTVenmoDriver *appSwitchedDriver;
 }
 
 @end
-

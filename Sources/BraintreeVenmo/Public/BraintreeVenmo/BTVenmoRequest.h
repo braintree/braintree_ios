@@ -3,13 +3,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Usage for the tokenized Venmo account: either multi-use or single use
+ Usage type for the tokenized Venmo account
  */
 typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
+    /// Unspecified
+    BTVenmoPaymentMethodUsageUnspecified = 0,
     /// Multi-use
-    BTVenmoPaymentMethodUsageMultiUse = 0,
+    BTVenmoPaymentMethodUsageMultiUse = 1,
     /// Single use
-    BTVenmoPaymentMethodUsageSingleUse = 1
+    BTVenmoPaymentMethodUsageSingleUse = 2
 };
 
 /**
@@ -25,16 +27,18 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
 /**
  * Whether to automatically vault the Venmo account on the client. For client-side vaulting, you must initialize BTAPIClient with a client token that was created with a customer ID. Also, `paymentMethodUsage` on the BTVenmoRequest must be set to `.multiUse`.
  *
- * If this property is set to false, you can still vault the Venmo account on your server, provided that `paymentMethodUsage` is set to `.multiUse`.
+ * If this property is set to false, you can still vault the Venmo account on your server, provided that `paymentMethodUsage` is not set to `.singleUse`.
  *
  * Defaults to false.
  */
 @property (nonatomic) BOOL vault;
 
 /**
- * If set to `.multiUse`, the resulting payment method will be authorized for future payments and can be vaulted. If set to `.singleUse`, the resulting payment method will be authorized for a one-time payment and cannot be vaulted.
+ * If set to `.multiUse`, the Venmo payment will be authorized for future payments and can be vaulted.
+ * If set to `.singleUse`, the Venmo payment will be authorized for a one-time payment and cannot be vaulted.
+ * If set to `.unspecified`, the legacy Venmo UI flow will launch. It is recommended to use `.multiUse` or `.singleUse` for the best customer experience.
  *
- * Defaults to `.multiUse`.
+ * Defaults to `.unspecified`.
  */
 @property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
 
