@@ -151,10 +151,23 @@ static BTVenmoDriver *appSwitchedDriver;
                 }
             };
 
-            [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *err) {
-                // TODO add handling for `err` and if parsing `venmoPaymentContext id` fails.
+            [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
+                if (err) {
+                    NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                                         code:BTVenmoDriverErrorTypeInvalidRequestURL
+                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL. Please contact support."}];
+                    completionBlock(nil, error);
+                    return;
+                }
 
                 NSString *paymentContextID = [body[@"data"][@"createVenmoPaymentContext"][@"venmoPaymentContext"][@"id"] asString];
+                if (paymentContextID == nil) {
+                    NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                                         code:BTVenmoDriverErrorTypeInvalidRequestURL
+                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."}];
+                    completionBlock(nil, error);
+                    return;
+                }
 
                 NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
                                                                                 accessToken:configuration.venmoAccessToken
