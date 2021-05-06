@@ -155,7 +155,7 @@ static BTVenmoDriver *appSwitchedDriver;
                 if (err) {
                     NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                                          code:BTVenmoDriverErrorTypeInvalidRequestURL
-                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL. Please contact support."}];
+                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
                     completionBlock(nil, error);
                     return;
                 }
