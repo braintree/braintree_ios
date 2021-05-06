@@ -2,6 +2,7 @@
 
 ## unreleased
 * Update Kount SDK to v4.1.5
+* Fix bug where `userAction` on `BTPayPalCheckoutRequest` was ignored
 
 ## 4.37.1 (2021-04-06)
 * Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
