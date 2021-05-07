@@ -6,13 +6,12 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureV2ButtonCustomization.h>
 #endif
 
-// To support SPM without an xcframework version of Cardinal, we created wrappers for Cardinal classes which are substituted for the actual CardinalMobile classes at runtime.
 @implementation BTThreeDSecureV2ButtonCustomization
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.cardinalValue = [NSClassFromString(@"ButtonCustomization") new];
+        self.cardinalValue = [ButtonCustomization new];
     }
 
     return self;
@@ -20,21 +19,12 @@
 
 - (void)setBackgroundColor:(NSString *)backgroundColor {
     _backgroundColor = backgroundColor;
-    if ([self.cardinalValue respondsToSelector:@selector(setBackgroundColor:)]) {
-        [self.cardinalValue performSelector:@selector(setBackgroundColor:) withObject:backgroundColor];
-    }
+    ((ButtonCustomization *)self.cardinalValue).backgroundColor = backgroundColor;
 }
 
 - (void)setCornerRadius:(int)cornerRadius {
     _cornerRadius = cornerRadius;
-    if ([self.cardinalValue respondsToSelector:@selector(setCornerRadius:)]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self.cardinalValue methodSignatureForSelector:@selector(setCornerRadius:)]];
-        [inv setSelector:@selector(setCornerRadius:)];
-        [inv setTarget:self.cardinalValue];
-
-        [inv setArgument:&(cornerRadius) atIndex:2];
-        [inv invoke];
-    }
+    ((ButtonCustomization *)self.cardinalValue).cornerRadius = cornerRadius;
 }
 
 @end

@@ -71,7 +71,7 @@
     void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             if (error.code == BTPaymentFlowDriverErrorTypeCanceled) {
-                self.progressBlock(@"Cancelled🎲");
+                self.progressBlock(@"Canceled 🎲");
             } else {
                 self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
             }

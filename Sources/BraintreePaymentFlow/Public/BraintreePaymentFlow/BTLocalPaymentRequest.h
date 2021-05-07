@@ -77,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, getter=isShippingAddressRequired) BOOL shippingAddressRequired;
 
 /**
+ Optional: Bank Identification Code of the customer (specific to iDEAL transactions).
+ */
+@property (nonatomic, nullable, copy) NSString *bic;
+
+/**
  A delegate for receiving information about the local payment flow.
  */
 @property (nonatomic, nullable, weak) id<BTLocalPaymentRequestDelegate> localPaymentFlowDelegate;

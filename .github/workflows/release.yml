@@ -14,12 +14,23 @@ jobs:
         uses: actions/checkout@v2
       - name: Use Xcode 12.5
         run: sudo xcode-select -switch /Applications/Xcode_12.5.app
+        with:
+          fetch-depth: 0
 
-      # Check for unreleased section in changelog
       - name: Check for unreleased section in changelog
         run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
 
-      # Update the version number
+      - name: Set git username and email
+        run: |
+          git config user.name braintreeps
+          git config user.email code@getbraintree.com
+
+      - name: Remove SPMTest app to prevent Carthage timeout
+        run: |
+          rm -rf SampleApps/SPMTest
+          git add SampleApps/SPMTest
+          git commit -m 'Remove SPMTest app to avoid Carthage timeout'
+
       - name: Update version
         run: |
           today=$(date +'%Y-%m-%d')
@@ -27,25 +38,26 @@ jobs:
           sed -i '' 's/\(s\.version *= *\).*/\1"'"${{ github.event.inputs.version }}"'\"/' Braintree.podspec
           sed -i '' 's/\(#define BRAINTREE_VERSION (@\).*/\1"'"${{ github.event.inputs.version }}"'\")/' Sources/BraintreeCore/Braintree-Version.h
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
+          plutil -replace CFBundleShortVersionString -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
           plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
+          plutil -replace CFBundleShortVersionString -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
 
-      # Tag the new version and push changes
-      - name: Tag and push new version
-        run: |
-          git config user.name braintreeps
-          git config user.email code@getbraintree.com
           git add .
           git commit -m 'Bump version to ${{ github.event.inputs.version }}'
           git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
-          git push origin tag ${{ github.event.inputs.version }}
 
-      # Save changelog entries to a file
-      - name: Extract changelog entries
+      - name: Restore SPMTest app for development purposes
+        run: |
+          git revert $(git rev-parse HEAD^1) --no-edit
+      
+      - name: Push commits and tag
+        run: git push origin HEAD ${{ github.event.inputs.version }}
+
+      - name: Save changelog entries to a file
         run: |
           sed -e '1,/##/d' -e '/##/,$d' CHANGELOG.md > changelog_entries.md
 
-      # Create the release on GitHub
-      - name: Create GitHub Release
+      - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -57,16 +69,14 @@ jobs:
           draft: false
           prerelease: false
 
-      # Create pre-built binaries for Carthage
-      - name: Create Carthage binaries
+      - name: Create Carthage pre-built binaries
         run: |
           rm -rf SampleApps/SPMTest
           carthage build --no-skip-current
           carthage archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
           git checkout SampleApps/SPMTest
 
-      # Add binaries to the GitHub release
-      - name: Upload Carthage binaries
+      - name: Upload Carthage pre-built binaries to GitHub release
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
@@ -77,18 +87,16 @@ jobs:
           asset_name: Braintree.framework.zip
           asset_content_type: application/zip
 
-      # Publish to CocoaPods
       - name: Publish to CocoaPods
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: pod trunk push Braintree.podspec
 
-      # Publish reference docs
       - name: Publish reference docs
-        run: gem install jazzy
-        run: brew install sourcekitten
-        run: sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
         run: |
+          gem install jazzy
+          brew install sourcekitten
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
           sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
             -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \
             -I $(pwd)/Sources/BraintreeAmericanExpress/Public \
@@ -102,17 +110,16 @@ jobs:
             -I $(pwd)/Sources/BraintreeUnionPay/Public \
             -I $(pwd)/Sources/BraintreeVenmo/Public \
             > objcDoc.json
-        run: |
           jazzy \
             --sourcekitten-sourcefile swiftDoc.json,objcDoc.json \
             --author Braintree \
             --author_url http://braintreepayments.com \
             --github_url https://github.com/braintree/braintree_ios \
-            --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version} \
+            --github-file-prefix https://github.com/braintree/braintree_ios/tree/${{ github.event.inputs.version }} \
             --theme fullwidth \
-            --output docs_output
-        run: |
-          git add docs_output
-          git commit -m "Publish docs to github pages"
-          git subtree split --prefix docs_output -b gh-pages
-          git push -f origin gh-pages:gh-pages
+            --output ${{ github.event.inputs.version }}
+          git checkout gh-pages
+          ln -sfn ${{ github.event.inputs.version }} current
+          git add current ${{ github.event.inputs.version }}
+          git commit -m "Publish ${{ github.event.inputs.version }} docs to github pages"
+          git push

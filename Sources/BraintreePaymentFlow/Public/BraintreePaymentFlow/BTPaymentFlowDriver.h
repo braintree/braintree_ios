@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 - (void)onPaymentWithURL:(NSURL * _Nullable) url error:(NSError * _Nullable)error;
 
 /**
- Use when the payment flow was cancelled.
+ Use when the payment flow was canceled.
  */
 - (void)onPaymentCancel;
 

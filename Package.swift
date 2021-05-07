@@ -40,6 +40,10 @@ let package = Package(
             targets: ["BraintreeThreeDSecure"]
         ),
         .library(
+            name: "CardinalMobile",
+            targets: ["CardinalMobile"]
+        ),
+        .library(
             name: "BraintreeUnionPay",
             targets: ["BraintreeUnionPay"]
         ),
@@ -78,7 +82,6 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCore",
-            dependencies: [],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
@@ -90,7 +93,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreePaymentFlow",
-            dependencies: ["BraintreeCore", "BraintreeCard", "PayPalDataCollector"],
+            dependencies: ["BraintreeCore", "PayPalDataCollector"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
@@ -107,15 +110,19 @@ let package = Package(
             publicHeadersPath: "Public",
             cSettings: [.headerSearchPath("V2UICustomization")]
         ),
+        .binaryTarget(
+            name: "CardinalMobile",
+            path: "Frameworks/CardinalMobile.xcframework"
+        ),
         .target(
             name: "BraintreeUnionPay",
-            dependencies: ["BraintreeCore", "BraintreeCard"],
+            dependencies: ["BraintreeCard"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeVenmo",
-            dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            dependencies: ["BraintreeCore"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
@@ -125,7 +132,6 @@ let package = Package(
         ),
         .target(
             name: "PayPalDataCollector",
-            dependencies: ["BraintreeCore"],
             path: "Sources/PayPalDataCollector"
         ),
         .binaryTarget(

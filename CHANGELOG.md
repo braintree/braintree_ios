@@ -1,10 +1,36 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Update Kount SDK to v4.1.5
+* Fix bug where `userAction` on `BTPayPalCheckoutRequest` was ignored
+* Remove SPM product libraries for `KountDataCollector` and `PPRiskMagnes` (this was a workaround for an Xcode bug discussed in #576; bug resolved in Xcode 12.5)
+
+## 4.37.1 (2021-04-06)
+* Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
+
+## 5.3.0 (2021-03-23)
+* Add CardinalMobile.xcframework version 2.2.5-1
+* Update Kount SDK to v4.1.4
+
+**NOTE:** For Swift Package Manager integrations using `BraintreeThreeDSecure`, manually including `CardinalMobile.framework` is no longer required. You should delete it from your project and add `CardinalMobile` via SPM. If you added the run script to remove simulator architectures from `CardinalMobile.framework`, you should remove this as well. See the [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for more information.
+
+## 5.2.0 (2021-03-15)
+* Fix potential crash if `legacyCode` param missing from GraphQL error response
+* PayPal
+  * Add `offerCredit` to `BTPayPalVaultRequest`
+
+## 5.1.0 (2021-03-08)
+* Local Payment Methods
+  * Add `bic` (Bank Identification Code) to `BTLocalPaymentRequest`
+* Apple Pay
+  * Add support for `PKPaymentNetworkElo` to Apple Pay configuration
+
+## 5.0.1 (2021-03-01)
 * SPM
   * Remove `KountDataCollector` binary dependency from `BraintreeDataCollector` target (fixes #624)
   * Remove `PPRiskMagnes` binary dependency from `PayPalDataCollector` target (fixes #624)
-  * Remove SPM product libraries for `KountDataCollector` and `PPRiskMagnes` (this was a workaround for an Xcode bug discussed in #576; bug resolved in Xcode 12.5)
+* Carthage
+  * Fix timeout when building from source using --no-use-binaries or --use-xcframeworks flags
 
 ## 5.0.0 (2021-02-11)
 * Breaking Changes

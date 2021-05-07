@@ -23,6 +23,8 @@
         parameters[@"description"] = self.billingAgreementDescription;
     }
 
+    parameters[@"offer_paypal_credit"] = @(self.offerCredit);
+
     if (self.shippingAddressOverride) {
         NSMutableDictionary *shippingAddressParams = [NSMutableDictionary dictionary];
         shippingAddressParams[@"line1"] = self.shippingAddressOverride.streetAddress;

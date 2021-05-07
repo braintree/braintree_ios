@@ -11,10 +11,10 @@ desc "Run all test tasks"
 task :spec => %w[spec:all]
 
 desc "Run sanity checks; bump and tag new version"
-task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries release:tag]
+task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries carthage:remove_spm_test_app release:tag]
 
 desc "Push tags, docs, and Pod"
-task :publish => %w[publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_publish]
+task :publish => %w[carthage:restore_spm_test_app publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_publish]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -109,15 +109,32 @@ end
 
 desc 'Carthage tasks'
 namespace :carthage do
-  task :build_demo do
-    # Remove SPMTest app to prevent Carthage timeout
-    run! "rm -rf SampleApps/SPMTest"
-    run! "git add SampleApps"
+  def remove_spm_test_app
+    run! "mv SampleApps/SPMTest/ temp/"
+    run! "git add SampleApps/SPMTest"
     run! "git commit -m 'Remove SPMTest app to avoid Carthage timeout'"
+  end
+
+  # Remove SPMTest app to prevent Carthage timeout
+  task :remove_spm_test_app do
+    run! "mkdir temp"
+    remove_spm_test_app
+  end
+
+  # Restore SPMTest app to prevent Carthage timeout
+  task :restore_spm_test_app do
+    run! "mv temp/SPMTest/ SampleApps/"
+    run! "rm -rf temp/"
+    run! "git add SampleApps/SPMTest"
+    run! "git commit -m 'Restore SPMTest app for development'"
+  end
+
+  task :build_demo do
+    remove_spm_test_app
 
     # Build Carthage demo app
     File.write("SampleApps/CarthageTest/Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
-    sh "cd SampleApps/CarthageTest && sh ../../carthage.sh update"
+    run! "cd SampleApps/CarthageTest && carthage update"
     success = run "xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
 
     # Clean up
@@ -131,8 +148,8 @@ namespace :carthage do
   desc "Create Braintree.framework.zip for Carthage."
   task :create_binaries do
     run! "rm -rf SampleApps/SPMTest" # Remove SPMTest app to prevent Carthage timeout
-    sh "sh carthage.sh build --no-skip-current"
-    sh "sh carthage.sh archive #{bt_modules.join(" ")} --output Braintree.framework.zip"
+    run! "carthage build --no-skip-current"
+    run! "carthage archive #{bt_modules.join(" ")} --output Braintree.framework.zip"
     run! "git co master SampleApps/SPMTest" # Restore SPMTest app
     say "Create binaries for Carthage complete."
   end
@@ -286,7 +303,7 @@ def jazzy_command
       --github_url https://github.com/braintree/braintree_ios
       --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version}
       --theme fullwidth
-      --output docs_output
+      --output #{current_version}
   ].join(' ')
 end
 
@@ -317,7 +334,7 @@ def sourcekitten_swift_command
 end
 
 desc "Generate documentation via jazzy and push to GH"
-task :docs_publish => %w[docs:generate docs:publish docs:clean]
+task :docs_publish => %w[docs:generate docs:publish]
 
 namespace :docs do
 
@@ -334,24 +351,17 @@ namespace :docs do
     run(sourcekitten_swift_command)
     run(sourcekitten_objc_command)
     run(jazzy_command)
-    puts "Generated HTML documentation at docs_output"
+    run! "rm swiftDoc.json && rm objcDoc.json"
+    puts "Generated HTML documentation"
   end
 
   task :publish do
-    run "git branch -D gh-pages"
-    run! "git add docs_output"
-    run! "git commit -m 'Publish docs to github pages'"
-    puts "Generating git subtree, this will take a moment..."
-    run! "git subtree split --prefix docs_output -b gh-pages"
-    run! "git push -f #{PUBLIC_REMOTE_NAME} gh-pages:gh-pages"
+    run! "git checkout gh-pages"
+    run! "ln -sfn #{current_version} current" # update symlink to current version
+    run! "git add current #{current_version}"
+    run! "git commit -m 'Publish #{current_version} docs to github pages'"
+    run! "git push"
+    run! "git checkout -"
+    puts "Published docs to github pages"
   end
-
-  task :clean do
-    run! "git reset HEAD~"
-    run! "git branch -D gh-pages"
-    puts "Published docs to gh-pages branch"
-    run! "rm -rf docs_output"
-    run! "rm swiftDoc.json && rm objcDoc.json"
-  end
-
 end

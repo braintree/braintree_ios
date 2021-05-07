@@ -11,6 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface BTPayPalVaultRequest : BTPayPalRequest
 
+/**
+ Optional: Offers PayPal Credit if the customer qualifies. Defaults to false.
+ */
+@property (nonatomic) BOOL offerCredit;
+
 @end
 
 NS_ASSUME_NONNULL_END

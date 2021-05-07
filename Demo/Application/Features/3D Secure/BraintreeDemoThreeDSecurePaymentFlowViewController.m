@@ -146,7 +146,7 @@
             [self updateCallbackCount];
             if (error) {
                 if (error.code == BTPaymentFlowDriverErrorTypeCanceled) {
-                    self.progressBlock(@"Cancelled🎲");
+                    self.progressBlock(@"Canceled 🎲");
                 } else {
                     self.progressBlock(error.localizedDescription);
                 }

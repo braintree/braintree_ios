@@ -6,13 +6,12 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureV2ToolbarCustomization.h>
 #endif
 
-// To support SPM without an xcframework version of Cardinal, we created wrappers for Cardinal classes which are substituted for the actual CardinalMobile classes at runtime.
 @implementation BTThreeDSecureV2ToolbarCustomization
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.cardinalValue = [NSClassFromString(@"ToolbarCustomization") new];
+        self.cardinalValue = [ToolbarCustomization new];
     }
 
     return self;
@@ -20,23 +19,17 @@
 
 - (void)setBackgroundColor:(NSString *)backgroundColor {
     _backgroundColor = backgroundColor;
-    if ([self.cardinalValue respondsToSelector:@selector(setBackgroundColor:)]) {
-        [self.cardinalValue performSelector:@selector(setBackgroundColor:) withObject:backgroundColor];
-    }
+    ((ToolbarCustomization *)self.cardinalValue).backgroundColor = backgroundColor;
 }
 
 - (void)setHeaderText:(NSString *)headerText {
     _headerText = headerText;
-    if ([self.cardinalValue respondsToSelector:@selector(setHeaderText:)]) {
-        [self.cardinalValue performSelector:@selector(setHeaderText:) withObject:headerText];
-    }
+    ((ToolbarCustomization *)self.cardinalValue).headerText = headerText;
 }
 
 - (void)setButtonText:(NSString *)buttonText {
     _buttonText = buttonText;
-    if ([self.cardinalValue respondsToSelector:@selector(setButtonText:)]) {
-        [self.cardinalValue performSelector:@selector(setButtonText:) withObject:buttonText];
-    }
+    ((ToolbarCustomization *)self.cardinalValue).buttonText = buttonText;
 }
 
 @end

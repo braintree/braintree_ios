@@ -168,9 +168,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             if (approvalUrl == nil) {
                 approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
             }
-            self.approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
+            approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
 
-            NSString *pairingID = [self.class tokenFromApprovalURL:self.approvalUrl];
+            NSString *pairingID = [self.class tokenFromApprovalURL:approvalUrl];
 
             self.clientMetadataID = [PPDataCollector clientMetadataID:pairingID];
 
@@ -236,11 +236,10 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 }
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL paymentType:(BTPayPalPaymentType)paymentType completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
-    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
-
-    self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
-                                                                  callbackURLScheme:BTPayPalCallbackURLScheme
-                                                                  completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+    self.approvalUrl = appSwitchURL; // exposed for testing
+    self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:appSwitchURL
+                                                               callbackURLScheme:BTPayPalCallbackURLScheme
+                                                               completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         // Required to avoid memory leak for BTPayPalDriver
         self.authenticationSession = nil;
 
@@ -257,7 +256,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                 }
             }
 
-            // User cancelled by breaking out of the PayPal browser switch flow
+            // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             NSError *err = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                                code:BTPayPalDriverErrorTypeCanceled
@@ -456,6 +455,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
     if ([self.payPalRequest isKindOfClass:BTPayPalCheckoutRequest.class] && ((BTPayPalCheckoutRequest *)self.payPalRequest).offerPayLater) {
         NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.paylater.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
+    }
+
+    if ([self.payPalRequest isKindOfClass:BTPayPalVaultRequest.class] && ((BTPayPalVaultRequest *)self.payPalRequest).offerCredit) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.webswitch.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];
     }

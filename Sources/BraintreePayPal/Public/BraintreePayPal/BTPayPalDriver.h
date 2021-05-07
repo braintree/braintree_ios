@@ -39,41 +39,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 };
 
 /** 
- BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts by presenting the PayPal website.
-
- @note To make PayPal available, you must ensure that PayPal is enabled in your Braintree control panel.
- See our [online documentation](https://developers.braintreepayments.com/ios+ruby/guides/paypal) for
- details.
-
- This class supports two basic use-cases: Vault and Checkout. Each of these involves variations on the
- user experience as well as variations on the capabilities granted to you by this authorization.
-
- The *Vault* option uses PayPal's future payments authorization, which allows your merchant account to
- charge this customer arbitrary amounts for a long period of time into the future (unless the user
- manually revokes this permission in their PayPal control panel.) This authorization flow includes
- a screen with legal language that directs the user to agree to the terms of Future Payments.
- Unfortunately, it is not currently possible to collect shipping information in the Vault flow.
-
- The *Checkout* option creates a one-time use PayPal payment on your behalf. As a result, you must
- specify the checkout details up-front, so that they can be shown to the user during the PayPal flow.
- With this flow, you must specify the estimated transaction amount, and you can collect shipping
- details. This flow omits the Future Payments agreement, and the resulting payment method cannot be
- stored in the vault. It is only possible to create one Braintree transaction with this form of user
- approval.
-
- The user experience takes full advantage of One Touch. This
- means that users may bypass the username/password entry screen when they are already logged in.
-
- Upon successful completion, you will receive a `BTPayPalAccountNonce`, which includes user-facing
- details and a payment method nonce, which you must pass to your server in order to create a transaction
- or save the authorization in the Braintree vault (not possible with Checkout).
-
- ## User Experience Details
-
- To keep your UI in sync during authentication, you may set a delegate, which will be notified
- as the PayPal driver progresses through the various steps necessary for user
- authentication.
-
+ Used to tokenize PayPal accounts.
 */
 @interface BTPayPalDriver : NSObject
 
