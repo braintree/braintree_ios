@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 4.37.2 (2021-05-10)
+## unreleased
 * Update Kount SDK to v4.1.5
 * Fix bug where `userAction` on `BTPayPalCheckoutRequest` was ignored
 
