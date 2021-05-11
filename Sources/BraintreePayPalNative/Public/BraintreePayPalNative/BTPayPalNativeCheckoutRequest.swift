@@ -1,9 +1,12 @@
 import Foundation
+import BraintreeCore
 
 /**
  Options for the PayPal Checkout and PayPal Checkout with Vault flows.
  */
 @objc public class BTPayPalNativeCheckoutRequest: BTPayPalNativeRequest {
+
+    // MARK: - Public
 
     /**
      Payment intent.
@@ -67,5 +70,62 @@ import Foundation
      */
     @objc public init(amount: String) {
         self.amount = amount
+    }
+
+    // MARK: - Internal
+
+    let hermesPath = "v1/paypal_hermes/create_payment_resource"
+    let paymentType = BTPayPalNativeRequest.PaymentType.checkout
+
+    var intentAsString: String {
+        switch intent {
+        case .sale:
+            return "sale"
+        case .order:
+            return "order"
+        case .authorize:
+            return "authorize"
+        }
+    }
+
+    var userActionAsString: String {
+        switch userAction {
+        case .commit:
+            return "commit"
+        case .default:
+            return ""
+        }
+    }
+
+    override func parameters(with configuration: BTConfiguration) -> [String : Any] {
+        var parameters = super.parameters(with: configuration)
+        parameters["intent"] = intentAsString
+        parameters["amount"] = amount
+        parameters["offer_pay_later"] = offerPayLater
+
+        let currencyCode = self.currencyCode ?? configuration.json["paypal"]["currencyIsoCode"].asString()
+        if let code = currencyCode {
+            parameters["currency_iso_code"] = code
+        }
+
+        if requestBillingAgreement {
+            parameters["request_billing_agreement"] = requestBillingAgreement
+        }
+
+        if requestBillingAgreement, let description = billingAgreementDescription {
+            parameters["billing_agreement_details"] = ["description": description]
+        }
+
+        if let addressOverride = shippingAddressOverride {
+            parameters["line1"] = addressOverride.streetAddress
+            parameters["line2"] = addressOverride.extendedAddress
+            parameters["city"] = addressOverride.locality
+            parameters["state"] = addressOverride.region
+            parameters["postal_code"] = addressOverride.postalCode
+            parameters["country_code"] = addressOverride.countryCodeAlpha2
+            parameters["recipient_name"] = addressOverride.recipientName
+        }
+
+        return parameters
     }
 }

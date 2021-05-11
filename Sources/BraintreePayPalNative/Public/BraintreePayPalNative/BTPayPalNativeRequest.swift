@@ -105,6 +105,11 @@ import BraintreeCore
     private static let callbackURLHostAndPath = "onetouch/v1/"
     private static let callbackURLScheme = "sdk.ios.braintree"
 
+    enum PaymentType {
+        case checkout
+        case vault
+    }
+
     var landingPageTypeAsString: String? {
         switch(landingPageType) {
         case .login:
