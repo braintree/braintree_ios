@@ -49,14 +49,14 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 
 #pragma mark Subscripting
 
-- (id)objectForKeyedSubscript:(NSString *)key {
+- (BTJSON *)objectForKeyedSubscript:(NSString *)key {
     BTJSON *json = [[BTJSON alloc] initWithValue:_value];
     json.subscripts = [self.subscripts arrayByAddingObject:key];
 
     return json;
 }
 
-- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+- (BTJSON *)objectAtIndexedSubscript:(NSUInteger)idx {
     BTJSON *json = [[BTJSON alloc] initWithValue:_value];
     json.subscripts = [self.subscripts arrayByAddingObject:@(idx)];
 
@@ -139,7 +139,13 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
         return nil;
     }
 
-    return self.value;
+    // TODO: Check to see if other places were relying on this method not properly returning NSArray<BTJSON> type
+    NSMutableArray *array = [NSMutableArray new];
+    for (id element in self.value) {
+        [array addObject:[[BTJSON alloc] initWithValue:element]];
+    }
+
+    return array;
 }
 
 - (NSDecimalNumber *)asNumber {
@@ -163,15 +169,17 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 }
 
 - (NSArray<NSString *> *)asStringArray {
-    NSArray <NSString *> *array = (NSArray <NSString *> *)self.asArray;
+    if (![self.value isKindOfClass:[NSArray class]]) {
+        return nil;
+    }
 
-    for (id obj in array) {
+    for (id obj in self.value) {
         if (![obj isKindOfClass:[NSString class]]) {
             return nil;
         }
     }
 
-    return array;
+    return self.value;
 }
 
 - (NSDictionary<NSString *, BTJSON *> *)asDictionary {

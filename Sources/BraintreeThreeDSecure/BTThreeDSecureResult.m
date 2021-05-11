@@ -31,7 +31,7 @@
         if ([json[@"errors"] asArray]) {
             NSDictionary *firstError = (NSDictionary *)[json[@"errors"] asArray].firstObject;
             if (firstError[@"message"]) {
-                _errorMessage = firstError[@"message"];
+                _errorMessage = [firstError[@"message"] asString];
             }
         } else {
             _errorMessage = [json[@"error"][@"message"] asString];
