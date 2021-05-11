@@ -139,7 +139,6 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
         return nil;
     }
 
-    // TODO: Check to see if other places were relying on this method not properly returning NSArray<BTJSON> type
     NSMutableArray *array = [NSMutableArray new];
     for (id element in self.value) {
         [array addObject:[[BTJSON alloc] initWithValue:element]];
