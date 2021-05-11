@@ -1,7 +1,8 @@
 import XCTest
-import BraintreePayPal
+import BraintreeCore
+@testable import BraintreePayPalNative
 
-class BTPayPalRequest_Tests: XCTestCase {
+class BTPayPalNativeRequest_Tests : XCTestCase {
 
     private var configuration: BTConfiguration!
 
@@ -20,18 +21,18 @@ class BTPayPalRequest_Tests: XCTestCase {
     // MARK: - landingPageTypeAsString
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsNotSpecified_returnNil() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalNativeRequest()
         XCTAssertNil(request.landingPageTypeAsString)
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsBilling_returnsBilling() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalNativeRequest()
         request.landingPageType = .billing
         XCTAssertEqual(request.landingPageTypeAsString, "billing")
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsLogin_returnsLogin() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalNativeRequest()
         request.landingPageType = .login
         XCTAssertEqual(request.landingPageTypeAsString, "login")
     }
@@ -39,7 +40,7 @@ class BTPayPalRequest_Tests: XCTestCase {
     // MARK: - parametersWithConfiguration
 
     func testParametersWithConfiguration_returnsAllParams() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalNativeRequest()
         request.isShippingAddressRequired = true
         request.displayName = "Display Name"
         request.landingPageType = .login
@@ -47,7 +48,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
 
-        request.lineItems = [BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)]
+        request.lineItems = [BTPayPalNativeLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)]
 
         let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
@@ -68,7 +69,7 @@ class BTPayPalRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenDisplayNameNotSet_usesDisplayNameFromConfig() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalNativeRequest()
 
         let json = BTJSON(value: [
             "paypalEnabled": true,
@@ -86,7 +87,7 @@ class BTPayPalRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalNativeRequest()
         // no_shipping = true should be the default.
 
         let parameters = request.parameters(with: configuration)
@@ -96,7 +97,7 @@ class BTPayPalRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenShippingAddressIsRequiredIsTrue_returnsNoShippingFalse() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalNativeRequest()
         request.isShippingAddressRequired = true
 
         let parameters = request.parameters(with: configuration)
