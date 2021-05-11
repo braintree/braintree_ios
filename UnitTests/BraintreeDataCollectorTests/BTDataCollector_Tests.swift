@@ -96,8 +96,8 @@ class BTDataCollector_Tests: XCTestCase {
         let expectation = self.expectation(description: "Returns fraud data")
         dataCollector.collectDeviceData { deviceData in
             let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
-            XCTAssertNil(json["fraud_merchant_id"] as? String)
-            XCTAssertNil(json["device_session_id"] as? String)
+            XCTAssertNil(json["fraud_merchant_id"].asString())
+            XCTAssertNil(json["device_session_id"].asString())
             XCTAssert((json["correlation_id"] as AnyObject).asString()!.count > 0)
             expectation.fulfill()
         }

@@ -21,7 +21,7 @@ class BTBinData_Tests: XCTestCase {
             ],
             "nonce": "fake-nonce",
             ])
-        let binData = BTBinData(json: json["binData"] as! BTJSON)
+        let binData = BTBinData(json: json["binData"])
 
         XCTAssertEqual(binData.prepaid, "Yes")
         XCTAssertEqual(binData.healthcare, "Yes")
@@ -38,7 +38,7 @@ class BTBinData_Tests: XCTestCase {
         let json = BTJSON(value: [
             "some": "value"
             ])
-        let binData = BTBinData(json: json["binData"] as! BTJSON)
+        let binData = BTBinData(json: json["binData"])
 
         XCTAssertEqual(binData.prepaid, "Unknown")
         XCTAssertEqual(binData.healthcare, "Unknown")
