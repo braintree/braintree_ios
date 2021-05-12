@@ -19,7 +19,6 @@ abstract_target 'Tests' do
 
   target 'IntegrationTests'
   target 'BraintreeCoreTests'
-  target 'BraintreeVenmoTests'
 end
 
 # https://github.com/CocoaPods/CocoaPods/issues/7314
