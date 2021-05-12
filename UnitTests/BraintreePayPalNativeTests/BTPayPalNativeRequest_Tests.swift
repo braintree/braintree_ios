@@ -59,10 +59,10 @@ class BTPayPalNativeRequest_Tests : XCTestCase {
         XCTAssertEqual(experienceProfile["locale_code"] as? String, "locale-code")
         XCTAssertEqual(parameters["merchant_account_id"] as? String, "merchant-account-id")
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
-        XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
-                                                                                   "unit_amount": "1",
-                                                                                   "name": "item",
-                                                                                   "kind": "credit"]])
+        XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity": "1",
+                                                                           "unit_amount": "1",
+                                                                           "name": "item",
+                                                                           "kind": "credit"]])
 
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
