@@ -1,27 +1,16 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - Braintree (4.37.0):
-    - Braintree/Card (= 4.37.0)
-    - Braintree/Core (= 4.37.0)
-    - Braintree/PayPal (= 4.37.0)
-    - Braintree/UI (= 4.37.0)
-  - Braintree/Card (4.37.0):
+  - Braintree (5.3.1):
+    - Braintree/Card (= 5.3.1)
+    - Braintree/Core (= 5.3.1)
+    - Braintree/PayPal (= 5.3.1)
+  - Braintree/Card (5.3.1):
     - Braintree/Core
-  - Braintree/Core (4.37.0)
-  - Braintree/PayPal (4.37.0):
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.37.0):
-    - Braintree/Core
-    - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.37.0):
+  - Braintree/Core (5.3.1)
+  - Braintree/PayPal (5.3.1):
     - Braintree/Core
     - Braintree/PayPalDataCollector
-    - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.37.0)
-  - Braintree/UI (4.37.0):
-    - Braintree/Card
-    - Braintree/Core
+  - Braintree/PayPalDataCollector (5.3.1)
   - DoubleConversion (1.1.6)
   - EXApplication (3.1.2):
     - UMCore
@@ -356,7 +345,7 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - Braintree (~> 4.37.0)
+  - Braintree (from `/Users/scannillo/bt/braintree_ios`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXApplication (from `../node_modules/expo-application/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -416,9 +405,10 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
-    - Braintree
 
 EXTERNAL SOURCES:
+  Braintree:
+    :path: "/Users/scannillo/bt/braintree_ios"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
@@ -528,7 +518,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  Braintree: e1f291d24a909bfbed88e86a0c3db76f26af9697
+  Braintree: f52d4fbe13548ab191a996b46694af9fca82f9a0
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXApplication: 47e6e78f70d07f538eeb544d5d0abe3287ac7043
   EXConstants: c00cd53a17a65b2e53ddb3890e4e74d3418e406e
@@ -583,6 +573,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 482155764886069beb1bc7fcf6036f12e4ad0751
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 9555879ca98a0a6548fce78bc7dcd1dfe900ccbd
+PODFILE CHECKSUM: fb7f9d82076126081b2af7ea6920d1b29110485f
 
 COCOAPODS: 1.10.1
