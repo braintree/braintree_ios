@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 /**
  Initialize a PayPal request with an amount for a one-time payment.
 
- @param amount Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', and is limited to 7 digits before the decimal point.
+ @param amount Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
  @return A PayPal Checkout request.
 */
 - (instancetype)initWithAmount:(NSString *)amount;
@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 /**
  Used for a one-time payment.
 
- Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', and is limited to 7 digits before the decimal point.
+ Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
 */
 @property (nonatomic, readonly, strong) NSString *amount;
 
