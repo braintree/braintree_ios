@@ -5,7 +5,7 @@
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 
-#if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
@@ -13,6 +13,9 @@
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
 #import <Braintree/Braintree-Swift.h>
+
+#elif __has_include("Braintree-Swift.h") // React Native
+#import "Braintree-Swift.h"
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCore/BraintreeCore.h>
