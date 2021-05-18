@@ -5,7 +5,7 @@
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 
-#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
