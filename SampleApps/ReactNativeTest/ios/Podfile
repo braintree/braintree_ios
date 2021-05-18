@@ -8,7 +8,7 @@ target 'ReactNativeTest' do
   use_unimodules!
   config = use_native_modules!
 
-  pod 'Braintree', :path => '/Users/scannillo/bt/braintree_ios'
+  pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios', :branch => 'master'
 
   use_react_native!(:path => config["reactNativePath"])
 
