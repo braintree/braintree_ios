@@ -65,4 +65,4 @@ jobs:
           npm install -g react-native-cli
           npm install
       - name: Run React Native iOS app
-        run: npm run ios
+        run: cd SampleApps/ReactNativeTest && npm run ios
