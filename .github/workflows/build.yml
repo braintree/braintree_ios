@@ -59,10 +59,13 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_12.4.app
       - name: Use current branch
         run: sed -i '' "s/branch => .*/branch => \'"$GITHUB_HEAD_REF"\'/" SampleApps/ReactNativeTest/ios/Podfile
-      - name: Install React Native
+      - name: Install npm dependencis
         run: |
           cd SampleApps/ReactNativeTest
-          npm install -g react-native-cli
           npm install
+      - name: Install CocoaPod dependencies
+        run: |
+          cd SampleApps/ReactNativeTest/ios
+          pod install
       - name: Run React Native iOS app
         run: cd SampleApps/ReactNativeTest && npm run ios
