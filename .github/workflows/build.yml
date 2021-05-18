@@ -60,6 +60,9 @@ jobs:
       - name: Use current branch
         run: sed -i '' "s/branch => .*/branch => \'"$GITHUB_HEAD_REF"\'/" SampleApps/ReactNativeTest/ios/Podfile
       - name: Install React Native
-        run: npm install -g react-native-cli
+        run: |
+          cd SampleApps/ReactNativeTest
+          npm install -g react-native-cli
+          npm install
       - name: Run React Native iOS app
-        run: cd SampleApps/ReactNativeTest && npm run ios
+        run: npm run ios
