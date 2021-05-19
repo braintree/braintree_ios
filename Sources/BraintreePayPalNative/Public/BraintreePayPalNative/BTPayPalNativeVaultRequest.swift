@@ -10,8 +10,7 @@ import BraintreePayPal
     /**
      Initializes a PayPal Vault request.
 
-     - Parameter payPalReturnURL: The return URL provided to the PayPal Native UI experience.
-     Used as part of the authentication process to identify your application. This value should match the one set in the `Return URLs` section of your application's dashboard on your [PayPal developer account](https://developer.paypal.com).
+     - Parameter payPalReturnURL: The return URL provided to the PayPal Native UI experience, which is used to identify your application. This value should match the one set in the `Return URLs` section of your application's dashboard on your [PayPal developer account](https://developer.paypal.com).
 
      - Returns: A PayPal Vault request.
      */
