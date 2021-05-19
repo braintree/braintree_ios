@@ -54,12 +54,15 @@ import PayPalCheckout
                 }, onApprove: { approval in
 
                 }, onCancel: {
-
+                    completion(nil, BTPayPalNativeError.canceled as NSError)
+                    return
                 }, onError: { error in
-
+                    completion(nil, BTPayPalNativeError.checkoutSDKFailed as NSError)
+                    return
                 })
             case .failure(let error):
                 completion(nil, error as NSError)
+                return
             }
         }
     }

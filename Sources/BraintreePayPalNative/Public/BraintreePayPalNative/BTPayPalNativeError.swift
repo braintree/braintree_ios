@@ -25,6 +25,9 @@ import Foundation
     /// PayPal flow was canceled by the user
     case canceled
 
+    /// PayPalCheckout SDK returned an error
+    case checkoutSDKFailed
+
     public var errorDescription: String? {
         switch self {
         case .invalidRequest:
@@ -41,6 +44,8 @@ import Foundation
             return "Failed to create PayPal order."
         case .canceled:
             return "PayPal flow was canceled by the user."
+        case .checkoutSDKFailed:
+            return "PayPalCheckout SDK returned an error"
         }
     }
 }

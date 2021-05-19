@@ -1,0 +1,44 @@
+import BraintreeCore
+import BraintreePayPal
+
+class BTPayPalNativeTokenizationRequest {
+
+    private let webURL: String
+    private let request: BTPayPalRequest
+    private let correlationID: String
+    private let clientMetadata: BTClientMetadata
+
+    init(webURL: String, request: BTPayPalRequest, correlationID: String, clientMetadata: BTClientMetadata) {
+        self.webURL = webURL
+        self.request = request
+        self.correlationID = correlationID
+        self.clientMetadata = clientMetadata
+    }
+
+    func parameters() -> [String : Any] {
+        var account: [String : Any] = [
+            "client": [
+                "platform": "iOS",
+                "product_name": "PayPal",
+                "paypal_sdk_version": "version"
+            ],
+            "response_type": "web",
+            "response": [
+                "webURL": webURL
+            ],
+            "correlation_id": correlationID,
+            "_meta": [
+                "source": clientMetadata.sourceString,
+                "integration": clientMetadata.integrationString,
+                "sessionId": clientMetadata.sessionID,
+            ]
+        ]
+
+        if let checkoutRequest = request as? BTPayPalNativeCheckoutRequest {
+            account["options"] = ["validate" : false]
+            account["intent"] = checkoutRequest.intentAsString
+        }
+
+        return ["paypal_account": account]
+    }
+}
