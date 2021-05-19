@@ -19,7 +19,7 @@ import PayPalCheckout
     }
 
     /**
-     Tokenize a PayPal account for vault or checkout. On success, you will receive an instance of `BTPayPalNativeAccountNonce`. On failure or user cancelation you will receive an error.
+     Tokenize a PayPal account for vault or checkout. On success, you will receive an instance of `BTPayPalNativeAccountNonce`. On failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
 
      - Parameter request Either a BTPayPalNativeCheckoutRequest or a BTPayPalNativeVaultRequest
 

@@ -1,14 +1,15 @@
 import Foundation
 
-enum BTPayPalNativeError: Int, LocalizedError {
+@objc public enum BTPayPalNativeError: Int, LocalizedError {
     case invalidRequest
     case fetchConfigurationFailed
     case payPalNotEnabled
     case payPalClientIDNotFound
     case invalidEnvironment
     case orderCreationFailed
+    case canceled
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalidRequest:
             return "Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest."
@@ -22,6 +23,8 @@ enum BTPayPalNativeError: Int, LocalizedError {
             return "Invalid environment identifier found in the Braintree configuration."
         case .orderCreationFailed:
             return "Failed to create PayPal order."
+        case .canceled:
+            return "PayPal flow was canceled by the user."
         }
     }
 }
