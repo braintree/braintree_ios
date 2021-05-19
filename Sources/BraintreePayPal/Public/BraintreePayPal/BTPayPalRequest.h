@@ -1,4 +1,11 @@
 #import <UIKit/UIKit.h>
+
+#if __has_include(<Braintree/BraintreePayPal.h>)
+#import <Braintree/BraintreeCore.h>
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
+
 @class BTPostalAddress; 
 @class BTPayPalLineItem;
 
@@ -111,6 +118,13 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestLandingPageType) {
  @note If your app supports multitasking, you must set this property to ensure that the ASWebAuthenticationSession is presented on the correct window.
  */
 @property (nonatomic, nullable, strong) UIWindow *activeWindow;
+
+/**
+ :nodoc:
+ @param configuration The merchant's Braintree configuration
+ @return A dictionary that can be serialized into JSON and sent in an HTTP request
+ */
+- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration;
 
 @end
 
