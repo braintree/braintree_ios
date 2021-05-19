@@ -113,10 +113,11 @@
 		4290C7F2259BD2E800D2044C /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		4290C7F3259BD2E800D2044C /* PPRiskMagnes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		429365EB2655708A004F96B2 /* BraintreePayPalNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429365E22655708A004F96B2 /* BraintreePayPalNative.framework */; };
-		42936614265570FD004F96B2 /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42936613265570FD004F96B2 /* PayPalCheckout.xcframework */; };
 		4293661726557123004F96B2 /* BraintreePayPal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; };
 		4295E91E259149C400A5C373 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */; };
 		4295E93625914BCE00A5C373 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */; };
+		42A829DF265576A50069864C /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A829DE265576A50069864C /* PayPalCheckout.xcframework */; };
+		42A82A172655796F0069864C /* BTPayPalNativeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A82A162655796F0069864C /* BTPayPalNativeRequest.swift */; };
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
 		42F3F6442603AC0A00401B0D /* KDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F63A2603AC0900401B0D /* KDataCollector.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -826,8 +827,9 @@
 		429365E22655708A004F96B2 /* BraintreePayPalNative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreePayPalNative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		429365EA2655708A004F96B2 /* BraintreePayPalNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreePayPalNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		429365F12655708B004F96B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		42936613265570FD004F96B2 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		42A37F1923EB65E8005A5BF7 /* PayPalIDTokenTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalIDTokenTestHelper.swift; sourceTree = "<group>"; };
+		42A829DE265576A50069864C /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = Frameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
+		42A82A162655796F0069864C /* BTPayPalNativeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeRequest.swift; sourceTree = "<group>"; };
 		42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequest_Tests.swift; sourceTree = "<group>"; };
 		42D79395233A65EB001FDD89 /* MockDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDelegates.swift; sourceTree = "<group>"; };
 		42E295FA239FF19000EAB00C /* BTPreferredPaymentMethodsResult_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPreferredPaymentMethodsResult_Internal.h; sourceTree = "<group>"; };
@@ -1147,8 +1149,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42A829DF265576A50069864C /* PayPalCheckout.xcframework in Frameworks */,
 				4293661726557123004F96B2 /* BraintreePayPal.framework in Frameworks */,
-				42936614265570FD004F96B2 /* PayPalCheckout.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1657,14 +1659,6 @@
 			path = BraintreeDataCollector;
 			sourceTree = "<group>";
 		};
-		429365E32655708A004F96B2 /* BraintreePayPalNative */ = {
-			isa = PBXGroup;
-			children = (
-				4293666526557390004F96B2 /* Public */,
-			);
-			path = BraintreePayPalNative;
-			sourceTree = "<group>";
-		};
 		429365EE2655708A004F96B2 /* BraintreePayPalNativeTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1673,17 +1667,26 @@
 			path = BraintreePayPalNativeTests;
 			sourceTree = "<group>";
 		};
-		4293666526557390004F96B2 /* Public */ = {
+		42A829F7265576AB0069864C /* BraintreePayPalNative */ = {
 			isa = PBXGroup;
 			children = (
-				4293666626557396004F96B2 /* BraintreePayPalNative */,
+				42A829F8265576D20069864C /* Public */,
+			);
+			path = BraintreePayPalNative;
+			sourceTree = "<group>";
+		};
+		42A829F8265576D20069864C /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				42A829F9265576E80069864C /* BraintreePayPalNative */,
 			);
 			path = Public;
 			sourceTree = "<group>";
 		};
-		4293666626557396004F96B2 /* BraintreePayPalNative */ = {
+		42A829F9265576E80069864C /* BraintreePayPalNative */ = {
 			isa = PBXGroup;
 			children = (
+				42A82A162655796F0069864C /* BTPayPalNativeRequest.swift */,
 			);
 			path = BraintreePayPalNative;
 			sourceTree = "<group>";
@@ -1739,7 +1742,7 @@
 				A76D7C011BB1CAB00000FA6A /* BraintreeDataCollector */,
 				038C7FBB1EA1648900241ABE /* BraintreePaymentFlow */,
 				2D941D391B59C76A0016EFB4 /* BraintreePayPal */,
-				429365E32655708A004F96B2 /* BraintreePayPalNative */,
+				42A829F7265576AB0069864C /* BraintreePayPalNative */,
 				A91E1EAC24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				4164B9891C9B6553006AE861 /* BraintreeUnionPay */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
@@ -1865,7 +1868,7 @@
 		A75DA3531921394200D997A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				42936613265570FD004F96B2 /* PayPalCheckout.xcframework */,
+				42A829DE265576A50069864C /* PayPalCheckout.xcframework */,
 				42F3F6DA2603B81C00401B0D /* CardinalMobile.xcframework */,
 				42F3F6392603AB8D00401B0D /* KountDataCollector.xcframework */,
 				4245D708256C2CA000F1A413 /* PPRiskMagnes.xcframework */,
@@ -2966,6 +2969,7 @@
 					};
 					429365E12655708A004F96B2 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 					429365E92655708A004F96B2 = {
 						CreatedOnToolsVersion = 12.4;
@@ -3441,6 +3445,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42A82A172655796F0069864C /* BTPayPalNativeRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4641,6 +4646,7 @@
 		429365F52655708B004F96B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -4686,6 +4692,7 @@
 		429365F62655708B004F96B2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
