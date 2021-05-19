@@ -345,7 +345,7 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - Braintree (from `/Users/scannillo/bt/braintree_ios`)
+  - Braintree (from `https://github.com/braintree/braintree_ios`, branch `master`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXApplication (from `../node_modules/expo-application/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -408,7 +408,8 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: "/Users/scannillo/bt/braintree_ios"
+    :branch: master
+    :git: https://github.com/braintree/braintree_ios
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
@@ -516,6 +517,11 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  Braintree:
+    :commit: 88de85d106ded71f3f09de46290312b2005084cf
+    :git: https://github.com/braintree/braintree_ios
+
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Braintree: f52d4fbe13548ab191a996b46694af9fca82f9a0
@@ -573,6 +579,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 482155764886069beb1bc7fcf6036f12e4ad0751
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: fb7f9d82076126081b2af7ea6920d1b29110485f
+PODFILE CHECKSUM: 250814b45cad2ec4516cd4461bd05cefd53d5a05
 
 COCOAPODS: 1.10.1
