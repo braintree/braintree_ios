@@ -824,7 +824,6 @@
 		4290C664259B9E2E00D2044C /* BTThreeDSecureV2ButtonCustomization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2ButtonCustomization.h; sourceTree = "<group>"; };
 		4290C665259B9E2E00D2044C /* BTThreeDSecureV2ToolbarCustomization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2ToolbarCustomization.h; sourceTree = "<group>"; };
 		429365E22655708A004F96B2 /* BraintreePayPalNative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreePayPalNative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		429365E52655708A004F96B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		429365EA2655708A004F96B2 /* BraintreePayPalNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreePayPalNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		429365F12655708B004F96B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42936613265570FD004F96B2 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = PayPalCheckout.xcframework; sourceTree = "<group>"; };
@@ -1661,7 +1660,7 @@
 		429365E32655708A004F96B2 /* BraintreePayPalNative */ = {
 			isa = PBXGroup;
 			children = (
-				429365E52655708A004F96B2 /* Info.plist */,
+				4293666526557390004F96B2 /* Public */,
 			);
 			path = BraintreePayPalNative;
 			sourceTree = "<group>";
@@ -1672,6 +1671,21 @@
 				429365F12655708B004F96B2 /* Info.plist */,
 			);
 			path = BraintreePayPalNativeTests;
+			sourceTree = "<group>";
+		};
+		4293666526557390004F96B2 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				4293666626557396004F96B2 /* BraintreePayPalNative */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+		4293666626557396004F96B2 /* BraintreePayPalNative */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BraintreePayPalNative;
 			sourceTree = "<group>";
 		};
 		6A50887E9E10BEB122A9F45D /* Pods */ = {
