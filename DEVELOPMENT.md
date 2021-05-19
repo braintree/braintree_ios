@@ -36,6 +36,8 @@ We use if-else preprocessor directives to satisfy each dependency manager. See t
 #endif
 ```
 
+### Importing internal headers
+
 In general, we avoid importing **internal headers from other modules**, but occasionally it's necessary. See the below example for importing an internal header file from another module:
 ```objc
 #if __has_include(<Braintree/BraintreeAmericanExpress.h>) // CocoaPods
@@ -49,15 +51,26 @@ In general, we avoid importing **internal headers from other modules**, but occa
 #endif
 ```
 
+### Importing a Swift module into Obj-C
+
 To import a Braintree framework written in **Swift** into an Objective-C file, use the following syntax:
 ```objc
-#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 
-#elif SWIFT_PACKAGE // SPM
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
 @import PayPalDataCollector;
 
-#else // Carthage
+#else                                            // Carthage
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 ```
