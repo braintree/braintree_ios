@@ -20,6 +20,7 @@
 				<string>PayPal - Vault</string>
 				<string>PayPal - Checkout</string>
 				<string>PayPal - Pay Later</string>
+				<string>PayPal - Native UI</string>
 				<string>Credit Card Tokenization</string>
 				<string>Venmo - Custom Button</string>
 				<string>Apple Pay - PassKit</string>
@@ -35,6 +36,7 @@
 				<string>BraintreeDemoPayPalVaultViewController</string>
 				<string>BraintreeDemoPayPalCheckoutViewController</string>
 				<string>BraintreeDemoPayPalPayLaterViewController</string>
+				<string>BraintreeDemoPayPalNativeUIViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
