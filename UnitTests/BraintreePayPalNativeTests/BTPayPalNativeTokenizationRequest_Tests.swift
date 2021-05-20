@@ -39,7 +39,7 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
         let request = BTPayPalNativeCheckoutRequest(payPalReturnURL: "return-url", amount: "5")
         request.intent = .order
         let clientMetadata = MockClientMetadata()
-        let tokenizationRequest = BTPayPalNativeTokenizationRequest(webURL: "some-url",
+        let tokenizationRequest = BTPayPalNativeTokenizationRequest(returnURL: "some-url",
                                                                     request: request,
                                                                     correlationID: "some-correlation-id",
                                                                     clientMetadata: clientMetadata)
@@ -70,7 +70,7 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
 
         let request = BTPayPalNativeVaultRequest(payPalReturnURL: "return-url")
         let clientMetadata = MockClientMetadata()
-        let tokenizationRequest = BTPayPalNativeTokenizationRequest(webURL: "some-url",
+        let tokenizationRequest = BTPayPalNativeTokenizationRequest(returnURL: "some-url",
                                                                     request: request,
                                                                     correlationID: "some-correlation-id",
                                                                     clientMetadata: clientMetadata)

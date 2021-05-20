@@ -1,5 +1,6 @@
 import BraintreeCore
 import PayPalCheckout
+import BraintreePayPal
 
 class BTPayPalNativeTokenizationClient {
 
@@ -9,7 +10,26 @@ class BTPayPalNativeTokenizationClient {
         self.apiClient = apiClient
     }
 
-    func tokenize(with approval: PayPalCheckout.Approval, completion: @escaping (Result<BTPayPalNativeAccountNonce, BTPayPalNativeError>) -> Void) {
+    func tokenize(returnURL: String, request: BTPayPalRequest,
+                  completion: @escaping (Result<BTPayPalNativeAccountNonce, BTPayPalNativeError>) -> Void) {
 
+        let tokenizationRequest = BTPayPalNativeTokenizationRequest(returnURL: returnURL,
+                                                                    request: request,
+                                                                    correlationID: "",
+                                                                    clientMetadata: apiClient.metadata)
+
+        apiClient .post("/v1/payment_methods/paypal_accounts", parameters: tokenizationRequest.parameters()) { body, _, error in
+            guard let json = body, error == nil else {
+                completion(.failure(.tokenizationFailed))
+                return
+            }
+
+            guard let accountNonce = BTPayPalNativeAccountNonce(json: json) else {
+                completion(.failure(.parsingTokenizationResultFailed))
+                return
+            }
+
+            completion(.success(accountNonce))
+        }
     }
 }

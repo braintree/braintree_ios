@@ -60,4 +60,11 @@
  */
 @property (nonatomic, nullable, readonly, strong) BTPayPalCreditFinancing *creditFinancing;
 
+
+/**
+ :nodoc:
+ Initializes an instance of BTPayPalAccountNonce.
+ */
+- (nullable instancetype)initWithJSON:(BTJSON * _Nonnull)json;
+
 @end

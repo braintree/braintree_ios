@@ -378,7 +378,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     NSString *phone = [details[@"payerInfo"][@"phone"] asString];
     NSString *payerID = [details[@"payerInfo"][@"payerId"] asString];
     BOOL isDefault = [payPalAccount[@"default"] isTrue];
-    
+
     BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
     BTPostalAddress *billingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
     if (!shippingAddress) {
