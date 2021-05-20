@@ -24,11 +24,11 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
         button.setTitleColor(UIColor.blue, for: .normal)
         button.setTitleColor(UIColor(red: 50.0 / 255, green: 50.0 / 255, blue: 255.0 / 255, alpha: 1.0), for: .highlighted)
         button.setTitleColor(UIColor.lightGray, for: .disabled)
-        button.addTarget(self, action: #selector(tappedPayPalCheckout(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(tappedPayPalNativeCheckout(_:)), for: .touchUpInside)
         return button
     }
 
-    @objc func tappedPayPalCheckout(_ button: UIButton?) {
+    @objc func tappedPayPalNativeCheckout(_ button: UIButton?) {
         self.progressBlock("Tapped PayPal - Native UI: using BTPayPalNativeClient")
 
         button?.setTitle(NSLocalizedString("Processing...", comment: ""), for: .disabled)
