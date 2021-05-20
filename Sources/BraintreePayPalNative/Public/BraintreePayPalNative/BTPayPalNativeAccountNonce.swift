@@ -1,4 +1,3 @@
-import BraintreeCore
 import BraintreePayPal
 
 /**

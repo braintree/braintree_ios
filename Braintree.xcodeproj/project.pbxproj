@@ -93,8 +93,9 @@
 		420E3B5A2329869B00550CE2 /* BTAuthenticationInsight.m in Sources */ = {isa = PBXBuildFile; fileRef = 420E3B582329869B00550CE2 /* BTAuthenticationInsight.m */; };
 		420E3B5C2329947200550CE2 /* BTAuthenticationInsight_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 420E3B5B2329943000550CE2 /* BTAuthenticationInsight_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		423906772656C83A0067B27A /* BTPayPalAccountNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423906302656C80C0067B27A /* BTPayPalAccountNonce_Tests.swift */; };
-		42456E44254753CF0018374E /* BTPayPalCreditFinancing_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42456E43254753CF0018374E /* BTPayPalCreditFinancing_Internal.h */; };
-		42456E6E2547543D0018374E /* BTPayPalCreditFinancingAmount_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42456E6D2547543D0018374E /* BTPayPalCreditFinancingAmount_Internal.h */; };
+		423906A7265703EA0067B27A /* BTPayPalCreditFinancingAmount_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423906A6265703EA0067B27A /* BTPayPalCreditFinancingAmount_Tests.swift */; };
+		42456E44254753CF0018374E /* BTPayPalCreditFinancing_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42456E43254753CF0018374E /* BTPayPalCreditFinancing_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		42456E6E2547543D0018374E /* BTPayPalCreditFinancingAmount_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 42456E6D2547543D0018374E /* BTPayPalCreditFinancingAmount_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4245D669256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245D668256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift */; };
 		42517321254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h in Headers */ = {isa = PBXBuildFile; fileRef = 42517320254B6CD000B5AE86 /* BTPayPalCreditFinancingAmount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4255C5132565CF3D00A3CA78 /* PPDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4255C5122565CF3D00A3CA78 /* PPDataCollector.swift */; };
@@ -819,6 +820,7 @@
 		421CBFD7239ED4D70044C448 /* BTThreeDSecureV1BrowserSwitchHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV1BrowserSwitchHelper.m; sourceTree = "<group>"; };
 		421CBFDA239ED6960044C448 /* BTThreeDSecureBrowserSwitchHelper_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureBrowserSwitchHelper_Tests.swift; sourceTree = "<group>"; };
 		423906302656C80C0067B27A /* BTPayPalAccountNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalAccountNonce_Tests.swift; sourceTree = "<group>"; };
+		423906A6265703EA0067B27A /* BTPayPalCreditFinancingAmount_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCreditFinancingAmount_Tests.swift; sourceTree = "<group>"; };
 		423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureResult.h; sourceTree = "<group>"; };
 		423B921424D1DFB50048B655 /* BTThreeDSecureResult_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureResult_Internal.h; sourceTree = "<group>"; };
 		423B921524D1DFB50048B655 /* BTThreeDSecureResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureResult.m; sourceTree = "<group>"; };
@@ -2223,6 +2225,7 @@
 				A977A04024FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift */,
 				423906302656C80C0067B27A /* BTPayPalAccountNonce_Tests.swift */,
 				42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */,
+				423906A6265703EA0067B27A /* BTPayPalCreditFinancingAmount_Tests.swift */,
 				427F32DF25D1D62D00435294 /* BTPayPalDriver_Tests.swift */,
 				42FC218A25CDE0290047C49A /* BTPayPalRequest_Tests.swift */,
 				427F328F25D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift */,
@@ -3750,6 +3753,7 @@
 				A977A04124FEC36F006049AB /* BTPaymentMethodNonceParser_PayPal_Tests.swift in Sources */,
 				427F329025D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift in Sources */,
 				A95229C724FD949D006F7D25 /* BTConfiguration+PayPal_Tests.swift in Sources */,
+				423906A7265703EA0067B27A /* BTPayPalCreditFinancingAmount_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

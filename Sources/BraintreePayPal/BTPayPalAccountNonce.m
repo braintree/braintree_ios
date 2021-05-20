@@ -70,31 +70,12 @@
         _billingAddress = billingAddress;
 
         BTJSON *creditFinancingJSON = details[@"creditFinancingOffered"];
-
         BOOL cardAmountImmutable = creditFinancingJSON[@"cardAmountImmutable"].isTrue;
         BOOL payerAcceptance = creditFinancingJSON[@"payerAcceptance"].isTrue;
         NSUInteger term = creditFinancingJSON[@"term"].asIntegerOrZero;
-
-        BTJSON *monthlyPaymentJSON = creditFinancingJSON[@"monthlyPayment"];
-        BTPayPalCreditFinancingAmount *monthlyPayment;
-        if (monthlyPaymentJSON.isObject) {
-            monthlyPayment = [[BTPayPalCreditFinancingAmount alloc] initWithCurrency:monthlyPaymentJSON[@"currency"].asString
-                                                                               value:monthlyPaymentJSON[@"value"].asString];
-        }
-
-        BTJSON *totalCostJSON = creditFinancingJSON[@"totalCost"];
-        BTPayPalCreditFinancingAmount *totalCost;
-        if (totalCostJSON.isObject) {
-            totalCost = [[BTPayPalCreditFinancingAmount alloc] initWithCurrency:totalCostJSON[@"currency"].asString
-                                                                          value:totalCostJSON[@"value"].asString];
-        }
-
-        BTJSON *totalInterestJSON = creditFinancingJSON[@"totalInterest"];
-        BTPayPalCreditFinancingAmount *totalInterest;
-        if (totalInterestJSON.isObject) {
-            totalInterest = [[BTPayPalCreditFinancingAmount alloc] initWithCurrency:totalInterestJSON[@"currency"].asString
-                                                                              value:totalInterestJSON[@"value"].asString];
-        }
+        BTPayPalCreditFinancingAmount *monthlyPayment = [[BTPayPalCreditFinancingAmount alloc] initWithJSON:creditFinancingJSON[@"monthlyPayment"]];
+        BTPayPalCreditFinancingAmount *totalCost = [[BTPayPalCreditFinancingAmount alloc] initWithJSON:creditFinancingJSON[@"totalCost"]];
+        BTPayPalCreditFinancingAmount *totalInterest = [[BTPayPalCreditFinancingAmount alloc] initWithJSON:creditFinancingJSON[@"totalInterest"]];
 
         _creditFinancing = [[BTPayPalCreditFinancing alloc] initWithCardAmountImmutable:cardAmountImmutable
                                                                          monthlyPayment:monthlyPayment
