@@ -70,6 +70,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
                    integration:(BTClientMetadataIntegrationType)integration;
 
 /**
+ :nodoc:
  Client metadata that is used for tracking the client session
 */
 @property (nonatomic, readonly, strong) BTClientMetadata *metadata;
