@@ -61,7 +61,7 @@ jobs:
         run: sed -i '' "s/branch => .*/branch => \'"$GITHUB_HEAD_REF"\'/" SampleApps/ReactNativeTest/ios/Podfile
       - name: Install npm dependencies
         run: cd SampleApps/ReactNativeTest && npm install
-      - name: Install CocoaPod dependencies
+      - name: Install CocoaPods dependencies
         run: cd SampleApps/ReactNativeTest/ios && pod install
       - name: Run React Native iOS app
         run: cd SampleApps/ReactNativeTest && npm run ios
