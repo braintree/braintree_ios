@@ -12,6 +12,10 @@
 		423B451125FFB5E500EF563F /* PPRiskMagnes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
+		4293663026557190004F96B2 /* BraintreePayPalNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4293662F26557190004F96B2 /* BraintreePayPalNative.framework */; };
+		4293663126557190004F96B2 /* BraintreePayPalNative.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4293662F26557190004F96B2 /* BraintreePayPalNative.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		42A82A12265577670069864C /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A82A11265577670069864C /* PayPalCheckout.xcframework */; };
+		42A82A13265577670069864C /* PayPalCheckout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 42A82A11265577670069864C /* PayPalCheckout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		42C574AE25FA66F9008B3681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574AD25FA66F9008B3681 /* AppDelegate.swift */; };
 		42C574B025FA66F9008B3681 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574AF25FA66F9008B3681 /* SceneDelegate.swift */; };
 		42C574B225FA66F9008B3681 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574B125FA66F9008B3681 /* ViewController.swift */; };
@@ -169,6 +173,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */,
+				4293663126557190004F96B2 /* BraintreePayPalNative.framework in Embed Frameworks */,
 				803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */,
 				803D650A256DAF9A00ACE692 /* PayPalDataCollector.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
@@ -178,6 +183,7 @@
 				803D6504256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Embed Frameworks */,
 				803D6500256DAF9A00ACE692 /* BraintreePaymentFlow.framework in Embed Frameworks */,
 				803D6506256DAF9A00ACE692 /* BraintreeUnionPay.framework in Embed Frameworks */,
+				42A82A13265577670069864C /* PayPalCheckout.xcframework in Embed Frameworks */,
 				803D6502256DAF9A00ACE692 /* BraintreePayPal.framework in Embed Frameworks */,
 				803D64F8256DAF9A00ACE692 /* BraintreeApplePay.framework in Embed Frameworks */,
 				42F3F6DD2603B83100401B0D /* CardinalMobile.xcframework in Embed Frameworks */,
@@ -191,6 +197,8 @@
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
+		4293662F26557190004F96B2 /* BraintreePayPalNative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreePayPalNative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42A82A11265577670069864C /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = ../Frameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		42C574AB25FA66F9008B3681 /* MockVenmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MockVenmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42C574AD25FA66F9008B3681 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42C574AF25FA66F9008B3681 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -438,10 +446,12 @@
 				803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */,
 				803D6509256DAF9A00ACE692 /* PayPalDataCollector.framework in Frameworks */,
 				803D6507256DAF9A00ACE692 /* BraintreeVenmo.framework in Frameworks */,
+				4293663026557190004F96B2 /* BraintreePayPalNative.framework in Frameworks */,
 				803D64FF256DAF9A00ACE692 /* BraintreePaymentFlow.framework in Frameworks */,
 				803D6503256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Frameworks */,
 				803D64F9256DAF9A00ACE692 /* BraintreeCard.framework in Frameworks */,
 				803D6505256DAF9A00ACE692 /* BraintreeUnionPay.framework in Frameworks */,
+				42A82A12265577670069864C /* PayPalCheckout.xcframework in Frameworks */,
 				08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -941,6 +951,8 @@
 		A0988FFB24DB44D60095EEEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				42A82A11265577670069864C /* PayPalCheckout.xcframework */,
+				4293662F26557190004F96B2 /* BraintreePayPalNative.framework */,
 				42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */,
 				803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */,
 				803D64EB256DAF9A00ACE692 /* BraintreeApplePay.framework */,

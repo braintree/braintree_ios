@@ -1,0 +1,11 @@
+framework module PayPalCheckout {
+  umbrella header "PayPalCheckout.h"
+
+  export *
+  module * { export * }
+}
+
+module PayPalCheckout.Swift {
+    header "PayPalCheckout-Swift.h"
+    requires objc
+}
