@@ -44,7 +44,7 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
 
         let request = BTPayPalNativeCheckoutRequest(payPalReturnURL: "tacocats://paypalpay", amount: "10.00")
 
-        let ppNativeClient = BTPayPalNativeClient.init(apiClient: apiClient)
+        let ppNativeClient = BTPayPalNativeClient(apiClient: apiClient)
         ppNativeClient.tokenizePayPalAccount(with: request) { (paypalAccountNonce, error) in
             if (error != nil) {
                 self.progressBlock(error?.localizedDescription)
