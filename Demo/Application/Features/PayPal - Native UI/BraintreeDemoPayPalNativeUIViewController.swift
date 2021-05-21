@@ -37,7 +37,7 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
         // This demo uses a hard coded tokenization key.
         // You can find the corresponding accounts for "PayPal Native Checkout" in 1Password.
         // TODO: obtain credentials for a BT-PP linked prod account. Update this demo to properly toggle b/w envs.
-        guard let apiClient = BTAPIClient.init(authorization: "sandbox_8hpbq6nh_ks3tvzmhdjryvknn") else {
+        guard let apiClient = BTAPIClient(authorization: "sandbox_8hpbq6nh_ks3tvzmhdjryvknn") else {
             self.progressBlock("Error constructing BTAPIClient.")
             return
         }
