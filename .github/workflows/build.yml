@@ -49,19 +49,3 @@ jobs:
         run: cd SampleApps/SPMTest && swift package resolve
       - name: Build & archive SPMTest
         run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
-  react-native:
-    name: React Native
-    runs-on: macOS-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Use Xcode 12.4
-        run: sudo xcode-select -switch /Applications/Xcode_12.4.app
-      - name: Use current branch
-        run: sed -i '' "s/branch => .*/branch => \'"$GITHUB_HEAD_REF"\'/" SampleApps/ReactNativeTest/ios/Podfile
-      - name: Install npm dependencies
-        run: cd SampleApps/ReactNativeTest && npm install
-      - name: Install CocoaPods dependencies
-        run: cd SampleApps/ReactNativeTest/ios && pod install
-      - name: Run React Native iOS app
-        run: cd SampleApps/ReactNativeTest && npm run ios

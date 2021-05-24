@@ -74,14 +74,3 @@ To import a Braintree framework written in **Swift** into an Objective-C file, u
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 ```
-
-## React Native Demo App
-
-Though we don't offer official React Native support, we have a React Native sample app at at `braintree_ios/SampleApps/ReactNativeTest` for testing as needed.
-
-To run this app:
-```
-cd SampleApps/ReactNativeTest/ && npm install
-cd ios/ && bundle exec pod install
-cd .. && npm run ios
-```
