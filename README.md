@@ -62,7 +62,7 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 | 5.x.x | Active | February 2021 | TBA | TBA |
 | 4.x.x | Inactive | November 2015 | February 2022 | February 2023 |
 
-Versions 3 and below are unsupported.
+Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 
 ## Demo
 

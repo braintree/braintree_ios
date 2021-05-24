@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.3.1 (2021-05-11)
 * Update Kount SDK to v4.1.5
 * Fix bug where `userAction` on `BTPayPalCheckoutRequest` was ignored
 * Remove SPM product libraries for `KountDataCollector` and `PPRiskMagnes` (this was a workaround for an Xcode bug discussed in #576; bug resolved in Xcode 12.5)

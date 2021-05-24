@@ -181,12 +181,14 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     if ([jsonResponse asDictionary]) {
         mutableUserInfo[BTCustomerInputBraintreeValidationErrorsKey] = [jsonResponse asDictionary];
         
-        BTJSON *fieldError = [[jsonResponse[@"fieldErrors"] asArray] firstObject];
         NSString *errorMessage = [jsonResponse[@"error"][@"message"] asString];
         if (errorMessage) {
             mutableUserInfo[NSLocalizedDescriptionKey] = errorMessage;
         }
-        NSString *firstFieldErrorMessage = [fieldError[@"fieldErrors"] firstObject][@"message"];
+
+        BTJSON *fieldError = [jsonResponse[@"fieldErrors"] asArray].firstObject;
+        BTJSON *firstFieldError = [fieldError[@"fieldErrors"] asArray].firstObject;
+        NSString *firstFieldErrorMessage = [firstFieldError[@"message"] asString];
         if (firstFieldErrorMessage) {
             mutableUserInfo[NSLocalizedFailureReasonErrorKey] = firstFieldErrorMessage;
         }
@@ -230,7 +232,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 }
 
 - (BOOL)isGraphQLEnabledForCardTokenization:(BTConfiguration *)configuration {
-    NSArray *graphQLFeatures = [configuration.json[@"graphQL"][@"features"] asArray];
+    NSArray *graphQLFeatures = [configuration.json[@"graphQL"][@"features"] asStringArray];
 
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
 }

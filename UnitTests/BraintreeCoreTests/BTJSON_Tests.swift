@@ -60,11 +60,19 @@ class BTJSON_Tests: XCTestCase {
     }
 
     func testArrayJSON() {
-        let JSON = "[\"One\", \"Two\", \"Three\"]".data(using: String.Encoding.utf8)!
-        let array = BTJSON(data: JSON)
+        let jsonString =
+            """
+            [
+                { "thing1" : "thing1" },
+                { "thing2" : "thing2" },
+                { "thing3" : "thing3" }
+            ]
+            """
+        let array = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
 
         XCTAssertTrue(array.isArray)
-        XCTAssertEqual((array as BTJSON).asArray()! as NSArray, ["One", "Two", "Three"])
+        XCTAssertEqual(array.asArray()?.count, 3)
+        XCTAssertEqual(array.asArray()?.first?["thing1"].asString(), "thing1")
     }
 
     func testArrayAccess() {
@@ -109,7 +117,7 @@ class BTJSON_Tests: XCTestCase {
         let JSON = "INVALID JSON".data(using: String.Encoding.utf8)!
         let string = BTJSON(data: JSON)
         
-        let error = (((string[0])["key"] as! BTJSON)[0])
+        let error = ((string[0])["key"][0])
 
         XCTAssertTrue(error.isError as Bool)
         guard let err = error.asError() as NSError? else {return}
@@ -134,11 +142,11 @@ class BTJSON_Tests: XCTestCase {
         
         let nested = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
 
-        XCTAssertEqual((nested["numbers"] as! BTJSON)[0].asString()!, "one")
-        XCTAssertEqual((nested["numbers"] as! BTJSON)[1].asString()!, "two")
-        XCTAssertEqual(((nested["numbers"] as! BTJSON)[2]["tens"] as! BTJSON).asNumber()!, NSDecimalNumber.zero)
-        XCTAssertEqual(((nested["numbers"] as! BTJSON)[2]["ones"] as! BTJSON).asNumber()!, NSDecimalNumber.one)
-        XCTAssertTrue((nested["truthy"] as! BTJSON).isTrue as Bool)
+        XCTAssertEqual((nested["numbers"])[0].asString()!, "one")
+        XCTAssertEqual((nested["numbers"])[1].asString()!, "two")
+        XCTAssertEqual((nested["numbers"])[2]["tens"].asNumber()!, NSDecimalNumber.zero)
+        XCTAssertEqual((nested["numbers"])[2]["ones"].asNumber()!, NSDecimalNumber.one)
+        XCTAssertTrue((nested["truthy"]).isTrue as Bool)
     }
 
     func testTrueBoolInterpretation() {
@@ -269,20 +277,8 @@ class BTJSON_Tests: XCTestCase {
         {
           "aString": "Hello, JSON 😍!",
           "anArray": [
-            1,
-            2,
-            3
-          ],
-          "aSetOfValues": [
-            "a",
-            "b",
-            "c"
-          ],
-          "aSetWithDuplicates": [
-            "a",
-            "a",
-            "b",
-            "b"
+            { "key1": "val1" },
+            { "key2": "val2" }
           ],
           "aLookupDictionary": {
             "foo": {
@@ -300,16 +296,15 @@ class BTJSON_Tests: XCTestCase {
         
         let obj = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
         
-        XCTAssertEqual((obj["aString"] as! BTJSON).asString(), "Hello, JSON 😍!")
-        XCTAssertNil((obj["notAString"] as! BTJSON).asString()) // nil for absent keys
-        XCTAssertNil((obj["anArray"] as! BTJSON).asString()) // nil for invalid values
-        XCTAssertEqual((obj["anArray"] as! BTJSON).asArray()! as NSArray, [1, 2, 3])
-        XCTAssertNil((obj["notAnArray"] as! BTJSON).asArray()) // nil for absent keys
-        XCTAssertNil((obj["aString"] as! BTJSON).asArray()) // nil for invalid values
-        // sets can be parsed as arrays:
-        XCTAssertEqual((obj["aSetOfValues"] as! BTJSON).asArray()! as NSArray, ["a", "b", "c"])
-        XCTAssertEqual((obj["aSetWithDuplicates"] as! BTJSON).asArray()! as NSArray, ["a", "a", "b", "b"])
-        let dictionary = (obj["aLookupDictionary"] as! BTJSON).asDictionary()!
+        XCTAssertEqual(obj["aString"].asString(), "Hello, JSON 😍!")
+        XCTAssertNil(obj["notAString"].asString()) // nil for absent keys
+        XCTAssertNil(obj["anArray"].asString()) // nil for invalid values
+        XCTAssertEqual(obj["anArray"].asArray()?.count, 2)
+        XCTAssertEqual(obj["anArray"].asArray()?.first?["key1"].asString(), "val1")
+        XCTAssertNil(obj["notAnArray"].asArray()) // nil for absent keys
+        XCTAssertNil(obj["aString"].asArray()) // nil for invalid values
+
+        let dictionary = obj["aLookupDictionary"].asDictionary()!
         let foo = dictionary["foo"]! as! Dictionary<String, AnyObject>
         XCTAssertEqual((foo["definition"] as! String), "A meaningless word")
         let letterCount = foo["letterCount"] as! NSNumber
@@ -322,8 +317,8 @@ class BTJSON_Tests: XCTestCase {
         XCTAssertNil((obj["aString"] as AnyObject).asURL())
         XCTAssertNil((obj["anInvalidURL"] as AnyObject).asURL()) // nil for invalid URLs
         // nested resources:
-        let btJson = (obj["aLookupDictionary"] as! BTJSON).asDictionary() as! [String: AnyObject]
+        let btJson = obj["aLookupDictionary"].asDictionary() as! [String: AnyObject]
         XCTAssertEqual((btJson["foo"] as! NSDictionary)["definition"] as! String, "A meaningless word")
-        XCTAssert((((obj["aLookupDictionary"] as! BTJSON)["aString"] as! BTJSON)["anyting"] as! BTJSON).isError as Bool)
+        XCTAssertTrue(obj["aLookupDictionary"]["aString"]["anyting"].isError)
     }
 }
