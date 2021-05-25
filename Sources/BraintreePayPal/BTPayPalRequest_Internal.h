@@ -22,8 +22,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 @property (nonatomic, nullable, copy, readonly) NSString *hermesPath;
 @property (nonatomic, readonly) BTPayPalPaymentType paymentType;
 
-- (NSDictionary<NSString *, NSObject *> *)parametersWithConfiguration:(BTConfiguration *)configuration;
-
 @end
 
 NS_ASSUME_NONNULL_END
