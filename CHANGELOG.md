@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.3.2 (2021-05-25)
 * Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
 * Fix `BTJSON` compatability for Swift
 
