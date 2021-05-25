@@ -2,6 +2,7 @@
 
 ## unreleased
 * Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
+* Fix `BTJSON` compatability for Swift
 
 ## 5.3.1 (2021-05-11)
 * Update Kount SDK to v4.1.5
