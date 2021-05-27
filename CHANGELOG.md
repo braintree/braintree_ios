@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Update PPRiskMagnes to 5.2.0
+* Add support for Carthage prebuilt xcframework dependencies
+
 ## 5.3.2 (2021-05-25)
 * Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
 * Fix `BTJSON` compatability for Swift
