@@ -1,7 +1,3 @@
 {
    "2.2.5": "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.2.2.5.zip?alt=https://github.com/braintree/braintree_ios/raw/test-xcframework-zips/Frameworks/CardinalMobile.xcframework.zip"
 }
-
-// https://github.com/braintree/braintree_ios/raw/test-xcframework-zips/Frameworks/CardinalMobile.xcframework.zip
-
-// https://my.domain.com/release/1.0.0/MyFramework.framework.zip?alt=https://my.domain.com/release/1.0.0/MyFramework.xcframework.zip
