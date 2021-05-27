@@ -1,1 +1,1 @@
-git "file:///Users/scannillo/bt/braintree_ios" "test-xcframework-zips"
+github "braintree/braintree_ios"
