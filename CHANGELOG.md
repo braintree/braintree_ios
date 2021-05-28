@@ -2,7 +2,8 @@
 
 ## unreleased
 * Update PPRiskMagnes to 5.2.0
-* Add support for Carthage prebuilt xcframework dependencies
+* Carthage
+    * Add xcframework support (requires [Carthage 0.38.0+](https://github.com/Carthage/Carthage/releases/tag/0.38.0))
 
 ## 5.3.2 (2021-05-25)
 * Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
