@@ -87,7 +87,7 @@ jobs:
           asset_name: Braintree.framework.zip
           asset_content_type: application/zip
 
-      - name: Create Carthage pre-built frameworks
+      - name: Create Carthage pre-built xcframeworks
         run: |
           rm -rf SampleApps/SPMTest
           rm -rf Carthage
