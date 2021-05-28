@@ -12,25 +12,40 @@
 #import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
-#import <Braintree/Braintree-Swift.h>
 
-#elif SWIFT_PACKAGE // SPM
+#elif SWIFT_PACKAGE                              // SPM
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
-// Use @import for SPM support (see https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348)
-@import PayPalDataCollector;
 
-#else // Carthage
+#else                                            // Carthage
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
+#endif
+
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import PayPalDataCollector;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 
@@ -168,9 +183,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             if (approvalUrl == nil) {
                 approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
             }
-            self.approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
+            approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
 
-            NSString *pairingID = [self.class tokenFromApprovalURL:self.approvalUrl];
+            NSString *pairingID = [self.class tokenFromApprovalURL:approvalUrl];
 
             self.clientMetadataID = [PPDataCollector clientMetadataID:pairingID];
 
@@ -236,11 +251,10 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 }
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL paymentType:(BTPayPalPaymentType)paymentType completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
-    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
-
-    self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:urlComponents.URL
-                                                                  callbackURLScheme:BTPayPalCallbackURLScheme
-                                                                  completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+    self.approvalUrl = appSwitchURL; // exposed for testing
+    self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:appSwitchURL
+                                                               callbackURLScheme:BTPayPalCallbackURLScheme
+                                                               completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         // Required to avoid memory leak for BTPayPalDriver
         self.authenticationSession = nil;
 

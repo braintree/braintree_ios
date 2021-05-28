@@ -280,9 +280,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                              completion(nil, error);
                          } else {
                              NSMutableArray *paymentMethodNonces = [NSMutableArray array];
-                             for (NSDictionary *paymentInfo in [body[@"paymentMethods"] asArray]) {
-                                 BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
-                                 BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:[paymentInfoJSON[@"type"] asString]];
+                             for (BTJSON *paymentInfo in [body[@"paymentMethods"] asArray]) {
+                                 BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfo withParsingBlockForType:[paymentInfo[@"type"] asString]];
                                  if (paymentMethodNonce) {
                                      [paymentMethodNonces addObject:paymentMethodNonce];
                                  }

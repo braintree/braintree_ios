@@ -90,7 +90,7 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
  Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
 */
-- (id)objectForKeyedSubscript:(NSString *)key;
+- (BTJSON *)objectForKeyedSubscript:(NSString *)key;
 
 /**
  Indexes into the JSON as if the current value is an array
