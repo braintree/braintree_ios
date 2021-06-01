@@ -242,7 +242,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoDriverErrorDomain")
             XCTAssertEqual(error.code, BTVenmoDriverErrorType.invalidRequestURL.rawValue)
-            XCTAssertEqual(error.localizedDescription, "Failed to fetch a Venmo paymentContextID while constructing the requestURL. Please contact support.")
+            XCTAssertEqual(error.localizedDescription, "Failed to fetch a Venmo paymentContextID while constructing the requestURL.")
             expectation.fulfill()
         }
 
