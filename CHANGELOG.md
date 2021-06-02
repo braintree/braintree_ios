@@ -3,6 +3,7 @@
 ## unreleased
 * Venmo
   * Add `paymentMethodUsage` to `BTVenmoRequest`
+  * Add `displayName` to `BTVenmoRequest`
 
 ## 5.3.2 (2021-05-25)
 * Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
