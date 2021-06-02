@@ -121,6 +121,32 @@ class BTVenmoDriver_Tests: XCTestCase {
     func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_createsPaymentContext() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         venmoRequest.paymentMethodUsage = .multiUse
+        venmoRequest.displayName = "app-display-name"
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters as NSObject?, [
+            "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
+            "variables": [
+                "input" : [
+                    "customerClient": "MOBILE_APP",
+                    "intent": "CONTINUE",
+                    "merchantProfileId": "venmo_merchant_id",
+                    "paymentMethodUsage": "MULTI_USE",
+                    "displayName": "app-display-name"
+                ]
+            ]
+        ] as NSObject)
+    }
+
+    func testTokenizeVenmoAccount_whenDisplayNameNotSet_createsPaymentContextWithoutDisplayName() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        venmoRequest.paymentMethodUsage = .multiUse
         BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
         venmoDriver.application = fakeApplication

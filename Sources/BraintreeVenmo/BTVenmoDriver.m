@@ -139,15 +139,21 @@ static BTVenmoDriver *appSwitchedDriver;
         metadata.source = BTClientMetadataSourceVenmoApp;
 
         if (venmoRequest.paymentMethodUsage != BTVenmoPaymentMethodUsageUnspecified) {
+            NSMutableDictionary *inputParams = [@{
+                @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
+                @"merchantProfileId": merchantProfileID,
+                @"customerClient": @"MOBILE_APP",
+                @"intent": @"CONTINUE"
+            } mutableCopy];
+
+            if (venmoRequest.displayName) {
+                inputParams[@"displayName"] = venmoRequest.displayName;
+            }
+
             NSDictionary *params = @{
                 @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
                 @"variables": @{
-                        @"input": @{
-                                @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
-                                @"merchantProfileId": merchantProfileID,
-                                @"customerClient": @"MOBILE_APP",
-                                @"intent": @"CONTINUE"
-                        }
+                        @"input": inputParams
                 }
             };
 

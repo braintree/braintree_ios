@@ -42,6 +42,11 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
  */
 @property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
 
+/**
+ * Optional. The business name that will be displayed in the Venmo app payment approval screen. Only used by merchants onboarded as PayFast channel partners.
+ */
+@property (nonatomic, nullable, copy) NSString *displayName;
+
 @end
 
 NS_ASSUME_NONNULL_END
