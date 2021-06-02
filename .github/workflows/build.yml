@@ -32,7 +32,7 @@ jobs:
       - name: Use current branch
         run: echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
       - name: Run carthage update
-        run: cd SampleApps/CarthageTest && carthage update
+        run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
   spm:
