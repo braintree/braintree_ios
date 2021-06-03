@@ -48,4 +48,4 @@ jobs:
       - name: Run swift package resolve
         run: cd SampleApps/SPMTest && swift package resolve
       - name: Build & archive SPMTest
-        run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build
+        run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build CODE_SIGNING_ALLOWED=NO
