@@ -70,15 +70,14 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Create Carthage pre-built binaries
+      - name: Create Carthage pre-built frameworks
         run: |
           rm -rf SampleApps/SPMTest
           carthage build --no-skip-current
           carthage archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
           git checkout SampleApps/SPMTest
 
-      - name: Upload Carthage pre-built binaries to GitHub release
-        id: upload-release-asset
+      - name: Upload Carthage pre-built frameworks to GitHub release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -86,6 +85,25 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: Braintree.framework.zip
           asset_name: Braintree.framework.zip
+          asset_content_type: application/zip
+
+      - name: Create Carthage pre-built xcframeworks
+        run: |
+          rm -rf SampleApps/SPMTest
+          rm -rf Carthage
+          carthage build --no-skip-current --use-xcframeworks
+          rm -rf Carthage/Build/BraintreeTestShared.xcframework
+          zip -r Braintree.xcframework.zip Carthage
+          git checkout SampleApps/SPMTest
+
+      - name: Upload Carthage pre-built xcframeworks to GitHub release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Braintree.xcframework.zip
+          asset_name: Braintree.xcframework.zip
           asset_content_type: application/zip
 
       - name: Publish to CocoaPods
