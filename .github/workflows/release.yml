@@ -8,12 +8,12 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: macOS-latest
+    runs-on: macOS-11
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Use Xcode 12.4
-        run: sudo xcode-select -switch /Applications/Xcode_12.4.app
+      - name: Use Xcode 12.5
+        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
         with:
           fetch-depth: 0
 
