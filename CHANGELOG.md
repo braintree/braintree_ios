@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.4.0 (2021-06-07)
 * Venmo
   * Add `paymentMethodUsage` to `BTVenmoRequest`
   * Add `displayName` to `BTVenmoRequest`
