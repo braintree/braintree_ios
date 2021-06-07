@@ -1,6 +1,9 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Venmo
+  * Add `paymentMethodUsage` to `BTVenmoRequest`
+  * Add `displayName` to `BTVenmoRequest`
 * Update PPRiskMagnes to 5.2.0
 * Carthage
     * Add xcframework support (requires [Carthage 0.38.0+](https://github.com/Carthage/Carthage/releases/tag/0.38.0))

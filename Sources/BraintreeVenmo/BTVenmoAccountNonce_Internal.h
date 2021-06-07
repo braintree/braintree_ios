@@ -11,6 +11,8 @@
                                   username:(NSString *)username
                                  isDefault:(BOOL)isDefault;
 
+- (instancetype)initWithPaymentContextJSON:(BTJSON *)paymentContextJSON;
+
 + (instancetype)venmoAccountWithJSON:(BTJSON *)venmoAccountJSON;
 
 @end
