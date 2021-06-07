@@ -255,6 +255,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 # pragma mark - Payment Methods
 
+// NEXT_MAJOR_VERSION - move fetchPaymentMethodNonces methods to Drop-in for compatibility with Android
+// This will also allow us to remove BTPaymentMethodNonceParser
 - (void)fetchPaymentMethodNonces:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completion {
     [self fetchPaymentMethodNonces:NO completion:completion];
 }
