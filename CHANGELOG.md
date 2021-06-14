@@ -2,7 +2,7 @@
 
 ## Unreleased
 * Swift Package Manager
-  * Removes invalid excludes from `Package.swift`
+  * Remove invalid excludes from `Package.swift`
 
 ## 5.4.0 (2021-06-07)
 * Venmo
