@@ -51,7 +51,7 @@ jobs:
         run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
   spm_old:
     name: SPM (on Xcode 12.4)
-    runs-on: macOS-10.3
+    runs-on: macos-10.15
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
