@@ -49,7 +49,7 @@ jobs:
         run: cd SampleApps/SPMTest && swift package resolve
       - name: Build & archive SPMTest
         run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
-  spm-xcode12.4:
+  spm_old:
     name: SPM (on Xcode 12.4)
     runs-on: macOS-10
     steps:
