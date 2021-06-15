@@ -19,7 +19,7 @@ class BTPayPalNativeTokenizationClient {
                                                                     correlationID: "", // TODO: get this value from PayPalCheckout SDK
                                                                     clientMetadata: apiClient.metadata)
 
-        apiClient .post("/v1/payment_methods/paypal_accounts", parameters: tokenizationRequest.parameters()) { body, _, error in
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: tokenizationRequest.parameters()) { body, _, error in
             guard let json = body, error == nil else {
                 completion(.failure(.tokenizationFailed))
                 return
