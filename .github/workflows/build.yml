@@ -56,7 +56,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Use Xcode 13
-        run: sudo xcode-select -switch /Applications/Xcode_13_beta.app
+        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
@@ -70,7 +70,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Use Xcode 13
-        run: sudo xcode-select -switch /Applications/Xcode_13_beta.app
+        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Remove SPMTest
         run: |
           git checkout $GITHUB_HEAD_REF
@@ -90,7 +90,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Use Xcode 13
-        run: sudo xcode-select -switch /Applications/Xcode_13_beta.app
+        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Use current branch
         run: sed -i '' 's/branch = .*/branch = \"'"$GITHUB_HEAD_REF"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
       - name: Run swift package resolve
