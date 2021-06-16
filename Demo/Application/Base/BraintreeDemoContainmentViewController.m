@@ -19,7 +19,6 @@
     self.title = NSLocalizedString(@"Braintree", nil);
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action: @selector(tappedRefresh)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil) style:UIBarButtonItemStylePlain target:self action: @selector(tappedSettings)];
-    self.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController setToolbarHidden:NO];
     [self setupToolbar];
     [self reloadIntegration];
