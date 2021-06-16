@@ -87,6 +87,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCore",
+            exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
         .target(
