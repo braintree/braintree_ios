@@ -131,7 +131,6 @@ let package = Package(
         .target(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
-            exclude: ["Info.plist"],
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
