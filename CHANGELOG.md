@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
+
 ## 5.4.0 (2021-06-07)
 * Venmo
   * Add `paymentMethodUsage` to `BTVenmoRequest`
