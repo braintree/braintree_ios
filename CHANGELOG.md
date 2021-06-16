@@ -1,8 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
-* Swift Package Manager
-  * Remove invalid excludes from `Package.swift`
+## unreleased
+* Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
+* Remove invalid excludes from `Package.swift`
 
 ## 5.4.0 (2021-06-07)
 * Venmo
