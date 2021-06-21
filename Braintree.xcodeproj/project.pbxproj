@@ -158,6 +158,8 @@
 		80FF7DC025882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DBF25882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift */; };
 		80FF7DD4258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DD3258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift */; };
 		8DAC8AD7FDF6F9C7FEE865F9 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACE57A9170944F73E8C5E9D /* Pods_Tests_BraintreeCoreTests.framework */; };
+		9C12D27226812B7F00E81ED1 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; };
+		9C12D27326812B7F00E81ED1 /* CardinalMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A07FA48D21B5C54E0026FF0E /* BTPayPalLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A07FA48E21B5C54E0026FF0E /* BTPayPalLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */; };
 		A5F444AE1E89906700B2B4F7 /* BTPayPalCreditFinancing.h in Headers */ = {isa = PBXBuildFile; fileRef = A5F444AD1E89903E00B2B4F7 /* BTPayPalCreditFinancing.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -261,7 +263,6 @@
 		A91E1EBC24FEEF3C007540E5 /* BTThreeDSecureAdditionalInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 801FD8E32231B4F000014DB0 /* BTThreeDSecureAdditionalInformation.m */; };
 		A91E1EBD24FEEF3C007540E5 /* BTThreeDSecureResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 423B921524D1DFB50048B655 /* BTThreeDSecureResult.m */; };
 		A91E1EC124FEEFA0007540E5 /* BraintreePaymentFlow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03502C841E9C0A1700F15EE6 /* BraintreePaymentFlow.framework */; platformFilter = ios; };
-		A91E1EC224FEEFC0007540E5 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A044377322AFFBD10084E2C1 /* CardinalMobile.framework */; platformFilter = ios; };
 		A91E1EC324FEF00A007540E5 /* BTConfiguration+ThreeDSecure.h in Headers */ = {isa = PBXBuildFile; fileRef = 80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A91E1EC424FEF00A007540E5 /* BTPaymentFlowDriver+ThreeDSecure.h in Headers */ = {isa = PBXBuildFile; fileRef = 03800A5E1F04632B00068F53 /* BTPaymentFlowDriver+ThreeDSecure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A91E1EC524FEF00A007540E5 /* BTThreeDSecureAdditionalInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 80A1EE3F2236B04F00F6218B /* BTThreeDSecureAdditionalInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -681,6 +682,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				80CC038B263210D700C4E6E0 /* BraintreeCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C12D27426812B7F00E81ED1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9C12D27326812B7F00E81ED1 /* CardinalMobile.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1199,8 +1211,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A91E1EDA24FEF1EA007540E5 /* BraintreeCard.framework in Frameworks */,
-				A91E1EC224FEEFC0007540E5 /* CardinalMobile.framework in Frameworks */,
 				A91E1EC124FEEFA0007540E5 /* BraintreePaymentFlow.framework in Frameworks */,
+				9C12D27226812B7F00E81ED1 /* CardinalMobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2635,6 +2647,7 @@
 				A91E1EA724FEEF21007540E5 /* Sources */,
 				A91E1EA824FEEF21007540E5 /* Frameworks */,
 				A91E1EA924FEEF21007540E5 /* Resources */,
+				9C12D27426812B7F00E81ED1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

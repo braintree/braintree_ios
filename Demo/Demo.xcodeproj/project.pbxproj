@@ -42,10 +42,10 @@
 		803D6509256DAF9A00ACE692 /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */; };
 		803D650A256DAF9A00ACE692 /* PayPalDataCollector.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A5D2553152A00006F53 /* Venmo_UITests.swift */; };
-		9C12D26D268126B900E81ED1 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26C268126B900E81ED1 /* PPRiskMagnes.xcframework */; };
-		9C12D26E268126B900E81ED1 /* PPRiskMagnes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26C268126B900E81ED1 /* PPRiskMagnes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9C12D270268126BB00E81ED1 /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26F268126BB00E81ED1 /* CardinalMobile.xcframework */; };
-		9C12D271268126BB00E81ED1 /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26F268126BB00E81ED1 /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9C12D27526812D9000E81ED1 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26C268126B900E81ED1 /* PPRiskMagnes.xcframework */; };
+		9C12D27626812D9000E81ED1 /* PPRiskMagnes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26C268126B900E81ED1 /* PPRiskMagnes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9C12D27726812DA600E81ED1 /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26F268126BB00E81ED1 /* CardinalMobile.xcframework */; };
+		9C12D27826812DA600E81ED1 /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C12D26F268126BB00E81ED1 /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
 		A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */; };
 		A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7F24DB44B10095EEEE /* Settings.bundle */; };
@@ -169,10 +169,11 @@
 			dstSubfolderSpec = 10;
 			files = (
 				803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */,
-				9C12D271268126BB00E81ED1 /* CardinalMobile.xcframework in Embed Frameworks */,
+				9C12D27826812DA600E81ED1 /* CardinalMobile.xcframework in Embed Frameworks */,
 				803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */,
 				803D650A256DAF9A00ACE692 /* PayPalDataCollector.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
+				9C12D27626812D9000E81ED1 /* PPRiskMagnes.xcframework in Embed Frameworks */,
 				803D64FE256DAF9A00ACE692 /* BraintreeDataCollector.framework in Embed Frameworks */,
 				803D64FC256DAF9A00ACE692 /* BraintreeCore.framework in Embed Frameworks */,
 				803D6504256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Embed Frameworks */,
@@ -180,7 +181,6 @@
 				803D6506256DAF9A00ACE692 /* BraintreeUnionPay.framework in Embed Frameworks */,
 				803D6502256DAF9A00ACE692 /* BraintreePayPal.framework in Embed Frameworks */,
 				803D64F8256DAF9A00ACE692 /* BraintreeApplePay.framework in Embed Frameworks */,
-				9C12D26E268126B900E81ED1 /* PPRiskMagnes.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,12 +432,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				803D64FB256DAF9A00ACE692 /* BraintreeCore.framework in Frameworks */,
-				9C12D270268126BB00E81ED1 /* CardinalMobile.xcframework in Frameworks */,
+				9C12D27726812DA600E81ED1 /* CardinalMobile.xcframework in Frameworks */,
 				803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */,
+				9C12D27526812D9000E81ED1 /* PPRiskMagnes.xcframework in Frameworks */,
 				803D6501256DAF9A00ACE692 /* BraintreePayPal.framework in Frameworks */,
 				803D64FD256DAF9A00ACE692 /* BraintreeDataCollector.framework in Frameworks */,
 				803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */,
-				9C12D26D268126B900E81ED1 /* PPRiskMagnes.xcframework in Frameworks */,
 				803D6509256DAF9A00ACE692 /* PayPalDataCollector.framework in Frameworks */,
 				803D6507256DAF9A00ACE692 /* BraintreeVenmo.framework in Frameworks */,
 				803D64FF256DAF9A00ACE692 /* BraintreePaymentFlow.framework in Frameworks */,
