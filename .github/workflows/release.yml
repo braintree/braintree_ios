@@ -17,6 +17,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Use Xcode 12.5
+        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
+
       - name: Check for unreleased section in changelog
         run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
 
