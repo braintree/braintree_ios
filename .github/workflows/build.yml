@@ -60,8 +60,8 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
         # Allowing warnings until Xcode 13 CocoaPods vendored frameworks issue is resolved: https://github.com/CocoaPods/CocoaPods/issues/10731
-      - name: Run pod lib lint --allow-warnings
-        run: pod lib lint
+      - name: Run pod lib lint 
+        run: pod lib lint --allow-warnings
   carthage_xcode_beta:
     name: Carthage (Xcode 13-beta)
     runs-on: macOS-11
