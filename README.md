@@ -28,7 +28,20 @@ We recommend using [Swift Package Manager](https://swift.org/package-manager/), 
 ### Swift Package Manager
 _This feature is only available in v5._
 
-See our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SWIFT_PACKAGE_MANAGER.md) for instructions on integrating with SPM. Using Braintree with SPM requires Xcode 12.5+.
+To add the `Braintree` package to your Xcode project, select _File > Swift Packages > Add Package Dependency_ and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
+
+If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see _General > Frameworks, Libraries, and Embedded Content_).
+
+In your app's source code files, use the following import syntax to include Braintree's libraries:
+```
+import BraintreeCore
+import BraintreeCard
+import BraintreeApplePay
+import BraintreePayPal
+```
+
+**Braintree v5.X.0 requires Xcode 12.5+ for SPM.** We recommend using the latest version for the simplest SPM integration. If using Braintree v5.X.0 and below, please see our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SPM_BUGFIX_GUIDE.m) for specific workarounds required to use these older versions.
+
 
 ### CocoaPods
 ```

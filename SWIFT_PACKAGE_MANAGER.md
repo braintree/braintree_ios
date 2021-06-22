@@ -1,29 +1,14 @@
-# Swift Package Manager Instructions
+# Swift Package Manager Instructions (for Braintree v5.0.0 to v5.X.0)
 
-Support for Swift Package Manager was introduced in Braintree iOS v5. It requires Xcode 12.5+.
+It is recommended to update to Braintree v5.X.0+ and Xcode 12.5 for the best SPM experience.
 
-* [General Instructions](#general-instructions)
 * [Binary Dependencies](#binary-dependencies)
 * [BraintreeDataCollector](#braintreedatacollector)
 * [BraintreeThreeDSecure](#braintreethreedsecure)
 
-### General Instructions
-
-To add the `Braintree` package to your Xcode project, select _File > Swift Packages > Add Package Dependency_ and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
-
-If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see _General > Frameworks, Libraries, and Embedded Content_).
-
-In your app's source code files, use the following import syntax to include Braintree's libraries:
-```
-import BraintreeCore
-import BraintreeCard
-import BraintreeApplePay
-import BraintreePayPal
-```
-
 ### Binary Dependencies
 
-#### Versions 5.4.0 and below
+#### Versions 5.0.0 to 5.X.0
 
 There is a known Xcode bug, reported in [this GitHub issue](https://github.com/braintree/braintree_ios/issues/576), that occurs when archiving apps that include binary dependencies via SPM. The workaround is to tick the checkboxes to explicitly include these binary dependencies in your app.
 
@@ -37,7 +22,7 @@ If your app uses app extensions, there is a [known SPM issue](https://forums.swi
 
 ### BraintreeDataCollector
 
-#### Versions 5.4.0 and below
+#### Versions 5.0.0 to 5.X.0
 
 There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-spm-package-for-ios-executable/41245/13) that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
 
