@@ -2,6 +2,7 @@
 
 ## unreleased
 * Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
+* Remove SPM product libraries for `KountDataCollector` and `PPRiskMagnes` (this was a workaround for an Xcode bug discussed in #576; bug resolved in Xcode 12.5)
 
 ## 5.4.0 (2021-06-07)
 * Venmo
@@ -18,7 +19,6 @@
 ## 5.3.1 (2021-05-11)
 * Update Kount SDK to v4.1.5
 * Fix bug where `userAction` on `BTPayPalCheckoutRequest` was ignored
-* Remove SPM product libraries for `KountDataCollector` and `PPRiskMagnes` (this was a workaround for an Xcode bug discussed in #576; bug resolved in Xcode 12.5)
 
 ## 4.37.1 (2021-04-06)
 * Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
