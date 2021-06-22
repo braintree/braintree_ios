@@ -114,7 +114,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "CardinalMobile",
-            path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+            path: "Frameworks/CardinalMobile.xcframework"
         ),
         .target(
             name: "BraintreeUnionPay",
@@ -128,7 +128,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "KountDataCollector",
-            path: "Frameworks/XCFrameworks/KountDataCollector.xcframework"
+            path: "Frameworks/KountDataCollector.xcframework"
         ),
         .target(
             name: "PayPalDataCollector",
@@ -137,7 +137,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
-            path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+            path: "Frameworks/PPRiskMagnes.xcframework"
         )
     ]
 )

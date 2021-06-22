@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
   s.subspec "DataCollector" do |s|
     s.source_files = "Sources/BraintreeDataCollector/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeDataCollector/Public/BraintreeDataCollector/*.h"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
+    s.vendored_frameworks = "Frameworks/KountDataCollector.xcframework"
     s.dependency "Braintree/Core"
   end
 
@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
 
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+    s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
   end
 
   s.subspec "ThreeDSecure" do |s|
@@ -76,7 +76,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/*.h"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PaymentFlow"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+    s.vendored_frameworks = "Frameworks/CardinalMobile.xcframework"
   end
 
   s.subspec "UnionPay" do |s|
