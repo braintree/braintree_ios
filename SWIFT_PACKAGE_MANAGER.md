@@ -1,6 +1,6 @@
-# Swift Package Manager Instructions (for Braintree v5.0.0 to v5.X.0)
+# Swift Package Manager Instructions (for Braintree 5.0.0 to 5.X.0)
 
-It is recommended to update to Braintree v5.X.0+ and Xcode 12.5 for the best SPM experience.
+It is recommended to update to Braintree 5.X.0+ and Xcode 12.5 for the best SPM experience.
 
 * [Binary Dependencies](#binary-dependencies)
 * [BraintreeDataCollector](#braintreedatacollector)
@@ -37,7 +37,7 @@ Make sure to select your app's target in the _Provide build settings from_ drop-
 
 ### BraintreeThreeDSecure
 
-#### Versions 5.3.0+
+#### Versions 5.3.0 to 5.X.0
 
 If you are using `BraintreeThreeDSecure`, you must also explicitly include `CardinalMobile` and `PPRiskMagnes`, both of which can be included through SPM.
 
