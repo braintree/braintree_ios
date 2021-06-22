@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Use Xcode 12.5
-        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
         with:
           fetch-depth: 0
 
