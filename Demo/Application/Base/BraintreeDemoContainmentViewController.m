@@ -48,6 +48,10 @@
     self.statusItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.statusItem.enabled = NO;
     self.toolbarItems = @[flexSpaceLeft, self.statusItem, flexSpaceRight];
+    
+    if (@available(iOS 15.0, *)) {
+        self.navigationController.toolbar.scrollEdgeAppearance = self.navigationController.toolbar.standardAppearance;
+    }
 }
 
 #pragma mark - UI Updates
@@ -63,6 +67,9 @@
 - (void)updateStatus:(NSString *)status {
     [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
     NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
+    if (@available(iOS 13.0, *)) {
+        [(UIButton *)self.statusItem.customView setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
+    }
 }
 
 
