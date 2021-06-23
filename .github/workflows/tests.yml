@@ -7,8 +7,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Use Xcode 12.5
-        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
+      - name: Use Xcode 13
+        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
@@ -19,8 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Use Xcode 12.5
-        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
+      - name: Use Xcode 13
+        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run UI Tests
@@ -31,8 +31,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Use Xcode 12.5
-        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
+      - name: Use Xcode 13
+        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
