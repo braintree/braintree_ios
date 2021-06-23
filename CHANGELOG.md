@@ -1,8 +1,13 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
-* Remove SPM product libraries for `KountDataCollector` and `PPRiskMagnes` (this was a workaround for an Xcode bug discussed in #576; bug resolved in Xcode 12.5)
+* Swift Package Manager
+  * Re-add `BraintreeCore` dependency to `PayPalDataCollector` for archive issue workaround (fixes #679)
+  * Remove product libraries for `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` (requires Xcode 12.5+)
+    _Notes:_
+    * This was workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
+    * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
+    * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
 
 ## 5.4.0 (2021-06-07)
 * Venmo

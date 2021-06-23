@@ -40,7 +40,7 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-**Braintree 5.X.0 requires Xcode 12.5+ for SPM.** We recommend using the latest version for the simplest SPM integration. If using Braintree 5.X.0 and below, please see our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SPM_BUGFIX_GUIDE.md) for specific workarounds required to use these older versions.
+**Braintree 5.X.0 requires Xcode 12.5+ for SPM.** We recommend using the latest version for the simplest SPM integration. If using Braintree 5.X.0 and below, please see our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SWIFT_PACKAGE_MANAGER.md) for specific workarounds required to use these older versions.
 
 
 ### CocoaPods
