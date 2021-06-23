@@ -1,5 +1,20 @@
 # Braintree iOS SDK Release Notes
 
+## 5.4.1 (2021-06-22)
+* Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
+
+## 5.4.0 (2021-06-07)
+* Venmo
+  * Add `paymentMethodUsage` to `BTVenmoRequest`
+  * Add `displayName` to `BTVenmoRequest`
+* Update PPRiskMagnes to 5.2.0
+* Carthage
+    * Add xcframework support (requires [Carthage 0.38.0+](https://github.com/Carthage/Carthage/releases/tag/0.38.0))
+
+## 5.3.2 (2021-05-25)
+* Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
+* Fix `BTJSON` compatability for Swift
+
 ## 5.3.1 (2021-05-11)
 * Update Kount SDK to v4.1.5
 * Fix bug where `userAction` on `BTPayPalCheckoutRequest` was ignored
