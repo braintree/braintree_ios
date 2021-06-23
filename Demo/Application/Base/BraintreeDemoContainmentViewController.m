@@ -66,10 +66,8 @@
 
 - (void)updateStatus:(NSString *)status {
     [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
+    [(UIButton *)self.statusItem.customView setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
-    if (@available(iOS 13.0, *)) {
-        [(UIButton *)self.statusItem.customView setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
-    }
 }
 
 
