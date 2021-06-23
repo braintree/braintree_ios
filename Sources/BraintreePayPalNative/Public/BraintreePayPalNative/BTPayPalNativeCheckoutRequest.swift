@@ -26,4 +26,15 @@ import BraintreePayPal
 
     let payPalReturnURL: String
     let hermesPath: String
+
+    var intentAsString: String {
+        switch intent {
+        case .sale:
+            return "sale"
+        case .order:
+            return "order"
+        default:
+            return "authorize"
+        }
+    }
 }

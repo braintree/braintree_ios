@@ -14,7 +14,7 @@
 
 @implementation BTPaymentMethodNonce
 
-- (instancetype)initWithNonce:(NSString *)nonce type:(NSString *)type {
+- (nullable instancetype)initWithNonce:(NSString *)nonce type:(NSString *)type {
     if (!nonce) return nil;
     
     if (self = [super init]) {

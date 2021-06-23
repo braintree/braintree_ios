@@ -33,11 +33,6 @@ typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
 @property (nonatomic, strong) BTGraphQLHTTP *graphQL;
 
 /**
- Client metadata that is used for tracking the client session
-*/
-@property (nonatomic, readonly, strong) BTClientMetadata *metadata;
-
-/**
  Exposed for testing analytics
 */
 @property (nonatomic, strong) BTAnalyticsService *analyticsService;

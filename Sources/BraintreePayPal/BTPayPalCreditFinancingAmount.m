@@ -18,4 +18,12 @@
     return self;
 }
 
+- (instancetype)initWithJSON:(BTJSON *)json {
+    if (self = [super init]) {
+        _currency = json[@"currency"].asString;
+        _value = json[@"value"].asString;
+    }
+    return self;
+}
+
 @end

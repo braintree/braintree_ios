@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param nonce       A transactable payment method nonce.
  @return A Payment Method Nonce, or `nil` if nonce is nil.
 */
-- (nullable instancetype)initWithNonce:(NSString *)nonce;
+- (nullable instancetype)initWithNonce:(NSString * _Nullable)nonce;
 
 /**
  Initialize a new Payment Method Nonce.
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param type         A string identifying the type of the payment method.
  @return A Payment Method Nonce, or `nil` if nonce is nil.
 */
-- (nullable instancetype)initWithNonce:(NSString *)nonce type:(NSString *)type;
+- (nullable instancetype)initWithNonce:(NSString * _Nullable)nonce type:(NSString *)type;
 
 /**
  Initialize a new Payment Method Nonce.
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param isDefault   A boolean indicating whether this is a default payment method.
  @return A Payment Method Nonce, or `nil` if nonce is nil.
 */
-- (nullable instancetype)initWithNonce:(NSString *)nonce type:(nonnull NSString *)type isDefault:(BOOL)isDefault;
+- (nullable instancetype)initWithNonce:(NSString * _Nullable)nonce type:(nonnull NSString *)type isDefault:(BOOL)isDefault;
 
 /**
  The one-time use payment method nonce

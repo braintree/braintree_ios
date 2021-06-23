@@ -70,6 +70,12 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
                    integration:(BTClientMetadataIntegrationType)integration;
 
 /**
+ :nodoc:
+ Client metadata that is used for tracking the client session
+*/
+@property (nonatomic, readonly, strong) BTClientMetadata *metadata;
+
+/**
  Provides configuration data as a `BTJSON` object.
 
  The configuration data can be used by supported payment options to configure themselves

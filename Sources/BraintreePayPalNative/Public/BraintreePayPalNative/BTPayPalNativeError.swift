@@ -25,6 +25,18 @@ import Foundation
     /// PayPal flow was canceled by the user
     case canceled
 
+    /// PayPalCheckout SDK returned an error
+    case checkoutSDKFailed
+
+    /// Tokenization with the Braintree Gateway failed
+    case tokenizationFailed
+
+    /// Failed to parse tokenization result
+    case parsingTokenizationResultFailed
+
+    /// PayPalCheckoutSDK did not provide a return URL
+    case returnURLNotFound
+
     public var errorDescription: String? {
         switch self {
         case .invalidRequest:
@@ -41,6 +53,14 @@ import Foundation
             return "Failed to create PayPal order."
         case .canceled:
             return "PayPal flow was canceled by the user."
+        case .checkoutSDKFailed:
+            return "PayPalCheckout SDK returned an error."
+        case .tokenizationFailed:
+            return "Tokenization with the Braintree Gateway failed."
+        case .parsingTokenizationResultFailed:
+            return "Failed to parse tokenization result."
+        case .returnURLNotFound:
+            return "PayPalCheckout SDK did not provide a return URL."
         }
     }
 }
