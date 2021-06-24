@@ -13,6 +13,11 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
 
     func testParameters_whenUsingCheckoutRequest_containsAllValues() {
         let expected: [String : Any] = [
+            "_meta": [
+                "source": "unknown",
+                "integration": "custom",
+                "sessionId": "mock-session-id",
+            ],
             "paypal_account": [
                 "client": [
                     "platform": "iOS",
@@ -28,11 +33,6 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
                 ],
                 "intent": "order",
                 "correlation_id": "some-correlation-id",
-                "_meta": [
-                    "source": "unknown",
-                    "integration": "custom",
-                    "sessionId": "mock-session-id",
-                ]
             ]
         ]
 
@@ -49,6 +49,11 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
 
     func testParameters_whenUsingVaultRequest_containsAllValues() {
         let expected: [String : Any] = [
+            "_meta": [
+                "source": "unknown",
+                "integration": "custom",
+                "sessionId": "mock-session-id",
+            ],
             "paypal_account": [
                 "client": [
                     "platform": "iOS",
@@ -59,12 +64,7 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
                 "response": [
                     "webURL": "some-url"
                 ],
-                "correlation_id": "some-correlation-id",
-                "_meta": [
-                    "source": "unknown",
-                    "integration": "custom",
-                    "sessionId": "mock-session-id",
-                ]
+                "correlation_id": "some-correlation-id"
             ]
         ]
 
