@@ -2,7 +2,6 @@
 
 ## unreleased
 * Swift Package Manager
-  * Re-add `BraintreeCore` dependency to `PayPalDataCollector` for archive issue workaround (fixes #679)
   * Remove product libraries for `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` (requires Xcode 12.5+)
     _Notes:_
     * This was workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
