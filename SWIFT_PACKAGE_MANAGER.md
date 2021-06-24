@@ -1,6 +1,6 @@
-# Swift Package Manager Instructions (for Braintree 5.0.0 to 5.X.0)
+# Swift Package Manager Instructions (for Braintree 5.0.0 to 5.4.1)
 
-It is recommended to update to Braintree 5.X.0+ and Xcode 12.5 for the best SPM experience.
+It is recommended to update to Braintree 5.4.2+ and Xcode 12.5 for the best SPM experience.
 
 * [Binary Dependencies](#binary-dependencies)
 * [BraintreeDataCollector](#braintreedatacollector)
@@ -8,7 +8,7 @@ It is recommended to update to Braintree 5.X.0+ and Xcode 12.5 for the best SPM 
 
 ### Binary Dependencies
 
-#### Versions 5.0.0 to 5.X.0
+#### Versions 5.0.0 to 5.4.1
 
 There is a known Xcode bug, reported in [this GitHub issue](https://github.com/braintree/braintree_ios/issues/576), that occurs when archiving apps that include binary dependencies via SPM. The workaround is to tick the checkboxes to explicitly include these binary dependencies in your app.
 
@@ -16,13 +16,13 @@ To use the `BraintreeDataCollector` library, you must also check the box for `Ko
 
 To use the `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, or `BraintreeVenmo` libraries, you must also check the box for `PPRiskMagnes`.
 
-To use the `BraintreeThreeDSecure` library, you must also check the boxes for `CardinalMobile` and `PPRiskMagnes`. _(This only applies to versions greater than 5.2.0. See [instructions below](#braintreethreedsecure) if you are using versions 5.0.0 to 5.2.0.)_
+To use the `BraintreeThreeDSecure` library, you must also check the boxes for `CardinalMobile` and `PPRiskMagnes`. _(This only applies to versions 5.3.0 through 5.4.1. See [instructions below](#braintreethreedsecure) if you are using versions 5.0.0 to 5.2.0.)_
 
 If your app uses app extensions, there is a [known SPM issue](https://forums.swift.org/t/swift-package-binary-framework-issue/41922) while using SPM packages with binaries. The issue occurs when uploading a build to App Store Connect. You can read the report on Swift Forums and follow [this workaround](https://github.com/braintree/braintree-ios-drop-in/issues/317#issuecomment-815005747).
 
 ### BraintreeDataCollector
 
-#### Versions 5.0.0 to 5.X.0
+#### Versions 5.0.0 to 5.4.1
 
 There is a [known bug](https://forums.swift.org/t/packaging-static-library-in-spm-package-for-ios-executable/41245/13) that occurs when uploading static libraries packaged as xcframeworks for Swift Package Manager. To avoid this issue, you must add a post-action to your scheme's Build section that removes an extra copy of `libKountDataCollector.a`.
 
@@ -37,7 +37,7 @@ Make sure to select your app's target in the _Provide build settings from_ drop-
 
 ### BraintreeThreeDSecure
 
-#### Versions 5.3.0 to 5.X.0
+#### Versions 5.3.0 to 5.4.1
 
 If you are using `BraintreeThreeDSecure`, you must also explicitly include `CardinalMobile` and `PPRiskMagnes`, both of which can be included through SPM.
 
