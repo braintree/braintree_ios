@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.4.2 (2021-06-24)
 * Swift Package Manager
   * Remove product libraries for `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` (requires Xcode 12.5+)
     * _Notes:_
