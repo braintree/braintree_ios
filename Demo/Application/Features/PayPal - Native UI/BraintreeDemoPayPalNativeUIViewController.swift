@@ -1,40 +1,60 @@
 import UIKit
 import BraintreePayPalNative
 
-class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseViewController {
+class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoBaseViewController {
 
     private var ppNativeClient: BTPayPalNativeClient?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.textAlignment = .center
-        textView.text = "This demo is using a hard-coded tokenization key for a BT sandbox with a linked PayPal sandbox account."
-        self.view.addSubview(textView)
+        let checkoutButton = UIButton(type: .custom)
+        checkoutButton.setTitle(NSLocalizedString("PayPal Checkout (Native UI)", comment: ""), for: .normal)
+        checkoutButton.setTitleColor(UIColor.blue, for: .normal)
+        checkoutButton.setTitleColor(UIColor(red: 50.0 / 255, green: 50.0 / 255, blue: 255.0 / 255, alpha: 1.0), for: .highlighted)
+        checkoutButton.setTitleColor(UIColor.lightGray, for: .disabled)
+        checkoutButton.addTarget(self, action: #selector(tappedPayPalCheckout(_:)), for: .touchUpInside)
+
+        let vaultButton = UIButton(type: .custom)
+        vaultButton.setTitle(NSLocalizedString("PayPal Vault (Native UI)", comment: ""), for: .normal)
+        vaultButton.setTitleColor(UIColor.blue, for: .normal)
+        vaultButton.setTitleColor(UIColor(red: 50.0 / 255, green: 50.0 / 255, blue: 255.0 / 255, alpha: 1.0), for: .highlighted)
+        vaultButton.setTitleColor(UIColor.lightGray, for: .disabled)
+        vaultButton.addTarget(self, action: #selector(tappedPayPalVault(_:)), for: .touchUpInside)
+
+        let label = UILabel()
+        label.textAlignment = .center
+        label.numberOfLines = 3
+        label.text = "This demo is using a hard-coded tokenization key for a BT sandbox with a linked PayPal sandbox account."
+
+        let stackView = UIStackView(arrangedSubviews: [checkoutButton, vaultButton, label])
+        stackView.axis = .vertical
+        stackView.spacing = 40
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            textView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            textView.topAnchor.constraint(equalTo: self.paymentButton.bottomAnchor),
-            textView.heightAnchor.constraint(equalToConstant: 60.0)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
 
-    override func createPaymentButton() -> UIView? {
-        let button = UIButton(type: .custom)
-        button.setTitle(NSLocalizedString("PayPal - Native UI", comment: ""), for: .normal)
-        button.setTitleColor(UIColor.blue, for: .normal)
-        button.setTitleColor(UIColor(red: 50.0 / 255, green: 50.0 / 255, blue: 255.0 / 255, alpha: 1.0), for: .highlighted)
-        button.setTitleColor(UIColor.lightGray, for: .disabled)
-        button.addTarget(self, action: #selector(tappedPayPalNativeCheckout(_:)), for: .touchUpInside)
-        return button
+    @objc func tappedPayPalCheckout(_ button: UIButton) {
+        self.progressBlock("Tapped PayPal Checkout - Native UI: using BTPayPalNativeClient")
+        let request = BTPayPalNativeCheckoutRequest(payPalReturnURL: "tacocats://paypalpay", amount: "10.00")
+        tokenizePayPalAccount(button: button, request: request)
     }
 
-    @objc func tappedPayPalNativeCheckout(_ button: UIButton?) {
-        self.progressBlock("Tapped PayPal - Native UI: using BTPayPalNativeClient")
+    @objc func tappedPayPalVault(_ button: UIButton) {
+        self.progressBlock("Tapped PayPal Vault - Native UI: using BTPayPalNativeClient")
+        let request = BTPayPalNativeVaultRequest(payPalReturnURL: "tacocats://paypalpay")
+        tokenizePayPalAccount(button: button, request: request)
+    }
 
-        button?.setTitle(NSLocalizedString("Processing...", comment: ""), for: .disabled)
-        button?.isEnabled = false
+    private func tokenizePayPalAccount(button: UIButton, request: BTPayPalRequest) {
+        button.setTitle(NSLocalizedString("Processing...", comment: ""), for: .disabled)
+        button.isEnabled = false
 
         // This demo uses a hard coded tokenization key.
         // You can find the corresponding accounts for "PayPal Native Checkout" in 1Password.
@@ -44,11 +64,10 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
             return
         }
 
-        let request = BTPayPalNativeCheckoutRequest(payPalReturnURL: "tacocats://paypalpay", amount: "10.00")
-
         ppNativeClient = BTPayPalNativeClient(apiClient: apiClient)
         ppNativeClient?.tokenizePayPalAccount(with: request) { (paypalAccountNonce, error) in
-            button?.isEnabled = true
+            button.isEnabled = true
+
             if let err = error {
                 self.progressBlock(err.localizedDescription)
             }
