@@ -8,6 +8,11 @@
     * This was workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
     * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
     * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
+  * Xcode 13 Beta
+    * Remove invalid file path exclusions from `Package.swift` (thanks @JonathanDowning)
+
+## 5.4.1 (2021-06-22)
+* Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
 
 ## 5.4.0 (2021-06-07)
 * Venmo
