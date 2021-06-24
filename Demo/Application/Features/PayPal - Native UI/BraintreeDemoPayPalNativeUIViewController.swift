@@ -3,6 +3,8 @@ import BraintreePayPalNative
 
 class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseViewController {
 
+    private var ppNativeClient: BTPayPalNativeClient?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let textView = UITextView()
@@ -44,8 +46,9 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
 
         let request = BTPayPalNativeCheckoutRequest(payPalReturnURL: "tacocats://paypalpay", amount: "10.00")
 
-        let ppNativeClient = BTPayPalNativeClient(apiClient: apiClient)
-        ppNativeClient.tokenizePayPalAccount(with: request) { (paypalAccountNonce, error) in
+        ppNativeClient = BTPayPalNativeClient(apiClient: apiClient)
+        ppNativeClient?.tokenizePayPalAccount(with: request) { (paypalAccountNonce, error) in
+            button?.isEnabled = true
             if let err = error {
                 self.progressBlock(err.localizedDescription)
             }
@@ -54,5 +57,4 @@ class BraintreeDemoPayPalNativeUIViewController: BraintreeDemoPaymentButtonBaseV
             }
         }
     }
-
 }

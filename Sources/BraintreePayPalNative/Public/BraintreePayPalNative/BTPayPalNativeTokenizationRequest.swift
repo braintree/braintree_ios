@@ -27,11 +27,12 @@ class BTPayPalNativeTokenizationRequest {
                 "webURL": returnURL
             ],
             "correlation_id": correlationID,
-            "_meta": [
-                "source": clientMetadata.sourceString,
-                "integration": clientMetadata.integrationString,
-                "sessionId": clientMetadata.sessionID,
-            ]
+        ]
+
+        let meta: [String : Any] = [
+            "source": clientMetadata.sourceString,
+            "integration": clientMetadata.integrationString,
+            "sessionId": clientMetadata.sessionID,
         ]
 
         if let checkoutRequest = request as? BTPayPalNativeCheckoutRequest {
@@ -39,6 +40,6 @@ class BTPayPalNativeTokenizationRequest {
             account["intent"] = checkoutRequest.intentAsString
         }
 
-        return ["paypal_account": account]
+        return ["paypal_account": account, "_meta": meta]
     }
 }
