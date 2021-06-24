@@ -3,10 +3,10 @@
 ## unreleased
 * Swift Package Manager
   * Remove product libraries for `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` (requires Xcode 12.5+)
-    _Notes:_
-    * This was a workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
-    * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
-    * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
+    * _Notes:_
+      * This was a workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
+      * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
+      * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
   * Xcode 13 Beta
     * Remove invalid file path exclusions from `Package.swift` (thanks @JonathanDowning)
 
