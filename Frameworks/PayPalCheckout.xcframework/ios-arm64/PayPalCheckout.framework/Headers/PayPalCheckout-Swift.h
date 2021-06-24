@@ -371,6 +371,10 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Pay mode used for a checkout session (Continue, Pay Now)
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) enum PPCUserAction userAction;)
 + (enum PPCUserAction)userAction SWIFT_WARN_UNUSED_RESULT;
+/// Determines if the SDK displays an alert before dismissing the paysheet
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class) BOOL showsExitAlert;)
++ (BOOL)showsExitAlert SWIFT_WARN_UNUSED_RESULT;
++ (void)setShowsExitAlert:(BOOL)value;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 /// Allows you to set the createOrder callback to be passed into the config object.
@@ -532,6 +536,12 @@ SWIFT_CLASS_NAMED("CheckoutConfig")
 @property (nonatomic, strong) UIViewController * _Nullable presentingViewController;
 /// Determines whether to show a button to copy debug payload into clipboard
 @property (nonatomic) BOOL debugEnabled;
+/// Optional merchant ID(s) for partners used for PaymentButton’s eligibility check.
+/// This is only used for partner, marketplaces, and cart solutions when they are acting
+/// on behalf of another merchant. For merchants acting on behalf of several merchants,
+/// pass each merchant ID into the array. For merchants action on behalf of a single merchant,
+/// you will only need to pass a single merchant ID into the array.
+@property (nonatomic, copy) NSArray<NSString *> * _Nullable merchantIDs;
 - (nonnull instancetype)initWithClientID:(NSString * _Nonnull)clientID returnUrl:(NSString * _Nonnull)returnUrl createOrder:(void (^ _Nullable)(PPCCreateOrderAction * _Nonnull))createOrder onApprove:(void (^ _Nullable)(PPCApproval * _Nonnull))onApprove onCancel:(void (^ _Nullable)(void))onCancel onError:(void (^ _Nullable)(PPCErrorInfo * _Nonnull))onError environment:(enum PPCEnvironment)environment OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -558,6 +568,7 @@ SWIFT_CLASS_NAMED("CorrelationIDs")
 @property (nonatomic, readonly, copy) NSString * _Nullable completeSCADebugID;
 /// Our correlation id associated when finishing the checkout flow.
 @property (nonatomic, readonly, copy) NSString * _Nullable finishCheckoutDebugID;
+@property (nonatomic, readonly, copy) NSString * _Nullable riskCorrelationID;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -582,6 +593,15 @@ SWIFT_CLASS_NAMED("CreateOrderAction")
 /// \param orderId an order ID/pay token/EC token
 ///
 - (void)setWithOrderId:(NSString * _Nonnull)orderId;
+/// Interface to provide the SDK with a Billing Agreement token. This will trigger a fallback to a web experience for a user
+/// to log in and complete the agreement.
+/// note:
+///
+/// To generate a billing agreement token using your server implementation,
+/// <a href="https://developer.paypal.com/docs/limited-release/reference-transactions/#create-billing-agreement-token">see our documentation on reference transactions</a>
+/// \param billingAgreementToken Billing agreement token
+///
+- (void)setWithBillingAgreementToken:(NSString * _Nonnull)billingAgreementToken;
 /// In case your request to create order fails, call this function instead of <code>set(orderId:)</code> in order to close the Paysheet.
 - (void)cancel;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -726,6 +746,9 @@ SWIFT_CLASS("_TtC14PayPalCheckout22ExtendedCheckoutConfig")
 /// SDK cannot proceed and falls back to web. Setting this property to <code>true</code> allows SDK to proceed
 /// with responsibility to collect a shipping address and provide it to SDK moving to the host app.
 @property (nonatomic) BOOL skipsShippingAddressContingency;
+/// Indicates whether Billing Agreements are supported by a host or not.
+/// If not, the checkout flow will fallback to web if this is supported (see <code>supportsWebFallbacks</code>).
+@property (nonatomic) BOOL supportsBillingAgreements;
 /// Indicates whether or not web fallbacks are supported
 @property (nonatomic) BOOL supportsWebFallbacks;
 /// Used to determine whether we’re using Firebase in the current lifecycle
@@ -766,8 +789,7 @@ SWIFT_CLASS_NAMED("OrderActionData")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
-enum PPCPatchOperation : NSInteger;
-enum PPCPatchPath : NSInteger;
+@class PPCPatchRequest;
 @class PPCPatchActionSuccess;
 
 /// Provides an interface to make common order requests from within the PayPal Checkout SDK.
@@ -830,9 +852,6 @@ SWIFT_CLASS_NAMED("OrderActions")
 ///
 - (void)authorizeOnComplete:(void (^ _Nonnull)(PPCAuthorizeActionSuccess * _Nullable, NSError * _Nullable))onComplete;
 /// Makes a request to the PayPal API to update an order.
-/// You will need to handle any errors vended on the order request as part of the patch function.
-/// More information can be found in the API documentation:
-/// <a href="https://developer.paypal.com/docs/api/orders/v2/#orders_patch">Patch Order Documentation</a>
 /// note:
 ///
 /// <ul>
@@ -847,25 +866,28 @@ SWIFT_CLASS_NAMED("OrderActions")
 ///     You will need to handle any errors vended on the order request as part of the patch function.
 ///   </li>
 /// </ul>
-/// \param operation The operation - possible values are: add, remove, replace
-///
-/// \param path The JSON Pointer to the target document location at which to complete the operation.
-/// These can be referenced via the PatchPath enum
-///
-/// \param referenceId To make an update, you may optionally provide a <code>reference_id</code>.
-/// If you omit a <code>reference_id</code> for an order with one purchase unit,
-/// PayPal defaults to a <code>reference_id</code> of <code>default</code>.
-///
-/// \param value The value to apply. The remove operation does not require a value.
-/// The possible values to patched can be found in the API documentation:
-/// <a href="https://developer.paypal.com/docs/api/orders/v2#orders_patch">Patch Order Request</a>
-///
-/// \param from The JSON Pointer to the target document location from which to move the value. Required for the move operation.
+/// \param request The request(s) to update the order with.
+/// <ul>
+///   <li>
+///     Currently only supports the following:
+///     <ul>
+///       <li>
+///         <code>shippingName</code> - add, replace
+///       </li>
+///       <li>
+///         <code>shippingAddress</code> - add, replace
+///       </li>
+///       <li>
+///         <code>amount</code> - replace
+///       </li>
+///     </ul>
+///   </li>
+/// </ul>
 ///
 /// \param onComplete Closure invoked when the patch request has resolved.
 /// Asynchronously vends either a <code>PatchActionSuccess</code> or an <code>Error</code> object.
 ///
-- (BOOL)patchWithOperation:(enum PPCPatchOperation)operation path:(enum PPCPatchPath)path referenceId:(NSString * _Nullable)referenceId value:(NSDictionary<NSString *, NSString *> * _Nullable)value from:(NSString * _Nullable)from error:(NSError * _Nullable * _Nullable)error onComplete:(void (^ _Nonnull)(PPCPatchActionSuccess * _Nullable, NSError * _Nullable))onComplete;
+- (void)patchWithRequest:(PPCPatchRequest * _Nonnull)request onComplete:(void (^ _Nonnull)(PPCPatchActionSuccess * _Nullable, NSError * _Nullable))onComplete;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -1362,94 +1384,54 @@ SWIFT_CLASS_NAMED("PatchActionSuccess")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-/// A list of the patch order actions that can be applied to an order request.
-/// <a href="https://developer.paypal.com/docs/api/orders/v2#orders_patch">Patch Order operation Documentation</a>
-/// Possible values are add, remove, replace
-typedef SWIFT_ENUM_NAMED(NSInteger, PPCPatchOperation, "PatchOperation", open) {
-/// Adds an item at the target location or replaces the existing item at the target location.
-/// Depending on the target location reference, completes one of these functions:
+@class PPCPurchaseUnitShippingName;
+@class PPCPurchaseUnitAmount;
+
+/// Represents each operation and their accepted path, as well as the paths accepted value for each type.
+/// <a href="https://developer.paypal.com/docs/api/orders/v2#orders_patch">Patch Order Documentation</a>
+/// note:
+///
 /// <ul>
 ///   <li>
-///     The target location is an array index. Inserts a new value into the array at the specified index.
-///   </li>
-///   <li>
-///     The target location is an object value that does not already exist. Adds a new value to the object.
-///   </li>
-///   <li>
-///     The target location is an object value that does exist. Replaces that parameter’s value.
-///   </li>
-///   <li>
-///     The value object defines the value to add.
+///     To make an update, you may optionally provide a <code>reference_id</code>. If you omit a <code>reference_id</code>,
+///     PayPal defaults to a <code>reference_id</code> of <code>default</code>.
 ///   </li>
 /// </ul>
-  PPCPatchOperationAdd = 0,
-/// Removes the value at the target location. For the operation to succeed, the target location must exist.
-  PPCPatchOperationRemove = 1,
-/// Replaces the value at the target location with a new value. The operation object must contain a value
-/// parameter that defines the replacement value. For the operation to succeed, the target location must exist.
-  PPCPatchOperationReplace = 2,
-};
-
-/// A list of fields that can be updated when patching an order.
-/// <a href="https://developer.paypal.com/docs/api/orders/v2#orders_patch">Patch Order operation Documentation</a>
-typedef SWIFT_ENUM_NAMED(NSInteger, PPCPatchPath, "PatchPath", open) {
-/// The intent to either capture or authorize the order
-/// note:
-/// Possible operation value <code>.replace</code>
-  PPCPatchPathIntent = 0,
-/// Each purchase unit represents either a full or partial order that the customer intends to purchase
-/// from the merchant.
-/// note:
-/// Possible operation values <code>.replace</code>, <code>.add</code>
-  PPCPatchPathPurchaseUnits = 1,
-/// The API caller-provided external ID. Used to reconcile API caller-initiated
-/// transactions with PayPal transactions. Appears in transaction and settlement reports.
-/// note:
-/// Possible operation values <code>.replace</code>, <code>.add</code>, <code>.remove</code>
-  PPCPatchPathCustomId = 2,
-/// The purchase description.
-/// note:
-/// Possible operation values <code>.replace</code>, <code>.add</code>, <code>.remove</code>
-  PPCPatchPathDescription = 3,
-/// The email address of merchant.
-/// note:
-/// Possible operation value <code>.replace</code>
-  PPCPatchPathPayeeEmail = 4,
-/// The name of the person to whom to ship the items. Supports only the <code>full_name</code> property.
-/// note:
-/// Possible operation values <code>.replace</code>, <code>.add</code>
-  PPCPatchPathShippingName = 5,
-/// The address of the person to whom to ship the items.
-/// note:
-/// Possible operation values <code>.replace</code>, <code>.add</code>
-  PPCPatchPathShippingAddress = 6,
-/// The payment descriptor on account transactions on the customer’s
-/// credit card statement, that PayPal sends to processors
-/// note:
-/// Possible operation values <code>.replace</code>,  <code>.remove</code>
-  PPCPatchPathSoftDescriptor = 7,
-/// The total order amount with an optional breakdown that provides details, such as the total item
+SWIFT_CLASS_NAMED("PatchRequest")
+@interface PPCPatchRequest : NSObject
+/// Adds a <code>shippingName</code> to the order request.
+/// \param shippingName The name of the person to whom to ship the items. Supports only the <code>full_name</code> property.
+///
+/// \param referenceId The API caller-provided external ID for the purchase unit if more than one purchase unit was provided.
+///
+- (void)addWithShippingName:(PPCPurchaseUnitShippingName * _Nonnull)shippingName referenceId:(NSString * _Nullable)referenceId;
+/// Adds a <code>shippingAddress</code> to the order request.
+/// \param shippingAddress The address of the person to whom to ship the items.
+///
+/// \param referenceId The API caller-provided external ID for the purchase unit if more than one purchase unit was provided.
+///
+- (void)addWithShippingAddress:(PPCOrderAddress * _Nonnull)shippingAddress referenceId:(NSString * _Nullable)referenceId;
+/// Replaces the <code>shippingName</code> of the order request.
+/// \param shippingName The name of the person to whom to ship the items. Supports only the <code>full_name</code> property.
+///
+/// \param referenceId The API caller-provided external ID for the purchase unit if more than one purchase unit was provided.
+///
+- (void)replaceWithShippingName:(PPCPurchaseUnitShippingName * _Nonnull)shippingName referenceId:(NSString * _Nullable)referenceId;
+/// Replaces the <code>shippingAddress</code> of the order request.
+/// \param shippingAddress The address of the person to whom to ship the items.
+///
+/// \param referenceId The API caller-provided external ID for the purchase unit if more than one purchase unit was provided.
+///
+- (void)replaceWithShippingAddress:(PPCOrderAddress * _Nonnull)shippingAddress referenceId:(NSString * _Nullable)referenceId;
+/// Replaces the <code>amount</code> of the order request.
+/// \param amount The total order amount with an optional breakdown that provides details, such as the total item
 /// amount, total tax amount, shipping, handling, insurance, and discounts, if any.
-/// note:
-/// Possible operation <code>.replace</code>
-  PPCPatchPathAmount = 8,
-/// The API caller-provided external invoice ID for this order.
-/// note:
-/// Possible operation values <code>.replace</code>, <code>.add</code>, <code>.remove</code>
-  PPCPatchPathInvoiceId = 9,
-/// Any additional payment instructions for PayPal Commerce Platform customers.
-/// note:
-/// Possible operation <code>.replace</code>
-  PPCPatchPathPaymentInstruction = 10,
-/// The disbursement mode of the transaction.
-/// note:
-/// Possible operation <code>.replace</code>
-  PPCPatchPathDisbursementMode = 11,
-/// An array of various fees, commissions, tips, or donations.
-/// note:
-/// Possible operation values <code>.replace</code>, <code>.add</code>, <code>.remove</code>
-  PPCPatchPathPlatformFees = 12,
-};
+///
+/// \param referenceId The API caller-provided external ID for the purchase unit if more than one purchase unit was provided.
+///
+- (void)replaceWithAmount:(PPCPurchaseUnitAmount * _Nonnull)amount referenceId:(NSString * _Nullable)referenceId;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
 
 enum PPCPaymentButtonFundingSource : NSInteger;
 enum PPCPaymentButtonColor : NSInteger;
@@ -1677,7 +1659,6 @@ SWIFT_CLASS("_TtC14PayPalCheckout18ProfileImageBubble")
 - (nonnull instancetype)initWithImage:(UIImage * _Nullable)image highlightedImage:(UIImage * _Nullable)highlightedImage SWIFT_UNAVAILABLE;
 @end
 
-@class PPCPurchaseUnitAmount;
 @class PPCPurchaseUnitPayee;
 @class PPCPurchaseUnitPaymentInstruction;
 @class PPCPurchaseUnitItem;
@@ -1905,7 +1886,6 @@ typedef SWIFT_ENUM_NAMED(NSInteger, PPCPurchaseUnitCategory, "Category", open) {
   PPCPurchaseUnitCategoryPhysicalGoods = 2,
 };
 
-@class PPCPurchaseUnitShippingName;
 
 /// The name and address of the person to whom to ship the items.
 SWIFT_CLASS_NAMED("Shipping")
@@ -1945,18 +1925,6 @@ SWIFT_CLASS("_TtC14PayPalCheckout14RateChangeView")
 @interface RateChangeView : UIView
 - (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
-@end
-
-
-SWIFT_CLASS_NAMED("ShippingAmount")
-@interface PPCShippingAmount : NSObject
-@property (nonatomic, readonly, copy) NSString * _Nonnull currencyValue;
-@property (nonatomic, readonly, copy) NSString * _Nonnull currencySymbol;
-@property (nonatomic, readonly, copy) NSString * _Nonnull currencyFormat;
-@property (nonatomic, readonly, copy) NSString * _Nonnull currencyFormatSymbolISOCurrency;
-@property (nonatomic, readonly, copy) NSString * _Nonnull currencyCode;
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
 @class PPCShippingChangeAddress;
@@ -2028,7 +1996,7 @@ SWIFT_CLASS_NAMED("ShippingMethod")
 @property (nonatomic, readonly, copy) NSString * _Nonnull label;
 @property (nonatomic, readonly) BOOL selected;
 @property (nonatomic, readonly) enum PPCShippingType type;
-@property (nonatomic, readonly, strong) PPCShippingAmount * _Nullable amount;
+@property (nonatomic, readonly, strong) PPCUnitAmount * _Nullable amount;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2072,6 +2040,7 @@ SWIFT_CLASS("_TtC14PayPalCheckout15TransitionLabel")
 
 
 
+
 /// UnitAmount should be used for the following objects:
 /// <ul>
 ///   <li>
@@ -2083,9 +2052,6 @@ SWIFT_CLASS("_TtC14PayPalCheckout15TransitionLabel")
 /// </ul>
 SWIFT_CLASS_NAMED("UnitAmount")
 @interface PPCUnitAmount : NSObject
-/// The <a href="https://developer.paypal.com/docs/api/reference/currency-codes/">three-character ISO-4217 currency code</a>
-/// that identifies the currency.
-@property (nonatomic, readonly) enum PPCCurrencyCode currencyCode;
 /// The value, which might be:
 /// An integer for currencies like JPY that are not typically fractional.
 /// A decimal fraction for currencies like TND that are subdivided into thousandths.
@@ -2097,7 +2063,11 @@ SWIFT_CLASS_NAMED("UnitAmount")
 ///     Pattern: ^((-?[0-9]+)|(-?([0-9]+)?[.][0-9]+))$
 ///   </li>
 /// </ul>
-@property (nonatomic, readonly, copy) NSString * _Nonnull value;
+@property (nonatomic, readonly, copy) NSString * _Nullable value;
+/// \param currencyCode The currency code that identifies the currency
+///
+/// \param value The value
+///
 - (nonnull instancetype)initWithCurrencyCode:(enum PPCCurrencyCode)currencyCode value:(NSString * _Nonnull)value OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");

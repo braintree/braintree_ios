@@ -245,13 +245,16 @@ public func != (lhs: PayPalCheckout.StaticIdentifiable, rhs: PayPalCheckout.Stat
   @objc required dynamic public init?(coder: Foundation.NSCoder)
   @objc deinit
 }
-@objc(PPCUnitAmount) @objcMembers public class UnitAmount : ObjectiveC.NSObject, Swift.Encodable {
-  @objc final public let currencyCode: PayPalCheckout.CurrencyCode
-  @objc final public let value: Swift.String
+@_hasMissingDesignatedInitializers @objc(PPCUnitAmount) @objcMembers public class UnitAmount : ObjectiveC.NSObject, Swift.Codable {
+  @objc final public let value: Swift.String?
+  public var currencyCode: PayPalCheckout.CurrencyCode? {
+    get
+  }
   @objc public init(currencyCode: PayPalCheckout.CurrencyCode, value: Swift.String)
+  required public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
   @objc deinit
   @objc override dynamic public init()
-  public func encode(to encoder: Swift.Encoder) throws
 }
 public struct ButtonState {
   public typealias Action = (PayPalCheckout.ButtonState) -> Swift.Void
@@ -397,6 +400,9 @@ public protocol BankAccount {
   public var boldLinkFont: UIKit.UIFont
   public var subheaderFont: UIKit.UIFont
   public var colorSheet: PayPalCheckout.ColorSheet
+  public var shadow: UIKit.UIColor {
+    get
+  }
   public var primaryColor: UIKit.UIColor {
     get
   }
@@ -1074,6 +1080,7 @@ public typealias GetOrderIdCallback = (Swift.String?, Swift.Error?) -> Swift.Voi
   @objc deinit
   @objc public func create(order: PayPalCheckout.OrderRequest, completion: @escaping (Swift.String?) -> Swift.Void = { _ in })
   @objc public func set(orderId: Swift.String)
+  @objc public func set(billingAgreementToken: Swift.String)
   @objc public func cancel()
   @objc override dynamic public init()
 }
@@ -1152,7 +1159,7 @@ public struct ExternalTracking {
   @objc final public let label: Swift.String
   @objc final public let selected: Swift.Bool
   @objc final public let type: PayPalCheckout.ShippingType
-  @objc final public let amount: PayPalCheckout.ShippingAmount?
+  @objc final public let amount: PayPalCheckout.UnitAmount?
   @objc deinit
   @objc override dynamic public init()
   public init(from decoder: Swift.Decoder) throws
@@ -1208,7 +1215,7 @@ public enum Transition {
 public protocol FundingSource {
   var fundingInstrument: PayPalCheckout.FundingInstrument? { get }
   var fundingMethodType: PayPalCheckout.FundingInstrumentMethodType { get }
-  var amount: PayPalCheckout.Amount { get }
+  var amount: PayPalCheckout.UnitAmount { get }
 }
 public protocol FundingOption {
   var fundingInstrument: PayPalCheckout.FundingInstrument { get }
@@ -1247,6 +1254,7 @@ public enum ColorType {
   case link
   case separator
   case opaqueSeparator
+  case shadow
   case systemFill
   case secondarySystemFill
   case tertiarySystemFill
@@ -1305,8 +1313,7 @@ public enum ColorType {
 @_hasMissingDesignatedInitializers @objc(PPCOrderActions) @objcMembers public class OrderActions : ObjectiveC.NSObject {
   @objc public func capture(onComplete: @escaping (PayPalCheckout.CaptureActionSuccess?, Swift.Error?) -> Swift.Void)
   @objc public func authorize(onComplete: @escaping (PayPalCheckout.AuthorizeActionSuccess?, Swift.Error?) -> Swift.Void)
-  public func patch<T>(orderRequests: [PayPalCheckout.PatchOrderRequest<T>], onComplete: @escaping (PayPalCheckout.PatchActionSuccess?, Swift.Error?) -> Swift.Void) where T : Swift.Encodable
-  @objc public func patch(operation: PayPalCheckout.PatchOperation, path: PayPalCheckout.PatchPath, referenceId: Swift.String?, value: [Swift.String : Swift.String]?, from: Swift.String?, onComplete: @escaping (PayPalCheckout.PatchActionSuccess?, Swift.Error?) -> Swift.Void) throws
+  @objc public func patch(request: PayPalCheckout.PatchRequest, onComplete: @escaping (PayPalCheckout.PatchActionSuccess?, Swift.Error?) -> Swift.Void)
   @objc deinit
   @objc override dynamic public init()
 }
@@ -1561,6 +1568,7 @@ public typealias ExtendedConfig = PayPalCheckout.ExtendedCheckoutConfig
   public var presentationMode: PayPalCheckout.PresentationMode
   public var externalLogs: [PayPalCheckout.ExternalTracking]?
   @objc public var skipsShippingAddressContingency: Swift.Bool
+  @objc public var supportsBillingAgreements: Swift.Bool
   @objc public var supportsWebFallbacks: Swift.Bool
   @objc public var usesFirebase: Swift.Bool {
     @objc get
@@ -2035,6 +2043,12 @@ public enum I18n {
   @PayPalCheckout.L10n public static var shutdown2: Swift.String {
     get
   }
+  @PayPalCheckout.L10n public static var snackbarEscapeButton: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var snackbarOnboardingText: Swift.String {
+    get
+  }
   @PayPalCheckout.L10n public static var startup1: Swift.String {
     get
   }
@@ -2096,26 +2110,6 @@ public struct ExternalTrackingProperty {
   public init(_ key: Swift.String, _ value: Swift.Double)
   public init(_ key: Swift.String, _ value: Swift.Float)
   public init(_ key: Swift.String, _ value: Swift.Bool)
-}
-@objc(PPCPatchPath) public enum PatchPath : Swift.Int, Swift.Codable, Swift.RawRepresentable {
-  case intent
-  case purchaseUnits
-  case customId
-  case description
-  case payeeEmail
-  case shippingName
-  case shippingAddress
-  case softDescriptor
-  case amount
-  case invoiceId
-  case paymentInstruction
-  case disbursementMode
-  case platformFees
-  public typealias RawValue = Swift.Int
-  public init?(rawValue: Swift.Int)
-  public var rawValue: Swift.Int {
-    get
-  }
 }
 public enum Analytics {
 }
@@ -2271,6 +2265,7 @@ public protocol ShippingAddress : PayPalCheckout.Address {
   @objc public static var userAction: PayPalCheckout.UserAction {
     @objc get
   }
+  @objc public static var showsExitAlert: Swift.Bool
   @objc deinit
   @objc public static func setCreateOrderCallback(_ createOrder: @escaping PayPalCheckout.CheckoutConfig.CreateOrderCallback)
   @objc public static func setOnApproveCallback(_ onApprove: @escaping PayPalCheckout.CheckoutConfig.ApprovalCallback)
@@ -2357,6 +2352,15 @@ public protocol CheckoutSessionFlags {
   var isSignupEligible: Swift.Bool { get }
   var showPPCreditOffer: Swift.Bool { get }
 }
+@_inheritsConvenienceInitializers @objc(PPCPatchRequest) @objcMembers public class PatchRequest : ObjectiveC.NSObject {
+  @objc deinit
+  @objc public func add(shippingName: PayPalCheckout.PurchaseUnit.ShippingName, referenceId: Swift.String? = nil)
+  @objc public func add(shippingAddress: PayPalCheckout.OrderAddress, referenceId: Swift.String? = nil)
+  @objc public func replace(shippingName: PayPalCheckout.PurchaseUnit.ShippingName, referenceId: Swift.String? = nil)
+  @objc public func replace(shippingAddress: PayPalCheckout.OrderAddress, referenceId: Swift.String? = nil)
+  @objc public func replace(amount: PayPalCheckout.PurchaseUnit.Amount, referenceId: Swift.String? = nil)
+  @objc override dynamic public init()
+}
 public struct FPTIEvent : Swift.Encodable, Swift.Equatable {
   public init(from: Swift.String, to: Swift.String)
   public func encode(to encoder: Swift.Encoder) throws
@@ -2383,12 +2387,6 @@ public struct Contingencies {
   public var hasShippingAddressContingency: Swift.Bool {
     get
   }
-}
-public class PatchOrderRequest<Value> : ObjectiveC.NSObject, Swift.Encodable where Value : Swift.Encodable {
-  public init(operation: PayPalCheckout.PatchOperation, path: PayPalCheckout.PatchPath, referenceId: Swift.String? = nil, value: Value? = nil, from: Swift.String? = nil) throws
-  public func encode(to encoder: Swift.Encoder) throws
-  @objc deinit
-  @objc override dynamic public init()
 }
 public enum FallbackType : Swift.String {
   case checkoutResponseErrors
@@ -2604,16 +2602,6 @@ public enum FPTIEventType {
   case scroll
   case custom(Swift.String)
 }
-@objc(PPCPatchOperation) public enum PatchOperation : Swift.Int {
-  case add
-  case remove
-  case replace
-  public typealias RawValue = Swift.Int
-  public init?(rawValue: Swift.Int)
-  public var rawValue: Swift.Int {
-    get
-  }
-}
 public struct NetworkOperationResult : PayPalCheckout.NetworkResult, Swift.Equatable {
   public var data: Foundation.Data?
   public var status: PayPalCheckout.NetworkStatus
@@ -2817,6 +2805,7 @@ public protocol CheckoutSession {
   var shippingAddresses: [PayPalCheckout.ShippingAddress] { get }
   var creditOffers: [PayPalCheckout.ProviderCreditOffer] { get }
   var fundingOptions: [PayPalCheckout.FundingOption] { get }
+  var allowedCardIssuers: [PayPalCheckout.CardIssuer] { get }
   var isBillingAgreement: Swift.Bool { get }
   var isChangePaymentMethodAllowed: Swift.Bool { get }
   var isChangeShippingAddressAllowed: Swift.Bool { get }
@@ -2839,6 +2828,9 @@ extension CheckoutSession {
     get
   }
   public var selectedAddress: PayPalCheckout.ShippingAddress? {
+    get
+  }
+  public var paymentContingenciesPresent: Swift.Bool {
     get
   }
 }
@@ -2864,18 +2856,10 @@ public protocol PlanTypes {
   var soloPlan: PayPalCheckout.Plan { get }
   var splitPlans: [PayPalCheckout.Plan] { get }
 }
-public protocol Amount {
-  var currencyCode: Swift.String? { get }
-  var currencyFormat: Swift.String? { get }
-  var currencyFormatSymbolISOCurrency: Swift.String? { get }
-  var currencySymbol: Swift.String? { get }
-  var currencyValue: Swift.String? { get }
-  var isEmpty: Swift.Bool { get }
-}
 public protocol CurrencyConversion {
-  var from: PayPalCheckout.Amount { get }
-  var to: PayPalCheckout.Amount { get }
-  var converted: PayPalCheckout.Amount { get }
+  var from: PayPalCheckout.UnitAmount { get }
+  var to: PayPalCheckout.UnitAmount { get }
+  var converted: PayPalCheckout.UnitAmount { get }
   var type: PayPalCheckout.CurrencyConversionType { get }
   var feeRate: Swift.String? { get }
   var spread: Swift.String? { get }
@@ -3001,8 +2985,8 @@ public struct CheckoutSessionResult : Swift.Codable {
   override public init(context: PayPalCheckout.State? = super, name: Swift.String? = super, _ function: @escaping (PayPalCheckout.State?, PayPalCheckout.SequenceProcessor<PayPalCheckout.State>.Next?) -> Swift.Void)
 }
 public protocol CartItem {
-  var unitPrice: PayPalCheckout.Amount { get }
-  var total: PayPalCheckout.Amount { get }
+  var unitPrice: PayPalCheckout.UnitAmount { get }
+  var total: PayPalCheckout.UnitAmount { get }
   var name: Swift.String { get }
   var itemDescription: Swift.String? { get }
   var quantity: Swift.Int { get }
@@ -3010,12 +2994,12 @@ public protocol CartItem {
 public protocol Cart {
   var intent: Swift.String { get }
   var items: [PayPalCheckout.CartItem] { get }
-  var handlingFee: PayPalCheckout.Amount { get }
-  var insurance: PayPalCheckout.Amount { get }
-  var shippingAndHandling: PayPalCheckout.Amount { get }
-  var subtotal: PayPalCheckout.Amount { get }
-  var tax: PayPalCheckout.Amount { get }
-  var total: PayPalCheckout.Amount { get }
+  var handlingFee: PayPalCheckout.UnitAmount { get }
+  var insurance: PayPalCheckout.UnitAmount { get }
+  var shippingAndHandling: PayPalCheckout.UnitAmount { get }
+  var subtotal: PayPalCheckout.UnitAmount { get }
+  var tax: PayPalCheckout.UnitAmount { get }
+  var total: PayPalCheckout.UnitAmount { get }
   var cartID: Swift.String { get }
   var cancelURL: Foundation.URL? { get }
   var returnURL: Foundation.URL? { get }
@@ -3183,17 +3167,6 @@ public protocol Cart {
   @objc override dynamic public init()
   public func encode(to encoder: Swift.Encoder) throws
 }
-@_hasMissingDesignatedInitializers @objc(PPCShippingAmount) @objcMembers final public class ShippingAmount : ObjectiveC.NSObject, Swift.Codable {
-  @objc final public let currencyValue: Swift.String
-  @objc final public let currencySymbol: Swift.String
-  @objc final public let currencyFormat: Swift.String
-  @objc final public let currencyFormatSymbolISOCurrency: Swift.String
-  @objc final public let currencyCode: Swift.String
-  @objc deinit
-  @objc override dynamic public init()
-  public init(from decoder: Swift.Decoder) throws
-  final public func encode(to encoder: Swift.Encoder) throws
-}
 public struct ThreeDSGenericURL : Swift.Codable, Swift.Equatable {
   public let href: Swift.String?
   public init(from decoder: Swift.Decoder) throws
@@ -3302,6 +3275,9 @@ public typealias URI = Swift.String
   @objc final public var finishCheckoutDebugID: Swift.String? {
     get
   }
+  @objc final public var riskCorrelationID: Swift.String? {
+    get
+  }
   @objc deinit
 }
 @_hasMissingDesignatedInitializers @objc(PPCErrorInfo) @objcMembers final public class ErrorInfo : ObjectiveC.NSObject {
@@ -3345,6 +3321,7 @@ public typealias Config = PayPalCheckout.CheckoutConfig
   @objc public var presentingViewController: UIKit.UIViewController?
   public var currencyCode: PayPalCheckout.CurrencyCode?
   @objc public var debugEnabled: Swift.Bool
+  @objc public var merchantIDs: [Swift.String]?
   @objc public init(clientID: Swift.String, returnUrl: Swift.String, createOrder: PayPalCheckout.CheckoutConfig.CreateOrderCallback? = nil, onApprove: PayPalCheckout.CheckoutConfig.ApprovalCallback? = nil, onCancel: PayPalCheckout.CheckoutConfig.CancelCallback? = nil, onError: PayPalCheckout.CheckoutConfig.ErrorCallback? = nil, environment: PayPalCheckout.Environment = .live)
   @objc public func copy(with zone: ObjectiveC.NSZone? = nil) -> Any
   @objc deinit
@@ -3471,8 +3448,6 @@ extension PayPalCheckout.NetworkActionType : Swift.Equatable {}
 extension PayPalCheckout.NetworkActionType : Swift.Hashable {}
 extension PayPalCheckout.CarouselCell.LabelType : Swift.Equatable {}
 extension PayPalCheckout.CarouselCell.LabelType : Swift.Hashable {}
-extension PayPalCheckout.PatchPath : Swift.Equatable {}
-extension PayPalCheckout.PatchPath : Swift.Hashable {}
 extension PayPalCheckout.HeightChange : Swift.Equatable {}
 extension PayPalCheckout.HeightChange : Swift.Hashable {}
 extension PayPalCheckout.Environment : Swift.Equatable {}
@@ -3511,9 +3486,6 @@ extension PayPalCheckout.FundingInstrumentSubType : Swift.RawRepresentable {}
 extension PayPalCheckout.FundingInstrumentMethodType : Swift.Equatable {}
 extension PayPalCheckout.FundingInstrumentMethodType : Swift.Hashable {}
 extension PayPalCheckout.FundingInstrumentMethodType : Swift.RawRepresentable {}
-extension PayPalCheckout.PatchOperation : Swift.Equatable {}
-extension PayPalCheckout.PatchOperation : Swift.Hashable {}
-extension PayPalCheckout.PatchOperation : Swift.RawRepresentable {}
 extension PayPalCheckout.CardIssuer : Swift.Equatable {}
 extension PayPalCheckout.CardIssuer : Swift.Hashable {}
 extension PayPalCheckout.CardIssuer : Swift.RawRepresentable {}
