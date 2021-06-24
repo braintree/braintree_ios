@@ -67,7 +67,7 @@ Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 
 ## Demo
 
-A demo app is included in the project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode.
+A demo app is included in the project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode. Xcode 13+ is required to run the demo app.
 
 ## Contributing
 
