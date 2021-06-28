@@ -48,6 +48,7 @@ import PayPalCheckout
                                                                        environment: order.environment)
 
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
+                PayPalCheckout.Checkout.showsExitAlert = false
 
                 PayPalCheckout.Checkout.start(presentingViewController: nil, createOrder: { action in
                     if request is BTPayPalNativeCheckoutRequest {
