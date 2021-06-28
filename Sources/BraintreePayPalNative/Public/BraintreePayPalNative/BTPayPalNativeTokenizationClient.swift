@@ -14,9 +14,15 @@ class BTPayPalNativeTokenizationClient {
                   request: BTPayPalRequest,
                   completion: @escaping (Result<BTPayPalNativeAccountNonce, BTPayPalNativeError>) -> Void) {
 
+        // TODO: Add unit tests for this scenario. Also do a sweep of all unit testing for PayPalNative module.
+        guard let correlationID = State.correlationIDs.riskCorrelationID else {
+            completion(.failure(.riskCorrelationIDNotFound))
+            return
+        }
+
         let tokenizationRequest = BTPayPalNativeTokenizationRequest(returnURL: returnURL,
                                                                     request: request,
-                                                                    correlationID: State.correlationIDs.riskCorrelationID ?? "",
+                                                                    correlationID: correlationID,
                                                                     clientMetadata: apiClient.metadata)
 
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: tokenizationRequest.parameters()) { body, _, error in

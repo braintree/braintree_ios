@@ -28,6 +28,9 @@ import Foundation
     /// PayPalCheckout SDK returned an error
     case checkoutSDKFailed
 
+    /// PayPalCheckout SDK did not return a riskCorrelationID
+    case riskCorrelationIDNotFound
+
     /// Tokenization with the Braintree Gateway failed
     case tokenizationFailed
 
@@ -55,6 +58,8 @@ import Foundation
             return "PayPal flow was canceled by the user."
         case .checkoutSDKFailed:
             return "PayPalCheckout SDK returned an error."
+        case .riskCorrelationIDNotFound:
+            return "PayPalCheckout SDK did not return a riskCorrelationID."
         case .tokenizationFailed:
             return "Tokenization with the Braintree Gateway failed."
         case .parsingTokenizationResultFailed:
