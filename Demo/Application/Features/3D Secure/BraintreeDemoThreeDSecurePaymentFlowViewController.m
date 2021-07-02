@@ -1,5 +1,4 @@
 #import "BraintreeDemoThreeDSecurePaymentFlowViewController.h"
-#import "BraintreeUI.h"
 #import "Demo-Swift.h"
 @import BraintreeThreeDSecure;
 
@@ -20,6 +19,7 @@
 
     UINib *cardFormNib = [UINib nibWithNibName:@"CardFormView" bundle:nil];
     self.cardFormView = [cardFormNib instantiateWithOwner:self options:nil][0];
+    self.cardFormView.hidePhoneNumberField = YES;
     [self.view addSubview:self.cardFormView];
 
     [NSLayoutConstraint activateConstraints:@[

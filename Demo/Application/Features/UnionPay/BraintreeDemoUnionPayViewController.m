@@ -1,13 +1,10 @@
 #import "BraintreeDemoUnionPayViewController.h"
-#import "BTUICardFormView.h"
+#import "Demo-Swift.h"
 @import BraintreeUnionPay;
 
-@interface BraintreeDemoUnionPayViewController () <BTUICardFormViewDelegate>
+@interface BraintreeDemoUnionPayViewController () <UITextFieldDelegate>
 
-@property (nonatomic, strong) IBOutlet UITextField *cardNumberField;
-@property (nonatomic, strong) IBOutlet UITextField *expirationMonthField;
-@property (nonatomic, strong) IBOutlet UITextField *expirationYearField;
-@property (nonatomic, strong) BTUICardFormView *cardForm;
+@property (nonatomic, strong) CardFormView *cardFormView;
 @property (nonatomic, strong) UIButton *submitButton;
 @property (nonatomic, strong) UIButton *smsButton;
 @property (nonatomic, strong) BTAPIClient *apiClient;
@@ -32,11 +29,19 @@
     self.title = NSLocalizedString(@"UnionPay", nil);
     self.edgesForExtendedLayout = UIRectEdgeBottom;
 
-    self.cardForm = [[BTUICardFormView alloc] init];
-    self.cardForm.optionalFields = BTUICardFormOptionalFieldsCvv;
-    self.cardForm.translatesAutoresizingMaskIntoConstraints = NO;
-    self.cardForm.delegate = self;
-    [self.view addSubview:self.cardForm];
+    UINib *cardFormNib = [UINib nibWithNibName:@"CardFormView" bundle:nil];
+    self.cardFormView = [cardFormNib instantiateWithOwner:self options:nil][0];
+    self.cardFormView.hidePostalCodeField = YES;
+    self.cardFormView.hideCVVTextField = YES;
+    self.cardFormView.cardNumberTextField.delegate = self;
+
+    [self.view addSubview:self.cardFormView];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [self.cardFormView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [self.cardFormView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor]
+    ]];
 
     self.submitButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.submitButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -52,10 +57,10 @@
     [self.view addSubview:self.smsButton];
 
     [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|[cardForm]|"
+                               constraintsWithVisualFormat:@"H:|[cardFormView]|"
                                options:NSLayoutFormatDirectionLeadingToTrailing
                                metrics:nil
-                               views:@{@"cardForm" : self.cardForm}]];
+                               views:@{@"cardFormView" : self.cardFormView}]];
     [self.view addConstraint:[NSLayoutConstraint
                                constraintWithItem:self.submitButton
                                attribute:NSLayoutAttributeCenterX
@@ -73,7 +78,7 @@
                                multiplier:1
                                constant:0]];
     [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.cardForm
+                               constraintWithItem:self.cardFormView
                                attribute:NSLayoutAttributeTop
                                relatedBy:NSLayoutRelationEqual
                                toItem:self.view
@@ -81,7 +86,7 @@
                                multiplier:1
                                constant:0]];
     [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.cardForm
+                               constraintWithItem:self.cardFormView
                                attribute:NSLayoutAttributeBottom
                                relatedBy:NSLayoutRelationEqual
                                toItem:self.smsButton
@@ -112,13 +117,21 @@
     self.progressBlock(@"Enrolling card");
 
     BTCard *card = [BTCard new];
-    card.number = self.cardForm.number;
-    card.expirationMonth = self.cardForm.expirationMonth;
-    card.expirationYear = self.cardForm.expirationYear;
-    card.cvv = self.cardForm.cvv;
+    if (self.cardFormView.cardNumberTextField &&
+        self.cardFormView.expirationMonthTextField &&
+        self.cardFormView.expirationYearTextField &&
+        self.cardFormView.cvvTextField) {
+        card.number = self.cardFormView.cardNumberTextField.text;
+        card.expirationMonth = self.cardFormView.expirationMonthTextField.text;
+        card.expirationYear = self.cardFormView.expirationYearTextField.text;
+        card.cvv = self.cardFormView.cvvTextField.text;
+    }
+
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
     request.mobileCountryCode = @"62";
-    request.mobilePhoneNumber = self.cardForm.phoneNumber;
+    if (self.cardFormView.phoneNumberTextField.text) {
+        request.mobilePhoneNumber = self.cardFormView.phoneNumberTextField.text;
+    }
 
     [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, BOOL smsCodeRequired, NSError * _Nullable error) {
         if (error) {
@@ -174,10 +187,15 @@
     self.progressBlock(@"Tokenizing card");
 
     BTCard *card = [BTCard new];
-    card.number = self.cardForm.number;
-    card.expirationMonth = self.cardForm.expirationMonth;
-    card.expirationYear = self.cardForm.expirationYear;
-    card.cvv = self.cardForm.cvv;
+    if (self.cardFormView.cardNumberTextField &&
+        self.cardFormView.expirationMonthTextField &&
+        self.cardFormView.expirationYearTextField &&
+        self.cardFormView.cvvTextField) {
+        card.number = self.cardFormView.cardNumberTextField.text;
+        card.expirationMonth = self.cardFormView.expirationMonthTextField.text;
+        card.expirationYear = self.cardFormView.expirationYearTextField.text;
+        card.cvv = self.cardFormView.cvvTextField.text;
+    }
 
     [self.cardClient tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         if (error) {
@@ -199,7 +217,6 @@
         }
 
         if (cardCapabilities.isSupported) {
-            self.cardForm.optionalFields = self.cardForm.optionalFields | BTUICardFormOptionalFieldsPhoneNumber;
             self.smsButton.hidden = NO;
             self.submitButton.hidden = NO;
         } else {
@@ -215,13 +232,13 @@
     }];
 }
 
-#pragma mark - BTUICardFormViewDelegate methods
+#pragma mark - UITextFieldDelegate methods
 
-- (void)cardFormViewDidEndEditing:(BTUICardFormView *)cardFormView {
-    if (cardFormView.number &&
-        ![cardFormView.number isEqualToString:self.lastCardNumber]) {
-        [self fetchCapabilities:cardFormView.number];
-        self.lastCardNumber = cardFormView.number;
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    if (self.cardFormView.cardNumberTextField.text &&
+        ![self.cardFormView.cardNumberTextField.text isEqualToString:self.lastCardNumber]) {
+        [self fetchCapabilities:self.cardFormView.cardNumberTextField.text];
+        self.lastCardNumber = self.cardFormView.cardNumberTextField.text;
     }
 }
 
