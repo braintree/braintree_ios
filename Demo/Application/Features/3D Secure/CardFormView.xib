@@ -66,7 +66,7 @@
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="4111 1111 1111 1111" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Bn-Of-28d">
                                     <rect key="frame" x="0.0" y="0.0" width="275" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" textContentType="cc-number"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="01" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zT1-Mb-AaS">
                                     <rect key="frame" x="0.0" y="72.5" width="275" height="34"/>
@@ -86,12 +86,12 @@
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="01234" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pt8-9Z-oAa">
                                     <rect key="frame" x="0.0" y="290.5" width="275" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" textContentType="postal-code"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="555-123-4567" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yid-C9-X50">
                                     <rect key="frame" x="0.0" y="363" width="275" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <textInputTraits key="textInputTraits" textContentType="tel"/>
                                 </textField>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
