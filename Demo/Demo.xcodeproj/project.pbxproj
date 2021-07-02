@@ -23,6 +23,8 @@
 		42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */; };
 		42F3F6DC2603B83100401B0D /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */; };
 		42F3F6DD2603B83100401B0D /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8017E94C268F828C00AE796C /* CardFormView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8017E94B268F828B00AE796C /* CardFormView.xib */; };
+		8017E950268F859900AE796C /* CardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8017E94F268F859900AE796C /* CardFormView.swift */; };
 		803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; };
 		803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EB256DAF9A00ACE692 /* BraintreeApplePay.framework */; };
@@ -206,6 +208,8 @@
 		42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../Frameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		8017E94B268F828B00AE796C /* CardFormView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardFormView.xib; sourceTree = "<group>"; };
+		8017E94F268F859900AE796C /* CardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFormView.swift; sourceTree = "<group>"; };
 		803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeAmericanExpress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64EB256DAF9A00ACE692 /* BraintreeApplePay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeApplePay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64EC256DAF9A00ACE692 /* BraintreeCard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -892,6 +896,8 @@
 			children = (
 				A0988F7924DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.h */,
 				A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */,
+				8017E94B268F828B00AE796C /* CardFormView.xib */,
+				8017E94F268F859900AE796C /* CardFormView.swift */,
 			);
 			path = "3D Secure";
 			sourceTree = "<group>";
@@ -1158,6 +1164,7 @@
 				A0988FA724DB44B20095EEEE /* BTUIPayPalMonogramFullWordmark.svg in Resources */,
 				A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */,
 				A0988FED24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.xib in Resources */,
+				8017E94C268F828C00AE796C /* CardFormView.xib in Resources */,
 				A0988FA824DB44B20095EEEE /* BTUICardMasterCard.svg in Resources */,
 				A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */,
 				A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */,
@@ -1281,6 +1288,7 @@
 				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
 				A0988FCB24DB44B20095EEEE /* BTUICTAControl.m in Sources */,
 				A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
+				8017E950268F859900AE796C /* CardFormView.swift in Sources */,
 				A0988FB324DB44B20095EEEE /* BTUIUnknownCardVectorArtView.m in Sources */,
 				A0988F9F24DB44B20095EEEE /* UIColor+BTUI.m in Sources */,
 				A0988FC524DB44B20095EEEE /* BTUIPayPalButton.m in Sources */,

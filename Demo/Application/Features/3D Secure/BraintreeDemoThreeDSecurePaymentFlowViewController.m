@@ -1,12 +1,13 @@
 #import "BraintreeDemoThreeDSecurePaymentFlowViewController.h"
 #import "BraintreeUI.h"
+#import "Demo-Swift.h"
 @import BraintreeThreeDSecure;
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
-@property (nonatomic, strong) BTUICardFormView *cardFormView;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
+@property (nonatomic, strong) CardFormView *cardFormView;
 @property (nonatomic) int callbackCount;
 
 @end
@@ -17,9 +18,8 @@
     [super viewDidLoad];
     self.title = NSLocalizedString(@"3D Secure - Payment Flow", nil);
 
-    self.cardFormView = [[BTUICardFormView alloc] init];
-    self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.cardFormView.optionalFields = BTUICardFormOptionalFieldsCvv | BTUICardFormFieldPostalCode;
+    UINib *cardFormNib = [UINib nibWithNibName:@"CardFormView" bundle:nil];
+    self.cardFormView = [cardFormNib instantiateWithOwner:self options:nil][0];
     [self.view addSubview:self.cardFormView];
 
     [NSLayoutConstraint activateConstraints:@[
@@ -61,15 +61,18 @@
 
 - (BTCard *)newCard {
     BTCard *card = [BTCard new];
-    if (self.cardFormView.valid &&
-        self.cardFormView.number &&
-        self.cardFormView.expirationMonth &&
-        self.cardFormView.expirationYear) {
-        card.number = self.cardFormView.number;
-        card.expirationMonth = self.cardFormView.expirationMonth;
-        card.expirationYear = self.cardFormView.expirationYear;
+    if (self.cardFormView.cardNumberTextField &&
+        self.cardFormView.expirationMonthTextField &&
+        self.cardFormView.expirationYearTextField &&
+        self.cardFormView.cvvTextField &&
+        self.cardFormView.postalCodeTextField) {
+        card.number = self.cardFormView.cardNumberTextField.text;
+        card.expirationMonth = self.cardFormView.expirationMonthTextField.text;
+        card.expirationYear = self.cardFormView.expirationYearTextField.text;
+        card.cvv = self.cardFormView.cvvTextField.text;
+        card.postalCode = self.cardFormView.postalCodeTextField.text;
     } else {
-        [self.cardFormView showTopLevelError:@"Not valid. Using default 3DS test card..."];
+        self.progressBlock(@"Card not valid. Using default 3DS test card...");
         card.number = @"4000000000001091";
         card.expirationMonth = @"01";
         card.expirationYear = @"2022";
