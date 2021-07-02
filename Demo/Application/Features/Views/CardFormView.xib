@@ -123,7 +123,7 @@
                 <outlet property="postalCodeLabel" destination="jpE-uH-rJF" id="9fP-Qd-mtY"/>
                 <outlet property="postalCodeTextField" destination="pt8-9Z-oAa" id="VME-hJ-sXo"/>
             </connections>
-            <point key="canvasLocation" x="1008.6956521739131" y="-403.45982142857139"/>
+            <point key="canvasLocation" x="1001" y="-403"/>
         </view>
     </objects>
     <resources>

@@ -285,6 +285,15 @@
 			path = "American Express UI Tests";
 			sourceTree = "<group>";
 		};
+		8017E951268FB7C100AE796C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8017E94B268F828B00AE796C /* CardFormView.xib */,
+				8017E94F268F859900AE796C /* CardFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		80581A752553187800006F53 /* Venmo UI Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -369,6 +378,7 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				8017E951268FB7C100AE796C /* Views */,
 				A0988F7824DB44B10095EEEE /* 3D Secure */,
 				A0988F7E24DB44B10095EEEE /* Amex */,
 				A0988F7224DB44B10095EEEE /* Apple Pay - PassKit */,
@@ -453,8 +463,6 @@
 			children = (
 				A0988F7924DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.h */,
 				A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */,
-				8017E94B268F828B00AE796C /* CardFormView.xib */,
-				8017E94F268F859900AE796C /* CardFormView.swift */,
 			);
 			path = "3D Secure";
 			sourceTree = "<group>";
