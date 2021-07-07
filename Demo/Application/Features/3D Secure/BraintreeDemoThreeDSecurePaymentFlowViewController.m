@@ -20,6 +20,7 @@
     UINib *cardFormNib = [UINib nibWithNibName:@"CardFormView" bundle:nil];
     self.cardFormView = [cardFormNib instantiateWithOwner:self options:nil][0];
     self.cardFormView.hidePhoneNumberField = YES;
+    self.cardFormView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 350);
     [self.view addSubview:self.cardFormView];
 
     [NSLayoutConstraint activateConstraints:@[

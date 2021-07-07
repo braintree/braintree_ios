@@ -16,10 +16,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="lvO-84-Wsg">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="397"/>
+                    <rect key="frame" x="10" y="10" width="394" height="377"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="qIJ-Ps-Q0p">
-                            <rect key="frame" x="0.0" y="0.0" width="119" height="397"/>
+                            <rect key="frame" x="0.0" y="0.0" width="119" height="377"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Number:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WbS-cs-eWG">
                                     <rect key="frame" x="0.0" y="0.0" width="119" height="20.5"/>
@@ -28,31 +28,31 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exp. Month:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BHg-me-KKU">
-                                    <rect key="frame" x="0.0" y="75.5" width="119" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="71.5" width="119" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exp. Year:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PrJ-ea-Cm5">
-                                    <rect key="frame" x="0.0" y="150.5" width="119" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="142.5" width="119" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CVV:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8x-3g-xbu">
-                                    <rect key="frame" x="0.0" y="226" width="119" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="214" width="119" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Postal Code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jpE-uH-rJF">
-                                    <rect key="frame" x="0.0" y="301" width="119" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="285" width="119" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBc-db-Np8">
-                                    <rect key="frame" x="0.0" y="376.5" width="119" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="356.5" width="119" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -61,35 +61,35 @@
                             <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="I77-PX-wym">
-                            <rect key="frame" x="139" y="0.0" width="275" height="397"/>
+                            <rect key="frame" x="139" y="0.0" width="255" height="377"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="4111 1111 1111 1111" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Bn-Of-28d">
-                                    <rect key="frame" x="0.0" y="0.0" width="275" height="34"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="255" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" textContentType="cc-number"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="01" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zT1-Mb-AaS">
-                                    <rect key="frame" x="0.0" y="72.5" width="275" height="34"/>
+                                    <rect key="frame" x="0.0" y="68.5" width="255" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="2099" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1lN-hp-LQP">
-                                    <rect key="frame" x="0.0" y="145" width="275" height="34"/>
+                                    <rect key="frame" x="0.0" y="137" width="255" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="123" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rc9-Xd-803">
-                                    <rect key="frame" x="0.0" y="218" width="275" height="34"/>
+                                    <rect key="frame" x="0.0" y="206" width="255" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="01234" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pt8-9Z-oAa">
-                                    <rect key="frame" x="0.0" y="290.5" width="275" height="34"/>
+                                    <rect key="frame" x="0.0" y="274.5" width="255" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" textContentType="postal-code"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="555-123-4567" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yid-C9-X50">
-                                    <rect key="frame" x="0.0" y="363" width="275" height="34"/>
+                                    <rect key="frame" x="0.0" y="343" width="255" height="34"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" textContentType="tel"/>
                                 </textField>
@@ -103,10 +103,10 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="lvO-84-Wsg" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="5Gq-MB-9GR"/>
-                <constraint firstItem="lvO-84-Wsg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Af2-8r-w4j"/>
-                <constraint firstItem="lvO-84-Wsg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Y31-pX-CMB"/>
-                <constraint firstItem="lvO-84-Wsg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="o1m-mq-bJ7"/>
+                <constraint firstItem="lvO-84-Wsg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Oar-KN-lxU"/>
+                <constraint firstItem="lvO-84-Wsg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="bd0-GH-oD1"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="lvO-84-Wsg" secondAttribute="bottom" constant="10" id="kRr-zR-JrX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="lvO-84-Wsg" secondAttribute="trailing" constant="10" id="sJQ-xO-g3r"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
