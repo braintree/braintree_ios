@@ -2,19 +2,27 @@ import XCTest
 
 internal extension XCUIApplication {
     var cardNumberTextField: XCUIElement {
-        return textFields["Card Number"]
+        return textFields["4111 1111 1111 1111"]
     }
 
     var expirationDateTextField: XCUIElement {
         return textFields["MM/YY"]
     }
 
+    var expirationMonthTextField: XCUIElement {
+        return textFields["01"]
+    }
+
+    var expirationYearTextField: XCUIElement {
+        return textFields["2099"]
+    }
+
     var postalCodeTextField: XCUIElement {
-        return textFields["Postal Code"]
+        return textFields["01234"]
     }
 
     var cvvTextField: XCUIElement {
-        return textFields["CVV"]
+        return textFields["123"]
     }
 
     var tokenizeButton: XCUIElement {
@@ -52,8 +60,10 @@ internal extension XCUIApplication {
     func enterCardDetailsWith(cardNumber: String, expirationDate: String = DateGenerator.sharedInstance.futureDate()) {
         cardNumberTextField.tap()
         cardNumberTextField.typeText(cardNumber)
-        expirationDateTextField.tap()
-        expirationDateTextField.typeText(expirationDate)
+        expirationMonthTextField.tap()
+        expirationMonthTextField.typeText(String(expirationDate.prefix(2)))
+        expirationYearTextField.tap()
+        expirationYearTextField.typeText(String(expirationDate.suffix(2)))
         if postalCodeTextField.exists {
             postalCodeTextField.forceTapElement()
             postalCodeTextField.typeText("12345")

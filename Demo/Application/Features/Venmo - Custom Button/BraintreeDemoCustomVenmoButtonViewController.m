@@ -1,5 +1,4 @@
 #import "BraintreeDemoCustomVenmoButtonViewController.h"
-#import "UIColor+BTUI.h"
 @import BraintreeVenmo;
 
 @interface BraintreeDemoCustomVenmoButtonViewController ()
@@ -19,8 +18,8 @@
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:NSLocalizedString(@"Venmo (custom button)", nil) forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
-    [button setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor colorWithRed:61.0f/255.0f green:149.0f/255.0f blue:206.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithRed:80.0f/255.0f green:177.0f/255.0f blue:234.0f/255.0f alpha:1.0] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(tappedCustomVenmo) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }

@@ -1,5 +1,4 @@
 #import "BraintreeDemoAmexViewController.h"
-#import "UIColor+BTUI.h"
 @import BraintreeAmericanExpress;
 @import BraintreeCard;
 
