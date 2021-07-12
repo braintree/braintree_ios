@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+ * Add `PPRiskMagnes` dependency to `PayPalDataCollector` to allow application builds to be parallelized.
+ 
 ## 5.4.2 (2021-06-24)
 * Swift Package Manager
   * Remove product libraries for `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` (requires Xcode 12.5+)
