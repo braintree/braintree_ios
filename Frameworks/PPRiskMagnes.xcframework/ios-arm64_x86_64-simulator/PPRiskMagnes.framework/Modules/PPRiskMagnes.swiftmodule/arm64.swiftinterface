@@ -1,0 +1,79 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 effective-4.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -O -module-name PPRiskMagnes
+import SystemConfiguration.CaptiveNetwork
+import CoreLocation
+import CoreMotion
+import Foundation
+import MessageUI
+import NetworkExtension
+@_exported import PPRiskMagnes
+import Security
+import Swift
+import SystemConfiguration
+import UIKit
+import WebKit
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc public class MagnesSDK : ObjectiveC.NSObject {
+  @objc public enum MagnesSource : Swift.Int {
+    case PAYPAL = 10
+    case EBAY = 11
+    case BRAINTREE = 12
+    case SIMILITY = 17
+    case VENMO = 18
+    case DEFAULT = 19
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+    public init?(rawValue: Swift.Int)
+  }
+  @objc public enum Environment : Swift.Int {
+    case LIVE = 0
+    case SANDBOX = 1
+    case STAGE = 2
+    public typealias RawValue = Swift.Int
+    public init?(rawValue: Swift.Int)
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @objc public enum MagnesErrors : Swift.Int, Swift.Error {
+    case invalidInputError = 100
+    public typealias RawValue = Swift.Int
+    public init?(rawValue: Swift.Int)
+    public var rawValue: Swift.Int {
+      get
+    }
+    public static var _nsErrorDomain: Swift.String {
+      get
+    }
+  }
+  @objc final public let appIdErrorMessage: Swift.String
+  @objc final public let cmidErrorMessage: Swift.String
+  @objc public class func shared() -> PPRiskMagnes.MagnesSDK
+  @objc public func setUp(setEnviroment env: PPRiskMagnes.MagnesSDK.Environment = Environment.LIVE, setOptionalAppGuid appGuid: Swift.String = "", setOptionalAPNToken apnToken: Swift.String = "", disableRemoteConfiguration isRemoteConfigDisabled: Swift.Bool = false, disableBeacon isBeaconDisabled: Swift.Bool = false, magnesSource source: PPRiskMagnes.MagnesSDK.MagnesSource = MagnesSource.DEFAULT) throws
+  @objc public func collect() -> PPRiskMagnes.MagnesResult
+  @objc public func collect(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
+  @objc public func collectAndSubmit() -> PPRiskMagnes.MagnesResult
+  @objc public func collectAndSubmit(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
+  @objc public func registerTelemetry(on textField: UIKit.UITextField, withViewId viewId: Swift.String, withPayPalClientMetadataId cmid: Swift.String)
+  @objc public func unregisterTelemetry(on textField: UIKit.UITextField)
+  @objc public func collectTelemetryData(textField: UIKit.UITextField, range: Foundation.NSRange, replacementString: Swift.String)
+  @objc public func collectTouchData(_ touches: Swift.Set<UIKit.UITouch>, withEvent event: UIKit.UIEvent?, forTouchPhase phase: UIKit.UITouch.Phase, withPayPalClientMetadataId cmid: Swift.String)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class MagnesResult : ObjectiveC.NSObject {
+  @objc public func getDeviceInfo() -> [Swift.String : Any]
+  @objc public func getPayPalClientMetaDataId() -> Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PPRiskMagnes.MagnesSDK.MagnesSource : Swift.Equatable {}
+extension PPRiskMagnes.MagnesSDK.MagnesSource : Swift.Hashable {}
+extension PPRiskMagnes.MagnesSDK.MagnesSource : Swift.RawRepresentable {}
+extension PPRiskMagnes.MagnesSDK.Environment : Swift.Equatable {}
+extension PPRiskMagnes.MagnesSDK.Environment : Swift.Hashable {}
+extension PPRiskMagnes.MagnesSDK.Environment : Swift.RawRepresentable {}
+extension PPRiskMagnes.MagnesSDK.MagnesErrors : Swift.Equatable {}
+extension PPRiskMagnes.MagnesSDK.MagnesErrors : Swift.Hashable {}
+extension PPRiskMagnes.MagnesSDK.MagnesErrors : Swift.RawRepresentable {}

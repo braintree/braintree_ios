@@ -1,7 +1,29 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.4.2 (2021-06-24)
+* Swift Package Manager
+  * Remove product libraries for `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` (requires Xcode 12.5+)
+    * _Notes:_
+      * This was a workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
+      * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
+      * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
+  * Xcode 13 Beta
+    * Remove invalid file path exclusions from `Package.swift` (thanks @JonathanDowning)
+
+## 5.4.1 (2021-06-22)
+* Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
+
+## 5.4.0 (2021-06-07)
+* Venmo
+  * Add `paymentMethodUsage` to `BTVenmoRequest`
+  * Add `displayName` to `BTVenmoRequest`
+* Update PPRiskMagnes to 5.2.0
+* Carthage
+    * Add xcframework support (requires [Carthage 0.38.0+](https://github.com/Carthage/Carthage/releases/tag/0.38.0))
+
+## 5.3.2 (2021-05-25)
 * Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
+* Fix `BTJSON` compatability for Swift
 
 ## 5.3.1 (2021-05-11)
 * Update Kount SDK to v4.1.5
@@ -734,7 +756,7 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
 * Fix bug in Demo app
   * Menu button now works correctly
 * Fix bug with PayPal app switching
-  * The bug occurred when installing a new app after the Braintree SDK had been initialized. When attempting to authorize with PayPal in this scenario, the SDK would switch to the `wallet` and launch the `in-app` authorization. 
+  * The bug occurred when installing a new app after the Braintree SDK had been initialized. When attempting to authorize with PayPal in this scenario, the SDK would switch to the `wallet` and launch the `in-app` authorization.
 
 ## 3.8.1 (2015-05-22)
 
@@ -825,11 +847,11 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.4-bt1) that does not include card.io.
   * :rotating_light: Please note! :rotating_light:  
 
-      This change breaks builds that depend on a workaround introduced in 3.4.0 that added card.io headers to fix [card.io duplicate symbol issues](https://github.com/braintree/braintree_ios/issues/53). 
+      This change breaks builds that depend on a workaround introduced in 3.4.0 that added card.io headers to fix [card.io duplicate symbol issues](https://github.com/braintree/braintree_ios/issues/53).
 
-      Since card.io is not officially part of the Braintree API, and since the headers were only included as part of a workaround for use by a small group of developers, this potentially-breaking change is not accompanied by a major version release. 
+      Since card.io is not officially part of the Braintree API, and since the headers were only included as part of a workaround for use by a small group of developers, this potentially-breaking change is not accompanied by a major version release.
 
-      If your build breaks due to this change, you can re-add card.io to your project's Podfile: 
+      If your build breaks due to this change, you can re-add card.io to your project's Podfile:
 
           pod 'CardIO', '~> 4.0'
 
@@ -885,7 +907,7 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
 
 * Upgrade PayPal Mobile SDK to version 2.7.1
   * Fixes symbol conflicts with 1Password
-  * Upgrades embedded card.io library to version 3.10.1 
+  * Upgrades embedded card.io library to version 3.10.1
 
 ## 3.4.1 (2014-11-05)
 
@@ -955,7 +977,7 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
   * Test improvements
   * Internal API tweaks
   * Update PayPal implementation to always support PayPal display email/phone across client and server
-    * Your PayPal app (client ID) must now have the email scope capability. This is default for Braintree-provisioned PayPal apps. 
+    * Your PayPal app (client ID) must now have the email scope capability. This is default for Braintree-provisioned PayPal apps.
   * Improved Braintree-Demo app that demonstrates many integration styles
   * Upgraded underlying PayPal Mobile SDK
 

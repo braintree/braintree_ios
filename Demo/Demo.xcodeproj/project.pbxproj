@@ -218,6 +218,7 @@
 		803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeVenmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PayPalDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80581A5D2553152A00006F53 /* Venmo_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venmo_UITests.swift; sourceTree = "<group>"; };
+		9C030582267BDF9E00DB7A68 /* Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Demo.entitlements; sourceTree = "<group>"; };
 		A0988E4924DB43DC0095EEEE /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0988E7B24DB44B10095EEEE /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSettings.swift; sourceTree = "<group>"; };
@@ -499,6 +500,7 @@
 		A0988E4024DB43DC0095EEEE = {
 			isa = PBXGroup;
 			children = (
+				9C030582267BDF9E00DB7A68 /* Demo.entitlements */,
 				A9C4E08024EC2A70002F6FF2 /* Application */,
 				42C574AC25FA66F9008B3681 /* MockVenmo */,
 				A0988FFB24DB44D60095EEEE /* Frameworks */,
@@ -1575,6 +1577,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES_ERROR;
+				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;
@@ -1604,6 +1607,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES_ERROR;
+				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;

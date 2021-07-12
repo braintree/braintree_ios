@@ -9,6 +9,17 @@ class BTVenmoAppSwitchReturnURL_Tests: XCTestCase {
 
         XCTAssertEqual(returnUrl?.nonce, "a-nonce")
         XCTAssertEqual(returnUrl?.state, .succeeded)
+        XCTAssertNil(returnUrl?.paymentContextID)
+        XCTAssertNil(returnUrl?.error)
+    }
+
+    func testInitWithURL_whenSuccessReturnURL_withPaymentContextID_setsSuccessWithPaymentContextState() {
+        let returnUrl = BTVenmoAppSwitchReturnURL.init(url: URL(string: "com.example.app://x-callback-url/vzero/auth/venmo/success?resource_id=12345"))
+
+        XCTAssertEqual(returnUrl?.state, .succeededWithPaymentContext)
+        XCTAssertEqual(returnUrl?.paymentContextID, "12345")
+        XCTAssertNil(returnUrl?.nonce)
+        XCTAssertNil(returnUrl?.username)
         XCTAssertNil(returnUrl?.error)
     }
 
