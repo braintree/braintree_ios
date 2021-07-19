@@ -11,7 +11,7 @@
  to prevent calls to openURL. Its type is `id` and not `UIApplication` because trying to subclass
  UIApplication is not possible, since it enforces that only one instance can ever exist
 */
-@property (nonatomic, strong) id application NS_EXTENSION_UNAVAILABLE("Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.");
+@property (nonatomic, strong) id application;
 
 /**
  Defaults to [NSBundle mainBundle], but exposed for unit tests to inject test doubles to stub values in infoDictionary
