@@ -419,7 +419,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding protocol
 
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13)) {
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13)) NS_EXTENSION_UNAVAILABLE("Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.") {
     if (self.payPalRequest.activeWindow) {
         return self.payPalRequest.activeWindow;
     }
