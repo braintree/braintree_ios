@@ -32,6 +32,8 @@ To add the `Braintree` package to your Xcode project, select _File > Swift Packa
 
 If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see _General > Frameworks, Libraries, and Embedded Content_).
 
+*`BraintreePayPal` and `BraintreePaymentFlow` also require the inclusion of the `PayPalDataCollector` module.*
+
 In your app's source code files, use the following import syntax to include Braintree's libraries:
 ```
 import BraintreeCore
