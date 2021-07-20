@@ -408,7 +408,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braintree/braintree_ios";
 			requirement = {
-				branch = "spm-binary-fix-xcode12-5";
+				branch = master;
 				kind = branch;
 			};
 		};
