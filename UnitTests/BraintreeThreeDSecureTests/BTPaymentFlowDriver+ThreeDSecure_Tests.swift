@@ -27,6 +27,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         threeDSecureRequest.challengeRequested = true
         threeDSecureRequest.exemptionRequested = true
         threeDSecureRequest.dataOnlyRequested = true
+        threeDSecureRequest.addCardChallengeRequested = .requested
 
         threeDSecureRequest.mobilePhoneNumber = "5151234321"
         threeDSecureRequest.email = "tester@example.com"
@@ -53,6 +54,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["challengeRequested"] as! Bool)
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["exemptionRequested"] as! Bool)
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["dataOnlyRequested"] as! Bool)
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["addCard"] as! Bool)
 
             let additionalInfo = self.mockAPIClient.lastPOSTParameters!["additionalInfo"] as! Dictionary<String, String>
             XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
@@ -75,6 +77,41 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    func testPerformThreeDSecureLookup_whenAddCardChallengeNotRequested_sendsAddCardFalse() {
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.amount = 9.97
+        threeDSecureRequest.dfReferenceID = "df-reference-id"
+
+        threeDSecureRequest.addCardChallengeRequested = .notRequested
+
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+            XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["addCard"] as! Bool)
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testPerformThreeDSecureLookup_whenAddCardChallengeUnspecified_doesNotSendAddCardParameter() {
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.amount = 9.97
+        threeDSecureRequest.dfReferenceID = "df-reference-id"
+
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+            XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["addCard"] as? Bool)
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
 
     func testPerformThreeDSecureLookup_whenSuccessful_callsBackWithResult() {
         let responseBody =
