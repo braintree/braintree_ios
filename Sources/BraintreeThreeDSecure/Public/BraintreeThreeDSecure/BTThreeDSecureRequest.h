@@ -73,15 +73,15 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureShippingMethod) {
 /**
  The add card challenge request
  */
-typedef NS_ENUM(NSInteger, BTThreeDSecureAddCardChallenge) {
+typedef NS_ENUM(NSInteger, BTThreeDSecureCardAddChallenge) {
     /// Unspecified
-    BTThreeDSecureAddCardChallengeUnspecified,
+    BTThreeDSecureCardAddChallengeUnspecified,
     
     /// Requested
-    BTThreeDSecureAddCardChallengeRequested,
+    BTThreeDSecureCardAddChallengeRequested,
     
     /// Not Requested
-    BTThreeDSecureAddCardChallengeNotRequested
+    BTThreeDSecureCardAddChallengeNotRequested
 };
 
 /**
@@ -161,7 +161,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureAddCardChallenge) {
  If set to BTThreeDSecureAddCardChallengeUnspecified and amount is 0, the authentication challenge will be presented to the user.
  If set to BTThreeDSecureAddCardChallengeNotRequested, when the amount is 0, the authentication challenge will not be presented to the user
  */
-@property (nonatomic) BTThreeDSecureAddCardChallenge addCardChallengeRequested;
+@property (nonatomic) BTThreeDSecureCardAddChallenge cardAddChallengeRequested;
 
 /**
  Optional. UI Customization for 3DS2 challenge views.

@@ -70,10 +70,10 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             requestParameters[@"dataOnlyRequested"] = @(request.dataOnlyRequested);
         }
         
-        if (request.addCardChallengeRequested == BTThreeDSecureAddCardChallengeRequested) {
-            requestParameters[@"addCard"] = @(true);
-        } else if (request.addCardChallengeRequested == BTThreeDSecureAddCardChallengeNotRequested) {
-            requestParameters[@"addCard"] = @(false);
+        if (request.cardAddChallengeRequested == BTThreeDSecureCardAddChallengeRequested) {
+            requestParameters[@"cardAdd"] = @(true);
+        } else if (request.cardAddChallengeRequested == BTThreeDSecureCardAddChallengeNotRequested) {
+            requestParameters[@"cardAdd"] = @(false);
         }
 
         NSMutableDictionary *additionalInformation = [NSMutableDictionary dictionary];
