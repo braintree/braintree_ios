@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.4.3 (2021-07-22)
 * Swift Package Manager
   * Adds `NS_EXTENSION_UNAVAILABLE` annotations to methods unavailable for use in app extensions. Fixes (Drop-In issue #343)[https://github.com/braintree/braintree-ios-drop-in/issues/343] for Xcode 13-beta3.
 
