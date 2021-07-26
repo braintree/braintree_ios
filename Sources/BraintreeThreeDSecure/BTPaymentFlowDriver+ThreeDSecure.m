@@ -71,7 +71,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         }
         
         if (request.cardAddChallengeRequested == BTThreeDSecureCardAddChallengeRequested) {
-            requestParameters[@"cardAdd"] = @(true);
+            requestParameters[@"cardAdd"] = @(YES);
         } else if (request.cardAddChallengeRequested == BTThreeDSecureCardAddChallengeNotRequested) {
             requestParameters[@"cardAdd"] = @(false);
         }
