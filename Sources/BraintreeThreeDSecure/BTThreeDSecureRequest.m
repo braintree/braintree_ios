@@ -53,7 +53,6 @@
     self = [super init];
     if (self) {
         _versionRequested = BTThreeDSecureVersion2;
-        _cardAddChallengeRequested = BTThreeDSecureCardAddChallengeUnspecified;
     }
 
     return self;
