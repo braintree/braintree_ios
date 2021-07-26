@@ -27,7 +27,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         threeDSecureRequest.challengeRequested = true
         threeDSecureRequest.exemptionRequested = true
         threeDSecureRequest.dataOnlyRequested = true
-        threeDSecureRequest.cardAddChallengeRequested = .requested
+        threeDSecureRequest.cardAddChallenge = .requested
 
         threeDSecureRequest.mobilePhoneNumber = "5151234321"
         threeDSecureRequest.email = "tester@example.com"
@@ -85,7 +85,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.dfReferenceID = "df-reference-id"
 
-        threeDSecureRequest.cardAddChallengeRequested = .notRequested
+        threeDSecureRequest.cardAddChallenge = .notRequested
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
