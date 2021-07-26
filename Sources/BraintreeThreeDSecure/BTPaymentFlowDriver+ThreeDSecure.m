@@ -73,7 +73,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         if (request.cardAddChallengeRequested == BTThreeDSecureCardAddChallengeRequested) {
             requestParameters[@"cardAdd"] = @(YES);
         } else if (request.cardAddChallengeRequested == BTThreeDSecureCardAddChallengeNotRequested) {
-            requestParameters[@"cardAdd"] = @(false);
+            requestParameters[@"cardAdd"] = @(NO);
         }
 
         NSMutableDictionary *additionalInformation = [NSMutableDictionary dictionary];
