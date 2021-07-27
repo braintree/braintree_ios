@@ -78,7 +78,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
-    func testPerformThreeDSecureLookup_whenAddCardChallengeNotRequested_sendsAddCardFalse() {
+    func testPerformThreeDSecureLookup_whenCardAddChallengeNotRequested_sendsCardAddFalse() {
         let expectation = self.expectation(description: "willCallCompletion")
 
         threeDSecureRequest.nonce = "fake-card-nonce"
