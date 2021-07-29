@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
 
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
-    s.vendored_frameworks = "Frameworks/PPRiskMagnes.xcframework"
+    s.vendored_frameworks = "Frameworks/MagnesXCFramework/PPRiskMagnes.xcframework"
   end
 
   s.subspec "ThreeDSecure" do |s|
@@ -92,6 +92,6 @@ Pod::Spec.new do |s|
   end
 
   # https://github.com/CocoaPods/CocoaPods/issues/10065#issuecomment-694266259
-  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  # s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  # s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end
