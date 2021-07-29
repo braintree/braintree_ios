@@ -116,7 +116,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "KountDataCollector",
-            path: "Frameworks/KountDataCollector.xcframework"
+            path: "Frameworks/XCFrameworks/KountDataCollector.xcframework"
         ),
         .target(
             name: "PayPalDataCollector",
