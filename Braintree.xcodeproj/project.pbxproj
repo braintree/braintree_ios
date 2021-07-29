@@ -114,7 +114,6 @@
 		4290C669259B9E2E00D2044C /* BTThreeDSecureV2TextBoxCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C663259B9E2E00D2044C /* BTThreeDSecureV2TextBoxCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4290C66A259B9E2E00D2044C /* BTThreeDSecureV2ButtonCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C664259B9E2E00D2044C /* BTThreeDSecureV2ButtonCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4290C66B259B9E2E00D2044C /* BTThreeDSecureV2ToolbarCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C665259B9E2E00D2044C /* BTThreeDSecureV2ToolbarCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4290C7F3259BD2E800D2044C /* PPRiskMagnes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4255C5EB2565D62400A3CA78 /* PPRiskMagnes.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E56B2323A827BC007F3B48 /* BTConfiguration+GraphQL.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		42E56B2623A827BC007F3B48 /* BTConfiguration+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E56B2423A827BC007F3B48 /* BTConfiguration+GraphQL.m */; };
 		42F3F6442603AC0A00401B0D /* KDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F63A2603AC0900401B0D /* KDataCollector.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -152,7 +151,6 @@
 		80FF7DC025882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DBF25882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift */; };
 		80FF7DD4258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DD3258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift */; };
 		8DAC8AD7FDF6F9C7FEE865F9 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACE57A9170944F73E8C5E9D /* Pods_Tests_BraintreeCoreTests.framework */; };
-		9C006A9B26B32AC9006FEB87 /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		9C36BD4326B30AA600F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		9C36BD4726B30C3000F0A559 /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
@@ -662,17 +660,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4290C7F4259BD2E800D2044C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				4290C7F3259BD2E800D2044C /* PPRiskMagnes.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A9E80AA024FEF45400196BD3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1171,7 +1158,6 @@
 			files = (
 				A903E1B924F9D3F900C314E1 /* BraintreeCore.framework in Frameworks */,
 				A977A06C24FED2F1006049AB /* PayPalDataCollector.framework in Frameworks */,
-				9C006A9B26B32AC9006FEB87 /* PPRiskMagnes.framework in Frameworks */,
 				A903E1B624F9D37B00C314E1 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2588,7 +2574,6 @@
 				A903E1A224F9D34000C314E1 /* Sources */,
 				A903E1A324F9D34000C314E1 /* Frameworks */,
 				A903E1A424F9D34000C314E1 /* Resources */,
-				4290C7F4259BD2E800D2044C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
