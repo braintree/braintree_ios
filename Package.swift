@@ -125,7 +125,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
-            path: "Frameworks/PPRiskMagnes.xcframework"
+            path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
         )
     ]
 )
