@@ -102,7 +102,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "CardinalMobile",
-            path: "Frameworks/CardinalMobile.xcframework"
+            path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
         ),
         .target(
             name: "BraintreeUnionPay",
