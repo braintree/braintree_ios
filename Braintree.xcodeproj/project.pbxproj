@@ -152,10 +152,10 @@
 		80FF7DC025882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DBF25882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift */; };
 		80FF7DD4258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DD3258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift */; };
 		8DAC8AD7FDF6F9C7FEE865F9 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACE57A9170944F73E8C5E9D /* Pods_Tests_BraintreeCoreTests.framework */; };
+		9C006A9B26B32AC9006FEB87 /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		9C36BD4326B30AA600F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		9C36BD4726B30C3000F0A559 /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
-		9C36BD4B26B310F200F0A559 /* PPRiskMagnes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */; platformFilter = ios; };
 		9C36BD4F26B3124900F0A559 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */; platformFilter = ios; };
 		9C36BD5026B3128B00F0A559 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */; platformFilter = ios; };
 		A07FA48D21B5C54E0026FF0E /* BTPayPalLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1171,7 +1171,7 @@
 			files = (
 				A903E1B924F9D3F900C314E1 /* BraintreeCore.framework in Frameworks */,
 				A977A06C24FED2F1006049AB /* PayPalDataCollector.framework in Frameworks */,
-				9C36BD4B26B310F200F0A559 /* PPRiskMagnes.framework in Frameworks */,
+				9C006A9B26B32AC9006FEB87 /* PPRiskMagnes.framework in Frameworks */,
 				A903E1B624F9D37B00C314E1 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
