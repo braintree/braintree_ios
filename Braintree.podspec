@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
 
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
-    s.vendored_frameworks = "Frameworks/MagnesXCFramework/PPRiskMagnes.xcframework"
+    s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
   end
 
   s.subspec "ThreeDSecure" do |s|
