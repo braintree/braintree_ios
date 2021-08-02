@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
+  * Provides fix for this [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/10731) & allows proper usage of `PPRiskMagnes.xcframework` by `PayPalDataCollector` subspec.
+
 ## 5.4.3 (2021-07-22)
 * Swift Package Manager
   * Adds `NS_EXTENSION_UNAVAILABLE` annotations to methods unavailable for use in app extensions. Fixes (Drop-In issue #343)[https://github.com/braintree/braintree-ios-drop-in/issues/343] for Xcode 13-beta3.
