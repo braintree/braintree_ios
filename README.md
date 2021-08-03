@@ -64,7 +64,7 @@ Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the framewor
 
 ## Documentation
 
-Start with [**'Hello, Client!'**](https://developers.braintreepayments.com/ios/start/hello-client) for instructions on basic setup and usage.
+Start with [**'Hello, Client!'**](https://developer.paypal.com/braintree/docs/start/hello-client/ios/v5) for instructions on basic setup and usage.
 
 Next, read the [**full documentation**](https://developer.paypal.com/braintree/docs/guides/payment-method-types-overview) for information about integrating with additional payment methods, such as PayPal and Venmo, as well as explore our pre-built [Drop-In UI offering](https://developer.paypal.com/braintree/docs/guides/drop-in/overview).
 
@@ -100,7 +100,7 @@ Here are a few ways to get in touch:
 ## Help
 
 * Read the headers
-* [Read the Braintree docs](https://developers.braintreepayments.com/ios/sdk/client)
+* [Read the Braintree docs](https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v5)
 * [Check out the reference docs](https://braintree.github.io/braintree_ios/)
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios/issues)
 * Want to contribute? [Check out contributing guidelines](https://github.com/braintree/braintree_ios/blob/master/CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
