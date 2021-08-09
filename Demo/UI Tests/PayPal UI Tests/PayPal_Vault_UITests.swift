@@ -27,7 +27,6 @@ class PayPal_Vault_UITests: XCTestCase {
         if continueButton.waitForExistence(timeout: 2) {
             continueButton.tap()
         }
-        
         app.coordinate(withNormalizedOffset: CGVector.zero).tap()
         sleep(1)
     }
