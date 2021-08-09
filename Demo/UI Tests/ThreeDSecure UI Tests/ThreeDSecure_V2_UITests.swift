@@ -13,7 +13,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         app.launchArguments.append("-Integration:BraintreeDemoThreeDSecurePaymentFlowViewController")
         app.launch()
 
-        waitForElementToAppear(app.cardNumberTextField)
+        _ = app.cardNumberTextField.waitForExistence(timeout: 10)
     }
 
     func testThreeDSecurePaymentFlowV2_frictionlessFlow_andTransacts() {

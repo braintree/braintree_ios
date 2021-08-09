@@ -17,7 +17,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.launchArguments.append("-Integration:BraintreeDemoThreeDSecurePaymentFlowViewController")
         app.launch()
 
-        waitForElementToAppear(app.cardNumberTextField)
+        _ = app.cardNumberTextField.waitForExistence(timeout: 10)
     }
 
     func testThreeDSecurePaymentFlowV1_completesAuthentication_receivesNonce() {
