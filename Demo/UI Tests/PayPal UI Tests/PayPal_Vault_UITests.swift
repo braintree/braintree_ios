@@ -22,13 +22,13 @@ class PayPal_Vault_UITests: XCTestCase {
         sleep(2)
 
         // Tap "Continue" on alert
-        addUIInterruptionMonitor(withDescription: "Alert prompting user that the app wants to use PayPal.com to sign in.") { (alert) -> Bool in
-            let continueButton = alert.buttons["Continue"]
-            if (alert.buttons["Continue"].exists) {
-                continueButton.tap()
-            }
-            return true
+        app.tap()
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let continueButton = springboard.buttons["Continue"]
+        if continueButton.waitForExistence(timeout: 2) {
+            continueButton.tap()
         }
+        
         app.coordinate(withNormalizedOffset: CGVector.zero).tap()
         sleep(1)
     }
