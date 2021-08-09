@@ -16,11 +16,10 @@ class PayPal_Vault_UITests: XCTestCase {
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalVaultViewController")
         app.launch()
-        sleep(1)
-        self.waitForElementToBeHittable(app.buttons["PayPal Vault"])
+        
+        _ = app.buttons["PayPal Vault"].waitForExistence(timeout: 10)
         app.buttons["PayPal Vault"].tap()
-        sleep(2)
-
+        
         // Tap "Continue" on alert
         app.tap()
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")

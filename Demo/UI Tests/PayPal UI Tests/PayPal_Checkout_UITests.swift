@@ -16,10 +16,8 @@ class PayPal_Checkout_UITests: XCTestCase {
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalCheckoutViewController")
         app.launch()
-        sleep(1)
-        self.waitForElementToBeHittable(app.buttons["PayPal Checkout"])
+        _ = app.buttons["PayPal Checkout"].waitForExistence(timeout: 2)
         app.buttons["PayPal Checkout"].tap()
-        sleep(2)
         
         // Tap "Continue" on alert
         app.tap()
