@@ -5,26 +5,25 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - BTAppContextSwitchDriver protocol
 
 /**
- A protocol for handling the return from gathering payment information from a browser or another app.
+ :nodoc: A protocol for handling the return from gathering payment information from a browser or another app.
  @note The app context may switch to a SFSafariViewController or to a native app, such as Venmo.
 */
 @protocol BTAppContextSwitchDriver
 
 @required
 
-// TODO: Is it possible NOT to use SceneDelegate in iOS 13+? Do we want to support that?
 /**
- Determine whether the return URL can be handled.
+ :nodoc: Determine whether the return URL can be handled.
 
- @param url the URL you receive in  `scene:openURLContexts:` (or `application:openURL:options:` if iOS 12) when returning to your app
+ @param url the URL you receive in  `scene:openURLContexts:` when returning to your app
  @return `YES` when the SDK can process the return URL
 */
 + (BOOL)canHandleReturnURL:(NSURL *)url NS_SWIFT_NAME(canHandleReturnURL(_:));
 
 /**
- Complete payment flow after returning from app or browser switch.
+ :nodoc: Complete payment flow after returning from app or browser switch.
 
- @param url The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if iOS 12)
+ @param url The URL you receive in `scene:openURLContexts:`
 */
 + (void)handleReturnURL:(NSURL *)url NS_SWIFT_NAME(handleReturnURL(_:));
 
@@ -34,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Handles return URLs when returning from app context switch and routes the return URL to the correct app context switch driver class.
- @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID. When your app returns from app switch, the app delegate should call `handleOpenURL:` or `handleOpenURLContext:`
+ @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID. When your app returns from app switch, the app delegate should call  `handleOpenURLContext:`
 */
 @interface BTAppContextSwitcher : NSObject
 
@@ -59,15 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param returnURLScheme The return URL scheme
 */
 + (void)setReturnURLScheme:(NSString *)returnURLScheme;
-
-// TODO: Investigate if this method can be removed in iOS 13. Is it possible NOT to use SceneDelegate in iOS 13+?
-/**
- Handles a return from app context switch
-
- @param url The URL that was opened to return to your app
- @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
-*/
-+ (BOOL)handleOpenURL:(NSURL *)url NS_SWIFT_NAME(handleOpenURL(_:));
 
 /**
  Handles a return from app context switch
