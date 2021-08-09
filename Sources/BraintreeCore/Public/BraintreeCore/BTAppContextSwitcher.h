@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 
+// TODO: Is it possible NOT to use SceneDelegate in iOS 13+? Do we want to support that?
 /**
  Determine whether the return URL can be handled.
 
@@ -59,6 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 + (void)setReturnURLScheme:(NSString *)returnURLScheme;
 
+// TODO: Investigate if this method can be removed in iOS 13. Is it possible NOT to use SceneDelegate in iOS 13+?
 /**
  Handles a return from app context switch
 
@@ -73,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param URLContext The URLContext provided by `scene:openURLContexts:`
  @return `YES` if the app switch successfully handled the URLContext, or `NO` if the attempt to handle the URLContext failed.
 */
-+ (BOOL)API_AVAILABLE(ios(13.0))handleOpenURLContext:(UIOpenURLContext *)URLContext NS_SWIFT_NAME(handleOpenURLContext(_:));
++ (BOOL)handleOpenURLContext:(UIOpenURLContext *)URLContext NS_SWIFT_NAME(handleOpenURLContext(_:));
 
 /**
  Registers a class that knows how to handle a return from app context switch

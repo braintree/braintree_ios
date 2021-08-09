@@ -51,8 +51,6 @@ class BTAppContextSwitcher_Tests: XCTestCase {
     }
 
     func testHandleOpenURLContext_whenDriverCanHandleOpenURL_invokesHandleReturnURL_andReturnsTrue() {
-        guard #available(iOS 13.0, *) else { return }
-
         appSwitch.register(MockAppContextSwitchDriver.self)
         MockAppContextSwitchDriver.cannedCanHandle = true
 
@@ -66,8 +64,6 @@ class BTAppContextSwitcher_Tests: XCTestCase {
     }
 
     func testHandleOpenURLContext_whenDriverCantHandleOpenURL_doesNotInvokeHandleReturnURL_andReturnsFalse() {
-        guard #available(iOS 13.0, *) else { return }
-
         appSwitch.register(MockAppContextSwitchDriver.self)
         MockAppContextSwitchDriver.cannedCanHandle = false
 
