@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased (next_major_version)
+* Bump minimum supported deployment target to iOS 13+
+* Require Xcode 13
+* `BraintreeCore`
+  * Remove `BTAppContextSwitcher.handleOpenURL` in favor of `handleOpenURLContext`
+
 ## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
   * Provides fix for this [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/10731) & allows proper usage of `PPRiskMagnes.xcframework` by `PayPalDataCollector` subspec.
