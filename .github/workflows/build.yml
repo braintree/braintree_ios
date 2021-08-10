@@ -2,54 +2,6 @@ name: Build
 on: [pull_request, workflow_dispatch]
 jobs:
   cocoapods:
-    name: CocoaPods (Xcode 12.5)
-    runs-on: macOS-11
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Use Xcode 12.5
-        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
-      - name: Install CocoaPod dependencies
-        run: pod install
-      - name: Run pod lib lint
-        run: pod lib lint
-  carthage:
-    name: Carthage (Xcode 12.5)
-    runs-on: macOS-11
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Use Xcode 12.5
-        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
-      - name: Remove SPMTest
-        run: |
-          git checkout $GITHUB_HEAD_REF
-          rm -rf SampleApps/SPMTest
-          git add SampleApps/SPMTest
-          git commit -m 'Remove SPMTest app to avoid Carthage timeout'
-      - name: Use current branch
-        run: echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
-      - name: Run carthage update
-        run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
-      - name: Build CarthageTest
-        run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
-  spm:
-    name: SPM (Xcode 12.5)
-    runs-on: macOS-11
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Use Xcode 12.5
-        run: sudo xcode-select -switch /Applications/Xcode_12.5.app
-      - name: Use current branch
-        run: sed -i '' 's/branch = .*/branch = \"'"$GITHUB_HEAD_REF"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
-      - name: Run swift package resolve
-        run: cd SampleApps/SPMTest && swift package resolve
-      - name: Build & archive SPMTest
-        run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
-  cocoapods_xcode_beta:
     name: CocoaPods (Xcode 13-beta)
     runs-on: macOS-11
     steps:
@@ -62,7 +14,7 @@ jobs:
         # Allowing warnings until Xcode 13 CocoaPods vendored frameworks issue is resolved: https://github.com/CocoaPods/CocoaPods/issues/10731
       - name: Run pod lib lint 
         run: pod lib lint --allow-warnings
-  carthage_xcode_beta:
+  carthage:
     name: Carthage (Xcode 13-beta)
     runs-on: macOS-11
     steps:
@@ -84,7 +36,7 @@ jobs:
         run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
-  spm_xcode_beta:
+  spm:
     name: SPM (Xcode 13-beta)
     runs-on: macOS-11
     steps:
