@@ -16,18 +16,16 @@ class PayPal_Vault_UITests: XCTestCase {
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalVaultViewController")
         app.launch()
-        sleep(1)
-        self.waitForElementToBeHittable(app.buttons["PayPal Vault"])
+        
+        _ = app.buttons["PayPal Vault"].waitForExistence(timeout: 10)
         app.buttons["PayPal Vault"].tap()
-        sleep(2)
-
+        
         // Tap "Continue" on alert
-        addUIInterruptionMonitor(withDescription: "Alert prompting user that the app wants to use PayPal.com to sign in.") { (alert) -> Bool in
-            let continueButton = alert.buttons["Continue"]
-            if (alert.buttons["Continue"].exists) {
-                continueButton.tap()
-            }
-            return true
+        app.tap()
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let continueButton = springboard.buttons["Continue"]
+        if continueButton.waitForExistence(timeout: 2) {
+            continueButton.tap()
         }
         app.coordinate(withNormalizedOffset: CGVector.zero).tap()
         sleep(1)

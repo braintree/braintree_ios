@@ -16,18 +16,15 @@ class PayPal_Checkout_UITests: XCTestCase {
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalCheckoutViewController")
         app.launch()
-        sleep(1)
-        self.waitForElementToBeHittable(app.buttons["PayPal Checkout"])
+        _ = app.buttons["PayPal Checkout"].waitForExistence(timeout: 2)
         app.buttons["PayPal Checkout"].tap()
-        sleep(2)
-
+        
         // Tap "Continue" on alert
-        addUIInterruptionMonitor(withDescription: "Alert prompting user that the app wants to use PayPal.com to sign in.") { (alert) -> Bool in
-            let continueButton = alert.buttons["Continue"]
-            if (alert.buttons["Continue"].exists) {
-                continueButton.tap()
-            }
-            return true
+        app.tap()
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let continueButton = springboard.buttons["Continue"]
+        if continueButton.waitForExistence(timeout: 2) {
+            continueButton.tap()
         }
         app.coordinate(withNormalizedOffset: CGVector.zero).tap()
         sleep(1)
@@ -47,7 +44,6 @@ class PayPal_Checkout_UITests: XCTestCase {
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let webviewElementsQuery = app.webViews.element.otherElements
-
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"], timeout: 20)
 
         webviewElementsQuery.links["Cancel Sandbox Purchase"].forceTapElement()
