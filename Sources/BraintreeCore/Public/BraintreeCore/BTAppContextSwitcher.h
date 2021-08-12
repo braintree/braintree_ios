@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Handles return URLs when returning from app context switch and routes the return URL to the correct app context switch driver class.
- @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID. When your app returns from app switch, the app delegate should call  `handleOpenURLContext:` (or `handleOpenURL if not using SceneDelegate`)
+ @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID. When your app returns from app switch, the app delegate should call  `handleOpenURLContext:` (or `handleOpenURL` if not using SceneDelegate)
 */
 @interface BTAppContextSwitcher : NSObject
 
