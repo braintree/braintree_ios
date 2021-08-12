@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  :nodoc: Complete payment flow after returning from app or browser switch.
 
- @param url The URL you receive in `scene:openURLContexts:`  (or `application:openURL:options:` if not using SceneDelegate)
+ @param url The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate)
 */
 + (void)handleReturnURL:(NSURL *)url NS_SWIFT_NAME(handleReturnURL(_:));
 
