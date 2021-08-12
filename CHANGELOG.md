@@ -3,8 +3,6 @@
 ## unreleased (next_major_version)
 * Bump minimum supported deployment target to iOS 13+
 * Require Xcode 13
-* `BraintreeCore`
-  * Remove `BTAppContextSwitcher.handleOpenURL` in favor of `handleOpenURLContext`
 
 ## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
