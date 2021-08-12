@@ -20,6 +20,41 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         XCTAssertEqual(appSwitch.returnURLScheme, "com.some.scheme")
     }
 
+    func testHandleOpenURL_whenDriverIsRegistered_invokesCanHandleReturnURL() {
+        appSwitch.register(MockAppContextSwitchDriver.self)
+        let expectedURL = URL(string: "fake://url")!
+
+        BTAppContextSwitcher.handleOpenURL(expectedURL)
+
+        XCTAssertEqual(MockAppContextSwitchDriver.lastCanHandleURL!, expectedURL)
+    }
+
+    func testHandleOpenURL_whenDriverCanHandleOpenURL_invokesHandleReturnURL_andReturnsTrue() {
+        appSwitch.register(MockAppContextSwitchDriver.self)
+        MockAppContextSwitchDriver.cannedCanHandle = true
+        let expectedURL = URL(string: "fake://url")!
+
+        let handled = BTAppContextSwitcher.handleOpenURL(expectedURL)
+
+        XCTAssertTrue(handled)
+        XCTAssertEqual(MockAppContextSwitchDriver.lastHandleReturnURL!, expectedURL)
+    }
+
+    func testHandleOpenURL_whenDriverCantHandleOpenURL_doesNotInvokeHandleReturnURL_andReturnsFalse() {
+        appSwitch.register(MockAppContextSwitchDriver.self)
+        MockAppContextSwitchDriver.cannedCanHandle = false
+
+        let handled = BTAppContextSwitcher.handleOpenURL(URL(string: "fake://url")!)
+
+        XCTAssertFalse(handled)
+        XCTAssertNil(MockAppContextSwitchDriver.lastHandleReturnURL)
+    }
+
+    func testHandleOpenURL_withNoAppSwitching_returnsFalse() {
+        let handled = BTAppContextSwitcher.handleOpenURL(URL(string: "scheme://")!)
+        XCTAssertFalse(handled)
+    }
+    
     func testHandleOpenURLContext_whenDriverCanHandleOpenURL_invokesHandleReturnURL_andReturnsTrue() {
         appSwitch.register(MockAppContextSwitchDriver.self)
         MockAppContextSwitchDriver.cannedCanHandle = true
@@ -44,7 +79,7 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         XCTAssertFalse(handled)
         XCTAssertNil(MockAppContextSwitchDriver.lastHandleReturnURL)
     }
-
+        
     func testHandleOpenURLContext_withNoAppSwitching_returnsFalse() {
         let mockURLContext = BTMockOpenURLContext(url: URL(string: "fake://url")!).mock
         let handled = BTAppContextSwitcher.handleOpenURLContext(mockURLContext)

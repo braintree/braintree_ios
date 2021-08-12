@@ -61,6 +61,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Handles a return from app context switch
+ @param url The URL that was opened to return to your app
+ @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
+*/
++ (BOOL)handleOpenURL:(NSURL *)url NS_SWIFT_NAME(handleOpenURL(_:));
+
+/**
+ Handles a return from app context switch
 
  @param URLContext The URLContext provided by `scene:openURLContexts:`
  @return `YES` if the app switch successfully handled the URLContext, or `NO` if the attempt to handle the URLContext failed.
