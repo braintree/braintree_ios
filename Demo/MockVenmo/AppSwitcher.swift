@@ -45,4 +45,10 @@ class AppSwitcher {
             .value
             .flatMap({ URL(string: $0) })
     }
+
+    // TODO: We can update this MockVenmo returnURL to include the `resource_id` to more closely mimic the VenmoContext Flow.
+    // OPTION 1: We add another "SUCCESS-CONTEXT" type button which triggers the context flow,
+    // this way we can easily test both.
+    // OPTION 2: We just update the existing "SUCCESS" button URL.
+
 }
