@@ -37,7 +37,7 @@ jobs:
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
   spm:
-    name: SPM (Xcode 13-beta)
+    name: SPM
     runs-on: macOS-11
     steps:
       - name: Check out repository
