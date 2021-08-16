@@ -2,7 +2,7 @@ name: Build
 on: [pull_request, workflow_dispatch]
 jobs:
   cocoapods:
-    name: CocoaPods (Xcode 13-beta)
+    name: CocoaPods
     runs-on: macOS-11
     steps:
       - name: Check out repository
