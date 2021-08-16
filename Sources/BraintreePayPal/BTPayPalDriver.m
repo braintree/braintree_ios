@@ -287,9 +287,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                                 completion:completionBlock];
     }];
 
-    if (@available(iOS 13, *)) {
-        self.authenticationSession.presentationContextProvider = self;
-    }
+    self.authenticationSession.presentationContextProvider = self;
 
     self.returnedToAppAfterPermissionAlert = NO;
     self.isAuthenticationSessionStarted = [self.authenticationSession start];
@@ -419,7 +417,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding protocol
 
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13)) NS_EXTENSION_UNAVAILABLE("Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.") {
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session NS_EXTENSION_UNAVAILABLE("Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.") {
     if (self.payPalRequest.activeWindow) {
         return self.payPalRequest.activeWindow;
     }

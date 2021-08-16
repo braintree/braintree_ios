@@ -1,6 +1,12 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 13+
+  * Require Xcode 13
+    * Bump Swift Tools Version to 5.5 for CocoaPods & SPM
+
+## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
   * Provides fix for this [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/10731) & allows proper usage of `PPRiskMagnes.xcframework` by `PayPalDataCollector` subspec.
 
