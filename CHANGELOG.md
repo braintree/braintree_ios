@@ -2,8 +2,8 @@
 
 ## unreleased
 * Breaking Changes
-    * Bump minimum supported deployment target to iOS 13+
-    * Require Xcode 13
+  * Bump minimum supported deployment target to iOS 13+
+  * Require Xcode 13
     * Bump Swift Tools Version to 5.5 for CocoaPods & SPM
 
 ## unreleased
