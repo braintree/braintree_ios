@@ -39,7 +39,7 @@
     return [[BTAppContextSwitcher sharedInstance] handleOpenURL:url];
 }
 
-+ (BOOL)handleOpenURLContext:(UIOpenURLContext *)URLContext API_AVAILABLE(ios(13.0)) {
++ (BOOL)handleOpenURLContext:(UIOpenURLContext *)URLContext {
     return [[BTAppContextSwitcher sharedInstance] handleOpenURL:URLContext.URL];
 }
 

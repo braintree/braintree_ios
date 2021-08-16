@@ -15,9 +15,9 @@ Pod::Spec.new do |s|
   s.author           = { "Braintree" => "code@getbraintree.com" }
   s.source           = { :git => "https://github.com/braintree/braintree_ios.git", :tag => s.version.to_s }
 
-  s.platform         = :ios, "12.0"
+  s.platform         = :ios, "13.0"
   s.compiler_flags   = "-Wall -Werror -Wextra"
-  s.swift_version    = "5.1"
+  s.swift_version    = "5.5"
 
   s.default_subspecs = %w[Core Card PayPal]
 

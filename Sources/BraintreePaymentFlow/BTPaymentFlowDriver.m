@@ -24,7 +24,7 @@
 @interface BTPaymentFlowDriver () <SFSafariViewControllerDelegate>
 
 @property (nonatomic, copy) void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *);
-@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController NS_AVAILABLE_IOS(9_0);
+@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 @property (nonatomic, strong, nullable) id<BTPaymentFlowRequestDelegate> paymentFlowRequestDelegate;
 @property (nonatomic, copy, nonnull) NSString *returnURLScheme;
 @property (nonatomic, strong, nonnull) BTAPIClient *apiClient;

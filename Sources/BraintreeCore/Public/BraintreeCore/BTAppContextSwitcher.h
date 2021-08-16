@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - BTAppContextSwitchDriver protocol
 
 /**
- A protocol for handling the return from gathering payment information from a browser or another app.
+ :nodoc: A protocol for handling the return from gathering payment information from a browser or another app.
  @note The app context may switch to a SFSafariViewController or to a native app, such as Venmo.
 */
 @protocol BTAppContextSwitchDriver
@@ -13,17 +13,17 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 
 /**
- Determine whether the return URL can be handled.
+ :nodoc: Determine whether the return URL can be handled.
 
- @param url the URL you receive in  `scene:openURLContexts:` (or `application:openURL:options:` if iOS 12) when returning to your app
+ @param url the URL you receive in  `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate) when returning to your app
  @return `YES` when the SDK can process the return URL
 */
 + (BOOL)canHandleReturnURL:(NSURL *)url NS_SWIFT_NAME(canHandleReturnURL(_:));
 
 /**
- Complete payment flow after returning from app or browser switch.
+ :nodoc: Complete payment flow after returning from app or browser switch.
 
- @param url The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if iOS 12)
+ @param url The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate)
 */
 + (void)handleReturnURL:(NSURL *)url NS_SWIFT_NAME(handleReturnURL(_:));
 
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Handles return URLs when returning from app context switch and routes the return URL to the correct app context switch driver class.
- @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID. When your app returns from app switch, the app delegate should call `handleOpenURL:` or `handleOpenURLContext:`
+ @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID. When your app returns from app switch, the app delegate should call  `handleOpenURLContext:` (or `handleOpenURL` if not using SceneDelegate)
 */
 @interface BTAppContextSwitcher : NSObject
 
@@ -60,20 +60,23 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setReturnURLScheme:(NSString *)returnURLScheme;
 
 /**
- Handles a return from app context switch
-
+ Handles a return from app context switch.
  @param url The URL that was opened to return to your app
  @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
+ 
+ @note This should be called in the AppDelegate's  `application:openURL:options:` method if the application is not using SceneDelegate.
 */
 + (BOOL)handleOpenURL:(NSURL *)url NS_SWIFT_NAME(handleOpenURL(_:));
 
 /**
- Handles a return from app context switch
+ Handles a return from app context switch.
 
  @param URLContext The URLContext provided by `scene:openURLContexts:`
  @return `YES` if the app switch successfully handled the URLContext, or `NO` if the attempt to handle the URLContext failed.
+ 
+ @note This should be called in the SceneDelegate's `scene:openURLContexts:` method if the application is using SceneDelegate.
 */
-+ (BOOL)API_AVAILABLE(ios(13.0))handleOpenURLContext:(UIOpenURLContext *)URLContext NS_SWIFT_NAME(handleOpenURLContext(_:));
++ (BOOL)handleOpenURLContext:(UIOpenURLContext *)URLContext NS_SWIFT_NAME(handleOpenURLContext(_:));
 
 /**
  Registers a class that knows how to handle a return from app context switch
