@@ -45,5 +45,4 @@ class AppSwitcher {
             .value
             .flatMap({ URL(string: $0) })
     }
-
 }
