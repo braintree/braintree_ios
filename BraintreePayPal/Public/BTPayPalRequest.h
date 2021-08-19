@@ -172,6 +172,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic) BOOL offerCredit;
 
 /**
+ Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to false. Only available with PayPal Checkout.
+ */
+@property (nonatomic) BOOL offerPayLater;
+
+/**
  Optional: A non-default merchant account to use for tokenization.
 */
 @property (nonatomic, nullable, copy) NSString *merchantAccountId;

@@ -1248,6 +1248,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertEqual(lastPostParameters["line2"] as? String, "Apt. 0")
@@ -1283,6 +1284,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertNil(lastPostParameters["line2"])
@@ -1429,6 +1431,56 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         } else {
             XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.appswitch.credit.offered.started"))
         }
+    }
+
+    func testCheckout_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.offerPayLater = true
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        let mockRequestFactory = FakePayPalRequestFactory()
+        payPalDriver.requestFactory = mockRequestFactory
+        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
+        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let stubAppSwitchDelegate = MockAppSwitchDelegate()
+
+        if #available(iOS 11.0, *) {
+            // do nothing
+        } else if #available(iOS 9.0, *) {
+            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
+            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
+        } else {
+            stubAppSwitchDelegate.willPerformAppSwitchExpectation = expectation(description: "Delegate received willPerformAppSwitch")
+            stubAppSwitchDelegate.didPerformAppSwitchExpectation = expectation(description: "Delegate received didPerformAppSwitch")
+            stubAppSwitchDelegate.appContextWillSwitchExpectation = expectation(description: "Delegate received appContextWillSwitch")
+            payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
+        }
+
+        payPalDriver.requestOneTimePayment(request) { _,_  in }
+
+        if #available(iOS 11.0, *) {
+            XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
+            XCTAssertTrue(payPalDriver.isSFAuthenticationSessionStarted)
+        } else {
+            self.waitForExpectations(timeout: 2, handler: nil)
+        }
+        XCTAssertTrue(mockRequestFactory.checkoutRequest.appSwitchPerformed)
+
+        // Ensure the payment resource had the correct parameters
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, true)
+
+        // Make sure analytics event was sent when switch occurred
+        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
+
+        XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.paylater.offered.started"))
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
@@ -2472,6 +2524,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(shippingAddress["line1"] as? String, "1234 Fake St.")
         XCTAssertEqual(shippingAddress["line2"] as? String, "Apt. 0")
@@ -2511,6 +2564,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(lastPostParameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(shippingAddress["line1"] as? String, "1234 Fake St.")
         XCTAssertNil(shippingAddress["line2"])
