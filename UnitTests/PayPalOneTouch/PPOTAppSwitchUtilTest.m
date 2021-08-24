@@ -68,7 +68,7 @@
 }
 
 - (void)testJsonEncodingDecoding {
-    NSDictionary *dict1 = @{@"key1": @1, @"key2": @"some.strings", @"key2": @{@"dict1": @"value"}, @"key3": @[@"el1", @"el2"]};
+    NSDictionary *dict1 = @{@"key1": @1, @"key2": @"some.strings", @"key3": @{@"dict1": @"value"}, @"key4": @[@"el1", @"el2"]};
 
     NSString *encoded = [PPOTJSONHelper base64EncodedJSONStringWithDictionary:dict1];
 

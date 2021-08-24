@@ -71,10 +71,11 @@ class BTAppSwitch_Tests: XCTestCase {
         
         appSwitch.register(MockAppSwitchHandler.self)
         MockAppSwitchHandler.cannedCanHandle = true
+
+        let mockURLOptions = BTMockOpenURLOptions(sourceApplication: "my-source-app").mock
+        let mockURLContext = BTMockOpenURLContext(url: URL(string: "my-url.com")!, options: mockURLOptions).mock
         
-        let urlContext = MockOpenURLContext(url: URL(string: "my-url.com")!, options: MockOpenURLOptions(sourceApplication: "my-source-app"))
-        
-        let handled = BTAppSwitch.handleOpenURLContext(urlContext)
+        let handled = BTAppSwitch.handleOpenURLContext(mockURLContext)
         
         XCTAssertTrue(handled)
         XCTAssertEqual(MockAppSwitchHandler.lastCanHandleURL, URL(string: "my-url.com"))
@@ -97,39 +98,5 @@ class MockAppSwitchHandler: BTAppSwitchHandler {
 
     @objc static func handleAppSwitchReturn(_ url: URL) {
         lastHandleAppSwitchReturnURL = url
-    }
-}
-
-@available(iOS 13.0, *)
-class MockOpenURLContext: UIOpenURLContext {
-
-    private let _url: URL
-    private let _options: UIScene.OpenURLOptions
-
-    override var url: URL {
-        return _url
-    }
-
-    override var options: UIScene.OpenURLOptions {
-        return _options
-    }
-
-    init(url: URL, options: UIScene.OpenURLOptions) {
-        self._url = url
-        self._options = options
-    }
-}
-
-@available(iOS 13.0, *)
-class MockOpenURLOptions: UIScene.OpenURLOptions {
-
-    private let _sourceApplication: String
-
-    override var sourceApplication: String? {
-        return _sourceApplication
-    }
-
-    init(sourceApplication: String) {
-        self._sourceApplication = sourceApplication
     }
 }

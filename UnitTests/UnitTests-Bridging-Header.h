@@ -57,3 +57,5 @@
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>
 #import "BTTestClientTokenFactory.h"
+#import "BTMockOpenURLContext.h"
+#import "BTMockOpenURLOptions.h"
