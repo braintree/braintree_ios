@@ -1,0 +1,63 @@
+/* 
+  Localizable.strings
+  Braintree
+
+  Created by Shin, Richard on 3/30/18.
+  
+*/
+"Card Tokenization" = "Card Tokenization";
+"Braintree" = "Braintree";
+"Settings" = "Settings";
+"Ready" = "Ready";
+"Custom Venmo Button" = "Custom Venmo Button";
+"Venmo (custom button)" = "Venmo (custom button)";
+"Drop In (Legacy)" = "Drop In (Legacy)";
+"Buy Now" = "Buy Now";
+"Check Out" = "Check Out";
+"3D Secure - Payment Flow" = "3D Secure - Payment Flow";
+"Tokenize and Verify New Card" = "Tokenize and Verify New Card";
+"Apple Pay" = "Apple Pay";
+"Apple Pay via PassKit" = "Apple Pay via PassKit";
+"PAY WITH APPLE PAY" = "PAY WITH APPLE PAY";
+"PayPal (custom button)" = "PayPal (custom button)";
+"PayPal one-time payment" = "PayPal one-time payment";
+"Processing..." = "Processing...";
+"iDEAL" = "iDEAL";
+"Pay With iDEAL" = "Pay With iDEAL";
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Custom Payment Button" = "Custom Payment Button";
+"Venmo" = "Venmo";
+"PayPal" = "PayPal";
+"Amex" = "Amex";
+"Get rewards balance" = "Get rewards balance";
+"Integrations" = "Integrations";
+"3DS" = "3DS";
+"Tokenize and Verify New Card" = "Tokenize and Verify New Card";
+"PayPal with Credit Offered" = "PayPal with Credit Offered";
+"BTUIPayPalButton" = "BTUIPayPalButton";
+"Drop-in" = "Drop-in";
+"CART" = "CART";
+"1 Sock" = "1 Sock";
+"$100" = "$100";
+"PAYMENT METHODS" = "PAYMENT METHODS";
+"Select Payment Method" = "Select Payment Method";
+"Complete Purchase" = "Complete Purchase";
+"PayPal (future payment button)" = "PayPal (future payment button)";
+"BTUIVenmoButton" = "BTUIVenmoButton";
+"UnionPay" = "UnionPay";
+"Submit" = "Submit";
+"Send SMS" = "Send SMS";
+"SMS Auth Code" = "SMS Auth Code";
+"SMSAuthCodeMessage" = "An authorization code has been sent to your mobile phone number. Please enter it here";
+"PayPal (Address Scope)" = "PayPal (Address Scope)";
+"Payment Button" = "Payment Button";
+"Change Payment Method" = "Change Payment Method";
+"Add Payment Method" = "Add Payment Method";
+"Billing Agreement with PayPal" = "Billing Agreement with PayPal";
+"BTDataCollector Protection" = "BTDataCollector Protection";
+"Collect All Data" = "Collect All Data";
+"Collect Kount Data" = "Collect Kount Data";
+"Collect PayPal Data" = "Collect PayPal Data";
+"Obtain Location Permission" = "Obtain Location Permission";
+"DismissalOfViewController Called" = "DismissalOfViewController Called";
