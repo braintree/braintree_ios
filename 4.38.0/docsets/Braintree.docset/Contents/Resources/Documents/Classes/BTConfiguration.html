@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BTConfiguration Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/objc/Class/BTConfiguration" class="dashAnchor"></a>
+
+    <a title="BTConfiguration Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          Braintree 4.38.0 Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/braintree/braintree_ios">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">Braintree Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      BTConfiguration Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAPIClient.html">BTAPIClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAmericanExpressClient.html">BTAmericanExpressClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAmericanExpressRewardsBalance.html">BTAmericanExpressRewardsBalance</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAppSwitch.html">BTAppSwitch</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTApplePayCardNonce.html">BTApplePayCardNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTApplePayClient.html">BTApplePayClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAuthenticationInsight.html">BTAuthenticationInsight</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTBinData.html">BTBinData</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCard.html">BTCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardCapabilities.html">BTCardCapabilities</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardClient.html">BTCardClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardNonce.html">BTCardNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardRequest.html">BTCardRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTClientMetadata.html">BTClientMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTClientToken.html">BTClientToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTConfiguration.html">BTConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTDataCollector.html">BTDataCollector</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTJSON.html">BTJSON</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTLocalPaymentRequest.html">BTLocalPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTLocalPaymentResult.html">BTLocalPaymentResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTLogger.html">BTLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTMutableClientMetadata.html">BTMutableClientMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalAccountNonce.html">BTPayPalAccountNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCreditFinancing.html">BTPayPalCreditFinancing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCreditFinancingAmount.html">BTPayPalCreditFinancingAmount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalDriver.html">BTPayPalDriver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalIDToken.html">BTPayPalIDToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalLineItem.html">BTPayPalLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalRequest.html">BTPayPalRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPaymentFlowDriver.html">BTPaymentFlowDriver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes.html#/c:objc(cs)BTPaymentFlowRequest">BTPaymentFlowRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes.html#/c:objc(cs)BTPaymentFlowResult">BTPaymentFlowResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPaymentMethodNonce.html">BTPaymentMethodNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPaymentMethodNonceParser.html">BTPaymentMethodNonceParser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPostalAddress.html">BTPostalAddress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureAdditionalInformation.html">BTThreeDSecureAdditionalInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureCardNonce.html">BTThreeDSecureCardNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureDriver.html">BTThreeDSecureDriver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureInfo.html">BTThreeDSecureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureLookup.html">BTThreeDSecureLookup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecurePostalAddress.html">BTThreeDSecurePostalAddress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureRequest.html">BTThreeDSecureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureResult.html">BTThreeDSecureResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV1UICustomization.html">BTThreeDSecureV1UICustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTTokenizationService.html">BTTokenizationService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTURLUtils.html">BTURLUtils</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoAccountNonce.html">BTVenmoAccountNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoDriver.html">BTVenmoDriver</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAPIClientErrorDomain">BTAPIClientErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAmericanExpressErrorDomain">BTAmericanExpressErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAppContextDidReturnNotification">BTAppContextDidReturnNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAppContextWillSwitchNotification">BTAppContextWillSwitchNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAppSwitchDidSwitchNotification">BTAppSwitchDidSwitchNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAppSwitchNotificationTargetKey">BTAppSwitchNotificationTargetKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAppSwitchWillProcessPaymentInfoNotification">BTAppSwitchWillProcessPaymentInfoNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTAppSwitchWillSwitchNotification">BTAppSwitchWillSwitchNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTApplePayErrorDomain">BTApplePayErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTCardClientErrorDomain">BTCardClientErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTClientTokenErrorDomain">BTClientTokenErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTClientTokenKeyAuthorizationFingerprint">BTClientTokenKeyAuthorizationFingerprint</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTClientTokenKeyConfigURL">BTClientTokenKeyConfigURL</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTClientTokenKeyVersion">BTClientTokenKeyVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTCustomerInputBraintreeValidationErrorsKey">BTCustomerInputBraintreeValidationErrorsKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTDataCollectorKountErrorDomain">BTDataCollectorKountErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTHTTPErrorDomain">BTHTTPErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTHTTPJSONResponseBodyKey">BTHTTPJSONResponseBodyKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTHTTPURLResponseKey">BTHTTPURLResponseKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTJSONErrorDomain">BTJSONErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTPayPalDriverErrorDomain">BTPayPalDriverErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTPaymentFlowDriverErrorDomain">BTPaymentFlowDriverErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTThreeDSecureErrorDomain">BTThreeDSecureErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTThreeDSecureFlowErrorDomain">BTThreeDSecureFlowErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTThreeDSecureInfoKey">BTThreeDSecureInfoKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTThreeDSecureValidationErrorsKey">BTThreeDSecureValidationErrorsKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTTokenizationServiceAmountOption">BTTokenizationServiceAmountOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTTokenizationServiceAppSwitchDelegateOption">BTTokenizationServiceAppSwitchDelegateOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTTokenizationServiceErrorDomain">BTTokenizationServiceErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTTokenizationServiceNonceOption">BTTokenizationServiceNonceOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTTokenizationServicePayPalScopesOption">BTTokenizationServicePayPalScopesOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTTokenizationServiceViewPresentingDelegateOption">BTTokenizationServiceViewPresentingDelegateOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BTVenmoDriverErrorDomain">BTVenmoDriverErrorDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@Braintree3DSecureVersionNumber">Braintree3DSecureVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@Braintree3DSecureVersionString">Braintree3DSecureVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeAmericanExpressVersionNumber">BraintreeAmericanExpressVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeAmericanExpressVersionString">BraintreeAmericanExpressVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeApplePayVersionNumber">BraintreeApplePayVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeApplePayVersionString">BraintreeApplePayVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeCardVersionNumber">BraintreeCardVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeCardVersionString">BraintreeCardVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeCoreVersionNumber">BraintreeCoreVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeCoreVersionString">BraintreeCoreVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeDataCollectorVersionNumber">BraintreeDataCollectorVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeDataCollectorVersionString">BraintreeDataCollectorVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreePayPalVersionNumber">BraintreePayPalVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreePayPalVersionString">BraintreePayPalVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreePaymentFlowVersionNumber">BraintreePaymentFlowVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreePaymentFlowVersionString">BraintreePaymentFlowVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeUnionPayVersionNumber">BraintreeUnionPayVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeUnionPayVersionString">BraintreeUnionPayVersionString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeVenmoVersionNumber">BraintreeVenmoVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@BraintreeVenmoVersionString">BraintreeVenmoVersionString</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTAPIClientErrorType.html">BTAPIClientErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTAmericanExpressErrorType.html">BTAmericanExpressErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTAppSwitchTarget.html">BTAppSwitchTarget</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTApplePayErrorType.html">BTApplePayErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTCardClientErrorType.html">BTCardClientErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTCardNetwork.html">BTCardNetwork</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTClientMetadataIntegrationType.html">BTClientMetadataIntegrationType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTClientMetadataSourceType.html">BTClientMetadataSourceType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTClientTokenError.html">BTClientTokenError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTDataCollectorEnvironment.html">BTDataCollectorEnvironment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTHTTPErrorCode.html">BTHTTPErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTJSONErrorCode.html">BTJSONErrorCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTLogLevel.html">BTLogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalDriverErrorType.html">BTPayPalDriverErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalIDTokenEnvironment.html">BTPayPalIDTokenEnvironment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalIDTokenError.html">BTPayPalIDTokenError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalLineItemKind.html">BTPayPalLineItemKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestIntent.html">BTPayPalRequestIntent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestLandingPageType.html">BTPayPalRequestLandingPageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestUserAction.html">BTPayPalRequestUserAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPaymentFlowDriverErrorType.html">BTPaymentFlowDriverErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureErrorType.html">BTThreeDSecureErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureFlowErrorType.html">BTThreeDSecureFlowErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureVersion.html">BTThreeDSecureVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTTokenizationServiceError.html">BTTokenizationServiceError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoDriverErrorType.html">BTVenmoDriverErrorType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTAppSwitchDelegate.html">BTAppSwitchDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTAppSwitchHandler.html">BTAppSwitchHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTDataCollectorDelegate.html">BTDataCollectorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTLocalPaymentRequestDelegate.html">BTLocalPaymentRequestDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTPayPalApprovalDelegate.html">BTPayPalApprovalDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTPayPalApprovalHandler.html">BTPayPalApprovalHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTPaymentFlowDriverDelegate.html">BTPaymentFlowDriverDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTPaymentFlowRequestDelegate.html">BTPaymentFlowRequestDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTThreeDSecureRequestDelegate.html">BTThreeDSecureRequestDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTViewControllerPresentingDelegate.html">BTViewControllerPresentingDelegate</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>BTConfiguration</h1>
+              <div class="declaration">
+                <div class="language">
+                  <p class="aside-title">Objective-C</p>
+                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">BTConfiguration</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                </div>
+                <div class="language">
+                  <p class="aside-title">Swift</p>
+                  <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">BTConfiguration</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Contains information specific to a merchant&rsquo;s Braintree integration</p>
+
+              <div class="slightly-smaller">
+                <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeCore/Public/BTConfiguration.h#L9-L40">Show on GitHub</a>
+              </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(im)initWithJSON:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithJSON:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(im)initWithJSON:">-initWithJSON:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Used to initialize a <code>BTConfiguration</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithJSON</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/BTJSON.html">BTJSON</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">json</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">json</span><span class="p">:</span> <span class="kt"><a href="../Classes/BTJSON.html">BTJSON</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>json</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Classes/BTJSON.html">BTJSON</a></code> to initialize with.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeCore/Public/BTConfiguration.h#L16">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)json"></a>
+                    <a name="//apple_ref/objc/Property/json" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)json">json</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The merchant account&rsquo;s configuration as a <code><a href="../Classes/BTJSON.html">BTJSON</a></code> object</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n"><a href="../Classes/BTJSON.html">BTJSON</a></span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">json</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">json</span><span class="p">:</span> <span class="kt"><a href="../Classes/BTJSON.html">BTJSON</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeCore/Public/BTConfiguration.h#L21">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Undesignated%20initializers%20%28do%20not%20use%29"></a>
+                <a name="//apple_ref/objc/Section/Undesignated initializers (do not use)" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Undesignated%20initializers%20%28do%20not%20use%29"></a>
+                  <h3 class="section-name"><p>Undesignated initializers (do not use)</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(im)init"></a>
+                    <a name="//apple_ref/objc/Method/-init" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)BTConfiguration(im)init">-init</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-unavailable">
+                        <p class="aside-title">Unavailable</p>
+                        <p>Please use initWithJSON: instead.</p>
+
+                      </div>
+                      <div class="abstract">
+                        <p>Base initializer - do not use.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="n">init</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeCore/Public/BTConfiguration.h#L28">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(cm)isBetaEnabledPaymentOption:"></a>
+                    <a name="//apple_ref/objc/Method/+isBetaEnabledPaymentOption:" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)BTConfiguration(cm)isBetaEnabledPaymentOption:">+isBetaEnabledPaymentOption:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-deprecated">
+                        <p class="aside-title">Deprecated</p>
+                        <p>Pay with Venmo is no longer in beta</p>
+
+                      </div>
+                      <div class="abstract">
+                        <p>Returns true if the corresponding beta flag is set, otherwise returns false</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">isBetaEnabledPaymentOption</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">paymentOption</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">isBetaEnabledPaymentOption</span><span class="p">(</span><span class="n">_</span> <span class="nv">paymentOption</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeCore/Public/BTConfiguration.h#L33">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(cm)setBetaPaymentOption:isEnabled:"></a>
+                    <a name="//apple_ref/objc/Method/+setBetaPaymentOption:isEnabled:" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)BTConfiguration(cm)setBetaPaymentOption:isEnabled:">+setBetaPaymentOption:<wbr>isEnabled:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-deprecated">
+                        <p class="aside-title">Deprecated</p>
+                        <p>Pay with Venmo is no longer in beta</p>
+
+                      </div>
+                      <div class="abstract">
+                        <p>Set a corresponding beta flag</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBetaPaymentOption</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">paymentOption</span>
+                   <span class="nf">isEnabled</span><span class="p">:(</span><span class="n">BOOL</span><span class="p">)</span><span class="nv">isEnabled</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">setBetaPaymentOption</span><span class="p">(</span><span class="n">_</span> <span class="nv">paymentOption</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">isEnabled</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeCore/Public/BTConfiguration.h#L38">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/ApplePay"></a>
+                <a name="//apple_ref/objc/Section/ApplePay" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/ApplePay"></a>
+                  <h3 class="section-name"><p>ApplePay</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)isApplePayEnabled"></a>
+                    <a name="//apple_ref/objc/Property/isApplePayEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)isApplePayEnabled">isApplePayEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates whether Apple Pay is enabled for your merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">isApplePayEnabled</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeApplePay/Public/BTConfiguration+ApplePay.h#L16">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)applePaySupportedNetworks"></a>
+                    <a name="//apple_ref/objc/Property/applePaySupportedNetworks" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)applePaySupportedNetworks">applePaySupportedNetworks</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The Apple Pay payment networks supported by your Braintree merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">PKPaymentNetwork</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">applePaySupportedNetworks</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeApplePay/Public/BTConfiguration+ApplePay.h#L21">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)canMakeApplePayPayments"></a>
+                    <a name="//apple_ref/objc/Property/canMakeApplePayPayments" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)canMakeApplePayPayments">canMakeApplePayPayments</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates if the Apple Pay merchant enabled payment networks are supported on this device.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">canMakeApplePayPayments</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeApplePay/Public/BTConfiguration+ApplePay.h#L26">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)applePayCountryCode"></a>
+                    <a name="//apple_ref/objc/Property/applePayCountryCode" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)applePayCountryCode">applePayCountryCode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The country code for your Braintree merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">applePayCountryCode</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeApplePay/Public/BTConfiguration+ApplePay.h#L31">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)applePayCurrencyCode"></a>
+                    <a name="//apple_ref/objc/Property/applePayCurrencyCode" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)applePayCurrencyCode">applePayCurrencyCode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The Apple Pay currency code supported by your Braintree merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">applePayCurrencyCode</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeApplePay/Public/BTConfiguration+ApplePay.h#L36">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)applePayMerchantIdentifier"></a>
+                    <a name="//apple_ref/objc/Property/applePayMerchantIdentifier" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)applePayMerchantIdentifier">applePayMerchantIdentifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The Apple Pay merchant identifier associated with your Braintree merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">applePayMerchantIdentifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeApplePay/Public/BTConfiguration+ApplePay.h#L41">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/PayPal"></a>
+                <a name="//apple_ref/objc/Section/PayPal" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/PayPal"></a>
+                  <h3 class="section-name"><p>PayPal</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)isPayPalEnabled"></a>
+                    <a name="//apple_ref/objc/Property/isPayPalEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)isPayPalEnabled">isPayPalEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates whether PayPal is enabled for the merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">isPayPalEnabled</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreePayPal/Public/BTConfiguration+PayPal.h#L15">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)isBillingAgreementsEnabled"></a>
+                    <a name="//apple_ref/objc/Property/isBillingAgreementsEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)isBillingAgreementsEnabled">isBillingAgreementsEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates whether PayPal billing agreements are enabled for the merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">isBillingAgreementsEnabled</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreePayPal/Public/BTConfiguration+PayPal.h#L20">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/UnionPay"></a>
+                <a name="//apple_ref/objc/Section/UnionPay" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/UnionPay"></a>
+                  <h3 class="section-name"><p>UnionPay</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)isUnionPayEnabled"></a>
+                    <a name="//apple_ref/objc/Property/isUnionPayEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)isUnionPayEnabled">isUnionPayEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates whether UnionPay is enabled for the merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">isUnionPayEnabled</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeUnionPay/Public/BTConfiguration+UnionPay.h#L15">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Venmo"></a>
+                <a name="//apple_ref/objc/Section/Venmo" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Venmo"></a>
+                  <h3 class="section-name"><p>Venmo</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(cm)enableVenmo:"></a>
+                    <a name="//apple_ref/objc/Method/+enableVenmo:" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)BTConfiguration(cm)enableVenmo:">+enableVenmo:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-deprecated">
+                        <p class="aside-title">Deprecated</p>
+                        <p>Venmo no longer relies on a user whitelist, thus this method is not needed</p>
+
+                      </div>
+                      <div class="abstract">
+                        <p>Force Venmo to be enabled. If false, Drop-In will not display the Venmo button and [BTVenmoDriver authorizationWithCompletion:] will return an error.
+When set to true the Venmo button will be visible if it is also setup properly.
+Defaults to false during the limited availability phase.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">enableVenmo</span><span class="p">:(</span><span class="n">BOOL</span><span class="p">)</span><span class="nv">isEnabled</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeVenmo/Public/BTConfiguration+Venmo.h#L17">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)isVenmoEnabled"></a>
+                    <a name="//apple_ref/objc/Property/isVenmoEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)isVenmoEnabled">isVenmoEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates whether Venmo is enabled for the merchant account.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">isVenmoEnabled</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeVenmo/Public/BTConfiguration+Venmo.h#L22">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)venmoAccessToken"></a>
+                    <a name="//apple_ref/objc/Property/venmoAccessToken" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)venmoAccessToken">venmoAccessToken</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the Access Token used by the Venmo app to tokenize on behalf of the merchant.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">venmoAccessToken</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeVenmo/Public/BTConfiguration+Venmo.h#L27">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)venmoMerchantID"></a>
+                    <a name="//apple_ref/objc/Property/venmoMerchantID" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)venmoMerchantID">venmoMerchantID</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the Venmo merchant ID used by the Venmo app to authorize payment.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">venmoMerchantID</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeVenmo/Public/BTConfiguration+Venmo.h#L32">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)BTConfiguration(py)venmoEnvironment"></a>
+                    <a name="//apple_ref/objc/Property/venmoEnvironment" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)BTConfiguration(py)venmoEnvironment">venmoEnvironment</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the Venmo environment used to handle this payment.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">venmoEnvironment</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/4.38.0/BraintreeVenmo/Public/BTConfiguration+Venmo.h#L37">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2021 <a class="link" href="http://braintreepayments.com" target="_blank" rel="external">Braintree</a>. All rights reserved. (Last updated: 2021-08-24)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
