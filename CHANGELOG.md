@@ -1,10 +1,13 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## unreleased (next-major-version)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 13+
   * Require Xcode 13
     * Bump Swift Tools Version to 5.5 for CocoaPods & SPM
+  * BraintreeVenmo
+    * Remove `.unspecified` case from `BTVenmoPaymentMethodUsage` enum
+    * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
 
 ## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.

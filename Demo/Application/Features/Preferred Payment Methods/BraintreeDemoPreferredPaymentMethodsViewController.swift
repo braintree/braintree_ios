@@ -115,7 +115,8 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
 
-        venmoDriver.tokenizeVenmoAccount(with: BTVenmoRequest()) { (nonce, error) in
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {

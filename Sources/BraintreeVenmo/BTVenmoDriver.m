@@ -138,62 +138,51 @@ static BTVenmoDriver *appSwitchedDriver;
         BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
         metadata.source = BTClientMetadataSourceVenmoApp;
 
-        if (venmoRequest.paymentMethodUsage != BTVenmoPaymentMethodUsageUnspecified) {
-            NSMutableDictionary *inputParams = [@{
-                @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
-                @"merchantProfileId": merchantProfileID,
-                @"customerClient": @"MOBILE_APP",
-                @"intent": @"CONTINUE"
-            } mutableCopy];
-
-            if (venmoRequest.displayName) {
-                inputParams[@"displayName"] = venmoRequest.displayName;
+        NSMutableDictionary *inputParams = [@{
+            @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
+            @"merchantProfileId": merchantProfileID,
+            @"customerClient": @"MOBILE_APP",
+            @"intent": @"CONTINUE"
+        } mutableCopy];
+        
+        if (venmoRequest.displayName) {
+            inputParams[@"displayName"] = venmoRequest.displayName;
+        }
+        
+        NSDictionary *params = @{
+            @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
+            @"variables": @{
+                @"input": inputParams
             }
-
-            NSDictionary *params = @{
-                @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
-                @"variables": @{
-                        @"input": inputParams
-                }
-            };
-
-            [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
-                if (err) {
-                    NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                                         code:BTVenmoDriverErrorTypeInvalidRequestURL
-                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
-                    completionBlock(nil, error);
-                    return;
-                }
-
-                NSString *paymentContextID = [body[@"data"][@"createVenmoPaymentContext"][@"venmoPaymentContext"][@"id"] asString];
-                if (paymentContextID == nil) {
-                    NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                                         code:BTVenmoDriverErrorTypeInvalidRequestURL
-                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."}];
-                    completionBlock(nil, error);
-                    return;
-                }
-
-                NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
-                                                                                accessToken:configuration.venmoAccessToken
-                                                                            returnURLScheme:self.returnURLScheme
-                                                                          bundleDisplayName:bundleDisplayName
-                                                                                environment:configuration.venmoEnvironment
-                                                                           paymentContextID:paymentContextID
-                                                                                   metadata:self.apiClient.metadata];
-                [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
-            }];
-        } else {
+        };
+        
+        [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
+            if (err) {
+                NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                                     code:BTVenmoDriverErrorTypeInvalidRequestURL
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
+                completionBlock(nil, error);
+                return;
+            }
+            
+            NSString *paymentContextID = [body[@"data"][@"createVenmoPaymentContext"][@"venmoPaymentContext"][@"id"] asString];
+            if (paymentContextID == nil) {
+                NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                                     code:BTVenmoDriverErrorTypeInvalidRequestURL
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."}];
+                completionBlock(nil, error);
+                return;
+            }
+            
             NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
                                                                             accessToken:configuration.venmoAccessToken
                                                                         returnURLScheme:self.returnURLScheme
                                                                       bundleDisplayName:bundleDisplayName
                                                                             environment:configuration.venmoEnvironment
-                                                                       paymentContextID:nil
+                                                                       paymentContextID:paymentContextID
                                                                                metadata:self.apiClient.metadata];
             [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
-        }
+        }];
     }];
 }
 
