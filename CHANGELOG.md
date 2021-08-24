@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 4.38.0 (2021-08-24)
 * Add `offerPayLater` to `BTPayPalRequest`
 
 ## 4.37.1 (2021-04-06)
