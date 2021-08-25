@@ -54,7 +54,7 @@ See [Frameworks](Docs/Frameworks.md) for an overview of the components that comp
 
 ## Releasing
 
-A release process is triggered via the `Release` workflow in the repo's `Actions` tab.
+A release is triggered via the `Release` workflow in the repo's `Actions` tab.
 
 ### v4
 
