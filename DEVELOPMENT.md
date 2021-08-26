@@ -76,3 +76,19 @@ To import a Braintree framework written in **Swift** into an Objective-C file, u
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 ```
+
+## Releasing
+
+A release is triggered via the `Release` workflow in the repo's `Actions` tab.
+
+### v4
+
+*Note: development for older SDK versions should happen off branches `3.x`, `4.x`, etc. *
+
+To release a version of the v4 SDK, select `Use workflow from: 4.x` and then the appropriate Semantic Version to release under `Version to release`.
+
+Once complete, manually update the CHANGELOG on the `master` branch to include your latest v4 release notes.
+
+### v5
+
+To release a version of the v5 SDK, select `Use workflow from: master` and then the appropriate Semantic Version to release under `Version to release`.
