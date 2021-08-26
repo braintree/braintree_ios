@@ -54,10 +54,14 @@ See [Frameworks](Docs/Frameworks.md) for an overview of the components that comp
 
 ## Releasing
 
-The release process is self-documented in a number of rake tasks.
+A release is triggered via the `Release` workflow in the repo's `Actions` tab.
 
-To release a new version of the SDK publicly, invoke an incantation that looks like this:
+### v4
 
-```sh
-rake release && rake publish && rake distribute
-```
+To release a version of the v4 SDK, select `Use workflow from: 4.x` and then the appropriate Semantic Version to release under `Version to release`.
+
+Then, manually update the CHANGELOG on the `master` branch to include your latest v4 release notes.
+
+### v5
+
+To release a version of the v5 SDK, select `Use workflow from: master` and then the appropriate Semantic Version to release under `Version to release`.
