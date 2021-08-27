@@ -6,7 +6,7 @@
 
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
-@property (nonatomic, strong) CardFormView *cardFormView;
+@property (nonatomic, strong) BTCardFormView *cardFormView;
 @property (nonatomic) int callbackCount;
 
 @end
@@ -17,7 +17,7 @@
     [super viewDidLoad];
     self.title = NSLocalizedString(@"3D Secure - Payment Flow", nil);
 
-    self.cardFormView = [[CardFormView alloc] initWithFrame:CGRectZero];
+    self.cardFormView = [[BTCardFormView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.cardFormView];
     self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardFormView.hidePhoneNumberField = YES;

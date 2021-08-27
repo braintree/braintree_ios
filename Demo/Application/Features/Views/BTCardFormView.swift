@@ -1,6 +1,6 @@
 import UIKit
 
-class CardFormView: UIView {
+class BTCardFormView: UIView {
 
     // MARK: - Public Card Form Input Values
 

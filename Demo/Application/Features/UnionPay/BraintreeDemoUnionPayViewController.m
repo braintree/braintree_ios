@@ -4,7 +4,7 @@
 
 @interface BraintreeDemoUnionPayViewController () <UITextFieldDelegate>
 
-@property (nonatomic, strong) CardFormView *cardFormView;
+@property (nonatomic, strong) BTCardFormView *cardFormView;
 @property (nonatomic, strong) UIButton *submitButton;
 @property (nonatomic, strong) UIButton *smsButton;
 @property (nonatomic, strong) BTAPIClient *apiClient;
@@ -35,7 +35,7 @@
 #pragma mark - Layout UI
 
 - (void)layoutUIComponents {
-    self.cardFormView = [[CardFormView alloc] initWithFrame:CGRectZero];
+    self.cardFormView = [[BTCardFormView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.cardFormView];
     self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardFormView.hidePostalCodeField = YES;
