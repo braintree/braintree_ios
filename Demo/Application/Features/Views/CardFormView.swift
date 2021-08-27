@@ -2,7 +2,7 @@ import UIKit
 
 class CardFormView: UIView {
 
-    // MARK: - Public Properties
+    // MARK: - Public Card Form Input Values
 
     @objc var cardNumber: String? {
         return cardNumberTextField.text != "" ? cardNumberTextField.text : nil
@@ -23,7 +23,7 @@ class CardFormView: UIView {
         return phoneNumberTextField.text != "" ? phoneNumberTextField.text : nil
     }
 
-    // MARK: - Public stuff
+    // MARK: - Public Card Form Config Options
 
     @objc var hidePhoneNumberField: Bool = false {
         didSet {

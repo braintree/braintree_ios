@@ -22,8 +22,8 @@
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:NSLocalizedString(@"Pay With iDEAL", nil) forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithRed:61.0f/255.0f green:149.0f/255.0f blue:206.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithRed:80.0f/255.0f green:177.0f/255.0f blue:234.0f/255.0f alpha:1.0] forState:UIControlStateHighlighted];
+    [button setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
+    [button setTitleColor:UIColor.darkGrayColor forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(idealButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
