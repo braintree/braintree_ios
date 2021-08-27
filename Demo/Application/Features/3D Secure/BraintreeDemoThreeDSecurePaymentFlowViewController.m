@@ -2,11 +2,11 @@
 #import "Demo-Swift.h"
 @import BraintreeThreeDSecure;
 
-@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
+@interface BraintreeDemoThreeDSecurePaymentFlowViewController ()
 
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
-@property (nonatomic, strong) CardFormView *cardFormView;
+@property (nonatomic, strong) CardFormViewCustom *cardFormView;
 @property (nonatomic) int callbackCount;
 
 @end
@@ -17,16 +17,15 @@
     [super viewDidLoad];
     self.title = NSLocalizedString(@"3D Secure - Payment Flow", nil);
 
-    UINib *cardFormNib = [UINib nibWithNibName:@"CardFormView" bundle:nil];
-    self.cardFormView = [cardFormNib instantiateWithOwner:self options:nil][0];
-    self.cardFormView.hidePhoneNumberField = YES;
-    self.cardFormView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 350);
+    self.cardFormView = [[CardFormViewCustom alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.cardFormView];
+    self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [NSLayoutConstraint activateConstraints:@[
         [self.cardFormView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
         [self.cardFormView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
-        [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor]
+        [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+        [self.cardFormView.heightAnchor constraintEqualToConstant:200]
     ]];
 }
 
@@ -62,23 +61,22 @@
 
 - (BTCard *)newCard {
     BTCard *card = [BTCard new];
-    if (self.cardFormView.cardNumberTextField &&
-        self.cardFormView.expirationMonthTextField &&
-        self.cardFormView.expirationYearTextField &&
-        self.cardFormView.cvvTextField &&
-        self.cardFormView.postalCodeTextField) {
-        card.number = self.cardFormView.cardNumberTextField.text;
-        card.expirationMonth = self.cardFormView.expirationMonthTextField.text;
-        card.expirationYear = self.cardFormView.expirationYearTextField.text;
-        card.cvv = self.cardFormView.cvvTextField.text;
-        card.postalCode = self.cardFormView.postalCodeTextField.text;
-    } else {
-        self.progressBlock(@"Card not valid. Using default 3DS test card...");
-        card.number = @"4000000000001091";
-        card.expirationMonth = @"01";
-        card.expirationYear = @"2022";
-        card.cvv = @"123";
+    if (self.cardFormView.cardNumber != nil) {
+        card.number = self.cardFormView.cardNumber;
     }
+    if (self.cardFormView.expirationYear != nil) {
+        card.expirationYear = self.cardFormView.expirationYear;
+    }
+    if (self.cardFormView.expirationMonth != nil) {
+        card.expirationMonth = self.cardFormView.expirationMonth;
+    }
+    if (self.cardFormView.cvv != nil) {
+        card.cvv = self.cardFormView.cvv;
+    }
+    if (self.cardFormView.postalCode != nil) {
+        card.postalCode = self.cardFormView.postalCode;
+    }
+
     return card;
 }
 
@@ -90,21 +88,19 @@
 - (void)tappedToVerifyNewCard {
     self.callbackCount = 0;
     [self updateCallbackCount];
-    
+
     BTCard *card = [self newCard];
-    
-    self.progressBlock([NSString stringWithFormat:@"Tokenizing card ending in %@", [card.number substringFromIndex:(card.number.length - 4)]]);
-    
+
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-        
+
         if (error) {
             self.progressBlock(error.localizedDescription);
             return;
         }
-        
+
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
-        
+
         self.paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:self.apiClient];
         self.paymentFlowDriver.viewControllerPresentingDelegate = self;
 
@@ -144,7 +140,7 @@
         v1UICustomization.redirectButtonText = @"Return to Demo App";
         v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";
         request.v1UICustomization = v1UICustomization;
-        
+
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
@@ -157,7 +153,7 @@
             } else if (result) {
                 BTThreeDSecureResult *threeDSecureResult = (BTThreeDSecureResult *)result;
                 self.completionBlock(threeDSecureResult.tokenizedCard);
-                
+
                 if (threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible && threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted) {
                     self.progressBlock(@"Liability shift possible and liability shifted");
                 } else {
