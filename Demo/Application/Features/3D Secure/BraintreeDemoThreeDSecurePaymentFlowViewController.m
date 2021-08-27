@@ -2,7 +2,7 @@
 #import "Demo-Swift.h"
 @import BraintreeThreeDSecure;
 
-@interface BraintreeDemoThreeDSecurePaymentFlowViewController ()
+@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
