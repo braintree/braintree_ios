@@ -8,6 +8,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 
 1. [Supported Versions](#supported-versions)
 2. [Venmo](#venmo)
+3. [Carthage](#carthage)
 
 ## Supported Versions
 
@@ -33,4 +34,12 @@ venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccountNonce, error
 
   // transact with nonce on server
 }
+```
+
+## Carthage
+
+v6 requires Carthage v0.38.0+, which adds support for xcframework binary dependencies.
+
+```
+carthage update --use-xcframeworks
 ```
