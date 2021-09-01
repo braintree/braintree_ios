@@ -11,9 +11,8 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Install CocoaPod dependencies
         run: pod install
-        # Allowing warnings until Xcode 13 CocoaPods vendored frameworks issue is resolved: https://github.com/CocoaPods/CocoaPods/issues/10731
       - name: Run pod lib lint 
-        run: pod lib lint --allow-warnings
+        run: pod lib lint
   carthage:
     name: Carthage
     runs-on: macOS-11

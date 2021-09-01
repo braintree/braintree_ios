@@ -12,6 +12,9 @@
 ## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
   * Provides fix for this [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/10731) & allows proper usage of `PPRiskMagnes.xcframework` by `PayPalDataCollector` subspec.
+  
+## 4.38.0 (2021-08-24)
+* Add `offerPayLater` to `BTPayPalRequest`
 
 ## 5.4.3 (2021-07-22)
 * Swift Package Manager
