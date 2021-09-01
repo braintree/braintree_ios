@@ -79,13 +79,11 @@
     if (self.latestTokenizedPayment) {
         NSString *nonce = self.latestTokenizedPayment.nonce;
         [self updateStatus:@"Creating Transaction…"];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         NSString *merchantAccountID = ([self.latestTokenizedPayment.type isEqualToString:@"UnionPay"]) ? @"fake_switch_usd" : nil;
         
         [BraintreeDemoMerchantAPIClient.shared makeTransactionWithPaymentMethodNonce:nonce
                                                                    merchantAccountID:merchantAccountID
                                                                           completion:^(NSString *transactionID, NSError *error) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             self.latestTokenizedPayment = nil;
             if (error) {
                 [self updateStatus:error.localizedDescription];
@@ -150,10 +148,7 @@
         case BraintreeDemoAuthTypePayPalIDToken: {
             [self updateStatus:@"Fetching PayPal ID Token…"];
 
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
             [BraintreeDemoMerchantAPIClient.shared fetchPayPalIDTokenWithCompletion:^(NSString * _Nullable idToken, NSError * _Nullable err) {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 if (err) {
                     [self updateStatus:err.localizedDescription];
                 } else {
@@ -167,10 +162,7 @@
         case BraintreeDemoAuthTypeClientToken: {
             [self updateStatus:@"Fetching Client Token…"];
 
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
             [BraintreeDemoMerchantAPIClient.shared createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 if (error) {
                     [self updateStatus:error.localizedDescription];
                 } else {
