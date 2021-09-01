@@ -8,6 +8,7 @@
   * BraintreeVenmo
     * Remove `.unspecified` case from `BTVenmoPaymentMethodUsage` enum
     * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
+  * Require Carthage 0.38.0+
 
 ## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
