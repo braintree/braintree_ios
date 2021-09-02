@@ -37,7 +37,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreeThreeDSecure",
-            targets: ["BraintreeThreeDSecure", "CardinalMobile"]
+            targets: ["BraintreeThreeDSecure", "CardinalMobile", "PPRiskMagnes"]
         ),
         .library(
             name: "BraintreeUnionPay",
