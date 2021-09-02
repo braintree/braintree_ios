@@ -29,7 +29,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreePaymentFlow",
-            targets: ["BraintreePaymentFlow"]
+            targets: ["BraintreePaymentFlow", "PPRiskMagnes"]
         ),
         .library(
             name: "BraintreePayPal",
