@@ -33,7 +33,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreePayPal",
-            targets: ["BraintreePayPal", "PayPalDataCollector"]
+            targets: ["BraintreePayPal", "PPRiskMagnes"]
         ),
         .library(
             name: "BraintreeThreeDSecure",
