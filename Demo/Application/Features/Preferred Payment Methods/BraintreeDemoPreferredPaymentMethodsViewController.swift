@@ -4,8 +4,8 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
     private let preferredPaymentMethods: BTPreferredPaymentMethods
     private let paypalDriver: BTPayPalDriver
     private let venmoDriver: BTVenmoDriver
-    private let oneTimePaymentButton = UIButton(type: .system)
-    private let billingAgreementButton = UIButton(type: .system)
+    private let payPalCheckoutButton = UIButton(type: .system)
+    private let payPalVaultButton = UIButton(type: .system)
     private let venmoButton = UIButton(type: .system)
     
     override init?(authorization: String!) {
@@ -17,8 +17,6 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
 
         super.init(authorization: authorization)
         
-        paypalDriver.appSwitchDelegate = self
-        
         title = "Preferred Payment Methods"
         view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
@@ -28,17 +26,17 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         preferredPaymentMethodsButton.addTarget(self, action: #selector(preferredPaymentMethodsButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(preferredPaymentMethodsButton)
         
-        oneTimePaymentButton.setTitle("PayPal One-Time Payment", for: .normal)
-        oneTimePaymentButton.translatesAutoresizingMaskIntoConstraints = false
-        oneTimePaymentButton.addTarget(self, action: #selector(oneTimePaymentButtonTapped(_:)), for: .touchUpInside)
-        oneTimePaymentButton.isEnabled = false
-        view.addSubview(oneTimePaymentButton)
+        payPalCheckoutButton.setTitle("PayPal Checkout", for: .normal)
+        payPalCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
+        payPalCheckoutButton.addTarget(self, action: #selector(payPalCheckoutButtonTapped(_:)), for: .touchUpInside)
+        payPalCheckoutButton.isEnabled = false
+        view.addSubview(payPalCheckoutButton)
         
-        billingAgreementButton.setTitle("PayPal Billing Agreement", for: .normal)
-        billingAgreementButton.translatesAutoresizingMaskIntoConstraints = false
-        billingAgreementButton.addTarget(self, action: #selector(billingAgreementButtonTapped(_:)), for: .touchUpInside)
-        billingAgreementButton.isEnabled = false
-        view.addSubview(billingAgreementButton)
+        payPalVaultButton.setTitle("PayPal Vault", for: .normal)
+        payPalVaultButton.translatesAutoresizingMaskIntoConstraints = false
+        payPalVaultButton.addTarget(self, action: #selector(payPalVaultButtonTapped(_:)), for: .touchUpInside)
+        payPalVaultButton.isEnabled = false
+        view.addSubview(payPalVaultButton)
         
         venmoButton.setTitle("Venmo", for: .normal)
         venmoButton.translatesAutoresizingMaskIntoConstraints = false
@@ -48,10 +46,10 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         
         view.addConstraints([preferredPaymentMethodsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                              preferredPaymentMethodsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                             billingAgreementButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             billingAgreementButton.bottomAnchor.constraint(equalTo: oneTimePaymentButton.bottomAnchor, constant: -40),
-                             oneTimePaymentButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             oneTimePaymentButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
+                             payPalVaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             payPalVaultButton.bottomAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: -40),
+                             payPalCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             payPalCheckoutButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
                              venmoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                              venmoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)])
     }
@@ -64,41 +62,41 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         self.progressBlock("Fetching preferred payment methods...")
         preferredPaymentMethods.fetch { (result) in
             self.progressBlock("PayPal Preferred: \(result.isPayPalPreferred)\nVenmo Preferred: \(result.isVenmoPreferred)")
-            self.oneTimePaymentButton.isEnabled = result.isPayPalPreferred
-            self.billingAgreementButton.isEnabled = result.isPayPalPreferred
+            self.payPalCheckoutButton.isEnabled = result.isPayPalPreferred
+            self.payPalVaultButton.isEnabled = result.isPayPalPreferred
             self.venmoButton.isEnabled = result.isVenmoPreferred
         }
     }
     
-    @objc func oneTimePaymentButtonTapped(_ button: UIButton) {
-        self.progressBlock("Tapped PayPal One-Time Payment")
+    @objc func payPalCheckoutButtonTapped(_ button: UIButton) {
+        self.progressBlock("Tapped PayPal Checkout")
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalRequest(amount: "4.30")
-        paypalDriver.requestOneTimePayment(paypalRequest) { (nonce, error) in
+        let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
+        paypalDriver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
             button.isEnabled = true
-            
+
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
                 self.completionBlock(n)
             } else {
-                self.progressBlock("Cancelled")
+                self.progressBlock("Canceled")
             }
         }
     }
     
-    @objc func billingAgreementButtonTapped(_ button: UIButton) {
-        self.progressBlock("Tapped PayPal Billing Agreement")
+    @objc func payPalVaultButtonTapped(_ button: UIButton) {
+        self.progressBlock("Tapped PayPal Vault")
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalRequest()
+        let paypalRequest = BTPayPalVaultRequest()
         paypalRequest.activeWindow = self.view.window
-        paypalDriver.requestBillingAgreement(paypalRequest) { (nonce, error) in
+        paypalDriver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {
@@ -106,7 +104,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             } else if let n = nonce {
                 self.completionBlock(n)
             } else {
-                self.progressBlock("Cancelled")
+                self.progressBlock("Canceled")
             }
         }
     }
@@ -116,8 +114,8 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
-        
-        venmoDriver.authorizeAccountAndVault(false) { (nonce, error) in
+
+        venmoDriver.tokenizeVenmoAccount(with: BTVenmoRequest()) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {
@@ -125,35 +123,9 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             } else if let n = nonce {
                 self.completionBlock(n)
             } else {
-                self.progressBlock("Cancelled")
+                self.progressBlock("Canceled")
             }
         }
     }
 }
 
-// MARK: - BTAppSwitchDelegate
-extension BraintreeDemoPreferredPaymentMethodsViewController: BTAppSwitchDelegate {
-    func appSwitcherWillPerformAppSwitch(_ appSwitcher: Any) {
-        self.progressBlock("paymentDriverWillPerformAppSwitch:")
-    }
-    
-    func appSwitcher(_ appSwitcher: Any, didPerformSwitchTo target: BTAppSwitchTarget) {
-        switch (target) {
-        case .webBrowser:
-            self.progressBlock("appSwitcher:didPerformSwitchToTarget: browser")
-            break
-        case .nativeApp:
-            self.progressBlock("appSwitcher:didPerformSwitchToTarget: app")
-            break
-        case .unknown:
-            self.progressBlock("appSwitcher:didPerformSwitchToTarget: unknown")
-            break
-        default:
-            break
-        }
-    }
-    
-    func appSwitcherWillProcessPaymentInfo(_ appSwitcher: Any) {
-        self.progressBlock("paymentDriverWillProcessPaymentInfo:")
-    }
-}

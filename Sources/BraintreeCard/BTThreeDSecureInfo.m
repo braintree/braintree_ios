@@ -25,7 +25,7 @@
     return self;
 }
 
-- (NSString *)acsTransactionId {
+- (NSString *)acsTransactionID {
     return [self.threeDSecureJSON[@"acsTransactionId"] asString];
 }
 
@@ -41,7 +41,7 @@
     return [self.threeDSecureJSON[@"cavv"] asString];
 }
 
-- (NSString *)dsTransactionId {
+- (NSString *)dsTransactionID {
     return [self.threeDSecureJSON[@"dsTransactionId"] asString];
 }
 
@@ -77,11 +77,11 @@
     return [self.threeDSecureJSON[@"status"] asString];
 }
 
-- (NSString *)threeDSecureAuthenticationId {
+- (NSString *)threeDSecureAuthenticationID {
     return [self.threeDSecureJSON[@"threeDSecureAuthenticationId"] asString];
 }
 
-- (NSString *)threeDSecureServerTransactionId {
+- (NSString *)threeDSecureServerTransactionID {
     return [self.threeDSecureJSON[@"threeDSecureServerTransactionId"] asString];
 }
 

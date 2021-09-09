@@ -9,33 +9,48 @@
 #import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/Braintree-Swift.h>
 
-#elif SWIFT_PACKAGE // SPM
+#elif SWIFT_PACKAGE                                   // SPM
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
-// Use @import for SPM support (see https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348)
-@import PayPalDataCollector;
 
-#else // Carthage
+#else                                                 // Carthage
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
+#endif
+
+#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                                   // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import PayPalDataCollector;
+
+#elif __has_include("Braintree-Swift.h")              // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                                 // Carthage
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 
 @interface BTLocalPaymentRequest ()
 
-@property (nonatomic, copy, nullable) NSString *paymentId;
+@property (nonatomic, copy, nullable) NSString *paymentID;
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
-@property (nonatomic, strong) NSString *correlationId;
+@property (nonatomic, strong) NSString *correlationID;
 
 @end
 
@@ -44,7 +59,7 @@
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
     BTLocalPaymentRequest *localPaymentRequest = (BTLocalPaymentRequest *)request;
-    self.correlationId = [PPDataCollector clientMetadataID:nil];
+    self.correlationID = [PPDataCollector clientMetadataID:nil];
     [apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *configurationError) {
         if (configurationError) {
             [delegate onPaymentComplete:nil error:configurationError];
@@ -117,8 +132,12 @@
             params[@"phone"] = localPaymentRequest.phone;
         }
 
-        if (localPaymentRequest.merchantAccountId) {
-            params[@"merchant_account_id"] = localPaymentRequest.merchantAccountId;
+        if (localPaymentRequest.merchantAccountID) {
+            params[@"merchant_account_id"] = localPaymentRequest.merchantAccountID;
+        }
+
+        if (localPaymentRequest.bic) {
+            params[@"bic"] = localPaymentRequest.bic;
         }
 
         params[@"experience_profile"] = @{
@@ -129,12 +148,12 @@
                    parameters:params
                    completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
              if (!error) {
-                 self.paymentId = [body[@"paymentResource"][@"paymentToken"] asString];
+                 self.paymentID = [body[@"paymentResource"][@"paymentToken"] asString];
                  NSString *approvalUrl = [body[@"paymentResource"][@"redirectUrl"] asString];
                  NSURL *url = [NSURL URLWithString:approvalUrl];
 
-                 if (self.paymentId && url) {
-                     [self.localPaymentFlowDelegate localPaymentStarted:self paymentId:self.paymentId start:^{
+                 if (self.paymentID && url) {
+                     [self.localPaymentFlowDelegate localPaymentStarted:self paymentID:self.paymentID start:^{
                          [delegate onPaymentWithURL:url error:error];
                      }];
                  } else {
@@ -168,19 +187,19 @@
         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
         parameters[@"paypal_account"][@"intent"] = @"sale";
 
-        if (self.correlationId) {
-            parameters[@"paypal_account"][@"correlation_id"] = self.correlationId;
+        if (self.correlationID) {
+            parameters[@"paypal_account"][@"correlation_id"] = self.correlationID;
         }
 
-        if (self.merchantAccountId) {
-            parameters[@"merchant_account_id"] = self.merchantAccountId;
+        if (self.merchantAccountID) {
+            parameters[@"merchant_account_id"] = self.merchantAccountID;
         }
 
         BTClientMetadata *metadata =  self.paymentFlowDriverDelegate.apiClient.metadata;
         parameters[@"_meta"] = @{
                                  @"source" : metadata.sourceString,
                                  @"integration" : metadata.integrationString,
-                                 @"sessionId" : metadata.sessionId,
+                                 @"sessionId" : metadata.sessionID,
                                  };
 
         [self.paymentFlowDriverDelegate.apiClient POST:@"/v1/payment_methods/paypal_accounts"
@@ -198,7 +217,7 @@
                  BTJSON *details = payPalAccount[@"details"];
 
                  NSString *email = [details[@"email"] asString];
-                 NSString *clientMetadataId = [details[@"correlationId"] asString];
+                 NSString *clientMetadataID = [details[@"correlationId"] asString];
                  // Allow email to be under payerInfo
                  if ([details[@"payerInfo"][@"email"] isString]) {
                      email = [details[@"payerInfo"][@"email"] asString];
@@ -207,7 +226,7 @@
                  NSString *firstName = [details[@"payerInfo"][@"firstName"] asString];
                  NSString *lastName = [details[@"payerInfo"][@"lastName"] asString];
                  NSString *phone = [details[@"payerInfo"][@"phone"] asString];
-                 NSString *payerId = [details[@"payerInfo"][@"payerId"] asString];
+                 NSString *payerID = [details[@"payerInfo"][@"payerId"] asString];
 
                  BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
                  BTPostalAddress *billingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
@@ -223,8 +242,8 @@
                                                                                                       phone:phone
                                                                                              billingAddress:billingAddress
                                                                                             shippingAddress:shippingAddress
-                                                                                           clientMetadataId:clientMetadataId
-                                                                                                    payerId:payerId];
+                                                                                           clientMetadataID:clientMetadataID
+                                                                                                    payerID:payerID];
                  [self.paymentFlowDriverDelegate onPaymentComplete:tokenizedLocalPayment error:nil];
              }
          }];

@@ -71,6 +71,20 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureShippingMethod) {
 };
 
 /**
+ The card add challenge request
+ */
+typedef NS_ENUM(NSInteger, BTThreeDSecureCardAddChallenge) {
+    /// Unspecified
+    BTThreeDSecureCardAddChallengeUnspecified,
+    
+    /// Requested
+    BTThreeDSecureCardAddChallengeRequested,
+    
+    /// Not Requested
+    BTThreeDSecureCardAddChallengeNotRequested
+};
+
+/**
  Used to initialize a 3D Secure payment flow
  */
 @interface BTThreeDSecureRequest : BTPaymentFlowRequest <BTPaymentFlowRequestDelegate>
@@ -134,6 +148,23 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureShippingMethod) {
  Optional. If set to true, an exemption to the authentication challenge will be requested.
  */
 @property (nonatomic) BOOL exemptionRequested;
+
+/**
+ :nodoc:
+ */
+@property (nonatomic) BOOL dataOnlyRequested;
+
+/**
+ Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
+ 
+ Defaults to BTThreeDSecureAddCardChallengeUnspecified.
+ 
+ If set to BTThreeDSecureAddCardChallengeRequested, the authentication challenge will be requested from the issuer to confirm adding new card to the merchant's vault.
+ If set to BTThreeDSecureAddCardChallengeNotRequested the authentication challenge will not be requested from the issuer.
+ If set to BTThreeDSecureAddCardChallengeUnspecified, when the amount is 0, the authentication challenge will be requested from the issuer.
+ If set to BTThreeDSecureAddCardChallengeUnspecified, when the amount is greater than 0, the authentication challenge will not be requested from the issuer.
+ */
+@property (nonatomic, assign) BTThreeDSecureCardAddChallenge cardAddChallenge;
 
 /**
  Optional. UI Customization for 3DS2 challenge views.

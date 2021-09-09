@@ -8,65 +8,16 @@
 
 @interface BTCard ()
 
-@property (nonatomic, strong) NSMutableDictionary *mutableParameters;
 @property (nonatomic, strong, readonly) NSString *cardTokenizationGraphQLMutation;
 
 @end
 
 @implementation BTCard
 
-- (instancetype)init {
-    return [self initWithParameters:@{}];
-}
-
-- (nonnull instancetype)initWithParameters:(NSDictionary *)parameters {
-    if (self = [super init]) {
-        _mutableParameters = [parameters mutableCopy];
-        _number = parameters[@"number"];
-        NSArray *components = [parameters[@"expiration_date"] componentsSeparatedByString:@"/"];
-        if (components.count == 2) {
-            _expirationMonth = components[0];
-            _expirationYear = components[1];
-        }
-        _postalCode = parameters[@"billing_address"][@"postal_code"];
-        _cvv = parameters[@"cvv"];
-        
-        _streetAddress = parameters[@"billing_address"][@"street_address"];
-        _extendedAddress = parameters[@"billing_address"][@"extended_address"];
-        _locality = parameters[@"billing_address"][@"locality"];
-        _region = parameters[@"billing_address"][@"region"];
-        _countryName = parameters[@"billing_address"][@"country_name"];
-        _countryCodeAlpha2 = parameters[@"billing_address"][@"country_code_alpha2"];
-        _countryCodeAlpha3 = parameters[@"billing_address"][@"country_code_alpha3"];
-        _countryCodeNumeric = parameters[@"billing_address"][@"country_code_numeric"];
-        _cardholderName = parameters[@"cardholder_name"];
-        _firstName = parameters[@"billing_address"][@"first_name"];
-        _lastName = parameters[@"billing_address"][@"last_name"];
-        _company = parameters[@"billing_address"][@"company"];
-        
-        _shouldValidate = [parameters[@"options"][@"validate"] boolValue];
-    }
-    return self;
-}
-
-- (instancetype)initWithNumber:(NSString *)number
-               expirationMonth:(NSString *)expirationMonth
-                expirationYear:(NSString *)expirationYear
-                           cvv:(NSString *)cvv
-{
-    if (self = [self initWithParameters:@{}]) {
-        _number = number;
-        _expirationMonth = expirationMonth;
-        _expirationYear = expirationYear;
-        _cvv = cvv;
-    }
-    return self;
-}
-
 #pragma mark -
 
 - (NSDictionary *)parameters {
-    NSMutableDictionary *p = [self.mutableParameters mutableCopy];
+    NSMutableDictionary *p = [NSMutableDictionary new];
     if (self.number) {
         p[@"number"] = self.number;
     }
@@ -91,14 +42,7 @@
         p[@"cvv"] = self.cvv;
     }
     
-    if (self.cardholderName) {
-        p[@"cardholder_name"] = self.cardholderName;
-    }
-    
     NSMutableDictionary *billingAddressDictionary = [NSMutableDictionary new];
-    if ([p[@"billing_address"] isKindOfClass:[NSDictionary class]]) {
-        [billingAddressDictionary addEntriesFromDictionary:p[@"billing_address"]];
-    }
     
     if (self.firstName) {
         billingAddressDictionary[@"first_name"] = self.firstName;
@@ -151,13 +95,8 @@
     if (billingAddressDictionary.count > 0) {
         p[@"billing_address"] = [billingAddressDictionary copy];
     }
-    
-    NSMutableDictionary *optionsDictionary = [NSMutableDictionary new];
-    if ([p[@"options"] isKindOfClass:[NSDictionary class]]) {
-        [optionsDictionary addEntriesFromDictionary:p[@"options"]];
-    }
-    optionsDictionary[@"validate"] = @(self.shouldValidate);
-    p[@"options"] = [optionsDictionary copy];
+
+    p[@"options"] = @{@"validate" : @(self.shouldValidate)};
     return [p copy];
 }
 
@@ -183,9 +122,6 @@
     }
 
     NSMutableDictionary *billingAddressDictionary = [NSMutableDictionary new];
-    if ([cardDictionary[@"billingAddress"] isKindOfClass:[NSDictionary class]]) {
-        [billingAddressDictionary addEntriesFromDictionary:cardDictionary[@"billingAddress"]];
-    }
 
     if (self.firstName) {
         billingAddressDictionary[@"firstName"] = self.firstName;
@@ -239,16 +175,11 @@
         cardDictionary[@"billingAddress"] = [billingAddressDictionary copy];
     }
 
-    NSMutableDictionary *optionsDictionary = [NSMutableDictionary new];
-    if ([inputDictionary[@"options"] isKindOfClass:[NSDictionary class]]) {
-        [optionsDictionary addEntriesFromDictionary:inputDictionary[@"options"]];
-    }
-    optionsDictionary[@"validate"] = @(self.shouldValidate);
-    inputDictionary[@"options"] = [optionsDictionary copy];
+    inputDictionary[@"options"] = @{@"validate" : @(self.shouldValidate)};
 
     NSMutableDictionary *variables = [@{ @"input": [inputDictionary copy] } mutableCopy];
     if (self.authenticationInsightRequested) {
-        variables[@"authenticationInsightInput"] = self.merchantAccountId ? @{ @"merchantAccountId": self.merchantAccountId } : @{};
+        variables[@"authenticationInsightInput"] = self.merchantAccountID ? @{ @"merchantAccountId": self.merchantAccountID } : @{};
     }
     
     return @{

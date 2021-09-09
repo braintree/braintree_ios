@@ -17,30 +17,30 @@
 			<string>BraintreeDemoCardTokenizationViewController</string>
 			<key>Titles</key>
 			<array>
-				<string>PayPal - Billing Agreement</string>
-				<string>PayPal - One-Time Payment</string>
+				<string>PayPal - Vault</string>
+				<string>PayPal - Checkout</string>
+				<string>PayPal - Pay Later</string>
 				<string>Credit Card Tokenization</string>
 				<string>Venmo - Custom Button</string>
 				<string>Apple Pay - PassKit</string>
 				<string>3D Secure Payment Flow</string>
 				<string>Fraud Protection - BTDataCollector</string>
 				<string>UnionPay</string>
-				<string>PayPal Credit</string>
 				<string>iDEAL</string>
 				<string>Amex</string>
 				<string>Preferred Payment Methods</string>
 			</array>
 			<key>Values</key>
 			<array>
-				<string>BraintreeDemoPayPalBillingAgreementViewController</string>
-				<string>BraintreeDemoPayPalOneTimePaymentViewController</string>
+				<string>BraintreeDemoPayPalVaultViewController</string>
+				<string>BraintreeDemoPayPalCheckoutViewController</string>
+				<string>BraintreeDemoPayPalPayLaterViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
 				<string>BraintreeDemoThreeDSecurePaymentFlowViewController</string>
 				<string>BraintreeDemoBTDataCollectorViewController</string>
 				<string>BraintreeDemoUnionPayViewController</string>
-				<string>BraintreeDemoPayPalCreditPaymentViewController</string>
 				<string>BraintreeDemoIdealViewController</string>
 				<string>BraintreeDemoAmexViewController</string>
 				<string>BraintreeDemoPreferredPaymentMethodsViewController</string>

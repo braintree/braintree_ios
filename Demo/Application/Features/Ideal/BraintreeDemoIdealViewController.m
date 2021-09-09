@@ -70,7 +70,7 @@
     void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             if (error.code == BTPaymentFlowDriverErrorTypeCanceled) {
-                self.progressBlock(@"Cancelled🎲");
+                self.progressBlock(@"Canceled 🎲");
             } else {
                 self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
             }
@@ -84,7 +84,7 @@
     [self.paymentFlowDriver startPaymentFlow:request completion:paymentFlowCompletionBlock];
 }
 
-#pragma mark BTAppSwitchDelegate
+#pragma mark BTViewControllerPresentingDelegate
 
 - (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];
@@ -96,8 +96,8 @@
 
 #pragma mark BTIdealRequestDelegate
 
-- (void)localPaymentStarted:(__unused BTLocalPaymentRequest *)request paymentId:(NSString *)paymentId start:(void (^)(void))start {
-    self.paymentIDLabel.text = [NSString stringWithFormat:@"LocalPayment ID: %@", paymentId];
+- (void)localPaymentStarted:(__unused BTLocalPaymentRequest *)request paymentID:(NSString *)paymentID start:(void (^)(void))start {
+    self.paymentIDLabel.text = [NSString stringWithFormat:@"LocalPayment ID: %@", paymentID];
     // Do preprocessing if necessary before calling start()
     start();
 }

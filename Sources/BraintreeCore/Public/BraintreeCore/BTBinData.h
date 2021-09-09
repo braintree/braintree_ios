@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The code for the product type of the card (e.g. `D` (Visa Signature Preferred), `G` (Visa Business)), if available.
  */
-@property (nonatomic, nullable, readonly, copy) NSString *productId;
+@property (nonatomic, nullable, readonly, copy) NSString *productID;
 
 @end
 

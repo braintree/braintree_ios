@@ -10,29 +10,18 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         fakeApplication.cannedCanOpenURL = false
     }
 
-    // TODO: - Investigate why this test often fails on the first run
     func testFetchPreferredPaymentMethods_sendsQueryToGraphQL() {
                 
         let expectation = self.expectation(description: "Sends query to GraphQL")
-        let apiClient = BTAPIClient(authorization: "development_client_key")!
-        
-        let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
-        mockConfigurationHTTP.cannedConfiguration = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
-        mockConfigurationHTTP.cannedStatusCode = 200
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
 
-        apiClient.configurationHTTP = mockConfigurationHTTP
-        
-        let mockGraphQLHTTP = FakeGraphQLHTTP.fakeHTTP()
-        apiClient.graphQL = mockGraphQLHTTP
-        
-        let sut = BTPreferredPaymentMethods(apiClient: apiClient)
+        let sut = BTPreferredPaymentMethods(apiClient: mockAPIClient)
         sut.application = fakeApplication
         
         sut.fetch { result in
-            
-            let lastRequestParameters = mockGraphQLHTTP.lastRequestParameters as! [String: Any]
-            let graphQLQuery = lastRequestParameters["query"] as! String
-            XCTAssertEqual(graphQLQuery, "query PreferredPaymentMethods { preferredPaymentMethods { paypalPreferred } }")
+            guard let lastRequestParameters = self.mockAPIClient.lastPOSTParameters as? [String: String] else { XCTFail(); return }
+            XCTAssertEqual(lastRequestParameters["query"], "query PreferredPaymentMethods { preferredPaymentMethods { paypalPreferred } }")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
             expectation.fulfill()
         }
         

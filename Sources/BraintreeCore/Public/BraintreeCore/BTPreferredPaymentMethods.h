@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param apiClient An API client
 */
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER NS_EXTENSION_UNAVAILABLE("Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.");
 
 /**
  :nodoc:

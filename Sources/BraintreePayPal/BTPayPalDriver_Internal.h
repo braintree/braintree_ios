@@ -5,21 +5,13 @@
 #endif
 
 #import <AuthenticationServices/AuthenticationServices.h>
+#import "BTPayPalRequest_Internal.h"
+
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 @class BTJSON;
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-@class SFAuthenticationSession;
-#pragma clang diagnostic pop
-
 NS_ASSUME_NONNULL_BEGIN
-
-typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
-    BTPayPalPaymentTypeCheckout,
-    BTPayPalPaymentTypeBillingAgreement
-};
 
 @interface BTPayPalDriver ()
 
@@ -34,9 +26,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 @property (nonatomic, strong, nullable) BTAPIClient *apiClient;
 
 /**
- Exposed for testing the clientMetadataId associated with this request
+ Exposed for testing the clientMetadataID associated with this request
 */
-@property (nonatomic, strong) NSString *clientMetadataId;
+@property (nonatomic, strong) NSString *clientMetadataID;
 
 /**
  Exposed for testing the intent associated with this request

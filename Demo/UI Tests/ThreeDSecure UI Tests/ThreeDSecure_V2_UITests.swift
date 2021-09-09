@@ -13,7 +13,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         app.launchArguments.append("-Integration:BraintreeDemoThreeDSecurePaymentFlowViewController")
         app.launch()
 
-        waitForElementToAppear(app.cardNumberTextField)
+        _ = app.cardNumberTextField.waitForExistence(timeout: 10)
     }
 
     func testThreeDSecurePaymentFlowV2_frictionlessFlow_andTransacts() {
@@ -48,7 +48,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
     }
 
     func testThreeDSecurePaymentFlowV2_challengeFlow_andFails() {
-        app.enterCardDetailsWith(cardNumber: "5200000000001104", expirationDate: expirationDate)
+        app.enterCardDetailsWith(cardNumber: "4000000000001109", expirationDate: expirationDate)
         app.tokenizeButton.tap()
 
         waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)

@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Optional: A non-default merchant account to use for tokenization.
  */
-@property (nonatomic, nullable, copy) NSString *merchantAccountId;
+@property (nonatomic, nullable, copy) NSString *merchantAccountID;
 
 /**
  Optional: The address of the customer. An error will occur if this address is not valid.
@@ -77,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, getter=isShippingAddressRequired) BOOL shippingAddressRequired;
 
 /**
+ Optional: Bank Identification Code of the customer (specific to iDEAL transactions).
+ */
+@property (nonatomic, nullable, copy) NSString *bic;
+
+/**
  A delegate for receiving information about the local payment flow.
  */
 @property (nonatomic, nullable, weak) id<BTLocalPaymentRequestDelegate> localPaymentFlowDelegate;
@@ -94,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
  Required delegate method which returns the payment ID before the flow starts.
  Use this to do any preprocessing and setup for webhooks. Use the `start()` callback to continue the flow.
  */
-- (void)localPaymentStarted:(BTLocalPaymentRequest *)request paymentId:(NSString *)paymentId start:(void(^)(void))start;;
+- (void)localPaymentStarted:(BTLocalPaymentRequest *)request paymentID:(NSString *)paymentID start:(void(^)(void))start;;
 
 @end
 

@@ -79,6 +79,16 @@ class BTConfiguration_ApplePay_Tests : XCTestCase {
         XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.maestro])
     }
 
+    @available(iOS 12.1.1, *)
+    func testApplePaySupportedNetworks_whenSupportedNetworksIncludesElo_returnsSupportedNetworks() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [ "supportedNetworks": ["elo"] ]
+            ])
+        let configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.elo])
+    }
+
     func testApplePaySupportedNetworks_doesNotPassesThroughUnknownValuesFromConfiguration() {
         let configurationJSON = BTJSON(value: [
             "applePay": [ "supportedNetworks": ["ChinaUnionPay", "Interac", "PrivateLabel"] ]

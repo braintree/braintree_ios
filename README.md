@@ -4,13 +4,13 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-![GitHub Actions CI](https://github.com/braintree/braintree_ios/workflows/CI/badge.svg)
+![GitHub Actions Tests](https://github.com/braintree/braintree_ios/workflows/Tests/badge.svg)
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
-A new major version of the SDK is available in beta. See the [v5 migration guide](/V5_MIGRATION.md) for details.
+v5 is the latest major version of Braintree iOS. To update from v4, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/master/V5_MIGRATION.md).
 
-**The Braintree iOS SDK requires Xcode 11+**. It permits a Deployment Target of iOS 8.0 or higher.
+**The Braintree iOS SDK permits a deployment target of iOS 12.0 or higher**. It requires Xcode 12+ and Swift 5.1+.
 
 ## Supported Payment Methods
 
@@ -25,14 +25,16 @@ A new major version of the SDK is available in beta. See the [v5 migration guide
 
 We recommend using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](https://github.com/CocoaPods/CocoaPods), or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
-### Swift Package Manager (v5 Beta)
-_This feature is only available in v5.0.0-beta1._
+### Swift Package Manager
+_This feature is only available in v5._
 
-To add the `Braintree` package to your Xcode project, select File > Swift Packages > Add Package Dependency and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
+To add the `Braintree` package to your Xcode project, select _File > Swift Packages > Add Package Dependency_ and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
 
-If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see General > Frameworks, Libraries, and Embedded Content).
+If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see _General > Frameworks, Libraries, and Embedded Content_).
 
-In your app's source code files, use the following import syntax to include Braintree's libraries. For example:
+*`BraintreePayPal` and `BraintreePaymentFlow` also require the inclusion of the `PayPalDataCollector` module.*
+
+In your app's source code files, use the following import syntax to include Braintree's libraries:
 ```
 import BraintreeCore
 import BraintreeCard
@@ -40,30 +42,8 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-#### Binary Dependencies
+**Braintree 5.4.2+ requires Xcode 12.5+ for SPM.** We recommend using the latest version for the simplest SPM integration. If using Braintree 5.4.1 and below, please see our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SWIFT_PACKAGE_MANAGER.md) for specific workarounds required to use these older versions.
 
-There is a known Xcode bug, reported in [this GitHub issue](https://github.com/braintree/braintree_ios/issues/576), on archiving apps that use binary dependencies via SPM. The workaround is to tick the checkbox to include these binary dependencies in your app.
-
-To use the `BraintreeDataCollector` library, you must also include the `KountDataCollector` library via SPM.
-
-The `PayPalDataCollector`, `BraintreePaymentFlow`, `BraintreeThreeDSecure`, `BraintreePayPal`, and `BraintreeVenmo` libraries all require the `PPRiskMagnes` library be included via SPM.
-
-#### BraintreeThreeDSecure
-
-To use the `BraintreeThreeDSecure` library via SPM, you must [manually include](#manually-including-a-framework) the `CardinalMobile.framework` located in the `Frameworks` dir.
-
-##### Manually including a framework
-
-1. Drag and drop the framework from Finder into your Xcode project
-    * Select _Copy items if needed_
-    * Click _Finish_. 
-        The result should look like:
-        <br/><br/>
-        ![image](image_assets/include_frameworks_in_proj.png)
-1. Open your project's settings by selecting your app target in the General tab
-    * Under the _Frameworks, Libraries, and Embedded Content_ section, make sure each framework is set to “Embed & Sign”
-    ![image](image_assets/link_libraries.png)
-1. Go to the Build Phases tab. Under _Link Binary With Libraries_, make sure the frameworks are listed. This should be taken care of by step #2 above, but if not, add the frameworks manually via the `+` button.
 
 ### CocoaPods
 ```
@@ -80,13 +60,14 @@ pod 'Braintree/Venmo'
 ### Carthage
 Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
-*Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. Open a GitHub issue if there are concerns.
+*Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. If there are concerns, please comment on [this Discussion thread](https://github.com/braintree/braintree_ios/discussions/705).
 
 ## Documentation
 
-Start with [**'Hello, Client!'**](https://developers.braintreepayments.com/ios/start/hello-client) for instructions on basic setup and usage.
+Start with [**'Hello, Client!'**](https://developer.paypal.com/braintree/docs/start/hello-client/ios/v5) for instructions on basic setup and usage.
 
-Next, read the [**full documentation**](https://developers.braintreepayments.com/ios/sdk/client) for information about integration options, such as Drop-In UI, PayPal, and credit card tokenization.
+Next, read the [**full documentation**](https://developer.paypal.com/braintree/docs/guides/payment-method-types-overview) for information about integrating with additional payment methods, such as PayPal and Venmo, as well as explore our pre-built [Drop-In UI offering](https://developer.paypal.com/braintree/docs/guides/drop-in/overview).
+
 
 ## Versions
 
@@ -94,16 +75,18 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |
-| 5.x.x | Beta | December 2020 | TBA | TBA |
-| 4.x.x | Active | November 2015 | TBA | TBA |
+| 5.x.x | Active | February 2021 | TBA | TBA |
+| 4.x.x | Inactive | November 2015 | February 2022 | February 2023 |
+
+Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 
 ## Demo
 
-A demo app is included in the project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode.
+A demo app is included in the project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode. Xcode 13+ is required to run the demo app.
 
 ## Contributing
 
-We welcome PRs to this repo. See our [development doc](DEVELOPMENT.md).
+We welcome PRs to this repo. See our [development doc](https://github.com/braintree/braintree_ios/blob/master/DEVELOPMENT.md).
 
 ## Feedback
 
@@ -117,11 +100,11 @@ Here are a few ways to get in touch:
 ## Help
 
 * Read the headers
-* [Read the Braintree docs](https://developers.braintreepayments.com/ios/sdk/client)
+* [Read the Braintree docs](https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v5)
 * [Check out the reference docs](https://braintree.github.io/braintree_ios/)
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios/issues)
-* Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
+* Want to contribute? [Check out contributing guidelines](https://github.com/braintree/braintree_ios/blob/master/CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
 
 ### License
 
-The Braintree iOS SDK is open source and available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+The Braintree iOS SDK is open source and available under the MIT license. See the [LICENSE](https://github.com/braintree/braintree_ios/blob/master/LICENSE) file for more info.

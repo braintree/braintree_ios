@@ -1,12 +1,128 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
+  * Provides fix for this [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/10731) & allows proper usage of `PPRiskMagnes.xcframework` by `PayPalDataCollector` subspec.
+  
+## 4.38.0 (2021-08-24)
+* Add `offerPayLater` to `BTPayPalRequest`
+
+## 5.4.3 (2021-07-22)
+* Swift Package Manager
+  * Adds `NS_EXTENSION_UNAVAILABLE` annotations to methods unavailable for use in app extensions. Fixes (Drop-In issue #343)[https://github.com/braintree/braintree-ios-drop-in/issues/343] for Xcode 13-beta3.
+* ThreeDSecure
+  * Add `cardAddChallenge` to `BTThreeDSecureRequest`
+
+## 5.4.2 (2021-06-24)
+* Swift Package Manager
+  * Remove product libraries for `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` (requires Xcode 12.5+)
+    * _Notes:_
+      * This was a workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
+      * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
+      * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
+  * Xcode 13 Beta
+    * Remove invalid file path exclusions from `Package.swift` (thanks @JonathanDowning)
+
+## 5.4.1 (2021-06-22)
+* Re-add `BraintreeCore` dependency to `PayPalDataCollector` for Swift Package Manager archive issue workaround (fixes #679)
+
+## 5.4.0 (2021-06-07)
+* Venmo
+  * Add `paymentMethodUsage` to `BTVenmoRequest`
+  * Add `displayName` to `BTVenmoRequest`
+* Update PPRiskMagnes to 5.2.0
+* Carthage
+    * Add xcframework support (requires [Carthage 0.38.0+](https://github.com/Carthage/Carthage/releases/tag/0.38.0))
+
+## 5.3.2 (2021-05-25)
+* Fix `Braintree-Swift.h` imports for React Native projects using CocoaPods (fixes #671)
+* Fix `BTJSON` compatability for Swift
+
+## 5.3.1 (2021-05-11)
+* Update Kount SDK to v4.1.5
+* Fix bug where `userAction` on `BTPayPalCheckoutRequest` was ignored
+
+## 4.37.1 (2021-04-06)
+* Update PPRiskMagnesOC to 4.0.12 (resolves potential duplicate symbols errors)
+
+## 5.3.0 (2021-03-23)
+* Add CardinalMobile.xcframework version 2.2.5-1
+* Update Kount SDK to v4.1.4
+
+**NOTE:** For Swift Package Manager integrations using `BraintreeThreeDSecure`, manually including `CardinalMobile.framework` is no longer required. You should delete it from your project and add `CardinalMobile` via SPM. If you added the run script to remove simulator architectures from `CardinalMobile.framework`, you should remove this as well. See the [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for more information.
+
+## 5.2.0 (2021-03-15)
+* Fix potential crash if `legacyCode` param missing from GraphQL error response
+* PayPal
+  * Add `offerCredit` to `BTPayPalVaultRequest`
+
+## 5.1.0 (2021-03-08)
+* Local Payment Methods
+  * Add `bic` (Bank Identification Code) to `BTLocalPaymentRequest`
+* Apple Pay
+  * Add support for `PKPaymentNetworkElo` to Apple Pay configuration
+
+## 5.0.1 (2021-03-01)
+* SPM
+  * Remove `KountDataCollector` binary dependency from `BraintreeDataCollector` target (fixes #624)
+  * Remove `PPRiskMagnes` binary dependency from `PayPalDataCollector` target (fixes #624)
+* Carthage
+  * Fix timeout when building from source using --no-use-binaries or --use-xcframeworks flags
+
+## 5.0.0 (2021-02-11)
 * Breaking Changes
   * Make `shippingMethod` property on `BTThreeDSecureRequest` an enum instead of a string
   * Remove `BTTokenizationService`
   * Make `BTPaymentMethodNonceParser` private
-* Fix memory leak in `BTPayPalDriver`
-* Add `offerPayLater` to `BTPayPalRequest`
+  * Remove `BTAppSwitchDelegate`
+  * Rename `BTAppSwitch` to `BTAppContextSwitcher`
+    * Rename `handleAppSwitchReturnURL()` to `handleReturnURL()`
+    * Rename `canHandleAppSwitchReturnURL()` to `canHandleReturnURL()`
+    * Remove `unregisterAppSwitchHandler()`
+  * Rename properties to use `ID` instead of `Id`:
+    * `BTAmericanExpressRewardsBalance.requestID`
+    * `BTCard.merchantAccountID`
+    * `BTThreeDSecureInfo.acsTransactionID`
+    * `BTThreeDSecureInfo.dsTransactionID`
+    * `BTThreeDSecureInfo.threeDSecureAuthenticationID`
+    * `BTThreeDSecureInfo.threeDSecureServerTransactionID`
+    * `BTBinData.productID`
+    * `BTClientMetadata.sessionID`
+    * `BTConfiguration+DataCollector.kountMerchantID`
+    * `BTDataCollector.fraudMerchantID`
+    * `BTPayPalAccountNonce.clientMetadataID`
+    * `BTPayPalAccountNonce.payerID`
+    * `BTPayPalRequest.merchantAccountID`
+    * `BTLocalPaymentRequest.merchantAccountID`
+    * `BTLocalPaymentResult.clientMetadataID`
+    * `BTLocalPaymentResult.payerID`
+    * `BTThreeDSecureAdditionalInformation.accountID`
+    * `BTThreeDSecureLookup.transactionID`
+  * Rename methods to use `ID` instead of `Id`:
+    * `BTLocalPaymentRequest.localPaymentStarted(request:paymentID:start:)`
+    * `BTVenmoDriver.authorizeAccount(profileID:vault:completion:)`
+  * Remove `initWithNumber` and `initWithParameters` initializers from `BTCard`
+  * Replace `BTVenmoDriver.authorizeAccount` methods with `BTVenmoDriver.tokenizeVenmoAccount`
+  * PayPal
+    * Update `BTPayPalDriver.requestOneTimePayment` to expect a `BTPayPalCheckoutRequest` and deprecate method
+    * Update `BTPayPalDriver.requestBillingAgreement` to expect a `BTPayPalVaultRequest` and deprecate method
+    * Remove `offerCredit` from `BTPayPalRequest` (`offerPayLater` should be used instead)
+  * BraintreeDataCollector
+    * Remove `BTDataCollectorDelegate`
+    * Remove `BTDataCollector.collectCardFraudData()`
+    * Remove `BTDataCollectorKountErrorDomain`
+* Add `environment` to `BTConfiguration`
+* Add `BTVenmoRequest`
+* Update Kount SDK to v4.1.3 (includes arm64 simulator architecture for Apple silicon)
+* PayPal
+  * Fix memory leak in `BTPayPalDriver`
+  * Add `BTPayPalCheckoutRequest`
+  * Add `BTPayPalVaultRequest`
+  * Add `tokenizePayPalAccount` method to `BTPayPalDriver`
+  * Add `offerPayLater` and `requestBillingAgreement` to `BTPayPalCheckoutRequest`
+* Update CardinalMobile.framework to v2.2.5
+
+**Note:** Includes all changes in [5.0.0-beta2](#500-beta2-2021-01-20) and [5.0.0-beta1](#500-beta1-2020-12-01)
 
 ## 5.0.0-beta2 (2021-01-20)
 * Add SPM support for `BraintreeDataCollector` and `BraintreeThreeDSecure`
@@ -653,7 +769,7 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
 * Fix bug in Demo app
   * Menu button now works correctly
 * Fix bug with PayPal app switching
-  * The bug occurred when installing a new app after the Braintree SDK had been initialized. When attempting to authorize with PayPal in this scenario, the SDK would switch to the `wallet` and launch the `in-app` authorization. 
+  * The bug occurred when installing a new app after the Braintree SDK had been initialized. When attempting to authorize with PayPal in this scenario, the SDK would switch to the `wallet` and launch the `in-app` authorization.
 
 ## 3.8.1 (2015-05-22)
 
@@ -744,11 +860,11 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.4-bt1) that does not include card.io.
   * :rotating_light: Please note! :rotating_light:  
 
-      This change breaks builds that depend on a workaround introduced in 3.4.0 that added card.io headers to fix [card.io duplicate symbol issues](https://github.com/braintree/braintree_ios/issues/53). 
+      This change breaks builds that depend on a workaround introduced in 3.4.0 that added card.io headers to fix [card.io duplicate symbol issues](https://github.com/braintree/braintree_ios/issues/53).
 
-      Since card.io is not officially part of the Braintree API, and since the headers were only included as part of a workaround for use by a small group of developers, this potentially-breaking change is not accompanied by a major version release. 
+      Since card.io is not officially part of the Braintree API, and since the headers were only included as part of a workaround for use by a small group of developers, this potentially-breaking change is not accompanied by a major version release.
 
-      If your build breaks due to this change, you can re-add card.io to your project's Podfile: 
+      If your build breaks due to this change, you can re-add card.io to your project's Podfile:
 
           pod 'CardIO', '~> 4.0'
 
@@ -804,7 +920,7 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
 
 * Upgrade PayPal Mobile SDK to version 2.7.1
   * Fixes symbol conflicts with 1Password
-  * Upgrades embedded card.io library to version 3.10.1 
+  * Upgrades embedded card.io library to version 3.10.1
 
 ## 3.4.1 (2014-11-05)
 
@@ -874,7 +990,7 @@ As always, feel free to [open an Issue](https://github.com/braintree/braintree_i
   * Test improvements
   * Internal API tweaks
   * Update PayPal implementation to always support PayPal display email/phone across client and server
-    * Your PayPal app (client ID) must now have the email scope capability. This is default for Braintree-provisioned PayPal apps. 
+    * Your PayPal app (client ID) must now have the email scope capability. This is default for Braintree-provisioned PayPal apps.
   * Improved Braintree-Demo app that demonstrates many integration styles
   * Upgraded underlying PayPal Mobile SDK
 

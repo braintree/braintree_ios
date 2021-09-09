@@ -60,7 +60,7 @@
 }
 
 - (BTCard *)newCard {
-    BTCard *card = [[BTCard alloc] init];
+    BTCard *card = [BTCard new];
     if (self.cardFormView.valid &&
         self.cardFormView.number &&
         self.cardFormView.expirationMonth &&
@@ -145,7 +145,7 @@
             [self updateCallbackCount];
             if (error) {
                 if (error.code == BTPaymentFlowDriverErrorTypeCanceled) {
-                    self.progressBlock(@"Cancelled🎲");
+                    self.progressBlock(@"Canceled 🎲");
                 } else {
                     self.progressBlock(error.localizedDescription);
                 }

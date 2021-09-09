@@ -255,6 +255,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 # pragma mark - Payment Methods
 
+// NEXT_MAJOR_VERSION - move fetchPaymentMethodNonces methods to Drop-in for compatibility with Android
+// This will also allow us to remove BTPaymentMethodNonceParser
 - (void)fetchPaymentMethodNonces:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completion {
     [self fetchPaymentMethodNonces:NO completion:completion];
 }
@@ -272,7 +274,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
     [self GET:@"v1/payment_methods"
              parameters:@{@"default_first": defaultFirstValue,
-                          @"session_id": self.metadata.sessionId}
+                          @"session_id": self.metadata.sessionID}
              completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
                  dispatch_async(dispatch_get_main_queue(), ^{
                      if (completion) {
@@ -280,9 +282,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                              completion(nil, error);
                          } else {
                              NSMutableArray *paymentMethodNonces = [NSMutableArray array];
-                             for (NSDictionary *paymentInfo in [body[@"paymentMethods"] asArray]) {
-                                 BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
-                                 BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:[paymentInfoJSON[@"type"] asString]];
+                             for (BTJSON *paymentInfo in [body[@"paymentMethods"] asArray]) {
+                                 BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfo withParsingBlockForType:[paymentInfo[@"type"] asString]];
                                  if (paymentMethodNonce) {
                                      [paymentMethodNonces addObject:paymentMethodNonce];
                                  }
@@ -351,7 +352,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                     }
                 }
                 if (!self.graphQL) {
-                    NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:[configuration.json[@"environment"] asString]];
+                    NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:configuration.environment];
                     if (self.clientToken) {
                         self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
                     } else if (self.tokenizationKey) {

@@ -8,19 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTCard : NSObject
 
 /**
- A convenience initializer for creating a card tokenization request.
-*/
-- (instancetype)initWithNumber:(NSString *)number
-               expirationMonth:(NSString *)expirationMonth
-                expirationYear:(NSString *)expirationYear
-                           cvv:(nullable NSString *)cvv;
-
-/**
-Designated initializer.
- */
-- (instancetype)initWithParameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;
-
-/**
  The card number
 */
 @property (nonatomic, nullable, copy) NSString *number;
@@ -128,14 +115,14 @@ Designated initializer.
 @property (nonatomic, assign) BOOL shouldValidate;
 
 /**
- Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountId` must be provided. Defaults to false.
+ Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountID` must be provided. Defaults to false.
  */
 @property (nonatomic, assign) BOOL authenticationInsightRequested;
 
 /**
- Optional: The merchant account id.
+ Optional: The merchant account ID.
  */
-@property (nonatomic, nullable, copy) NSString *merchantAccountId;
+@property (nonatomic, nullable, copy) NSString *merchantAccountID;
 
 @end
 

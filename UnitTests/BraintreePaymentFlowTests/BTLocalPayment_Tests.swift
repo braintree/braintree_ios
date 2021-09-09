@@ -18,7 +18,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         localPaymentRequest.paymentType = "ideal"
         mockAPIClient = MockAPIClient(authorization: tempClientToken)!
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
-        BTAppSwitch.setReturnURLScheme("com.my-return-url-scheme")
+        BTAppContextSwitcher.setReturnURLScheme("com.my-return-url-scheme")
     }
 
     override func tearDown() {
@@ -27,7 +27,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenReturnURLInvalid() {
-        BTAppSwitch.setReturnURLScheme("")
+        BTAppContextSwitcher.setReturnURLScheme("")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         let expectation = self.expectation(description: "Start payment fails with error")
@@ -43,7 +43,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenLocalPaymentsNotEnabled() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": false ])
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -61,7 +61,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenAmountIsNil() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -81,7 +81,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenPaymentTypeIsNil() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -101,7 +101,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenLocalPaymentDelegateIsNil() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
@@ -121,7 +121,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_postsAllCreationParameters() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
@@ -134,7 +134,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
             "paymentToken": "123aaa-123-543-777",
             ] ])
 
-        localPaymentRequest.merchantAccountId = "customer-nl-merchant-account"
+        localPaymentRequest.merchantAccountID = "customer-nl-merchant-account"
         localPaymentRequest.paymentType = "ideal"
         localPaymentRequest.paymentTypeCountryCode = "NL"
         localPaymentRequest.currencyCode = "EUR"
@@ -181,7 +181,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_displaysSafariViewControllerWhenAvailable() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
@@ -202,7 +202,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenRedirectUrlIsMissing() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
@@ -224,7 +224,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenPaymentTokenIsMissing() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
@@ -245,10 +245,10 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
-    func testStartPayment_returnsPaymentId_inDelegateCallback() {
+    func testStartPayment_returnsPaymentID_inDelegateCallback() {
         mockLocalPaymentRequestDelegate.idExpectation = self.expectation(description: "Received payment ID")
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
@@ -267,11 +267,11 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 4, handler: nil)
 
-        XCTAssertEqual(mockLocalPaymentRequestDelegate.paymentId, "123aaa-123-543-abv")
+        XCTAssertEqual(mockLocalPaymentRequestDelegate.paymentID, "123aaa-123-543-abv")
     }
 
     func testStartPayment_success_sendsAnalyticsEvents() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
@@ -294,7 +294,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
     }
 
     func testStartPayment_failure_sendsAnalyticsEvents() {
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
@@ -312,46 +312,14 @@ class BTLocalPayment_UnitTests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.failed"))
     }
 
-    func testStartPayment_makesDelegateCallbacks_forContextSwitchEvents() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
-
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
-
-        mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
-            "redirectUrl": "https://www.somebankurl.com",
-            "paymentToken": "123aaa-123-543-777",
-            ] ])
-
-        var paymentFinishedExpectation: XCTestExpectation? = nil
-        driver.startPaymentFlow(localPaymentRequest) { (result, error) in
-            paymentFinishedExpectation?.fulfill()
-        }
-
-        paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "http://unused.example.com")!)
-
-        waitForExpectations(timeout: 2, handler: nil)
-
-        XCTAssertTrue(appSwitchDelegate.appContextWillSwitchCalled)
-        XCTAssertTrue(appSwitchDelegate.appContextDidReturnCalled)
-    }
-
     func testStartPayment_successfulResult_callsCompletionBlock() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
             "redirectUrl": "https://www.somebankurl.com",
@@ -364,9 +332,9 @@ class BTLocalPayment_UnitTests: XCTestCase {
             XCTAssertNotNil(result)
             guard let localPaymentResult = result as! BTLocalPaymentResult? else {return}
 
-            XCTAssertEqual(localPaymentResult.clientMetadataId, "89d377ae78244447a3f78ada7d01b270")
+            XCTAssertEqual(localPaymentResult.clientMetadataID, "89d377ae78244447a3f78ada7d01b270")
             XCTAssertEqual(localPaymentResult.type, "PayPalAccount")
-            XCTAssertEqual(localPaymentResult.payerId, "PCKXQCZ6J3YXU")
+            XCTAssertEqual(localPaymentResult.payerID, "PCKXQCZ6J3YXU")
             XCTAssertEqual(localPaymentResult.nonce, "f689056d-aee1-421e-9d10-f2c9b34d4d6f")
             paymentFinishedExpectation!.fulfill()
         }
@@ -403,7 +371,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -411,13 +379,11 @@ class BTLocalPayment_UnitTests: XCTestCase {
     func testStartPayment_cancelResult_callsCompletionBlock() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
             "redirectUrl": "https://www.somebankurl.com",
@@ -435,7 +401,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -443,13 +409,11 @@ class BTLocalPayment_UnitTests: XCTestCase {
     func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        let appSwitchDelegate = MockAppSwitchDelegate()
-        driver.appSwitchDelegate = appSwitchDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
             "redirectUrl": "https://www.somebankurl.com",
@@ -468,7 +432,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }

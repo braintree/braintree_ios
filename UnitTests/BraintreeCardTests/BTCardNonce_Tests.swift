@@ -52,7 +52,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.binData.payroll, "No")
         XCTAssertEqual(cardNonce.binData.issuingBank, "US")
         XCTAssertEqual(cardNonce.binData.countryOfIssuance, "Something")
-        XCTAssertEqual(cardNonce.binData.productId, "123")
+        XCTAssertEqual(cardNonce.binData.productID, "123")
         XCTAssertEqual(cardNonce.authenticationInsight?.regulationEnvironment, "unregulated")
     }
     
@@ -101,7 +101,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.binData.payroll, "No")
         XCTAssertEqual(cardNonce.binData.issuingBank, "US")
         XCTAssertEqual(cardNonce.binData.countryOfIssuance, "Something")
-        XCTAssertEqual(cardNonce.binData.productId, "123")
+        XCTAssertEqual(cardNonce.binData.productID, "123")
     }
 
     func testCardNonceWithJSON_ignoresCaseWhenParsingCardType() {
@@ -231,7 +231,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.binData.payroll, "No")
         XCTAssertEqual(cardNonce.binData.issuingBank, "US")
         XCTAssertEqual(cardNonce.binData.countryOfIssuance, "USA")
-        XCTAssertEqual(cardNonce.binData.productId, "123")
+        XCTAssertEqual(cardNonce.binData.productID, "123")
         XCTAssertEqual(cardNonce.authenticationInsight?.regulationEnvironment, "unregulated")
     }
     
@@ -350,6 +350,6 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertEqual(cardNonce.binData.payroll, "Unknown")
         XCTAssertEqual(cardNonce.binData.issuingBank, "")
         XCTAssertEqual(cardNonce.binData.countryOfIssuance, "")
-        XCTAssertEqual(cardNonce.binData.productId, "")
+        XCTAssertEqual(cardNonce.binData.productID, "")
     }
 }

@@ -15,8 +15,8 @@
                         phone:(NSString *)phone
                billingAddress:(BTPostalAddress *)billingAddress
               shippingAddress:(BTPostalAddress *)shippingAddress
-             clientMetadataId:(NSString *)clientMetadataId
-                      payerId:(NSString *)payerId
+             clientMetadataID:(NSString *)clientMetadataID
+                      payerID:(NSString *)payerID
                     isDefault:(BOOL)isDefault
               creditFinancing:(BTPayPalCreditFinancing *)creditFinancing;
 

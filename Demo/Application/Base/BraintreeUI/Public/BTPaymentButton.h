@@ -2,7 +2,7 @@
 #import "BTUIThemedView.h"
 #import <UIKit/UIKit.h>
 
-@protocol BTAppSwitchDelegate, BTViewControllerPresentingDelegate;
+@protocol BTViewControllerPresentingDelegate;
 @class BTAPIClient, BTPaymentMethodNonce;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -64,11 +64,6 @@ NS_ASSUME_NONNULL_BEGIN
  Setting this property will force the button to reload using the new configuration.
 */
 @property (nonatomic, strong, nullable) BTConfiguration *configuration;
-
-/**
- Optional delegate for receiving payment lifecycle messages from a payment option that may initiate an app or browser switch to authorize payments.
-*/
-@property (nonatomic, weak, nullable) id <BTAppSwitchDelegate> appSwitchDelegate;
 
 /**
  Optional delegate for receiving payment lifecycle messages from a payment driverthat requires presentation of a view controller to authorize a payment.

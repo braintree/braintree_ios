@@ -39,7 +39,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 + (void)load {
     if (self == [BTPaymentFlowDriver class]) {
-        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchDriver:self];
     }
 }
 
@@ -128,4 +128,3 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 @end
-

@@ -44,19 +44,19 @@
 /**
  Client metadata id associated with this transaction.
 */
-@property (nonatomic, nullable, readonly, copy) NSString *clientMetadataId;
+@property (nonatomic, nullable, readonly, copy) NSString *clientMetadataID;
 
 /**
  Optional. Payer id associated with this transaction.
 
- Will be provided for Billing Agreement and Checkout.
+ Will be provided for Vault and Checkout.
 */
-@property (nonatomic, nullable, readonly, copy) NSString *payerId;
+@property (nonatomic, nullable, readonly, copy) NSString *payerID;
 
 /**
  Optional. Credit financing details if the customer pays with PayPal Credit.
 
- Will be provided for Billing Agreement and Checkout.
+ Will be provided for Vault and Checkout.
  */
 @property (nonatomic, nullable, readonly, strong) BTPayPalCreditFinancing *creditFinancing;
 

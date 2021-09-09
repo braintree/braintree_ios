@@ -1,8 +1,8 @@
 #import "BTThreeDSecureV2Provider.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
-#import "BTProxyCardinal.h"
 #import "BTThreeDSecureV2UICustomization_Internal.h"
+#import <CardinalMobile/CardinalMobile.h>
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTConfiguration+ThreeDSecure.h>
@@ -30,9 +30,9 @@
 
 #endif
 
-@interface BTThreeDSecureV2Provider() <BTProxyCardinalValidationDelegate>
+@interface BTThreeDSecureV2Provider() <CardinalValidationDelegate>
 
-@property (strong, nonatomic) id<BTProxyCardinalSession> cardinalSession;
+@property (strong, nonatomic) CardinalSession *cardinalSession;
 
 @property (strong, nonatomic) BTThreeDSecureResult *lookupResult;
 @property (strong, nonatomic) BTAPIClient *apiClient;
@@ -50,14 +50,14 @@
     BTThreeDSecureV2Provider *instance = [self new];
     instance.apiClient = apiClient;
 
-    instance.cardinalSession = (id<BTProxyCardinalSession>)[NSClassFromString(@"CardinalSession") new];
-    id<BTProxyCardinalSessionConfiguration> cardinalConfiguration = (id<BTProxyCardinalSessionConfiguration>)[NSClassFromString(@"CardinalSessionConfiguration") new];
+    instance.cardinalSession = [CardinalSession new];
+    CardinalSessionConfiguration *cardinalConfiguration = [CardinalSessionConfiguration new];
     if (request.v2UICustomization) {
         cardinalConfiguration.uiCustomization = request.v2UICustomization.cardinalValue;
     }
-    BTProxyCardinalSessionEnvironment cardinalEnvironment = BTProxyCardinalSessionEnvironmentStaging;
-    if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {
-        cardinalEnvironment = BTProxyCardinalSessionEnvironmentProduction;
+    CardinalSessionEnvironment cardinalEnvironment = CardinalSessionEnvironmentStaging;
+    if ([configuration.environment isEqualToString:@"production"]) {
+        cardinalEnvironment = CardinalSessionEnvironmentProduction;
     }
     cardinalConfiguration.deploymentEnvironment = cardinalEnvironment;
     [instance.cardinalSession configure:cardinalConfiguration];
@@ -66,7 +66,7 @@
                                didComplete:^(__unused NSString * _Nonnull consumerSessionId) {
                                    [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk.init.setup-completed"];
                                    completionHandler(@{@"dfReferenceId": consumerSessionId});
-                               } didValidate:^(__unused id<BTProxyCardinalResponse> _Nonnull validateResponse) {
+                               } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
                                    [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk.init.setup-failed"];
                                    completionHandler(@{});
                                }];
@@ -79,7 +79,7 @@
     self.lookupResult = lookupResult;
     self.successHandler = successHandler;
     self.failureHandler = failureHandler;
-    [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionId
+    [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionID
                                             payload:lookupResult.lookup.PAReq
                                 didValidateDelegate:self];
 }
@@ -96,12 +96,12 @@
 }
 
 #pragma mark - Cardinal Delegate
-- (void)cardinalSession:(__unused id<BTProxyCardinalSession>)session stepUpDidValidateWithResponse:(id<BTProxyCardinalResponse>)validateResponse serverJWT:(__unused NSString *)serverJWT {
+- (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT {
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.cardinal-sdk.action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
     switch (validateResponse.actionCode) {
-        case BTProxyCardinalResponseActionCodeSuccess:
-        case BTProxyCardinalResponseActionCodeNoAction:
-        case BTProxyCardinalResponseActionCodeFailure: {
+        case CardinalResponseActionCodeSuccess:
+        case CardinalResponseActionCodeNoAction:
+        case CardinalResponseActionCodeFailure: {
             [BTThreeDSecureAuthenticateJWT authenticateJWT:serverJWT
                                              withAPIClient:self.apiClient
                                            forLookupResult:self.lookupResult
@@ -109,8 +109,8 @@
                                                    failure:self.failureHandler];
             break;
         }
-        case BTProxyCardinalResponseActionCodeError:
-        case BTProxyCardinalResponseActionCodeTimeout: {
+        case CardinalResponseActionCodeError:
+        case CardinalResponseActionCodeTimeout: {
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
             if (validateResponse.errorDescription) {
                 userInfo[NSLocalizedDescriptionKey] = validateResponse.errorDescription;
@@ -127,7 +127,7 @@
                                      failureHandler:self.failureHandler];
             break;
         }
-        case BTProxyCardinalResponseActionCodeCancel: {
+        case CardinalResponseActionCodeCancel: {
             [self callFailureHandlerWithErrorDomain:BTPaymentFlowDriverErrorDomain
                                           errorCode:BTPaymentFlowDriverErrorTypeCanceled
                                       errorUserInfo:nil
@@ -141,19 +141,19 @@
     self.failureHandler = nil;
 }
 
-- (NSString *)analyticsStringForActionCode:(BTProxyCardinalResponseActionCode)actionCode {
+- (NSString *)analyticsStringForActionCode:(CardinalResponseActionCode)actionCode {
     switch (actionCode) {
-        case BTProxyCardinalResponseActionCodeSuccess:
+        case CardinalResponseActionCodeSuccess:
             return @"completed";
-        case BTProxyCardinalResponseActionCodeNoAction:
+        case CardinalResponseActionCodeNoAction:
             return @"noaction";
-        case BTProxyCardinalResponseActionCodeFailure:
+        case CardinalResponseActionCodeFailure:
             return @"failure";
-        case BTProxyCardinalResponseActionCodeError:
+        case CardinalResponseActionCodeError:
             return @"failed";
-        case BTProxyCardinalResponseActionCodeCancel:
+        case CardinalResponseActionCodeCancel:
             return @"canceled";
-        case BTProxyCardinalResponseActionCodeTimeout:
+        case CardinalResponseActionCodeTimeout:
             return @"timeout";
     }
 }

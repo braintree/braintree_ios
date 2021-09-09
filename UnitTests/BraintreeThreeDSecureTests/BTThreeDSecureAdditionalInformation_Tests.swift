@@ -44,7 +44,7 @@ class BTThreeDSecureAdditionalInformation_Tests: XCTestCase {
         info.paymentAccountIndicator = "03"
         info.paymentAccountAge = "20190101"
         info.addressMatch = "N"
-        info.accountId = "ABC123"
+        info.accountID = "ABC123"
         info.ipAddress = "127.0.0.1"
         info.orderDescription = "Description"
         info.taxAmount = "1234"

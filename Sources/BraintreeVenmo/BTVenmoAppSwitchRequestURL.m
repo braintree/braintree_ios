@@ -28,6 +28,7 @@
                     returnURLScheme:(NSString *)scheme
                   bundleDisplayName:(NSString *)bundleName
                         environment:(NSString *)environment
+                   paymentContextID:(NSString *)paymentContextID
                            metadata:(BTClientMetadata *)metadata
 {
     NSURL *successReturnURL = [self returnURLWithScheme:scheme result:@"success"];
@@ -39,7 +40,7 @@
     
     NSMutableDictionary *braintreeData = [@{@"_meta": @{
                                                     @"version": BRAINTREE_VERSION,
-                                                    @"sessionId": [metadata sessionId],
+                                                    @"sessionId": [metadata sessionID],
                                                     @"integration": [metadata integrationString],
                                                     @"platform": @"ios"
                                                     }
@@ -57,6 +58,10 @@
                                                   @"braintree_environment": environment,
                                                   @"braintree_sdk_data": base64EncodedBraintreeData,
                                                   } mutableCopy];
+
+    if (paymentContextID) {
+        appSwitchParameters[@"resource_id"] = paymentContextID;
+    }
 
     NSURLComponents *components = [self appSwitchBaseURLComponents];
     components.percentEncodedQuery = [BTURLUtils queryStringWithDictionary:appSwitchParameters];

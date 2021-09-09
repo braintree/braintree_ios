@@ -11,7 +11,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     [self setupAppearance];
     [self registerDefaultsFromSettings];
 
-    [BTAppSwitch setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
+    [BTAppContextSwitcher setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:@"magnes.debug.mode"];
@@ -34,7 +34,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
         // handled by scene delegate
     } else {
         if ([[url.scheme lowercaseString] isEqualToString:[BraintreeDemoAppDelegatePaymentsURLScheme lowercaseString]]) {
-            return [BTAppSwitch handleOpenURL:url];
+            return [BTAppContextSwitcher handleOpenURL:url];
         }
     }
     return YES;

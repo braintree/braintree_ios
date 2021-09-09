@@ -23,12 +23,12 @@ NSString * const BTPayPalIDTokenErrorDomain = @"com.braintreepayments.BTPayPalID
             return nil;
         }
         
-        NSArray *externalIds = [json[@"external_id"] asArray];
-        for (NSString *externalId in externalIds) {
-            if ([externalId hasPrefix:@"Braintree:"]) {
-                _braintreeMerchantID = [externalId componentsSeparatedByString:@":"][1];
-            } else if ([externalId hasPrefix:@"PayPal:"]) {
-                _paypalMerchantID = [externalId componentsSeparatedByString:@":"][1];
+        NSArray *externalIDs = [json[@"external_id"] asStringArray];
+        for (NSString *externalID in externalIDs) {
+            if ([externalID hasPrefix:@"Braintree:"]) {
+                _braintreeMerchantID = [externalID componentsSeparatedByString:@":"][1];
+            } else if ([externalID hasPrefix:@"PayPal:"]) {
+                _paypalMerchantID = [externalID componentsSeparatedByString:@":"][1];
             }
         }
         

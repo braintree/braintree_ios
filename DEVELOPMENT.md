@@ -12,10 +12,12 @@ There are a number of test targets for each section of the project.
 
 It's a good idea to run `rake`, which runs all unit tests, before committing.
 
+Running the tests requires Xcode 13+.
+
 Use the following commands to run tests:
 * UI tests: `bundle && rake spec:ui`
 * Unit tests: `bundle && rake spec:unit`
-* Integration tests: `bundle && rake spec:api:integration`
+* Integration tests: `bundle && rake spec:integration`
 * All tests: `bundle && rake spec:all`
 
 ## Importing Header Files
@@ -36,6 +38,8 @@ We use if-else preprocessor directives to satisfy each dependency manager. See t
 #endif
 ```
 
+### Importing internal headers
+
 In general, we avoid importing **internal headers from other modules**, but occasionally it's necessary. See the below example for importing an internal header file from another module:
 ```objc
 #if __has_include(<Braintree/BraintreeAmericanExpress.h>) // CocoaPods
@@ -49,15 +53,42 @@ In general, we avoid importing **internal headers from other modules**, but occa
 #endif
 ```
 
+### Importing a Swift module into Obj-C
+
 To import a Braintree framework written in **Swift** into an Objective-C file, use the following syntax:
 ```objc
-#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 
-#elif SWIFT_PACKAGE // SPM
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
 @import PayPalDataCollector;
 
-#else // Carthage
+#else                                            // Carthage
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 ```
+
+## Releasing
+
+A release is triggered via the `Release` workflow in the repo's `Actions` tab.
+
+### v4
+
+*Note: development for older SDK versions should happen off branches `3.x`, `4.x`, etc. *
+
+To release a version of the v4 SDK, select `Use workflow from: 4.x` and then the appropriate Semantic Version to release under `Version to release`.
+
+Once complete, manually update the CHANGELOG on the `master` branch to include your latest v4 release notes.
+
+### v5
+
+To release a version of the v5 SDK, select `Use workflow from: master` and then the appropriate Semantic Version to release under `Version to release`.

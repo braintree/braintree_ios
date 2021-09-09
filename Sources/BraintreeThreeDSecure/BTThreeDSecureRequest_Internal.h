@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
 
 /**
- The dfReferenceId for the session. Exposed for testing.
+ The dfReferenceID for the session. Exposed for testing.
  */
-@property (nonatomic, strong) NSString *dfReferenceId;
+@property (nonatomic, strong) NSString *dfReferenceID;
 
 /**
  The account type as a raw string.

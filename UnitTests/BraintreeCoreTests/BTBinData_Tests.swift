@@ -21,7 +21,7 @@ class BTBinData_Tests: XCTestCase {
             ],
             "nonce": "fake-nonce",
             ])
-        let binData = BTBinData(json: json["binData"] as! BTJSON)
+        let binData = BTBinData(json: json["binData"])
 
         XCTAssertEqual(binData.prepaid, "Yes")
         XCTAssertEqual(binData.healthcare, "Yes")
@@ -31,14 +31,14 @@ class BTBinData_Tests: XCTestCase {
         XCTAssertEqual(binData.payroll, "No")
         XCTAssertEqual(binData.issuingBank, "US")
         XCTAssertEqual(binData.countryOfIssuance, "Something")
-        XCTAssertEqual(binData.productId, "123")
+        XCTAssertEqual(binData.productID, "123")
     }
     
     func testBinData_withEmptyJSON() {
         let json = BTJSON(value: [
             "some": "value"
             ])
-        let binData = BTBinData(json: json["binData"] as! BTJSON)
+        let binData = BTBinData(json: json["binData"])
 
         XCTAssertEqual(binData.prepaid, "Unknown")
         XCTAssertEqual(binData.healthcare, "Unknown")
@@ -48,7 +48,7 @@ class BTBinData_Tests: XCTestCase {
         XCTAssertEqual(binData.payroll, "Unknown")
         XCTAssertEqual(binData.issuingBank, "")
         XCTAssertEqual(binData.countryOfIssuance, "")
-        XCTAssertEqual(binData.productId, "")
+        XCTAssertEqual(binData.productID, "")
     }
     
     func testBinData_withPartialJSON() {
@@ -67,7 +67,7 @@ class BTBinData_Tests: XCTestCase {
         XCTAssertEqual(binData.payroll, "Unknown")
         XCTAssertEqual(binData.issuingBank, "")
         XCTAssertEqual(binData.countryOfIssuance, "Something")
-        XCTAssertEqual(binData.productId, "123")
+        XCTAssertEqual(binData.productID, "123")
     }
     
 }

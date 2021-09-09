@@ -37,13 +37,13 @@ describe(@"string values", ^{
         expect(m.integrationString).to.equal(@"unknown");
     });
 
-    it(@"sessionId returns a 32 character UUID string", ^{
-        expect(m.sessionId.length).to.equal(32);
+    it(@"sessionID returns a 32 character UUID string", ^{
+        expect(m.sessionID.length).to.equal(32);
     });
 
-    it(@"sessionId should be different than a different instance's sessionId", ^{
+    it(@"sessionID should be different than a different instance's sessionID", ^{
         BTMutableClientMetadata *m2 = [BTMutableClientMetadata new];
-        expect(m.sessionId).notTo.equal(m2.sessionId);
+        expect(m.sessionID).notTo.equal(m2.sessionID);
     });
 
 });
@@ -59,7 +59,7 @@ sharedExamplesFor(@"a copied metadata instance", ^(NSDictionary *data) {
     it(@"has the same values", ^{
         expect(copied.integration).to.equal(original.integration);
         expect(copied.source).to.equal(original.source);
-        expect(copied.sessionId).to.equal(original.sessionId);
+        expect(copied.sessionID).to.equal(original.sessionID);
     });
 });
 
@@ -199,7 +199,7 @@ SpecEnd
     expect(parameters).to.equal(
                                 @{@"integration": metadata.integrationString,
                                   @"source": metadata.sourceString,
-                                  @"sessionId": metadata.sessionId,
+                                  @"sessionId": metadata.sessionID,
                                   });
 }
 

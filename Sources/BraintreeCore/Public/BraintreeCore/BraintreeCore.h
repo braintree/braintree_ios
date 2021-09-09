@@ -8,7 +8,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTAPIClient.h>
-#import <Braintree/BTAppSwitch.h>
+#import <Braintree/BTAppContextSwitcher.h>
 #import <Braintree/BTBinData.h>
 #import <Braintree/BTClientMetadata.h>
 #import <Braintree/BTClientToken.h>
@@ -28,7 +28,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <Braintree/BTURLUtils.h>
 #else
 #import <BraintreeCore/BTAPIClient.h>
-#import <BraintreeCore/BTAppSwitch.h>
+#import <BraintreeCore/BTAppContextSwitcher.h>
 #import <BraintreeCore/BTBinData.h>
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTClientToken.h>
