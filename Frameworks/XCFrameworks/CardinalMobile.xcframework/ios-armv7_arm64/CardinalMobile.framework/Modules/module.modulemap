@@ -1,6 +1,0 @@
-framework module CardinalMobile {
-  umbrella header "CardinalMobile.h"
-
-  export *
-  module * { export * }
-}
