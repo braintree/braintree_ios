@@ -8,6 +8,9 @@
   * BraintreeVenmo
     * Remove `.unspecified` case from `BTVenmoPaymentMethodUsage` enum
     * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
+  * BraintreePayPal
+    * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalDriver.tokenizePayPalAccount`
+    * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalDriver.tokenizePayPalAccount`
 
 ## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.

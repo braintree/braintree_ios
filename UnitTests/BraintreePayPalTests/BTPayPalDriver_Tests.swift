@@ -97,11 +97,11 @@ class BTPayPalDriver_Tests: XCTestCase {
 
     // MARK: - POST request to Hermes endpoint
 
-    func testRequestOneTimePayment_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.intent = .sale
+    func testTokenizePayPalAccount_checkout_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
+        checkoutRequest.intent = .sale
 
-        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
+        payPalDriver.tokenizePayPalAccount(with: checkoutRequest) { (_, _) -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -112,11 +112,11 @@ class BTPayPalDriver_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
-    func testRequestBillingAgreement_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
-        let request = BTPayPalVaultRequest()
-        request.billingAgreementDescription = "description"
-
-        payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
+    func testTokenizePayPalAccount_vault_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
+        let vaultRequest = BTPayPalVaultRequest()
+        vaultRequest.billingAgreementDescription = "description"
+        
+        payPalDriver.tokenizePayPalAccount(with: vaultRequest) { (_, _) -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
