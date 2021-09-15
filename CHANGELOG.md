@@ -3,6 +3,9 @@
 ## unreleased
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
   * Provides fix for this [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/10731) & allows proper usage of `PPRiskMagnes.xcframework` by `PayPalDataCollector` subspec.
+* Swift Package Manager
+  * Update Package.swift to include `PPRiskMagnes` as explicit target for library products that require `PayPalDataCollector`
+  * _Note:_ No longer requires manual inclusion of `PayPalDataCollector` in order to use `BraintreeThreeDSecure`, `BraintreePayPal`, and `BraintreePaymentFlow`
   
 ## 4.38.0 (2021-08-24)
 * Add `offerPayLater` to `BTPayPalRequest`
