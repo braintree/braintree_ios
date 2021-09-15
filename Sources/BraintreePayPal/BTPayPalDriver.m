@@ -107,21 +107,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-#pragma mark - Billing Agreement (Vault)
-
-- (void)requestBillingAgreement:(BTPayPalVaultRequest *)request
-                     completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
-}
-
-#pragma mark - One-Time Payment (Checkout)
-
-- (void)requestOneTimePayment:(BTPayPalCheckoutRequest *)request
-                   completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
-}
-
-#pragma mark - Helpers
+#pragma mark - Tokenize PayPal Account
 
 - (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
@@ -200,6 +186,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         }];
     }];
 }
+
+#pragma mark - Helpers
 
 - (NSDictionary *)dictionaryFromResponseURL:(NSURL *)url {
     if ([[self.class actionFromURLAction: url] isEqualToString:@"cancel"]) {
