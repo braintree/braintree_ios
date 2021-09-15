@@ -1,5 +1,4 @@
 #import "BraintreeDemoIdealViewController.h"
-#import "UIColor+BTUI.h"
 @import BraintreePaymentFlow;
 
 @interface BraintreeDemoIdealViewController () <BTViewControllerPresentingDelegate, BTLocalPaymentRequestDelegate>
@@ -23,8 +22,8 @@
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:NSLocalizedString(@"Pay With iDEAL", nil) forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
-    [button setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
+    [button setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
+    [button setTitleColor:UIColor.darkGrayColor forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(idealButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
