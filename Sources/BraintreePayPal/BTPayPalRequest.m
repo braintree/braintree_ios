@@ -53,6 +53,10 @@ NSString *const BTPayPalCallbackURLScheme = @"sdk.ios.braintree";
         parameters[@"merchant_account_id"] = self.merchantAccountID;
     }
 
+    if (self.correlationId) {
+        parameters[@"correlation_id"] = self.correlationId;
+    }
+
     if (self.shippingAddressOverride) {
         experienceProfile[@"address_override"] = @(!self.isShippingAddressEditable);
     } else {
