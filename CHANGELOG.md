@@ -3,6 +3,7 @@
 ## unreleased (next-major-version)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 13+
+  * Require Carthage 0.38.0+
   * Require Xcode 13
     * Bump Swift Tools Version to 5.5 for CocoaPods & SPM
   * BraintreeVenmo
