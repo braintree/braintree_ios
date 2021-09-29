@@ -5,20 +5,25 @@
 #import <Braintree/BTPaymentFlowResult.h>
 #import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
+#import <Braintree/BTWebAuthenticator.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
+#import "../BraintreeCore/BTWebAuthenticator.h"
 
 #else // Carthage
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTWebAuthenticator.h>
 
 #endif
+
+#import <AuthenticationServices/AuthenticationServices.h>
 
 @interface BTPaymentFlowDriver () <ASWebAuthenticationPresentationContextProviding>
 
@@ -27,6 +32,7 @@
 @property (nonatomic, copy, nonnull) NSString *returnURLScheme;
 @property (nonatomic, strong, nonnull) BTAPIClient *apiClient;
 @property (nonatomic, strong, nonnull) BTPaymentFlowRequest *request;
+@property (nonatomic, strong, nonnull) BTWebAuthenticator *webAuthenticator;
 
 @end
 
@@ -44,9 +50,17 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
+    return [self initWithAPIClient:apiClient webAuthenticator:[[BTWebAuthenticator alloc] init]];
+}
+
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient webAuthenticator:(BTWebAuthenticator *)webAuthenticator {
     if (self = [super init]) {
         _apiClient = apiClient;
         _returnURLScheme = BTCallbackURLScheme;
+        _webAuthenticator = webAuthenticator;
+        if (@available(iOS 13, *)) {
+            _webAuthenticator.presentationContextProvider = self;
+        }
     }
     return self;
 }
@@ -77,11 +91,8 @@ static BTPaymentFlowDriver *paymentFlowDriver;
         return;
     }
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.initiate.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
-
-    self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:url callbackURLScheme:BTCallbackURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-        // Required to avoid memory leak for BTPaymentFlowDriver
-        self.authenticationSession = nil;
-
+    
+    [_webAuthenticator authenticateWithURL:url callbackURLScheme:BTCallbackURLScheme completion:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         if (error) {
             if (error.domain == ASWebAuthenticationSessionErrorDomain && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
                 [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.canceled", [self.paymentFlowRequestDelegate paymentFlowName]]];
@@ -98,12 +109,6 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
         [self.paymentFlowRequestDelegate handleOpenURL:callbackURL];
     }];
-
-    if (@available(iOS 13, *)) {
-        self.authenticationSession.presentationContextProvider = self;
-    }
-
-    [self.authenticationSession start]; // TODO what if the start fails
 }
 
 - (void)onPaymentComplete:(BTPaymentFlowResult *)result error:(NSError *)error {

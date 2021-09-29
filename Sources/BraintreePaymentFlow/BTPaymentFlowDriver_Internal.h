@@ -4,7 +4,7 @@
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
 #endif
 
-#import <AuthenticationServices/AuthenticationServices.h>
+#import <BraintreeCore/BTWebAuthenticator.h>
 
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
@@ -19,9 +19,7 @@
  */
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *_Nonnull)request completion:(void (^_Nullable)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock;
 
-/**
- Exposed for testing, the ASWebAuthenticationSession instance used for the flow
- */
-@property (nonatomic, strong, nullable) ASWebAuthenticationSession *authenticationSession;
+
+- (instancetype _Nonnull)initWithAPIClient:(BTAPIClient * _Nonnull)apiClient webAuthenticator:(BTWebAuthenticator * _Nonnull)webAuthenticator NS_DESIGNATED_INITIALIZER;
 
 @end
