@@ -5,21 +5,21 @@
 #import <Braintree/BTPaymentFlowResult.h>
 #import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BTWebAuthenticator.h>
+#import <Braintree/BTWebAuthenticationSession.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTWebAuthenticator.h"
+#import "../BraintreeCore/BTWebAuthenticationSession.h"
 
 #else // Carthage
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTWebAuthenticator.h>
+#import <BraintreeCore/BTWebAuthenticationSession.h>
 
 #endif
 
@@ -32,7 +32,7 @@
 @property (nonatomic, copy, nonnull) NSString *returnURLScheme;
 @property (nonatomic, strong, nonnull) BTAPIClient *apiClient;
 @property (nonatomic, strong, nonnull) BTPaymentFlowRequest *request;
-@property (nonatomic, strong, nonnull) BTWebAuthenticator *webAuthenticator;
+@property (nonatomic, strong, nonnull) BTWebAuthenticationSession *webAuthenticator;
 
 @end
 
@@ -50,10 +50,10 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
-    return [self initWithAPIClient:apiClient webAuthenticator:[[BTWebAuthenticator alloc] init]];
+    return [self initWithAPIClient:apiClient webAuthenticator:[[BTWebAuthenticationSession alloc] init]];
 }
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient webAuthenticator:(BTWebAuthenticator *)webAuthenticator {
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient webAuthenticator:(BTWebAuthenticationSession *)webAuthenticator {
     if (self = [super init]) {
         _apiClient = apiClient;
         _returnURLScheme = BTCallbackURLScheme;
@@ -92,7 +92,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
     }
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.initiate.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
     
-    [_webAuthenticator authenticateWithURL:url callbackURLScheme:BTCallbackURLScheme completion:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+    [_webAuthenticator startWithURL:url callbackURLScheme:BTCallbackURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         if (error) {
             if (error.domain == ASWebAuthenticationSessionErrorDomain && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
                 [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.canceled", [self.paymentFlowRequestDelegate paymentFlowName]]];

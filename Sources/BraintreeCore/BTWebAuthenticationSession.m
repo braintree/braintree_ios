@@ -1,23 +1,23 @@
 //
-//  BTWebAuthenticator.m
+//  BTWebAuthenticationSession.m
 //  BraintreeTestShared
 //
 //  Created by Shropshire, Steven on 9/29/21.
 //
 
-#import "BTWebAuthenticator.h"
+#import "BTWebAuthenticationSession.h"
 
 typedef void (^AuthenticateWithURLCompletionHandler) (NSURL * _Nullable callbackURL, NSError * _Nullable error);
 
-@interface BTWebAuthenticator ()
+@interface BTWebAuthenticationSession ()
 
 @property (nonatomic, strong, nullable) ASWebAuthenticationSession *authenticationSession;
 
 @end
 
-@implementation BTWebAuthenticator
+@implementation BTWebAuthenticationSession
 
-- (void)authenticateWithURL:(NSURL*)url callbackURLScheme:(NSString *)callbackURLScheme completion:(void (^)(NSURL * _Nullable callbackURL, NSError * _Nullable error))completionHandler {
+- (void)startWithURL:(NSURL*)url callbackURLScheme:(NSString *)callbackURLScheme completionHandler:(void (^)(NSURL * _Nullable callbackURL, NSError * _Nullable error))completionHandler {
     
     AuthenticateWithURLCompletionHandler internalCompletionHandler =
         ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
@@ -26,8 +26,9 @@ typedef void (^AuthenticateWithURLCompletionHandler) (NSURL * _Nullable callback
             completionHandler(callbackURL, error);
         };
     
-    _authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:url callbackURLScheme:callbackURLScheme
-      completionHandler:internalCompletionHandler];
+    _authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:url
+                                                           callbackURLScheme:callbackURLScheme
+                                                           completionHandler:internalCompletionHandler];
     
     if (@available(iOS 13, *)) {
         _authenticationSession.presentationContextProvider = self.presentationContextProvider;
