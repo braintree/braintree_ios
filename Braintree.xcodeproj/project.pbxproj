@@ -352,7 +352,7 @@
 		BC20A8FB2385F8640077AF56 /* BTPreferredPaymentMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = BC20A8F92385F8640077AF56 /* BTPreferredPaymentMethods.m */; };
 		BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
-		BC85A55E2704F3D100C3CADA /* MockASWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A55D2704F3D100C3CADA /* MockASWebAuthenticationSession.swift */; };
+		BC85A55E2704F3D100C3CADA /* MockBTWebAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A55D2704F3D100C3CADA /* MockBTWebAuthenticator.swift */; };
 		BC85A5632704FFFC00C3CADA /* BTWebAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = BC85A5602704F77600C3CADA /* BTWebAuthenticator.m */; };
 		BC85A5642705000600C3CADA /* BTWebAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = BC85A55F2704F77600C3CADA /* BTWebAuthenticator.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1058,7 +1058,7 @@
 		BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPreferredPaymentMethodsResult.h; sourceTree = "<group>"; };
 		BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPreferredPaymentMethodsResult.m; sourceTree = "<group>"; };
 		BC6F67D02386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPreferredPaymentMethods_Tests.swift; sourceTree = "<group>"; };
-		BC85A55D2704F3D100C3CADA /* MockASWebAuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockASWebAuthenticationSession.swift; sourceTree = "<group>"; };
+		BC85A55D2704F3D100C3CADA /* MockBTWebAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTWebAuthenticator.swift; sourceTree = "<group>"; };
 		BC85A55F2704F77600C3CADA /* BTWebAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTWebAuthenticator.h; sourceTree = "<group>"; };
 		BC85A5602704F77600C3CADA /* BTWebAuthenticator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTWebAuthenticator.m; sourceTree = "<group>"; };
 		C25AE12E88A1D4C82A54CB19 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1933,7 +1933,7 @@
 				A7D6746C1B84073300ED6C00 /* MockViewControllerPresentingDelegate.swift */,
 				A977A06A24FECFC3006049AB /* NonceValidator.swift */,
 				A9A76CA624F9E92E0044EAEE /* TestClientTokenFactory.swift */,
-				BC85A55D2704F3D100C3CADA /* MockASWebAuthenticationSession.swift */,
+				BC85A55D2704F3D100C3CADA /* MockBTWebAuthenticator.swift */,
 			);
 			path = BraintreeTestShared;
 			sourceTree = "<group>";
@@ -3389,7 +3389,7 @@
 				A903E1B124F9D35500C314E1 /* FakeApplication.swift in Sources */,
 				A903E1B224F9D35500C314E1 /* MockViewControllerPresentingDelegate.swift in Sources */,
 				A9A76CA724F9E92E0044EAEE /* TestClientTokenFactory.swift in Sources */,
-				BC85A55E2704F3D100C3CADA /* MockASWebAuthenticationSession.swift in Sources */,
+				BC85A55E2704F3D100C3CADA /* MockBTWebAuthenticator.swift in Sources */,
 				A977A06B24FECFC3006049AB /* NonceValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
