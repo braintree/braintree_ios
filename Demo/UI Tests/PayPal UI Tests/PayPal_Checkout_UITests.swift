@@ -7,6 +7,7 @@ import XCTest
 
 class PayPal_Checkout_UITests: XCTestCase {
     var app: XCUIApplication!
+    var springboard: XCUIApplication!
 
     override func setUp() {
         super.setUp()
@@ -16,18 +17,23 @@ class PayPal_Checkout_UITests: XCTestCase {
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalCheckoutViewController")
         app.launch()
+        
+        springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        
         _ = app.buttons["PayPal Checkout"].waitForExistence(timeout: 2)
         app.buttons["PayPal Checkout"].tap()
         
         // Tap "Continue" on alert
         app.tap()
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let continueButton = springboard.buttons["Continue"]
-        if continueButton.waitForExistence(timeout: 2) {
-            continueButton.tap()
-        }
+        
+        waitForAuthDialogAndTapButton(named: "Continue")
         app.coordinate(withNormalizedOffset: CGVector.zero).tap()
         sleep(1)
+    }
+    
+    private func waitForAuthDialogAndTapButton(named buttonName: String) {
+        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20)
+        springboard.buttons[buttonName].tap()
     }
 
     func testPayPal_checkout_receivesNonce() {
