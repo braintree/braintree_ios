@@ -23,7 +23,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         _ = app.cardNumberTextField.waitForExistence(timeout: 10)
     }
     
-    private func waitForWebAuthenticationDialogAndTapButton(named buttonName: String) {
+    private func waitForAuthDialogAndTapButton(named buttonName: String) {
         _ = springboard.buttons[buttonName].waitForExistence(timeout: .threeDSecureTimeout)
         springboard.buttons[buttonName].tap()
     }
@@ -32,7 +32,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.enterCardDetailsWith(cardNumber: "4000000000000002")
         app.tokenizeButton.tap()
         
-        waitForWebAuthenticationDialogAndTapButton(named: "Continue")
+        waitForAuthDialogAndTapButton(named: "Continue")
         waitForElementToAppear(app.webViewPasswordTextField, timeout: .threeDSecureTimeout)
 
         app.webViewPasswordTextField.forceTapElement()
@@ -48,7 +48,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.enterCardDetailsWith(cardNumber: "5200000000000015")
         app.tokenizeButton.tap()
 
-        waitForWebAuthenticationDialogAndTapButton(named: "Continue")
+        waitForAuthDialogAndTapButton(named: "Continue")
         waitForElementToAppear(app.webViewPasswordTextField, timeout: .threeDSecureTimeout)
 
         app.webViewPasswordTextField.forceTapElement()
@@ -80,7 +80,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.enterCardDetailsWith(cardNumber: "4000000000000028")
         app.tokenizeButton.tap()
 
-        waitForWebAuthenticationDialogAndTapButton(named: "Continue")
+        waitForAuthDialogAndTapButton(named: "Continue")
         waitForElementToAppear(app.webViewPasswordTextField, timeout: .threeDSecureTimeout)
 
         app.webViewPasswordTextField.forceTapElement()
@@ -108,7 +108,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.enterCardDetailsWith(cardNumber: "4000000000000036")
         app.tokenizeButton.tap()
 
-        waitForWebAuthenticationDialogAndTapButton(named: "Continue")
+        waitForAuthDialogAndTapButton(named: "Continue")
         waitForElementToAppear(app.webViewPasswordTextField, timeout: .threeDSecureTimeout)
 
         app.webViewPasswordTextField.tap()
@@ -124,7 +124,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.enterCardDetailsWith(cardNumber: "4000000000000093")
         app.tokenizeButton.tap()
 
-        waitForWebAuthenticationDialogAndTapButton(named: "Continue")
+        waitForAuthDialogAndTapButton(named: "Continue")
         waitForElementToAppear(app.webViewPasswordTextField, timeout: .threeDSecureTimeout)
 
         app.webViewPasswordTextField.forceTapElement()
@@ -140,7 +140,7 @@ class ThreeDSecure_V1_UITests: XCTestCase {
         app.enterCardDetailsWith(cardNumber: "4000000000000002")
         app.tokenizeButton.tap()
 
-        waitForWebAuthenticationDialogAndTapButton(named: "Cancel")
+        waitForAuthDialogAndTapButton(named: "Cancel")
 
         waitForElementToAppear(app.buttons["Canceled 🎲"])
     }
