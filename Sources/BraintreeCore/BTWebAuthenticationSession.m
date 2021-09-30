@@ -4,8 +4,11 @@
 //
 //  Created by Shropshire, Steven on 9/29/21.
 //
-
-#import "BTWebAuthenticationSession.h"
+#if __has_include(<Braintree/BraintreeCore.h>)
+#import <Braintree/BTWebAuthenticationSession.h>
+#else
+#import <BraintreeCore/BTWebAuthenticationSession.h>
+#endif
 
 typedef void (^AuthenticateWithURLCompletionHandler) (NSURL * _Nullable callbackURL, NSError * _Nullable error);
 
