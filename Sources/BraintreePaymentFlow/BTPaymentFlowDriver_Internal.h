@@ -4,8 +4,6 @@
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
 #endif
 
-#import <BraintreeCore/BTWebAuthenticationSession.h>
-
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
 
