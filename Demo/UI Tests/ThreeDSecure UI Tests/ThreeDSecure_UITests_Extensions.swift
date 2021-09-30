@@ -32,7 +32,7 @@ internal extension XCUIApplication {
     var cardinalSubmitButton: XCUIElement {
         return buttons["SUBMIT"]
     }
-
+    
     var liabilityShiftedMessage: XCUIElement {
         return buttons["Liability shift possible and liability shifted"]
     }
