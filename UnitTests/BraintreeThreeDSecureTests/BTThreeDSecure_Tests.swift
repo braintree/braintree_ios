@@ -26,29 +26,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     // MARK: - ThreeDSecure Authentication Tests
-
-    func testStartPayment_displaysSafariViewControllerWhenAvailable_andRequiresAuthentication() {
-        BTAppContextSwitcher.setReturnURLScheme("com.braintreepayments.Demo.payments")
-
-        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
-
-        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
-
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "assetsUrl": "https://assets.example.com"
-        ])
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-//        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-
-        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-
-        driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
-
-        }
-
-        waitForExpectations(timeout: 4, handler: nil)
-    }
-
     func testStartPayment_v2_returnsErrorWhenCardinalAuthenticationJWT_isMissing() {
         threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
