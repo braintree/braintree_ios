@@ -19,7 +19,4 @@
  */
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *_Nonnull)request completion:(void (^_Nullable)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock;
 
-
-- (instancetype _Nonnull)initWithAPIClient:(BTAPIClient * _Nonnull)apiClient webAuthenticator:(BTWebAuthenticationSession * _Nonnull)webAuthenticator NS_DESIGNATED_INITIALIZER;
-
 @end

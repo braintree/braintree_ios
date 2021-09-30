@@ -354,7 +354,7 @@
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
 		BC85A55E2704F3D100C3CADA /* MockBTWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC85A55D2704F3D100C3CADA /* MockBTWebAuthenticationSession.swift */; };
 		BC85A5632704FFFC00C3CADA /* BTWebAuthenticationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = BC85A5602704F77600C3CADA /* BTWebAuthenticationSession.m */; };
-		BC85A5642705000600C3CADA /* BTWebAuthenticationSession.h in Headers */ = {isa = PBXBuildFile; fileRef = BC85A55F2704F77600C3CADA /* BTWebAuthenticationSession.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BC85A5642705000600C3CADA /* BTWebAuthenticationSession.h in Headers */ = {isa = PBXBuildFile; fileRef = BC85A55F2704F77600C3CADA /* BTWebAuthenticationSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -1392,7 +1392,6 @@
 				BC20A8F92385F8640077AF56 /* BTPreferredPaymentMethods.m */,
 				42E295FA239FF19000EAB00C /* BTPreferredPaymentMethodsResult_Internal.h */,
 				BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */,
-				BC85A55F2704F77600C3CADA /* BTWebAuthenticationSession.h */,
 				BC85A5602704F77600C3CADA /* BTWebAuthenticationSession.m */,
 				80BB0C85241937A5003C8BA9 /* BTURLUtils.m */,
 				2DE12F0D1B59BE0100EA1BCF /* Info.plist */,
@@ -1517,6 +1516,7 @@
 				BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */,
 				80BB0C84241937A5003C8BA9 /* BTURLUtils.h */,
 				418456E71BE42F0B00C32391 /* BTViewControllerPresentingDelegate.h */,
+				BC85A55F2704F77600C3CADA /* BTWebAuthenticationSession.h */,
 			);
 			path = BraintreeCore;
 			sourceTree = "<group>";

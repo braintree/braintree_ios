@@ -32,7 +32,7 @@
 @property (nonatomic, copy, nonnull) NSString *returnURLScheme;
 @property (nonatomic, strong, nonnull) BTAPIClient *apiClient;
 @property (nonatomic, strong, nonnull) BTPaymentFlowRequest *request;
-@property (nonatomic, strong, nonnull) BTWebAuthenticationSession *webAuthenticator;
+@property (nonatomic, strong, nonnull) BTWebAuthenticationSession *webAuthenticationSession;
 
 @end
 
@@ -50,16 +50,16 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
-    return [self initWithAPIClient:apiClient webAuthenticator:[[BTWebAuthenticationSession alloc] init]];
+    return [self initWithAPIClient:apiClient webAuthenticationSession:[[BTWebAuthenticationSession alloc] init]];
 }
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient webAuthenticator:(BTWebAuthenticationSession *)webAuthenticator {
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient webAuthenticationSession:(BTWebAuthenticationSession *)webAuthenticator {
     if (self = [super init]) {
         _apiClient = apiClient;
         _returnURLScheme = BTCallbackURLScheme;
-        _webAuthenticator = webAuthenticator;
+        _webAuthenticationSession = webAuthenticator;
         if (@available(iOS 13, *)) {
-            _webAuthenticator.presentationContextProvider = self;
+            _webAuthenticationSession.presentationContextProvider = self;
         }
     }
     return self;
@@ -92,7 +92,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
     }
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.initiate.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
     
-    [_webAuthenticator startWithURL:url callbackURLScheme:BTCallbackURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+    [_webAuthenticationSession startWithURL:url callbackURLScheme:BTCallbackURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         if (error) {
             if (error.domain == ASWebAuthenticationSessionErrorDomain && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
                 [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.canceled", [self.paymentFlowRequestDelegate paymentFlowName]]];

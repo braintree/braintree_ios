@@ -8,7 +8,7 @@
 import Foundation
 import BraintreeCore
 
-class MockBTWebAuthenticationSession: BTWebAuthenticationSession {
+public class MockBTWebAuthenticationSession: BTWebAuthenticationSession {
     
     private struct StartInvocation: Equatable {
         let url: URL
@@ -18,16 +18,16 @@ class MockBTWebAuthenticationSession: BTWebAuthenticationSession {
     private var startInvocation: StartInvocation?
     private var completionHandler: ((URL?, Error?) -> Void)?
     
-    override func start(with url: URL, callbackURLScheme: String, completion completionHandler: @escaping (URL?, Error?) -> Void) {
+    public override func start(with url: URL, callbackURLScheme: String, completionHandler: @escaping (URL?, Error?) -> Void) {
         startInvocation = StartInvocation(url: url, callbackURLScheme: callbackURLScheme)
         self.completionHandler = completionHandler
     }
     
-    func didCallStart(with url: URL, callbackURLScheme: String) -> Bool {
+    public func didCallStart(with url: URL, callbackURLScheme: String) -> Bool {
         return startInvocation == StartInvocation(url: url, callbackURLScheme: callbackURLScheme)
     }
     
-    func simulateCompletion(with url: URL?, error: Error?) {
+    public func simulateCompletion(with url: URL?, error: Error?) {
         completionHandler?(url, error)
     }
 }
