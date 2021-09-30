@@ -10,16 +10,16 @@
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTWebAuthenticationSession.h"
 
 #else // Carthage
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTWebAuthenticationSession.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 #endif
 
