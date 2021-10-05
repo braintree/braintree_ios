@@ -146,6 +146,7 @@
         }
 
         params[@"experience_profile"] = @{
+                                          @"brand_name": localPaymentRequest.displayName,
                                           @"no_shipping": @(!localPaymentRequest.isShippingAddressRequired)
                                           };
 
