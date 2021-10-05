@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.4.4 (2021-10-05)
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
   * Provides fix for this [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/10731) & allows proper usage of `PPRiskMagnes.xcframework` by `PayPalDataCollector` subspec.
 * Swift Package Manager
