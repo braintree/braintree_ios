@@ -150,7 +150,7 @@
         } mutableCopy];
 
         if (localPaymentRequest.displayName) {
-            params[@"experience_profile"][@"brand_name"] = localPaymentRequest.displayName;
+            experienceProfile[@"brand_name"] = localPaymentRequest.displayName;
         }
         
         params[@"experience_profile"] = [experienceProfile copy];
