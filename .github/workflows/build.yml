@@ -50,7 +50,7 @@ jobs:
       - name: Build & archive SPMTest
         run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
   cocoapods_xcode_beta:
-    name: CocoaPods (Xcode 13-beta)
+    name: CocoaPods (Xcode 13)
     runs-on: macOS-11
     steps:
       - name: Check out repository
@@ -62,7 +62,7 @@ jobs:
       - name: Run pod lib lint 
         run: pod lib lint
   carthage_xcode_beta:
-    name: Carthage (Xcode 13-beta)
+    name: Carthage (Xcode 13)
     runs-on: macOS-11
     steps:
       - name: Check out repository
@@ -84,7 +84,7 @@ jobs:
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
   spm_xcode_beta:
-    name: SPM (Xcode 13-beta)
+    name: SPM (Xcode 13)
     runs-on: macOS-11
     steps:
       - name: Check out repository
