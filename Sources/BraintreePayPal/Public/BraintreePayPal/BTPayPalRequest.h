@@ -113,9 +113,9 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestLandingPageType) {
 @property (nonatomic, nullable, strong) UIWindow *activeWindow;
 
 /**
- Optional: A correlation ID created with Set Transaction Context on your server.
+ Optional: A risk correlation ID created with Set Transaction Context on your server.
 */
-@property (nonatomic, nullable, copy) NSString *correlationId;
+@property (nonatomic, nullable, copy) NSString *riskCorrelationId;
 
 @end
 
