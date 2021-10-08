@@ -44,7 +44,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.displayName = "Display Name"
         request.landingPageType = .login
         request.localeCode = "locale-code"
-        request.correlationId = "123-correlation-id"
+        request.riskCorrelationId = "123-correlation-id"
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
 
