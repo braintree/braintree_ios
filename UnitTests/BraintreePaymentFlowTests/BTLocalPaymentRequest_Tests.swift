@@ -31,6 +31,7 @@ class BTLocalPaymentRequest_UnitTests: XCTestCase {
         request.merchantAccountID = "account-id"
         request.bic = "bank-id-code"
         request.isShippingAddressRequired = true
+        request.displayName = "My Brand!"
 
         let mockRequestDelegate = MockLocalPaymentRequestDelegate()
         request.localPaymentFlowDelegate = mockRequestDelegate
@@ -65,6 +66,7 @@ class BTLocalPaymentRequest_UnitTests: XCTestCase {
             "merchant_account_id": "account-id",
             "bic": "bank-id-code",
             "experience_profile": [
+                "brand_name": "My Brand!",
                 "no_shipping": false
             ]
         ]

@@ -151,6 +151,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         localPaymentRequest.address!.locality = "Den Haag"
         localPaymentRequest.email = "lingo-buyer@paypal.com"
         localPaymentRequest.isShippingAddressRequired = true
+        localPaymentRequest.displayName = "My Brand!"
         driver.startPaymentFlow(localPaymentRequest) { (result, error) in
 
         }
@@ -178,6 +179,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
             return
         }
         XCTAssertFalse(experienceProfile["no_shipping"] as! Bool)
+        XCTAssertEqual(experienceProfile["brand_name"] as? String, "My Brand!")
     }
 
     func testStartPayment_displaysSafariViewControllerWhenAvailable() {
