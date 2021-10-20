@@ -17,4 +17,10 @@
  */
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *_Nonnull)request completion:(void (^_Nullable)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock;
 
+
+/**
+ Exposed for mocking the associated ASWebAuthenticationSession.
+ */
+@property (nonatomic, strong, nonnull) BTWebAuthenticationSession *webAuthenticationSession;
+
 @end

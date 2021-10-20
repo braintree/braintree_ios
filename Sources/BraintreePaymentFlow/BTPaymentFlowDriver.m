@@ -32,7 +32,6 @@
 @property (nonatomic, copy, nonnull) NSString *returnURLScheme;
 @property (nonatomic, strong, nonnull) BTAPIClient *apiClient;
 @property (nonatomic, strong, nonnull) BTPaymentFlowRequest *request;
-@property (nonatomic, strong, nonnull) BTWebAuthenticationSession *webAuthenticationSession;
 
 @end
 
@@ -50,17 +49,8 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
-    return [self initWithAPIClient:apiClient webAuthenticationSession:[[BTWebAuthenticationSession alloc] init]];
-}
-
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient webAuthenticationSession:(BTWebAuthenticationSession *)webAuthenticator {
     if (self = [super init]) {
         _apiClient = apiClient;
-        _returnURLScheme = BTCallbackURLScheme;
-        _webAuthenticationSession = webAuthenticator;
-        if (@available(iOS 13, *)) {
-            _webAuthenticationSession.presentationContextProvider = self;
-        }
     }
     return self;
 }

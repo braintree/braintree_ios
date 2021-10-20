@@ -112,9 +112,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
  
  @param apiClient The API client.
  */
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
-
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient webAuthenticationSession:(BTWebAuthenticationSession *)webAuthenticator NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
 /**
  Base initializer - do not use.
