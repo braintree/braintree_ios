@@ -42,12 +42,6 @@ NSString *const BTCallbackURLScheme = @"sdk.ios.braintree";
 
 static BTPaymentFlowDriver *paymentFlowDriver;
 
-+ (void)load {
-    if (self == [BTPaymentFlowDriver class]) {
-        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchDriver:self];
-    }
-}
-
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         _apiClient = apiClient;

@@ -23,9 +23,6 @@ class PayPal_Checkout_UITests: XCTestCase {
         _ = app.buttons["PayPal Checkout"].waitForExistence(timeout: 2)
         app.buttons["PayPal Checkout"].tap()
         
-        // Tap "Continue" on alert
-        app.tap()
-        
         waitForAuthDialogAndTapButton(named: "Continue")
         app.coordinate(withNormalizedOffset: CGVector.zero).tap()
         sleep(1)
