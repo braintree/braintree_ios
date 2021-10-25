@@ -1738,8 +1738,8 @@
 			isa = PBXGroup;
 			children = (
 				80C4AC4F26B33017000552C2 /* CardinalMobile.framework */,
-				808249F8252C1F97000AD8FF /* UnitTests */,
 				80824659252C19F5000AD8FF /* Sources */,
+				808249F8252C1F97000AD8FF /* UnitTests */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				6A50887E9E10BEB122A9F45D /* Pods */,
