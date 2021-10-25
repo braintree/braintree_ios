@@ -3,6 +3,7 @@
 ## unreleased
 * Local Payment Methods
   * Add `displayName` to `BTLocalPaymentRequest`
+* Add CardinalMobile.xcframework and CardinalMobile.framework version to 2.2.5-2
 
 ## 5.4.4 (2021-10-05)
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
