@@ -135,9 +135,8 @@
 		80A79DD725CA04CB00A9E9A2 /* BTVenmoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A79DD525CA04CB00A9E9A2 /* BTVenmoRequest.m */; };
 		80BB0C86241937A5003C8BA9 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB0C84241937A5003C8BA9 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80BB0C87241937A5003C8BA9 /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BB0C85241937A5003C8BA9 /* BTURLUtils.m */; };
-		80C4AC4E26B32FD2000552C2 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */; platformFilter = ios; };
-		80C4AC5026B33017000552C2 /* CardinalMobile.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 80C4AC4F26B33017000552C2 /* CardinalMobile.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80CC038A263210D700C4E6E0 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
+		80D667C327273F64002851DF /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */; platformFilter = ios; };
 		80DBE69523A931A600373230 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE69423A931A600373230 /* Helpers.swift */; };
 		80FF7B242587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B222587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m */; };
 		80FF7B4C2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B4A2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m */; };
@@ -666,7 +665,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				80C4AC5026B33017000552C2 /* CardinalMobile.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1185,8 +1183,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80C4AC4E26B32FD2000552C2 /* CardinalMobile.framework in Frameworks */,
 				A9E80A9F24FEF40C00196BD3 /* BraintreeTestShared.framework in Frameworks */,
+				80D667C327273F64002851DF /* CardinalMobile.framework in Frameworks */,
 				A91E1EF724FEF2E4007540E5 /* BraintreeThreeDSecure.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
