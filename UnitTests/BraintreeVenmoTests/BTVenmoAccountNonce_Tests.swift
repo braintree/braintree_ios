@@ -45,6 +45,5 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
         XCTAssertEqual(venmoAccountNonce?.firstName, "venmo-first-name")
         XCTAssertEqual(venmoAccountNonce?.lastName, "venmo-last-name")
         XCTAssertEqual(venmoAccountNonce?.phoneNumber, "venmo-phone-number")
-
     }
 }
