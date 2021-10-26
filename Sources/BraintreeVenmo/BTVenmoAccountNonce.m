@@ -28,7 +28,8 @@
 }
 
 - (instancetype)initWithPaymentContextJSON:(BTJSON *)paymentContextJSON {
-    BTVenmoAccountNonce *accountNonce = [[self.class alloc] initWithPaymentMethodNonce:[paymentContextJSON[@"data"][@"node"][@"paymentMethodId"] asString] username:[paymentContextJSON[@"data"][@"node"][@"userName"] asString] isDefault:NO];
+    BTVenmoAccountNonce *accountNonce = [[self.class alloc] initWithPaymentMethodNonce:[paymentContextJSON[@"data"][@"node"][@"paymentMethodId"] asString] 
+                                                                              username:[paymentContextJSON[@"data"][@"node"][@"userName"] asString] isDefault:NO];
 
     if (paymentContextJSON[@"data"][@"node"][@"payerInfo"]) {
         accountNonce.email = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"email"] asString];
