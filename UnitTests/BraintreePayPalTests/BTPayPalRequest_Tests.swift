@@ -44,6 +44,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.displayName = "Display Name"
         request.landingPageType = .login
         request.localeCode = "locale-code"
+        request.riskCorrelationId = "123-correlation-id"
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
 
@@ -57,6 +58,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
         XCTAssertEqual(experienceProfile["locale_code"] as? String, "locale-code")
         XCTAssertEqual(parameters["merchant_account_id"] as? String, "merchant-account-id")
+        XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
         XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
                                                                                    "unit_amount": "1",
