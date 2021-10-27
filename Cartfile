@@ -1,2 +1,2 @@
-binary "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.json" == 2.2.5-xcf
+binary "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.json" == 2.2.5-2-xcframework-only-update
 binary "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.json" == 5.2.0
