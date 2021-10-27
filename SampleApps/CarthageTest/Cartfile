@@ -1,1 +1,1 @@
-git "file:///Users/scannillo/bt/braintree_ios" "cardinal-2.2.5-2"
+github "braintree/braintree_ios"
