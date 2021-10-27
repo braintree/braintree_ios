@@ -37,7 +37,7 @@ class PayPal_Vault_UITests: XCTestCase {
 
         webviewElementsQuery.links["Proceed with Sandbox Purchase"].forceTapElement()
 
-        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 2));
+        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 2))
     }
 
     func testPayPal_vault_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
@@ -53,6 +53,6 @@ class PayPal_Vault_UITests: XCTestCase {
     func testPayPal_vault_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
         app.buttons["Cancel"].forceTapElement()
 
-        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].waitForExistence(timeout: 2));
+        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].waitForExistence(timeout: 2))
     }
 }

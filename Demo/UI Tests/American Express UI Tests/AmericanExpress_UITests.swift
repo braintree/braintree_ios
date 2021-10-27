@@ -29,6 +29,6 @@ class AmericanExpress_UITests: XCTestCase {
     func testIneligibleCard_receivesErrorMessage() {
         app.buttons["Ineligible card"].tap()
 
-        XCTAssertTrue(app.buttons["INQ2002: Card is not eligible for the Program"].waitForExistence(timeout: 10));
+        XCTAssertTrue(app.buttons["INQ2002: Card is not eligible for the Program"].waitForExistence(timeout: 10))
     }
 }
