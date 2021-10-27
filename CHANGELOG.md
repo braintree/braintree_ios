@@ -3,6 +3,7 @@
 ## unreleased
 * Local Payment Methods
   * Add `displayName` to `BTLocalPaymentRequest`
+* Add `riskCorrelationId` to `BTPayPalRequest`
 
 ## 5.4.4 (2021-10-05)
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
