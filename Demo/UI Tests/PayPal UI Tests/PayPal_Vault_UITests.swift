@@ -6,29 +6,28 @@
 import XCTest
 
 class PayPal_Vault_UITests: XCTestCase {
-    var app: XCUIApplication!
+    
+    var app = XCUIApplication()
+    var springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalVaultViewController")
         app.launch()
         
-        _ = app.buttons["PayPal Vault"].waitForExistence(timeout: 10)
         app.buttons["PayPal Vault"].tap()
         
         // Tap "Continue" on alert
-        app.tap()
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let continueButton = springboard.buttons["Continue"]
-        if continueButton.waitForExistence(timeout: 2) {
-            continueButton.tap()
-        }
-        app.coordinate(withNormalizedOffset: CGVector.zero).tap()
-        sleep(1)
+        springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        waitForAuthDialogAndTapButton(named: "Continue")
+    }
+
+    private func waitForAuthDialogAndTapButton(named buttonName: String) {
+        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
+        springboard.buttons[buttonName].tap()
     }
 
     func testPayPal_vault_receivesNonce() {
