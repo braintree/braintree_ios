@@ -1,0 +1,33 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/scannillo/bt/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalCheckoutRequest.h",
+      "line": 43,
+      "symbol": "BTPayPalCheckoutRequest",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/scannillo/bt/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalCheckoutRequest.h",
+      "line": 45,
+      "symbol": "BTPayPalCheckoutRequest.+new",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/scannillo/bt/braintree_ios/Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/BraintreeThreeDSecure.h",
+      "line": 4,
+      "symbol": "BraintreeThreeDSecureVersionNumber",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/scannillo/bt/braintree_ios/Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/BraintreeThreeDSecure.h",
+      "line": 7,
+      "symbol": "BraintreeThreeDSecureVersionString",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/scannillo/bt/braintree_ios"
+}
