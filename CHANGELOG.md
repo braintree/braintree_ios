@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.5.0 (2021-11-01)
 * Add `displayName` to `BTLocalPaymentRequest`
 * Add `riskCorrelationId` to `BTPayPalRequest`
 * Update `CardinalMobile` frameworks
