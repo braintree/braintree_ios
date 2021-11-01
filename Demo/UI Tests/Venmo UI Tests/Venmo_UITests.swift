@@ -24,7 +24,7 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenSignInSuccessful_returnsNonce() {
         mockVenmo.buttons["SUCCESS"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 2));
+        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 2))
     }
 
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
@@ -36,6 +36,6 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
         mockVenmo.buttons["Cancel"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].exists);
+        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].exists)
     }
 }
