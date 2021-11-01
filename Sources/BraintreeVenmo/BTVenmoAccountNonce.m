@@ -7,6 +7,11 @@
 #endif
 
 @interface BTVenmoAccountNonce ()
+@property (nonatomic, readwrite, copy) NSString *email;
+@property (nonatomic, readwrite, copy) NSString *externalId;
+@property (nonatomic, readwrite, copy) NSString *firstName;
+@property (nonatomic, readwrite, copy) NSString *lastName;
+@property (nonatomic, readwrite, copy) NSString *phoneNumber;
 @property (nonatomic, readwrite, copy) NSString *username;
 @end
 
@@ -23,9 +28,18 @@
 }
 
 - (instancetype)initWithPaymentContextJSON:(BTJSON *)paymentContextJSON {
-    return [[self.class alloc] initWithPaymentMethodNonce:[paymentContextJSON[@"data"][@"node"][@"paymentMethodId"] asString]
-                                                 username:[paymentContextJSON[@"data"][@"node"][@"userName"] asString]
-                                                isDefault:NO];
+    BTVenmoAccountNonce *accountNonce = [[self.class alloc] initWithPaymentMethodNonce:[paymentContextJSON[@"data"][@"node"][@"paymentMethodId"] asString] 
+                                                                              username:[paymentContextJSON[@"data"][@"node"][@"userName"] asString] isDefault:NO];
+
+    if (paymentContextJSON[@"data"][@"node"][@"payerInfo"]) {
+        accountNonce.email = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"email"] asString];
+        accountNonce.externalId = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"externalId"] asString];
+        accountNonce.firstName = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"firstName"] asString];
+        accountNonce.lastName = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"lastName"] asString];
+        accountNonce.phoneNumber = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"phoneNumber"] asString];
+    }
+
+    return accountNonce;
 }
 
 + (instancetype)venmoAccountWithJSON:(BTJSON *)venmoAccountJSON {

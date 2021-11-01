@@ -182,6 +182,7 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                                 environment:configuration.venmoEnvironment
                                                                            paymentContextID:paymentContextID
                                                                                    metadata:self.apiClient.metadata];
+
                 [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
             }];
         } else {
@@ -273,7 +274,7 @@ static BTVenmoDriver *appSwitchedDriver;
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceededWithPaymentContext: {
             NSDictionary *params = @{
-                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName } } }",
+                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName } } } }",
                 @"variables": @{ @"id": returnURL.paymentContextID }
             };
 
