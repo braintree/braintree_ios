@@ -91,7 +91,4 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
   end
 
-  # https://github.com/CocoaPods/CocoaPods/issues/10065#issuecomment-694266259
-  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end

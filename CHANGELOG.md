@@ -1,9 +1,17 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Local Payment Methods
-  * Add `displayName` to `BTLocalPaymentRequest`
+* Add `displayName` to `BTLocalPaymentRequest`
 * Add `riskCorrelationId` to `BTPayPalRequest`
+* Update `CardinalMobile` frameworks
+  * Update `CardinalMobile.xcframework` to 2.2.5-2
+    * Adds `arm64` simulator / Apple Silicon support (discussed in #564)
+    * Fixes 3DS (iOS 15 translucent toolbar issue)[#748]
+  * Update `CardinalMobile.framework` to 2.2.5-1
+  * _Note:_
+      * This release allows all SPM, CocoaPods, and Carthage users using `--use-xcframeworks` to get **Apple Silicon support** and the iOS 15 3DS toolbar fix.
+      * Carthage users not using `--use-xcframeworks` will not get these updates until a later version.
+      * See PR #750 for more details.
 
 ## 5.4.4 (2021-10-05)
 * Re-organize `/Frameworks` binaries into nested `/FatFrameworks` and `/XCFrameworks` directories.
