@@ -178,7 +178,7 @@ namespace :spm do
   end
 
 
-  # Note: This task is for edge case LE merchants who insist on integrating directly with xcframeworks, though we encourage integrating directly through a package manager instead.
+  # Note: This task is for edge case merchants who insist on integrating directly with xcframeworks, though we encourage integrating directly through a package manager instead.
   desc "Create xcframework for each Braintree module."
   task :create_binaries do
     run! "mkdir archive"
