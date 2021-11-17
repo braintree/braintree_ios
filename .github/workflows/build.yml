@@ -10,9 +10,9 @@ jobs:
       - name: Use Xcode 12.5
         run: sudo xcode-select -switch /Applications/Xcode_12.5.1.app
       - name: Install CocoaPod dependencies
-        run: pod install
+        run: bundle exec pod install
       - name: Run pod lib lint
-        run: pod lib lint
+        run: bundle exec pod lib lint
   carthage:
     name: Carthage (Xcode 12.5)
     runs-on: macOS-11
@@ -58,9 +58,9 @@ jobs:
       - name: Use Xcode 13
         run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Install CocoaPod dependencies
-        run: pod install
+        run: bundle exec pod install
       - name: Run pod lib lint 
-        run: pod lib lint
+        run: bundle exec pod lib lint
   carthage_xcode_beta:
     name: Carthage (Xcode 13)
     runs-on: macOS-11
