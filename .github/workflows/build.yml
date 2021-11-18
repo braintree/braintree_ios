@@ -12,9 +12,7 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
-        run: |
-          pod --version
-          pod lib lint
+        run: pod lib lint
   carthage:
     name: Carthage (Xcode 12.5)
     runs-on: macOS-11
