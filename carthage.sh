@@ -8,7 +8,7 @@ set -euo pipefail
 xcconfig=$(mktemp /tmp/static.xcconfig.XXXXXX)
 trap 'rm -f "$xcconfig"' INT TERM HUP EXIT
 
-# For Xcode 12 make sure EXCLUDED_ARCHS is set to arm architectures otherwise
+# For Xcode 13 make sure EXCLUDED_ARCHS is set to arm architectures otherwise
 # the build will fail on lipo due to duplicate architectures.
 
 CURRENT_XCODE_VERSION=$(xcodebuild -version | grep "Build version" | cut -d' ' -f3)
