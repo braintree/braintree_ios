@@ -1,4 +1,5 @@
 import Foundation
+import BraintreeCore
 
 // TODO: will objcMembers attribute expose internal / private implementation? Make sure not.
 
