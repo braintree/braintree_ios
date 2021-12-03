@@ -49,7 +49,7 @@ jobs:
         run: cd SampleApps/SPMTest && swift package resolve
       - name: Build & archive SPMTest
         run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
-  cocoapods_xcode_beta:
+  cocoapods_xcode_13:
     name: CocoaPods (Xcode 13)
     runs-on: macOS-11
     steps:
@@ -61,7 +61,7 @@ jobs:
         run: pod install
       - name: Run pod lib lint 
         run: pod lib lint
-  carthage_xcode_beta:
+  carthage_xcode_13:
     name: Carthage (Xcode 13)
     runs-on: macOS-11
     steps:
@@ -83,7 +83,11 @@ jobs:
         run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
-  spm_xcode_beta:
+      - name: Run carthage build without --use-xcframeworks
+        run: |
+          ./carthage.sh build --no-skip-current
+          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
+  spm_xcode_13:
     name: SPM (Xcode 13)
     runs-on: macOS-11
     steps:
