@@ -13,5 +13,5 @@ FOUNDATION_EXPORT const unsigned char BraintreeAmericanExpressVersionString[];
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeAmericanExpress/BTAmericanExpressClient.h>
-#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
+//#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
 #endif
