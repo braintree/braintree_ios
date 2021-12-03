@@ -80,8 +80,7 @@
         }
 
         self.progressBlock(@"Amex - getting rewards balance");
-        BTAmericanExpressClientSwift *test = [[BTAmericanExpressClientSwift alloc] initWithAPIClient: _apiClient];
-        [test getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance *rewardsBalance, NSError *error) {
+        [self.amexClient getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance *rewardsBalance, NSError *error) {
             if (error) {
                 self.progressBlock(error.localizedDescription);
             } else if (rewardsBalance.errorCode) {
@@ -90,15 +89,6 @@
                 self.progressBlock([NSString stringWithFormat:@"%@ %@, %@ %@", rewardsBalance.rewardsAmount, rewardsBalance.rewardsUnit, rewardsBalance.currencyAmount, rewardsBalance.currencyIsoCode]);
             }
         }];
-//        [self.amexClient getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance *rewardsBalance, NSError *error) {
-//            if (error) {
-//                self.progressBlock(error.localizedDescription);
-//            } else if (rewardsBalance.errorCode) {
-//                self.progressBlock([NSString stringWithFormat:@"%@: %@", rewardsBalance.errorCode, rewardsBalance.errorMessage]);
-//            } else {
-//                self.progressBlock([NSString stringWithFormat:@"%@ %@, %@ %@", rewardsBalance.rewardsAmount, rewardsBalance.rewardsUnit, rewardsBalance.currencyAmount, rewardsBalance.currencyIsoCode]);
-//            }
-//        }];
     }];
 }
 

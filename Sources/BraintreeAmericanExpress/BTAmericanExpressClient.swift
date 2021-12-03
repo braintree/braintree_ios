@@ -1,13 +1,22 @@
 import Foundation
-
+import BraintreeCore
 
 ///  Domain for American Express errors.
 // TODO: Make this accessible in objc
-public let BTAmericanExpressErrorDomainSwift: String = "com.braintreepayments.BTAmericanExpressErrorDomain"
+public let BTAmericanExpressErrorDomain: String = "com.braintreepayments.BTAmericanExpressErrorDomain"
+
+// TODO: Convert this enum to Swift
+///**
+// Error codes associated with American Express.
+// */
+//typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
+//    /// Unknown error
+//    BTAmericanExpressErrorTypeUnknown = 0,
+//};
 
 // TODO: Does this class need to inherit from NSObject?
-
-@objcMembers public class BTAmericanExpressClientSwift: NSObject {
+///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
+@objcMembers public class BTAmericanExpressClient: NSObject {
     
     ///  Exposed for testing to get the instance of BTAPIClient
     private var apiClient: BTAPIClient
@@ -19,7 +28,6 @@ public let BTAmericanExpressErrorDomainSwift: String = "com.braintreepayments.BT
         self.apiClient = apiClient
     }
     
-    
     ///  Gets the rewards balance associated with a Braintree nonce. Only for American Express cards.
     /// - Parameters:
     ///   - nonce: A nonce representing a card that will be used to look up the rewards balance.
@@ -27,9 +35,9 @@ public let BTAmericanExpressErrorDomainSwift: String = "com.braintreepayments.BT
     ///   - completion:  A completion block that is invoked when the request has completed. If the request succeeds,
     ///   `rewardsBalance` will contain information about the rewards balance and `error` will be `nil` (see exceptions in note);
     ///   if it fails, `rewardsBalance` will be `nil` and `error` will describe the failure.
-    ///  @note If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
+    ///  - Note: If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
     public func getRewardsBalance(forNonce nonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
-        var parameters = ["currencyIsoCode": currencyIsoCode,
+        let parameters = ["currencyIsoCode": currencyIsoCode,
                           "paymentMethodNonce": nonce]
         // TODO: Investigate how to expose analytics
         // [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.start"];
