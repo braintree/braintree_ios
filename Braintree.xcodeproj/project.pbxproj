@@ -129,6 +129,7 @@
 		8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */; };
 		8018090A24A4C89C00FC8BD3 /* BTPayPalIDToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B9D0D32347EB770005F8D4 /* BTPayPalIDToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80252BD627299FE0002E0D84 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
+		804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalanceSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalanceSwift.swift */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
 		80A79DD625CA04CB00A9E9A2 /* BTVenmoRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 80A79DD425CA04CB00A9E9A2 /* BTVenmoRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -831,6 +832,7 @@
 		801FD8E32231B4F000014DB0 /* BTThreeDSecureAdditionalInformation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureAdditionalInformation.m; sourceTree = "<group>"; };
 		801FD8E72231C34500014DB0 /* BTThreeDSecureAdditionalInformation_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureAdditionalInformation_Internal.h; sourceTree = "<group>"; };
 		80328FE4243250CA0034ABC0 /* BTPayPalIDToken_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalIDToken_SwiftTests.swift; sourceTree = "<group>"; };
+		804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalanceSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalanceSwift.swift; sourceTree = "<group>"; };
 		80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+ThreeDSecure_Tests.swift"; sourceTree = "<group>"; };
 		80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLHTTP_SSLPinning_IntegrationTests.swift; sourceTree = "<group>"; };
 		805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPostalAddress_Tests.swift; sourceTree = "<group>"; };
@@ -1283,6 +1285,7 @@
 				0357C48B1F96882500E63851 /* BTAmericanExpressClient.m */,
 				039A8BD41F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m */,
 				0357C48C1F96882500E63851 /* Public */,
+				804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalanceSwift.swift */,
 			);
 			path = BraintreeAmericanExpress;
 			sourceTree = "<group>";
@@ -2836,6 +2839,7 @@
 					};
 					0357C47B1F96869600E63851 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1310;
 						ProvisioningStyle = Manual;
 					};
 					2D941D371B59C76A0016EFB4 = {
@@ -3232,6 +3236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalanceSwift.swift in Sources */,
 				039A8BD51F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m in Sources */,
 				0357C48E1F96882500E63851 /* BTAmericanExpressClient.m in Sources */,
 			);
@@ -3958,6 +3963,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4007,6 +4014,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5639,6 +5647,7 @@
 		A948D6CF24FAB79B00F4F178 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5685,6 +5694,7 @@
 		A948D6D024FAB79B00F4F178 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;

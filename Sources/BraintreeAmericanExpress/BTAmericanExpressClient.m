@@ -16,6 +16,8 @@
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
 
+#import <BraintreeAmericanExpress/BraintreeAmericanExpress-Swift.h>
+
 NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmericanExpressErrorDomain";
 
 @interface BTAmericanExpressClient ()
@@ -53,9 +55,12 @@ NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmerica
                      return;
                  }
                  BTAmericanExpressRewardsBalance *rewardsBalance = [[BTAmericanExpressRewardsBalance alloc] initWithJSON:body];
+
                  [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.success"];
                  completionBlock(rewardsBalance, nil);
      }];
+
+    BTAmericanExpressRewardsBalanceSwift *mySwift = [[BTAmericanExpressRewardsBalanceSwift alloc] initWithJSON:[BTJSON new]];
 }
 
 @end
