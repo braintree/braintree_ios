@@ -5,7 +5,7 @@ import Foundation
 /**
  Contains information about an American Express rewards balance.
  */
-@objcMembers public class BTAmericanExpressRewardsBalanceSwift: NSObject {
+@objcMembers public class BTAmericanExpressRewardsBalance: NSObject {
 
     /// Optional. An error code when there was an issue fetching the rewards balance
     public var errorCode: String? // TODO: make sure this optional translates properly into nullable ObjC var
