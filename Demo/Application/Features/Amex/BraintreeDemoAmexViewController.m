@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Amex", nil);
-
+    
     UIButton *validCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [validCardButton setTitle:NSLocalizedString(@"Valid card", nil) forState:UIControlStateNormal];
     [validCardButton addTarget:self action:@selector(tappedValidCard) forControlEvents:UIControlEventTouchUpInside];
@@ -80,7 +80,8 @@
         }
 
         self.progressBlock(@"Amex - getting rewards balance");
-        [self.amexClient getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance *rewardsBalance, NSError *error) {
+        BTAmericanExpressClientSwift *test = [[BTAmericanExpressClientSwift alloc] initWithAPIClient: _apiClient];
+        [test getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance *rewardsBalance, NSError *error) {
             if (error) {
                 self.progressBlock(error.localizedDescription);
             } else if (rewardsBalance.errorCode) {
@@ -89,6 +90,15 @@
                 self.progressBlock([NSString stringWithFormat:@"%@ %@, %@ %@", rewardsBalance.rewardsAmount, rewardsBalance.rewardsUnit, rewardsBalance.currencyAmount, rewardsBalance.currencyIsoCode]);
             }
         }];
+//        [self.amexClient getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance *rewardsBalance, NSError *error) {
+//            if (error) {
+//                self.progressBlock(error.localizedDescription);
+//            } else if (rewardsBalance.errorCode) {
+//                self.progressBlock([NSString stringWithFormat:@"%@: %@", rewardsBalance.errorCode, rewardsBalance.errorMessage]);
+//            } else {
+//                self.progressBlock([NSString stringWithFormat:@"%@ %@, %@ %@", rewardsBalance.rewardsAmount, rewardsBalance.rewardsUnit, rewardsBalance.currencyAmount, rewardsBalance.currencyIsoCode]);
+//            }
+//        }];
     }];
 }
 
