@@ -71,6 +71,9 @@
     card.cvv = @"1234";
     
     self.progressBlock(@"Tokenizing Card");
+    
+
+    NSLog(@"Error: %@", BTAmericanExpressError.Domain);
 
     [self.cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
         if (error) {
