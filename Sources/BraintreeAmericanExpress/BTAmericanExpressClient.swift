@@ -1,9 +1,6 @@
 import Foundation
 import BraintreeCore
 
-///  Domain for American Express errors.
-// TODO: Make this accessible in objc
-public let BTAmericanExpressErrorDomain: String = "com.braintreepayments.BTAmericanExpressErrorDomain"
 
 // TODO: Convert this enum to Swift
 ///**
@@ -14,11 +11,13 @@ public let BTAmericanExpressErrorDomain: String = "com.braintreepayments.BTAmeri
 //    BTAmericanExpressErrorTypeUnknown = 0,
 //};
 
-// TODO: Does this class need to inherit from NSObject?
 ///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
 @objcMembers public class BTAmericanExpressClient: NSObject {
     
-    ///  Exposed for testing to get the instance of BTAPIClient
+    ///  Domain for American Express errors.
+    @objc public static let BTAmericanExpressErrorDomain = "com.braintreepayments.BTAmericanExpressErrorDomain"
+    
+        ///  Exposed for testing to get the instance of BTAPIClient
     private var apiClient: BTAPIClient
     
     ///  Creates an American Express client.
@@ -54,9 +53,9 @@ public let BTAmericanExpressErrorDomain: String = "com.braintreepayments.BTAmeri
                 completion(rewardsBalance, nil)
             } else {
                 // TODO: We are returning an empty rewards balance here because this is exactly what happens in obj-C, but in Swift we should explicitly handle this error case
-                completion(BTAmericanExpressRewardsBalance(json: BTJSON()), nil)
+                let error = NSError(domain: BTAmericanExpressError.Domain, code: BTAmericanExpressError.Code.unknown.rawValue, userInfo: [NSLocalizedDescriptionKey: "Response body was empty"])
+                completion(nil, error)
             }
         }
-        
     }
 }
