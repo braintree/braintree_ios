@@ -12,6 +12,7 @@ about: Create a report to help us improve
  - Xcode Version: [e.g. Xcode 12.5]
  - Device: [e.g. iPhone 12]
  - Integration type & version: [e.g. CocoaPods 1.1.1, Carthage 0.18.1, Swift Package Manager 5.2.0]
+ - Development Processor Type: [e.g. Intel, M1/ Apple Silicon]
 
 **Describe the bug**
 Description of what the bug is. Please include as many details as possible.
