@@ -1,15 +1,11 @@
 import Foundation
 import BraintreeCore
 
-// TODO: will objcMembers attribute expose internal / private implementation? Make sure not.
-
-/**
- Contains information about an American Express rewards balance.
- */
+/// Contains information about an American Express rewards balance.
 @objcMembers public class BTAmericanExpressRewardsBalance: NSObject {
 
     /// Optional. An error code when there was an issue fetching the rewards balance
-    public var errorCode: String? // TODO: make sure this optional translates properly into nullable ObjC var
+    public var errorCode: String?
 
     /// Optional. An error message when there was an issue fetching the rewards balance
     public var errorMessage: String?
@@ -33,9 +29,8 @@ import BraintreeCore
     public var rewardsUnit: String?
 
     /// Initialize with JSON from Braintree
-    /// - Parameter json: JSON TODO
-    @objc(initWithJSON:)
-    public init(json: BTJSON) {
+    /// - Parameter json: The JSON body response
+    init(json: BTJSON) {
         self.errorCode = json["error"]["code"].asString()
         self.errorMessage = json["error"]["message"].asString()
         self.conversionRate = json["conversionRate"].asString()

@@ -1,6 +1,6 @@
 import XCTest
 import BraintreeCore
-import BraintreeAmericanExpress
+@testable import BraintreeAmericanExpress
 
 class BTAmericanExpressRewardsBalance_Tests: XCTestCase {
     
@@ -27,7 +27,6 @@ class BTAmericanExpressRewardsBalance_Tests: XCTestCase {
         XCTAssertEqual(rewardsBalance.rewardsUnit, "Points")
         XCTAssertNil(rewardsBalance.errorCode)
         XCTAssertNil(rewardsBalance.errorMessage)
-
     }
     
     func testInitWithJson_parsesErrorJsonCorrectly() {

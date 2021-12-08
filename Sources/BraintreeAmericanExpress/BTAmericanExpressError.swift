@@ -1,25 +1,25 @@
 import Foundation
 
-/**
- Error codes associated with American Express.
- */
+///  Error codes associated with American Express.
 enum BTAmericanExpressError: Error, CustomNSError, LocalizedError {
+
     /// Unknown error
     case unknown
     
-    /// Empty response
-    case emptyResponse
+    /// An API response was received with missing rewards data
+    case noRewardsData
     
     static var errorDomain: String {
         "com.braintreepayments.BTAmericanExpressErrorDomain"
     }
-    
+
+    // TODO: Revist scope of the error code
     var errorCode: Int {
         switch self {
         case .unknown:
             return 0
 
-        case .emptyResponse:
+        case .noRewardsData:
             return 1
         }
     }
@@ -27,10 +27,11 @@ enum BTAmericanExpressError: Error, CustomNSError, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unknown:
-            return "Unknown error"
+            return "An unknown error occured. Please contact support."
 
-        case .emptyResponse:
-            return "Response was empty"
+        case .noRewardsData:
+            return "No American Express Rewards data was returned. Please contact support."
         }
     }
+
 }

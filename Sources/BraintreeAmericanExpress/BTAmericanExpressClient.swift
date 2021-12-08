@@ -1,27 +1,13 @@
 import Foundation
 import BraintreeCore
 
-
-// TODO: Convert this enum to Swift
-///**
-// Error codes associated with American Express.
-// */
-//typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
-//    /// Unknown error
-//    BTAmericanExpressErrorTypeUnknown = 0,
-//};
-
 ///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
 @objcMembers public class BTAmericanExpressClient: NSObject {
     
-    ///  Domain for American Express errors.
-    @objc public static let BTAmericanExpressErrorDomain = "com.braintreepayments.BTAmericanExpressErrorDomain"
-    
-        ///  Exposed for testing to get the instance of BTAPIClient
     private var apiClient: BTAPIClient
     
     ///  Creates an American Express client.
-    /// - Parameter apiClient: An API client
+    /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
@@ -48,16 +34,17 @@ import BraintreeCore
                 completion(nil, error)
                 return
             }
-            
+
             guard let body = body else {
                 // [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.error"];
-                completion(nil, BTAmericanExpressError.emptyResponse)
+                completion(nil, BTAmericanExpressError.noRewardsData)
                 return
             }
-            
+
             let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
             // [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.success"];
             completion(rewardsBalance, nil)
         }
     }
+
 }
