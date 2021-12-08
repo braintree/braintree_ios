@@ -40,5 +40,4 @@ import BraintreeCore
         self.rewardsAmount = json["rewardsAmount"].asString()
         self.rewardsUnit = json["rewardsUnit"].asString()
     }
-
 }

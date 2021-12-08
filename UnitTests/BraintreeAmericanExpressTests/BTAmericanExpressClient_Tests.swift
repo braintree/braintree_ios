@@ -39,11 +39,17 @@ class BTAmericanExpressClient_Tests: XCTestCase {
     }
     
     func testGetRewardsBalance_returnsSendsAnalyticsEventOnError() {
-        mockAPIClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: nil)
+        mockAPIClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: [NSLocalizedDescriptionKey:"Fake description"])
 
         let expectation = self.expectation(description: "Amex rewards balance response")
         amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD", completion: { (rewardsBalance, error) in
-            XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
+            
+            if let error = error as NSError? {
+                XCTAssertEqual(error.code, 100)
+                XCTAssertEqual(error.localizedDescription, "Fake description")
+                XCTAssertEqual(error.domain, "foo")
+            }
+            
             XCTAssertNil(rewardsBalance)
             expectation.fulfill()
         })
@@ -53,16 +59,18 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
     }
     
-    func testGetRewardsBalance_returnsSendsAnalyticsEventOnEmptyAPIResponse() {
-        let responseBody = [:] as [String : Any]
-        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+    func testGetRewardsBalance_returnsSendsAnalyticsEventOnNilAPIResponse() {
+        mockAPIClient.cannedResponseBody = nil
 
-        let expectation = self.expectation(description: "Amex rewards balance response")
+        let expectation = self.expectation(description: "Amex rewards balance response was nil")
         amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD", completion: { (rewardsBalance, error) in
             
-            XCTAssertEqual(error?.code, BTAmericanExpressError.ErrorCode.noRewardsData.rawValue)
-            XCTAssertEqual(error?.localizedDescription, "No American Express Rewards data was returned. Please contact support.")
-            XCTAssertEqual(error?.domain, BTAmericanExpressError.errorDomain)
+            if let error = error as NSError? {
+                XCTAssertEqual(error.code, BTAmericanExpressError.noRewardsData.errorCode)
+                XCTAssertEqual(error.localizedDescription, "No American Express Rewards data was returned. Please contact support.")
+                XCTAssertEqual(error.domain, BTAmericanExpressError.errorDomain)
+            }
+            
             XCTAssertNil(rewardsBalance)
             expectation.fulfill()
         })

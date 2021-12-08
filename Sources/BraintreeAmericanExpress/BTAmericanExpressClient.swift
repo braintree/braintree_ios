@@ -36,7 +36,7 @@ import BraintreeCore
 
             guard let body = body else {
                 self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.error")
-                completion(nil, BTAmericanExpressError.noRewardsDataError)
+                completion(nil, BTAmericanExpressError.noRewardsData)
                 return
             }
 
@@ -45,5 +45,4 @@ import BraintreeCore
             completion(rewardsBalance, nil)
         }
     }
-
 }
