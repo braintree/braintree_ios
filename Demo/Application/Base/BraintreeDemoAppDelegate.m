@@ -23,7 +23,8 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     UIColor *pleasantGray = [UIColor colorWithWhite:42/255.0f alpha:1.0f];
 
     [[UIToolbar appearance] setBarTintColor:pleasantGray];
-    [[UIToolbar appearance] setBarStyle:UIBarStyleBlackTranslucent];
+    [[UIToolbar appearance] setBarStyle:UIBarStyleBlack];
+    [[UIToolbar appearance] setTranslucent:YES];
 }
 
 - (void)registerDefaultsFromSettings {

@@ -5,7 +5,7 @@
 @import Expecta;
 @import OHHTTPStubs;
 
-NSURL *validDataURL() {
+NSURL *validDataURL(void) {
     NSDictionary *validObject = @{@"clientId":@"a-client-id", @"nest": @{@"nested":@"nested-value"}};
     NSError *jsonSerializationError;
     NSData *configurationData = [NSJSONSerialization dataWithJSONObject:validObject
@@ -16,7 +16,7 @@ NSURL *validDataURL() {
     return [NSURL URLWithString:dataURLString];
 }
 
-NSDictionary *parameterDictionary() {
+NSDictionary *parameterDictionary(void) {
     return @{@"stringParameter": @"value",
              @"crazyStringParameter[]": @"crazy%20and&value",
              @"numericParameter": @42,
@@ -40,7 +40,7 @@ void withStub(void (^block)(void (^removeStub)(void))) {
     });
 }
 
-NSURLSession *testURLSession() {
+NSURLSession *testURLSession(void) {
     NSURLSessionConfiguration *testConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     [testConfiguration setProtocolClasses:@[[BTHTTPTestProtocol class]]];
     return [NSURLSession sessionWithConfiguration:testConfiguration];

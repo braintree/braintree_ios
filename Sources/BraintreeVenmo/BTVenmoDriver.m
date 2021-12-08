@@ -173,7 +173,7 @@ static BTVenmoDriver *appSwitchedDriver;
                 completionBlock(nil, error);
                 return;
             }
-            
+
             NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
                                                                             accessToken:configuration.venmoAccessToken
                                                                         returnURLScheme:self.returnURLScheme
@@ -262,7 +262,7 @@ static BTVenmoDriver *appSwitchedDriver;
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceededWithPaymentContext: {
             NSDictionary *params = @{
-                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName } } }",
+                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName } } } }",
                 @"variables": @{ @"id": returnURL.paymentContextID }
             };
 

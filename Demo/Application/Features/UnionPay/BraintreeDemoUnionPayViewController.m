@@ -1,13 +1,10 @@
 #import "BraintreeDemoUnionPayViewController.h"
-#import "BTUICardFormView.h"
+#import "Demo-Swift.h"
 @import BraintreeUnionPay;
 
-@interface BraintreeDemoUnionPayViewController () <BTUICardFormViewDelegate>
+@interface BraintreeDemoUnionPayViewController () <UITextFieldDelegate>
 
-@property (nonatomic, strong) IBOutlet UITextField *cardNumberField;
-@property (nonatomic, strong) IBOutlet UITextField *expirationMonthField;
-@property (nonatomic, strong) IBOutlet UITextField *expirationYearField;
-@property (nonatomic, strong) BTUICardFormView *cardForm;
+@property (nonatomic, strong) BTCardFormView *cardFormView;
 @property (nonatomic, strong) UIButton *submitButton;
 @property (nonatomic, strong) UIButton *smsButton;
 @property (nonatomic, strong) BTAPIClient *apiClient;
@@ -32,11 +29,17 @@
     self.title = NSLocalizedString(@"UnionPay", nil);
     self.edgesForExtendedLayout = UIRectEdgeBottom;
 
-    self.cardForm = [[BTUICardFormView alloc] init];
-    self.cardForm.optionalFields = BTUICardFormOptionalFieldsCvv;
-    self.cardForm.translatesAutoresizingMaskIntoConstraints = NO;
-    self.cardForm.delegate = self;
-    [self.view addSubview:self.cardForm];
+    [self layoutUIComponents];
+}
+
+#pragma mark - Layout UI
+
+- (void)layoutUIComponents {
+    self.cardFormView = [[BTCardFormView alloc] initWithFrame:CGRectZero];
+    [self.view addSubview:self.cardFormView];
+    self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.cardFormView.hidePostalCodeField = YES;
+    self.cardFormView.hideCVVField = YES;
 
     self.submitButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.submitButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -51,59 +54,26 @@
     [self.smsButton addTarget:self action:@selector(enroll:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.smsButton];
 
-    [self.view addConstraints:[NSLayoutConstraint
-                               constraintsWithVisualFormat:@"H:|[cardForm]|"
-                               options:NSLayoutFormatDirectionLeadingToTrailing
-                               metrics:nil
-                               views:@{@"cardForm" : self.cardForm}]];
-    [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.submitButton
-                               attribute:NSLayoutAttributeCenterX
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeCenterX
-                               multiplier:1
-                               constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.smsButton
-                               attribute:NSLayoutAttributeCenterX
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeCenterX
-                               multiplier:1
-                               constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.cardForm
-                               attribute:NSLayoutAttributeTop
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeTop
-                               multiplier:1
-                               constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.cardForm
-                               attribute:NSLayoutAttributeBottom
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.smsButton
-                               attribute:NSLayoutAttributeTop
-                               multiplier:1
-                               constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.smsButton
-                               attribute:NSLayoutAttributeBottom
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.submitButton
-                               attribute:NSLayoutAttributeTop
-                               multiplier:1
-                               constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint
-                               constraintWithItem:self.submitButton
-                               attribute:NSLayoutAttributeBottom
-                               relatedBy:NSLayoutRelationEqual
-                               toItem:self.view
-                               attribute:NSLayoutAttributeBottom
-                               multiplier:1
-                               constant:0]];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.cardFormView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        [self.cardFormView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+        [self.cardFormView.heightAnchor constraintEqualToConstant:150]
+    ]];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [self.submitButton.topAnchor constraintEqualToAnchor:self.cardFormView.bottomAnchor constant: 20.0],
+        [self.submitButton.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [self.submitButton.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+        [self.submitButton.heightAnchor constraintEqualToConstant:50]
+    ]];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [self.smsButton.topAnchor constraintEqualToAnchor:self.submitButton.bottomAnchor],
+        [self.smsButton.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+        [self.smsButton.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+        [self.smsButton.heightAnchor constraintEqualToConstant:50]
+    ]];
 }
 
 #pragma mark - Actions
@@ -112,13 +82,24 @@
     self.progressBlock(@"Enrolling card");
 
     BTCard *card = [BTCard new];
-    card.number = self.cardForm.number;
-    card.expirationMonth = self.cardForm.expirationMonth;
-    card.expirationYear = self.cardForm.expirationYear;
-    card.cvv = self.cardForm.cvv;
+    if (self.cardFormView.cardNumber) {
+        card.number = self.cardFormView.cardNumber;
+    }
+    if (self.cardFormView.expirationYear) {
+        card.expirationYear = self.cardFormView.expirationYear;
+    }
+    if (self.cardFormView.expirationMonth) {
+        card.expirationMonth = self.cardFormView.expirationMonth;
+    }
+    if (self.cardFormView.cvv) {
+        card.cvv = self.cardFormView.cvv;
+    }
+
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
     request.mobileCountryCode = @"62";
-    request.mobilePhoneNumber = self.cardForm.phoneNumber;
+    if (self.cardFormView.phoneNumber) {
+        request.mobilePhoneNumber = self.cardFormView.phoneNumber;
+    }
 
     [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, BOOL smsCodeRequired, NSError * _Nullable error) {
         if (error) {
@@ -174,10 +155,18 @@
     self.progressBlock(@"Tokenizing card");
 
     BTCard *card = [BTCard new];
-    card.number = self.cardForm.number;
-    card.expirationMonth = self.cardForm.expirationMonth;
-    card.expirationYear = self.cardForm.expirationYear;
-    card.cvv = self.cardForm.cvv;
+    if (self.cardFormView.cardNumber) {
+        card.number = self.cardFormView.cardNumber;
+    }
+    if (self.cardFormView.expirationYear) {
+        card.expirationYear = self.cardFormView.expirationYear;
+    }
+    if (self.cardFormView.expirationMonth) {
+        card.expirationMonth = self.cardFormView.expirationMonth;
+    }
+    if (self.cardFormView.cvv) {
+        card.cvv = self.cardFormView.cvv;
+    }
 
     [self.cardClient tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         if (error) {
@@ -199,7 +188,6 @@
         }
 
         if (cardCapabilities.isSupported) {
-            self.cardForm.optionalFields = self.cardForm.optionalFields | BTUICardFormOptionalFieldsPhoneNumber;
             self.smsButton.hidden = NO;
             self.submitButton.hidden = NO;
         } else {
@@ -215,13 +203,13 @@
     }];
 }
 
-#pragma mark - BTUICardFormViewDelegate methods
+#pragma mark - UITextFieldDelegate methods
 
-- (void)cardFormViewDidEndEditing:(BTUICardFormView *)cardFormView {
-    if (cardFormView.number &&
-        ![cardFormView.number isEqualToString:self.lastCardNumber]) {
-        [self fetchCapabilities:cardFormView.number];
-        self.lastCardNumber = cardFormView.number;
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    if (self.cardFormView.cardNumberTextField.text &&
+        ![self.cardFormView.cardNumberTextField.text isEqualToString:self.lastCardNumber]) {
+        [self fetchCapabilities:self.cardFormView.cardNumberTextField.text];
+        self.lastCardNumber = self.cardFormView.cardNumberTextField.text;
     }
 }
 

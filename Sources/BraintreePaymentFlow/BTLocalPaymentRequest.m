@@ -145,9 +145,15 @@
             params[@"bic"] = localPaymentRequest.bic;
         }
 
-        params[@"experience_profile"] = @{
-                                          @"no_shipping": @(!localPaymentRequest.isShippingAddressRequired)
-                                          };
+        NSMutableDictionary *experienceProfile = [@{
+            @"no_shipping": @(!localPaymentRequest.isShippingAddressRequired)
+        } mutableCopy];
+
+        if (localPaymentRequest.displayName) {
+            experienceProfile[@"brand_name"] = localPaymentRequest.displayName;
+        }
+        
+        params[@"experience_profile"] = [experienceProfile copy];
 
         [apiClient POST:@"v1/local_payments/create"
                    parameters:params

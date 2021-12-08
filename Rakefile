@@ -11,7 +11,7 @@ desc "Run all test tasks"
 task :spec => %w[spec:all]
 
 desc "Run sanity checks; bump and tag new version"
-task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_binaries carthage:remove_spm_test_app release:tag]
+task :release => %w[release:assumptions build_demo_apps release:check_working_directory release:bump_version release:lint_podspec carthage:create_frameworks carthage:create_xcframeworks carthage:remove_spm_test_app release:tag]
 
 desc "Push tags, docs, and Pod"
 task :publish => %w[carthage:restore_spm_test_app publish:push_private publish:push_public publish:push_pod publish:create_github_release docs_publish]
@@ -146,12 +146,22 @@ namespace :carthage do
   end
 
   desc "Create Braintree.framework.zip for Carthage."
-  task :create_binaries do
+  task :create_frameworks do
     run! "rm -rf SampleApps/SPMTest" # Remove SPMTest app to prevent Carthage timeout
-    run! "carthage build --no-skip-current"
-    run! "carthage archive #{bt_modules.join(" ")} --output Braintree.framework.zip"
+    sh "sh carthage.sh build --no-skip-current"
+    sh "sh carthage.sh archive #{bt_modules.join(" ")} --output Braintree.framework.zip"
     run! "git co master SampleApps/SPMTest" # Restore SPMTest app
-    say "Create binaries for Carthage complete."
+    say "Create framework binaries for Carthage complete."
+  end
+
+  desc "Create Braintree.xcframework.zip for Carthage."
+  task :create_xcframeworks do
+    run! "rm -rf SampleApps/SPMTest" # Remove SPMTest app to prevent Carthage timeout
+-   run! "carthage build --no-skip-current --use-xcframeworks"
+    run! "rm -rf Carthage/Build/BraintreeTestShared.xcframework"
+    run! "zip -r Braintree.xcframework.zip Carthage"
+    run! "git co master SampleApps/SPMTest" # Restore SPMTest app
+    say "Create xcframework binaries for Carthage complete."
   end
 end
 
@@ -177,6 +187,8 @@ namespace :spm do
     run! 'git checkout SampleApps/SPMTest'
   end
 
+
+  # Note: This task is for edge case merchants who insist on integrating directly with xcframeworks, though we encourage integrating directly through a package manager instead.
   desc "Create xcframework for each Braintree module."
   task :create_binaries do
     run! "mkdir archive"

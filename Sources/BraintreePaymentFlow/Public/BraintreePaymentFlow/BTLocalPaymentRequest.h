@@ -52,6 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *currencyCode;
 
 /**
+ Optional: The merchant name displayed inside of the local payment flow.
+ */
+@property (nonatomic, nullable, copy) NSString *displayName;
+
+/**
  Optional: Payer email of the customer.
  */
 @property (nonatomic, nullable, copy) NSString *email;
