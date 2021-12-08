@@ -32,7 +32,6 @@ class BTAmericanExpressClient_Tests: XCTestCase {
             XCTAssertNotNil(rewardsBalance)
             expectation.fulfill()
         })
-        
         waitForExpectations(timeout: 2, handler: nil)
         
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")

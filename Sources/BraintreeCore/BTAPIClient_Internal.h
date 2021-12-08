@@ -42,7 +42,6 @@ typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
 */
 @property (nonatomic, strong) BTAnalyticsService *analyticsService;
 
-
 /**
  Queues an analytics event to be sent.
  */

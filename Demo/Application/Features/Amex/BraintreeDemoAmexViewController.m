@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Amex", nil);
-    
+
     UIButton *validCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [validCardButton setTitle:NSLocalizedString(@"Valid card", nil) forState:UIControlStateNormal];
     [validCardButton addTarget:self action:@selector(tappedValidCard) forControlEvents:UIControlEventTouchUpInside];
@@ -71,7 +71,7 @@
     card.cvv = @"1234";
     
     self.progressBlock(@"Tokenizing Card");
-    
+
     [self.cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
