@@ -13,8 +13,9 @@
     * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalDriver.tokenizePayPalAccount`
     * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalDriver.tokenizePayPalAccount`
   * BraintreeAmericanExpress
-    * Remove unused `BTAmericanExpressErrorDomain`
-    * Remove unused `BTAmericanExpressErrorType`
+    * Remove `BTAmericanExpressErrorDomain` global constant
+    * Remove `BTAmericanExpressErrorType` 
+    * Make `BTAmericanExpressRewardsBalance` initializer private
 
 ## 5.5.0 (2021-11-01)
 * Add `displayName` to `BTLocalPaymentRequest`
