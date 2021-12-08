@@ -60,9 +60,9 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Amex rewards balance response")
         amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD", completion: { (rewardsBalance, error) in
             
-//            XCTAssertEqual(error?.code, BTAmericanExpressError.noRewardsData)
-//            XCTAssertEqual(error?.localizedDescription, "No American Express Rewards data was returned. Please contact support.")
-//            XCTAssertEqual(error?.domain, BTAmericanExpressError.errorDomain)
+            XCTAssertEqual(error?.code, BTAmericanExpressError.ErrorCode.noRewardsData.rawValue)
+            XCTAssertEqual(error?.localizedDescription, "No American Express Rewards data was returned. Please contact support.")
+            XCTAssertEqual(error?.domain, BTAmericanExpressError.errorDomain)
             XCTAssertNil(rewardsBalance)
             expectation.fulfill()
         })
