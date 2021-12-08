@@ -1,6 +1,6 @@
 import XCTest
 import BraintreeTestShared
-import BraintreeAmericanExpress
+@testable import BraintreeAmericanExpress
 import BraintreeCore
 
 class BTAmericanExpressClient_Tests: XCTestCase {
@@ -34,8 +34,8 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         
         waitForExpectations(timeout: 2, handler: nil)
         
-//        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
-//        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.success")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.success")
     }
     
     func testGetRewardsBalance_returnsSendsAnalyticsEventOnError() {
@@ -49,7 +49,26 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         })
         waitForExpectations(timeout: 2, handler: nil)
 
-//        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
-//        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
+    }
+    
+    func testGetRewardsBalance_returnsSendsAnalyticsEventOnEmptyAPIResponse() {
+        let responseBody = [:] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
+        let expectation = self.expectation(description: "Amex rewards balance response")
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD", completion: { (rewardsBalance, error) in
+            
+//            XCTAssertEqual(error?.code, BTAmericanExpressError.noRewardsData)
+//            XCTAssertEqual(error?.localizedDescription, "No American Express Rewards data was returned. Please contact support.")
+//            XCTAssertEqual(error?.domain, BTAmericanExpressError.errorDomain)
+            XCTAssertNil(rewardsBalance)
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
     }
 }

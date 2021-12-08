@@ -25,24 +25,23 @@ import BraintreeCore
     
         let parameters = ["currencyIsoCode": currencyIsoCode,
                           "paymentMethodNonce": nonce]
-        // TODO: Investigate how to expose analytics
-        // [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.start"];
+        self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.start")
 
         self.apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { body, response, error in
             if let error = error {
-                // [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.error"];
+                self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.error")
                 completion(nil, error)
                 return
             }
 
             guard let body = body else {
-                // [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.error"];
+                self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.error")
                 completion(nil, BTAmericanExpressError.noRewardsData)
                 return
             }
 
             let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
-            // [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.success"];
+            self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.success")
             completion(rewardsBalance, nil)
         }
     }
