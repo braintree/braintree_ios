@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased (next-major-version)
+* Convert `BraintreeAmericanExpress` module to Swift
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 13+
   * Require Carthage 0.38.0+
