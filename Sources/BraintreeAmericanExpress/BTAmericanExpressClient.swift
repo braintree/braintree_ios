@@ -6,7 +6,7 @@ import BraintreeCore
 ///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
 @objcMembers public class BTAmericanExpressClient: NSObject {
     
-    private var apiClient: BTAPIClient
+    private let apiClient: BTAPIClient
     
     ///  Creates an American Express client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
@@ -26,9 +26,9 @@ import BraintreeCore
     public func getRewardsBalance(forNonce nonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
         let parameters = ["currencyIsoCode": currencyIsoCode,
                           "paymentMethodNonce": nonce]
-        self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.start")
+        apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.start")
 
-        self.apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { body, response, error in
+        apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { body, response, error in
             if let error = error {
                 self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.error")
                 completion(nil, error)
