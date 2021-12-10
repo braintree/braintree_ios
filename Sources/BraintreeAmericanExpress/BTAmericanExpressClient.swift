@@ -28,7 +28,9 @@ import BraintreeCore
                           "paymentMethodNonce": nonce]
         apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.start")
 
-        apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { body, response, error in
+        apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
+            guard let self = self else { return }
+
             if let error = error {
                 self.apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.error")
                 completion(nil, error)
