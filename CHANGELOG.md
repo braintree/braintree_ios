@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased (next-major-version)
+* Convert `BraintreeAmericanExpress` module to Swift
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 13+
   * Require Carthage 0.38.0+
@@ -12,6 +13,10 @@
   * BraintreePayPal
     * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalDriver.tokenizePayPalAccount`
     * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalDriver.tokenizePayPalAccount`
+  * BraintreeAmericanExpress
+    * Remove `BTAmericanExpressErrorDomain` global constant
+    * Remove `BTAmericanExpressErrorType` 
+    * Make `BTAmericanExpressRewardsBalance` initializer private
 
 ## 5.5.0 (2021-11-01)
 * Add `displayName` to `BTLocalPaymentRequest`
