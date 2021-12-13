@@ -22,8 +22,7 @@ Pod::Spec.new do |s|
   s.default_subspecs = %w[Core Card PayPal]
 
   s.subspec "AmericanExpress" do |s|
-    s.source_files  = "Sources/BraintreeAmericanExpress/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeAmericanExpress/Public/BraintreeAmericanExpress/*.h"
+    s.source_files  = "Sources/BraintreeAmericanExpress/*.swift"
     s.dependency "Braintree/Core"
   end
 
