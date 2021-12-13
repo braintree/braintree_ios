@@ -36,6 +36,6 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
         mockVenmo.buttons["Cancel"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].exists)
+        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].waitForExistence(timeout: 2))
     }
 }
