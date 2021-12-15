@@ -1,5 +1,5 @@
 #import "BTDataCollector_Internal.h"
-#import "kDataCollector.h"
+#import "KDataCollector.h"
 #import <CoreLocation/CoreLocation.h>
 
 #if __has_include(<Braintree/BraintreeDataCollector.h>)
