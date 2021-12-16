@@ -347,6 +347,7 @@
 		BC20A8FB2385F8640077AF56 /* BTPreferredPaymentMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = BC20A8F92385F8640077AF56 /* BTPreferredPaymentMethods.m */; };
 		BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
+		BE2DF5C5276BD51D00F748DF /* BTDataCollectorSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2DF5C4276BD51D00F748DF /* BTDataCollectorSwift.swift */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -1044,6 +1045,7 @@
 		BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPreferredPaymentMethodsResult.h; sourceTree = "<group>"; };
 		BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPreferredPaymentMethodsResult.m; sourceTree = "<group>"; };
 		BC6F67D02386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPreferredPaymentMethods_Tests.swift; sourceTree = "<group>"; };
+		BE2DF5C4276BD51D00F748DF /* BTDataCollectorSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollectorSwift.swift; sourceTree = "<group>"; };
 		C25AE12E88A1D4C82A54CB19 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8CC981A1FD4AD9A818F86F5 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
@@ -1782,6 +1784,7 @@
 				413CDF4E1C779ED400B89FCA /* BTDataCollector_Internal.h */,
 				A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */,
 				A76D7C1D1BB1CBBF0000FA6A /* Public */,
+				BE2DF5C4276BD51D00F748DF /* BTDataCollectorSwift.swift */,
 			);
 			path = BraintreeDataCollector;
 			sourceTree = "<group>";
@@ -3257,6 +3260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C8CBB81276BA93E00727AD7 /* BTConfiguration+DataCollector.m in Sources */,
+				BE2DF5C5276BD51D00F748DF /* BTDataCollectorSwift.swift in Sources */,
 				9C8CBB83276BB13800727AD7 /* BTDataCollectorConfiguration.swift in Sources */,
 				A76D7C231BB1CBDC0000FA6A /* BTDataCollector.m in Sources */,
 			);
