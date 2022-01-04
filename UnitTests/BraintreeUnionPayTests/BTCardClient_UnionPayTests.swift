@@ -493,7 +493,8 @@ class BTCardClient_UnionPayTests: XCTestCase {
                 return
             }
             XCTAssertEqual(cardParameters["number"] as? String, "4111111111111111")
-            XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
+            XCTAssertEqual(cardParameters["expiration_month"] as? String, "12")
+            XCTAssertEqual(cardParameters["expiration_year"] as? String, "2038")
             XCTAssertEqual(cardParameters["cvv"] as? String, "123")
 
             guard let tokenizationOptionsParameters = cardParameters["options"] as? [String: AnyObject] else {
@@ -540,7 +541,8 @@ class BTCardClient_UnionPayTests: XCTestCase {
                 return
             }
             XCTAssertEqual(cardParameters["number"] as? String, "4111111111111111")
-            XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
+            XCTAssertEqual(cardParameters["expiration_month"] as? String, "12")
+            XCTAssertEqual(cardParameters["expiration_year"] as? String, "2038")
             XCTAssertEqual(cardParameters["cvv"] as? String, "123")
 
             guard let tokenizationOptionsParameters = cardParameters["options"] as? [String: AnyObject] else {

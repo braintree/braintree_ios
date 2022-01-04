@@ -37,7 +37,8 @@ class BTCardClient_Tests: XCTestCase {
             }
             
             XCTAssertEqual(cardParams["number"] as? String, "4111111111111111")
-            XCTAssertEqual(cardParams["expiration_date"] as? String, "12/2038")
+            XCTAssertEqual(cardParams["expiration_month"] as? String, "12")
+            XCTAssertEqual(cardParams["expiration_year"] as? String, "2038")
             XCTAssertEqual(cardParams["cvv"] as? String, "1234")
             XCTAssertEqual(cardParams["cardholder_name"] as? String, "Brian Tree")
             
