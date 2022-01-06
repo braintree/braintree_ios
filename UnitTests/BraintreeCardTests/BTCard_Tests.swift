@@ -46,7 +46,6 @@ class BTCard_Tests: XCTestCase {
             "expiration_month": "12",
             "expiration_year": "2038",
             "cardholder_name": "Brian Tree",
-            "expiration_date": "12/2038",
             "cvv": "123",
             "billing_address": [
                 "first_name": "Brian",
