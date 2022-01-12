@@ -235,20 +235,20 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 - (NSError *)cardTokenizationErrorForError:(NSError *)error {
     NSError *callbackError = error;
-    NSDictionary<NSErrorUserInfoKey,id> *errorMap = error.userInfo;
-    BTJSON *errorFields = [errorMap objectForKey:BTHTTPJSONResponseBodyKey];
-    
-    BTJSON *errorCode = errorFields[@"fieldErrors"][0][@"fieldErrors"][0][@"code"];
-    
-    // Gateway error code for card already exists
-    if ([errorCode.asString  isEqual: @"81724"]) {
-        callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                            code:BTCardClientErrorTypeCardAlreadyExists
-                                        userInfo:[self.class validationErrorUserInfo:error.userInfo]];
-    } else {
-        callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                            code:BTCardClientErrorTypeCustomerInputInvalid
-                                        userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+    if (error.userInfo) {
+        BTJSON *errorFields = [error.userInfo objectForKey:BTHTTPJSONResponseBodyKey];
+        BTJSON *errorCode = errorFields[@"fieldErrors"][0][@"fieldErrors"][0][@"code"];
+        
+        // Gateway error code for card already exists
+        if ([errorCode.asString  isEqual: @"81724"]) {
+            callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                code:BTCardClientErrorTypeCardAlreadyExists
+                                            userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+        } else {
+            callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                code:BTCardClientErrorTypeCustomerInputInvalid
+                                            userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+        }
     }
     return callbackError;
 }
