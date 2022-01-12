@@ -1,7 +1,9 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Remove expiration date duplication in card tokenization (fixes #772)
+* Card Tokenization
+  * Remove expiration date duplication in card tokenization (fixes #772)
+  * Add `BTCardClientErrorTypeCardAlreadyExists` to `BTCardClientErrorType` 
 
 ## 5.5.0 (2021-11-01)
 * Add `displayName` to `BTLocalPaymentRequest`
