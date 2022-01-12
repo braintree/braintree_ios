@@ -97,9 +97,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
-                             callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                                 code:BTCardClientErrorTypeCustomerInputInvalid
-                                                             userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+                         callbackError = [self cardTokenizationErrorForError:error];
                      }
 
                      [self sendGraphQLAnalyticsEventWithSuccess:NO];
@@ -125,9 +123,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
-                         callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                             code:BTCardClientErrorTypeCustomerInputInvalid
-                                                         userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+                         callbackError = [self cardTokenizationErrorForError:error];
                      }
 
                      if (request.enrollmentID) {
@@ -235,6 +231,26 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     NSArray *graphQLFeatures = [configuration.json[@"graphQL"][@"features"] asStringArray];
 
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
+}
+
+- (NSError *)cardTokenizationErrorForError:(NSError *)error {
+     NSError *callbackError = error;
+     NSDictionary<NSErrorUserInfoKey,id> *errorMap = error.userInfo;
+     BTJSON *errorFields = [errorMap objectForKey:BTHTTPJSONResponseBodyKey];
+     
+     BTJSON *errorCode = errorFields[@"fieldErrors"][0][@"fieldErrors"][0][@"code"];
+     
+    // Gateway error code for card already exists
+     if ([errorCode.asString  isEqual: @"81724"]) {
+         callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                             code:BTCardClientErrorTypeCardAlreadyExists
+                                         userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+     } else {
+         callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                             code:BTCardClientErrorTypeCustomerInputInvalid
+                                         userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+     }
+    return callbackError;
 }
 
 @end
