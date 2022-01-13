@@ -259,6 +259,72 @@ class BTCardClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
+    func testTokenization_whenGraphQLTokenizationEndpointReturns422AndCode81724_callsCompletionWithValidationError() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+        ])
+        let stubJSONResponse = BTJSON(value: [
+            "data": [
+                "tokenizeCreditCard": "null"
+            ],
+            "errors": [
+                [
+                    "message": "Duplicate card exists in the vault.",
+                    "path": ["tokenizeCreditCard"],
+                    "extensions": [
+                        "errorType": "user_error",
+                        "errorClass": "VALIDATION",
+                        "legacyCode": "81724",
+                        "inputPath": ["input"]
+                    ]
+                ]
+            ],
+            "extensions": [
+                "requestId": "abc-123-def-456"
+            ]
+        ])
+        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPJSONResponseBodyKey: stubJSONResponse
+        ])
+        mockAPIClient.cannedResponseError = stubError
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "123"
+
+        let request = BTCardRequest()
+        request.card = card
+
+        let expectation = self.expectation(description: "Callback invoked with error")
+        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
+            XCTAssertNil(cardNonce)
+            guard let error = error as NSError? else {return}
+            
+            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
+            XCTAssertEqual(error.code, BTCardClientErrorType.cardAlreadyExists.rawValue)
+            if let json = (error.userInfo as NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
+                XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
+            } else {
+                XCTFail("Expected JSON response in userInfo[BTCustomInputBraintreeValidationErrorsKey]")
+            }
+            XCTAssertEqual(error.localizedDescription, "Credit card is invalid")
+            XCTAssertEqual((error as NSError).localizedFailureReason, "Duplicate card exists in the vault.")
+            
+            
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
     func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: nil)
