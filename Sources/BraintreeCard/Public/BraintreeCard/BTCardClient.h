@@ -26,6 +26,9 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 
     /// Customer provided invalid input
     BTCardClientErrorTypeCustomerInputInvalid,
+    
+    /// Card already exists as a saved payment method
+    BTCardClientErrorTypeCardAlreadyExists,
 };
 
 /**

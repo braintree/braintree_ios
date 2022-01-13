@@ -1,8 +1,11 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Add nil checks for 3DS handlers (fixes #769)
-* Remove expiration date duplication in card tokenization (fixes #772)
+* Card Tokenization
+  * Remove expiration date duplication in card tokenization (fixes #772)
+  * Add `BTCardClientErrorTypeCardAlreadyExists` to `BTCardClientErrorType` 
+* 3DS
+  * Add nil checks for 3DS handlers (fixes #769)
 
 ## 5.5.0 (2021-11-01)
 * Add `displayName` to `BTLocalPaymentRequest`
