@@ -30,7 +30,9 @@
                                              code:BTThreeDSecureFlowErrorTypeFailedAuthentication
                                          userInfo:@{NSLocalizedDescriptionKey: @"Tokenized card nonce is required"}];
         [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
-        failureHandler(error);
+        if (failureHandler != nil) {
+            failureHandler(error);
+        }
         return;
     }
 
@@ -41,7 +43,9 @@
          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
             [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
-            failureHandler(error);
+            if (failureHandler != nil) {
+                failureHandler(error);
+            }
             return;
         }
 
@@ -56,7 +60,9 @@
             result.tokenizedCard = lookupResult.tokenizedCard;
         }
 
-        successHandler(result);
+        if (successHandler != nil) {
+            successHandler(result);
+        }
     }];
 }
 
