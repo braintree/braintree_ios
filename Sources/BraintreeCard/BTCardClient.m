@@ -101,7 +101,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                              BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPJSONResponseBodyKey];
                              BTJSON *errorCode = [errorResponse[@"errors"] asArray].firstObject[@"extensions"][@"legacyCode"];
 
-                             callbackError = [self constructCallbackErrorResponseForErrorCode:errorCode error:error];
+                             callbackError = [self constructCallbackErrorForErrorCode:errorCode error:error];
                          }
                      }
 
@@ -133,7 +133,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                              BTJSON *fieldErrors = [errorResponse[@"fieldErrors"] asArray].firstObject;
                              BTJSON *errorCode = [fieldErrors[@"fieldErrors"] asArray].firstObject[@"code"];
 
-                             callbackError = [self constructCallbackErrorResponseForErrorCode:errorCode error:error];
+                             callbackError = [self constructCallbackErrorForErrorCode:errorCode error:error];
                          }
                      }
 
