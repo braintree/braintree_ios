@@ -244,7 +244,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
 }
 
-- (NSError *)constructCallbackErrorForErrorCode:(String *)errorCode error:(NSError *)error {
+- (NSError *)constructCallbackErrorForErrorCode:(BTJSON *)errorCode error:(NSError *)error {
     NSError *callbackError = error;
 
     // Gateway error code for card already exists
