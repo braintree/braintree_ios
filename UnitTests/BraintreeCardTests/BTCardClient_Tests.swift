@@ -268,23 +268,35 @@ class BTCardClient_Tests: XCTestCase {
             ]
         ])
         let stubJSONResponse = BTJSON(value: [
-            "data": [
-                "tokenizeCreditCard": "null"
-            ],
             "errors": [
                 [
-                    "message": "Duplicate card exists in the vault.",
-                    "path": ["tokenizeCreditCard"],
+                    "message": "Duplicate card exists in the vault",
+                    "locations": [
+                        [
+                            "line": 2,
+                            "column": 3
+                        ]
+                    ],
+                    "path": [
+                        "tokenizeCreditCard"
+                    ],
                     "extensions": [
-                        "errorType": "user_error",
                         "errorClass": "VALIDATION",
-                        "legacyCode": "81724",
-                        "inputPath": ["input"]
+                        "errorType": "user_error",
+                        "inputPath": [
+                            "input",
+                            "creditCard",
+                            "number"
+                        ],
+                        "legacyCode": "81724"
                     ]
                 ]
             ],
+            "data": [
+                "tokenizeCreditCard": "null"
+            ],
             "extensions": [
-                "requestId": "abc-123-def-456"
+                "requestId": "3521c97e-a420-47f4-a8ef-a8cefb0fa635"
             ]
         ])
         let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
