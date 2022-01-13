@@ -314,10 +314,7 @@ class BTCardClient_Tests: XCTestCase {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
                 XCTFail("Expected JSON response in userInfo[BTCustomInputBraintreeValidationErrorsKey]")
-            }
-            XCTAssertEqual(error.localizedDescription, "Credit card is invalid")
-            XCTAssertEqual((error as NSError).localizedFailureReason, "Duplicate card exists in the vault.")
-            
+            }            
             
             expectation.fulfill()
         }
