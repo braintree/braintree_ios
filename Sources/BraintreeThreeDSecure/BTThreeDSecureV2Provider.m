@@ -92,7 +92,9 @@
                                          code:errorCode
                                      userInfo:errorUserInfo];
 
-    failureHandler(error);
+    if (failureHandler != nil) {
+        failureHandler(error);
+    }
 }
 
 #pragma mark - Cardinal Delegate
