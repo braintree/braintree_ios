@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.6.1 (2022-01-14)
 * Fix error construction for duplicate card error
 
 ## 5.6.0 (2022-01-13)
