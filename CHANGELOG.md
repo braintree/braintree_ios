@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Fix error construction for duplicate card error
+
 ## 5.6.0 (2022-01-13)
 * Card Tokenization
   * Remove expiration date duplication in card tokenization (fixes #772)
