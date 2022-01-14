@@ -98,10 +98,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
                      if (response.statusCode == 422) {
                          if (error.userInfo) {
-                             BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPJSONResponseBodyKey];
-                             BTJSON *errorCode = [errorResponse[@"errors"] asArray].firstObject[@"extensions"][@"legacyCode"];
-
-                             callbackError = [self constructCallbackErrorForErrorCode:errorCode error:error];
+                             callbackError = [self constructCallbackErrorForErrorUserInfo:error.userInfo error:error];
                          }
                      }
 
@@ -129,11 +126,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
                      if (response.statusCode == 422) {
                          if (error.userInfo) {
-                             BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPJSONResponseBodyKey];
-                             BTJSON *fieldErrors = [errorResponse[@"fieldErrors"] asArray].firstObject;
-                             BTJSON *errorCode = [fieldErrors[@"fieldErrors"] asArray].firstObject[@"code"];
-
-                             callbackError = [self constructCallbackErrorForErrorCode:errorCode error:error];
+                             callbackError = [self constructCallbackErrorForErrorUserInfo:error.userInfo error:error];
                          }
                      }
 
@@ -244,8 +237,18 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
 }
 
-- (NSError *)constructCallbackErrorForErrorCode:(BTJSON *)errorCode error:(NSError *)error {
+- (NSError *)constructCallbackErrorForErrorUserInfo:(NSDictionary *)errorUserInfo error:(NSError *)error {
     NSError *callbackError = error;
+    BTJSON *errorCode = nil;
+    
+    BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPJSONResponseBodyKey];
+    BTJSON *fieldErrors = [errorResponse[@"fieldErrors"] asArray].firstObject;
+    errorCode = [fieldErrors[@"fieldErrors"] asArray].firstObject[@"code"];
+
+    if (errorCode == nil) {
+        BTJSON *errorResponse = [errorUserInfo objectForKey:BTHTTPJSONResponseBodyKey];
+        errorCode = [errorResponse[@"errors"] asArray].firstObject[@"extensions"][@"legacyCode"];
+    }
 
     // Gateway error code for card already exists
     if ([errorCode.asString  isEqual: @"81724"]) {
