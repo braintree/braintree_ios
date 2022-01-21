@@ -44,7 +44,6 @@
                                         <state key="normal" title="ERROR"/>
                                         <connections>
                                             <action selector="didTapError:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eng-kb-nWu"/>
-                                            <action selector="didTapSuccess:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kzl-me-tfH"/>
                                         </connections>
                                     </button>
                                 </subviews>
