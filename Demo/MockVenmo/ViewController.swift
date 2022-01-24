@@ -2,18 +2,23 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBAction func didTapSuccess(_ sender: UIButton) {
-        guard let successURL = AppSwitcher.successURL else { return }
-        UIApplication.shared.open(successURL, options: [:], completionHandler: nil)
+    @IBAction func didTapSuccessWithPaymentContext(_ sender: UIButton) {
+        guard let successURL = AppSwitcher.successURLWithPaymentContext else { return }
+        UIApplication.shared.open(successURL)
+    }
+
+    @IBAction func didTapSuccessWithoutPaymentContext(_ sender: UIButton) {
+        guard let successURL = AppSwitcher.successURLWithoutPaymentContext else { return }
+        UIApplication.shared.open(successURL)
     }
 
     @IBAction func didTapError(_ sender: UIButton) {
         guard let errorURL = AppSwitcher.errorURL else { return }
-        UIApplication.shared.open(errorURL, options: [:], completionHandler: nil)
+        UIApplication.shared.open(errorURL)
     }
 
     @IBAction func didTapCancel(_ sender: UIBarButtonItem) {
         guard let cancelURL = AppSwitcher.cancelURL else { return }
-        UIApplication.shared.open(cancelURL, options: [:], completionHandler: nil)
+        UIApplication.shared.open(cancelURL)
     }
 }
