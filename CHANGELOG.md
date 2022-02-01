@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.6.2 (2022-02-01)
 * Update import statement of header file from `kDataCollector` to `KDataCollector`
 
 ## 5.6.1 (2022-01-14)
