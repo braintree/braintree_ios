@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## unreleased
 * Swift Package Manager
   * Add explicit package dependancies for `BraintreeDataCollector`, `BraintreeThreeDSecure`, and `PayPalDataCollector` (fixes #735)
 
