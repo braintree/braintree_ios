@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Swift Package Manager
+  * Add explicit package dependancies for `BraintreeDataCollector`, `BraintreeThreeDSecure`, and `PayPalDataCollector` (fixes #735)
+
 ## 5.6.2 (2022-02-01)
 * Update import statement of header file from `kDataCollector` to `KDataCollector`
 
