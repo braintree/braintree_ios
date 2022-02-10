@@ -1,42 +1,20 @@
 import XCTest
 
 extension XCTestCase {
-    func waitForElementToAppear(_ element: XCUIElement, timeout: TimeInterval = 10,  file: String = #file, line: UInt = #line) {
+    func waitForElementToAppear(_ element: XCUIElement, timeout: TimeInterval = 15) {
         let existsPredicate = NSPredicate(format: "exists == true")
         
-        expectation(for: existsPredicate,
-                                evaluatedWith: element, handler: nil)
+        expectation(for: existsPredicate, evaluatedWith: element)
         
-        waitForExpectations(timeout: timeout) { (error) -> Void in
-            if (error != nil) {
-                let message = "Failed to find \(element) after \(timeout) seconds."
-                self.record(XCTIssue(type: .assertionFailure,
-                                     compactDescription: message,
-                                     detailedDescription: nil,
-                                     sourceCodeContext: XCTSourceCodeContext(location: XCTSourceCodeLocation(filePath: file, lineNumber: Int(line))),
-                                     associatedError: error,
-                                     attachments: []))
-            }
-        }
+        waitForExpectations(timeout: timeout)
     }
     
-    func waitForElementToBeHittable(_ element: XCUIElement, timeout: TimeInterval = 10,  file: String = #file, line: UInt = #line) {
+    func waitForElementToBeHittable(_ element: XCUIElement, timeout: TimeInterval = 15) {
         let existsPredicate = NSPredicate(format: "exists == true && hittable == true")
         
-        expectation(for: existsPredicate,
-                                evaluatedWith: element, handler: nil)
+        expectation(for: existsPredicate, evaluatedWith: element)
         
-        waitForExpectations(timeout: timeout) { (error) -> Void in
-            if (error != nil) {
-                let message = "Failed to find \(element) after \(timeout) seconds."
-                self.record(XCTIssue(type: .assertionFailure,
-                                     compactDescription: message,
-                                     detailedDescription: nil,
-                                     sourceCodeContext: XCTSourceCodeContext(location: XCTSourceCodeLocation(filePath: file, lineNumber: Int(line))),
-                                     associatedError: error,
-                                     attachments: []))
-            }
-        }
+        waitForExpectations(timeout: timeout)
     }
 }
 

@@ -18,6 +18,23 @@
     * Remove `BTAmericanExpressErrorType` 
     * Make `BTAmericanExpressRewardsBalance` initializer private
 
+## 5.6.3 (2022-02-09)
+* Swift Package Manager
+  * Add explicit package dependancies for `BraintreeDataCollector`, `BraintreeThreeDSecure`, and `PayPalDataCollector` (fixes #735)
+
+## 5.6.2 (2022-02-01)
+* Update import statement of header file from `kDataCollector` to `KDataCollector`
+
+## 5.6.1 (2022-01-14)
+* Fix error construction for duplicate card error
+
+## 5.6.0 (2022-01-13)
+* Card Tokenization
+  * Remove expiration date duplication in card tokenization (fixes #772)
+  * Add `BTCardClientErrorTypeCardAlreadyExists` to `BTCardClientErrorType` 
+* 3DS
+  * Add nil checks for 3DS handlers (fixes #769)
+
 ## 5.5.0 (2021-11-01)
 * Add `displayName` to `BTLocalPaymentRequest`
 * Add `riskCorrelationId` to `BTPayPalRequest`

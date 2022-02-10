@@ -79,7 +79,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeDataCollector",
-            dependencies: ["BraintreeCore"],
+            dependencies: ["BraintreeCore", "KountDataCollector"],
             exclude: ["Kount"],
             publicHeadersPath: "Public"
         ),
@@ -95,7 +95,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeThreeDSecure",
-            dependencies: ["BraintreePaymentFlow", "BraintreeCard"],
+            dependencies: ["BraintreePaymentFlow", "BraintreeCard", "CardinalMobile", "PPRiskMagnes"],
             publicHeadersPath: "Public",
             cSettings: [.headerSearchPath("V2UICustomization")]
         ),
@@ -119,7 +119,7 @@ let package = Package(
         ),
         .target(
             name: "PayPalDataCollector",
-            dependencies: ["BraintreeCore"],
+            dependencies: ["BraintreeCore", "PPRiskMagnes"],
             path: "Sources/PayPalDataCollector"
         ),
         .binaryTarget(
