@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
  Optional: the country name associated with the card's billing address.
 
  @note Braintree only accepts specific country names.
- @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ @see https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
 */
 @property (nonatomic, nullable, copy) NSString *countryName;
 
@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
  Optional: the ISO 3166-1 alpha-2 country code specified in the card's billing address.
 
  @note Braintree only accepts specific alpha-2 values.
- @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ @see https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
 */
 @property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
 
@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
  Optional: The ISO 3166-1 alpha-3 country code specified in the card's billing address.
 
  @note Braintree only accepts specific alpha-3 values.
- @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ @see https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
  */
 @property (nonatomic, nullable, copy) NSString *countryCodeAlpha3;
 
@@ -103,7 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
  Optional: The ISO 3166-1 numeric country code specified in the card's billing address.
 
  @note Braintree only accepts specific numeric values.
- @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ @see https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
  */
 @property (nonatomic, nullable, copy) NSString *countryCodeNumeric;
 
