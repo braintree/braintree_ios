@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
 
                        This CocoaPod will help you accept payments in your iOS app.
 
-                       Check out our development portal at https://developers.braintreepayments.com.
+                       Check out our development portal at https://developer.paypal.com/braintree/docs.
   DESC
   s.homepage         = "https://developer.paypal.com/braintree"
   s.documentation_url = "https://developer.paypal.com/braintree/docs/start/hello-client"
