@@ -4,7 +4,7 @@ See the [CHANGELOG](/CHANGELOG.md) for a complete list of changes. This migratio
 
 v5 introduces support for Swift Package Manager. See the [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for more details.
 
-_Documentation for v5 will be published to https://developers.braintreepayments.com once it is available for general release._
+_Documentation for v5 will be published to https://developer.paypal.com/braintree/docs once it is available for general release._
 
 ## Table of Contents
 

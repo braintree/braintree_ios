@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  The regulation environment for the associated nonce to help determine the need
- for 3D Secure. See https://developers.braintreepayments.com/guides/3d-secure/advanced-options/ios/v4#authentication-insight
+ for 3D Secure. See https://developer.paypal.com/braintree/docs/guides/3d-secure/advanced-options/ios/v5#authentication-insight
  for a list of possible values.
  */
 @property (nonatomic, nullable, copy) NSString *regulationEnvironment;

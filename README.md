@@ -14,12 +14,12 @@ v5 is the latest major version of Braintree iOS. To update from v4, see the [v5 
 
 ## Supported Payment Methods
 
-- [Credit Cards](https://developers.braintreepayments.com/guides/credit-cards/overview)
-- [PayPal](https://developers.braintreepayments.com/guides/paypal/overview)
-- [Pay with Venmo](https://developers.braintreepayments.com/guides/venmo/overview)
-- [Apple Pay](https://developers.braintreepayments.com/guides/apple-pay/overview)
-- [ThreeDSecure](https://developers.braintreepayments.com/guides/3d-secure/overview)
-- [Visa Checkout](https://developers.braintreepayments.com/guides/visa-checkout/overview)
+- [Credit Cards](https://developer.paypal.com/braintree/docs/guides/credit-cards/overview)
+- [PayPal](https://developer.paypal.com/braintree/docs/guides/paypal/overview)
+- [Pay with Venmo](https://developer.paypal.com/braintree/docs/guides/venmo/overview)
+- [Apple Pay](https://developer.paypal.com/braintree/docs/guides/apple-pay/overview)
+- [ThreeDSecure](https://developer.paypal.com/braintree/docs/guides/3d-secure/overview)
+- [Visa Checkout](https://developer.paypal.com/braintree/docs/guides/secure-remote-commerce/overview)
 
 ## Installation
 
@@ -71,7 +71,7 @@ Next, read the [**full documentation**](https://developer.paypal.com/braintree/d
 
 ## Versions
 
-This SDK abides by our Client SDK Deprecation Policy. For more information on the potential statuses of an SDK check our [developer docs](http://developers.braintreepayments.com/guides/client-sdk/deprecation-policy).
+This SDK abides by our Client SDK Deprecation Policy. For more information on the potential statuses of an SDK check our [developer docs](https://developer.paypal.com/braintree/docs/guides/client-sdk/deprecation-policy/ios/v5).
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |

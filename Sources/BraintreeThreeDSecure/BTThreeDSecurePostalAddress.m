@@ -3,7 +3,7 @@
 @implementation BTThreeDSecurePostalAddress
 
 // Property names follow the `Braintree_Address` convention as documented at:
-// https://developers.braintreepayments.com/ios+php/reference/response/address
+// https://developer.paypal.com/braintree/docs/reference/request/address/create
 
 - (id)copyWithZone:(__unused NSZone *)zone {
     BTThreeDSecurePostalAddress *address = [[BTThreeDSecurePostalAddress alloc] init];
