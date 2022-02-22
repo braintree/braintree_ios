@@ -149,8 +149,22 @@
             [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
             return;
         }
-        NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+        NSDate *currentTimestamp = [[NSDate alloc] init];
+        NSDate *invalidCacheTimestamp = [currentTimestamp dateByAddingTimeInterval:-60*5];
         
+        NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+        NSHTTPURLResponse *cachedResponse = (NSHTTPURLResponse*)cachedConfigurationResponse.response;
+        
+        NSString *cachedResponseDateString = cachedResponse.allHeaderFields[@"Date"];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"EEE',' dd' 'MMM' 'yyyy HH':'mm':'ss zzz"];
+        NSDate *cachedResponseDate = [dateFormatter dateFromString:cachedResponseDateString];
+        
+        if (cachedResponseDate < invalidCacheTimestamp) {
+            [[NSURLCache sharedURLCache] removeAllCachedResponses];
+            cachedConfigurationResponse = nil;
+        }
+
         if (cachedConfigurationResponse != nil) {
             [self handleRequestCompletion:cachedConfigurationResponse.data response:cachedConfigurationResponse.response error:nil completionBlock:completionBlock];
         } else {
