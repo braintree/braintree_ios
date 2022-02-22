@@ -110,7 +110,11 @@
 }
 
 - (void)GET:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
-    [self httpRequest:@"GET" path:aPath parameters:parameters completion:completionBlock];
+    if ([aPath containsString:@"configuration"]) {
+        [self httpRequestWithConfiguration:@"GET" path:aPath parameters:parameters completion:completionBlock];
+    } else {
+        [self httpRequest:@"GET" path:aPath parameters:parameters completion:completionBlock];
+    }
 }
 
 - (void)POST:(NSString *)aPath completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
@@ -139,15 +143,50 @@
 
 #pragma mark - Underlying HTTP
 
+- (void)httpRequestWithConfiguration:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    [self createRequest:method path:aPath parameters:parameters completion:^(NSURLRequest *request, NSError *error) {
+        if (error != nil) {
+            [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
+            return;
+        }
+        NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+        
+        if (cachedConfigurationResponse != nil) {
+            [self handleRequestCompletion:cachedConfigurationResponse.data response:cachedConfigurationResponse.response error:nil completionBlock:completionBlock];
+        } else {
+            NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (data != nil && response != nil) {
+                    NSCachedURLResponse *cachedURLResponse = [[NSCachedURLResponse alloc]initWithResponse:response data:data];
+                    [[NSURLCache sharedURLCache] storeCachedResponse:cachedURLResponse forRequest:request];
+                }
+                [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
+            }];
+            [task resume];
+        }
+    }];
+}
+
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
-    
+    [self createRequest:method path:aPath parameters:parameters completion:^(NSURLRequest *request, NSError *error) {
+        if (error != nil) {
+            [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
+            return;
+        }
+        NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
+        }];
+        [task resume];
+    }];
+}
+
+- (void)createRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(NSURLRequest *request, NSError *error))completionBlock {
     BOOL hasHttpPrefix = aPath != nil && [aPath hasPrefix:@"http"];
     if (!hasHttpPrefix && (!self.baseURL || [self.baseURL.absoluteString isEqualToString:@""])) {
         NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
         if (method) errorUserInfo[@"method"] = method;
         if (aPath) errorUserInfo[@"path"] = aPath;
         if (parameters) errorUserInfo[@"parameters"] = parameters;
-        completionBlock(nil, nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
+        completionBlock(nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
         return;
     }
 
@@ -180,7 +219,7 @@
         if (aPath) errorUserInfo[@"path"] = aPath;
         if (parameters) errorUserInfo[@"parameters"] = parameters;
         errorUserInfo[NSLocalizedFailureReasonErrorKey] = @"fullPathURL was nil";
-        completionBlock(nil, nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
+        completionBlock(nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
         return;
     }
     
@@ -208,7 +247,7 @@
         }
 
         if (jsonSerializationError != nil) {
-            completionBlock(nil, nil, jsonSerializationError);
+            completionBlock(nil, jsonSerializationError);
             return;
         }
 
@@ -221,20 +260,8 @@
     [request setAllHTTPHeaderFields:headers];
 
     [request setHTTPMethod:method];
-
-    NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
     
-    if (cachedConfigurationResponse != nil) {
-        [self handleRequestCompletion:cachedConfigurationResponse.data response:cachedConfigurationResponse.response error:nil completionBlock:completionBlock];
-    } else {
-        // Perform the actual request
-        NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            NSCachedURLResponse *cachedURLResponse = [[NSCachedURLResponse alloc]initWithResponse:response data:data];
-            [[NSURLCache sharedURLCache] storeCachedResponse:cachedURLResponse forRequest:request];
-            [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
-        }];
-        [task resume];
-    }
+    completionBlock(request, nil);
 }
 
 - (void)handleRequestCompletion:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
