@@ -222,11 +222,19 @@
 
     [request setHTTPMethod:method];
 
-    // Perform the actual request
-    NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
-    }];
-    [task resume];
+    NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+    
+    if (cachedConfigurationResponse != nil) {
+        [self handleRequestCompletion:cachedConfigurationResponse.data response:cachedConfigurationResponse.response error:nil completionBlock:completionBlock];
+    } else {
+        // Perform the actual request
+        NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            NSCachedURLResponse *cachedURLResponse = [[NSCachedURLResponse alloc]initWithResponse:response data:data];
+            [[NSURLCache sharedURLCache] storeCachedResponse:cachedURLResponse forRequest:request];
+            [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
+        }];
+        [task resume];
+    }
 }
 
 - (void)handleRequestCompletion:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {

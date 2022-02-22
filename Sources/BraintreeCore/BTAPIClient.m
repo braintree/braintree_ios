@@ -487,6 +487,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     if (self.graphQL && self.graphQL.session) {
         [self.graphQL.session finishTasksAndInvalidate];
     }
+    
+    [self.configurationHTTP.session.configuration.URLCache removeAllCachedResponses];
 }
 
 @end
