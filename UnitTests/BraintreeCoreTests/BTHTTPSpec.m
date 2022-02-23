@@ -1,5 +1,6 @@
 #import "BTHTTP.h"
 #import "BTHTTPTestProtocol.h"
+#import "MockNSHTTPURLResponse.h"
 @import BraintreeCore;
 @import Specta;
 @import Expecta;
@@ -393,6 +394,65 @@ NSURLSession *testURLSession(void) {
             done();
         }];
     });
+}
+
+#pragma mark Configuration
+
+- (void)testGETRequests_whenPathContainsConfiguration_cachesConfiguration {
+    waitUntil(^(DoneCallback done){
+        [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            XCTAssertNotNil(body);
+            XCTAssertNotNil(response);
+            XCTAssertNil(error);
+
+            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+            XCTAssertNotNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+            done();
+        }];
+    });
+}
+
+- (void)testGETRequests_whenPathDoesNotContainConfiguration_doesNotStoreInCache {
+    waitUntil(^(DoneCallback done){
+        [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            XCTAssertNotNil(body);
+            XCTAssertNotNil(response);
+            XCTAssertNil(error);
+
+            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+            XCTAssertNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+            done();
+        }];
+    });
+}
+
+- (void)testGETRequests_whenPathContainsConfiguration_whenCacheTimeToLiveExpired_clearsCache {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
+
+        [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            XCTAssertNotNil(body);
+            XCTAssertNotNil(response);
+            XCTAssertNil(error);
+
+            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+            XCTAssertNotNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+            
+            MockNSHTTPURLResponse *mockedResponse = [[MockNSHTTPURLResponse alloc] init];
+            NSDictionary *headerFields = [[NSDictionary alloc] init];
+            [headerFields setValue:@"Wed, 23 Feb 2022 16:17:10 GMT" forKey:@"Date"];
+            [mockedResponse setAllHeaderFields:headerFields];
+            NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:mockedResponse data:[[NSData alloc] init]];
+            [[NSURLCache sharedURLCache] storeCachedResponse:cachedResponse forRequest:httpRequest];
+
+        }];
+    
+        [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+            XCTAssertNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+        }];
+
+    [expectation fulfill];
+    [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
 #pragma mark Authentication
@@ -1039,3 +1099,4 @@ NSURLSession *testURLSession(void) {
 }
 
 @end
+

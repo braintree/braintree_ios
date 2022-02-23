@@ -111,7 +111,7 @@
 
 - (void)GET:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     if ([aPath containsString:@"configuration"]) {
-        [self httpRequestWithConfiguration:@"GET" path:aPath parameters:parameters completion:completionBlock];
+        [self httpRequestForConfiguration:@"GET" path:aPath parameters:parameters completion:completionBlock];
     } else {
         [self httpRequest:@"GET" path:aPath parameters:parameters completion:completionBlock];
     }
@@ -143,13 +143,14 @@
 
 #pragma mark - Underlying HTTP
 
-- (void)httpRequestWithConfiguration:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+- (void)httpRequestForConfiguration:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self createRequest:method path:aPath parameters:parameters completion:^(NSURLRequest *request, NSError *error) {
         if (error != nil) {
             [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
             return;
         }
         NSDate *currentTimestamp = [[NSDate alloc] init];
+        // Invalidate cached configuration after 5 minutes
         NSDate *invalidCacheTimestamp = [currentTimestamp dateByAddingTimeInterval:-60*5];
         
         NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
