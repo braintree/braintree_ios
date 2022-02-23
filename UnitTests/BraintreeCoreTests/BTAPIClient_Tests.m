@@ -66,19 +66,6 @@
     XCTAssertNil([[BTAPIClient alloc] initWithAuthorization:@"invalidclienttoken" sendAnalyticsEvent:NO]);
 }
 
-//- (void)testDeallocation_removesCachedConfigurationResonse {
-//
-//    __weak BTAPIClient *weakReference;
-//    @autoreleasepool {
-//        BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:TestClientTokenFactory.validClientToken sendAnalyticsEvent:NO];
-//        XCTAssertNotNil(apiClient.configurationHTTP.session.configuration.URLCache);
-//        weakReference = apiClient;
-//
-//    }
-//    XCTAssertNil(weakReference.configurationHTTP.session.configuration.URLCache);
-//    XCTAssertNil(weakReference);
-//}
-
 #pragma mark - Environment Base URL
 
 - (void)testBaseURL_isDeterminedByTokenizationKey {

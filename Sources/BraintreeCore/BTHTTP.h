@@ -4,6 +4,7 @@
 @class BTHTTPResponse;
 @class BTJSON;
 @class BTPayPalIDToken;
+@class BTCacheDateValidator;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
  An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
 */
 @property (nonatomic, nullable, strong) NSArray<NSData *> *pinnedCertificates;
+
+/// internal date cache validator for testing
+@property (nonatomic) BTCacheDateValidator *cacheDateValidator;
 
 /**
  Initialize `BTHTTP` with the URL for the Braintree API

@@ -2,6 +2,7 @@
 #import "Braintree-Version.h"
 #import "BTAPIPinnedCertificates.h"
 #import "BTLogger_Internal.h"
+#import "BTCacheDateValidator_Internal.h"
 #include <sys/sysctl.h>
 
 #if __has_include(<Braintree/BraintreeCore.h>)
@@ -36,6 +37,7 @@
     self = [super init];
     if (self) {
         self.baseURL = URL;
+        self.cacheDateValidator = [[BTCacheDateValidator alloc] init];
     }
     
     return self;
@@ -149,19 +151,10 @@
             [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
             return;
         }
-        NSDate *currentTimestamp = [[NSDate alloc] init];
-        // Invalidate cached configuration after 5 minutes
-        NSDate *invalidCacheTimestamp = [currentTimestamp dateByAddingTimeInterval:-60*5];
         
         NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
-        NSHTTPURLResponse *cachedResponse = (NSHTTPURLResponse*)cachedConfigurationResponse.response;
         
-        NSString *cachedResponseDateString = cachedResponse.allHeaderFields[@"Date"];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"EEE',' dd' 'MMM' 'yyyy HH':'mm':'ss zzz"];
-        NSDate *cachedResponseDate = [dateFormatter dateFromString:cachedResponseDateString];
-        
-        if (cachedResponseDate < invalidCacheTimestamp) {
+        if ([self.cacheDateValidator isCacheInvalid:cachedConfigurationResponse]) {
             [[NSURLCache sharedURLCache] removeAllCachedResponses];
             cachedConfigurationResponse = nil;
         }

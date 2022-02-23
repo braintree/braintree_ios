@@ -1,6 +1,7 @@
 #import "BTHTTP.h"
 #import "BTHTTPTestProtocol.h"
 #import "MockNSHTTPURLResponse.h"
+#import "MockBTCacheDateValidator.h"
 @import BraintreeCore;
 @import Specta;
 @import Expecta;
@@ -66,6 +67,7 @@ NSURLSession *testURLSession(void) {
 
 - (void)tearDown {
     [HTTPStubs removeAllStubs];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     [super tearDown];
 }
@@ -428,30 +430,49 @@ NSURLSession *testURLSession(void) {
 
 - (void)testGETRequests_whenPathContainsConfiguration_whenCacheTimeToLiveExpired_clearsCache {
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
+    [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNotNil(body);
+        XCTAssertNotNil(response);
+        XCTAssertNil(error);
+        
+        NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+        XCTAssertNotNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+        
+        MockNSHTTPURLResponse *mockedResponse = [[MockNSHTTPURLResponse alloc] init];
+        NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:mockedResponse data:[[NSData alloc] init]];
+        [[NSURLCache sharedURLCache] storeCachedResponse:cachedResponse forRequest:httpRequest];
+    }];
 
-        [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-            XCTAssertNotNil(body);
-            XCTAssertNotNil(response);
-            XCTAssertNil(error);
+    MockBTCacheDateValidator *mockCacheValidator = [[MockBTCacheDateValidator alloc] init];
+    mockCacheValidator.isCacheInvalid = YES;
+    self->http.cacheDateValidator = mockCacheValidator;
 
-            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
-            XCTAssertNotNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
-            
-            MockNSHTTPURLResponse *mockedResponse = [[MockNSHTTPURLResponse alloc] init];
-            NSDictionary *headerFields = [[NSDictionary alloc] init];
-            [headerFields setValue:@"Wed, 23 Feb 2022 16:17:10 GMT" forKey:@"Date"];
-            [mockedResponse setAllHeaderFields:headerFields];
-            NSCachedURLResponse *cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:mockedResponse data:[[NSData alloc] init]];
-            [[NSURLCache sharedURLCache] storeCachedResponse:cachedResponse forRequest:httpRequest];
-
-        }];
+    [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+        XCTAssertNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+        [expectation fulfill];
+    }];
     
-        [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
-            XCTAssertNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
-        }];
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
 
-    [expectation fulfill];
+- (void)testGETRequests_whenPathContainsConfiguration_whenCacheTimeToLiveIsNotInvalid_clearsCache {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
+    
+    MockBTCacheDateValidator *mockCacheValidator = [[MockBTCacheDateValidator alloc] init];
+    mockCacheValidator.isCacheInvalid = NO;
+    self->http.cacheDateValidator = mockCacheValidator;
+
+    [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNotNil(body);
+        XCTAssertNotNil(response);
+        XCTAssertNil(error);
+        
+        NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+        XCTAssertNotNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+        [expectation fulfill];
+    }];
+    
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
