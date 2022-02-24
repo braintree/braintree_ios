@@ -137,31 +137,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 }
 
-- (instancetype)copyWithSource:(BTClientMetadataSourceType)source
-                   integration:(BTClientMetadataIntegrationType)integration
-{
-    BTAPIClient *copiedClient;
-
-    if (self.clientToken) {
-        copiedClient = [[[self class] alloc] initWithAuthorization:self.clientToken.originalValue sendAnalyticsEvent:NO];
-    } else if (self.tokenizationKey) {
-        copiedClient = [[[self class] alloc] initWithAuthorization:self.tokenizationKey sendAnalyticsEvent:NO];
-    } else if (self.payPalIDToken) {
-        copiedClient = [[[self class] alloc] initWithAuthorization:self.payPalIDToken.token sendAnalyticsEvent:NO];
-    } else {
-        NSAssert(NO, @"Cannot copy an API client that does not specify a client token or tokenization key");
-    }
-
-    if (copiedClient) {
-        BTMutableClientMetadata *mutableMetadata = [self.metadata mutableCopy];
-        mutableMetadata.source = source;
-        mutableMetadata.integration = integration;
-        copiedClient->_metadata = [mutableMetadata copy];
-    }
-
-    return copiedClient;
-}
-
 #pragma mark - Base URL
 
 ///  Gets base URL from tokenization key

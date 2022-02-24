@@ -62,14 +62,6 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization;
 
 /**
- Create a copy of an existing API client, but specify a new source and integration type.
- This provides a way to override an API client's source and integration metadata, which
- is captured and sent to Braintree as part of the analytics we track.
-*/
-- (instancetype)copyWithSource:(BTClientMetadataSourceType)source
-                   integration:(BTClientMetadataIntegrationType)integration;
-
-/**
  Provides configuration data as a `BTJSON` object.
 
  The configuration data can be used by supported payment options to configure themselves

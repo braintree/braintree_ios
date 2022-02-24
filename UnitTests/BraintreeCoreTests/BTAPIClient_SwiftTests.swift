@@ -68,36 +68,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
         XCTAssertEqual(apiClientAuthType, .payPalIDToken)
     }
 
-    // MARK: - Copy
-
-    func testCopyWithSource_whenUsingClientToken_usesSameClientToken() {
-        let clientToken = TestClientTokenFactory.token(withVersion: 2)
-        let apiClient = BTAPIClient(authorization: clientToken)
-
-        let copiedApiClient = apiClient?.copy(with: .unknown, integration: .unknown)
-
-        XCTAssertEqual(copiedApiClient?.clientToken?.originalValue, clientToken)
-    }
-
-    func testCopyWithSource_whenUsingTokenizationKey_usesSameTokenizationKey() {
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        let copiedApiClient = apiClient?.copy(with: .unknown, integration: .unknown)
-        XCTAssertEqual(copiedApiClient?.tokenizationKey, "development_testing_integration_merchant_id")
-    }
-
-    func testCopyWithSource_setsMetadataSourceAndIntegration() {
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        let copiedApiClient = apiClient?.copy(with: .payPalBrowser, integration: .dropIn)
-        XCTAssertEqual(copiedApiClient?.metadata.source, .payPalBrowser)
-        XCTAssertEqual(copiedApiClient?.metadata.integration, .dropIn)
-    }
-
-    func testCopyWithSource_copiesHTTP() {
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        let copiedApiClient = apiClient?.copy(with: .payPalBrowser, integration: .dropIn)
-        XCTAssertTrue(copiedApiClient !== apiClient)
-    }
-
     // MARK: - fetchOrReturnRemoteConfiguration
 
     // TODO: - Investigate why this test often fails on the first run

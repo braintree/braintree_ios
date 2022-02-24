@@ -613,7 +613,6 @@ class BTVenmoDriver_Tests: XCTestCase {
         let venmoDriver = BTVenmoDriver(apiClient: apiClient)
         
         XCTAssertEqual(venmoDriver.apiClient.metadata.integration, BTClientMetadataIntegrationType.custom)
-        XCTAssertEqual(venmoDriver.apiClient.metadata.source, BTClientMetadataSourceType.venmoApp)
     }
 
     // MARK: - BTAppContextSwitchDriver
