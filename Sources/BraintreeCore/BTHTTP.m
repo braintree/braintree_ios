@@ -111,12 +111,16 @@
     [self GET:aPath parameters:nil completion:completionBlock];
 }
 
-- (void)GET:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
-    if ([aPath containsString:@"configuration"]) {
+- (void)GET:(NSString *)aPath parameters:(NSDictionary *)parameters shouldCache:(BOOL)shouldCache completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    if (shouldCache) {
         [self httpRequestForConfiguration:@"GET" path:aPath parameters:parameters completion:completionBlock];
     } else {
         [self httpRequest:@"GET" path:aPath parameters:parameters completion:completionBlock];
     }
+}
+
+- (void)GET:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    [self httpRequest:@"GET" path:aPath parameters:parameters completion:completionBlock];
 }
 
 - (void)POST:(NSString *)aPath completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {

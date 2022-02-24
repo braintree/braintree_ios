@@ -323,7 +323,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         } else if (self.payPalIDToken) {
             configPath = [self.payPalIDToken.configURL absoluteString];
         }
-        [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
             if (error) {
                 fetchError = error;
             } else if (response.statusCode != 200) {

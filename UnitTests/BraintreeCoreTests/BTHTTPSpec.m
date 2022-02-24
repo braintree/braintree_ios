@@ -1,7 +1,5 @@
 #import "BTHTTP.h"
 #import "BTHTTPTestProtocol.h"
-#import "MockNSHTTPURLResponse.h"
-#import "MockBTCacheDateValidator.h"
 @import BraintreeCore;
 @import Specta;
 @import Expecta;
@@ -400,9 +398,9 @@ NSURLSession *testURLSession(void) {
 
 #pragma mark Configuration
 
-- (void)testGETRequests_whenPathContainsConfiguration_cachesConfiguration {
+- (void)testGETRequests_whenShouldCache_cachesConfiguration {
     waitUntil(^(DoneCallback done){
-        [self->http GET:@"/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"/configuration" parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -414,9 +412,9 @@ NSURLSession *testURLSession(void) {
     });
 }
 
-- (void)testGETRequests_whenPathDoesNotContainConfiguration_doesNotStoreInCache {
+- (void)testGETRequests_whenShouldNotCache_doesNotStoreInCache {
     waitUntil(^(DoneCallback done){
-        [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"/configuration" parameters:@{ @"configVersion": @"3" } shouldCache:NO completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);

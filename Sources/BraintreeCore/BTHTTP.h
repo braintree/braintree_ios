@@ -79,6 +79,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)GET:(NSString *)endpoint
  parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
+shouldCache:(BOOL)shouldCache
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
+
+- (void)GET:(NSString *)endpoint
+ parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)POST:(NSString *)endpoint
