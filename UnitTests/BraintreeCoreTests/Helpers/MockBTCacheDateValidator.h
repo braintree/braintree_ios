@@ -6,7 +6,6 @@
 @interface MockBTCacheDateValidator : BTCacheDateValidator
 @property (nonatomic) BOOL isCacheInvalid;
 
-- (instancetype)init;
 -(BOOL) isCacheInvalid:(NSCachedURLResponse *)cachedConfigurationResponse;
 @end
 #endif
