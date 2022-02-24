@@ -4,7 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTCacheDateValidator : NSObject
 
-@property (nonatomic) int timeToLiveMinutes;
+@property (nonatomic, readonly) int timeToLiveMinutes;
 
 -(BOOL) isCacheInvalid:(NSCachedURLResponse *)cachedConfigurationResponse;
 

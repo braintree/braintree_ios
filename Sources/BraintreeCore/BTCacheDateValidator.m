@@ -4,12 +4,15 @@
 
 @implementation BTCacheDateValidator : NSObject
 
-int timeToLiveMinutes = 5;
+- (instancetype)init {
+    _timeToLiveMinutes = 5;
+    return self;
+}
 
 -(BOOL) isCacheInvalid:(NSCachedURLResponse *)cachedConfigurationResponse {
     NSDate *currentTimestamp = [[NSDate alloc] init];
     // Invalidate cached configuration after 5 minutes
-    NSDate *invalidCacheTimestamp = [currentTimestamp dateByAddingTimeInterval:-60*timeToLiveMinutes];
+    NSDate *invalidCacheTimestamp = [currentTimestamp dateByAddingTimeInterval:-60*_timeToLiveMinutes];
     
     NSHTTPURLResponse *cachedResponse = (NSHTTPURLResponse*)cachedConfigurationResponse.response;
     
