@@ -113,7 +113,7 @@
 
 - (void)GET:(NSString *)aPath parameters:(NSDictionary *)parameters shouldCache:(BOOL)shouldCache completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     if (shouldCache) {
-        [self httpRequestForConfiguration:@"GET" path:aPath parameters:parameters completion:completionBlock];
+        [self httpRequestWithCaching:@"GET" path:aPath parameters:parameters completion:completionBlock];
     } else {
         [self httpRequest:@"GET" path:aPath parameters:parameters completion:completionBlock];
     }
@@ -149,22 +149,22 @@
 
 #pragma mark - Underlying HTTP
 
-- (void)httpRequestForConfiguration:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+- (void)httpRequestWithCaching:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self createRequest:method path:aPath parameters:parameters completion:^(NSURLRequest *request, NSError *error) {
         if (error != nil) {
             [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
             return;
         }
         
-        NSCachedURLResponse *cachedConfigurationResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+        NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
         
-        if ([self.cacheDateValidator isCacheInvalid:cachedConfigurationResponse]) {
+        if ([self.cacheDateValidator isCacheInvalid:cachedResponse]) {
             [[NSURLCache sharedURLCache] removeAllCachedResponses];
-            cachedConfigurationResponse = nil;
+            cachedResponse = nil;
         }
 
-        if (cachedConfigurationResponse != nil) {
-            [self handleRequestCompletion:cachedConfigurationResponse.data response:cachedConfigurationResponse.response error:nil completionBlock:completionBlock];
+        if (cachedResponse != nil) {
+            [self handleRequestCompletion:cachedResponse.data response:cachedResponse.response error:nil completionBlock:completionBlock];
         } else {
             NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                 if (data != nil && response != nil) {
