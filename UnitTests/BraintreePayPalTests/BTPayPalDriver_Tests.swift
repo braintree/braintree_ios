@@ -621,7 +621,7 @@ class BTPayPalDriver_Tests: XCTestCase {
 
     // MARK: - Analytics
 
-    func testAPIClientMetadata_hasSourceSetToPayPalBrowser() {
+    func testAPIClientMetadata_hasIntegrationSetToCustom() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let payPalDriver = BTPayPalDriver(apiClient: apiClient)
 
