@@ -69,7 +69,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     }
 
     // MARK: - Copy
-    
+
     func testCopyWithSource_whenUsingClientToken_usesSameClientToken() {
         let clientToken = TestClientTokenFactory.token(withVersion: 2)
         let apiClient = BTAPIClient(authorization: clientToken)
@@ -97,7 +97,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         let copiedApiClient = apiClient?.copy(with: .payPalBrowser, integration: .dropIn)
         XCTAssertTrue(copiedApiClient !== apiClient)
     }
-    
+
     // MARK: - fetchOrReturnRemoteConfiguration
 
     // TODO: - Investigate why this test often fails on the first run
