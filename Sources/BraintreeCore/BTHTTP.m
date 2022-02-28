@@ -152,7 +152,7 @@
 - (void)httpRequestWithCaching:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self createRequest:method path:aPath parameters:parameters completion:^(NSURLRequest *request, NSError *error) {
         if (error != nil) {
-            [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
+            [self handleRequestCompletion:nil request:nil shouldCache:NO response:nil error:error completionBlock:completionBlock];
             return;
         }
         
@@ -164,14 +164,10 @@
         }
 
         if (cachedResponse != nil) {
-            [self handleRequestCompletion:cachedResponse.data response:cachedResponse.response error:nil completionBlock:completionBlock];
+            [self handleRequestCompletion:cachedResponse.data request:nil shouldCache:NO response:cachedResponse.response error:nil completionBlock:completionBlock];
         } else {
             NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                if (data != nil && response != nil) {
-                    NSCachedURLResponse *cachedURLResponse = [[NSCachedURLResponse alloc]initWithResponse:response data:data];
-                    [[NSURLCache sharedURLCache] storeCachedResponse:cachedURLResponse forRequest:request];
-                }
-                [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
+                [self handleRequestCompletion:data request:request shouldCache:YES response:response error:error completionBlock:completionBlock];
             }];
             [task resume];
         }
@@ -181,11 +177,11 @@
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self createRequest:method path:aPath parameters:parameters completion:^(NSURLRequest *request, NSError *error) {
         if (error != nil) {
-            [self handleRequestCompletion:nil response:nil error:error completionBlock:completionBlock];
+            [self handleRequestCompletion:nil request:nil shouldCache:NO response:nil error:error completionBlock:completionBlock];
             return;
         }
         NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
+            [self handleRequestCompletion:data request:request shouldCache:NO response:response error:error completionBlock:completionBlock];
         }];
         [task resume];
     }];
@@ -276,7 +272,7 @@
     completionBlock(request, nil);
 }
 
-- (void)handleRequestCompletion:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+- (void)handleRequestCompletion:(NSData *)data request:(NSURLRequest *)request shouldCache:(BOOL)shouldCache response:(NSURLResponse *)response error:(NSError *)error completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     // Handle errors for which the response is irrelevant
     // e.g. SSL, unavailable network, etc.
     if (error != nil) {
@@ -341,6 +337,12 @@
             [self callCompletionBlock:completionBlock body:nil response:nil error:json.asError];
         }
         return;
+    }
+    
+    // We should only cache the response if we do not have an error
+    if (request != nil && shouldCache) {
+        NSCachedURLResponse *cachedURLResponse = [[NSCachedURLResponse alloc]initWithResponse:response data:data];
+        [[NSURLCache sharedURLCache] storeCachedResponse:cachedURLResponse forRequest:request];
     }
 
     [self callCompletionBlock:completionBlock body:json response:httpResponse error:nil];

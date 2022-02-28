@@ -108,7 +108,9 @@ shouldCache:(BOOL)shouldCache
     completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)handleRequestCompletion:(nullable NSData *)data
+                        request:(nullable NSURLRequest *)request
                        response:(nullable NSURLResponse *)response
+                    shouldCache:(BOOL)shouldCache
                           error:(nullable NSError *)error
                 completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock;
 
