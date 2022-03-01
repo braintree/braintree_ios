@@ -66,7 +66,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/PayPalDataCollector"
   end
 
-  s.subspec "BraintreeSEPADebit" do |s|
+  s.subspec "SEPADebit" do |s|
     s.source_files = "Sources/BraintreeSEPADebit/*.swift"
     s.dependency "Braintree/Core"
   end
