@@ -69,6 +69,8 @@
     [threeDSecureButtonsContainer addSubview:self.callbackCountLabel];
     self.callbackCount = 0;
     [self updateCallbackCount];
+    
+    self.centerYConstant = 100;
 
     [NSLayoutConstraint activateConstraints:@[
         [verifyNewCardButton.topAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.topAnchor],
