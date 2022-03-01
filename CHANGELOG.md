@@ -1,8 +1,5 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
-* Add 3DS v1 and v2 card autofill buttons to Demo App
-
 ## 5.6.3 (2022-02-09)
 * Swift Package Manager
   * Add explicit package dependancies for `BraintreeDataCollector`, `BraintreeThreeDSecure`, and `PayPalDataCollector` (fixes #735)
