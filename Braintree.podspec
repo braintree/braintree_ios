@@ -66,6 +66,11 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/PayPalDataCollector"
   end
 
+  s.subspec "BraintreeSEPADebit" do |s|
+    s.source_files = "Sources/BraintreeSEPADebit/*.swift"
+    s.dependency "Braintree/Core"
+  end
+
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
     s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
