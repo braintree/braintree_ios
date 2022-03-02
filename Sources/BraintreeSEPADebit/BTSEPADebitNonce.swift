@@ -20,15 +20,7 @@ import BraintreeCore
         let nonce = json["nonce"].asString()!
         self.ibanLastFour = json["details"]["ibanLastChars"].asString()
         self.customerID = json["details"]["customerId"].asString()
-        let mandateType = json["details"]["mandateType"].asString()
-        
-        if mandateType == "ONE_OFF" {
-            self.mandateType = .oneOff
-        } else if mandateType == "RECURRENT" {
-            self.mandateType = .recurrent
-        } else {
-            self.mandateType = nil
-        }
+        self.mandateType = BTSEPADebitMandateType.getMandateType(from: json["details"]["mandateType"].asString())
 
         super.init(nonce: nonce, type: "SEPADebit")!
     }
