@@ -1,5 +1,6 @@
 import Foundation
 
+/// Mandate type for the SEPA Debit request.
 @objc public enum BTSEPADebitMandateType: Int {
     case oneOff
     case recurrent

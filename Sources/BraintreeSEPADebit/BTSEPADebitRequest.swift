@@ -4,33 +4,40 @@ import Foundation
 import BraintreeCore
 #endif
 
+/// Parameters for creating a SEPA Debit tokenization request.
 @objcMembers public class BTSEPADebitRequest: NSObject {
 
-    public let accountHolderName: String?
-
+    /// The full IBAN
     public let iban: String
-
-    public let customerID: String?
-
+    
+    /// The `BTSEPADebitMandateType`
     public let mandateType: BTSEPADebitMandateType
-
+    
+    /// The account holder name
+    public let accountHolderName: String?
+    
+    /// The customer ID
+    public let customerID: String?
+    
+    /// A non-default merchant account to use for tokenization.
+    public let merchantAccountID: String?
+    
+    /// The user's billing address
     public let billingAddress: BTPostalAddress?
 
-    public let merchantAccountID: String?
-
     init(
-        accountHolderName: String? = nil,
         iban: String,
-        customerID: String? = nil,
         mandateType: BTSEPADebitMandateType,
-        billingAddress: BTPostalAddress? = nil,
-        merchantAccountID: String? = nil
+        accountHolderName: String? = nil,
+        customerID: String? = nil,
+        merchantAccountID: String? = nil,
+        billingAddress: BTPostalAddress? = nil
     ) {
-        self.accountHolderName = accountHolderName
         self.iban = iban
-        self.customerID = customerID
         self.mandateType = mandateType
-        self.billingAddress = billingAddress
+        self.accountHolderName = accountHolderName
+        self.customerID = customerID
         self.merchantAccountID = merchantAccountID
+        self.billingAddress = billingAddress
     }
 }
