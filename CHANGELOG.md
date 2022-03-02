@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.7.0 (2022-03-02)
 * Fix configuration caching
 
 ## 5.6.3 (2022-02-09)
