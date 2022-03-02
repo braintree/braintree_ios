@@ -339,8 +339,9 @@
         return;
     }
     
-    // We should only cache the response if we do not have an error
-    if (request != nil && shouldCache) {
+    // We should only cache the response if we do not have an error and status code is 2xx
+    BOOL successStatusCode = httpResponse.statusCode >= 200 && httpResponse.statusCode < 300;
+    if (request != nil && shouldCache && successStatusCode) {
         NSCachedURLResponse *cachedURLResponse = [[NSCachedURLResponse alloc]initWithResponse:response data:data];
         [[NSURLCache sharedURLCache] storeCachedResponse:cachedURLResponse forRequest:request];
     }
