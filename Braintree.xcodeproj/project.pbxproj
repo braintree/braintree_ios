@@ -362,7 +362,7 @@
 		BE642DA527D0138000694A5B /* BTSEPADebitNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8727D0094600694A5B /* BTSEPADebitNonce.swift */; };
 		BE642DA627D0138000694A5B /* BTSEPADebitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8527D0047800694A5B /* BTSEPADebitRequest.swift */; };
 		BE642DA927D013A400694A5B /* BTSEPADebitClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8C27D0130300694A5B /* BTSEPADebitClient_Tests.swift */; };
-		BE642DAB27D01BCA00694A5B /* BTPaymentMethodNonceParser_SEPADebit_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642DAA27D01BCA00694A5B /* BTPaymentMethodNonceParser_SEPADebit_Tests.swift */; };
+		BE642DAB27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642DAA27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -1093,8 +1093,7 @@
 		BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitMandateType.swift; sourceTree = "<group>"; };
 		BE642D8C27D0130300694A5B /* BTSEPADebitClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitClient_Tests.swift; sourceTree = "<group>"; };
 		BE642DA027D0132A00694A5B /* BraintreeSEPADebitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeSEPADebitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE642DA127D0132A00694A5B /* BraintreePaymentFlowTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BraintreePaymentFlowTests copy-Info.plist"; path = "/Users/jdesmarais/Desktop/PayPal/braintree_ios/BraintreePaymentFlowTests copy-Info.plist"; sourceTree = "<absolute>"; };
-		BE642DAA27D01BCA00694A5B /* BTPaymentMethodNonceParser_SEPADebit_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_SEPADebit_Tests.swift; sourceTree = "<group>"; };
+		BE642DAA27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitNonce_Tests.swift; sourceTree = "<group>"; };
 		BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitClient.swift; sourceTree = "<group>"; };
 		BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeSEPADebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C25AE12E88A1D4C82A54CB19 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1805,7 +1804,6 @@
 				6A50887E9E10BEB122A9F45D /* Pods */,
 				A75DA3521921394200D997A2 /* Products */,
 				80808913253E212E00C6E159 /* Recovered References */,
-				BE642DA127D0132A00694A5B /* BraintreePaymentFlowTests copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2202,7 +2200,7 @@
 			isa = PBXGroup;
 			children = (
 				BE642D8C27D0130300694A5B /* BTSEPADebitClient_Tests.swift */,
-				BE642DAA27D01BCA00694A5B /* BTPaymentMethodNonceParser_SEPADebit_Tests.swift */,
+				BE642DAA27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift */,
 			);
 			path = BraintreeSEPADebitTests;
 			sourceTree = "<group>";
@@ -3708,7 +3706,7 @@
 			files = (
 				BE642DA327D0138000694A5B /* BTSEPADebitClient.swift in Sources */,
 				BE642DA427D0138000694A5B /* BTSEPADebitMandateType.swift in Sources */,
-				BE642DAB27D01BCA00694A5B /* BTPaymentMethodNonceParser_SEPADebit_Tests.swift in Sources */,
+				BE642DAB27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift in Sources */,
 				BE642DA927D013A400694A5B /* BTSEPADebitClient_Tests.swift in Sources */,
 				BE642DA527D0138000694A5B /* BTSEPADebitNonce.swift in Sources */,
 				BE642DA627D0138000694A5B /* BTSEPADebitRequest.swift in Sources */,

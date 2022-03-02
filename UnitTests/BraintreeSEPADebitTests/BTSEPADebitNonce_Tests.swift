@@ -2,9 +2,9 @@ import XCTest
 import BraintreeCore
 @testable import BraintreeSEPADebit
 
-class BTPaymentMethodNonceParser_SEPADebit_Tests: XCTestCase {
+class BTPSEPADebitNonce_Tests: XCTestCase {
 
-    func testCardNonceWithJSON_createsCardWithExpectedValues() {
+    func testSEPADebitNonceWithJSON_createsSEPADebitNonceWithExpectedValues() {
         let sepaDebitNonce = BTSEPADebitNonce(
             json: BTJSON(
                 value: [
