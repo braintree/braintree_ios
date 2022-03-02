@@ -10,19 +10,19 @@ import BraintreeCore
     /// The full IBAN
     public let iban: String
     
-    /// The `BTSEPADebitMandateType`
+    /// The `BTSEPADebitMandateType`.
     public let mandateType: BTSEPADebitMandateType
     
-    /// The account holder name
+    /// The account holder name.
     public let accountHolderName: String?
     
-    /// The customer ID
+    /// The customer ID.
     public let customerID: String?
     
     /// A non-default merchant account to use for tokenization.
     public let merchantAccountID: String?
     
-    /// The user's billing address
+    /// The user's billing address.
     public let billingAddress: BTPostalAddress?
 
     init(
