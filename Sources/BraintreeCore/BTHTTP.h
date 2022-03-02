@@ -4,6 +4,7 @@
 @class BTHTTPResponse;
 @class BTJSON;
 @class BTPayPalIDToken;
+@class BTCacheDateValidator;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
  An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
 */
 @property (nonatomic, nullable, strong) NSArray<NSData *> *pinnedCertificates;
+
+/// internal date cache validator for testing
+@property (nonatomic) BTCacheDateValidator *cacheDateValidator;
 
 /**
  Initialize `BTHTTP` with the URL for the Braintree API
@@ -75,6 +79,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)GET:(NSString *)endpoint
  parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
+shouldCache:(BOOL)shouldCache
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
+
+- (void)GET:(NSString *)endpoint
+ parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)POST:(NSString *)endpoint
@@ -99,6 +108,8 @@ NS_ASSUME_NONNULL_BEGIN
     completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)handleRequestCompletion:(nullable NSData *)data
+                        request:(nullable NSURLRequest *)request
+                    shouldCache:(BOOL)shouldCache
                        response:(nullable NSURLResponse *)response
                           error:(nullable NSError *)error
                 completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock;

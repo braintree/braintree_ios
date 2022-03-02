@@ -156,6 +156,7 @@
 		8DAC8AD7FDF6F9C7FEE865F9 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACE57A9170944F73E8C5E9D /* Pods_Tests_BraintreeCoreTests.framework */; };
 		9C36BD4326B30AA600F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
+		9C5309D027C7EABF004DE326 /* BTCacheDateValidator_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5309CF27C7EABF004DE326 /* BTCacheDateValidator_Tests.m */; };
 		A07FA48D21B5C54E0026FF0E /* BTPayPalLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A07FA48E21B5C54E0026FF0E /* BTPayPalLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */; };
 		A5F444AE1E89906700B2B4F7 /* BTPayPalCreditFinancing.h in Headers */ = {isa = PBXBuildFile; fileRef = A5F444AD1E89903E00B2B4F7 /* BTPayPalCreditFinancing.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -351,6 +352,8 @@
 		BC20A8FB2385F8640077AF56 /* BTPreferredPaymentMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = BC20A8F92385F8640077AF56 /* BTPreferredPaymentMethods.m */; };
 		BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
+		BE9F444427C6C75E00A117D5 /* BTCacheDateValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */; };
+		BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -866,6 +869,7 @@
 		9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PPRiskMagnes.framework; path = Frameworks/FatFrameworks/PPRiskMagnes.framework; sourceTree = "<group>"; };
 		9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/FatFrameworks/CardinalMobile.framework; sourceTree = "<group>"; };
+		9C5309CF27C7EABF004DE326 /* BTCacheDateValidator_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator_Tests.m; sourceTree = "<group>"; };
 		A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2Provider.h; sourceTree = "<group>"; };
 		A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV2Provider.m; sourceTree = "<group>"; };
 		A044377322AFFBD10084E2C1 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/CardinalMobile.framework; sourceTree = "<group>"; };
@@ -1054,6 +1058,8 @@
 		BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPreferredPaymentMethodsResult.h; sourceTree = "<group>"; };
 		BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPreferredPaymentMethodsResult.m; sourceTree = "<group>"; };
 		BC6F67D02386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPreferredPaymentMethods_Tests.swift; sourceTree = "<group>"; };
+		BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator.m; sourceTree = "<group>"; };
+		BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCacheDateValidator_Internal.h; sourceTree = "<group>"; };
 		C25AE12E88A1D4C82A54CB19 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8CC981A1FD4AD9A818F86F5 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
@@ -1360,6 +1366,8 @@
 				A7A6DD4B1B445A29008857E1 /* BTAPIPinnedCertificates.m */,
 				A7B1C1521B66F79900ED063C /* BTAppContextSwitcher.m */,
 				030DBF3E1F3A567300E959F0 /* BTBinData.m */,
+				BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */,
+				BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */,
 				A72E13501B446DED002703DD /* BTClientMetadata.m */,
 				A7D674721B84FDB400ED6C00 /* BTClientToken.m */,
 				A7B1C1421B66B3D000ED063C /* BTConfiguration.m */,
@@ -2129,6 +2137,7 @@
 				A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
+				9C5309CF27C7EABF004DE326 /* BTCacheDateValidator_Tests.m */,
 			);
 			path = BraintreeCoreTests;
 			sourceTree = "<group>";
@@ -2214,6 +2223,7 @@
 				A977CE4F24F82429009D1A66 /* BTAPIClient_Internal.h in Headers */,
 				42E56B2523A827BC007F3B48 /* BTConfiguration+GraphQL.h in Headers */,
 				A977CE4E24F82206009D1A66 /* BTPreferredPaymentMethods_Internal.h in Headers */,
+				BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */,
 				A7C889F91B5F0B6A007A0E9C /* Braintree-Version.h in Headers */,
 				A935F10D24F703370070F023 /* BTAnalyticsService.h in Headers */,
 				2DE12F4C1B59C36900EA1BCF /* BTHTTP.h in Headers */,
@@ -3262,6 +3272,7 @@
 				41211EF81BA0E45300DB1705 /* BTPaymentMethodNonce.m in Sources */,
 				2DE12F531B59C36900EA1BCF /* BTKeychain.m in Sources */,
 				A74BF1C61C57F25F0049E149 /* BTAnalyticsService.m in Sources */,
+				BE9F444427C6C75E00A117D5 /* BTCacheDateValidator.m in Sources */,
 				03B9D0D62347EB770005F8D4 /* BTPayPalIDToken.m in Sources */,
 				2DE12F4D1B59C36900EA1BCF /* BTHTTP.m in Sources */,
 				2DE12F511B59C36900EA1BCF /* BTJSON.m in Sources */,
@@ -3531,6 +3542,7 @@
 			files = (
 				A95229C524FD8F15006F7D25 /* BTVersion_Tests.swift in Sources */,
 				A908437224FD8BD0004134CA /* BTPreferredPaymentMethods_Tests.swift in Sources */,
+				9C5309D027C7EABF004DE326 /* BTCacheDateValidator_Tests.m in Sources */,
 				A908437124FD8BB0004134CA /* BTPostalAddress_Tests.swift in Sources */,
 				A908436E24FD8AD6004134CA /* BTPayPalIDToken_SwiftTests.swift in Sources */,
 				A908437024FD8B22004134CA /* BTPayPalIDToken_Tests.m in Sources */,
