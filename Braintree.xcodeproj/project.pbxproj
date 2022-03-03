@@ -356,7 +356,7 @@
 		BE642D8827D0094600694A5B /* BTSEPADebitNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8727D0094600694A5B /* BTSEPADebitNonce.swift */; };
 		BE642D8A27D00F1300694A5B /* BTSEPADebitMandateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */; };
 		BE642D9A27D0132A00694A5B /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
-		BE642DA227D0137000694A5B /* BraintreeSEPADebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */; };
+		BE642DA227D0137000694A5B /* BraintreeSEPADebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */; platformFilter = ios; };
 		BE642DA327D0138000694A5B /* BTSEPADebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */; };
 		BE642DA427D0138000694A5B /* BTSEPADebitMandateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */; };
 		BE642DA527D0138000694A5B /* BTSEPADebitNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8727D0094600694A5B /* BTSEPADebitNonce.swift */; };
@@ -3972,6 +3972,7 @@
 		};
 		BE642DA827D0139000694A5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = BEF3F17227CE9EC600072467 /* BraintreeSEPADebit */;
 			targetProxy = BE642DA727D0139000694A5B /* PBXContainerItemProxy */;
 		};
