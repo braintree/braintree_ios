@@ -19,7 +19,7 @@ import BraintreeCore
         self.apiClient = apiClient
     }
     
-    /// Initiates a browser switch to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
+    /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
     /// - Parameters:
     ///   - request: a BTSEPADebitRequest
     ///   - context: the ASWebAuthenticationPresentationContextProviding protocol conforming ViewController
@@ -33,7 +33,7 @@ import BraintreeCore
         // call internal function to start ASWebAuthenticationSession
     }
     
-    /// Initiates a browser switch to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
+    /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
     /// - Parameters:
     ///   - request: a BTSEPADebitRequest
     /// - Note: This function should only be used for iOS 12 support.
