@@ -357,10 +357,6 @@
 		BE642D8A27D00F1300694A5B /* BTSEPADebitMandateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */; };
 		BE642D9A27D0132A00694A5B /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
 		BE642DA227D0137000694A5B /* BraintreeSEPADebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */; platformFilter = ios; };
-		BE642DA327D0138000694A5B /* BTSEPADebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */; };
-		BE642DA427D0138000694A5B /* BTSEPADebitMandateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */; };
-		BE642DA527D0138000694A5B /* BTSEPADebitNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8727D0094600694A5B /* BTSEPADebitNonce.swift */; };
-		BE642DA627D0138000694A5B /* BTSEPADebitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8527D0047800694A5B /* BTSEPADebitRequest.swift */; };
 		BE642DA927D013A400694A5B /* BTSEPADebitClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8C27D0130300694A5B /* BTSEPADebitClient_Tests.swift */; };
 		BE642DAB27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642DAA27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */; };
@@ -3704,12 +3700,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE642DA327D0138000694A5B /* BTSEPADebitClient.swift in Sources */,
-				BE642DA427D0138000694A5B /* BTSEPADebitMandateType.swift in Sources */,
 				BE642DAB27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift in Sources */,
 				BE642DA927D013A400694A5B /* BTSEPADebitClient_Tests.swift in Sources */,
-				BE642DA527D0138000694A5B /* BTSEPADebitNonce.swift in Sources */,
-				BE642DA627D0138000694A5B /* BTSEPADebitRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6657,7 +6649,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreePaymentFlowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/BraintreePaymentFlowTests/BraintreePaymentFlowTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6702,7 +6693,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreePaymentFlowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/BraintreePaymentFlowTests/BraintreePaymentFlowTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -6712,6 +6702,7 @@
 		BEF3F17A27CE9EC600072467 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -6782,6 +6773,7 @@
 		BEF3F17B27CE9EC600072467 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
