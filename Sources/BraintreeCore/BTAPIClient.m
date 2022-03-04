@@ -113,6 +113,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 }
 
+// NEXT_MAJOR_VERSION: remove this unused method
 - (instancetype)copyWithSource:(BTClientMetadataSourceType)source
                    integration:(BTClientMetadataIntegrationType)integration
 {
@@ -295,7 +296,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         if (self.clientToken) {
             configPath = [self.clientToken.configURL absoluteString];
         }
-        [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
             if (error) {
                 fetchError = error;
             } else if (response.statusCode != 200) {
@@ -455,6 +456,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     if (self.graphQL && self.graphQL.session) {
         [self.graphQL.session finishTasksAndInvalidate];
     }
+    
+    [self.configurationHTTP.session.configuration.URLCache removeAllCachedResponses];
 }
 
 @end

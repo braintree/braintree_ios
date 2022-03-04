@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
 
 /**
  An internal initializer to toggle whether to send an analytics event during initialization.
- This prevents copyWithSource:integration: from sending a duplicate event. It can also be used to suppress excessive network chatter during testing.
+ It can also be used to suppress excessive network chatter during testing.
 */
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
 

@@ -607,13 +607,12 @@ class BTVenmoDriver_Tests: XCTestCase {
 
     // MARK: - Analytics
     
-    func testAPIClientMetadata_hasSourceSetToVenmoApp() {
+    func testAPIClientMetadata_hasIntegrationSetToCustom() {
         // API client by default uses source = .Unknown and integration = .Custom
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let venmoDriver = BTVenmoDriver(apiClient: apiClient)
         
         XCTAssertEqual(venmoDriver.apiClient.metadata.integration, BTClientMetadataIntegrationType.custom)
-        XCTAssertEqual(venmoDriver.apiClient.metadata.source, BTClientMetadataSourceType.venmoApp)
     }
 
     // MARK: - BTAppContextSwitchDriver
