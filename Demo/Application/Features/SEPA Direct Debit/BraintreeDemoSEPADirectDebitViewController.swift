@@ -12,10 +12,10 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
 
         super.init(authorization: authorization)
         
-        title = "SEPA Debit"
+        title = "SEPA Direct Debit"
         view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
-        sepaDirectDebitButton.setTitle("SEPA Debit", for: .normal)
+        sepaDirectDebitButton.setTitle("SEPA Direct Debit", for: .normal)
         sepaDirectDebitButton.translatesAutoresizingMaskIntoConstraints = false
         sepaDirectDebitButton.addTarget(self, action: #selector(sepaDirectDebitButtonTapped), for: .touchUpInside)
         view.addSubview(sepaDirectDebitButton)
@@ -67,11 +67,16 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     }
     
     private func generateRandomCustomerID() -> String {
-        return ""
+        UUID().uuidString.replacingOccurrences(of: "-", with: "")
     }
     
     private func generateRandomIBAN() -> String {
-        return ""
+        let length = 24
+        let characters = "0123456789"
+        let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
+        let randomString = String(randomCharacters)
+
+        return "FR" + randomString
     }
 }
 
