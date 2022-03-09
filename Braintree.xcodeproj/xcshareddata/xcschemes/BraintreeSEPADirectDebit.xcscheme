@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BEF3F17227CE9EC600072467"
-               BuildableName = "BraintreeSEPADebit.framework"
-               BlueprintName = "BraintreeSEPADebit"
+               BuildableName = "BraintreeSEPADirectDebit.framework"
+               BlueprintName = "BraintreeSEPADirectDebit"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BEF3F17227CE9EC600072467"
-            BuildableName = "BraintreeSEPADebit.framework"
-            BlueprintName = "BraintreeSEPADebit"
+            BuildableName = "BraintreeSEPADirectDebit.framework"
+            BlueprintName = "BraintreeSEPADirectDebit"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

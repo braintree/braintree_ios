@@ -90,7 +90,7 @@ jobs:
       - name: Run carthage build without --use-xcframeworks
         run: |
           ./carthage.sh build --no-skip-current
-          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
+          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADirectDebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
   spm_xcode_13:
     name: SPM (Xcode 13)
     runs-on: macOS-11

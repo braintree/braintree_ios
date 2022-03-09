@@ -38,8 +38,8 @@
 		A74D4AFA1BFBB3FB00BF36CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AF81BFBB3FB00BF36CD /* Main.storyboard */; };
 		A74D4AFC1BFBB3FB00BF36CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */; };
 		A74D4AFF1BFBB3FB00BF36CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFD1BFBB3FB00BF36CD /* LaunchScreen.storyboard */; };
-		BE642D7D27CEC4F200694A5B /* BraintreeSEPADebit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE642D7C27CEC4F200694A5B /* BraintreeSEPADebit.xcframework */; };
-		BE642D7E27CEC4F200694A5B /* BraintreeSEPADebit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE642D7C27CEC4F200694A5B /* BraintreeSEPADebit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BE777ABD27D9122D00487D23 /* BraintreeSEPADirectDebit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE777AA127D90DA900487D23 /* BraintreeSEPADirectDebit.xcframework */; };
+		BE777ABE27D9122D00487D23 /* BraintreeSEPADirectDebit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE777AA127D90DA900487D23 /* BraintreeSEPADirectDebit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,8 +49,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BE642D7E27CEC4F200694A5B /* BraintreeSEPADebit.xcframework in Embed Frameworks */,
 				429925B4266189020085F77D /* BraintreePaymentFlow.xcframework in Embed Frameworks */,
+				BE777ABE27D9122D00487D23 /* BraintreeSEPADirectDebit.xcframework in Embed Frameworks */,
 				429925B6266189020085F77D /* BraintreeCore.xcframework in Embed Frameworks */,
 				429925B2266189020085F77D /* PPRiskMagnes.xcframework in Embed Frameworks */,
 				429925B8266189020085F77D /* BraintreeUnionPay.xcframework in Embed Frameworks */,
@@ -90,7 +90,7 @@
 		A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A74D4AFE1BFBB3FB00BF36CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A74D4B001BFBB3FB00BF36CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BE642D7C27CEC4F200694A5B /* BraintreeSEPADebit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeSEPADebit.xcframework; path = ../../Carthage/Build/BraintreeSEPADebit.xcframework; sourceTree = "<group>"; };
+		BE777AA127D90DA900487D23 /* BraintreeSEPADirectDebit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeSEPADirectDebit.xcframework; path = ../../Carthage/Build/BraintreeSEPADirectDebit.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +98,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE642D7D27CEC4F200694A5B /* BraintreeSEPADebit.xcframework in Frameworks */,
 				429925B3266189020085F77D /* BraintreePaymentFlow.xcframework in Frameworks */,
+				BE777ABD27D9122D00487D23 /* BraintreeSEPADirectDebit.xcframework in Frameworks */,
 				429925B5266189020085F77D /* BraintreeCore.xcframework in Frameworks */,
 				429925B1266189020085F77D /* PPRiskMagnes.xcframework in Frameworks */,
 				429925B7266189020085F77D /* BraintreeUnionPay.xcframework in Frameworks */,
@@ -121,7 +121,7 @@
 		03BFA5C81FB2F0BB0003ABCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BE642D7C27CEC4F200694A5B /* BraintreeSEPADebit.xcframework */,
+				BE777AA127D90DA900487D23 /* BraintreeSEPADirectDebit.xcframework */,
 				4299259D266189010085F77D /* BraintreeAmericanExpress.xcframework */,
 				4299259F266189010085F77D /* BraintreeApplePay.xcframework */,
 				429925A5266189010085F77D /* BraintreeCard.xcframework */,

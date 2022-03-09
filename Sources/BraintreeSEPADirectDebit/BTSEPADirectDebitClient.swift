@@ -3,6 +3,6 @@ import Foundation
 import BraintreeCore
 #endif
 
-@objc public class BTSEPADebitClient: NSObject {
+@objc public class BTSEPADirectDebitClient: NSObject {
     
 }
