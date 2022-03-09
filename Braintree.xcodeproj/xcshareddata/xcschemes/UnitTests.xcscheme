@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BE642D8E27D0132A00694A5B"
                BuildableName = "BraintreeSEPADebitTests.xctest"
-               BlueprintName = "BraintreeSEPADebitTests"
+               BlueprintName = "BraintreeSEPADirectDebitTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -155,7 +155,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BE642D8E27D0132A00694A5B"
                BuildableName = "BraintreeSEPADebitTests.xctest"
-               BlueprintName = "BraintreeSEPADebitTests"
+               BlueprintName = "BraintreeSEPADirectDebitTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>

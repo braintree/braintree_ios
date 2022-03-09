@@ -1,7 +1,7 @@
 import Foundation
 
 /// Mandate type for the SEPA Debit request.
-@objc public enum BTSEPADebitMandateType: Int, CustomStringConvertible {
+@objc public enum BTSEPADirectDebitMandateType: Int, CustomStringConvertible {
 
     case oneOff
     case recurrent
@@ -16,12 +16,12 @@ import Foundation
         }
     }
 
-    static func getMandateType(from stringValue: String?) -> BTSEPADebitMandateType? {
+    static func getMandateType(from stringValue: String?) -> BTSEPADirectDebitMandateType? {
         switch stringValue {
-        case BTSEPADebitMandateType.oneOff.description:
+        case BTSEPADirectDebitMandateType.oneOff.description:
             return .oneOff
 
-        case BTSEPADebitMandateType.recurrent.description:
+        case BTSEPADirectDebitMandateType.recurrent.description:
             return .recurrent
 
         default:

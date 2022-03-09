@@ -352,14 +352,14 @@
 		BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
 		BE642D7727CEB8C600694A5B /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
-		BE642D8627D0047800694A5B /* BTSEPADebitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8527D0047800694A5B /* BTSEPADebitRequest.swift */; };
-		BE642D8827D0094600694A5B /* BTSEPADebitNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8727D0094600694A5B /* BTSEPADebitNonce.swift */; };
-		BE642D8A27D00F1300694A5B /* BTSEPADebitMandateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */; };
+		BE642D8627D0047800694A5B /* BTSEPADirectDebitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */; };
+		BE642D8827D0094600694A5B /* BTSEPADirectDebitNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8727D0094600694A5B /* BTSEPADirectDebitNonce.swift */; };
+		BE642D8A27D00F1300694A5B /* BTSEPADirectDebitMandateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8927D00F1300694A5B /* BTSEPADirectDebitMandateType.swift */; };
 		BE642D9A27D0132A00694A5B /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
-		BE642DA227D0137000694A5B /* BraintreeSEPADebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */; platformFilter = ios; };
-		BE642DA927D013A400694A5B /* BTSEPADebitClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8C27D0130300694A5B /* BTSEPADebitClient_Tests.swift */; };
-		BE642DAB27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642DAA27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift */; };
-		BEF3F17E27CE9EDF00072467 /* BTSEPADebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */; };
+		BE642DA227D0137000694A5B /* BraintreeSEPADirectDebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */; platformFilter = ios; };
+		BE642DA927D013A400694A5B /* BTSEPADirectDebitClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8C27D0130300694A5B /* BTSEPADirectDebitClient_Tests.swift */; };
+		BE642DAB27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */; };
+		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -1084,14 +1084,14 @@
 		BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPreferredPaymentMethodsResult.h; sourceTree = "<group>"; };
 		BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPreferredPaymentMethodsResult.m; sourceTree = "<group>"; };
 		BC6F67D02386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPreferredPaymentMethods_Tests.swift; sourceTree = "<group>"; };
-		BE642D8527D0047800694A5B /* BTSEPADebitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitRequest.swift; sourceTree = "<group>"; };
-		BE642D8727D0094600694A5B /* BTSEPADebitNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitNonce.swift; sourceTree = "<group>"; };
-		BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitMandateType.swift; sourceTree = "<group>"; };
-		BE642D8C27D0130300694A5B /* BTSEPADebitClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitClient_Tests.swift; sourceTree = "<group>"; };
-		BE642DA027D0132A00694A5B /* BraintreeSEPADebitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeSEPADebitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE642DAA27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitNonce_Tests.swift; sourceTree = "<group>"; };
-		BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADebitClient.swift; sourceTree = "<group>"; };
-		BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeSEPADebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitRequest.swift; sourceTree = "<group>"; };
+		BE642D8727D0094600694A5B /* BTSEPADirectDebitNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitNonce.swift; sourceTree = "<group>"; };
+		BE642D8927D00F1300694A5B /* BTSEPADirectDebitMandateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitMandateType.swift; sourceTree = "<group>"; };
+		BE642D8C27D0130300694A5B /* BTSEPADirectDebitClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient_Tests.swift; sourceTree = "<group>"; };
+		BE642DA027D0132A00694A5B /* BraintreeSEPADirectDebitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeSEPADirectDebitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitNonce_Tests.swift; sourceTree = "<group>"; };
+		BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient.swift; sourceTree = "<group>"; };
+		BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C25AE12E88A1D4C82A54CB19 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8CC981A1FD4AD9A818F86F5 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
@@ -1315,7 +1315,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE642DA227D0137000694A5B /* BraintreeSEPADebit.framework in Frameworks */,
+				BE642DA227D0137000694A5B /* BraintreeSEPADirectDebit.framework in Frameworks */,
 				BE642D9A27D0132A00694A5B /* BraintreeTestShared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1712,7 +1712,7 @@
 				A76D7C011BB1CAB00000FA6A /* BraintreeDataCollector */,
 				038C7FBB1EA1648900241ABE /* BraintreePaymentFlow */,
 				2D941D391B59C76A0016EFB4 /* BraintreePayPal */,
-				BEF3F17027CE9E2600072467 /* BraintreeSEPADebit */,
+				BEF3F17027CE9E2600072467 /* BraintreeSEPADirectDebit */,
 				A91E1EAC24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				4164B9891C9B6553006AE861 /* BraintreeUnionPay */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
@@ -1731,7 +1731,7 @@
 				A9E5C19F24FD5A7C00EE691F /* BraintreeDataCollectorTests */,
 				A91E1E8B24FEDD7F007540E5 /* BraintreePaymentFlowTests */,
 				A9E5C1E124FD665D00EE691F /* BraintreePayPalTests */,
-				BE642D8B27D0129D00694A5B /* BraintreeSEPADebitTests */,
+				BE642D8B27D0129D00694A5B /* BraintreeSEPADirectDebitTests */,
 				A903E1A724F9D34000C314E1 /* BraintreeTestShared */,
 				A91E1EF324FEF2E4007540E5 /* BraintreeThreeDSecureTests */,
 				A9E5C1B324FD5DD500EE691F /* BraintreeUnionPayTests */,
@@ -1830,8 +1830,8 @@
 				A91E1EAB24FEEF21007540E5 /* BraintreeThreeDSecure.framework */,
 				A91E1EF224FEF2E3007540E5 /* BraintreeThreeDSecureTests.xctest */,
 				A9B241FC2507D156000FAA3F /* PayPalDataCollectorTests.xctest */,
-				BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */,
-				BE642DA027D0132A00694A5B /* BraintreeSEPADebitTests.xctest */,
+				BE642DA027D0132A00694A5B /* BraintreeSEPADirectDebitTests.xctest */,
+				BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2192,24 +2192,24 @@
 			path = BraintreeCoreTests;
 			sourceTree = "<group>";
 		};
-		BE642D8B27D0129D00694A5B /* BraintreeSEPADebitTests */ = {
+		BE642D8B27D0129D00694A5B /* BraintreeSEPADirectDebitTests */ = {
 			isa = PBXGroup;
 			children = (
-				BE642D8C27D0130300694A5B /* BTSEPADebitClient_Tests.swift */,
-				BE642DAA27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift */,
+				BE642D8C27D0130300694A5B /* BTSEPADirectDebitClient_Tests.swift */,
+				BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */,
 			);
-			path = BraintreeSEPADebitTests;
+			path = BraintreeSEPADirectDebitTests;
 			sourceTree = "<group>";
 		};
-		BEF3F17027CE9E2600072467 /* BraintreeSEPADebit */ = {
+		BEF3F17027CE9E2600072467 /* BraintreeSEPADirectDebit */ = {
 			isa = PBXGroup;
 			children = (
-				BEF3F17127CE9E6C00072467 /* BTSEPADebitClient.swift */,
-				BE642D8927D00F1300694A5B /* BTSEPADebitMandateType.swift */,
-				BE642D8727D0094600694A5B /* BTSEPADebitNonce.swift */,
-				BE642D8527D0047800694A5B /* BTSEPADebitRequest.swift */,
+				BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */,
+				BE642D8927D00F1300694A5B /* BTSEPADirectDebitMandateType.swift */,
+				BE642D8727D0094600694A5B /* BTSEPADirectDebitNonce.swift */,
+				BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */,
 			);
-			path = BraintreeSEPADebit;
+			path = BraintreeSEPADirectDebit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2905,9 +2905,9 @@
 			productReference = A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BE642D8E27D0132A00694A5B /* BraintreeSEPADebitTests */ = {
+		BE642D8E27D0132A00694A5B /* BraintreeSEPADirectDebitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BE642D9D27D0132A00694A5B /* Build configuration list for PBXNativeTarget "BraintreeSEPADebitTests" */;
+			buildConfigurationList = BE642D9D27D0132A00694A5B /* Build configuration list for PBXNativeTarget "BraintreeSEPADirectDebitTests" */;
 			buildPhases = (
 				BE642D9327D0132A00694A5B /* Sources */,
 				BE642D9927D0132A00694A5B /* Frameworks */,
@@ -2919,14 +2919,14 @@
 				BE642DA827D0139000694A5B /* PBXTargetDependency */,
 				BE642D8F27D0132A00694A5B /* PBXTargetDependency */,
 			);
-			name = BraintreeSEPADebitTests;
+			name = BraintreeSEPADirectDebitTests;
 			productName = BraintreePaymentFlowTests;
-			productReference = BE642DA027D0132A00694A5B /* BraintreeSEPADebitTests.xctest */;
+			productReference = BE642DA027D0132A00694A5B /* BraintreeSEPADirectDebitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BEF3F17227CE9EC600072467 /* BraintreeSEPADebit */ = {
+		BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BEF3F17927CE9EC600072467 /* Build configuration list for PBXNativeTarget "BraintreeSEPADebit" */;
+			buildConfigurationList = BEF3F17927CE9EC600072467 /* Build configuration list for PBXNativeTarget "BraintreeSEPADirectDebit" */;
 			buildPhases = (
 				BEF3F17327CE9EC600072467 /* Sources */,
 				BEF3F17527CE9EC600072467 /* Frameworks */,
@@ -2938,9 +2938,9 @@
 			dependencies = (
 				BE642D7A27CEB8C600694A5B /* PBXTargetDependency */,
 			);
-			name = BraintreeSEPADebit;
+			name = BraintreeSEPADirectDebit;
 			productName = PayPalRisk;
-			productReference = BEF3F17C27CE9EC600072467 /* BraintreeSEPADebit.framework */;
+			productReference = BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -3057,8 +3057,8 @@
 				A91E1E8924FEDD7F007540E5 /* BraintreePaymentFlowTests */,
 				2D941D371B59C76A0016EFB4 /* BraintreePayPal */,
 				A9E5C1DF24FD665D00EE691F /* BraintreePayPalTests */,
-				BEF3F17227CE9EC600072467 /* BraintreeSEPADebit */,
-				BE642D8E27D0132A00694A5B /* BraintreeSEPADebitTests */,
+				BE642D8E27D0132A00694A5B /* BraintreeSEPADirectDebitTests */,
+				BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */,
 				A903E1A524F9D34000C314E1 /* BraintreeTestShared */,
 				A91E1EAA24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				A91E1EF124FEF2E3007540E5 /* BraintreeThreeDSecureTests */,
@@ -3700,8 +3700,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE642DAB27D01BCA00694A5B /* BTSEPADebitNonce_Tests.swift in Sources */,
-				BE642DA927D013A400694A5B /* BTSEPADebitClient_Tests.swift in Sources */,
+				BE642DAB27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift in Sources */,
+				BE642DA927D013A400694A5B /* BTSEPADirectDebitClient_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3709,10 +3709,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEF3F17E27CE9EDF00072467 /* BTSEPADebitClient.swift in Sources */,
-				BE642D8827D0094600694A5B /* BTSEPADebitNonce.swift in Sources */,
-				BE642D8A27D00F1300694A5B /* BTSEPADebitMandateType.swift in Sources */,
-				BE642D8627D0047800694A5B /* BTSEPADebitRequest.swift in Sources */,
+				BE642D8827D0094600694A5B /* BTSEPADirectDebitNonce.swift in Sources */,
+				BE642D8A27D00F1300694A5B /* BTSEPADirectDebitMandateType.swift in Sources */,
+				BE642D8627D0047800694A5B /* BTSEPADirectDebitRequest.swift in Sources */,
+				BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3965,7 +3965,7 @@
 		BE642DA827D0139000694A5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilter = ios;
-			target = BEF3F17227CE9EC600072467 /* BraintreeSEPADebit */;
+			target = BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */;
 			targetProxy = BE642DA727D0139000694A5B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -6758,7 +6758,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MODULEMAP_FILE = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeSEPADebit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeSEPADirectDebit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -6825,7 +6825,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MODULEMAP_FILE = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeSEPADebit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeSEPADirectDebit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -7065,7 +7065,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BE642D9D27D0132A00694A5B /* Build configuration list for PBXNativeTarget "BraintreeSEPADebitTests" */ = {
+		BE642D9D27D0132A00694A5B /* Build configuration list for PBXNativeTarget "BraintreeSEPADirectDebitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BE642D9E27D0132A00694A5B /* Debug */,
@@ -7074,7 +7074,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BEF3F17927CE9EC600072467 /* Build configuration list for PBXNativeTarget "BraintreeSEPADebit" */ = {
+		BEF3F17927CE9EC600072467 /* Build configuration list for PBXNativeTarget "BraintreeSEPADirectDebit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BEF3F17A27CE9EC600072467 /* Debug */,

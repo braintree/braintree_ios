@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// A  payment method nonce representing a SEPA Debit payment.
-@objcMembers public class BTSEPADebitNonce {
+@objcMembers public class BTSEPADirectDebitNonce {
     
     /// The payment method nonce.
     public let nonce: String?
@@ -17,12 +17,12 @@ import BraintreeCore
     public let customerID: String?
     
     /// The `BTSEPADebitMandateType`.
-    public let mandateType: BTSEPADebitMandateType?
+    public let mandateType: BTSEPADirectDebitMandateType?
         
     init(json: BTJSON) {
         self.nonce = json["nonce"].asString()
         self.ibanLastFour = json["details"]["ibanLastChars"].asString()
         self.customerID = json["details"]["customerId"].asString()
-        self.mandateType = BTSEPADebitMandateType.getMandateType(from: json["details"]["mandateType"].asString())
+        self.mandateType = BTSEPADirectDebitMandateType.getMandateType(from: json["details"]["mandateType"].asString())
     }
 }

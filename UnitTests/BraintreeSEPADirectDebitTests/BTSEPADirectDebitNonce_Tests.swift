@@ -1,11 +1,11 @@
 import XCTest
 import BraintreeCore
-@testable import BraintreeSEPADebit
+@testable import BraintreeSEPADirectDebit
 
-class BTPSEPADebitNonce_Tests: XCTestCase {
+class BTSEPADirectDebitNonce_Tests: XCTestCase {
 
     func testSEPADebitNonceWithJSON_createsSEPADebitNonceWithExpectedValues() {
-        let sepaDebitNonce = BTSEPADebitNonce(
+        let sepaDebitNonce = BTSEPADirectDebitNonce(
             json: BTJSON(
                 value: [
                     "type": "SEPADebit",
@@ -24,6 +24,6 @@ class BTPSEPADebitNonce_Tests: XCTestCase {
         XCTAssertEqual(sepaDebitNonce.nonce, "1194c322-9763-08b7-4777-0b9b5e5cc3e4")
         XCTAssertEqual(sepaDebitNonce.ibanLastFour, "1234")
         XCTAssertEqual(sepaDebitNonce.customerID, "a-customer-id")
-        XCTAssertEqual(sepaDebitNonce.mandateType, BTSEPADebitMandateType.oneOff)
+        XCTAssertEqual(sepaDebitNonce.mandateType, BTSEPADirectDebitMandateType.oneOff)
     }
 }
