@@ -80,6 +80,7 @@
 		A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */; };
 		BE777A9F27D90BA300487D23 /* BraintreeSEPADirectDebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE777A9E27D90BA300487D23 /* BraintreeSEPADirectDebit.framework */; };
 		BE777AA027D90BA300487D23 /* BraintreeSEPADirectDebit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE777A9E27D90BA300487D23 /* BraintreeSEPADirectDebit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +216,7 @@
 		A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V2_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
 		BE777A9E27D90BA300487D23 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSEPADirectDebitViewController.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -383,19 +385,20 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				8017E951268FB7C100AE796C /* Views */,
 				A0988F7824DB44B10095EEEE /* 3D Secure */,
 				A0988F7E24DB44B10095EEEE /* Amex */,
 				A0988F7224DB44B10095EEEE /* Apple Pay - PassKit */,
 				A0988F6B24DB44B10095EEEE /* Credit Card Tokenization */,
 				A0988F5C24DB44B10095EEEE /* Fraud Protection - BTDataCollector */,
 				A0988F6224DB44B10095EEEE /* Ideal */,
-				A0988F7B24DB44B10095EEEE /* PayPal - Vault */,
 				A0988F5F24DB44B10095EEEE /* PayPal - Checkout */,
 				A0988F6824DB44B10095EEEE /* PayPal - Pay Later */,
+				A0988F7B24DB44B10095EEEE /* PayPal - Vault */,
 				A0988F5A24DB44B10095EEEE /* Preferred Payment Methods */,
+				BE777AC227D936E700487D23 /* SEPA Direct Debit */,
 				A0988F8724DB44B10095EEEE /* UnionPay */,
 				A0988F8124DB44B10095EEEE /* Venmo - Custom Button */,
+				8017E951268FB7C100AE796C /* Views */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -582,6 +585,14 @@
 				A0988F5024DB44B10095EEEE /* Supporting Files */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		BE777AC227D936E700487D23 /* SEPA Direct Debit */ = {
+			isa = PBXGroup;
+			children = (
+				BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */,
+			);
+			path = "SEPA Direct Debit";
 			sourceTree = "<group>";
 		};
 		F1D1FED7D4B39E9B6D0FCC73 /* Pods */ = {
@@ -811,6 +822,7 @@
 				803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */,
 				A0988FF324DB44B20095EEEE /* BraintreeDemoPayPalVaultViewController.m in Sources */,
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
+				BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */,
 				A0988FF724DB44B20095EEEE /* BraintreeDemoUnionPayViewController.m in Sources */,
 				A0988FF424DB44B20095EEEE /* BraintreeDemoAmexViewController.m in Sources */,
 				A0988FE624DB44B20095EEEE /* main.m in Sources */,
