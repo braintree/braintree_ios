@@ -32,4 +32,17 @@ import BraintreeCore
         // create mandate request from SEPADebitRequest properties
         // call internal function to start ASWebAuthenticationSession
     }
+    
+    /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
+    /// - Parameters:
+    ///   - request: a BTSEPADebitRequest
+    /// - Note: This function should only be used for iOS 12 support.
+    // NEXT_MAJOR_VERSION remove this function
+    public func tokenize(
+        request: BTSEPADirectDebitRequest,
+        completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
+    ) {
+        // create mandate request from SEPADebitRequest properties
+        // call internal function to start ASWebAuthenticationSession
+    }
 }
