@@ -8,22 +8,22 @@ import BraintreeCore
 @objcMembers public class BTSEPADirectDebitRequest: NSObject {
 
     /// Required. The account holder name.
-    public let accountHolderName: String?
+    public var accountHolderName: String?
 
     /// Required. The full IBAN.
-    public let iban: String?
+    public var iban: String?
 
     /// Required. The customer ID.
-    public let customerID: String?
+    public var customerID: String?
     
     /// Required. The `BTSEPADebitMandateType`.
-    public let mandateType: BTSEPADirectDebitMandateType?
+    public var mandateType: BTSEPADirectDebitMandateType?
 
     /// Required. The user's billing address.
-    public let billingAddress: BTPostalAddress?
+    public var billingAddress: BTPostalAddress?
 
     /// Optional. A non-default merchant account to use for tokenization.
-    public let merchantAccountID: String?
+    public var merchantAccountID: String?
     
     /// Initialize a new SEPA Direct Debit request.
     /// - Parameters:
@@ -33,6 +33,7 @@ import BraintreeCore
     ///   - mandateType: Required. The `BTSEPADebitMandateType`.
     ///   - billingAddress: Required. The user's billing address.
     ///   - merchantAccountID: Optional. A non-default merchant account to use for tokenization.
+    // NEXT_MAJOR_VERSION consider refactoring public request initializers to include required parameters instead of defaulting everything to optional
     public init(
         accountHolderName: String? = nil,
         iban: String? = nil,
