@@ -385,20 +385,20 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				8017E951268FB7C100AE796C /* Views */,
 				A0988F7824DB44B10095EEEE /* 3D Secure */,
 				A0988F7E24DB44B10095EEEE /* Amex */,
 				A0988F7224DB44B10095EEEE /* Apple Pay - PassKit */,
 				A0988F6B24DB44B10095EEEE /* Credit Card Tokenization */,
 				A0988F5C24DB44B10095EEEE /* Fraud Protection - BTDataCollector */,
 				A0988F6224DB44B10095EEEE /* Ideal */,
+				A0988F7B24DB44B10095EEEE /* PayPal - Vault */,
 				A0988F5F24DB44B10095EEEE /* PayPal - Checkout */,
 				A0988F6824DB44B10095EEEE /* PayPal - Pay Later */,
-				A0988F7B24DB44B10095EEEE /* PayPal - Vault */,
 				A0988F5A24DB44B10095EEEE /* Preferred Payment Methods */,
 				BE777AC227D936E700487D23 /* SEPA Direct Debit */,
 				A0988F8724DB44B10095EEEE /* UnionPay */,
 				A0988F8124DB44B10095EEEE /* Venmo - Custom Button */,
-				8017E951268FB7C100AE796C /* Views */,
 			);
 			path = Features;
 			sourceTree = "<group>";
