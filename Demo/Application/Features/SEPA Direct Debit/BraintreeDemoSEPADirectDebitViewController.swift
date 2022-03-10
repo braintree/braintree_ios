@@ -43,27 +43,26 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         billingAddress.postalCode = "09456"
         billingAddress.countryCodeAlpha2 = "FR"
         
-        let sepaDirectDebitRequest = BTSEPADirectDebitRequest(
-            accountHolderName: "John Doe",
-            iban: generateRandomIBAN(),
-            customerID: generateRandomCustomerID(),
-            mandateType: .oneOff,
-            billingAddress: billingAddress
-        )
+        let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
+        sepaDirectDebitRequest.accountHolderName = "John Doe"
+        sepaDirectDebitRequest.iban = generateRandomIBAN()
+        sepaDirectDebitRequest.customerID = generateRandomCustomerID()
+        sepaDirectDebitRequest.mandateType = .oneOff
+        sepaDirectDebitRequest.billingAddress = billingAddress
         
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
             self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
             self.sepaDirectDebitButton.isEnabled = false
 
             if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                let sepaDirectDebitNonce = sepaDirectDebitNonce as! BTPaymentMethodNonce
-                self.completionBlock(sepaDirectDebitNonce)
+                self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
             } else if let error = error {
                 self.progressBlock(error.localizedDescription)
             } else {
                 self.progressBlock("Canceled")
             }
         }
+        self.sepaDirectDebitButton.isEnabled = true
     }
     
     private func generateRandomCustomerID() -> String {
