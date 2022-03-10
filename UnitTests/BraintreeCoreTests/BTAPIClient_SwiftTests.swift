@@ -36,18 +36,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
         XCTAssertEqual(apiClient?.clientToken?.originalValue, clientToken)
     }
 
-    func testAPIClientInitialization_withValidPayPalIDToken_returnsClientWithPayPalIDToken() {
-        let payPalIDToken = "123.eyJpc3MiOiJodHRwczovL2FwaS5zYW5kYm94LnBheXBhbC5jb20iLCJzdWIiOiJNSkZQMzlWNE1RUkFFIiwiYWNyIjpbImNsaWVudCJdLCJzY29wZSI6WyJCcmFpbnRyZWU6VmF1bHQiXSwib3B0aW9ucyI6e30sImF6Ijoic2Iuc2xjIiwiZXh0ZXJuYWxfaWQiOlsiUGF5UGFsOk1KRlAzOVY0TVFSQUUiLCJCcmFpbnRyZWU6Y2Z4czNnaHp3ZmsycmhxbSJdLCJleHAiOjE1OTMwODgxMTMsImp0aSI6IlUyQUFIckM2Vjdpc2tqa0J6Z2ZORkhSeXNuekJIUUVacWdVMVl4ZG0xaWl1a1poQ2RQQXRjQnhhdGtzNVpzeHlZN1hZbkNST0cydzFfLTFPV2R1LVJDeEMtMVlCYXdJWUotT1FQRUdEYVhNWnhUMExWUjBDOWVnQ3BIdUItZllnIn0.456"
-        let apiClient = BTAPIClient(authorization: payPalIDToken)
-        XCTAssertEqual(apiClient?.payPalIDToken?.token, payPalIDToken)
-    }
-
-    func testAPIClientIntialization_withInvalidPayPalIDToken_returnsNil() {
-        let payPalIDToken = "broken.paypal.idToken"
-        let apiClient = BTAPIClient(authorization: payPalIDToken)
-        XCTAssertNil(apiClient)
-    }
-
     // MARK: - authorizationType
     
     func testAPIClientAuthorizationType_forTokenizationKey() {
@@ -60,12 +48,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
         let clientToken = "1234abc=="
         let apiClientAuthType = BTAPIClient.authorizationType(forAuthorization: clientToken)
         XCTAssertEqual(apiClientAuthType, .clientToken)
-    }
-
-    func testAPIClientAuthorizationType_forPayPalIDToken() {
-        let payPalIDToken = "1a.2b.3c-_"
-        let apiClientAuthType = BTAPIClient.authorizationType(forAuthorization: payPalIDToken)
-        XCTAssertEqual(apiClientAuthType, .payPalIDToken)
     }
 
     // MARK: - Copy
