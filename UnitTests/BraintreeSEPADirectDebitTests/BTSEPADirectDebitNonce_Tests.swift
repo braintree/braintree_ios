@@ -21,9 +21,9 @@ class BTSEPADirectDebitNonce_Tests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(sepaDebitNonce.nonce, "1194c322-9763-08b7-4777-0b9b5e5cc3e4")
-        XCTAssertEqual(sepaDebitNonce.ibanLastFour, "1234")
-        XCTAssertEqual(sepaDebitNonce.customerID, "a-customer-id")
-        XCTAssertEqual(sepaDebitNonce.mandateType, BTSEPADirectDebitMandateType.oneOff)
+        XCTAssertEqual(sepaDebitNonce?.nonce, "1194c322-9763-08b7-4777-0b9b5e5cc3e4")
+        XCTAssertEqual(sepaDebitNonce?.ibanLastFour, "1234")
+        XCTAssertEqual(sepaDebitNonce?.customerID, "a-customer-id")
+        XCTAssertEqual(sepaDebitNonce?.mandateType, BTSEPADirectDebitMandateType.oneOff)
     }
 }
