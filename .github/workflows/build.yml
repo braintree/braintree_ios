@@ -31,6 +31,8 @@ jobs:
           git commit -m 'Remove SPMTest app to avoid Carthage timeout'
       - name: Use current branch
         run: echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
+      - name: Run carthage build
+        run: carthage build --no-skip-current --use-xcframeworks
       - name: Run carthage update
         run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
@@ -79,6 +81,8 @@ jobs:
           git commit -m 'Remove SPMTest app to avoid Carthage timeout'
       - name: Use current branch
         run: echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
+      - name: Run carthage build
+        run: carthage build --no-skip-current --use-xcframeworks
       - name: Run carthage update
         run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
@@ -86,7 +90,7 @@ jobs:
       - name: Run carthage build without --use-xcframeworks
         run: |
           ./carthage.sh build --no-skip-current
-          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
+          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADirectDebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
   spm_xcode_13:
     name: SPM (Xcode 13)
     runs-on: macOS-11
