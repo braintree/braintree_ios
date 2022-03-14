@@ -3057,8 +3057,8 @@
 				A91E1E8924FEDD7F007540E5 /* BraintreePaymentFlowTests */,
 				2D941D371B59C76A0016EFB4 /* BraintreePayPal */,
 				A9E5C1DF24FD665D00EE691F /* BraintreePayPalTests */,
-				BE642D8E27D0132A00694A5B /* BraintreeSEPADirectDebitTests */,
 				BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */,
+				BE642D8E27D0132A00694A5B /* BraintreeSEPADirectDebitTests */,
 				A903E1A524F9D34000C314E1 /* BraintreeTestShared */,
 				A91E1EAA24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				A91E1EF124FEF2E3007540E5 /* BraintreeThreeDSecureTests */,
@@ -6605,6 +6605,35 @@
 			};
 			name = Release;
 		};
+		BE0B163A27DFF95900868C77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = UnitTests/BraintreeSEPADirectDebitTests/Info.plist;
+				PRODUCT_NAME = BraintreeSEPADirectDebitTests;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BE0B163B27DFF95900868C77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				INFOPLIST_FILE = UnitTests/BraintreeSEPADirectDebitTests/Info.plist;
+				PRODUCT_NAME = BraintreeSEPADirectDebitTests;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		BEF3F17A27CE9EC600072467 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6974,8 +7003,8 @@
 		BE642D9D27D0132A00694A5B /* Build configuration list for PBXNativeTarget "BraintreeSEPADirectDebitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BE642D9E27D0132A00694A5B /* Debug */,
-				BE642D9F27D0132A00694A5B /* Release */,
+				BE0B163A27DFF95900868C77 /* Debug */,
+				BE0B163B27DFF95900868C77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
