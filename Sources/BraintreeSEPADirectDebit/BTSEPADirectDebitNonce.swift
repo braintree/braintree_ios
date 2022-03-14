@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// A  payment method nonce representing a SEPA Debit payment.
-@objcMembers public class BTSEPADirectDebitNonce {
+@objcMembers public class BTSEPADirectDebitNonce: NSObject {
     
     /// The payment method nonce.
     public let nonce: String?
