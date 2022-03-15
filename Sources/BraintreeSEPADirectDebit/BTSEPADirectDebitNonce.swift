@@ -8,7 +8,7 @@ import BraintreeCore
 @objcMembers public class BTSEPADirectDebitNonce: NSObject {
     
     /// The payment method nonce.
-    public let nonce: String?
+    public let nonce: String
     
     /// The IBAN last four characters.
     public let ibanLastFour: String?
@@ -21,7 +21,9 @@ import BraintreeCore
        
     // NEXT_MAJOR_VERSION consider making init non-optional (especially internal ones) once we convert to Swift.
     init?(json: BTJSON) {
-        self.nonce = json["nonce"].asString()
+        guard let nonce = json["nonce"].asString() else { return nil }
+        
+        self.nonce = nonce
         self.ibanLastFour = json["details"]["ibanLastChars"].asString()
         self.customerID = json["details"]["customerId"].asString()
         self.mandateType = BTSEPADirectDebitMandateType.getMandateType(from: json["details"]["mandateType"].asString())
