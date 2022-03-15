@@ -49,6 +49,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.customerID = generateRandomCustomerID()
         sepaDirectDebitRequest.mandateType = .oneOff
         sepaDirectDebitRequest.billingAddress = billingAddress
+        sepaDirectDebitRequest.merchantAccountID = "eur_pwpp_multi_account_merchant_account"
         
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
             self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)

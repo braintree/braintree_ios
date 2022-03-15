@@ -42,6 +42,10 @@ import BraintreeCore
         request: BTSEPADirectDebitRequest,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
+        let api = SEPADirectDebitAPI()
+        api.createMandate(sepaDirectDebitRequest: request, configuration: nil) { result, error in
+            // TODO: remove this as this is just used to test the create mandate request right now in the demo
+        }
         // create mandate request from SEPADebitRequest properties
         // call internal function to start ASWebAuthenticationSession
     }
