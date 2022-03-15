@@ -2920,7 +2920,7 @@
 				BE642D8F27D0132A00694A5B /* PBXTargetDependency */,
 			);
 			name = BraintreeSEPADirectDebitTests;
-			productName = BraintreePaymentFlowTests;
+			productName = BraintreeSEPADirectDebitTests;
 			productReference = BE642DA027D0132A00694A5B /* BraintreeSEPADirectDebitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
