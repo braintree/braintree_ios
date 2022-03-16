@@ -84,14 +84,14 @@ import BraintreeCore
         try container.encode(returnURL, forKey: .returnURL)
         try container.encodeIfPresent(merchantAccountID, forKey: .merchantAccountID)
 
-        var sepaDebitContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .sepaDebit)
+        var sepaDebitContainer = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .sepaDebit)
         try sepaDebitContainer.encodeIfPresent(accountHolderName, forKey: .accountHolderName)
         try sepaDebitContainer.encodeIfPresent(customerID, forKey: .customerID)
         try sepaDebitContainer.encodeIfPresent(iban, forKey: .iban)
         try sepaDebitContainer.encodeIfPresent(mandateType?.description, forKey: .mandateType)
         try sepaDebitContainer.encodeIfPresent(iban, forKey: .iban)
 
-        var billingAddressContainer = try sepaDebitContainer.nestedContainer(keyedBy: AddressKeys.self, forKey: .billingAddress)
+        var billingAddressContainer = sepaDebitContainer.nestedContainer(keyedBy: AddressKeys.self, forKey: .billingAddress)
         try billingAddressContainer.encodeIfPresent(billingAddress?.streetAddress, forKey: .streetAddress)
         try billingAddressContainer.encodeIfPresent(billingAddress?.extendedAddress, forKey: .extendedAddress)
         try billingAddressContainer.encodeIfPresent(billingAddress?.locality, forKey: .locality)
