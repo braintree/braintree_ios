@@ -67,11 +67,11 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     }
     
     private func generateRandomCustomerID() -> String {
-        UUID().uuidString.replacingOccurrences(of: "-", with: "")
+        String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(20))
     }
     
     private func generateRandomIBAN() -> String {
-        let length = 24
+        let length = 25
         let characters = "0123456789"
         let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
         let randomString = String(randomCharacters)

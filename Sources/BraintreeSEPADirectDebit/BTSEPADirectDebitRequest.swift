@@ -25,7 +25,7 @@ import BraintreeCore
         case locality = "admin_area_1"
         case region = "admin_area_2"
         case postalCode = "postal_code"
-        case countryCodeAlpha2 = "countryCode"
+        case countryCodeAlpha2 = "country_code"
     }
 
     /// Required. The account holder name.
@@ -91,7 +91,7 @@ import BraintreeCore
         try sepaDebitContainer.encodeIfPresent(mandateType?.description, forKey: .mandateType)
         try sepaDebitContainer.encodeIfPresent(iban, forKey: .iban)
 
-        var billingAddressContainer = try container.nestedContainer(keyedBy: AddressKeys.self, forKey: .billingAddress)
+        var billingAddressContainer = try sepaDebitContainer.nestedContainer(keyedBy: AddressKeys.self, forKey: .billingAddress)
         try billingAddressContainer.encodeIfPresent(billingAddress?.streetAddress, forKey: .streetAddress)
         try billingAddressContainer.encodeIfPresent(billingAddress?.extendedAddress, forKey: .extendedAddress)
         try billingAddressContainer.encodeIfPresent(billingAddress?.locality, forKey: .locality)
