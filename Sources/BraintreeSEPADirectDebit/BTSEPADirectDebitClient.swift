@@ -29,8 +29,14 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
-        // create mandate request from SEPADebitRequest properties
-        // call internal function to start ASWebAuthenticationSession
+        createMandate(request: request) { result, error in
+            if error != nil {
+                completion(nil, error)
+                return
+            } else if result != nil {
+                // TODO: future PR start ASWebAuthenticationSession with result.approvalURL
+            }
+        }
     }
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -42,11 +48,24 @@ import BraintreeCore
         request: BTSEPADirectDebitRequest,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
+        createMandate(request: request) { result, error in
+            if error != nil {
+                completion(nil, error)
+                return
+            } else if result != nil {
+                print(result)
+                // TODO: future PR start ASWebAuthenticationSession with result.approvalURL
+            }
+        }
+    }
+    
+    func createMandate(
+        request: BTSEPADirectDebitRequest,
+        completion: @escaping (CreateMandateResult?, Error?) -> Void
+    ) {
         let api = SEPADirectDebitAPI()
         api.createMandate(sepaDirectDebitRequest: request, configuration: nil) { result, error in
-            // TODO: remove this as this is just used to test the create mandate request right now in the demo
+            completion(result, error)
         }
-        // create mandate request from SEPADebitRequest properties
-        // call internal function to start ASWebAuthenticationSession
     }
 }

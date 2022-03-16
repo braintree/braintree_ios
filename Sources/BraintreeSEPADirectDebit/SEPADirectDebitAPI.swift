@@ -14,7 +14,6 @@ class SEPADirectDebitAPI {
     ) {
         let request = buildRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
         
-        // TODO: finish this data task
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
@@ -22,11 +21,11 @@ class SEPADirectDebitAPI {
                 }
                 return
             }
-            // TODO: have CreateMandateResult conform to decodable
-//            let result = try? JSONDecoder().decode(CreateMandateResult.self, from: data)
-//            DispatchQueue.main.async {
-//                completion(result, nil)
-//            }
+            
+            let result = try? JSONDecoder().decode(CreateMandateResult.self, from: data)
+            DispatchQueue.main.async {
+                completion(result, nil)
+            }
         }
         task.resume()
     }
