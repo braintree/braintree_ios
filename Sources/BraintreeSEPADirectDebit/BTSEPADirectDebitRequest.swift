@@ -37,7 +37,7 @@ import BraintreeCore
     /// Required. The customer ID.
     public var customerID: String?
     
-    /// Required. The `BTSEPADebitMandateType`.
+    /// Optional. The `BTSEPADebitMandateType`. If not set, defaults to `.oneOff`
     public var mandateType: BTSEPADirectDebitMandateType?
 
     /// Required. The user's billing address.
@@ -55,7 +55,7 @@ import BraintreeCore
     ///   - accountHolderName:Required. The account holder name.
     ///   - iban: Required. The full IBAN.
     ///   - customerID: Required. The customer ID.
-    ///   - mandateType: Required. The `BTSEPADebitMandateType`.
+    ///   - mandateType: Optional. The `BTSEPADebitMandateType`. If not set, defaults to `.oneOff`
     ///   - billingAddress: Required. The user's billing address.
     ///   - merchantAccountID: Optional. A non-default merchant account to use for tokenization.
     // NEXT_MAJOR_VERSION consider refactoring public request initializers to include required parameters instead of defaulting everything to optional

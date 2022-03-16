@@ -9,7 +9,6 @@ class SEPADirectDebitAPI {
     
     func createMandate(
         sepaDirectDebitRequest: BTSEPADirectDebitRequest,
-        configuration: BTConfiguration? = nil,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
         let request = buildRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
@@ -30,7 +29,7 @@ class SEPADirectDebitAPI {
         task.resume()
     }
     
-    private func buildRequest(sepaDirectDebitRequest: BTSEPADirectDebitRequest, configuration: BTConfiguration? = nil) -> URLRequest {
+    func buildRequest(sepaDirectDebitRequest: BTSEPADirectDebitRequest) -> URLRequest {
         let sepaDirectDebitData = try? JSONEncoder().encode(sepaDirectDebitRequest)
 
         var baseURL = URL(string: "http://localhost:3000")

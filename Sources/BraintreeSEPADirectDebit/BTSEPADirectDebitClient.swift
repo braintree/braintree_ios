@@ -12,11 +12,14 @@ import BraintreeCore
     
     public weak var delegate: BTViewControllerPresentingDelegate?
     
+    var sepaDirectDebitAPI: SEPADirectDebitAPI
+    
     ///  Creates a SEPA Debit client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+        self.sepaDirectDebitAPI = SEPADirectDebitAPI()
     }
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -53,7 +56,6 @@ import BraintreeCore
                 completion(nil, error)
                 return
             } else if result != nil {
-                print(result)
                 // TODO: future PR start ASWebAuthenticationSession with result.approvalURL
             }
         }
@@ -63,8 +65,7 @@ import BraintreeCore
         request: BTSEPADirectDebitRequest,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
-        let api = SEPADirectDebitAPI()
-        api.createMandate(sepaDirectDebitRequest: request, configuration: nil) { result, error in
+        sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request) { result, error in
             completion(result, error)
         }
     }

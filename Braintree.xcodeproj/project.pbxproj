@@ -363,6 +363,12 @@
 		BE642DA927D013A400694A5B /* BTSEPADirectDebitClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8C27D0130300694A5B /* BTSEPADirectDebitClient_Tests.swift */; };
 		BE642DAB27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
+		BEFE6DA227E25B42002BE9C8 /* BTSEPADirectDebitRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA127E25B42002BE9C8 /* BTSEPADirectDebitRequest_Tests.swift */; };
+		BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */; };
+		BEFE6DA627E27070002BE9C8 /* MockSEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA527E27070002BE9C8 /* MockSEPADirectDebitAPI.swift */; };
+		BEFE6DA827E289DF002BE9C8 /* MockWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA727E289DF002BE9C8 /* MockWebAuthenticationSession.swift */; };
+		BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */; };
+		BEFE6DAC27E28DFF002BE9C8 /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -1098,6 +1104,12 @@
 		BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitNonce_Tests.swift; sourceTree = "<group>"; };
 		BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient.swift; sourceTree = "<group>"; };
 		BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEFE6DA127E25B42002BE9C8 /* BTSEPADirectDebitRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitRequest_Tests.swift; sourceTree = "<group>"; };
+		BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI_Tests.swift; sourceTree = "<group>"; };
+		BEFE6DA527E27070002BE9C8 /* MockSEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSEPADirectDebitAPI.swift; sourceTree = "<group>"; };
+		BEFE6DA727E289DF002BE9C8 /* MockWebAuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWebAuthenticationSession.swift; sourceTree = "<group>"; };
+		BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
+		BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthenticationSession.swift; sourceTree = "<group>"; };
 		C25AE12E88A1D4C82A54CB19 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8CC981A1FD4AD9A818F86F5 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
@@ -2204,6 +2216,11 @@
 				BE642D8C27D0130300694A5B /* BTSEPADirectDebitClient_Tests.swift */,
 				BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */,
 				9C67362727E247270089BD99 /* CreateMandateResult_Tests.swift */,
+				BEFE6DA127E25B42002BE9C8 /* BTSEPADirectDebitRequest_Tests.swift */,
+				BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */,
+				BEFE6DA527E27070002BE9C8 /* MockSEPADirectDebitAPI.swift */,
+				BEFE6DA727E289DF002BE9C8 /* MockWebAuthenticationSession.swift */,
+				BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */,
 			);
 			path = BraintreeSEPADirectDebitTests;
 			sourceTree = "<group>";
@@ -2217,6 +2234,7 @@
 				BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */,
 				BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */,
 				BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */,
+				BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */,
 			);
 			path = BraintreeSEPADirectDebit;
 			sourceTree = "<group>";
@@ -3709,9 +3727,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEFE6DA827E289DF002BE9C8 /* MockWebAuthenticationSession.swift in Sources */,
+				BEFE6DA227E25B42002BE9C8 /* BTSEPADirectDebitRequest_Tests.swift in Sources */,
+				BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */,
+				BEFE6DAC27E28DFF002BE9C8 /* WebAuthenticationSession.swift in Sources */,
 				9C67362827E247270089BD99 /* CreateMandateResult_Tests.swift in Sources */,
+				BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */,
 				BE642DAB27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift in Sources */,
 				BE642DA927D013A400694A5B /* BTSEPADirectDebitClient_Tests.swift in Sources */,
+				BEFE6DA627E27070002BE9C8 /* MockSEPADirectDebitAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
