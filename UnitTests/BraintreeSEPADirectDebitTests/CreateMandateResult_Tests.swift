@@ -21,8 +21,8 @@ class CreateMandateResult_Tests: XCTestCase {
             }
         }
         """
-        let data = jsonData.data(using: .utf8)!
-        let result = try! JSONDecoder().decode(CreateMandateResult.self, from: data)
+        let data = try XCTUnwrap(jsonData.data(using: .utf8))
+        let result = try XCTUnwrap(JSONDecoder().decode(CreateMandateResult.self, from: data))
 
         XCTAssertEqual(result.bankReferenceToken, "QkEtNE41NkpHTjgyQTlZQQ")
         XCTAssertEqual(result.ibanLastFour, "4020")
@@ -33,5 +33,4 @@ class CreateMandateResult_Tests: XCTestCase {
             "https://api.test19.stage.paypal.com/directdebit/mandate/authorize?cart_id=3M4823521V931154L&auth_code=C21_A.AAfdeSkAgu3HOvz2APRL9II1frofQCtCCwnCWJuSTDxy46cC1X7C3DQwJjanPG9j578EIYVHpl12GLAptqwl7AMAQB6eQA"
         )
     }
-
 }
