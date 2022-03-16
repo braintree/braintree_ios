@@ -1,6 +1,5 @@
 import Foundation
 
-// TODO: this will need to conform to Decodable
 struct CreateMandateResult: Decodable {
     
     private enum CodingKeys: String, CodingKey {
@@ -14,11 +13,11 @@ struct CreateMandateResult: Decodable {
         case mandateType
     }
     
-    private let approvalURL: String
-    private let ibanLastFour: String
-    private let customerID: String
-    private let bankReferenceToken: String
-    private let mandateType: String
+    let approvalURL: String
+    let ibanLastFour: String
+    let customerID: String
+    let bankReferenceToken: String
+    let mandateType: String
     
     init(
         approvalURL: String,
