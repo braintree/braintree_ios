@@ -37,7 +37,10 @@ import BraintreeCore
                 completion(nil, error)
                 return
             } else if result != nil {
-                guard let urlString = result?.approvalURL else { return }
+                guard let urlString = result?.approvalURL else {
+                    completion(nil, BTSEPADirectDebitError.unknown)
+                    return
+                }
                 if urlString == "null" {
                     // TODO: call tokenize - url already approved
                 } else if let url = URL(string: urlString) {
@@ -70,7 +73,10 @@ import BraintreeCore
                 completion(nil, error)
                 return
             } else if result != nil {
-                guard let urlString = result?.approvalURL else { return }
+                guard let urlString = result?.approvalURL else {
+                    completion(nil, BTSEPADirectDebitError.unknown)
+                    return
+                }
                 if urlString == "null" {
                     // TODO: call tokenize - url already approved
                 } else if let url = URL(string: urlString) {
