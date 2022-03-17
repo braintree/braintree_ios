@@ -10,7 +10,7 @@ import BraintreeCore
 
     private let apiClient: BTAPIClient
     
-    public weak var delegate: BTViewControllerPresentingDelegate?
+    public weak var delegate: BTSEPADirectDebitDelegate?
     
     var sepaDirectDebitAPI: SEPADirectDebitAPI
     
@@ -103,6 +103,7 @@ import BraintreeCore
         webAuthenticationSession: WebAuthenticationSession,
         completion: @escaping (Bool) -> Void
     ) {
+        self.delegate?.sepaDirectDebit(self, didStartWebSession: true)
         webAuthenticationSession.start(url: url) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
@@ -115,6 +116,7 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool) -> Void
     ) {
+        self.delegate?.sepaDirectDebit(self, didStartWebSession: true)
         webAuthenticationSession.start(url: url, context: context) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
@@ -146,6 +148,7 @@ import BraintreeCore
                   }
             completion(true)
         }
+        self.delegate?.sepaDirectDebit(self, didCompleteWebSession: true)
     }
     
     private func getQueryStringParameter(url: String, param: String) -> String? {
