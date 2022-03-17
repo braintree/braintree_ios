@@ -105,7 +105,7 @@ import BraintreeCore
 
             if let url = url {
                 // TODO: handle force unwrapping
-                guard url.path.contains("success"),
+                guard url.absoluteString.contains("sepa/success"),
                       self.getQueryStringParameter(url: url.absoluteString, param: "success")!.contains("true") else {
                           // TODO: throw error
                           completion(false)

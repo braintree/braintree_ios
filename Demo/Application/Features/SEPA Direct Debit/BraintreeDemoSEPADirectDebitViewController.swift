@@ -2,6 +2,7 @@ import UIKit
 import AuthenticationServices
 import BraintreeSEPADirectDebit
 
+@available(iOS 13.0, *)
 class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController, ASWebAuthenticationPresentationContextProviding {
     private let sepaDirectDebitClient: BTSEPADirectDebitClient
     private let sepaDirectDebitButton = UIButton(type: .system)
@@ -34,18 +35,12 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     }
     
     // MARK: - ASWebAuthenticationPresentationContextProviding conformance
-     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-         if #available(iOS 13.0, *) {
-             return UIApplication
-                 .shared
-                 .connectedScenes
-                 .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
-                 .first { $0.isKeyWindow } 
-         } else {
-             return ASPresentationAnchor()
-         }
-     }
-    
+
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+      let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+      return window ?? ASPresentationAnchor()
+    }
+
     // MARK: - SEPA Direct Debit implementation
     
     @objc func sepaDirectDebitButtonTapped() {
@@ -67,7 +62,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "eur_pwpp_multi_account_merchant_account"
         
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
+        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
             self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
             self.sepaDirectDebitButton.isEnabled = false
 

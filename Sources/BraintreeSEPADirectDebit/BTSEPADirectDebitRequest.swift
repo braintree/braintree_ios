@@ -74,8 +74,10 @@ import BraintreeCore
         self.billingAddress = billingAddress
         self.merchantAccountID = merchantAccountID
         
-        self.cancelURL = "https://example.com" // TODO: FUTURE PR set this in browser switch flow
-        self.returnURL = "https://example.com" // TODO: FUTURE PR set this in browser switch flow
+        let bundleID = Bundle.main.bundleIdentifier ?? ""
+
+        self.cancelURL = bundleID.appending("://sepa/cancel")
+        self.returnURL = bundleID.appending("://sepa/success")
     }
     
     public func encode(to encoder: Encoder) throws {
