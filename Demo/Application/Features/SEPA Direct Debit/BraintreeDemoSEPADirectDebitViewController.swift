@@ -1,7 +1,8 @@
 import UIKit
+import AuthenticationServices
 import BraintreeSEPADirectDebit
 
-class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController {
+class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController, ASWebAuthenticationPresentationContextProviding {
     private let sepaDirectDebitClient: BTSEPADirectDebitClient
     private let sepaDirectDebitButton = UIButton(type: .system)
     
@@ -31,6 +32,21 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - ASWebAuthenticationPresentationContextProviding conformance
+     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+         if #available(iOS 13.0, *) {
+             return UIApplication
+                 .shared
+                 .connectedScenes
+                 .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
+                 .first { $0.isKeyWindow } 
+         } else {
+             return ASPresentationAnchor()
+         }
+     }
+    
+    // MARK: - SEPA Direct Debit implementation
     
     @objc func sepaDirectDebitButtonTapped() {
         self.progressBlock("Tapped SEPA Debit")

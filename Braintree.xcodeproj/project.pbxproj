@@ -368,7 +368,7 @@
 		BEFE6DA627E27070002BE9C8 /* MockSEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA527E27070002BE9C8 /* MockSEPADirectDebitAPI.swift */; };
 		BEFE6DA827E289DF002BE9C8 /* MockWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA727E289DF002BE9C8 /* MockWebAuthenticationSession.swift */; };
 		BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */; };
-		BEFE6DAC27E28DFF002BE9C8 /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
+		BEFE6DAD27E399AB002BE9C8 /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -3730,7 +3730,6 @@
 				BEFE6DA827E289DF002BE9C8 /* MockWebAuthenticationSession.swift in Sources */,
 				BEFE6DA227E25B42002BE9C8 /* BTSEPADirectDebitRequest_Tests.swift in Sources */,
 				BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */,
-				BEFE6DAC27E28DFF002BE9C8 /* WebAuthenticationSession.swift in Sources */,
 				9C67362827E247270089BD99 /* CreateMandateResult_Tests.swift in Sources */,
 				BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */,
 				BE642DAB27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift in Sources */,
@@ -3749,6 +3748,7 @@
 				BE0B163D27E0CC7400868C77 /* CreateMandateResult.swift in Sources */,
 				BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */,
 				BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */,
+				BEFE6DAD27E399AB002BE9C8 /* WebAuthenticationSession.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

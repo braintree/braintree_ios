@@ -21,9 +21,13 @@ class SEPADirectDebitAPI {
                 return
             }
             
-            let result = try? JSONDecoder().decode(CreateMandateResult.self, from: data)
-            DispatchQueue.main.async {
-                completion(result, nil)
+            do {
+                let result = try JSONDecoder().decode(CreateMandateResult.self, from: data)
+                DispatchQueue.main.async {
+                    completion(result, nil)
+                }
+            } catch {
+                // TODO: throw error if any part of the result is nil
             }
         }
         task.resume()

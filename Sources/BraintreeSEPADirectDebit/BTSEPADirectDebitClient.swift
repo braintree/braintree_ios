@@ -37,7 +37,21 @@ import BraintreeCore
                 completion(nil, error)
                 return
             } else if result != nil {
-                // TODO: future PR start ASWebAuthenticationSession with result.approvalURL
+                guard let urlString = result?.approvalURL else { return }
+                if urlString == "null" {
+                    // TODO: call tokenize - url already approved
+                } else if let url = URL(string: urlString) {
+                    self.startAuthenticationSession(url: url, webAuthenticationSession: WebAuthenticationSession(), context: context) { success in
+                        switch success {
+                        case true:
+                            // TODO: call tokenize
+                            return
+                        case false:
+                            // TODO: handle error
+                            return
+                        }
+                    }
+                }
             }
         }
     }
@@ -68,5 +82,42 @@ import BraintreeCore
         sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request) { result, error in
             completion(result, error)
         }
+    }
+    
+    @available(iOS 13.0, *)
+    func startAuthenticationSession(
+        url: URL,
+        webAuthenticationSession: WebAuthenticationSession,
+        context: ASWebAuthenticationPresentationContextProviding,
+        completion: @escaping (Bool) -> Void
+    ) {
+        webAuthenticationSession.start(url: url, context: context) { url, error in
+            if let error = error {
+                switch error {
+                case ASWebAuthenticationSessionError.canceledLogin:
+                    // TODO: handle cancellation
+                    return
+                default:
+                    // TODO: handle error
+                    return
+                }
+            }
+
+            if let url = url {
+                // TODO: handle force unwrapping
+                guard url.path.contains("success"),
+                      self.getQueryStringParameter(url: url.absoluteString, param: "success")!.contains("true") else {
+                          // TODO: throw error
+                          completion(false)
+                          return
+                      }
+                completion(true)
+            }
+        }
+    }
+    
+    private func getQueryStringParameter(url: String, param: String) -> String? {
+        guard let url = URLComponents(string: url) else { return nil }
+        return url.queryItems?.first { $0.name == param }?.value
     }
 }
