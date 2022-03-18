@@ -102,7 +102,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     }
     
     private func generateRandomIBAN() -> String {
-        let length = 25
+        let length = 24
         let characters = "0123456789"
         let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
         let randomString = String(randomCharacters)
