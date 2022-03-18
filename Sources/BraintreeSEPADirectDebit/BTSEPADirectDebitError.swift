@@ -11,6 +11,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
     
     /// SEPA Direct Debit flow was canceled by the user.
     case webFlowCanceled
+    
+    /// SEPA Direct Debit presentation context misconfiguration.
+    case presentationContextInvalid
 
     static var errorDomain: String {
         "com.braintreepayments.BTSEPADirectDebitErrorDomain"
@@ -26,6 +29,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .webFlowCanceled:
             return 2
+            
+        case .presentationContextInvalid:
+            return 3
         }
     }
 
@@ -39,6 +45,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .webFlowCanceled:
             return "SEPA Direct Debit flow was canceled by the user."
+            
+        case .presentationContextInvalid:
+            return "The presentation context provided to the tokenize method was invalid or not provided."
         }
     }
 }

@@ -134,7 +134,7 @@ import BraintreeCore
                 completion(false, BTSEPADirectDebitError.webFlowCanceled)
                 return
             default:
-                completion(false, BTSEPADirectDebitError.webFlowCanceled)
+                completion(false, BTSEPADirectDebitError.presentationContextInvalid)
                 return
             }
         }

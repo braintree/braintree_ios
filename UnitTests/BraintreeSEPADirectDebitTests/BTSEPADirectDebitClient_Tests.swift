@@ -87,7 +87,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         }
     }
     
-    func testTokenizeWithPresentationContext_handleWebAuthenticationSessionResultCalledWithCancelledLogin_returnsError() {
+    func testTokenizeWithPresentationContext_handleWebAuthenticationSessionResultCalledWithCanceledSession_returnsError() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
         
@@ -133,7 +133,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         }
     }
     
-    func testTokenize_handleWebAuthenticationSessionResultCalledWithCancelledLogin_returnsError() {
+    func testTokenize_handleWebAuthenticationSessionResultCalledWithCanceledSession_returnsError() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
         
@@ -166,6 +166,88 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, BTSEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, BTSEPADirectDebitError.webFlowCanceled.errorCode)
                 XCTAssertEqual(error.localizedDescription, BTSEPADirectDebitError.webFlowCanceled.localizedDescription)
+            } else if nonce != nil {
+                XCTFail("This request should return an error.")
+            }
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    func testTokenizeWithPresentationContext_handleWebAuthenticationSessionResultCalledWithInvalidContext_returnsError() {
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
+        
+        let mockCreateMandateResult = CreateMandateResult(
+            approvalURL: "https://example-success",
+            ibanLastFour: "1234",
+            customerID: "a-customer-id",
+            bankReferenceToken: "a-bank-reference-token",
+            mandateType: "ONE_OFF"
+        )
+
+        mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
+            _bridgedNSError: NSError(
+                domain: ASWebAuthenticationSessionError.errorDomain,
+                code: ASWebAuthenticationSessionError.presentationContextInvalid.rawValue,
+                userInfo: ["Description": "Mock cancellation error description."]
+            )
+        )
+
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(
+            apiClient: mockAPIClient,
+            webAuthenticationSession: mockWebAuthenticationSession,
+            sepaDirectDebitAPI: mockSepaDirectDebitAPI
+        )
+        
+        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
+
+        sepaDirectDebitClient.tokenize(
+            request: sepaDirectDebitRequest,
+            context: MockViewController()
+        ) { nonce, error in
+            if error != nil, let error = error as NSError? {
+                XCTAssertEqual(error.domain, BTSEPADirectDebitError.errorDomain)
+                XCTAssertEqual(error.code, BTSEPADirectDebitError.presentationContextInvalid.errorCode)
+                XCTAssertEqual(error.localizedDescription, BTSEPADirectDebitError.presentationContextInvalid.localizedDescription)
+            } else if nonce != nil {
+                XCTFail("This request should return an error.")
+            }
+        }
+    }
+    
+    func testTokenize_handleWebAuthenticationSessionResultCalledWithInvalidContext_returnsError() {
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
+        
+        let mockCreateMandateResult = CreateMandateResult(
+            approvalURL: "https://example-success",
+            ibanLastFour: "1234",
+            customerID: "a-customer-id",
+            bankReferenceToken: "a-bank-reference-token",
+            mandateType: "ONE_OFF"
+        )
+
+        mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
+            _bridgedNSError: NSError(
+                domain: ASWebAuthenticationSessionError.errorDomain,
+                code: 3,
+                userInfo: ["Description": "Mock invalid context provided error."]
+            )
+        )
+
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(
+            apiClient: mockAPIClient,
+            webAuthenticationSession: mockWebAuthenticationSession,
+            sepaDirectDebitAPI: mockSepaDirectDebitAPI
+        )
+        
+        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
+        
+        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+            if error != nil, let error = error as NSError? {
+                XCTAssertEqual(error.domain, BTSEPADirectDebitError.errorDomain)
+                XCTAssertEqual(error.code, BTSEPADirectDebitError.presentationContextInvalid.errorCode)
+                XCTAssertEqual(error.localizedDescription, BTSEPADirectDebitError.presentationContextInvalid.localizedDescription)
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
