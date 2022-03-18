@@ -37,14 +37,10 @@ import BraintreeCore
             if error != nil {
                 completion(nil, error)
                 return
-            } else if result != nil {
-                guard let urlString = result?.approvalURL else {
-                    completion(nil, BTSEPADirectDebitError.unknown)
-                    return
-                }
-                if urlString == "null" {
+            } else if result != nil, let result = result {
+                if result.approvalURL == "null" {
                     // TODO: call tokenize - url already approved
-                } else if let url = URL(string: urlString) {
+                } else if let url = URL(string: result.approvalURL) {
                     self.startAuthenticationSession(url: url, context: context) { success in
                         switch success {
                         case true:
@@ -84,7 +80,6 @@ import BraintreeCore
                     self.startAuthenticationSessionWithoutContext(url: url) { success in
                         switch success {
                         case true:
-                            print(result)
                             // TODO: call tokenize
                             return
                         case false:

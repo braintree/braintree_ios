@@ -44,7 +44,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     // MARK: - SEPA Direct Debit implementation
     
     @objc func sepaDirectDebitButtonTapped() {
-        self.progressBlock("Tapped SEPA Debit")
+        self.progressBlock("Tapped SEPA Direct Debit")
 
         let billingAddress = BTPostalAddress()
         billingAddress.streetAddress = "Kantstraße 70"
@@ -64,8 +64,10 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         
         if #available(iOS 13.0, *) {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
-                self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
-                self.sepaDirectDebitButton.isEnabled = false
+                DispatchQueue.main.async {
+                    self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
+                    self.sepaDirectDebitButton.isEnabled = false
+                }
                 
                 if let sepaDirectDebitNonce = sepaDirectDebitNonce {
                     self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
@@ -77,9 +79,10 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
             }
         } else {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-                self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
-                self.sepaDirectDebitButton.isEnabled = false
-                
+                DispatchQueue.main.async {
+                    self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
+                    self.sepaDirectDebitButton.isEnabled = false
+                }
                 if let sepaDirectDebitNonce = sepaDirectDebitNonce {
                     self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
                 } else if let error = error {
@@ -89,7 +92,9 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
                 }
             }
         }
-        self.sepaDirectDebitButton.isEnabled = true
+        DispatchQueue.main.async {
+            self.sepaDirectDebitButton.isEnabled = true
+        }
     }
     
     private func generateRandomCustomerID() -> String {

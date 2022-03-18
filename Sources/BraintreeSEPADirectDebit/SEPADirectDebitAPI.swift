@@ -27,7 +27,7 @@ class SEPADirectDebitAPI {
                     completion(result, nil)
                 }
             } catch {
-                // TODO: throw error if any part of the result is nil
+                completion(nil, BTSEPADirectDebitError.invalidResult)
             }
         }
         task.resume()

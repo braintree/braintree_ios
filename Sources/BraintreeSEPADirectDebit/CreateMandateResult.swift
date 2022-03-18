@@ -39,7 +39,9 @@ struct CreateMandateResult: Decodable {
         let bodyContainer = try messageContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .body)
         let sepaDebitContainer = try bodyContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .sepaDebitAccount)
         
-        approvalURL = try sepaDebitContainer.decode(String.self, forKey: .approvalURL)
+        // Defaulting the approval URL to the string "null" if the API returns nil for this field because the
+        // mandate has already been approved.
+        approvalURL = try sepaDebitContainer.decodeIfPresent(String.self, forKey: .approvalURL) ?? "null"
         ibanLastFour = try sepaDebitContainer.decode(String.self, forKey: .ibanLastFour)
         customerID = try sepaDebitContainer.decode(String.self, forKey: .customerID)
         bankReferenceToken = try sepaDebitContainer.decode(String.self, forKey: .bankReferenceToken)
