@@ -49,7 +49,7 @@ import BraintreeCore
     private var cancelURL: String
     
     private var returnURL: String
-    
+
     /// Initialize a new SEPA Direct Debit request.
     /// - Parameters:
     ///   - accountHolderName:Required. The account holder name.
