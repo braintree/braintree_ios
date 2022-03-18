@@ -23,6 +23,12 @@ import BraintreeCore
         self.webAuthenticationSession =  WebAuthenticationSession()
     }
     
+    init(apiClient: BTAPIClient, webAuthenticationSession: WebAuthenticationSession, sepaDirectDebitAPI: SEPADirectDebitAPI) {
+        self.apiClient = apiClient
+        self.webAuthenticationSession = webAuthenticationSession
+        self.sepaDirectDebitAPI = sepaDirectDebitAPI
+    }
+    
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
     /// - Parameters:
     ///   - request: a BTSEPADebitRequest
@@ -44,10 +50,10 @@ import BraintreeCore
                     self.startAuthenticationSession(url: url, context: context) { success, error in
                         switch success {
                         case true:
-                            // TODO: call tokenize
+                            // TODO: call BTSEPADirectDebitClient.tokenize
                             return
                         case false:
-                            // TODO: handle error
+                            completion(nil, error)
                             return
                         }
                     }
@@ -76,7 +82,7 @@ import BraintreeCore
                     self.startAuthenticationSessionWithoutContext(url: url) { success, error in
                         switch success {
                         case true:
-                            // TODO: call tokenize
+                            // TODO: call BTSEPADirectDebitClient.tokenize
                             return
                         case false:
                             completion(nil, error)
@@ -128,15 +134,15 @@ import BraintreeCore
                 completion(false, BTSEPADirectDebitError.webFlowCanceled)
                 return
             default:
-                // TODO: handle error
+                completion(false, BTSEPADirectDebitError.webFlowCanceled)
                 return
             }
         }
 
         if let url = url {
-            // TODO: handle force unwrapping
             guard url.absoluteString.contains("sepa/success"),
-                  self.getQueryStringParameter(url: url.absoluteString, param: "success")!.contains("true") else {
+                  let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
+                  queryParameter.contains("true") else {
                       // TODO: throw error
                       completion(false, nil)
                       return

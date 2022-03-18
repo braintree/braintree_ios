@@ -33,6 +33,10 @@ class SEPADirectDebitAPI {
         task.resume()
     }
     
+    func tokenize(ibanLastFour: String, customerId: String, bankReferenceToken: String, mandateType: String) {
+        // TODO: implement (future PR)
+    }
+    
     func buildRequest(sepaDirectDebitRequest: BTSEPADirectDebitRequest) -> URLRequest {
         let sepaDirectDebitData = try? JSONEncoder().encode(sepaDirectDebitRequest)
 
