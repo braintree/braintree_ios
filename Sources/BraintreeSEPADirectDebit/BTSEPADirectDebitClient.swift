@@ -7,8 +7,6 @@ import BraintreeCore
 
 /// Used to integrate with SEPA Debit.
 @objc public class BTSEPADirectDebitClient: NSObject {
-    
-    weak var delegate: BTSEPADirectDebitDelegate?
 
     let apiClient: BTAPIClient
     
@@ -112,7 +110,6 @@ import BraintreeCore
         url: URL,
         completion: @escaping (Bool) -> Void
     ) {
-        self.delegate?.sepaDirectDebit(self, didStartWebSession: true)
         self.webAuthenticationSession.start(url: url) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
@@ -124,7 +121,6 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool) -> Void
     ) {
-        self.delegate?.sepaDirectDebit(self, didStartWebSession: true)
         self.webAuthenticationSession.start(url: url, context: context) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
@@ -156,7 +152,6 @@ import BraintreeCore
                   }
             completion(true)
         }
-        self.delegate?.sepaDirectDebit(self, didCompleteWebSession: true)
     }
     
     private func getQueryStringParameter(url: String, param: String) -> String? {

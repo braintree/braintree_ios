@@ -157,7 +157,6 @@
 		9C36BD4326B30AA600F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		9C67362827E247270089BD99 /* CreateMandateResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C67362727E247270089BD99 /* CreateMandateResult_Tests.swift */; };
-		9C67362C27E3D6730089BD99 /* BTSEPADirectDebitDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C67362B27E3D6730089BD99 /* BTSEPADirectDebitDelegate.swift */; };
 		9C67362E27E3DAB90089BD99 /* BTSEPADirectDebitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C67362D27E3DAB90089BD99 /* BTSEPADirectDebitError.swift */; };
 		A07FA48D21B5C54E0026FF0E /* BTPayPalLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A07FA48E21B5C54E0026FF0E /* BTPayPalLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */; };
@@ -908,7 +907,6 @@
 		9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PPRiskMagnes.framework; path = Frameworks/FatFrameworks/PPRiskMagnes.framework; sourceTree = "<group>"; };
 		9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/FatFrameworks/CardinalMobile.framework; sourceTree = "<group>"; };
 		9C67362727E247270089BD99 /* CreateMandateResult_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMandateResult_Tests.swift; sourceTree = "<group>"; };
-		9C67362B27E3D6730089BD99 /* BTSEPADirectDebitDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitDelegate.swift; sourceTree = "<group>"; };
 		9C67362D27E3DAB90089BD99 /* BTSEPADirectDebitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitError.swift; sourceTree = "<group>"; };
 		A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2Provider.h; sourceTree = "<group>"; };
 		A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV2Provider.m; sourceTree = "<group>"; };
@@ -2239,7 +2237,6 @@
 				BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */,
 				BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */,
 				BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */,
-				9C67362B27E3D6730089BD99 /* BTSEPADirectDebitDelegate.swift */,
 				9C67362D27E3DAB90089BD99 /* BTSEPADirectDebitError.swift */,
 			);
 			path = BraintreeSEPADirectDebit;
@@ -3756,7 +3753,6 @@
 				BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */,
 				BEFE6DAD27E399AB002BE9C8 /* WebAuthenticationSession.swift in Sources */,
 				9C67362E27E3DAB90089BD99 /* BTSEPADirectDebitError.swift in Sources */,
-				9C67362C27E3D6730089BD99 /* BTSEPADirectDebitDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
