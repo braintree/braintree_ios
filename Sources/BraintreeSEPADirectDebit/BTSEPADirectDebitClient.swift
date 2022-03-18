@@ -7,11 +7,13 @@ import BraintreeCore
 
 /// Used to integrate with SEPA Debit.
 @objc public class BTSEPADirectDebitClient: NSObject {
+    
+    weak var delegate: BTSEPADirectDebitDelegate?
 
-    private let apiClient: BTAPIClient
+    let apiClient: BTAPIClient
     
-    public weak var delegate: BTSEPADirectDebitDelegate?
-    
+    let webAuthenticationSession: WebAuthenticationSession
+        
     var sepaDirectDebitAPI: SEPADirectDebitAPI
     
     ///  Creates a SEPA Debit client.
@@ -20,6 +22,7 @@ import BraintreeCore
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
         self.sepaDirectDebitAPI = SEPADirectDebitAPI()
+        self.webAuthenticationSession =  WebAuthenticationSession()
     }
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -44,7 +47,7 @@ import BraintreeCore
                 if urlString == "null" {
                     // TODO: call tokenize - url already approved
                 } else if let url = URL(string: urlString) {
-                    self.startAuthenticationSession(url: url, webAuthenticationSession: WebAuthenticationSession(), context: context) { success in
+                    self.startAuthenticationSession(url: url, context: context) { success in
                         switch success {
                         case true:
                             // TODO: call tokenize
@@ -80,9 +83,10 @@ import BraintreeCore
                 if urlString == "null" {
                     // TODO: call tokenize - url already approved
                 } else if let url = URL(string: urlString) {
-                    self.startAuthenticationSessionWithoutContext(url: url, webAuthenticationSession: WebAuthenticationSession()) { success in
+                    self.startAuthenticationSessionWithoutContext(url: url) { success in
                         switch success {
                         case true:
+                            print(result)
                             // TODO: call tokenize
                             return
                         case false:
@@ -106,11 +110,10 @@ import BraintreeCore
     
     func startAuthenticationSessionWithoutContext(
         url: URL,
-        webAuthenticationSession: WebAuthenticationSession,
         completion: @escaping (Bool) -> Void
     ) {
         self.delegate?.sepaDirectDebit(self, didStartWebSession: true)
-        webAuthenticationSession.start(url: url) { url, error in
+        self.webAuthenticationSession.start(url: url) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
     }
@@ -118,12 +121,11 @@ import BraintreeCore
     @available(iOS 13.0, *)
     func startAuthenticationSession(
         url: URL,
-        webAuthenticationSession: WebAuthenticationSession,
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool) -> Void
     ) {
         self.delegate?.sepaDirectDebit(self, didStartWebSession: true)
-        webAuthenticationSession.start(url: url, context: context) { url, error in
+        self.webAuthenticationSession.start(url: url, context: context) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
     }
