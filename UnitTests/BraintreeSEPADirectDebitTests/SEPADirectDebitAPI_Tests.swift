@@ -88,4 +88,8 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         // TODO: When in sandbox we should test to confirm that not passing a merchant account ID uses the default merchant account ID as expected
     }
     
+    func testCreateMandate_createMandateResultContainsNil_returnsError() {
+        // TODO: when BTAPIClient is used in SEPADirectDebitAPI we need to tested that we return the BTSEPADirectDebitError.invalidResult if any fields are nil during decoding
+    }
+    
 }

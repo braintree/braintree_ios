@@ -8,6 +8,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
     
     /// The result was invalid
     case invalidResult
+    
+    /// SEPA Direct Debit flow was canceled by the user.
+    case webFlowCanceled
 
     static var errorDomain: String {
         "com.braintreepayments.BTSEPADirectDebitErrorDomain"
@@ -20,6 +23,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .invalidResult:
             return 1
+            
+        case .webFlowCanceled:
+            return 2
         }
     }
 
@@ -30,6 +36,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .invalidResult:
             return "There was an error decoding a required field in the result."
+            
+        case .webFlowCanceled:
+            return "SEPA Direct Debit flow was canceled by the user."
         }
     }
 }

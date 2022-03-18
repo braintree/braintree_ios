@@ -1,5 +1,6 @@
 import Foundation
 import AuthenticationServices
+@testable import BraintreeSEPADirectDebit
 
 @available(iOS 13.0, *)
 class MockWebAuthenticationSession: WebAuthenticationSession {

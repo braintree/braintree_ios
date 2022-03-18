@@ -10,7 +10,7 @@ import BraintreeCore
 
     let apiClient: BTAPIClient
     
-    let webAuthenticationSession: WebAuthenticationSession
+    var webAuthenticationSession: WebAuthenticationSession
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI
     
@@ -41,7 +41,7 @@ import BraintreeCore
                 if result.approvalURL == "null" {
                     // TODO: call tokenize - url already approved
                 } else if let url = URL(string: result.approvalURL) {
-                    self.startAuthenticationSession(url: url, context: context) { success in
+                    self.startAuthenticationSession(url: url, context: context) { success, error in
                         switch success {
                         case true:
                             // TODO: call tokenize
@@ -69,21 +69,17 @@ import BraintreeCore
             if error != nil {
                 completion(nil, error)
                 return
-            } else if result != nil {
-                guard let urlString = result?.approvalURL else {
-                    completion(nil, BTSEPADirectDebitError.unknown)
-                    return
-                }
-                if urlString == "null" {
+            } else if result != nil, let result = result {
+                if result.approvalURL == "null" {
                     // TODO: call tokenize - url already approved
-                } else if let url = URL(string: urlString) {
-                    self.startAuthenticationSessionWithoutContext(url: url) { success in
+                } else if let url = URL(string: result.approvalURL) {
+                    self.startAuthenticationSessionWithoutContext(url: url) { success, error in
                         switch success {
                         case true:
                             // TODO: call tokenize
                             return
                         case false:
-                            // TODO: handle error
+                            completion(nil, error)
                             return
                         }
                     }
@@ -103,7 +99,7 @@ import BraintreeCore
     
     func startAuthenticationSessionWithoutContext(
         url: URL,
-        completion: @escaping (Bool) -> Void
+        completion: @escaping (Bool, Error?) -> Void
     ) {
         self.webAuthenticationSession.start(url: url) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
@@ -114,7 +110,7 @@ import BraintreeCore
     func startAuthenticationSession(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
-        completion: @escaping (Bool) -> Void
+        completion: @escaping (Bool, Error?) -> Void
     ) {
         self.webAuthenticationSession.start(url: url, context: context) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
@@ -124,12 +120,12 @@ import BraintreeCore
     func handleWebAuthenticationSessionResult(
         url: URL?,
         error: Error?,
-        completion: @escaping (Bool) -> Void
+        completion: @escaping (Bool, Error?) -> Void
     ) {
         if let error = error {
             switch error {
             case ASWebAuthenticationSessionError.canceledLogin:
-                // TODO: handle cancellation
+                completion(false, BTSEPADirectDebitError.webFlowCanceled)
                 return
             default:
                 // TODO: handle error
@@ -142,10 +138,10 @@ import BraintreeCore
             guard url.absoluteString.contains("sepa/success"),
                   self.getQueryStringParameter(url: url.absoluteString, param: "success")!.contains("true") else {
                       // TODO: throw error
-                      completion(false)
+                      completion(false, nil)
                       return
                   }
-            completion(true)
+            completion(true, nil)
         }
     }
     
