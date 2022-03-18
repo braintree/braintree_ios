@@ -14,6 +14,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
     
     /// SEPA Direct Debit presentation context misconfiguration.
     case presentationContextInvalid
+    
+    /// The URL returned from the web flow was invalid.
+    case resultURLInvalid
 
     static var errorDomain: String {
         "com.braintreepayments.BTSEPADirectDebitErrorDomain"
@@ -32,6 +35,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .presentationContextInvalid:
             return 3
+            
+        case .resultURLInvalid:
+            return 4
         }
     }
 
@@ -48,6 +54,9 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .presentationContextInvalid:
             return "The presentation context provided to the tokenize method was invalid or not provided."
+            
+        case .resultURLInvalid:
+            return "The URL returned from the web flow result was invalid."
         }
     }
 }

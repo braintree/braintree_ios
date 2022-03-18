@@ -143,8 +143,7 @@ import BraintreeCore
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {
-                      // TODO: throw error
-                      completion(false, nil)
+                      completion(false, BTSEPADirectDebitError.resultURLInvalid)
                       return
                   }
             completion(true, nil)
