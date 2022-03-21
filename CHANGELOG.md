@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased 
+* PPRiskMagnes
+  * Update PPRiskMagnes to 5.4.0
+  * This version of PPRiskMagnes replaces the dynamic framework/xcframework with a static framework/xcframework
+
 ## 5.7.0 (2022-03-02)
 * Fix configuration caching
 
