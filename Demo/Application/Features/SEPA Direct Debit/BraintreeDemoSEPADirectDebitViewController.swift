@@ -64,11 +64,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         
         if #available(iOS 13.0, *) {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
-                DispatchQueue.main.async {
-                    self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
-                    self.sepaDirectDebitButton.isEnabled = false
-                }
-                
                 if let sepaDirectDebitNonce = sepaDirectDebitNonce {
                     self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
                 } else if let error = error {
@@ -79,10 +74,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
             }
         } else {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-                DispatchQueue.main.async {
-                    self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
-                    self.sepaDirectDebitButton.isEnabled = false
-                }
                 if let sepaDirectDebitNonce = sepaDirectDebitNonce {
                     self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
                 } else if let error = error {
@@ -92,9 +83,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
                 }
             }
         }
-        DispatchQueue.main.async {
-            self.sepaDirectDebitButton.isEnabled = true
-        }
     }
     
     private func generateRandomCustomerID() -> String {
@@ -102,7 +90,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     }
     
     private func generateRandomIBAN() -> String {
-        let length = 24
+        let length = 25
         let characters = "0123456789"
         let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
         let randomString = String(randomCharacters)
