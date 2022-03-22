@@ -5,7 +5,7 @@ import AuthenticationServices
 import BraintreeCore
 #endif
 
-/// Used to integrate with SEPA Debit.
+/// Used to integrate with SEPA Direct Debit.
 @objc public class BTSEPADirectDebitClient: NSObject {
 
     let apiClient: BTAPIClient
@@ -14,7 +14,7 @@ import BraintreeCore
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI
     
-    ///  Creates a SEPA Debit client.
+    ///  Creates a SEPA Direct Debit client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
@@ -131,10 +131,10 @@ import BraintreeCore
         if let error = error {
             switch error {
             case ASWebAuthenticationSessionError.canceledLogin:
-                completion(false, BTSEPADirectDebitError.webFlowCanceled)
+                completion(false, SEPADirectDebitError.webFlowCanceled)
                 return
             default:
-                completion(false, BTSEPADirectDebitError.presentationContextInvalid)
+                completion(false, SEPADirectDebitError.presentationContextInvalid)
                 return
             }
         }
@@ -143,7 +143,7 @@ import BraintreeCore
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {
-                      completion(false, BTSEPADirectDebitError.resultURLInvalid)
+                      completion(false, SEPADirectDebitError.resultURLInvalid)
                       return
                   }
             completion(true, nil)

@@ -1,6 +1,6 @@
 import Foundation
 
-/// Mandate type for the SEPA Debit request.
+/// Mandate type for the SEPA Direct Debit request.
 @objc public enum BTSEPADirectDebitMandateType: Int, CustomStringConvertible {
 
     case oneOff

@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with SEPA Direct Debit.
-enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
+enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
@@ -19,7 +19,7 @@ enum BTSEPADirectDebitError: Error, CustomNSError, LocalizedError {
     case resultURLInvalid
 
     static var errorDomain: String {
-        "com.braintreepayments.BTSEPADirectDebitErrorDomain"
+        "com.braintreepayments.SEPADirectDebitErrorDomain"
     }
 
     var errorCode: Int {

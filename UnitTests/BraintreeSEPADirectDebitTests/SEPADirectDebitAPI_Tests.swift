@@ -40,8 +40,8 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
                 }
             },
             "merchant_account_id":"eur_pwpp_multi_account_merchant_account",
-            "cancel_url":"https://example.com",
-            "return_url":"https://example.com"
+            "cancel_url":"com.apple.dt.xctest.tool://sepa/cancel",
+            "return_url":"com.apple.dt.xctest.tool://sepa/success"
         }
         """
             .components(separatedBy: .newlines)
@@ -50,7 +50,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
 
         let api = SEPADirectDebitAPI()
         let request = api.buildRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
-        let body = String(data: request.httpBody ?? Data(), encoding: .utf8)?.replacingOccurrences(of: "\\/\\/", with: "//")
+        let body = String(data: request.httpBody ?? Data(), encoding: .utf8)?.replacingOccurrences(of: "\\/\\/", with: "//").replacingOccurrences(of: "\\", with: "")
         
         XCTAssertEqual(request.url, URL(string: "http://localhost:3000/merchants/pwpp_multi_account_merchant/client_api/v1/sepa_debit"))
         XCTAssertEqual(request.httpMethod, "POST")
@@ -110,7 +110,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testCreateMandate_createMandateResultContainsNil_returnsError() {
-        // TODO: when BTAPIClient is used in SEPADirectDebitAPI we need to tested that we return the BTSEPADirectDebitError.invalidResult if any fields are nil during decoding
+        // TODO: when BTAPIClient is used in SEPADirectDebitAPI we need to tested that we return the SEPADirectDebitError.invalidResult if any fields are nil during decoding
     }
     
 }
