@@ -14,6 +14,9 @@ import BraintreeCore
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI
     
+    // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
+    private let mandateAlreadyApprovedURLString: String = "null"
+    
     ///  Creates a SEPA Direct Debit client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
@@ -43,8 +46,8 @@ import BraintreeCore
             if error != nil {
                 completion(nil, error)
                 return
-            } else if result != nil, let result = result {
-                if result.approvalURL == "null" {
+            } else if let result = result {
+                if result.approvalURL == self.mandateAlreadyApprovedURLString {
                     // TODO: call tokenize - url already approved
                 } else if let url = URL(string: result.approvalURL) {
                     self.startAuthenticationSession(url: url, context: context) { success, error in
@@ -58,6 +61,8 @@ import BraintreeCore
                         }
                     }
                 }
+            } else {
+                completion(nil, SEPADirectDebitError.unknown)
             }
         }
     }
@@ -75,8 +80,8 @@ import BraintreeCore
             if error != nil {
                 completion(nil, error)
                 return
-            } else if result != nil, let result = result {
-                if result.approvalURL == "null" {
+            } else if let result = result {
+                if result.approvalURL == self.mandateAlreadyApprovedURLString {
                     // TODO: call tokenize - url already approved
                 } else if let url = URL(string: result.approvalURL) {
                     self.startAuthenticationSessionWithoutContext(url: url) { success, error in
@@ -90,10 +95,14 @@ import BraintreeCore
                         }
                     }
                 }
+            } else {
+                completion(nil, SEPADirectDebitError.unknown)
             }
         }
     }
     
+    /// Calls `SEPADirectDebitAPI.tokenize` to create the mandate and returns the `approvalURL` in the `CreateMandateResult`
+    /// that is used to display the mandate to the user during the web flow.
     func createMandate(
         request: BTSEPADirectDebitRequest,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
@@ -103,6 +112,7 @@ import BraintreeCore
         }
     }
     
+    /// Starts the web authentication session with the `approvalURL` from the `CreateMandateResult` on iOS 12
     func startAuthenticationSessionWithoutContext(
         url: URL,
         completion: @escaping (Bool, Error?) -> Void
@@ -112,6 +122,7 @@ import BraintreeCore
         }
     }
     
+    /// Starts the web authentication session with the context with the `approvalURL` from the `CreateMandateResult` on iOS 13+
     @available(iOS 13.0, *)
     func startAuthenticationSession(
         url: URL,
@@ -123,6 +134,7 @@ import BraintreeCore
         }
     }
     
+    /// Handles the result from the web authentication flow when returning to the app. Returns a success result or an error.
     func handleWebAuthenticationSessionResult(
         url: URL?,
         error: Error?,
@@ -137,9 +149,7 @@ import BraintreeCore
                 completion(false, SEPADirectDebitError.presentationContextInvalid)
                 return
             }
-        }
-
-        if let url = url {
+        } else if let url = url {
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {
@@ -147,6 +157,8 @@ import BraintreeCore
                       return
                   }
             completion(true, nil)
+        } else {
+            completion(false, SEPADirectDebitError.unknown)
         }
     }
     
