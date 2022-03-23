@@ -9,13 +9,11 @@
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>
 #import <Braintree/BTJSON.h>
-#import <Braintree/BTPayPalIDToken.h>
 #else
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTPayPalIDToken.h>
 #endif
 
 #import <UIKit/UIKit.h>
@@ -177,9 +175,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.clientToken.authorizationFingerprint];
             } else if (self.apiClient.tokenizationKey) {
                 self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL tokenizationKey:self.apiClient.tokenizationKey];
-            } else if (self.apiClient.payPalIDToken) {
-                self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.payPalIDToken.token];
-                return;
             }
             if (!self.http) {
                 NSError *error = [NSError errorWithDomain:BTAnalyticsServiceErrorDomain code:BTAnalyticsServiceErrorTypeInvalidAPIClient userInfo:@{ NSLocalizedDescriptionKey : @"API client must have client token or tokenization key" }];
