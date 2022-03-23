@@ -1,5 +1,6 @@
 import Foundation
 
+/// The result returned from the SEPADirectDebitAPI.createMandate API call. This result is used to display the mandate to the customer.
 struct CreateMandateResult: Decodable {
     
     private enum CodingKeys: String, CodingKey {
@@ -15,10 +16,19 @@ struct CreateMandateResult: Decodable {
     
     static let mandateAlreadyApprovedURLString: String = "null"
     
+    /// The approval URL used to present the mandate to the customer.
     let approvalURL: String
+
+    /// The last four digits of the IBAN.
     let ibanLastFour: String
+
+    /// The customer ID of the user.
     let customerID: String
+
+    /// The bank reference token that ties the IBAN to a specific bank.
     let bankReferenceToken: String
+
+    /// The `BTSEPADirectDebitMandateType` of either `.recurring` or `.oneOff`
     let mandateType: String
 
     init(
