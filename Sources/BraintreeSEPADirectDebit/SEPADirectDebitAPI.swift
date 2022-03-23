@@ -12,9 +12,10 @@ class SEPADirectDebitAPI {
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
         guard let sepaDirectDebitData = try? JSONEncoder().encode(sepaDirectDebitRequest) else {
-            // TODO: handle error
+            completion(nil, SEPADirectDebitError.createMandateEncodingFailure)
             return
         }
+
         let request = buildURLRequest(withComponent: "merchants/pwpp_multi_account_merchant/client_api/v1/sepa_debit", httpBody: sepaDirectDebitData)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -54,9 +55,10 @@ class SEPADirectDebitAPI {
         ]
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
-            // TODO: handle error
+            completion(nil, SEPADirectDebitError.tokenizeJSONSerializationFailure)
             return
         }
+
         let request = buildURLRequest(withComponent: "merchants/pwpp_multi_account_merchant/client_api/v1/payment_methods/sepa_debit_accounts", httpBody: jsonData)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -66,7 +68,7 @@ class SEPADirectDebitAPI {
                 }
                 return
             }
-            
+
             let result = BTSEPADirectDebitNonce(json: BTJSON(data: data))
             DispatchQueue.main.async {
                 completion(result, nil)

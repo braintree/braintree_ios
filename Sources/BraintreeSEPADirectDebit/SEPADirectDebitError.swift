@@ -17,6 +17,12 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
     
     /// The URL returned from the web flow was invalid.
     case resultURLInvalid
+    
+    /// The BTSEPADirectDebitRequest could not be encoded.
+    case createMandateEncodingFailure
+    
+    /// The tokenization request could not be serialized.
+    case tokenizeJSONSerializationFailure
 
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
@@ -38,6 +44,12 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .resultURLInvalid:
             return 4
+            
+        case .createMandateEncodingFailure:
+            return 5
+            
+        case .tokenizeJSONSerializationFailure:
+            return 6
         }
     }
 
@@ -57,6 +69,12 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .resultURLInvalid:
             return "The URL returned from the web flow result was invalid."
+            
+        case .createMandateEncodingFailure:
+            return "The BTSEPADirectDebitRequest could not be encoded."
+            
+        case .tokenizeJSONSerializationFailure:
+            return "The tokenization request could not be serialized."
         }
     }
 }

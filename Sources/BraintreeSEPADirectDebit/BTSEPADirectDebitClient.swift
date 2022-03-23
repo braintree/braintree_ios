@@ -51,19 +51,34 @@ import BraintreeCore
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
             if result.approvalURL == result.mandateAlreadyApprovedURLString {
-                self.sepaDirectDebitAPI.tokenize(ibanLastFour: result.ibanLastFour, customerId: result.customerID, bankReferenceToken: result.bankReferenceToken, mandateType: result.mandateType) { sepaDirectDebitNonce, error in
+                self.sepaDirectDebitAPI.tokenize(
+                    ibanLastFour: result.ibanLastFour,
+                    customerId: result.customerID,
+                    bankReferenceToken: result.bankReferenceToken,
+                    mandateType: result.mandateType
+                ) { sepaDirectDebitNonce, error in
+                    guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                        completion(nil, error)
+                        return
+                    }
                     completion(sepaDirectDebitNonce, nil)
-                    return
                 }
             } else if let url = URL(string: result.approvalURL) {
                 self.startAuthenticationSession(url: url, context: context) { success, error in
                     switch success {
                     case true:
-                        self.sepaDirectDebitAPI.tokenize(ibanLastFour: result.ibanLastFour, customerId: result.customerID, bankReferenceToken: result.bankReferenceToken, mandateType: result.mandateType) { sepaDirectDebitNonce, error in
+                        self.sepaDirectDebitAPI.tokenize(
+                            ibanLastFour: result.ibanLastFour,
+                            customerId: result.customerID,
+                            bankReferenceToken: result.bankReferenceToken,
+                            mandateType: result.mandateType
+                        ) { sepaDirectDebitNonce, error in
+                            guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                                completion(nil, error)
+                                return
+                            }
                             completion(sepaDirectDebitNonce, nil)
-                            return
                         }
-                        // TODO: return error
                     case false:
                         completion(nil, error)
                         return
@@ -96,17 +111,33 @@ import BraintreeCore
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
             if result.approvalURL == result.mandateAlreadyApprovedURLString {
-                self.sepaDirectDebitAPI.tokenize(ibanLastFour: result.ibanLastFour, customerId: result.customerID, bankReferenceToken: result.bankReferenceToken, mandateType: result.mandateType) { sepaDirectDebitNonce, error in
+                self.sepaDirectDebitAPI.tokenize(
+                    ibanLastFour: result.ibanLastFour,
+                    customerId: result.customerID,
+                    bankReferenceToken: result.bankReferenceToken,
+                    mandateType: result.mandateType
+                ) { sepaDirectDebitNonce, error in
+                    guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                        completion(nil, error)
+                        return
+                    }
                     completion(sepaDirectDebitNonce, nil)
-                    return
                 }
             } else if let url = URL(string: result.approvalURL) {
                 self.startAuthenticationSessionWithoutContext(url: url) { success, error in
                     switch success {
                     case true:
-                        self.sepaDirectDebitAPI.tokenize(ibanLastFour: result.ibanLastFour, customerId: result.customerID, bankReferenceToken: result.bankReferenceToken, mandateType: result.mandateType) { sepaDirectDebitNonce, error in
+                        self.sepaDirectDebitAPI.tokenize(
+                            ibanLastFour: result.ibanLastFour,
+                            customerId: result.customerID,
+                            bankReferenceToken: result.bankReferenceToken,
+                            mandateType: result.mandateType
+                        ) { sepaDirectDebitNonce, error in
+                            guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                                completion(nil, error)
+                                return
+                            }
                             completion(sepaDirectDebitNonce, nil)
-                            return
                         }
                     case false:
                         completion(nil, error)
