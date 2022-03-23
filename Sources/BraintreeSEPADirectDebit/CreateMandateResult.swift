@@ -1,5 +1,6 @@
 import Foundation
 
+/// The result returned from the SEPADirectDebitAPI.createMandate API call. This result is used to display the mandate to the customer.
 struct CreateMandateResult: Decodable {
     
     private enum CodingKeys: String, CodingKey {
@@ -13,13 +14,23 @@ struct CreateMandateResult: Decodable {
         case mandateType
     }
     
-    let approvalURL: String
-    let ibanLastFour: String
-    let customerID: String
-    let bankReferenceToken: String
-    let mandateType: String
-    let mandateAlreadyApprovedURLString: String = "null"
+    static let mandateAlreadyApprovedURLString: String = "null"
     
+    /// The approval URL used to present the mandate to the customer.
+    let approvalURL: String
+
+    /// The last four digits of the IBAN.
+    let ibanLastFour: String
+
+    /// The customer ID of the user.
+    let customerID: String
+
+    /// The bank reference token that ties the IBAN to a specific bank.
+    let bankReferenceToken: String
+
+    /// The `BTSEPADirectDebitMandateType` of either `.recurring` or `.oneOff`
+    let mandateType: String
+
     init(
         approvalURL: String,
         ibanLastFour: String,
@@ -42,7 +53,7 @@ struct CreateMandateResult: Decodable {
         
         // Defaulting the approval URL to the string "null" if the API returns nil for this field because the
         // mandate has already been approved.
-        approvalURL = try sepaDebitContainer.decodeIfPresent(String.self, forKey: .approvalURL) ?? mandateAlreadyApprovedURLString
+        approvalURL = try sepaDebitContainer.decodeIfPresent(String.self, forKey: .approvalURL) ?? CreateMandateResult.mandateAlreadyApprovedURLString
         ibanLastFour = try sepaDebitContainer.decode(String.self, forKey: .ibanLastFour)
         customerID = try sepaDebitContainer.decode(String.self, forKey: .customerID)
         bankReferenceToken = try sepaDebitContainer.decode(String.self, forKey: .bankReferenceToken)

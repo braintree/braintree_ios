@@ -17,13 +17,22 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
     
     /// The URL returned from the web flow was invalid.
     case resultURLInvalid
+
+    /// The result of the create mandate request was nil and no error was returned.
+    case resultReturnedNil
     
+    /// The approval URL is invalid.
+    case approvalURLInvalid
+    
+    /// The web authentication session result was nil and no error was returned.
+    case authenticationResultNil
+
     /// The BTSEPADirectDebitRequest could not be encoded.
     case createMandateEncodingFailure
     
     /// The tokenization request could not be serialized.
     case tokenizeJSONSerializationFailure
-
+    
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
     }
@@ -44,12 +53,21 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .resultURLInvalid:
             return 4
-            
-        case .createMandateEncodingFailure:
+
+        case .resultReturnedNil:
             return 5
             
-        case .tokenizeJSONSerializationFailure:
+        case .approvalURLInvalid:
             return 6
+            
+        case .authenticationResultNil:
+            return 7
+            
+        case .createMandateEncodingFailure:
+            return 8
+            
+        case .tokenizeJSONSerializationFailure:
+            return 9
         }
     }
 
@@ -69,7 +87,16 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .resultURLInvalid:
             return "The URL returned from the web flow result was invalid."
+
+        case .resultReturnedNil:
+            return "The result of the create mandate request was nil and no error was returned."
             
+        case .approvalURLInvalid:
+            return "The approval URL is invalid."
+            
+        case .authenticationResultNil:
+            return "The web authentication session result was nil and no error was returned."
+
         case .createMandateEncodingFailure:
             return "The BTSEPADirectDebitRequest could not be encoded."
             
