@@ -50,7 +50,7 @@ import BraintreeCore
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
-            if result.approvalURL == result.mandateAlreadyApprovedURLString {
+            if result.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
                 // TODO: call BTSEPADirectDebitClient.tokenize - url already approved
             } else if let url = URL(string: result.approvalURL) {
                 self.startAuthenticationSession(url: url, context: context) { success, error in
@@ -89,7 +89,7 @@ import BraintreeCore
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
-            if result.approvalURL == result.mandateAlreadyApprovedURLString {
+            if result.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
                 // TODO: call BTSEPADirectDebitClient.tokenize - url already approved
             } else if let url = URL(string: result.approvalURL) {
                 self.startAuthenticationSessionWithoutContext(url: url) { success, error in
