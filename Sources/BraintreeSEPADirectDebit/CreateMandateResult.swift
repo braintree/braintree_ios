@@ -18,6 +18,7 @@ struct CreateMandateResult: Decodable {
     let customerID: String
     let bankReferenceToken: String
     let mandateType: String
+    let mandateAlreadyApprovedURLString: String = "null"
     
     init(
         approvalURL: String,
@@ -41,7 +42,7 @@ struct CreateMandateResult: Decodable {
         
         // Defaulting the approval URL to the string "null" if the API returns nil for this field because the
         // mandate has already been approved.
-        approvalURL = try sepaDebitContainer.decodeIfPresent(String.self, forKey: .approvalURL) ?? "null"
+        approvalURL = try sepaDebitContainer.decodeIfPresent(String.self, forKey: .approvalURL) ?? mandateAlreadyApprovedURLString
         ibanLastFour = try sepaDebitContainer.decode(String.self, forKey: .ibanLastFour)
         customerID = try sepaDebitContainer.decode(String.self, forKey: .customerID)
         bankReferenceToken = try sepaDebitContainer.decode(String.self, forKey: .bankReferenceToken)

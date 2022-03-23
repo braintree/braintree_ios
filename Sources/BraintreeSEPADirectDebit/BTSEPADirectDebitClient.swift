@@ -13,10 +13,7 @@ import BraintreeCore
     var webAuthenticationSession: WebAuthenticationSession
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI
-    
-    // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
-    private let mandateAlreadyApprovedURLString: String = "null"
-    
+
     ///  Creates a SEPA Direct Debit client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
@@ -43,26 +40,31 @@ import BraintreeCore
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
         createMandate(request: request) { result, error in
-            if error != nil {
+            guard error == nil else {
                 completion(nil, error)
                 return
-            } else if let result = result {
-                if result.approvalURL == self.mandateAlreadyApprovedURLString {
-                    // TODO: call tokenize - url already approved
-                } else if let url = URL(string: result.approvalURL) {
-                    self.startAuthenticationSession(url: url, context: context) { success, error in
-                        switch success {
-                        case true:
-                            // TODO: call BTSEPADirectDebitClient.tokenize
-                            return
-                        case false:
-                            completion(nil, error)
-                            return
-                        }
+            }
+
+            guard let result = result else {
+                completion(nil, SEPADirectDebitError.unknown)
+                return
+            }
+            // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
+            if result.approvalURL == result.mandateAlreadyApprovedURLString {
+                // TODO: call BTSEPADirectDebitClient.tokenize - url already approved
+            } else if let url = URL(string: result.approvalURL) {
+                self.startAuthenticationSession(url: url, context: context) { success, error in
+                    switch success {
+                    case true:
+                        // TODO: call BTSEPADirectDebitClient.tokenize
+                        return
+                    case false:
+                        completion(nil, error)
+                        return
                     }
                 }
             } else {
-                completion(nil, SEPADirectDebitError.unknown)
+              completion(nil, SEPADirectDebitError.unknown)
             }
         }
     }
@@ -77,26 +79,31 @@ import BraintreeCore
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
         createMandate(request: request) { result, error in
-            if error != nil {
+            guard error == nil else {
                 completion(nil, error)
                 return
-            } else if let result = result {
-                if result.approvalURL == self.mandateAlreadyApprovedURLString {
-                    // TODO: call tokenize - url already approved
-                } else if let url = URL(string: result.approvalURL) {
-                    self.startAuthenticationSessionWithoutContext(url: url) { success, error in
-                        switch success {
-                        case true:
-                            // TODO: call BTSEPADirectDebitClient.tokenize
-                            return
-                        case false:
-                            completion(nil, error)
-                            return
-                        }
+            }
+
+            guard let result = result else {
+                completion(nil, SEPADirectDebitError.unknown)
+                return
+            }
+            // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
+            if result.approvalURL == result.mandateAlreadyApprovedURLString {
+                // TODO: call BTSEPADirectDebitClient.tokenize - url already approved
+            } else if let url = URL(string: result.approvalURL) {
+                self.startAuthenticationSessionWithoutContext(url: url) { success, error in
+                    switch success {
+                    case true:
+                        // TODO: call BTSEPADirectDebitClient.tokenize
+                        return
+                    case false:
+                        completion(nil, error)
+                        return
                     }
                 }
             } else {
-                completion(nil, SEPADirectDebitError.unknown)
+              completion(nil, SEPADirectDebitError.unknown)
             }
         }
     }
