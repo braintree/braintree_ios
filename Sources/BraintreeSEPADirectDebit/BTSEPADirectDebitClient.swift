@@ -46,7 +46,7 @@ import BraintreeCore
             }
 
             guard let result = result else {
-                completion(nil, SEPADirectDebitError.unknown)
+                completion(nil, SEPADirectDebitError.resultReturnedNil)
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
@@ -64,7 +64,7 @@ import BraintreeCore
                     }
                 }
             } else {
-              completion(nil, SEPADirectDebitError.unknown)
+              completion(nil, SEPADirectDebitError.approvalURLInvalid)
             }
         }
     }
@@ -85,7 +85,7 @@ import BraintreeCore
             }
 
             guard let result = result else {
-                completion(nil, SEPADirectDebitError.unknown)
+                completion(nil, SEPADirectDebitError.resultReturnedNil)
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
@@ -103,7 +103,7 @@ import BraintreeCore
                     }
                 }
             } else {
-              completion(nil, SEPADirectDebitError.unknown)
+              completion(nil, SEPADirectDebitError.approvalURLInvalid)
             }
         }
     }
@@ -165,7 +165,7 @@ import BraintreeCore
                   }
             completion(true, nil)
         } else {
-            completion(false, SEPADirectDebitError.unknown)
+            completion(false, SEPADirectDebitError.authenticationResultNil)
         }
     }
     
