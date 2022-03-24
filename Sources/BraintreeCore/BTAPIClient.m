@@ -12,13 +12,11 @@
 #import <Braintree/BTConfiguration.h>
 #import <Braintree/BTJSON.h>
 #import <Braintree/BTPaymentMethodNonce.h>
-#import <Braintree/BTPayPalIDToken.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>
-#import <BraintreeCore/BTPayPalIDToken.h>
 #endif
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
@@ -79,23 +77,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 }
                 break;
             }
-
-            case BTAPIClientAuthorizationTypePayPalIDToken: {
-                NSError *error;
-                _payPalIDToken = [[BTPayPalIDToken alloc] initWithIDTokenString:authorization error:&error];
-                if (!_payPalIDToken || error) {
-                    [[BTLogger sharedLogger] error:@"BTClient could not initialize because the provided PayPal ID Token was invalid"];
-                    [[BTLogger sharedLogger] error:[error localizedDescription]];
-                    return nil;
-                }
-                
-                _configurationHTTP = [[BTHTTP alloc] initWithPayPalIDToken:_payPalIDToken];
-
-                if (sendAnalyticsEvent) {
-                    [self queueAnalyticsEvent:@"ios.started.paypal-id-token"];
-                }
-                break;
-            }
         }
 
         _metadata = [[BTClientMetadata alloc] init];
@@ -124,19 +105,15 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 + (BTAPIClientAuthorizationType)authorizationTypeForAuthorization:(NSString *)authorization {
     NSRegularExpression *isTokenizationKeyRegExp = [NSRegularExpression regularExpressionWithPattern:@"^[a-zA-Z0-9]+_[a-zA-Z0-9]+_[a-zA-Z0-9_]+$" options:0 error:NULL];
     NSTextCheckingResult *tokenizationKeyMatch = [isTokenizationKeyRegExp firstMatchInString:authorization options:0 range: NSMakeRange(0, authorization.length)];
-
-    NSRegularExpression *isPayPalIDTokenRegExp = [NSRegularExpression regularExpressionWithPattern:@"^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\.[a-zA-Z0-9_-]+$" options:0 error:NULL];
-    NSTextCheckingResult *payPalIDTokenMatch = [isPayPalIDTokenRegExp firstMatchInString:authorization options:0 range: NSMakeRange(0, authorization.length)];
-
+    
     if (tokenizationKeyMatch) {
         return BTAPIClientAuthorizationTypeTokenizationKey;
-    } else if (payPalIDTokenMatch) {
-        return BTAPIClientAuthorizationTypePayPalIDToken;
     } else {
         return BTAPIClientAuthorizationTypeClientToken;
     }
 }
 
+// NEXT_MAJOR_VERSION: remove this unused method
 - (instancetype)copyWithSource:(BTClientMetadataSourceType)source
                    integration:(BTClientMetadataIntegrationType)integration
 {
@@ -146,8 +123,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         copiedClient = [[[self class] alloc] initWithAuthorization:self.clientToken.originalValue sendAnalyticsEvent:NO];
     } else if (self.tokenizationKey) {
         copiedClient = [[[self class] alloc] initWithAuthorization:self.tokenizationKey sendAnalyticsEvent:NO];
-    } else if (self.payPalIDToken) {
-        copiedClient = [[[self class] alloc] initWithAuthorization:self.payPalIDToken.token sendAnalyticsEvent:NO];
     } else {
         NSAssert(NO, @"Cannot copy an API client that does not specify a client token or tokenization key");
     }
@@ -320,10 +295,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         NSString *configPath = @"v1/configuration"; // Default for tokenizationKey
         if (self.clientToken) {
             configPath = [self.clientToken.configURL absoluteString];
-        } else if (self.payPalIDToken) {
-            configPath = [self.payPalIDToken.configURL absoluteString];
         }
-        [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
             if (error) {
                 fetchError = error;
             } else if (response.statusCode != 200) {
@@ -347,8 +320,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                         self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
                     } else if (self.tokenizationKey) {
                         self.http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:self.tokenizationKey];
-                    } else if (self.payPalIDToken) {
-                        self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.payPalIDToken.token];
                     }
                 }
                 if (!self.graphQL) {
@@ -357,8 +328,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                         self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
                     } else if (self.tokenizationKey) {
                         self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL tokenizationKey:self.tokenizationKey];
-                    } else if (self.payPalIDToken) {
-                        self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.payPalIDToken.token];
                     }
                 }
             }
@@ -487,6 +456,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     if (self.graphQL && self.graphQL.session) {
         [self.graphQL.session finishTasksAndInvalidate];
     }
+    
+    [self.configurationHTTP.session.configuration.URLCache removeAllCachedResponses];
 }
 
 @end
