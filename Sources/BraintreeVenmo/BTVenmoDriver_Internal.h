@@ -29,7 +29,7 @@
 @property (nonatomic, copy) NSString *returnURLScheme;
 
 /**
- Exposed for testing to get the instance of BTAPIClient after it has been copied by `copyWithSource:integration:`
+ Exposed for testing to get the instance of BTAPIClient
 */
 @property (nonatomic, strong) BTAPIClient *apiClient;
 

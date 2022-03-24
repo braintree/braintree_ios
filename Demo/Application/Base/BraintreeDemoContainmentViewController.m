@@ -158,20 +158,6 @@
             self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:tokenizationKey];
             return;
         }
-        case BraintreeDemoAuthTypePayPalIDToken: {
-            [self updateStatus:@"Fetching PayPal ID Token…"];
-
-            [BraintreeDemoMerchantAPIClient.shared fetchPayPalIDTokenWithCompletion:^(NSString * _Nullable idToken, NSError * _Nullable err) {
-                if (err) {
-                    [self updateStatus:err.localizedDescription];
-                } else {
-                    [self updateStatus:@"Using PayPal ID Token"];
-                    self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:idToken];
-                }
-            }];
-
-            break;
-        }
         case BraintreeDemoAuthTypeClientToken: {
             [self updateStatus:@"Fetching Client Token…"];
 
