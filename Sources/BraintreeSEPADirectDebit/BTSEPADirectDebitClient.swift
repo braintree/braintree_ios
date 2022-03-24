@@ -12,11 +12,14 @@ import BraintreeCore
     
     public weak var delegate: BTViewControllerPresentingDelegate?
     
+    var sepaDirectDebitAPI: SEPADirectDebitAPI
+    
     ///  Creates a SEPA Debit client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+        self.sepaDirectDebitAPI = SEPADirectDebitAPI()
     }
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -29,8 +32,14 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
-        // create mandate request from SEPADebitRequest properties
-        // call internal function to start ASWebAuthenticationSession
+        createMandate(request: request) { result, error in
+            if error != nil {
+                completion(nil, error)
+                return
+            } else if result != nil {
+                // TODO: future PR start ASWebAuthenticationSession with result.approvalURL
+            }
+        }
     }
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -42,7 +51,22 @@ import BraintreeCore
         request: BTSEPADirectDebitRequest,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
-        // create mandate request from SEPADebitRequest properties
-        // call internal function to start ASWebAuthenticationSession
+        createMandate(request: request) { result, error in
+            if error != nil {
+                completion(nil, error)
+                return
+            } else if result != nil {
+                // TODO: future PR start ASWebAuthenticationSession with result.approvalURL
+            }
+        }
+    }
+    
+    func createMandate(
+        request: BTSEPADirectDebitRequest,
+        completion: @escaping (CreateMandateResult?, Error?) -> Void
+    ) {
+        sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request) { result, error in
+            completion(result, error)
+        }
     }
 }
