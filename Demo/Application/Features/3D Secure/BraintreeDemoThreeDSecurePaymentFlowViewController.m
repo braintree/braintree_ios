@@ -7,6 +7,8 @@
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
 @property (nonatomic, strong) BTCardFormView *cardFormView;
+@property (nonatomic, strong) UIButton *autofillButton3DS1;
+@property (nonatomic, strong) UIButton *autofillButton3DS2;
 @property (nonatomic) int callbackCount;
 
 @end
@@ -21,12 +23,32 @@
     [self.view addSubview:self.cardFormView];
     self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardFormView.hidePhoneNumberField = YES;
+    
+    self.autofillButton3DS1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.autofillButton3DS1.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.autofillButton3DS1 setTitle:NSLocalizedString(@"Autofill 3DS v1 Card", nil) forState:UIControlStateNormal];
+    [self.autofillButton3DS1 addTarget:self action:@selector(tappedToAutofill3DS1Card) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.autofillButton3DS1];
+    
+    self.autofillButton3DS2 = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.autofillButton3DS2.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.autofillButton3DS2 setTitle:NSLocalizedString(@"Autofill 3DS v2 Card", nil) forState:UIControlStateNormal];
+    [self.autofillButton3DS2 addTarget:self action:@selector(tappedToAutofill3DS2Card) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.autofillButton3DS2];
 
     [NSLayoutConstraint activateConstraints:@[
         [self.cardFormView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
         [self.cardFormView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
         [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
-        [self.cardFormView.heightAnchor constraintEqualToConstant:200]
+        [self.cardFormView.heightAnchor constraintEqualToConstant:200],
+        
+        [self.autofillButton3DS1.topAnchor constraintEqualToAnchor:self.cardFormView.bottomAnchor constant:10],
+        [self.autofillButton3DS1.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:10],
+        [self.autofillButton3DS1.heightAnchor constraintEqualToConstant:30],
+        
+        [self.autofillButton3DS2.topAnchor constraintEqualToAnchor:self.autofillButton3DS1.bottomAnchor constant:10],
+        [self.autofillButton3DS2.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:10],
+        [self.autofillButton3DS2.heightAnchor constraintEqualToConstant:30]
     ]];
 }
 
@@ -47,6 +69,8 @@
     [threeDSecureButtonsContainer addSubview:self.callbackCountLabel];
     self.callbackCount = 0;
     [self updateCallbackCount];
+    
+    self.centerYConstant = 100;
 
     [NSLayoutConstraint activateConstraints:@[
         [verifyNewCardButton.topAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.topAnchor],
@@ -83,6 +107,33 @@
 
 - (void)updateCallbackCount {
     self.callbackCountLabel.text = [NSString stringWithFormat:@"Callback Count: %i", self.callbackCount];
+}
+
+-(void)tappedToAutofill3DS1Card {
+    self.cardFormView.cardNumberTextField.text = @"4000000000000002";
+    self.cardFormView.expirationTextField.text = self.generateFutureDate;
+    self.cardFormView.cvvTextField.text = @"123";
+    self.cardFormView.postalCodeTextField.text = @"12345";
+}
+
+-(void)tappedToAutofill3DS2Card {
+    self.cardFormView.cardNumberTextField.text = @"4000000000001091";
+    self.cardFormView.expirationTextField.text = self.generateFutureDate;
+    self.cardFormView.cvvTextField.text = @"123";
+    self.cardFormView.postalCodeTextField.text = @"12345";
+}
+
+-(NSString *)generateFutureDate {
+    NSString *monthString = @"12";
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yy"];
+
+    NSDate *futureYear = [[NSCalendar currentCalendar]dateByAddingUnit:NSCalendarUnitYear value:3 toDate:[NSDate date] options:0];
+    NSString *yearString = [dateFormatter stringFromDate:futureYear];
+    NSString *futureDateString = [NSString stringWithFormat:@"%@/%@", monthString, yearString];
+
+    return futureDateString;
 }
 
 /// "Tokenize and Verify New Card"

@@ -56,6 +56,28 @@ import BraintreeCore.Private
             }
         }
     }
+    
+    public override func get(_ endpoint: String, parameters: [String : String]?, shouldCache: Bool, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+        GETRequestCount += 1
+        lastRequestEndpoint = endpoint
+        lastRequestParameters = parameters
+        lastRequestMethod = "GET"
+
+        if cannedError != nil {
+            dispatchQueue.async {
+                completionBlock!(nil, nil, self.cannedError)
+            }
+        } else {
+            let httpResponse = HTTPURLResponse.init(url: URL.init(string: endpoint)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+            dispatchQueue.async {
+                if endpoint.contains("v1/configuration") {
+                    completionBlock!(self.cannedConfiguration, httpResponse, nil)
+                } else {
+                    completionBlock!(self.cannedResponse, httpResponse, nil)
+                }
+            }
+        }
+    }
 
     public override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1

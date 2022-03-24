@@ -51,7 +51,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
-        _apiClient = [apiClient copyWithSource:BTClientMetadataSourceVenmoApp integration:apiClient.metadata.integration];
+        _apiClient = apiClient;
     }
     return self;
 }
