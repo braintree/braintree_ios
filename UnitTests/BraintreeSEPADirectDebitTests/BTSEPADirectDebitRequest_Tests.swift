@@ -22,8 +22,8 @@ class BTSEPADirectDebitRequest_Tests: XCTestCase {
                 }
             },
             "merchant_account_id":"eur_pwpp_multi_account_merchant_account",
-            "cancel_url":"https://example.com",
-            "return_url":"https://example.com"
+            "cancel_url":"com.apple.dt.xctest.tool://sepa/cancel",
+            "return_url":"com.apple.dt.xctest.tool://sepa/success"
         }
         """
             .components(separatedBy: .newlines)
@@ -48,7 +48,7 @@ class BTSEPADirectDebitRequest_Tests: XCTestCase {
         )
         
         let encodedRequest = try XCTUnwrap(JSONEncoder().encode(sepaDirectDebitRequest))
-        let encodedRequestData = String(data: encodedRequest, encoding: .utf8)?.replacingOccurrences(of: "\\/\\/", with: "//")
+        let encodedRequestData = String(data: encodedRequest, encoding: .utf8)?.replacingOccurrences(of: "\\/\\/", with: "//").replacingOccurrences(of: "\\", with: "")
 
         XCTAssertEqual(encodedRequestData, expectedJSON)
     }

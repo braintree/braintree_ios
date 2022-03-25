@@ -21,12 +21,20 @@ class SEPADirectDebitAPI {
                 return
             }
             
-            let result = try? JSONDecoder().decode(CreateMandateResult.self, from: data)
-            DispatchQueue.main.async {
-                completion(result, nil)
+            do {
+                let result = try JSONDecoder().decode(CreateMandateResult.self, from: data)
+                DispatchQueue.main.async {
+                    completion(result, nil)
+                }
+            } catch {
+                completion(nil, SEPADirectDebitError.invalidResult)
             }
         }
         task.resume()
+    }
+    
+    func tokenize(ibanLastFour: String, customerId: String, bankReferenceToken: String, mandateType: String) {
+        // TODO: implement (future PR)
     }
     
     func buildRequest(sepaDirectDebitRequest: BTSEPADirectDebitRequest) -> URLRequest {

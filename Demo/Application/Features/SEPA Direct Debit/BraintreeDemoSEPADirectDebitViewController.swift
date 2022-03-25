@@ -1,7 +1,8 @@
 import UIKit
+import AuthenticationServices
 import BraintreeSEPADirectDebit
 
-class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController {
+class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController, ASWebAuthenticationPresentationContextProviding {
     private let sepaDirectDebitClient: BTSEPADirectDebitClient
     private let sepaDirectDebitButton = UIButton(type: .system)
     
@@ -32,8 +33,18 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - ASWebAuthenticationPresentationContextProviding conformance
+
+    @available(iOS 13.0, *)
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+      let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+      return window ?? ASPresentationAnchor()
+    }
+
+    // MARK: - SEPA Direct Debit implementation
+    
     @objc func sepaDirectDebitButtonTapped() {
-        self.progressBlock("Tapped SEPA Debit")
+        self.progressBlock("Tapped SEPA Direct Debit")
 
         let billingAddress = BTPostalAddress()
         billingAddress.streetAddress = "Kantstraße 70"
@@ -51,19 +62,27 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "eur_pwpp_multi_account_merchant_account"
         
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-            self.sepaDirectDebitButton.setTitle("Processing...", for: .disabled)
-            self.sepaDirectDebitButton.isEnabled = false
-
-            if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
-            } else if let error = error {
-                self.progressBlock(error.localizedDescription)
-            } else {
-                self.progressBlock("Canceled")
+        if #available(iOS 13.0, *) {
+            sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
+                if let sepaDirectDebitNonce = sepaDirectDebitNonce {
+                    self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
+                } else if let error = error {
+                    self.progressBlock(error.localizedDescription)
+                } else {
+                    self.progressBlock("Canceled")
+                }
+            }
+        } else {
+            sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
+                if let sepaDirectDebitNonce = sepaDirectDebitNonce {
+                    self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
+                } else if let error = error {
+                    self.progressBlock(error.localizedDescription)
+                } else {
+                    self.progressBlock("Canceled")
+                }
             }
         }
-        self.sepaDirectDebitButton.isEnabled = true
     }
     
     private func generateRandomCustomerID() -> String {
@@ -71,7 +90,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     }
     
     private func generateRandomIBAN() -> String {
-        let length = 24
+        let length = 25
         let characters = "0123456789"
         let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
         let randomString = String(randomCharacters)

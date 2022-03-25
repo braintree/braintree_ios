@@ -1,11 +1,18 @@
 import Foundation
 import AuthenticationServices
+@testable import BraintreeSEPADirectDebit
 
-@available(iOS 13.0, *)
 class MockWebAuthenticationSession: WebAuthenticationSession {
 
     var cannedResponseURL: URL?
     var cannedErrorResponse: Error?
-
-    // TODO: add mock implementation
+    
+    @available(iOS 13.0, *)
+    override func start(url: URL, context: ASWebAuthenticationPresentationContextProviding, completion: @escaping (URL?, Error?) -> Void) {
+        completion(cannedResponseURL, cannedErrorResponse)
+    }
+    
+    override func start(url: URL, completion: @escaping (URL?, Error?) -> Void) {
+        completion(cannedResponseURL, cannedErrorResponse)
+    }
 }

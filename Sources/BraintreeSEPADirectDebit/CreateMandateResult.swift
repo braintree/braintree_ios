@@ -14,6 +14,11 @@ struct CreateMandateResult: Decodable {
         case mandateType
     }
     
+    /// Defaulting the approval URL to the string "null" if the API returns nil for this field because the mandate has already been approved.
+    /// Swift automatically converts the string "null" to nil, so we want to convert it back to indicate that the mandate was already approved.
+    /// This also allows us to still handle an actually nil approval URL if needed vs treating it like an already approved mandate.
+    static let mandateAlreadyApprovedURLString: String = "null"
+    
     /// The approval URL used to present the mandate to the customer.
     let approvalURL: String
 
@@ -28,7 +33,7 @@ struct CreateMandateResult: Decodable {
 
     /// The `BTSEPADirectDebitMandateType` of either `.recurring` or `.oneOff`
     let mandateType: String
-    
+
     init(
         approvalURL: String,
         ibanLastFour: String,
@@ -49,7 +54,7 @@ struct CreateMandateResult: Decodable {
         let bodyContainer = try messageContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .body)
         let sepaDebitContainer = try bodyContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .sepaDebitAccount)
         
-        approvalURL = try sepaDebitContainer.decode(String.self, forKey: .approvalURL)
+        approvalURL = try sepaDebitContainer.decodeIfPresent(String.self, forKey: .approvalURL) ?? CreateMandateResult.mandateAlreadyApprovedURLString
         ibanLastFour = try sepaDebitContainer.decode(String.self, forKey: .ibanLastFour)
         customerID = try sepaDebitContainer.decode(String.self, forKey: .customerID)
         bankReferenceToken = try sepaDebitContainer.decode(String.self, forKey: .bankReferenceToken)
