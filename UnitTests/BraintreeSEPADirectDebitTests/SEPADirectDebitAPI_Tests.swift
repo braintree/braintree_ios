@@ -6,7 +6,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     var billingAddress = BTPostalAddress()
     var sepaDirectDebitRequest = BTSEPADirectDebitRequest()
     var successApprovalURL: String = ""
-    var createMandateResult = CreateMandateResult(
+    var mockCreateMandateResult = CreateMandateResult(
         approvalURL: """
         https://api.test19.stage.paypal.com/directdebit/mandate/authorize?cart_id=1JH42426EL748934W&auth_code=C21_A.AAdcUj4loKRxLtfw336KxbGY7dA7UsLJQTpZU3cE2h49eKkhN1OjFcLxxxzOGVzRiwOzGLlS_cS2BU4ZLKjMnR6lZSG2iQ
         """,
@@ -190,7 +190,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         
         api.cannedTokenizePaymentMethodNonce = BTSEPADirectDebitNonce(json: json)
         
-        api.tokenize(createMandateResult: createMandateResult) { nonce, error in
+        api.tokenize(createMandateResult: mockCreateMandateResult) { nonce, error in
             if error != nil {
                 XCTFail("This request should be successful.")
             } else if nonce != nil {
@@ -207,7 +207,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         let api = MockSEPADirectDebitAPI()
         api.cannedTokenizeError = NSError(domain: "CannedError", code: 0, userInfo: [NSLocalizedDescriptionKey: "This is a fake tokenizeJSONSerializationFailure error"])
         
-        api.tokenize(createMandateResult: createMandateResult) { nonce, error in
+        api.tokenize(createMandateResult: mockCreateMandateResult) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
@@ -217,5 +217,4 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
             }
         }
     }
-    
 }
