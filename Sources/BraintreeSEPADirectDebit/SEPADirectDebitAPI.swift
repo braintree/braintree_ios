@@ -73,12 +73,13 @@ class SEPADirectDebitAPI {
     
     func buildURLRequest(withComponent component: String, httpBody: Data) -> URLRequest {
         let baseURL = URL(string: "http://localhost:3000")?.appendingPathComponent(component)
+
         var request = URLRequest(url: (baseURL)!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("development_testing_pwpp_multi_account_merchant", forHTTPHeaderField: "Client-Key")
         request.httpMethod = "POST"
         request.httpBody = httpBody
-        
+
         return request
     }
 }

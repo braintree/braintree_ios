@@ -5,34 +5,34 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
-    
+
     /// The result was invalid
     case invalidResult
-    
+
     /// SEPA Direct Debit flow was canceled by the user.
     case webFlowCanceled
-    
+
     /// SEPA Direct Debit presentation context misconfiguration.
     case presentationContextInvalid
-    
+
     /// The URL returned from the web flow was invalid.
     case resultURLInvalid
 
     /// The result of the create mandate request was nil and no error was returned.
     case resultReturnedNil
-    
+
     /// The approval URL is invalid.
     case approvalURLInvalid
-    
+
     /// The web authentication session result was nil and no error was returned.
     case authenticationResultNil
 
     /// The BTSEPADirectDebitRequest could not be encoded.
     case createMandateEncodingFailure
-    
+
     /// The tokenization request could not be serialized.
     case tokenizeJSONSerializationFailure
-    
+
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
     }
