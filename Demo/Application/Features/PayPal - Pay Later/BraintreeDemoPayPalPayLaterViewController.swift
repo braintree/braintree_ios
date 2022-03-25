@@ -38,4 +38,3 @@ class BraintreeDemoPayPalPayLaterViewController: BraintreeDemoPaymentButtonBaseV
         }
     }
 }
-
