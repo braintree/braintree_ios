@@ -6,7 +6,7 @@ import BraintreeCore
 #endif
 
 /// Used to integrate with SEPA Direct Debit.
-@objc public class BTSEPADirectDebitClient: NSObject {
+@objcMembers public class BTSEPADirectDebitClient: NSObject {
 
     let apiClient: BTAPIClient
     
