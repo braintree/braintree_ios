@@ -39,34 +39,47 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.selected.started")
         createMandate(request: request) { createMandateResult, error in
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.requested")
             guard error == nil else {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
                 completion(nil, error)
                 return
             }
 
             guard let createMandateResult = createMandateResult else {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
                 completion(nil, SEPADirectDebitError.resultReturnedNil)
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
             if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
+                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
                     guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                        self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
                         completion(nil, error)
                         return
                     }
+                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
                     completion(sepaDirectDebitNonce, nil)
                 }
             } else if let url = URL(string: createMandateResult.approvalURL) {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSession(url: url, context: context) { success, error in
+                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
                     switch success {
                     case true:
                         self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
+                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
                             guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
                                 completion(nil, error)
                                 return
                             }
+                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
                             completion(sepaDirectDebitNonce, nil)
                         }
                     case false:
@@ -75,7 +88,8 @@ import BraintreeCore
                     }
                 }
             } else {
-              completion(nil, SEPADirectDebitError.approvalURLInvalid)
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
+                completion(nil, SEPADirectDebitError.approvalURLInvalid)
             }
         }
     }
@@ -89,34 +103,47 @@ import BraintreeCore
         request: BTSEPADirectDebitRequest,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.selected.started")
         createMandate(request: request) { createMandateResult, error in
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.requested")
             guard error == nil else {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
                 completion(nil, error)
                 return
             }
 
             guard let createMandateResult = createMandateResult else {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
                 completion(nil, SEPADirectDebitError.resultReturnedNil)
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
             if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
+                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
                     guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                        self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
                         completion(nil, error)
                         return
                     }
+                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
                     completion(sepaDirectDebitNonce, nil)
                 }
             } else if let url = URL(string: createMandateResult.approvalURL) {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSessionWithoutContext(url: url) { success, error in
+                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
                     switch success {
                     case true:
                         self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
+                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
                             guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
                                 completion(nil, error)
                                 return
                             }
+                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
                             completion(sepaDirectDebitNonce, nil)
                         }
                     case false:
@@ -125,7 +152,8 @@ import BraintreeCore
                     }
                 }
             } else {
-              completion(nil, SEPADirectDebitError.approvalURLInvalid)
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
+                completion(nil, SEPADirectDebitError.approvalURLInvalid)
             }
         }
     }
@@ -172,9 +200,11 @@ import BraintreeCore
         if let error = error {
             switch error {
             case ASWebAuthenticationSessionError.canceledLogin:
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.canceled")
                 completion(false, SEPADirectDebitError.webFlowCanceled)
                 return
             default:
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.presentation-context-invalid")
                 completion(false, SEPADirectDebitError.presentationContextInvalid)
                 return
             }
@@ -185,8 +215,10 @@ import BraintreeCore
                       completion(false, SEPADirectDebitError.resultURLInvalid)
                       return
                   }
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.success")
             completion(true, nil)
         } else {
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.failure")
             completion(false, SEPADirectDebitError.authenticationResultNil)
         }
     }
