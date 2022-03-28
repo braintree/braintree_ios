@@ -69,7 +69,6 @@ import BraintreeCore
             } else if let url = URL(string: createMandateResult.approvalURL) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSession(url: url, context: context) { success, error in
-                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
                     switch success {
                     case true:
                         self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
@@ -133,7 +132,6 @@ import BraintreeCore
             } else if let url = URL(string: createMandateResult.approvalURL) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSessionWithoutContext(url: url) { success, error in
-                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
                     switch success {
                     case true:
                         self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
@@ -187,6 +185,7 @@ import BraintreeCore
         completion: @escaping (Bool, Error?) -> Void
     ) {
         self.webAuthenticationSession.start(url: url, context: context) { url, error in
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
     }
@@ -212,6 +211,7 @@ import BraintreeCore
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {
+                      self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.failure")
                       completion(false, SEPADirectDebitError.resultURLInvalid)
                       return
                   }
