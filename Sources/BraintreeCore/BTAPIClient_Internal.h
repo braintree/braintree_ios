@@ -40,11 +40,6 @@ typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
 @property (nonatomic, strong) BTAnalyticsService *analyticsService;
 
 /**
- Sends this event and all queued analytics events. Use `queueAnalyticsEvent` for low priority events.
-*/
-- (void)sendAnalyticsEvent:(NSString *)eventName;
-
-/**
  Queues an analytics event to be sent.
  */
 - (void)queueAnalyticsEvent:(NSString *)eventName;

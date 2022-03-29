@@ -62,7 +62,7 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .authenticationResultNil:
             return 7
-            
+
         case .encodingFailure:
             return 8
             
