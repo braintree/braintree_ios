@@ -41,7 +41,6 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.selected.started")
         createMandate(request: request) { createMandateResult, error in
-            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.requested")
             guard error == nil else {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
                 completion(nil, error)
@@ -56,31 +55,15 @@ import BraintreeCore
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
             if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
-                self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
-                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
-                    guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
-                        self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
-                        completion(nil, error)
-                        return
-                    }
-                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
-                    completion(sepaDirectDebitNonce, nil)
-                }
+                self.tokenize(createMandateResult: createMandateResult, completion: completion)
+                return
             } else if let url = URL(string: createMandateResult.approvalURL) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSession(url: url, context: context) { success, error in
                     switch success {
                     case true:
-                        self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
-                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
-                            guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
-                                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
-                                completion(nil, error)
-                                return
-                            }
-                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
-                            completion(sepaDirectDebitNonce, nil)
-                        }
+                        self.tokenize(createMandateResult: createMandateResult, completion: completion)
+                        return
                     case false:
                         completion(nil, error)
                         return
@@ -104,7 +87,6 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.selected.started")
         createMandate(request: request) { createMandateResult, error in
-            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.requested")
             guard error == nil else {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
                 completion(nil, error)
@@ -119,31 +101,15 @@ import BraintreeCore
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
             if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
-                self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
-                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
-                    guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
-                        self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
-                        completion(nil, error)
-                        return
-                    }
-                    self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
-                    completion(sepaDirectDebitNonce, nil)
-                }
+                self.tokenize(createMandateResult: createMandateResult, completion: completion)
+                return
             } else if let url = URL(string: createMandateResult.approvalURL) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSessionWithoutContext(url: url) { success, error in
                     switch success {
                     case true:
-                        self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
-                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
-                            guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
-                                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
-                                completion(nil, error)
-                                return
-                            }
-                            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
-                            completion(sepaDirectDebitNonce, nil)
-                        }
+                        self.tokenize(createMandateResult: createMandateResult, completion: completion)
+                        return
                     case false:
                         completion(nil, error)
                         return
@@ -156,14 +122,31 @@ import BraintreeCore
         }
     }
     
-    /// Calls `SEPADirectDebitAPI.tokenize` to create the mandate and returns the `approvalURL` in the `CreateMandateResult`
+    /// Calls `SEPADirectDebitAPI.createMandate` to create the mandate and returns the `approvalURL` in the `CreateMandateResult`
     /// that is used to display the mandate to the user during the web flow.
     func createMandate(
         request: BTSEPADirectDebitRequest,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.requested")
         sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request) { result, error in
             completion(result, error)
+        }
+    }
+    
+    func tokenize(
+        createMandateResult: CreateMandateResult,
+        completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
+    ) {
+        self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
+        self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
+            guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
+                completion(nil, error)
+                return
+            }
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
+            completion(sepaDirectDebitNonce, nil)
         }
     }
     
@@ -172,6 +155,7 @@ import BraintreeCore
         url: URL,
         completion: @escaping (Bool, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
         self.webAuthenticationSession.start(url: url) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
@@ -184,8 +168,8 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
         self.webAuthenticationSession.start(url: url, context: context) { url, error in
-            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
     }
