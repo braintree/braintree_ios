@@ -149,16 +149,16 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         }
     }
     
-    func testCreateMandate_onInvalidResponseJSON_returnsError() {
+    func testCreateMandate_onInvalidResult_returnsError() {
         // TODO: in a future PR we should be testing the SEPADirectDebitAPI with the MockAPIClient here instead of MockSEPADirectDebitAPI
         let api = MockSEPADirectDebitAPI()
-        api.cannedCreateMandateError = NSError(domain: "CannedError", code: 0, userInfo: [NSLocalizedDescriptionKey: "This is a fake error"])
+        api.cannedCreateMandateError = SEPADirectDebitError.invalidResult
         
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { result, error in
             if error != nil, let error = error as NSError? {
-                XCTAssertEqual(error.domain, "CannedError")
-                XCTAssertEqual(error.code, 0)
-                XCTAssertEqual(error.localizedDescription, "This is a fake error")
+                XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
+                XCTAssertEqual(error.code, SEPADirectDebitError.invalidResult.errorCode)
+                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.invalidResult.localizedDescription)
             } else if result != nil {
                 XCTFail("This request should fail.")
             }
@@ -205,13 +205,29 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     func testTokenize_onInvalidResponseJSON_returnsError() {
         // TODO: in a future PR we should be testing the SEPADirectDebitAPI with the MockAPIClient here instead of MockSEPADirectDebitAPI
         let api = MockSEPADirectDebitAPI()
-        api.cannedTokenizeError = NSError(domain: "CannedError", code: 0, userInfo: [NSLocalizedDescriptionKey: "This is a fake tokenizeJSONSerializationFailure error"])
+        api.cannedTokenizeError = SEPADirectDebitError.jsonSerializationFailure
         
         api.tokenize(createMandateResult: mockCreateMandateResult) { nonce, error in
             if error != nil, let error = error as NSError? {
-                XCTAssertEqual(error.domain, "CannedError")
-                XCTAssertEqual(error.code, 0)
-                XCTAssertEqual(error.localizedDescription, "This is a fake tokenizeJSONSerializationFailure error")
+                XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
+                XCTAssertEqual(error.code, SEPADirectDebitError.jsonSerializationFailure.errorCode)
+                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.jsonSerializationFailure.localizedDescription)
+            } else if nonce != nil {
+                XCTFail("This request should fail.")
+            }
+        }
+    }
+    
+    func testCreateMandate_onEncodingFaulure_returnsError() {
+        // TODO: in a future PR we should be testing the SEPADirectDebitAPI with the MockAPIClient here instead of MockSEPADirectDebitAPI
+        let api = MockSEPADirectDebitAPI()
+        api.cannedTokenizeError = SEPADirectDebitError.encodingFailure
+        
+        api.tokenize(createMandateResult: mockCreateMandateResult) { nonce, error in
+            if error != nil, let error = error as NSError? {
+                XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
+                XCTAssertEqual(error.code, SEPADirectDebitError.encodingFailure.errorCode)
+                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.encodingFailure.localizedDescription)
             } else if nonce != nil {
                 XCTFail("This request should fail.")
             }

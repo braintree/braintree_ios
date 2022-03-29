@@ -12,7 +12,7 @@ class SEPADirectDebitAPI {
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
         guard let sepaDirectDebitData = try? JSONEncoder().encode(sepaDirectDebitRequest) else {
-            completion(nil, SEPADirectDebitError.createMandateEncodingFailure)
+            completion(nil, SEPADirectDebitError.encodingFailure)
             return
         }
 
@@ -49,7 +49,7 @@ class SEPADirectDebitAPI {
         ]
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
-            completion(nil, SEPADirectDebitError.tokenizeJSONSerializationFailure)
+            completion(nil, SEPADirectDebitError.jsonSerializationFailure)
             return
         }
 

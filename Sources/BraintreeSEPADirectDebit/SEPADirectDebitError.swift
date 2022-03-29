@@ -28,10 +28,10 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
     case authenticationResultNil
 
     /// The BTSEPADirectDebitRequest could not be encoded.
-    case createMandateEncodingFailure
+    case encodingFailure
 
-    /// The tokenization request could not be serialized.
-    case tokenizeJSONSerializationFailure
+    /// The request could not be serialized.
+    case jsonSerializationFailure
 
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
@@ -63,10 +63,10 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
         case .authenticationResultNil:
             return 7
             
-        case .createMandateEncodingFailure:
+        case .encodingFailure:
             return 8
             
-        case .tokenizeJSONSerializationFailure:
+        case .jsonSerializationFailure:
             return 9
         }
     }
@@ -97,11 +97,11 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
         case .authenticationResultNil:
             return "The web authentication session result was nil and no error was returned."
 
-        case .createMandateEncodingFailure:
+        case .encodingFailure:
             return "The BTSEPADirectDebitRequest could not be encoded."
             
-        case .tokenizeJSONSerializationFailure:
-            return "The tokenization request could not be serialized."
+        case .jsonSerializationFailure:
+            return "The request could not be serialized."
         }
     }
 }
