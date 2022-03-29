@@ -13,7 +13,7 @@ struct CreateMandateResult: Decodable {
         case bankReferenceToken
         case mandateType
     }
-    
+
     /// Defaulting the approval URL to the string "null" if the API returns nil for this field because the mandate has already been approved.
     /// Swift automatically converts the string "null" to nil, so we want to convert it back to indicate that the mandate was already approved.
     /// This also allows us to still handle an actually nil approval URL if needed vs treating it like an already approved mandate.

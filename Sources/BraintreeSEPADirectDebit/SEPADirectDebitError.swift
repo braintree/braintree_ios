@@ -5,27 +5,33 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
-    
+
     /// The result was invalid
     case invalidResult
-    
+
     /// SEPA Direct Debit flow was canceled by the user.
     case webFlowCanceled
-    
+
     /// SEPA Direct Debit presentation context misconfiguration.
     case presentationContextInvalid
-    
+
     /// The URL returned from the web flow was invalid.
     case resultURLInvalid
-    
+
     /// The result of the create mandate request was nil and no error was returned.
     case resultReturnedNil
-    
+
     /// The approval URL is invalid.
     case approvalURLInvalid
-    
+
     /// The web authentication session result was nil and no error was returned.
     case authenticationResultNil
+
+    /// The BTSEPADirectDebitRequest could not be encoded.
+    case encodingFailure
+
+    /// The request could not be serialized.
+    case jsonSerializationFailure
 
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
@@ -47,7 +53,7 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .resultURLInvalid:
             return 4
-            
+
         case .resultReturnedNil:
             return 5
             
@@ -56,6 +62,12 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .authenticationResultNil:
             return 7
+            
+        case .encodingFailure:
+            return 8
+            
+        case .jsonSerializationFailure:
+            return 9
         }
     }
 
@@ -75,7 +87,7 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .resultURLInvalid:
             return "The URL returned from the web flow result was invalid."
-            
+
         case .resultReturnedNil:
             return "The result of the create mandate request was nil and no error was returned."
             
@@ -84,6 +96,12 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .authenticationResultNil:
             return "The web authentication session result was nil and no error was returned."
+
+        case .encodingFailure:
+            return "The BTSEPADirectDebitRequest could not be encoded."
+            
+        case .jsonSerializationFailure:
+            return "The request could not be serialized."
         }
     }
 }
