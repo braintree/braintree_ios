@@ -67,8 +67,7 @@ static NSString *BraintreeVersion = @"2018-03-06";
         return;
     }
 
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-    BTJSON *body = [[BTJSON alloc] initWithValue:json];
+    BTJSON *body = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
 
     // Success case
     if ([body asDictionary] && ![body[@"errors"] asArray]) {
