@@ -3,6 +3,7 @@
 ## unreleased
 * PPDataCollector
   * Allow passing isSandbox bool for data collection in `clientMetadataID` and `collectPayPalDeviceData` functions
+* Fix potential crash when http request fails (no error, but empty body)
 
 ## 5.8.0 (2022-03-24)
 * PPRiskMagnes
