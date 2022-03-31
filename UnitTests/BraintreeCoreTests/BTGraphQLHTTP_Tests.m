@@ -514,4 +514,27 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
+- (void)testHttpError_returnsError {
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        return YES;
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        // Ideally would test with both nil and empty data, but OHTTPStubs doesn't support nil data.
+        return [HTTPStubsResponse responseWithData:[NSData data] statusCode:500 headers:@{}];
+    }];
+
+    id expectedErrorBody = @{
+        @"error": @{@"message": @"An unexpected error occurred"},
+    };
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
+    [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
+        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqual(error.code, BTHTTPErrorCodeServerError);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
 @end

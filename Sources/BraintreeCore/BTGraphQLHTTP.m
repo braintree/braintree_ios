@@ -63,11 +63,12 @@ static NSString *BraintreeVersion = @"2018-03-06";
 {
     // Network error
     if (error) {
-        [self callCompletionBlock:completionBlock body:nil response:nil error:error];
+        [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
         return;
     }
 
-    BTJSON *body = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data?:[NSData data] options:0 error:NULL];
+    BTJSON *body = [[BTJSON alloc] initWithValue:json];
 
     // Success case
     if ([body asDictionary] && ![body[@"errors"] asArray]) {
@@ -173,11 +174,6 @@ static NSString *BraintreeVersion = @"2018-03-06";
 
     // Perform the actual request
     NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
-            return;
-        }
-
         [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
     }];
     [task resume];
