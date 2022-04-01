@@ -1,4 +1,5 @@
 #import "BraintreeDemoBTDataCollectorViewController.h"
+#import "Demo-Swift.h"
 @import BraintreeDataCollector;
 @import PayPalDataCollector;
 @import CoreLocation;
@@ -81,7 +82,18 @@
 }
 
 - (IBAction)tappedCollectPayPal {
-    self.dataLabel.text = [PPDataCollector collectPayPalDeviceData];
+    BOOL isSandbox;
+    
+    switch (BraintreeDemoSettings.currentEnvironment) {
+        case BraintreeDemoEnvironmentSandbox:
+            isSandbox = TRUE;
+        case BraintreeDemoEnvironmentProduction:
+            isSandbox = FALSE;
+        case BraintreeDemoEnvironmentCustom:
+            isSandbox = FALSE;
+    };
+    
+    self.dataLabel.text = [PPDataCollector collectPayPalDeviceDataWithIsSandbox:isSandbox];
     self.progressBlock(@"Collected PayPal clientMetadataID!");
 }
 
