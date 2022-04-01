@@ -62,4 +62,19 @@ class PPDataCollector_Tests: XCTestCase {
         XCTAssertNotNil(dataCollector.collectPayPalDeviceData(isSandbox: false))
         XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.LIVE)
     }
+    
+    func testSandboxGenerateClientMetadataID_returnsEnvironmentSandbox() {
+        let dataCollector = PPDataCollector.self
+
+        XCTAssertNotNil(dataCollector.sandboxGenerateClientMetadataID())
+        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.SANDBOX)
+    }
+    
+    func testGenerateClientMetadataID_returnsEnvironmentProduction() {
+        let dataCollector = PPDataCollector.self
+
+        XCTAssertNotNil(dataCollector.generateClientMetadataID())
+        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.LIVE)
+
+    }
 }
