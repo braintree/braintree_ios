@@ -21,6 +21,16 @@ import Security
     @objc public class func clientMetadataID(_ pairingID: String?) -> String {
         clientMetadataID(pairingID, isSandbox: false)
     }
+    
+    /// Returns a client metadata ID with the environment set to use Sandbox.
+    /// - Parameters:
+    ///   - pairingID: A pairing ID to associate with this clientMetadataID must be 10-32 chars long or null.
+    /// - Returns: A client metadata ID to send as a header
+    /// - Note: This returns a raw client metadata ID, which is not the correct format for device data when creating a transaction. Instead, it is recommended to use `collectPayPalDeviceData`.
+    // NEXT_MAJOR_VERSION: remove this function
+    @objc public class func sandboxClientMetadataID(_ pairingID: String?) -> String {
+        clientMetadataID(pairingID, isSandbox: true)
+    }
 
     /// Returns a client metadata ID.
     /// - Parameters:
