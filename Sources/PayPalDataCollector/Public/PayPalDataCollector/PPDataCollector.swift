@@ -69,17 +69,17 @@ import Security
 
     // NEXT_MAJOR_VERSION: make this not a class function
     @objc class func generateClientMetadataID(isSandbox: Bool) -> String {
-        return PPDataCollector.generateClientMetadataID("", disableBeacon: false, isSandbox: isSandbox, data: nil)
+        PPDataCollector.generateClientMetadataID("", disableBeacon: false, isSandbox: isSandbox, data: nil)
     }
 
     // MARK: - Helper methods for BTDataCollector
 
     @objc class func generateClientMetadataID() -> String {
-        return PPDataCollector.generateClientMetadataID("", disableBeacon: false, isSandbox: false, data: nil)
+        PPDataCollector.generateClientMetadataID("", disableBeacon: false, isSandbox: false, data: nil)
     }
 
     @objc class func sandboxGenerateClientMetadataID() -> String {
-        return PPDataCollector.generateClientMetadataID("", disableBeacon: false, isSandbox: true, data: nil)
+        PPDataCollector.generateClientMetadataID("", disableBeacon: false, isSandbox: true, data: nil)
     }
 
     // NEXT_MAJOR_VERSION: make this not a static function
