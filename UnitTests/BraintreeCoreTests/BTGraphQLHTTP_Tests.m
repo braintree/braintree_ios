@@ -522,15 +522,12 @@
         return [HTTPStubsResponse responseWithData:[NSData data] statusCode:500 headers:@{}];
     }];
 
-    id expectedErrorBody = @{
-        @"error": @{@"message": @"An unexpected error occurred"},
-    };
-
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
     [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-        XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
+        XCTAssertNil(body);
+        XCTAssertEqualObjects(error.userInfo[NSLocalizedDescriptionKey], @"An unexpected error occurred with the HTTP request.");
         XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
-        XCTAssertEqual(error.code, BTHTTPErrorCodeServerError);
+        XCTAssertEqual(error.code, BTHTTPErrorCodeUnknown);
         [expectation fulfill];
     }];
 
