@@ -135,8 +135,12 @@ static Class PayPalDataCollectorClass;
 + (NSString *)generatePayPalClientMetadataID:(BOOL)isSandbox {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-    if (PayPalDataCollectorClass && isSandbox ? [PayPalDataCollectorClass respondsToSelector:@selector(sandboxGenerateClientMetadataID)] : [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
-        return isSandbox ? [PayPalDataCollectorClass performSelector:@selector(sandboxGenerateClientMetadataID)] : [PayPalDataCollectorClass performSelector:@selector(generateClientMetadataID)];
+    if (PayPalDataCollectorClass) {
+        if (isSandbox && [PayPalDataCollectorClass respondsToSelector:@selector(sandboxGenerateClientMetadataID)]) {
+            return [PayPalDataCollectorClass performSelector:@selector(sandboxGenerateClientMetadataID)];
+        } else if (!isSandbox && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
+            return [PayPalDataCollectorClass performSelector:@selector(generateClientMetadataID)];
+        }
     }
 #pragma clang diagnostic pop
     
