@@ -59,12 +59,13 @@
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
     BTLocalPaymentRequest *localPaymentRequest = (BTLocalPaymentRequest *)request;
-    self.correlationID = [PPDataCollector clientMetadataID:nil];
     [apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *configurationError) {
         if (configurationError) {
             [delegate onPaymentComplete:nil error:configurationError];
             return;
         }
+
+        self.correlationID = [PPDataCollector clientMetadataID:nil isSandbox:[configuration.environment isEqualToString:@"sandbox"]];
 
         NSError *integrationError;
 

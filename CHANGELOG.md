@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* PPDataCollector
+  * Allow passing isSandbox bool for data collection in `clientMetadataID` and `collectPayPalDeviceData` functions
+
 ## 5.8.0 (2022-03-24)
 * PPRiskMagnes
   * Update PPRiskMagnes to 5.4.0
