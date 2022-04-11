@@ -287,61 +287,49 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     // Note: Uses dispatch_semaphore to block the configuration queue when the configuration fetch
     //       request is waiting to return. In this context, it is OK to block, as the configuration
     //       queue is a background queue to guarantee atomic access to the remote configuration resource.
-    dispatch_async(self.configurationQueue, ^{
-        __block NSError *fetchError;
-
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        __block BTConfiguration *configuration;
-        NSString *configPath = @"v1/configuration"; // Default for tokenizationKey
-        if (self.clientToken) {
-            configPath = [self.clientToken.configURL absoluteString];
-        }
-        [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
-            if (error) {
-                fetchError = error;
-            } else if (response.statusCode != 200) {
-                NSError *configurationDomainError =
-                [NSError errorWithDomain:BTAPIClientErrorDomain
-                                    code:BTAPIClientErrorTypeConfigurationUnavailable
-                                userInfo:@{
-                                           NSLocalizedFailureReasonErrorKey: @"Unable to fetch remote configuration from Braintree API at this time."
-                                           }];
-                fetchError = configurationDomainError;
-            } else {
-                configuration = [[BTConfiguration alloc] initWithJSON:body];
-                if (!self.braintreeAPI) {
-                    NSURL *apiURL = [configuration.json[@"braintreeApi"][@"url"] asURL];
-                    NSString *accessToken = [configuration.json[@"braintreeApi"][@"accessToken"] asString];
-                    self.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:apiURL accessToken:accessToken];
-                }
-                if (!self.http) {
-                    NSURL *baseURL = [configuration.json[@"clientApiUrl"] asURL];
-                    if (self.clientToken) {
-                        self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-                    } else if (self.tokenizationKey) {
-                        self.http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:self.tokenizationKey];
-                    }
-                }
-                if (!self.graphQL) {
-                    NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:configuration.environment];
-                    if (self.clientToken) {
-                        self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-                    } else if (self.tokenizationKey) {
-                        self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL tokenizationKey:self.tokenizationKey];
-                    }
+    __block NSError *fetchError;
+    __block BTConfiguration *configuration;
+    NSString *configPath = @"v1/configuration"; // Default for tokenizationKey
+    if (self.clientToken) {
+        configPath = [self.clientToken.configURL absoluteString];
+    }
+    [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            fetchError = error;
+        } else if (response.statusCode != 200) {
+            NSError *configurationDomainError =
+            [NSError errorWithDomain:BTAPIClientErrorDomain
+                                code:BTAPIClientErrorTypeConfigurationUnavailable
+                            userInfo:@{
+                NSLocalizedFailureReasonErrorKey: @"Unable to fetch remote configuration from Braintree API at this time."
+            }];
+            fetchError = configurationDomainError;
+        } else {
+            configuration = [[BTConfiguration alloc] initWithJSON:body];
+            if (!self.braintreeAPI) {
+                NSURL *apiURL = [configuration.json[@"braintreeApi"][@"url"] asURL];
+                NSString *accessToken = [configuration.json[@"braintreeApi"][@"accessToken"] asString];
+                self.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:apiURL accessToken:accessToken];
+            }
+            if (!self.http) {
+                NSURL *baseURL = [configuration.json[@"clientApiUrl"] asURL];
+                if (self.clientToken) {
+                    self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
+                } else if (self.tokenizationKey) {
+                    self.http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:self.tokenizationKey];
                 }
             }
-
-            // Important: Unlock semaphore in all cases
-            dispatch_semaphore_signal(semaphore);
-        }];
-
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock(configuration, fetchError);
-        });
-    });
+            if (!self.graphQL) {
+                NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:configuration.environment];
+                if (self.clientToken) {
+                    self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
+                } else if (self.tokenizationKey) {
+                    self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL tokenizationKey:self.tokenizationKey];
+                }
+            }
+        }
+        completionBlock(configuration, fetchError);
+    }];
 }
 
 #pragma mark - Analytics
