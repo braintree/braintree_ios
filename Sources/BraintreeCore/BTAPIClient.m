@@ -90,6 +90,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             configurationCache = [[NSURLCache alloc] initWithMemoryCapacity:1 * 1024 * 1024 diskCapacity:0 diskPath:nil];
         });
         configuration.URLCache = configurationCache;
+        // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
         configuration.requestCachePolicy = NSURLRequestUseProtocolCachePolicy;
         _configurationHTTP.session = [NSURLSession sessionWithConfiguration:configuration];
 
@@ -273,20 +274,12 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 #pragma mark - Remote Configuration
 
 - (void)fetchOrReturnRemoteConfiguration:(void (^)(BTConfiguration *, NSError *))completionBlock {
-    // Guarantee that multiple calls to this method will successfully obtain configuration exactly once.
+    // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
     //
     // Rules:
     //   - If cachedConfiguration is present, return it without a request
-    //   - If cachedConfiguration is not present, fetch it and cache the succesful response
-    //     - If fetching fails, return error and the next queued will try to fetch again
-    //
-    // Note: Configuration queue is SERIAL. This helps ensure that each request for configuration
-    //       is processed independently. Thus, the check for cached configuration and the fetch is an
-    //       atomic operation with respect to other calls to this method.
-    //
-    // Note: Uses dispatch_semaphore to block the configuration queue when the configuration fetch
-    //       request is waiting to return. In this context, it is OK to block, as the configuration
-    //       queue is a background queue to guarantee atomic access to the remote configuration resource.
+    //   - If cachedConfiguration is not present, fetch it and cache the successful response
+    //   - If fetching fails, return error
     __block NSError *fetchError;
     __block BTConfiguration *configuration;
     NSString *configPath = @"v1/configuration"; // Default for tokenizationKey
