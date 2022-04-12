@@ -413,6 +413,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testGETRequests_whenShouldNotCache_doesNotStoreInCache {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     waitUntil(^(DoneCallback done){
         [self->http GET:@"/configuration" parameters:@{ @"configVersion": @"3" } shouldCache:NO completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);

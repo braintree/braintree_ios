@@ -633,7 +633,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.pay-with-venmo.network-connection.failure"))
     }
-
+    
     // MARK: - BTAppContextSwitchDriver
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_returnsTrue() {
