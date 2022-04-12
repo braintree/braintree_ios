@@ -157,7 +157,7 @@
             cachedResponse = nil;
         }
         
-        dispatch_after(0.2, dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             if (cachedResponse != nil) {
                 [self handleRequestCompletion:cachedResponse.data request:nil shouldCache:NO response:cachedResponse.response error:nil completionBlock:completionBlock];
             } else {
