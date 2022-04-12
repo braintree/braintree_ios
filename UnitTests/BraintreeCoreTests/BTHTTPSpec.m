@@ -61,6 +61,7 @@ NSURLSession *testURLSession(void) {
 
     http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
     http.session = testURLSession();
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 - (void)tearDown {
@@ -410,6 +411,7 @@ NSURLSession *testURLSession(void) {
             done();
         }];
     });
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 - (void)testGETRequests_whenShouldNotCache_doesNotStoreInCache {
