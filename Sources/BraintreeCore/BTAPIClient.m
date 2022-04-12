@@ -90,7 +90,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             configurationCache = [[NSURLCache alloc] initWithMemoryCapacity:1 * 1024 * 1024 diskCapacity:0 diskPath:nil];
         });
         configuration.URLCache = configurationCache;
-        configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+        configuration.requestCachePolicy = NSURLRequestUseProtocolCachePolicy;
         _configurationHTTP.session = [NSURLSession sessionWithConfiguration:configuration];
 
         // Kickoff the background request to fetch the config
