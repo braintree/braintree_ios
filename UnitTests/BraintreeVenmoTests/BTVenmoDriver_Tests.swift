@@ -633,21 +633,6 @@ class BTVenmoDriver_Tests: XCTestCase {
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.pay-with-venmo.network-connection.failure"))
     }
-    
-    func testHandleOpenURL_whenNetworkConnectionLost_sendsAnalytics() {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        venmoRequest.paymentMethodUsage = .multiUse
-        
-        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
-        venmoDriver.
-        venmoDriver.application = FakeApplication()
-        venmoDriver.bundle = FakeBundle()
-        venmoDriver.returnURLScheme = "scheme"
-
-        BTVenmoDriver.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
-
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.pay-with-venmo.network-connection.failure"))
-    }
 
     // MARK: - BTAppContextSwitchDriver
 

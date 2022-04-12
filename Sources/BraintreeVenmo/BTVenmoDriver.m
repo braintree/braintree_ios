@@ -60,6 +60,10 @@ static BTVenmoDriver *appSwitchedDriver;
     return nil;
 }
 
+- (void)setAppSwitchedDriver {
+    appSwitchedDriver = self;
+}
+
 #pragma mark - Accessors
 
 - (id)application NS_EXTENSION_UNAVAILABLE("Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.") {
