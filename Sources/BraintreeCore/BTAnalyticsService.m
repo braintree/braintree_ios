@@ -147,7 +147,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(__unused void(^)(NSError *error))completionBlock {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         [self enqueueEvent:eventKind];
         [self flush:completionBlock];
     });
