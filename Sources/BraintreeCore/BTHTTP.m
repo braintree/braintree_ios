@@ -156,15 +156,17 @@
             [[NSURLCache sharedURLCache] removeAllCachedResponses];
             cachedResponse = nil;
         }
-
-        if (cachedResponse != nil) {
-            [self handleRequestCompletion:cachedResponse.data request:nil shouldCache:NO response:cachedResponse.response error:nil completionBlock:completionBlock];
-        } else {
-            NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                [self handleRequestCompletion:data request:request shouldCache:YES response:response error:error completionBlock:completionBlock];
-            }];
-            [task resume];
-        }
+        
+        dispatch_after(0.2, dispatch_get_main_queue(), ^{
+            if (cachedResponse != nil) {
+                [self handleRequestCompletion:cachedResponse.data request:nil shouldCache:NO response:cachedResponse.response error:nil completionBlock:completionBlock];
+            } else {
+                NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    [self handleRequestCompletion:data request:request shouldCache:YES response:response error:error completionBlock:completionBlock];
+                }];
+                [task resume];
+            }
+        });
     }];
 }
 
