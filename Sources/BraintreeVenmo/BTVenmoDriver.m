@@ -35,6 +35,7 @@
 
 NSString * const BTVenmoDriverErrorDomain = @"com.braintreepayments.BTVenmoDriverErrorDomain";
 NSString * const BTVenmoAppStoreUrl = @"https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428";
+NSInteger const NetworkConnectionLostCode = -1005;
 
 @implementation BTVenmoDriver
 
@@ -159,7 +160,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
             [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
                 if (err) {
-                    if ([err.localizedDescription isEqualToString:@"The network connection was lost."]) {
+                    if (error.code == NetworkConnectionLostCode) {
                         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                     }
                     NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
@@ -213,7 +214,7 @@ static BTVenmoDriver *appSwitchedDriver;
               parameters:params
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                   if (error) {
-                      if ([error.localizedDescription isEqualToString:@"The network connection was lost."]) {
+                      if (error.code == NetworkConnectionLostCode) {
                           [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                       }
                       [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.vault.failure"];
@@ -286,7 +287,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
             [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                 if (error) {
-                    if ([error.localizedDescription isEqualToString:@"The network connection was lost."]) {
+                    if (error.code == NetworkConnectionLostCode) {
                         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                     }
                     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.client-failure"];

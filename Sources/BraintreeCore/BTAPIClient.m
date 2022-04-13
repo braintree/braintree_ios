@@ -280,13 +280,14 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     //   - If cachedConfiguration is present, return it without a request
     //   - If cachedConfiguration is not present, fetch it and cache the successful response
     //   - If fetching fails, return error
-    __block NSError *fetchError;
-    __block BTConfiguration *configuration;
     NSString *configPath = @"v1/configuration"; // Default for tokenizationKey
     if (self.clientToken) {
         configPath = [self.clientToken.configURL absoluteString];
     }
     [self.configurationHTTP GET:configPath parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSError *fetchError;
+        BTConfiguration *configuration;
+
         if (error) {
             fetchError = error;
         } else if (response.statusCode != 200) {
