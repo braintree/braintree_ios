@@ -71,7 +71,7 @@ describe(@"metadata", ^{
     });
     describe(@"deviceModel", ^{
         it(@"returns the device model", ^{
-            expect([BTAnalyticsMetadata metadata][@"deviceModel"]).to.match(@"iPhone\\d,\\d|i386|x86_64");
+            expect([BTAnalyticsMetadata metadata][@"deviceModel"]).to.match(@"iPhone\\d,\\d|i386|x86_64|arm64");
         });
     });
 

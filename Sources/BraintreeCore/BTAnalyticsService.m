@@ -129,7 +129,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
         _sessionsQueue = dispatch_queue_create("com.braintreepayments.BTAnalyticsService", DISPATCH_QUEUE_SERIAL);
         _apiClient = apiClient;
         _flushThreshold = 1;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
     }
     return self;
 }
@@ -239,27 +238,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
             }
         });
     }];
-}
-
-#pragma mark - Private methods
-
-- (void)appWillResign:(NSNotification *)notification {
-    UIApplication *application = notification.object;
-    
-    __block UIBackgroundTaskIdentifier bgTask;
-    bgTask = [application beginBackgroundTaskWithName:@"BTAnalyticsService" expirationHandler:^{
-        [[BTLogger sharedLogger] warning:@"Analytics service background task expired"];
-        [application endBackgroundTask:bgTask];
-        bgTask = UIBackgroundTaskInvalid;
-    }];
-    
-    // Start the long-running task and return immediately.
-    dispatch_async(self.sessionsQueue, ^{
-        [self flush:^(__unused NSError * _Nullable error) {
-            [application endBackgroundTask:bgTask];
-            bgTask = UIBackgroundTaskInvalid;
-        }];
-    });
 }
 
 #pragma mark - Helpers

@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Venmo
+  * Reduce network connection lost error frequency on older iOS and Venmo app versions
 * PPDataCollector
   * Allow passing isSandbox bool for data collection in `clientMetadataID` and `collectPayPalDeviceData` functions
 

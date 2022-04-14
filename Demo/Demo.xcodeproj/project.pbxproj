@@ -44,7 +44,6 @@
 		803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803FB9DD26D93146002BF92D /* BTCardFormView.swift */; };
 		80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A5D2553152A00006F53 /* Venmo_UITests.swift */; };
 		9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */; };
-		9C36BD2A26B3071B00F0A559 /* PPRiskMagnes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; };
 		9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
@@ -110,7 +109,6 @@
 				803D650A256DAF9A00ACE692 /* PayPalDataCollector.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
 				803D64FE256DAF9A00ACE692 /* BraintreeDataCollector.framework in Embed Frameworks */,
-				9C36BD2A26B3071B00F0A559 /* PPRiskMagnes.xcframework in Embed Frameworks */,
 				803D64FC256DAF9A00ACE692 /* BraintreeCore.framework in Embed Frameworks */,
 				803D6504256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Embed Frameworks */,
 				803D6500256DAF9A00ACE692 /* BraintreePaymentFlow.framework in Embed Frameworks */,
