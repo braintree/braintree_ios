@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.9.0 (2022-04-14)
 * Venmo
   * Reduce network connection lost error frequency on older iOS and Venmo app versions
 * PPDataCollector
