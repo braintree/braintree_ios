@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 5.9.0 (2022-04-14)
+* Venmo
+  * Reduce network connection lost error frequency on older iOS and Venmo app versions
+* PPDataCollector
+  * Allow passing isSandbox bool for data collection in `clientMetadataID` and `collectPayPalDeviceData` functions
+
 ## 5.8.0 (2022-03-24)
 * PPRiskMagnes
   * Update PPRiskMagnes to 5.4.0

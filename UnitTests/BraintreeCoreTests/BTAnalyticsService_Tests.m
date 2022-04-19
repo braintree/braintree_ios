@@ -224,33 +224,6 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-- (void)testAnalyticsService_whenAppIsBackgrounded_sendsQueuedAnalyticsEvents {
-    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
-    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
-    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
-    analyticsService.flushThreshold = 5;
-    analyticsService.http = mockAnalyticsHTTP;
-    
-    [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
-    [analyticsService sendAnalyticsEvent:@"another.analytics.event"];
-    // Pause briefly to allow analytics service to dispatch async blocks
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationWillResignActiveNotification object:nil];
-
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-    
-    XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
-    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
-    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
-    XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.currentTime);
-    XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
-
-    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"another.analytics.event");
-    XCTAssertGreaterThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.currentTime);
-    XCTAssertLessThanOrEqual([mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"timestamp"] unsignedIntegerValue], self.oneSecondLater);
-    [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
-}
-
 #pragma mark - Helpers
 
 - (MockAPIClient *)stubbedAPIClientWithAnalyticsURL:(NSString *)analyticsURL {

@@ -22,11 +22,11 @@ class Venmo_UITests: XCTestCase {
         demoApp.buttons["Venmo (custom button)"].tap()
     }
     
-    func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
+    func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsToApp() {
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 15))
+        XCTAssertTrue(demoApp.buttons["Failed to store Venmo Account in vault"].waitForExistence(timeout: 15))
     }
     
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
