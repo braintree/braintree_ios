@@ -184,11 +184,6 @@ static NSString *BraintreeVersion = @"2018-03-06";
 
     // Perform the actual request
     NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
-            return;
-        }
-
         [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
     }];
     [task resume];
