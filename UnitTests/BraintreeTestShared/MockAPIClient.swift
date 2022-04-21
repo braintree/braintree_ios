@@ -73,13 +73,6 @@ public class MockAPIClient : BTAPIClient {
         completion([], nil)
     }
 
-    /// BTAPIClient gets copied by other classes like BTPayPalDriver, BTVenmoDriver, etc.
-    /// This copy causes MockAPIClient to lose its stubbed data (canned responses), so the
-    /// workaround for tests is to stub copyWithSource:integration: to *not* copy itself
-    public override func copy(with source: BTClientMetadataSourceType, integration: BTClientMetadataIntegrationType) -> Self {
-        return self
-    }
-
     public override func sendAnalyticsEvent(_ name: String) {
         postedAnalyticsEvents.append(name)
     }

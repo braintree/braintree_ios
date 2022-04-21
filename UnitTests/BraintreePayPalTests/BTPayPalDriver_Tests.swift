@@ -621,12 +621,11 @@ class BTPayPalDriver_Tests: XCTestCase {
 
     // MARK: - Analytics
 
-    func testAPIClientMetadata_hasSourceSetToPayPalBrowser() {
+    func testAPIClientMetadata_hasIntegrationSetToCustom() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let payPalDriver = BTPayPalDriver(apiClient: apiClient)
 
         XCTAssertEqual(payPalDriver.apiClient?.metadata.integration, BTClientMetadataIntegrationType.custom)
-        XCTAssertEqual(payPalDriver.apiClient?.metadata.source, BTClientMetadataSourceType.payPalBrowser)
     }
 
     func testHandleBrowserSwitchReturn_vault_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {

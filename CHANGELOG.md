@@ -18,6 +18,20 @@
     * Remove `BTAmericanExpressErrorType` 
     * Make `BTAmericanExpressRewardsBalance` initializer private
 
+## 5.9.0 (2022-04-14)
+* Venmo
+  * Reduce network connection lost error frequency on older iOS and Venmo app versions
+* PPDataCollector
+  * Allow passing isSandbox bool for data collection in `clientMetadataID` and `collectPayPalDeviceData` functions
+
+## 5.8.0 (2022-03-24)
+* PPRiskMagnes
+  * Update PPRiskMagnes to 5.4.0
+  * This version of PPRiskMagnes replaces the dynamic framework/xcframework with a static framework/xcframework
+
+## 5.7.0 (2022-03-02)
+* Fix configuration caching
+
 ## 5.6.3 (2022-02-09)
 * Swift Package Manager
   * Add explicit package dependancies for `BraintreeDataCollector`, `BraintreeThreeDSecure`, and `PayPalDataCollector` (fixes #735)

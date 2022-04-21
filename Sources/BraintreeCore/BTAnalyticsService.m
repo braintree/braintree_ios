@@ -9,13 +9,11 @@
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>
 #import <Braintree/BTJSON.h>
-#import <Braintree/BTPayPalIDToken.h>
 #else
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTPayPalIDToken.h>
 #endif
 
 #import <UIKit/UIKit.h>
@@ -131,7 +129,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
         _sessionsQueue = dispatch_queue_create("com.braintreepayments.BTAnalyticsService", DISPATCH_QUEUE_SERIAL);
         _apiClient = apiClient;
         _flushThreshold = 1;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
     }
     return self;
 }
@@ -177,9 +174,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.clientToken.authorizationFingerprint];
             } else if (self.apiClient.tokenizationKey) {
                 self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL tokenizationKey:self.apiClient.tokenizationKey];
-            } else if (self.apiClient.payPalIDToken) {
-                self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.payPalIDToken.token];
-                return;
             }
             if (!self.http) {
                 NSError *error = [NSError errorWithDomain:BTAnalyticsServiceErrorDomain code:BTAnalyticsServiceErrorTypeInvalidAPIClient userInfo:@{ NSLocalizedDescriptionKey : @"API client must have client token or tokenization key" }];
@@ -244,27 +238,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
             }
         });
     }];
-}
-
-#pragma mark - Private methods
-
-- (void)appWillResign:(NSNotification *)notification {
-    UIApplication *application = notification.object;
-    
-    __block UIBackgroundTaskIdentifier bgTask;
-    bgTask = [application beginBackgroundTaskWithName:@"BTAnalyticsService" expirationHandler:^{
-        [[BTLogger sharedLogger] warning:@"Analytics service background task expired"];
-        [application endBackgroundTask:bgTask];
-        bgTask = UIBackgroundTaskInvalid;
-    }];
-    
-    // Start the long-running task and return immediately.
-    dispatch_async(self.sessionsQueue, ^{
-        [self flush:^(__unused NSError * _Nullable error) {
-            [application endBackgroundTask:bgTask];
-            bgTask = UIBackgroundTaskInvalid;
-        }];
-    });
 }
 
 #pragma mark - Helpers

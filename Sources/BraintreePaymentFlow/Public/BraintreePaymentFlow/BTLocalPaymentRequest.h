@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  This value must be one of the supported country codes for a given local payment type listed at the link below. For local payments supported in multiple countries, this value may determine which banks are presented to the customer.
 
- https://developers.braintreepayments.com/guides/local-payment-methods/client-side-custom/ios/v4#invoke-payment-flow
+ https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v5#invoke-payment-flow
  */
 @property (nonatomic, nullable, copy) NSString *paymentTypeCountryCode;
 

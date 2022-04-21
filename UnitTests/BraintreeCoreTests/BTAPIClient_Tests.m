@@ -224,7 +224,6 @@
 
 - (void)testPOST_whenUsingGateway_includesMetadata {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     FakeHTTP *mockHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = mockHTTP;
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
@@ -246,7 +245,6 @@
 
 - (void)testPOST_whenUsingBraintreeAPI_doesNotIncludeMetadata {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     FakeAPIHTTP *mockAPIHTTP = [FakeAPIHTTP fakeHTTP];
     apiClient.braintreeAPI = mockAPIHTTP;
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
@@ -264,7 +262,6 @@
 
 - (void)testPOST_whenUsingGraphQLAPI_includesMetadata {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     FakeGraphQLHTTP *mockGraphQLHTTP = [FakeGraphQLHTTP fakeHTTP];
     apiClient.graphQL = mockGraphQLHTTP;
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];

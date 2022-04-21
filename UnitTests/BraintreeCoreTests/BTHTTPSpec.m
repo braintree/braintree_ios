@@ -61,10 +61,12 @@ NSURLSession *testURLSession(void) {
 
     http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
     http.session = testURLSession();
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 - (void)tearDown {
     [HTTPStubs removeAllStubs];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     [super tearDown];
 }
@@ -390,6 +392,38 @@ NSURLSession *testURLSession(void) {
             expect(httpRequest.URL.query).to.contain(@"param=value");
             expect(httpRequest.HTTPMethod).to.equal(@"DELETE");
             expect(httpRequest.HTTPBody).to.beNil();
+            done();
+        }];
+    });
+}
+
+#pragma mark Configuration
+
+- (void)testGETRequests_whenShouldCache_cachesConfiguration {
+    waitUntil(^(DoneCallback done){
+        [self->http GET:@"/configuration" parameters:@{ @"configVersion": @"3" } shouldCache:YES completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            XCTAssertNotNil(body);
+            XCTAssertNotNil(response);
+            XCTAssertNil(error);
+
+            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+            XCTAssertNotNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
+            done();
+        }];
+    });
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+}
+
+- (void)testGETRequests_whenShouldNotCache_doesNotStoreInCache {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    waitUntil(^(DoneCallback done){
+        [self->http GET:@"/configuration" parameters:@{ @"configVersion": @"3" } shouldCache:NO completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            XCTAssertNotNil(body);
+            XCTAssertNotNil(response);
+            XCTAssertNil(error);
+
+            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+            XCTAssertNil([[NSURLCache sharedURLCache] cachedResponseForRequest:httpRequest]);
             done();
         }];
     });

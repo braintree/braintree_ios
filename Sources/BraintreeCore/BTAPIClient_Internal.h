@@ -12,21 +12,18 @@
 @class BTHTTP;
 @class BTJSON;
 @class BTPaymentMethodNonce;
-@class BTPayPalIDToken;
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
     BTAPIClientAuthorizationTypeTokenizationKey = 0,
     BTAPIClientAuthorizationTypeClientToken,
-    BTAPIClientAuthorizationTypePayPalIDToken,
 };
 
 @interface BTAPIClient ()
 
 @property (nonatomic, copy, nullable) NSString *tokenizationKey;
 @property (nonatomic, strong, nullable) BTClientToken *clientToken;
-@property (nonatomic, strong, nullable) BTPayPalIDToken *payPalIDToken;
 @property (nonatomic, strong) BTHTTP *http;
 @property (nonatomic, strong) BTHTTP *configurationHTTP;
 @property (nonatomic, strong) BTAPIHTTP *braintreeAPI;
@@ -49,7 +46,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientAuthorizationType) {
 
 /**
  An internal initializer to toggle whether to send an analytics event during initialization.
- This prevents copyWithSource:integration: from sending a duplicate event. It can also be used to suppress excessive network chatter during testing.
+ It can also be used to suppress excessive network chatter during testing.
 */
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
 

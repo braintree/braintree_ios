@@ -572,15 +572,32 @@ class BTVenmoDriver_Tests: XCTestCase {
 
     // MARK: - Analytics
     
-    func testAPIClientMetadata_hasSourceSetToVenmoApp() {
+    func testAPIClientMetadata_hasIntegrationSetToCustom() {
         // API client by default uses source = .Unknown and integration = .Custom
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let venmoDriver = BTVenmoDriver(apiClient: apiClient)
         
         XCTAssertEqual(venmoDriver.apiClient.metadata.integration, BTClientMetadataIntegrationType.custom)
-        XCTAssertEqual(venmoDriver.apiClient.metadata.source, BTClientMetadataSourceType.venmoApp)
     }
+    
+    func testTokenizeVenmoAccount_whenNetworkConnectionLost_sendsAnalytics() {
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        venmoDriver.application = FakeApplication()
+        venmoDriver.bundle = FakeBundle()
+        venmoDriver.returnURLScheme = "scheme"
 
+        let expectation = self.expectation(description: "Callback invoked")
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { nonce, error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.pay-with-venmo.network-connection.failure"))
+    }
+    
     // MARK: - BTAppContextSwitchDriver
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_returnsTrue() {
