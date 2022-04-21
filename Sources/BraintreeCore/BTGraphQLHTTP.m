@@ -67,18 +67,15 @@ static NSString *BraintreeVersion = @"2018-03-06";
         return;
     }
 
-    BTJSON *body;
-    
     if (data == nil) {
         NSError *error = [[NSError alloc] initWithDomain:BTHTTPErrorDomain
                                                             code:BTHTTPErrorCodeUnknown
                             userInfo:@{NSLocalizedDescriptionKey: @"An unexpected error occurred with the HTTP request."}];
         [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
         return;
-    } else {
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-        body = [[BTJSON alloc] initWithValue:json];
     }
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+    BTJSON *body = [[BTJSON alloc] initWithValue:json];
 
     // Success case
     if ([body asDictionary] && ![body[@"errors"] asArray]) {
