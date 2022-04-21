@@ -69,7 +69,7 @@ static NSString *BraintreeVersion = @"2018-03-06";
 
     BTJSON *body;
     
-    if (data == nil || data.length == 0) {
+    if (data == nil) {
         NSError *error = [[NSError alloc] initWithDomain:BTHTTPErrorDomain
                                                             code:BTHTTPErrorCodeUnknown
                             userInfo:@{NSLocalizedDescriptionKey: @"An unexpected error occurred with the HTTP request."}];

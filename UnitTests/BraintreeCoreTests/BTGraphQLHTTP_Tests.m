@@ -515,23 +515,12 @@
 }
 
 - (void)testHttpError_returnsError {
-    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
-        return YES;
-    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
-        return [HTTPStubsResponse responseWithData:[NSData data] statusCode:500 headers:@{}];
-    }];
-    
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
-    [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-        XCTAssertNil(body);
-        XCTAssertEqualObjects(error.userInfo[NSLocalizedDescriptionKey], @"An unexpected error occurred with the HTTP request.");
+    [http handleRequestCompletion:nil response:nil error:nil completionBlock:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertEqualObjects(error.localizedDescription, @"An unexpected error occurred with the HTTP request.");
         XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
         XCTAssertEqual(error.code, BTHTTPErrorCodeUnknown);
-        [expectation fulfill];
-    }];
 
-    [self waitForExpectationsWithTimeout:2 handler:nil];
+    }];
 }
 
 @end
