@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Fix potential crash when http request fails with no error but empty data (thanks @cltnschlosser)
+
 ## 5.9.0 (2022-04-14)
 * Venmo
   * Reduce network connection lost error frequency on older iOS and Venmo app versions

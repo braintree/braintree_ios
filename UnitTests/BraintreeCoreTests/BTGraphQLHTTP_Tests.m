@@ -514,4 +514,13 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
+- (void)testHttpError_withEmptyDataAndNoError_returnsError {
+    [http handleRequestCompletion:nil response:nil error:nil completionBlock:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertEqualObjects(error.localizedDescription, @"An unexpected error occurred with the HTTP request.");
+        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqual(error.code, BTHTTPErrorCodeUnknown);
+
+    }];
+}
+
 @end
