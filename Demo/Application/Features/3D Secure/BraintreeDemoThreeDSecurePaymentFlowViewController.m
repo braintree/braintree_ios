@@ -185,7 +185,25 @@
         [toolbarCustomization setTextColor:@"#222222"];
         [toolbarCustomization setTextFontSize:18];
         [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
+        
+        BTThreeDSecureV2ButtonCustomization *buttonCustomization = [BTThreeDSecureV2ButtonCustomization new];
+        [buttonCustomization setBackgroundColor:@"#FFC0CB"];
+        [buttonCustomization setCornerRadius:20];
+        
+        BTThreeDSecureV2TextBoxCustomization *textBoxCustomization = [BTThreeDSecureV2TextBoxCustomization new];
+        [textBoxCustomization setBorderColor:@"#ADD8E6"];
+        [textBoxCustomization setCornerRadius:10];
+        [textBoxCustomization setBorderWidth:5];
+        
+        BTThreeDSecureV2LabelCustomization *labelCustomization = [BTThreeDSecureV2LabelCustomization new];
+        [labelCustomization setHeadingTextColor:@"#A020F0"];
+        [labelCustomization setHeadingTextFontSize:24];
+        [labelCustomization setHeadingTextFontName:@"AmericanTypewriter"];
+        
         [ui setToolbarCustomization:toolbarCustomization];
+        [ui setButtonCustomization:buttonCustomization buttonType:ButtonTypeVerify];
+        [ui setTextBoxCustomization:textBoxCustomization];
+        [ui setLabelCustomization:labelCustomization];
         request.v2UICustomization = ui;
 
         BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
