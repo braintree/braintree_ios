@@ -61,6 +61,7 @@ NSURLSession *testURLSession(void) {
 
     http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
     http.session = testURLSession();
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 - (void)tearDown {
@@ -410,9 +411,11 @@ NSURLSession *testURLSession(void) {
             done();
         }];
     });
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 - (void)testGETRequests_whenShouldNotCache_doesNotStoreInCache {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     waitUntil(^(DoneCallback done){
         [self->http GET:@"/configuration" parameters:@{ @"configVersion": @"3" } shouldCache:NO completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);

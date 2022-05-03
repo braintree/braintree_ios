@@ -156,15 +156,19 @@
             [[NSURLCache sharedURLCache] removeAllCachedResponses];
             cachedResponse = nil;
         }
-
-        if (cachedResponse != nil) {
-            [self handleRequestCompletion:cachedResponse.data request:nil shouldCache:NO response:cachedResponse.response error:nil completionBlock:completionBlock];
-        } else {
-            NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                [self handleRequestCompletion:data request:request shouldCache:YES response:response error:error completionBlock:completionBlock];
-            }];
-            [task resume];
-        }
+        
+        // The increase in speed of API calls with cached configuration caused an increase in "network connection lost" errors.
+        // Adding this delay allows us to throttle the network requests slightly to reduce load on the servers and decrease connection lost errors.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            if (cachedResponse != nil) {
+                [self handleRequestCompletion:cachedResponse.data request:nil shouldCache:NO response:cachedResponse.response error:nil completionBlock:completionBlock];
+            } else {
+                NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    [self handleRequestCompletion:data request:request shouldCache:YES response:response error:error completionBlock:completionBlock];
+                }];
+                [task resume];
+            }
+        });
     }];
 }
 

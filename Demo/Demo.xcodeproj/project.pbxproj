@@ -44,7 +44,6 @@
 		803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803FB9DD26D93146002BF92D /* BTCardFormView.swift */; };
 		80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A5D2553152A00006F53 /* Venmo_UITests.swift */; };
 		9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */; };
-		9C36BD2A26B3071B00F0A559 /* PPRiskMagnes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; };
 		9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
@@ -60,14 +59,11 @@
 		A0988FE624DB44B20095EEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5824DB44B10095EEEE /* main.m */; };
 		A0988FE724DB44B20095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */; };
 		A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */; };
-		A0988FE924DB44B20095EEEE /* BraintreeDemoPayPalCheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.m */; };
 		A0988FEA24DB44B20095EEEE /* BraintreeDemoIdealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */; };
-		A0988FEC24DB44B20095EEEE /* BraintreeDemoPayPalPayLaterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalPayLaterViewController.m */; };
 		A0988FED24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */; };
 		A0988FEE24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */; };
 		A0988FF024DB44B20095EEEE /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */; };
 		A0988FF224DB44B20095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */; };
-		A0988FF324DB44B20095EEEE /* BraintreeDemoPayPalVaultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7D24DB44B10095EEEE /* BraintreeDemoPayPalVaultViewController.m */; };
 		A0988FF424DB44B20095EEEE /* BraintreeDemoAmexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */; };
 		A0988FF524DB44B20095EEEE /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F8324DB44B10095EEEE /* BraintreeDemoCustomVenmoButtonViewController.m */; };
 		A0988FF724DB44B20095EEEE /* BraintreeDemoUnionPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F8824DB44B10095EEEE /* BraintreeDemoUnionPayViewController.m */; };
@@ -81,6 +77,9 @@
 		BE777A9F27D90BA300487D23 /* BraintreeSEPADirectDebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE777A9E27D90BA300487D23 /* BraintreeSEPADirectDebit.framework */; };
 		BE777AA027D90BA300487D23 /* BraintreeSEPADirectDebit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE777A9E27D90BA300487D23 /* BraintreeSEPADirectDebit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */; };
+		BE4F788927EE2B6D00FF4C0E /* BraintreeDemoPayPalVaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4F788827EE2B6D00FF4C0E /* BraintreeDemoPayPalVaultViewController.swift */; };
+		BE4F788E27EE394600FF4C0E /* BraintreeDemoPayPalCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4F788D27EE394600FF4C0E /* BraintreeDemoPayPalCheckoutViewController.swift */; };
+		BE4F789027EE3C1D00FF4C0E /* BraintreeDemoPayPalPayLaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4F788F27EE3C1D00FF4C0E /* BraintreeDemoPayPalPayLaterViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,12 +183,8 @@
 		A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPreferredPaymentMethodsViewController.swift; sourceTree = "<group>"; };
 		A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTDataCollectorViewController.m; sourceTree = "<group>"; };
 		A0988F5E24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTDataCollectorViewController.h; sourceTree = "<group>"; };
-		A0988F6024DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCheckoutViewController.h; sourceTree = "<group>"; };
-		A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalCheckoutViewController.m; sourceTree = "<group>"; };
 		A0988F6324DB44B10095EEEE /* BraintreeDemoIdealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIdealViewController.h; sourceTree = "<group>"; };
 		A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoIdealViewController.m; sourceTree = "<group>"; };
-		A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalPayLaterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalPayLaterViewController.m; sourceTree = "<group>"; };
-		A0988F6A24DB44B10095EEEE /* BraintreeDemoPayPalPayLaterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalPayLaterViewController.h; sourceTree = "<group>"; };
 		A0988F6C24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCardTokenizationViewController.h; sourceTree = "<group>"; };
 		A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BraintreeDemoCardTokenizationViewController.xib; sourceTree = "<group>"; };
 		A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCardTokenizationViewController.m; sourceTree = "<group>"; };
@@ -197,8 +192,6 @@
 		A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoApplePayPassKitViewController.m; sourceTree = "<group>"; };
 		A0988F7924DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoThreeDSecurePaymentFlowViewController.h; sourceTree = "<group>"; };
 		A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoThreeDSecurePaymentFlowViewController.m; sourceTree = "<group>"; };
-		A0988F7C24DB44B10095EEEE /* BraintreeDemoPayPalVaultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalVaultViewController.h; sourceTree = "<group>"; };
-		A0988F7D24DB44B10095EEEE /* BraintreeDemoPayPalVaultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalVaultViewController.m; sourceTree = "<group>"; };
 		A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoAmexViewController.m; sourceTree = "<group>"; };
 		A0988F8024DB44B10095EEEE /* BraintreeDemoAmexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoAmexViewController.h; sourceTree = "<group>"; };
 		A0988F8224DB44B10095EEEE /* BraintreeDemoCustomVenmoButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomVenmoButtonViewController.h; sourceTree = "<group>"; };
@@ -217,6 +210,9 @@
 		A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
 		BE777A9E27D90BA300487D23 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSEPADirectDebitViewController.swift; sourceTree = "<group>"; };
+		BE4F788827EE2B6D00FF4C0E /* BraintreeDemoPayPalVaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPayPalVaultViewController.swift; sourceTree = "<group>"; };
+		BE4F788D27EE394600FF4C0E /* BraintreeDemoPayPalCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPayPalCheckoutViewController.swift; sourceTree = "<group>"; };
+		BE4F788F27EE3C1D00FF4C0E /* BraintreeDemoPayPalPayLaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPayPalPayLaterViewController.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -423,8 +419,7 @@
 		A0988F5F24DB44B10095EEEE /* PayPal - Checkout */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F6024DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.h */,
-				A0988F6124DB44B10095EEEE /* BraintreeDemoPayPalCheckoutViewController.m */,
+				BE4F788D27EE394600FF4C0E /* BraintreeDemoPayPalCheckoutViewController.swift */,
 			);
 			path = "PayPal - Checkout";
 			sourceTree = "<group>";
@@ -441,8 +436,7 @@
 		A0988F6824DB44B10095EEEE /* PayPal - Pay Later */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F6A24DB44B10095EEEE /* BraintreeDemoPayPalPayLaterViewController.h */,
-				A0988F6924DB44B10095EEEE /* BraintreeDemoPayPalPayLaterViewController.m */,
+				BE4F788F27EE3C1D00FF4C0E /* BraintreeDemoPayPalPayLaterViewController.swift */,
 			);
 			path = "PayPal - Pay Later";
 			sourceTree = "<group>";
@@ -478,8 +472,7 @@
 		A0988F7B24DB44B10095EEEE /* PayPal - Vault */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F7C24DB44B10095EEEE /* BraintreeDemoPayPalVaultViewController.h */,
-				A0988F7D24DB44B10095EEEE /* BraintreeDemoPayPalVaultViewController.m */,
+				BE4F788827EE2B6D00FF4C0E /* BraintreeDemoPayPalVaultViewController.swift */,
 			);
 			path = "PayPal - Vault";
 			sourceTree = "<group>";
@@ -819,8 +812,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0988F9524DB44B20095EEEE /* BraintreeDemoBaseViewController.m in Sources */,
+				BE4F789027EE3C1D00FF4C0E /* BraintreeDemoPayPalPayLaterViewController.swift in Sources */,
 				803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */,
-				A0988FF324DB44B20095EEEE /* BraintreeDemoPayPalVaultViewController.m in Sources */,
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
 				BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */,
 				A0988FF724DB44B20095EEEE /* BraintreeDemoUnionPayViewController.m in Sources */,
@@ -828,7 +821,7 @@
 				A0988FE624DB44B20095EEEE /* main.m in Sources */,
 				A0988F9724DB44B20095EEEE /* BraintreeDemoContainmentViewController.m in Sources */,
 				A0988FEA24DB44B20095EEEE /* BraintreeDemoIdealViewController.m in Sources */,
-				A0988FEC24DB44B20095EEEE /* BraintreeDemoPayPalPayLaterViewController.m in Sources */,
+				BE4F788927EE2B6D00FF4C0E /* BraintreeDemoPayPalVaultViewController.swift in Sources */,
 				A0988FEE24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
 				A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
@@ -838,8 +831,8 @@
 				A0988F9624DB44B20095EEEE /* BraintreeDemoAppDelegate.m in Sources */,
 				A0988FF024DB44B20095EEEE /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
 				A0988FF524DB44B20095EEEE /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */,
+				BE4F788E27EE394600FF4C0E /* BraintreeDemoPayPalCheckoutViewController.swift in Sources */,
 				A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */,
-				A0988FE924DB44B20095EEEE /* BraintreeDemoPayPalCheckoutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

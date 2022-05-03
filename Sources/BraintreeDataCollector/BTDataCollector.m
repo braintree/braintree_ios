@@ -103,7 +103,9 @@ static Class PayPalDataCollectorClass;
             }];
         }
         
-        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID];
+        BOOL isSandbox = [configuration.environment isEqualToString:@"sandbox"];
+        
+        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID:isSandbox];
         if (payPalClientMetadataID) {
             dataDictionary[@"correlation_id"] = payPalClientMetadataID;
         }
@@ -130,11 +132,15 @@ static Class PayPalDataCollectorClass;
 
 #pragma mark - Helper methods
 
-+ (NSString *)generatePayPalClientMetadataID {
++ (NSString *)generatePayPalClientMetadataID:(BOOL)isSandbox {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-    if (PayPalDataCollectorClass && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
-        return [PayPalDataCollectorClass performSelector:@selector(generateClientMetadataID)];
+    if (PayPalDataCollectorClass) {
+        if (isSandbox && [PayPalDataCollectorClass respondsToSelector:@selector(sandboxGenerateClientMetadataID)]) {
+            return [PayPalDataCollectorClass performSelector:@selector(sandboxGenerateClientMetadataID)];
+        } else if (!isSandbox && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
+            return [PayPalDataCollectorClass performSelector:@selector(generateClientMetadataID)];
+        }
     }
 #pragma clang diagnostic pop
     

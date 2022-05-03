@@ -187,7 +187,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             NSString *pairingID = [self.class tokenFromApprovalURL:approvalUrl];
 
-            self.clientMetadataID = self.payPalRequest.riskCorrelationId ? self.payPalRequest.riskCorrelationId : [PPDataCollector clientMetadataID:pairingID];
+            self.clientMetadataID = self.payPalRequest.riskCorrelationId ? self.payPalRequest.riskCorrelationId : [PPDataCollector clientMetadataID:pairingID isSandbox:[configuration.environment isEqualToString:@"sandbox"]];
 
             BOOL analyticsSuccess = error ? NO : YES;
 
