@@ -87,10 +87,13 @@
     switch (BraintreeDemoSettings.currentEnvironment) {
         case BraintreeDemoEnvironmentSandbox:
             isSandbox = TRUE;
+            break;
         case BraintreeDemoEnvironmentProduction:
             isSandbox = FALSE;
+            break;
         case BraintreeDemoEnvironmentCustom:
             isSandbox = FALSE;
+            break;
     };
     
     self.dataLabel.text = [PPDataCollector collectPayPalDeviceDataWithIsSandbox:isSandbox];

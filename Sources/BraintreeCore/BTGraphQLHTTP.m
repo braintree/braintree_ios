@@ -63,10 +63,17 @@ static NSString *BraintreeVersion = @"2018-03-06";
 {
     // Network error
     if (error) {
-        [self callCompletionBlock:completionBlock body:nil response:nil error:error];
+        [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
         return;
     }
 
+    if (data == nil) {
+        NSError *error = [[NSError alloc] initWithDomain:BTHTTPErrorDomain
+                                                            code:BTHTTPErrorCodeUnknown
+                            userInfo:@{NSLocalizedDescriptionKey: @"An unexpected error occurred with the HTTP request."}];
+        [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
+        return;
+    }
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
     BTJSON *body = [[BTJSON alloc] initWithValue:json];
 
@@ -174,11 +181,6 @@ static NSString *BraintreeVersion = @"2018-03-06";
 
     // Perform the actual request
     NSURLSessionTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
-            return;
-        }
-
         [self handleRequestCompletion:data response:response error:error completionBlock:completionBlock];
     }];
     [task resume];
