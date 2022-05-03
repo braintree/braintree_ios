@@ -176,6 +176,8 @@
         request.billingAddress = billingAddress;
         request.email = @"test@example.com";
         request.shippingMethod = BTThreeDSecureShippingMethodSameDay;
+        
+        // MARK: v2 Customization
 
         BTThreeDSecureV2UICustomization *ui = [BTThreeDSecureV2UICustomization new];
         BTThreeDSecureV2ToolbarCustomization *toolbarCustomization = [BTThreeDSecureV2ToolbarCustomization new];
@@ -204,11 +206,15 @@
         [ui setButtonCustomization:buttonCustomization buttonType:ButtonTypeVerify];
         [ui setTextBoxCustomization:textBoxCustomization];
         [ui setLabelCustomization:labelCustomization];
+
         request.v2UICustomization = ui;
 
+        // MARK: v2 Customization
+        
         BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
         v1UICustomization.redirectButtonText = @"Return to Demo App";
         v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";
+
         request.v1UICustomization = v1UICustomization;
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
