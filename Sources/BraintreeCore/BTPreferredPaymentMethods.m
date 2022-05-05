@@ -54,7 +54,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
                 
                 if (preferredPaymentMethodsError || !body) {
                     if (preferredPaymentMethodsError.code == NetworkConnectionLostCode) {
-                        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                        [self.apiClient sendAnalyticsEvent:@"ios.preferred-payment-methods.network-connection.failure"];
                     }
                     [self.apiClient sendAnalyticsEvent:@"ios.preferred-payment-methods.api-error"];
                 } else {

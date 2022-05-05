@@ -136,7 +136,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
                 if (error.code == NetworkConnectionLostCode) {
-                    [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                    [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.network-connection.failure"];
                 }
                 completionBlock(nil, error);
                 [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.tokenization"];

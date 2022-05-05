@@ -180,7 +180,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
                  }
              } else {
                  if (error.code == NetworkConnectionLostCode) {
-                     [apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                     [apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
                  }
 
                  [delegate onPaymentWithURL:nil error:error];
@@ -226,7 +226,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
          {
              if (error) {
                  if (error.code == NetworkConnectionLostCode) {
-                     [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                     [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
                  }
                  [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
                  return;

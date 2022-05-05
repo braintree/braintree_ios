@@ -43,7 +43,7 @@
          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
             if (error.code == NetworkConnectionLostCode) {
-                [apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.network-connection.failure"];
             }
             [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
             if (failureHandler != nil) {

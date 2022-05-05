@@ -110,7 +110,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             
             if (error) {
                 if (error.code == NetworkConnectionLostCode) {
-                    [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                    [self.apiClient sendAnalyticsEvent:@"ios.three-d-secure.lookup.network-connection.failure"];
                 }
                 // Provide more context for card validation error when status code 422
                 if ([error.domain isEqualToString:BTHTTPErrorDomain] &&

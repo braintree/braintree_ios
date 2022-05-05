@@ -106,7 +106,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
          {
              if (error) {
                  if (error.code == NetworkConnectionLostCode) {
-                     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                     [self.apiClient sendAnalyticsEvent:@"ios.union-pay.network-connection.failure"];
                  }
                  [self sendUnionPayEvent:@"enrollment-failed"];
                 
