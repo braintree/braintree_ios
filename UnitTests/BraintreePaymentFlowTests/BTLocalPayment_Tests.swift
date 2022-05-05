@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeTestShared
 import BraintreeCore
 import BraintreePaymentFlow
 
@@ -438,7 +438,6 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         
         let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
-        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
 
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
@@ -450,6 +449,31 @@ class BTLocalPayment_UnitTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
+    }
+    
+    //TODO: Fix this test. It might be hitting BTLocalPaymentRequest line 183 but we want it to hit 229
+    func testOpenURL_whenNetworkConnectionLost_sendsAnalytics() {
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+        mockAPIClient.cannedMetadata = BTClientMetadata()
+        
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
+        
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+        
+//        driver.setupPaymentFlow(localPaymentRequest)
+        let expectation = self.expectation(description: "Callback invoked")
+        driver.startPaymentFlow(localPaymentRequest) { result, error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+        
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
     }
