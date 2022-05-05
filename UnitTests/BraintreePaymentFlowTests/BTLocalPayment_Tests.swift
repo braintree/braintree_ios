@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-@testable import BraintreeTestShared
+import BraintreeTestShared
 import BraintreeCore
 import BraintreePaymentFlow
 
@@ -453,28 +453,36 @@ class BTLocalPayment_UnitTests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
     }
     
-    //TODO: Fix this test. It might be hitting BTLocalPaymentRequest line 183 but we want it to hit 229
     func testOpenURL_whenNetworkConnectionLost_sendsAnalytics() {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        mockAPIClient.cannedMetadata = BTClientMetadata()
-        
+
         let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
-        
+        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
+
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        
-//        driver.setupPaymentFlow(localPaymentRequest)
-        let expectation = self.expectation(description: "Callback invoked")
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
+            "redirectUrl": "https://www.somebankurl.com",
+            "paymentToken": "123aaa-123-543-777",
+            ] ])
+
+        var paymentFinishedExpectation: XCTestExpectation? = nil
         driver.startPaymentFlow(localPaymentRequest) { result, error in
             XCTAssertNotNil(error)
-            expectation.fulfill()
+            XCTAssertNil(result)
+            paymentFinishedExpectation!.fulfill()
         }
 
         waitForExpectations(timeout: 2)
-        
-        BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
-        
+
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+
+        paymentFinishedExpectation = self.expectation(description: "Payment finished with error")
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "an-error-url")!)
+
+        waitForExpectations(timeout: 2)
+
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
     }
 }
