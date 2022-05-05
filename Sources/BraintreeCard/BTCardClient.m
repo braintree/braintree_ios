@@ -95,7 +95,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
              {
                  if (error) {
                      if (error.code == NetworkConnectionLostCode) {
-                         [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
+                         [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
                      }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                      NSError *callbackError = error;

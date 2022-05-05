@@ -278,6 +278,28 @@ class BTApplePay_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
+    
+    func testTokenizeApplePay_whenNetworkConnectionLost_sendsAnalytics() {
+        mockClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production"
+            ]
+        ])
+        
+        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let payment = MockPKPayment()
+
+        let expectation = self.expectation(description: "Callback invoked")
+        applePayClient.tokenizeApplePay(payment) { nonce, error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+        
+        XCTAssertTrue(mockClient.postedAnalyticsEvents.contains("ios.apple-pay.network-connection.failure"))
+    }
 
     // MARK: - Metadata
 
