@@ -24,6 +24,7 @@
 #endif
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
+NSInteger const NetworkConnectionLostCode = -1005;
 
 @implementation BTApplePayClient
 
@@ -134,6 +135,9 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
+                if (error.code == NetworkConnectionLostCode) {
+                    [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                }
                 completionBlock(nil, error);
                 [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.tokenization"];
                 return;

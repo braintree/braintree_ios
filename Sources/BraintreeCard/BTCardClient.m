@@ -25,6 +25,7 @@
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
 NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
+NSInteger const NetworkConnectionLostCode = -1005;
 
 @interface BTCardClient ()
 @end
@@ -93,6 +94,9 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
              {
                  if (error) {
+                     if (error.code == NetworkConnectionLostCode) {
+                         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                     }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                      NSError *callbackError = error;
 
@@ -121,6 +125,9 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
              {
                  if (error != nil) {
+                     if (error.code == NetworkConnectionLostCode) {
+                         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                     }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                      NSError *callbackError = error;
 

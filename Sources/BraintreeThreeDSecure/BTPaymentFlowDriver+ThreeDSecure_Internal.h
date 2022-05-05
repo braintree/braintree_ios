@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTPaymentFlowDriver (ThreeDSecure_Internal)
 
+extern NSInteger const NetworkConnectionLostCode;
+
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
                        completion:(void (^)(BTThreeDSecureResult  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
 

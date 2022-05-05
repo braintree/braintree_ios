@@ -27,6 +27,8 @@
 
 #endif
 
+NSInteger const NetworkConnectionLostCode = -1005;
+
 @implementation BTCardClient (UnionPay)
 
 #pragma mark - Public methods
@@ -103,6 +105,9 @@
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
+                 if (error.code == NetworkConnectionLostCode) {
+                     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                 }
                  [self sendUnionPayEvent:@"enrollment-failed"];
                 
                  NSError *callbackError = error;

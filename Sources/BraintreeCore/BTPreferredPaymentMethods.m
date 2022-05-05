@@ -11,6 +11,8 @@
 
 @end
 
+NSInteger const NetworkConnectionLostCode = -1005;
+
 @implementation BTPreferredPaymentMethods
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
@@ -51,6 +53,9 @@
                 BTPreferredPaymentMethodsResult *result = [[BTPreferredPaymentMethodsResult alloc] initWithJSON:body venmoInstalled:isVenmoInstalled];
                 
                 if (preferredPaymentMethodsError || !body) {
+                    if (preferredPaymentMethodsError.code == NetworkConnectionLostCode) {
+                        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                    }
                     [self.apiClient sendAnalyticsEvent:@"ios.preferred-payment-methods.api-error"];
                 } else {
                     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.preferred-payment-methods.paypal.api-detected.%@",

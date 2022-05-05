@@ -66,6 +66,8 @@ NSString * _Nonnull const PayPalEnvironmentSandbox = @"sandbox";
  */
 NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
+NSInteger const NetworkConnectionLostCode = -1005;
+
 @interface BTPayPalDriver () <ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, assign) BOOL returnedToAppAfterPermissionAlert;
@@ -166,6 +168,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                   parameters:[request parametersWithConfiguration:configuration]
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
+                if (error.code == NetworkConnectionLostCode) {
+                    [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                }
                 NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;
                 if (error.userInfo[NSLocalizedDescriptionKey] == nil && errorDetailsIssue != nil) {
                     NSMutableDictionary *dictionary = [error.userInfo mutableCopy];
@@ -577,6 +582,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
               parameters:parameters
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
+            if (error.code == NetworkConnectionLostCode) {
+                [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+            }
             [self sendAnalyticsEventForTokenizationFailureForPaymentType:paymentType];
             if (completionBlock) {
                 completionBlock(nil, error);

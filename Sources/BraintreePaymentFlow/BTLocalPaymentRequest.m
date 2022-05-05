@@ -54,6 +54,8 @@
 
 @end
 
+NSInteger const NetworkConnectionLostCode = -1005;
+
 @implementation BTLocalPaymentRequest
 
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
@@ -177,6 +179,10 @@
                      return;
                  }
              } else {
+                 if (error.code == NetworkConnectionLostCode) {
+                     [apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                 }
+
                  [delegate onPaymentWithURL:nil error:error];
              }
          }];
@@ -219,6 +225,9 @@
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
          {
              if (error) {
+                 if (error.code == NetworkConnectionLostCode) {
+                     [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
+                 }
                  [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
                  return;
              } else {
