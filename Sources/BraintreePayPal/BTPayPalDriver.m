@@ -169,7 +169,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
                 if (error.code == NetworkConnectionLostCode) {
-                    [self.apiClient sendAnalyticsEvent:@"ios.paypal.network-connection.failure"];
+                    [self.apiClient sendAnalyticsEvent:@"ios.paypal.tokenize.network-connection.failure"];
                 }
                 NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;
                 if (error.userInfo[NSLocalizedDescriptionKey] == nil && errorDetailsIssue != nil) {
@@ -583,7 +583,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
             if (error.code == NetworkConnectionLostCode) {
-                [self.apiClient sendAnalyticsEvent:@"ios.paypal.network-connection.failure"];
+                [self.apiClient sendAnalyticsEvent:@"ios.paypal.handle-browser-switch.network-connection.failure"];
             }
             [self sendAnalyticsEventForTokenizationFailureForPaymentType:paymentType];
             if (completionBlock) {
