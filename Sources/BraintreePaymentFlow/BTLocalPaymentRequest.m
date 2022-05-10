@@ -54,8 +54,6 @@
 
 @end
 
-NSInteger const NetworkConnectionLostCode = -1005;
-
 @implementation BTLocalPaymentRequest
 
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
@@ -179,7 +177,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
                      return;
                  }
              } else {
-                 if (error.code == NetworkConnectionLostCode) {
+                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
                      [apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
                  }
 
@@ -225,7 +223,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
          {
              if (error) {
-                 if (error.code == NetworkConnectionLostCode) {
+                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
                      [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
                  }
                  [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];

@@ -66,8 +66,6 @@ NSString * _Nonnull const PayPalEnvironmentSandbox = @"sandbox";
  */
 NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
-NSInteger const NetworkConnectionLostCode = -1005;
-
 @interface BTPayPalDriver () <ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, assign) BOOL returnedToAppAfterPermissionAlert;
@@ -168,7 +166,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
                   parameters:[request parametersWithConfiguration:configuration]
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
-                if (error.code == NetworkConnectionLostCode) {
+                if (error.code == NETWORK_CONNECTION_LOST_CODE) {
                     [self.apiClient sendAnalyticsEvent:@"ios.paypal.tokenize.network-connection.failure"];
                 }
                 NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;
@@ -582,7 +580,7 @@ NSInteger const NetworkConnectionLostCode = -1005;
               parameters:parameters
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
-            if (error.code == NetworkConnectionLostCode) {
+            if (error.code == NETWORK_CONNECTION_LOST_CODE) {
                 [self.apiClient sendAnalyticsEvent:@"ios.paypal.handle-browser-switch.network-connection.failure"];
             }
             [self sendAnalyticsEventForTokenizationFailureForPaymentType:paymentType];
