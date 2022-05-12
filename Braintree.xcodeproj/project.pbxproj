@@ -1684,7 +1684,6 @@
 		80824659252C19F5000AD8FF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9CE51786282D527E0013C740 /* BraintreePayPalNativeCheckout */,
 				0357C47D1F96869600E63851 /* BraintreeAmericanExpress */,
 				A7C889751B5EF5DE007A0E9C /* BraintreeApplePay */,
 				A7C889911B5F043B007A0E9C /* BraintreeCard */,
@@ -1692,6 +1691,7 @@
 				A76D7C011BB1CAB00000FA6A /* BraintreeDataCollector */,
 				038C7FBB1EA1648900241ABE /* BraintreePaymentFlow */,
 				2D941D391B59C76A0016EFB4 /* BraintreePayPal */,
+				9CE51786282D527E0013C740 /* BraintreePayPalNativeCheckout */,
 				A91E1EAC24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				4164B9891C9B6553006AE861 /* BraintreeUnionPay */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
@@ -1703,13 +1703,13 @@
 		808249F8252C1F97000AD8FF /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				9CE5179C282D54030013C740 /* BraintreePayPalNativeCheckoutTests */,
 				A948D6C724FAB79B00F4F178 /* BraintreeAmericanExpressTests */,
 				A948D6DD24FAC6C000F4F178 /* BraintreeApplePayTests */,
 				A95C410924FAEF2100045045 /* BraintreeCardTests */,
 				A9E5C22524FD6D0800EE691F /* BraintreeCoreTests */,
 				A9E5C19F24FD5A7C00EE691F /* BraintreeDataCollectorTests */,
 				A91E1E8B24FEDD7F007540E5 /* BraintreePaymentFlowTests */,
+				9CE5179C282D54030013C740 /* BraintreePayPalNativeCheckoutTests */,
 				A9E5C1E124FD665D00EE691F /* BraintreePayPalTests */,
 				A903E1A724F9D34000C314E1 /* BraintreeTestShared */,
 				A91E1EF324FEF2E4007540E5 /* BraintreeThreeDSecureTests */,
