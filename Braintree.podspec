@@ -72,7 +72,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PayPalNativeCheckout" do |s|
-    s.source_files = "Sources/PayPalNativeCheckout/*.swift"
+    s.source_files = "Sources/BraintreePayPalNativeCheckout/*.swift"
     s.dependency "Braintree/Core"
   end
 
