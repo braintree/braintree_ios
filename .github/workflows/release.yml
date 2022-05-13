@@ -115,7 +115,14 @@ jobs:
         run: |
           gem install jazzy
           brew install sourcekitten
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
+
+          # run sourcekitten on each Swift module individually
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > pay-pal-data-collector.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPalNativeCheckout -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-pay-pal-native-checkout.json
+          
+          # merge sourcekitten output
+          jq -s '.[0] + .[1]' pay-pal-data-collector.json braintree-pay-pal-native-checkout.json > swiftDoc.json
+
           sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
             -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \
             -I $(pwd)/Sources/BraintreeAmericanExpress/Public \
