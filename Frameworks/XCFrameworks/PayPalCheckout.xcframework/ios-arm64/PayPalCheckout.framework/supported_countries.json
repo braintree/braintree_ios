@@ -1,0 +1,1832 @@
+{
+  "countries": [
+    {
+      "id": "AL",
+      "name": "Albania",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "DZ",
+      "name": "Algeria",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AD",
+      "name": "Andorra",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AO",
+      "name": "Angola",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AI",
+      "name": "Anguilla",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AU",
+      "name": "Australia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City/Neighborhood",
+      "state": "State/Territory ",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AG",
+      "name": "Antigua & Barbuda",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AR",
+      "name": "Argentina",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Province",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AM",
+      "name": "Armenia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AW",
+      "name": "Aruba",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AT",
+      "name": "Austria",
+      "address1": "Street name and house number",
+      "address2": "Additional information",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AZ",
+      "name": "Azerbaijan",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BS",
+      "name": "Bahamas",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BH",
+      "name": "Bahrain",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BB",
+      "name": "Barbados",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BY",
+      "name": "Belarus",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Locality",
+      "state": "Province",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BE",
+      "name": "Belgium",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BZ",
+      "name": "Belize",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BJ",
+      "name": "Benin",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BM",
+      "name": "Bermuda",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BT",
+      "name": "Bhutan",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BO",
+      "name": "Bolivia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BA",
+      "name": "Bosnia & Herzegovina",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BW",
+      "name": "Botswana",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BR",
+      "name": "Brazil",
+      "address1": "Address, Number",
+      "address2": "District / Neighborhood",
+      "city": "City",
+      "state": "State",
+      "zipcode": "CEP"
+    },
+    {
+      "id": "VG",
+      "name": "British Virgin Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BN",
+      "name": "Brunei",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Locality",
+      "state": "District / Capital",
+      "zipcode": "Post Code"
+    },
+    {
+      "id": "BG",
+      "name": "Bulgaria",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "BF",
+      "name": "Burkina Faso",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "BI",
+      "name": "Burundi",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KH",
+      "name": "Cambodia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CM",
+      "name": "Cameroon",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Locality",
+      "state": "",
+      "zipcode": ""
+    },
+    {
+      "id": "CA",
+      "name": "Canada",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Province",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CV",
+      "name": "Cape Verde",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KY",
+      "name": "Cayman Islands",
+      "address1": "Street name and house number",
+      "address2": "More address details",
+      "city": "Island’s name",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TD",
+      "name": "Chad",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CL",
+      "name": "Chile",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Commune / Locality",
+      "state": "Region",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CN",
+      "name": "China",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Province / Municipality",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CO",
+      "name": "Colombia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Department / Capital District",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KM",
+      "name": "Comoros",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CG",
+      "name": "Congo - Brazzaville",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CD",
+      "name": "Congo - Kinshasa",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CK",
+      "name": "Cook Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CR",
+      "name": "Costa Rica",
+      "address1": "Address line 1",
+      "address2": "District",
+      "city": "Canton",
+      "state": "Province",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CI",
+      "name": "Côte d'Ivoire",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": ""
+    },
+    {
+      "id": "HR",
+      "name": "Croatia",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CY",
+      "name": "Cyprus",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "CZ",
+      "name": "Czech Republic",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Delivery post office",
+      "state": "",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "DK",
+      "name": "Denmark",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "DJ",
+      "name": "Djibouti",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "DM",
+      "name": "Dominica",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "DO",
+      "name": "Dominican Republic",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "Municipality",
+      "state": "Province / National District",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "EC",
+      "name": "Ecuador",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "Town",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "EG",
+      "name": "Egypt",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SV",
+      "name": "El Salvador",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Department",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ER",
+      "name": "Eritrea",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "EE",
+      "name": "Estonia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "",
+      "state": "District / Parish",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ET",
+      "name": "Ethiopia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "FK",
+      "name": "Falkland Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "FO",
+      "name": "Faroe Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "FJ",
+      "name": "Fiji",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "FI",
+      "name": "Finland",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "FR",
+      "name": "France",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GF",
+      "name": "French Guiana",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PF",
+      "name": "French Polynesia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GA",
+      "name": "Gabon",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GM",
+      "name": "Gambia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GE",
+      "name": "Georgia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "DE",
+      "name": "Germany",
+      "address1": "Street name and house number",
+      "address2": "Additional information",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GI",
+      "name": "Gibraltar",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GR",
+      "name": "Greece",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GL",
+      "name": "Greenland",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GD",
+      "name": "Grenada",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GP",
+      "name": "Guadeloupe",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GT",
+      "name": "Guatemala",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GN",
+      "name": "Guinea",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GW",
+      "name": "Guinea-Bissau",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GY",
+      "name": "Guyana",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "HN",
+      "name": "Honduras",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "HK",
+      "name": "Hong Kong SAR China",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "District/Area",
+      "state": "Region",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "HU",
+      "name": "Hungary",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "IS",
+      "name": "Iceland",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Town",
+      "state": "",
+      "zipcode": "Post code"
+    },
+    {
+      "id": "IN",
+      "name": "India",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Town/City",
+      "state": "County/State",
+      "zipcode": "PIN code"
+    },
+    {
+      "id": "ID",
+      "name": "Indonesia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Province",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "IE",
+      "name": "Ireland",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Town / City",
+      "state": "County / Dublin postal district",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "IL",
+      "name": "Israel",
+      "address1": "Street and house number",
+      "address2": "More address details",
+      "city": "City",
+      "state": "County / Dublin postal district",
+      "zipcode": "ZIP code"
+    },
+    {
+      "id": "IT",
+      "name": "Italy",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Province",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "JM",
+      "name": "Jamaica",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "JP",
+      "name": "Japan",
+      "address1": "Street name, street number",
+      "address2": "Building name, floor, room number",
+      "city": "City / Ward / Town / Village",
+      "state": "Prefecture",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "JO",
+      "name": "Jordan",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KZ",
+      "name": "Kazakhstan",
+      "address1": "Street name and house number",
+      "address2": "District",
+      "city": "City",
+      "state": "Region / Independent city",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KE",
+      "name": "Kenya",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KI",
+      "name": "Kiribati",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KW",
+      "name": "Kuwait",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "KG",
+      "name": "Kyrgyzstan",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "LA",
+      "name": "Laos",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "LV",
+      "name": "Latvia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "LS",
+      "name": "Lesotho",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "LI",
+      "name": "Liechtenstein",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "LT",
+      "name": "Lithuania",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "LU",
+      "name": "Luxembourg",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Post code"
+    },
+    {
+      "id": "MK",
+      "name": "Macedonia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Post code"
+    },
+    {
+      "id": "MG",
+      "name": "Madagascar",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MW",
+      "name": "Malawi",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MY",
+      "name": "Malaysia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Locality",
+      "state": "State / Federal territory",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MV",
+      "name": "Maldives",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ML",
+      "name": "Mali",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MT",
+      "name": "Malta",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MH",
+      "name": "Marshall Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MQ",
+      "name": "Martinique",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MR",
+      "name": "Mauritania",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MU",
+      "name": "Mauritius",
+      "address1": "Street name and house number",
+      "address2": "District / Dependency",
+      "city": "Main village / Town",
+      "state": "Sub-locality",
+      "zipcode": "Post code"
+    },
+    {
+      "id": "YT",
+      "name": "Mayotte",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MX",
+      "name": "Mexico",
+      "address1": "Address line 1",
+      "address2": "Neighborhood / Quarter",
+      "city": "City",
+      "state": "State",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "FM",
+      "name": "Micronesia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Zip code"
+    },
+    {
+      "id": "MD",
+      "name": "Moldova",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Zip code"
+    },
+    {
+      "id": "MC",
+      "name": "Monaco",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      
+      "state": "",
+      "zipcode": "Zip code"
+    },
+    {
+      "id": "MN",
+      "name": "Mongolia",
+      "address1": "Address",
+      "address2": "District / Sub-province",
+      "city": "Capital / Province",
+      "state": "Sub-district / Sub-division",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ME",
+      "name": "Montenegro",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Locality",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MS",
+      "name": "Montserrat",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MA",
+      "name": "Morocco",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "MZ",
+      "name": "Mozambique",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NA",
+      "name": "Namibia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NR",
+      "name": "Nauru",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NP",
+      "name": "Nepal",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / District",
+      "state": "Zone / Capital",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NL",
+      "name": "Netherlands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Zone ",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AN",
+      "name": "Netherlands Antilles",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NC",
+      "name": "New Caledonia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NZ",
+      "name": "New Zealand",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Suburb",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NI",
+      "name": "Nicaragua",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NE",
+      "name": "Niger",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NG",
+      "name": "Nigeria",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "State / Capital",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NU",
+      "name": "Niue",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NF",
+      "name": "Norfolk Island",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "NO",
+      "name": "Norway",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "OM",
+      "name": "Oman",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PA",
+      "name": "Panama",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / District",
+      "state": "Province / Region",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PG",
+      "name": "Papua New Guinea",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PW",
+      "name": "Palau",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PY",
+      "name": "Paraguay",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Post town",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PE",
+      "name": "Peru",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PH",
+      "name": "Philippines",
+      "address1": "Street name, house number, subdivision",
+      "address2": "Barangay / District",
+      "city": "City / Municipality",
+      "state": "Province / Region",
+      "zipcode": "ZIP code"
+    },
+    {
+      "id": "PN",
+      "name": "Pitcairn Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PL",
+      "name": "Poland",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town",
+      "state": "Province",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PT",
+      "name": "Portugal",
+      "address1": "Street address",
+      "address2": "Address line 2",
+      "city": "Town / Village / Post office",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "QA",
+      "name": "Qatar",
+      "address1": "Street address",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "RE",
+      "name": "Réunion",
+      "address1": "Street address",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "RO",
+      "name": "Romania",
+      "address1": "Address line 1",
+      "address2": "Judet / Sector",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "RU",
+      "name": "Russia",
+      "address1": "Street, building, apartment",
+      "address2": "Address line 2",
+      "city": "Center of population (city, village)",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "RW",
+      "name": "Rwanda",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "WS",
+      "name": "Samoa",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Locality",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SM",
+      "name": "San Marino",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ST",
+      "name": "São Tomé & Príncipe",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SA",
+      "name": "Saudi Arabia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SN",
+      "name": "Senegal",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "RS",
+      "name": "Serbia",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SC",
+      "name": "Seychelles",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SL",
+      "name": "Sierra Leone",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SG",
+      "name": "Singapore",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SK",
+      "name": "Slovakia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Post Office name",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SI",
+      "name": "Slovenia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SB",
+      "name": "Solomon Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SO",
+      "name": "Somalia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ZA",
+      "name": "South Africa",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KR",
+      "name": "South Korea",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ES",
+      "name": "Spain",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "Province / Autonomous city",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "LK",
+      "name": "Sri Lanka",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SH",
+      "name": "St. Helena",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "KN",
+      "name": "St. Kitts & Nevis",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "LC",
+      "name": "St. Lucia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "PM",
+      "name": "St. Pierre & Miquelon",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "VC",
+      "name": "St. Vincent & Grenadines",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SR",
+      "name": "Suriname",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SJ",
+      "name": "Svalbard & Jan Mayen",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SZ",
+      "name": "Swaziland",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "SE",
+      "name": "Sweden",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City / Town",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "CH",
+      "name": "Switzerland",
+      "address1": "Street name and house number",
+      "address2": "Additional information",
+      "city": "City",
+      "state": "Canton",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TW",
+      "name": "Taiwan",
+      "address1": "Street name and house number",
+      "address2": "Additional information",
+      "city": "City",
+      "state": "County",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TJ",
+      "name": "Tajikistan",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TZ",
+      "name": "Tanzania",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TH",
+      "name": "Thailand",
+      "address1": "Plot/house number, moo/lane and street name",
+      "address2": "District",
+      "city": "Subdistrict",
+      "state": "Province",
+      "zipcode": "Postcode"
+    },
+    {
+      "id": "TG",
+      "name": "Togo",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TO",
+      "name": "Tonga",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Locality",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TT",
+      "name": "Trinidad & Tobago",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TN",
+      "name": "Tunisia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TR",
+      "name": "Turkey",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TM",
+      "name": "Turkmenistan",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TC",
+      "name": "Turks & Caicos Islands",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "TV",
+      "name": "Tuvalu",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "UG",
+      "name": "Uganda",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "UA",
+      "name": "Ukraine",
+      "address1": "Street address",
+      "address2": "Additional information",
+      "city": "Center of population",
+      "state": "Region",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "AE",
+      "name": "United Arab Emirates",
+      "address1": "PO Box",
+      "address2": "Additional information",
+      "city": "City",
+      "state": "Emirate",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "GB",
+      "name": "United Kingdom",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / District",
+      "state": "County",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "US",
+      "name": "United States",
+      "address1": "Street address",
+      "address2": "Apt., ste., bldg.",
+      "city": "City",
+      "state": "State",
+      "zipcode": "Zip code"
+    },
+    {
+      "id": "UY",
+      "name": "Uruguay",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City / Town / Locality",
+      "state": "Department",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "VU",
+      "name": "Vanuatu",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "VA",
+      "name": "Vatican City",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "VE",
+      "name": "Venezuela",
+      "address1": "Street name and house number",
+      "address2": "Address line 2",
+      "city": "City",
+      "state": "State / Capital District / Federal Dependencies",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "VN",
+      "name": "Vietnam",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "Town",
+      "state": "Larger city / Province",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "WF",
+      "name": "Wallis & Futuna",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "YE",
+      "name": "Yemen",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ZM",
+      "name": "Zambia",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town / Village",
+      "state": "",
+      "zipcode": "Postal code"
+    },
+    {
+      "id": "ZW",
+      "name": "Zimbabwe",
+      "address1": "Address line 1",
+      "address2": "Address line 2",
+      "city": "City / Town",
+      "state": "",
+      "zipcode": "Postal code"
+    }
+  ]
+}
