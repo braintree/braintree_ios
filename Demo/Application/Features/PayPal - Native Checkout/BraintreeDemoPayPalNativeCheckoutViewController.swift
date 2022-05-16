@@ -24,6 +24,8 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
+        let client = BTPayPalNativeCheckoutClient(clientID: "AVgzJ5j6adTAjZHTRHCgzKdWXwOxaCcUc9tZWsdNWVe9WwNasAKWHbiuluX8nVBksz0hV9psUMGLQuWW",
+                                                  returnUrl: "com.braintreepayments.Demo://paypalpay")
 //        let driver = BTPayPalDriver(apiClient: apiClient)
 //        let request = BTPayPalCheckoutRequest(amount: "4.30")
 //        request.activeWindow = self.view.window
