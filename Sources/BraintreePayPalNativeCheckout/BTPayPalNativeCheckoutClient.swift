@@ -8,9 +8,7 @@ import BraintreeCore
 
 public class BTPayPalNativeCheckoutClient: NSObject {
     
-    public init(clientID: String, returnUrl: String) {
-        let config = CheckoutConfig(clientID: clientID, returnUrl: returnUrl)
-        
-        Checkout.set(config: config)
+    public func tokenize() {
+        // TODO: Launch native checkout flow
     }
 }
