@@ -8,6 +8,5 @@ public class BTPayPalNativeCheckoutRequest: NSObject {
     public init(returnURL: String, amount: String) {
         self.returnURL = returnURL
         self.amount = amount
-        super.init()
     }
 }
