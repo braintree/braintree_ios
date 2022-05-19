@@ -8,7 +8,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        client = BTPayPalNativeCheckoutClient()
+//        client = BTPayPalNativeCheckoutClient()
     }
     
     override func createPaymentButton() -> UIView! {
@@ -26,6 +26,6 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        client.tokenize()
+//        client.tokenize()
     }
 }
