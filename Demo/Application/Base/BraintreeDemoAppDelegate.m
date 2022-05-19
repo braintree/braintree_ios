@@ -3,7 +3,6 @@
 
 #import "Demo-Swift.h"
 
-
 NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Demo.payments";
 
 @implementation BraintreeDemoAppDelegate
