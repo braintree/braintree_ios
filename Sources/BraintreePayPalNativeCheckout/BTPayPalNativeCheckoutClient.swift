@@ -3,6 +3,17 @@ import Foundation
 import BraintreeCore
 #endif
 
-class BTPayPalNativeCheckoutClient: NSObject {
-
+@objcMembers
+public class BTPayPalNativeCheckoutClient: NSObject {
+    private var apiClient: BTAPIClient
+    
+    @objc(initWithAPIClient:)
+    public init(apiClient: BTAPIClient) {
+        self.apiClient = apiClient
+    }
+    
+    public func tokenize(request: BTPayPalNativeCheckoutRequest, completion: (BTPayPalNativeCheckoutNonce?, Error?) -> Void) {
+        // TODO: start native checkout
+    }
 }
+
