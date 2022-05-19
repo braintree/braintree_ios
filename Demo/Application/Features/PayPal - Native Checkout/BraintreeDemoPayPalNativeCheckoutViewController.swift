@@ -3,12 +3,12 @@ import UIKit
 import BraintreePayPalNativeCheckout
 
 class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
-    private var client: BTPayPalNativeCheckoutClient!
+    private var payPalNativeCheckoutClient: BTPayPalNativeCheckoutClient!
     private var button: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        client = BTPayPalNativeCheckoutClient()
+        payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
     }
     
     override func createPaymentButton() -> UIView! {
@@ -22,10 +22,19 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
     }
     
     @objc func tappedPayPalCheckout(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - Native Checkout using BTPayPalDriver")
+        progressBlock("Tapped PayPal - Native Checkout using BTPayPalNativeCheckout")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
-
-//        client.tokenize()
+        
+        let request = BTPayPalNativeCheckoutRequest(returnURL: "", amount: "")
+        payPalNativeCheckoutClient.tokenize(request: request) { nonce, error in
+            sender.isEnabled = true
+            
+            guard let nonce = nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+            self.nonceStringCompletionBlock(nonce.nonce)
+        }
     }
 }

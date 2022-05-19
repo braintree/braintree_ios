@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(PayPalCheckout)
-import PayPalCheckout
-#endif
 #if canImport(BraintreeCore)
 import BraintreeCore
 #endif
@@ -16,7 +13,7 @@ public class BTPayPalNativeCheckoutClient: NSObject {
     }
     
     public func tokenize(request: BTPayPalNativeCheckoutRequest, completion: (BTPayPalNativeCheckoutNonce?, Error?) -> Void) {
-        // TODO: start native checkout
+        completion(nil, NSError(domain: "TODO: Implement Native Checkout", code: 0, userInfo: nil))
     }
 }
 

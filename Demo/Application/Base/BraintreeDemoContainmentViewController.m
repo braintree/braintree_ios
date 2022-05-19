@@ -7,6 +7,7 @@
 
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
 @property (nonatomic, strong) BTPaymentMethodNonce *latestTokenizedPayment;
+@property (nonatomic, strong) NSString *latestTokenizedPaymentString;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
 
 @end
@@ -64,10 +65,23 @@
     }
 }
 
+- (void)setLatestTokenizedPaymentString:(NSString*)latestNonceString {
+    _latestTokenizedPaymentString = latestNonceString;
+
+    if (latestNonceString) {
+        self.statusItem.enabled = YES;
+    }
+}
+
 - (void)updateStatus:(NSString *)status {
     [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
     [(UIButton *)self.statusItem.customView setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
+        [(UIButton *)self.statusItem.customView setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+        NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
+    });
 }
 
 
@@ -75,16 +89,20 @@
 
 - (void)tappedStatus {
     NSLog(@"Tapped status!");
-
-    if (self.latestTokenizedPayment) {
-        NSString *nonce = self.latestTokenizedPayment.nonce;
+    
+    if (self.latestTokenizedPayment || self.latestTokenizedPaymentString) {
+        NSString *nonce = self.latestTokenizedPaymentString != nil ? self.latestTokenizedPaymentString : self.latestTokenizedPayment.nonce;
+        NSString *merchantAccountID = nil;
         [self updateStatus:@"Creating Transaction…"];
-        NSString *merchantAccountID = ([self.latestTokenizedPayment.type isEqualToString:@"UnionPay"]) ? @"fake_switch_usd" : nil;
+        if (_latestTokenizedPayment != nil) {
+            merchantAccountID = ([self.latestTokenizedPayment.type isEqualToString:@"UnionPay"]) ? @"fake_switch_usd" : nil;
+        }
         
         [BraintreeDemoMerchantAPIClient.shared makeTransactionWithPaymentMethodNonce:nonce
                                                                    merchantAccountID:merchantAccountID
                                                                           completion:^(NSString *transactionID, NSError *error) {
             self.latestTokenizedPayment = nil;
+            self.latestTokenizedPaymentString = nil;
             if (error) {
                 [self updateStatus:error.localizedDescription];
             } else {
@@ -173,6 +191,7 @@
     [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([_currentDemoViewController class])]];
     _currentDemoViewController.progressBlock = [self progressBlock];
     _currentDemoViewController.completionBlock = [self completionBlock];
+    _currentDemoViewController.nonceStringCompletionBlock = [self nonceStringCompletionBlock];
     _currentDemoViewController.transactionBlock = [self transactionBlock];
     
     [self containIntegrationViewController:_currentDemoViewController];
@@ -233,6 +252,18 @@
     dispatch_once(&onceToken, ^{
         block = ^(id tokenized){
             self.latestTokenizedPayment = tokenized;
+            [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
+        };
+    });
+    return block;
+}
+
+- (void (^)(NSString *paymentMethodNonceString))nonceStringCompletionBlock {
+    static id block;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        block = ^(id paymentMethodNonceString){
+            self.latestTokenizedPaymentString = paymentMethodNonceString;
             [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
         };
     });
