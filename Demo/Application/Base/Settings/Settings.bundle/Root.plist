@@ -17,6 +17,7 @@
 			<string>BraintreeDemoCardTokenizationViewController</string>
 			<key>Titles</key>
 			<array>
+				<string>PayPal - Native Checkout</string>
 				<string>PayPal - Vault</string>
 				<string>PayPal - Checkout</string>
 				<string>PayPal - Pay Later</string>
@@ -32,6 +33,7 @@
 			</array>
 			<key>Values</key>
 			<array>
+				<string>BraintreeDemoPayPalNativeCheckoutViewController</string>
 				<string>BraintreeDemoPayPalVaultViewController</string>
 				<string>BraintreeDemoPayPalCheckoutViewController</string>
 				<string>BraintreeDemoPayPalPayLaterViewController</string>
