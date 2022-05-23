@@ -15,7 +15,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:@"magnes.debug.mode"];
-
+    
     if (@available(iOS 13, *)) {
         // handled by scene delegate
     } else {
