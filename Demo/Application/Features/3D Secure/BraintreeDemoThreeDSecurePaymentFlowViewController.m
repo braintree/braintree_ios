@@ -4,7 +4,7 @@
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 
-@property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
+@property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
 @property (nonatomic, strong) BTCardFormView *cardFormView;
 @property (nonatomic, strong) UIButton *autofillButton3DS1;
@@ -153,8 +153,8 @@
 
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
 
-        self.paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:self.apiClient];
-        self.paymentFlowDriver.viewControllerPresentingDelegate = self;
+        self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:self.apiClient];
+        self.paymentFlowClient.viewControllerPresentingDelegate = self;
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;
@@ -193,11 +193,11 @@
         v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";
         request.v1UICustomization = v1UICustomization;
 
-        [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
+        [self.paymentFlowClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {
-                if (error.code == BTPaymentFlowDriverErrorTypeCanceled) {
+                if (error.code == BTPaymentFlowClientErrorTypeCanceled) {
                     self.progressBlock(@"Canceled 🎲");
                 } else {
                     self.progressBlock(error.localizedDescription);
@@ -217,11 +217,11 @@
     }];
 }
 
-- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+- (void)paymentClient:(__unused id)client requestsPresentationOfViewController:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(__unused UIViewController *)viewController {
+- (void)paymentClient:(__unused id)client requestsDismissalOfViewController:(__unused UIViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

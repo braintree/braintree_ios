@@ -2,7 +2,7 @@
 
 #import "BraintreeDemoPaymentButtonBaseViewController.h"
 
-@class BTThreeDSecureDriver;
+@class BTThreeDSecureClient;
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController : BraintreeDemoPaymentButtonBaseViewController
 

@@ -3,7 +3,7 @@
 
 @interface BraintreeDemoCustomVenmoButtonViewController ()
 
-@property (nonatomic, strong) BTVenmoDriver *venmoDriver;
+@property (nonatomic, strong) BTVenmoClient *venmoClient;
 
 @end
 
@@ -11,7 +11,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:self.apiClient];
+    self.venmoClient = [[BTVenmoClient alloc] initWithAPIClient:self.apiClient];
     self.title = NSLocalizedString(@"Custom Venmo Button", nil);
 }
 
@@ -28,7 +28,7 @@
     self.progressBlock(@"Tapped Venmo - initiating Venmo auth");
     BTVenmoRequest *venmoRequest = [[BTVenmoRequest alloc] initWithPaymentMethodUsage:BTVenmoPaymentMethodUsageMultiUse];
     [venmoRequest setVault:YES];
-    [self.venmoDriver tokenizeVenmoAccountWithVenmoRequest:venmoRequest completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
+    [self.venmoClient tokenizeVenmoAccountWithVenmoRequest:venmoRequest completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
         if (venmoAccount) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [venmoAccount debugDescription]);

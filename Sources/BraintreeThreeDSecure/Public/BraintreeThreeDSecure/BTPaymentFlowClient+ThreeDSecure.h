@@ -1,7 +1,7 @@
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>)
-#import <Braintree/BTPaymentFlowDriver.h>
+#import <Braintree/BTPaymentFlowClient.h>
 #else
-#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#import <BraintreePaymentFlow/BTPaymentFlowClient.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
@@ -29,9 +29,9 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
 };
 
 /**
- Category on BTPaymentFlowDriver for 3D Secure
+ Category on BTPaymentFlowClient for 3D Secure
  */
-@interface BTPaymentFlowDriver (ThreeDSecure)
+@interface BTPaymentFlowClient (ThreeDSecure)
 
 /**
  Creates a stringified JSON object containing the information necessary to perform a lookup.

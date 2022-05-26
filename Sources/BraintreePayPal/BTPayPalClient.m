@@ -1,4 +1,4 @@
-#import "BTPayPalDriver_Internal.h"
+#import "BTPayPalClient_Internal.h"
 #import "BTPayPalAccountNonce_Internal.h"
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
@@ -49,7 +49,7 @@
 #import <PayPalDataCollector/PayPalDataCollector-Swift.h>
 #endif
 
-NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
+NSString *const BTPayPalClientErrorDomain = @"com.braintreepayments.BTPayPalClientErrorDomain";
 
 /**
  This environment MUST be used for App Store submissions.
@@ -66,16 +66,16 @@ NSString * _Nonnull const PayPalEnvironmentSandbox = @"sandbox";
  */
 NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
-@interface BTPayPalDriver () <ASWebAuthenticationPresentationContextProviding>
+@interface BTPayPalClient () <ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, assign) BOOL returnedToAppAfterPermissionAlert;
 
 @end
 
-@implementation BTPayPalDriver
+@implementation BTPayPalClient
 
 + (void)load {
-    if (self == [BTPayPalDriver class]) {
+    if (self == [BTPayPalClient class]) {
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
             return [self payPalAccountFromJSON:payPalAccount];
         }];
@@ -111,22 +111,22 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 - (void)tokenizePayPalAccountWithPayPalRequest:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
-        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                             code:BTPayPalDriverErrorTypeIntegration
-                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalDriver failed because BTAPIClient is nil."}];
+        NSError *error = [NSError errorWithDomain:BTPayPalClientErrorDomain
+                                             code:BTPayPalClientErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalClient failed because BTAPIClient is nil."}];
         completionBlock(nil, error);
         return;
     }
 
     if (!request) {
-        completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
+        completionBlock(nil, [NSError errorWithDomain:BTPayPalClientErrorDomain code:BTPayPalClientErrorTypeInvalidRequest userInfo:nil]);
         return;
     }
 
     if (!([request isKindOfClass:BTPayPalCheckoutRequest.class] || [request isKindOfClass:BTPayPalVaultRequest.class])) {
-        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                             code:BTPayPalDriverErrorTypeIntegration
-                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalDriver failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."}];
+        NSError *error = [NSError errorWithDomain:BTPayPalClientErrorDomain
+                                             code:BTPayPalClientErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalClient failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."}];
         completionBlock(nil, error);
         return;
     }
@@ -219,8 +219,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if (!error) {
         // Defensive programming in case PayPal One Touch returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
         if (![url.scheme.lowercaseString hasPrefix:@"http"]) {
-            NSError *urlError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                                    code:BTPayPalDriverErrorTypeUnknown
+            NSError *urlError = [NSError errorWithDomain:BTPayPalClientErrorDomain
+                                                    code:BTPayPalClientErrorTypeUnknown
                                                 userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in ASWebAuthenticationSession: %@://", url.scheme],
                                                             NSLocalizedRecoverySuggestionErrorKey: @"Try again or contact Braintree Support." }];
 
@@ -246,7 +246,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:appSwitchURL
                                                                callbackURLScheme:BTPayPalCallbackURLScheme
                                                                completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-        // Required to avoid memory leak for BTPayPalDriver
+        // Required to avoid memory leak for BTPayPalClient
         self.authenticationSession = nil;
 
         if (error) {
@@ -264,8 +264,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            NSError *err = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                               code:BTPayPalDriverErrorTypeCanceled
+            NSError *err = [NSError errorWithDomain:BTPayPalClientErrorDomain
+                                               code:BTPayPalClientErrorTypeCanceled
                                            userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow was canceled by the user."}];
             if (completionBlock) {
                 completionBlock(nil, err);
@@ -428,8 +428,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if (![configuration[@"paypalEnabled"] isTrue]) {
         [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
         if (error != NULL) {
-            *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                         code:BTPayPalDriverErrorTypeDisabled
+            *error = [NSError errorWithDomain:BTPayPalClientErrorDomain
+                                         code:BTPayPalClientErrorTypeDisabled
                                      userInfo:@{ NSLocalizedDescriptionKey: @"PayPal is not enabled for this merchant",
                                                  NSLocalizedRecoverySuggestionErrorKey: @"Enable PayPal for this merchant in the Braintree Control Panel" }];
         }
@@ -512,8 +512,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                          paymentType:(BTPayPalPaymentType)paymentType
                           completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     if (![self.class isValidURLAction: url]) {
-        NSError *responseError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                                     code:BTPayPalDriverErrorTypeUnknown
+        NSError *responseError = [NSError errorWithDomain:BTPayPalClientErrorDomain
+                                                     code:BTPayPalClientErrorTypeUnknown
                                                  userInfo:@{ NSLocalizedDescriptionKey: @"Unexpected response" }];
 
         if (completionBlock) {
@@ -528,8 +528,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
         if (completionBlock) {
             // If there's no response, the user canceled out of the flow using the cancel link
             // on the PayPal website
-            NSError *err = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                               code:BTPayPalDriverErrorTypeCanceled
+            NSError *err = [NSError errorWithDomain:BTPayPalClientErrorDomain
+                                               code:BTPayPalClientErrorTypeCanceled
                                            userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow was canceled by the user."}];
 
             completionBlock(nil, err);

@@ -22,12 +22,12 @@ class BraintreeDemoPayPalPayLaterViewController: BraintreeDemoPaymentButtonBaseV
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
-        let driver = BTPayPalDriver(apiClient: apiClient)
+        let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalCheckoutRequest(amount: "4.30")
         request.offerPayLater = true
         request.activeWindow = self.view.window
         
-        driver.tokenizePayPalAccount(with: request) { nonce, error in
+        client.tokenizePayPalAccount(with: request) { nonce, error in
             sender.isEnabled = true
             
             guard let nonce = nonce else {

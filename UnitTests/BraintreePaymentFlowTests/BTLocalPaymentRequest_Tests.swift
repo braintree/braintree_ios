@@ -36,10 +36,10 @@ class BTLocalPaymentRequest_UnitTests: XCTestCase {
         let mockRequestDelegate = MockLocalPaymentRequestDelegate()
         request.localPaymentFlowDelegate = mockRequestDelegate
 
-        let mockDriverDelegate = MockPaymentFlowDriverDelegate()
-        mockDriverDelegate._returnURLScheme = "com.app.payments"
+        let mockClientDelegate = MockPaymentFlowClientDelegate()
+        mockClientDelegate._returnURLScheme = "com.app.payments"
 
-        request.handle(request, client: mockClient, paymentDriverDelegate: mockDriverDelegate)
+        request.handle(request, client: mockClient, paymentClientDelegate: mockClientDelegate)
 
         XCTAssertEqual(mockClient.lastPOSTPath, "v1/local_payments/create")
 

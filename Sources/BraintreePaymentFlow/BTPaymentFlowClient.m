@@ -1,4 +1,4 @@
-#import "BTPaymentFlowDriver_Internal.h"
+#import "BTPaymentFlowClient_Internal.h"
 #import <SafariServices/SafariServices.h>
 
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
@@ -21,7 +21,7 @@
 
 #endif
 
-@interface BTPaymentFlowDriver () <SFSafariViewControllerDelegate>
+@interface BTPaymentFlowClient () <SFSafariViewControllerDelegate>
 
 @property (nonatomic, copy) void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *);
 @property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
@@ -31,15 +31,15 @@
 
 @end
 
-NSString * const BTPaymentFlowDriverErrorDomain = @"com.braintreepayments.BTPaymentFlowDriverErrorDomain";
+NSString * const BTPaymentFlowClientErrorDomain = @"com.braintreepayments.BTPaymentFlowClientErrorDomain";
 
-@implementation BTPaymentFlowDriver
+@implementation BTPaymentFlowClient
 
-static BTPaymentFlowDriver *paymentFlowDriver;
+static BTPaymentFlowClient *paymentFlowClient;
 
 + (void)load {
-    if (self == [BTPaymentFlowDriver class]) {
-        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchDriver:self];
+    if (self == [BTPaymentFlowClient class]) {
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
     }
 }
 
@@ -58,11 +58,11 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 - (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
     [self setupPaymentFlow:request completion:completionBlock];
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.start-payment.selected", [self.paymentFlowRequestDelegate paymentFlowName]]];
-    [self.paymentFlowRequestDelegate handleRequest:request client:self.apiClient paymentDriverDelegate:self];
+    [self.paymentFlowRequestDelegate handleRequest:request client:self.apiClient paymentClientDelegate:self];
 }
 
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
-    paymentFlowDriver = self;
+    paymentFlowClient = self;
     self.paymentFlowCompletionBlock = completionBlock;
     self.paymentFlowRequestDelegate = request;
 }
@@ -72,33 +72,33 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL *)appSwitchURL {
-    if ([self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
+    if ([self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentClient:requestsPresentationOfViewController:)]) {
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
         self.safariViewController.delegate = self;
         self.safariViewController.dismissButtonStyle = SFSafariViewControllerDismissButtonStyleCancel;
-        [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
+        [self.viewControllerPresentingDelegate paymentClient:self requestsPresentationOfViewController:self.safariViewController];
     } else {
-        [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue payment flow. BTPaymentFlowDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
 }
 
 - (void)informDelegatePresentingViewControllerNeedsDismissal {
-    if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsDismissalOfViewController:)]) {
-        [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
+    if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentClient:requestsDismissalOfViewController:)]) {
+        [self.viewControllerPresentingDelegate paymentClient:self requestsDismissalOfViewController:self.safariViewController];
         self.safariViewController = nil;
     } else {
-        [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end payment flow. BTPaymentFlowDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
 }
 
 #pragma mark - App switch
 
 + (void)handleReturnURL:(NSURL *)url {
-    [paymentFlowDriver handleOpenURL:url];
+    [paymentFlowClient handleOpenURL:url];
 }
 
 + (BOOL)canHandleReturnURL:(NSURL *)url {
-    return [paymentFlowDriver.paymentFlowRequestDelegate canHandleAppSwitchReturnURL:url];
+    return [paymentFlowClient.paymentFlowRequestDelegate canHandleAppSwitchReturnURL:url];
 }
 
 - (void)handleOpenURL:(NSURL *)url {
@@ -113,7 +113,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
     [self onPaymentCancel];
 }
 
-#pragma mark - BTPaymentFlowDriverDelegate protocol
+#pragma mark - BTPaymentFlowClientDelegate protocol
 
 - (void)onPaymentWithURL:(NSURL *)url error:(NSError *)error {
     if (error) {
@@ -128,16 +128,16 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 
 - (void)onPaymentCancel {
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.canceled", [self.paymentFlowRequestDelegate paymentFlowName]]];
-    NSError *error = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                         code:BTPaymentFlowDriverErrorTypeCanceled
+    NSError *error = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
+                                         code:BTPaymentFlowClientErrorTypeCanceled
                                      userInfo:@{NSLocalizedDescriptionKey: @"Payment flow was canceled by the user."}];
     self.paymentFlowCompletionBlock(nil, error);
-    paymentFlowDriver = nil;
+    paymentFlowClient = nil;
 }
 
 - (void)onPaymentComplete:(BTPaymentFlowResult *)result error:(NSError *)error {
     self.paymentFlowCompletionBlock(result, error);
-    paymentFlowDriver = nil;
+    paymentFlowClient = nil;
 }
 
 @end

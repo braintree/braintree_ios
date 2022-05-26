@@ -1,5 +1,5 @@
 #import "BTThreeDSecureV2Provider.h"
-#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
 #import "BTThreeDSecureV2UICustomization_Internal.h"
 #import <CardinalMobile/CardinalMobile.h>
@@ -130,8 +130,8 @@
             break;
         }
         case CardinalResponseActionCodeCancel: {
-            [self callFailureHandlerWithErrorDomain:BTPaymentFlowDriverErrorDomain
-                                          errorCode:BTPaymentFlowDriverErrorTypeCanceled
+            [self callFailureHandlerWithErrorDomain:BTPaymentFlowClientErrorDomain
+                                          errorCode:BTPaymentFlowClientErrorTypeCanceled
                                       errorUserInfo:nil
                                      failureHandler:self.failureHandler];
             break;

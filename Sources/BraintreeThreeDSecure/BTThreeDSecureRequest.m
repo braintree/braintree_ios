@@ -1,4 +1,4 @@
-#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
@@ -16,7 +16,7 @@
 #import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/Braintree-Version.h>
-#import <Braintree/BTPaymentFlowDriver_Internal.h>
+#import <Braintree/BTPaymentFlowClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
@@ -27,7 +27,7 @@
 #import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/Braintree-Version.h"
-#import "../BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h"
+#import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
@@ -38,7 +38,7 @@
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
-#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
+#import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
 #endif
 
@@ -99,14 +99,14 @@
 
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
-paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
-    self.paymentFlowDriverDelegate = delegate;
+paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
+    self.paymentFlowClientDelegate = delegate;
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.initialized"];
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
         if (configurationError) {
-            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
+            [self.paymentFlowClientDelegate onPaymentComplete:nil error:configurationError];
             return;
         }
 
@@ -179,20 +179,20 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
 - (void)startRequest:(BTPaymentFlowRequest *)request configuration:(BTConfiguration *)configuration {
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
-    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
-    BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:apiClient];
+    BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
+    BTPaymentFlowClient *paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:apiClient];
     
     if (threeDSecureRequest.versionRequested == BTThreeDSecureVersion1 && threeDSecureRequest.threeDSecureRequestDelegate == nil) {
         threeDSecureRequest.threeDSecureRequestDelegate = self;
     }
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.started"];
-    [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
+    [paymentFlowClient performThreeDSecureLookup:threeDSecureRequest
                                       completion:^(BTThreeDSecureResult *lookupResult, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error) {
                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
-                [self.paymentFlowDriverDelegate onPaymentWithURL:nil error:error];
+                [self.paymentFlowClientDelegate onPaymentWithURL:nil error:error];
                 return;
             }
 
@@ -209,39 +209,39 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
 - (void)processLookupResult:(BTThreeDSecureResult *)lookupResult configuration:(BTConfiguration *)configuration {
     if (!lookupResult.lookup.requiresUserAuthentication) {
-        [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult error:nil];
+        [self.paymentFlowClientDelegate onPaymentComplete:lookupResult error:nil];
         return;
     }
     
     if (lookupResult.lookup.isThreeDSecureVersion2) {
         [self performV2Authentication:lookupResult];
     } else {
-        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:self.paymentFlowDriverDelegate.returnURLScheme
+        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:self.paymentFlowClientDelegate.returnURLScheme
                                                                            assetsURL:[configuration.json[@"assetsUrl"] asString]
                                                                  threeDSecureRequest:self
                                                                   threeDSecureLookup:lookupResult.lookup];
-        [self.paymentFlowDriverDelegate onPaymentWithURL:browserSwitchURL error:nil];
+        [self.paymentFlowClientDelegate onPaymentWithURL:browserSwitchURL error:nil];
     }
 }
 
 - (void)performV2Authentication:(BTThreeDSecureResult *)lookupResult {
     typeof(self) __weak weakSelf = self;
-    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
+    BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
     [self.threeDSecureV2Provider processLookupResult:lookupResult
                                              success:^(BTThreeDSecureResult *result) {
                                                  [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
-                                                 [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                                                 [weakSelf.paymentFlowClientDelegate onPaymentComplete:result error:nil];
                                              } failure:^(NSError *error) {
                                                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
-                                                 [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+                                                 [weakSelf.paymentFlowClientDelegate onPaymentComplete:nil error:error];
                                              }];
 }
 
 - (void)handleOpenURL:(NSURL *)url {
     NSString *jsonAuthResponse = [BTURLUtils queryParametersForURL:url][@"auth_response"];
     if (!jsonAuthResponse || jsonAuthResponse.length == 0) {
-        [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.missing-auth-response"]];
-        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+        [self.paymentFlowClientDelegate.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.missing-auth-response"]];
+        [self.paymentFlowClientDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                                                         code:BTThreeDSecureFlowErrorTypeFailedAuthentication
                                                                                     userInfo:@{NSLocalizedDescriptionKey: @"Auth Response missing from URL."}]];
         return;
@@ -250,8 +250,8 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     NSError *jsonError;
     NSData *jsonData = [NSJSONSerialization JSONObjectWithData:[jsonAuthResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&jsonError];
     if (!jsonData) {
-        [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.invalid-auth-response"]];
-        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+        [self.paymentFlowClientDelegate.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.invalid-auth-response"]];
+        [self.paymentFlowClientDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                                                         code:BTThreeDSecureFlowErrorTypeFailedAuthentication
                                                                                     userInfo:@{NSLocalizedDescriptionKey: @"Auth Response JSON parsing error."}]];
         return;
@@ -259,13 +259,13 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
     BTJSON *authBody = [[BTJSON alloc] initWithValue:jsonData];
     if (!authBody.isObject) {
-        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+        [self.paymentFlowClientDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                                                         code:BTThreeDSecureFlowErrorTypeFailedAuthentication
                                                                                     userInfo:@{NSLocalizedDescriptionKey: @"Auth Response is not a valid BTJSON object."}]];
         return;
     }
     
-    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
+    BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
     BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
 
     if (result.errorMessage || !result.tokenizedCard) {
@@ -279,12 +279,12 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                              code:BTThreeDSecureFlowErrorTypeFailedAuthentication
                                          userInfo:userInfo];
-        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+        [self.paymentFlowClientDelegate onPaymentComplete:nil error:error];
         return;
     }
 
     [self logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
-    [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+    [self.paymentFlowClientDelegate onPaymentComplete:result error:nil];
 }
 
 - (void)logThreeDSecureCompletedAnalyticsForResult:(BTThreeDSecureResult *)result withAPIClient:(BTAPIClient *)apiClient {

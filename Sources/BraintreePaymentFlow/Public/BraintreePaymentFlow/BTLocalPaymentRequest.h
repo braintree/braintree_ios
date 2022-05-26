@@ -1,9 +1,9 @@
 #if __has_include(<Braintree/BraintreePaymentFlow.h>)
 #import <Braintree/BTPaymentFlowRequest.h>
-#import <Braintree/BTPaymentFlowDriver.h>
+#import <Braintree/BTPaymentFlowClient.h>
 #else
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
-#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#import <BraintreePaymentFlow/BTPaymentFlowClient.h>
 #endif
 
 @class BTPostalAddress;

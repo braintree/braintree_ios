@@ -9,9 +9,9 @@ class BTAppContextSwitcher_Tests: XCTestCase {
     }
 
     override func tearDown() {
-        MockAppContextSwitchDriver.cannedCanHandle = false
-        MockAppContextSwitchDriver.lastCanHandleURL = nil
-        MockAppContextSwitchDriver.lastHandleReturnURL = nil
+        MockAppContextSwitchClient.cannedCanHandle = false
+        MockAppContextSwitchClient.lastCanHandleURL = nil
+        MockAppContextSwitchClient.lastHandleReturnURL = nil
         super.tearDown()
     }
 
@@ -20,34 +20,34 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         XCTAssertEqual(appSwitch.returnURLScheme, "com.some.scheme")
     }
 
-    func testHandleOpenURL_whenDriverIsRegistered_invokesCanHandleReturnURL() {
-        appSwitch.register(MockAppContextSwitchDriver.self)
+    func testHandleOpenURL_whenClientIsRegistered_invokesCanHandleReturnURL() {
+        appSwitch.register(MockAppContextSwitchClient.self)
         let expectedURL = URL(string: "fake://url")!
 
         BTAppContextSwitcher.handleOpenURL(expectedURL)
 
-        XCTAssertEqual(MockAppContextSwitchDriver.lastCanHandleURL!, expectedURL)
+        XCTAssertEqual(MockAppContextSwitchClient.lastCanHandleURL!, expectedURL)
     }
 
-    func testHandleOpenURL_whenDriverCanHandleOpenURL_invokesHandleReturnURL_andReturnsTrue() {
-        appSwitch.register(MockAppContextSwitchDriver.self)
-        MockAppContextSwitchDriver.cannedCanHandle = true
+    func testHandleOpenURL_whenClientCanHandleOpenURL_invokesHandleReturnURL_andReturnsTrue() {
+        appSwitch.register(MockAppContextSwitchClient.self)
+        MockAppContextSwitchClient.cannedCanHandle = true
         let expectedURL = URL(string: "fake://url")!
 
         let handled = BTAppContextSwitcher.handleOpenURL(expectedURL)
 
         XCTAssertTrue(handled)
-        XCTAssertEqual(MockAppContextSwitchDriver.lastHandleReturnURL!, expectedURL)
+        XCTAssertEqual(MockAppContextSwitchClient.lastHandleReturnURL!, expectedURL)
     }
 
-    func testHandleOpenURL_whenDriverCantHandleOpenURL_doesNotInvokeHandleReturnURL_andReturnsFalse() {
-        appSwitch.register(MockAppContextSwitchDriver.self)
-        MockAppContextSwitchDriver.cannedCanHandle = false
+    func testHandleOpenURL_whenClientCantHandleOpenURL_doesNotInvokeHandleReturnURL_andReturnsFalse() {
+        appSwitch.register(MockAppContextSwitchClient.self)
+        MockAppContextSwitchClient.cannedCanHandle = false
 
         let handled = BTAppContextSwitcher.handleOpenURL(URL(string: "fake://url")!)
 
         XCTAssertFalse(handled)
-        XCTAssertNil(MockAppContextSwitchDriver.lastHandleReturnURL)
+        XCTAssertNil(MockAppContextSwitchClient.lastHandleReturnURL)
     }
 
     func testHandleOpenURL_withNoAppSwitching_returnsFalse() {
@@ -55,29 +55,29 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         XCTAssertFalse(handled)
     }
     
-    func testHandleOpenURLContext_whenDriverCanHandleOpenURL_invokesHandleReturnURL_andReturnsTrue() {
-        appSwitch.register(MockAppContextSwitchDriver.self)
-        MockAppContextSwitchDriver.cannedCanHandle = true
+    func testHandleOpenURLContext_whenClientCanHandleOpenURL_invokesHandleReturnURL_andReturnsTrue() {
+        appSwitch.register(MockAppContextSwitchClient.self)
+        MockAppContextSwitchClient.cannedCanHandle = true
 
         let mockURLContext = BTMockOpenURLContext(url: URL(string: "my-url.com")!).mock
 
         let handled = BTAppContextSwitcher.handleOpenURLContext(mockURLContext)
 
         XCTAssertTrue(handled)
-        XCTAssertEqual(MockAppContextSwitchDriver.lastCanHandleURL, URL(string: "my-url.com"))
-        XCTAssertEqual(MockAppContextSwitchDriver.lastHandleReturnURL, URL(string: "my-url.com"))
+        XCTAssertEqual(MockAppContextSwitchClient.lastCanHandleURL, URL(string: "my-url.com"))
+        XCTAssertEqual(MockAppContextSwitchClient.lastHandleReturnURL, URL(string: "my-url.com"))
     }
 
-    func testHandleOpenURLContext_whenDriverCantHandleOpenURL_doesNotInvokeHandleReturnURL_andReturnsFalse() {
-        appSwitch.register(MockAppContextSwitchDriver.self)
-        MockAppContextSwitchDriver.cannedCanHandle = false
+    func testHandleOpenURLContext_whenClientCantHandleOpenURL_doesNotInvokeHandleReturnURL_andReturnsFalse() {
+        appSwitch.register(MockAppContextSwitchClient.self)
+        MockAppContextSwitchClient.cannedCanHandle = false
 
         let mockURLContext = BTMockOpenURLContext(url: URL(string: "fake://url")!).mock
 
         let handled = BTAppContextSwitcher.handleOpenURLContext(mockURLContext)
 
         XCTAssertFalse(handled)
-        XCTAssertNil(MockAppContextSwitchDriver.lastHandleReturnURL)
+        XCTAssertNil(MockAppContextSwitchClient.lastHandleReturnURL)
     }
         
     func testHandleOpenURLContext_withNoAppSwitching_returnsFalse() {
@@ -88,7 +88,7 @@ class BTAppContextSwitcher_Tests: XCTestCase {
 
 }
 
-class MockAppContextSwitchDriver: BTAppContextSwitchDriver {
+class MockAppContextSwitchClient: BTAppContextSwitchClient {
     static var cannedCanHandle = false
     static var lastCanHandleURL: URL?
     static var lastHandleReturnURL: URL?
