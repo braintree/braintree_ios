@@ -51,6 +51,9 @@
                 BTPreferredPaymentMethodsResult *result = [[BTPreferredPaymentMethodsResult alloc] initWithJSON:body venmoInstalled:isVenmoInstalled];
                 
                 if (preferredPaymentMethodsError || !body) {
+                    if (preferredPaymentMethodsError.code == NETWORK_CONNECTION_LOST_CODE) {
+                        [self.apiClient sendAnalyticsEvent:@"ios.preferred-payment-methods.network-connection.failure"];
+                    }
                     [self.apiClient sendAnalyticsEvent:@"ios.preferred-payment-methods.api-error"];
                 } else {
                     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.preferred-payment-methods.paypal.api-detected.%@",

@@ -618,4 +618,30 @@ class BTCardClient_UnionPayTests: XCTestCase {
 
         waitForExpectations(timeout: standardTimeout, handler: nil)
     }
+    
+    func testEnrollCard_whenNetworkConnectionLost_sendsAnalyticsEvent() {
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard()
+        card.number = "4111111111111111"
+        card.expirationMonth = "12"
+        card.expirationYear = "2038"
+        card.cvv = "123"
+
+        let request = BTCardRequest()
+        request.card = card
+        request.smsCode = "12345"
+        request.enrollmentID = "enrollment-id"
+        
+        let expectation = self.expectation(description: "Callback invoked")
+        
+        cardClient.enrollCard(request) { _, _, error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: standardTimeout)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.union-pay.network-connection.failure"))
+    }
 }

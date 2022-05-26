@@ -432,5 +432,58 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
+    
+    func testHandleRequest_whenNetworkConnectionLost_sendsAnalytics() {
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+        
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
+
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+        
+        let expectation = self.expectation(description: "Callback invoked")
+        driver.startPaymentFlow(localPaymentRequest) { result, error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
+    }
+    
+    func testOpenURL_whenNetworkConnectionLost_sendsAnalytics() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+
+        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
+        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
+
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
+            "redirectUrl": "https://www.somebankurl.com",
+            "paymentToken": "123aaa-123-543-777",
+            ] ])
+
+        var paymentFinishedExpectation: XCTestExpectation? = nil
+        driver.startPaymentFlow(localPaymentRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            paymentFinishedExpectation!.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+
+        paymentFinishedExpectation = self.expectation(description: "Payment finished with error")
+        BTPaymentFlowDriver.handleReturnURL(URL(string: "an-error-url")!)
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
+    }
 }
 

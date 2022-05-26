@@ -159,7 +159,7 @@ static BTVenmoDriver *appSwitchedDriver;
         
         [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
             if (err) {
-                if (err.code == NetworkConnectionLostCode) {
+                if (err.code == NETWORK_CONNECTION_LOST_CODE) {
                     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                 }
                 NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain

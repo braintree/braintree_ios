@@ -177,6 +177,10 @@
                      return;
                  }
              } else {
+                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     [apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
+                 }
+
                  [delegate onPaymentWithURL:nil error:error];
              }
          }];
@@ -219,6 +223,9 @@
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
          {
              if (error) {
+                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
+                 }
                  [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
                  return;
              } else {
