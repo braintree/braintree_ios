@@ -52,14 +52,26 @@ let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
 venmoRequest.profileID = "my-profile-id"
 venmoRequest.vault = true
 
-venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccountNonce, error) -> Void in
-  if (error != nil) {
-    // handle error
-  }
-
-  // transact with nonce on server
+venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccountNonce, error in
+    guard let venmoAccountNonce = venmoAccountNonce else {
+        // handle error
+    }
+    // send nonce to server
 }
 ```
 
 ## PayPal
 `BTPayPalDriver` has been renamed to `BTPayPalClient`
+
+Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`:
+```
+let payPalClient = BTPayPalClient(apiClient: <MY_BTAPICLIENT>)
+let request = BTPayPalCheckoutRequest(amount: "1")
+
+payPalClient.tokenizePayPalAccount(with: request) { payPalAccountNonce, error in
+    guard let payPalAccountNonce = payPalAccountNonce else {
+        // handle error
+    }
+    // send nonce to server
+}
+```
