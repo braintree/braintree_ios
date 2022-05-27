@@ -47,8 +47,8 @@ Pod::Spec.new do |s|
   s.subspec "DataCollector" do |s|
     s.source_files = "Sources/BraintreeDataCollector/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeDataCollector/Public/BraintreeDataCollector/*.h"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
     s.dependency "Braintree/Core"
+    s.dependency "Braintree/KountDataCollector"
   end
 
   s.subspec "PaymentFlow" do |s|
@@ -88,6 +88,12 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
     s.dependency "Braintree/Core"
+  end
+
+ s.subspec "KountDataCollector" do |s|
+    s.source_files = "Sources/KountDataCollector/*.{h,m}"
+    s.public_header_files = "Sources/KountDataCollector/*.h"
+    s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
   end
 
 end

@@ -25,7 +25,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreeDataCollector",
-            targets: ["BraintreeDataCollector", "KountDataCollector"]
+            targets: ["BraintreeDataCollector"]
         ),
         .library(
             name: "BraintreePaymentFlow",
@@ -50,6 +50,10 @@ let package = Package(
         .library(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
+        ),
+        .library(
+            name: "KountDataCollector",
+            targets: ["KountDataCollector"]
         )
     ],
     dependencies: [
