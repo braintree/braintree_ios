@@ -1,7 +1,7 @@
 #if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BTPayPalDriver.h>
+#import <Braintree/BTPayPalClient.h>
 #else
-#import <BraintreePayPal/BTPayPalDriver.h>
+#import <BraintreePayPal/BTPayPalClient.h>
 #endif
 
 #import <AuthenticationServices/AuthenticationServices.h>
@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTPayPalDriver ()
+@interface BTPayPalClient ()
 
 /**
  Exposed for testing the approvalURL construction

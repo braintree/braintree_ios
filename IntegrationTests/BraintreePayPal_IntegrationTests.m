@@ -1,5 +1,5 @@
 #import "BTAPIClient_Internal.h"
-#import "BTPayPalDriver_Internal.h"
+#import "BTPayPalClient_Internal.h"
 #import "BTNonceValidationHelper.h"
 @import BraintreePayPal;
 @import OCMock;
@@ -17,14 +17,14 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
 - (void)testOneTimePayment_withTokenizationKey_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    BTPayPalClient *payPalClient = [[BTPayPalClient alloc] initWithAPIClient:apiClient];
     [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
     XCTestExpectation *tokenizationExpectation = [self expectationWithDescription:@"Tokenize one-time payment"];
 
     // Simulate SFAuthenicationSession completing
     NSURL *returnURL = [NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture];
-    [payPalDriver handleBrowserSwitchReturnURL:returnURL
+    [payPalClient handleBrowserSwitchReturnURL:returnURL
                                    paymentType:BTPayPalPaymentTypeCheckout
                                     completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
@@ -37,7 +37,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
 - (void)testOneTimePayment_withClientToken_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    BTPayPalClient *payPalClient = [[BTPayPalClient alloc] initWithAPIClient:apiClient];
 
     [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
@@ -45,7 +45,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     // Simulate SFAuthenicationSession completing
     NSURL *returnURL = [NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture];
-    [payPalDriver handleBrowserSwitchReturnURL:returnURL
+    [payPalClient handleBrowserSwitchReturnURL:returnURL
                                    paymentType:BTPayPalPaymentTypeCheckout
                                     completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
@@ -60,7 +60,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
 - (void)testBillingAgreement_withTokenizationKey_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    BTPayPalClient *payPalClient = [[BTPayPalClient alloc] initWithAPIClient:apiClient];
 
     [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
@@ -68,7 +68,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     // Simulate SFAuthenicationSession completing
     NSURL *returnURL = [NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture];
-    [payPalDriver handleBrowserSwitchReturnURL:returnURL
+    [payPalClient handleBrowserSwitchReturnURL:returnURL
                                    paymentType:BTPayPalPaymentTypeCheckout
                                     completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
@@ -81,7 +81,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
 - (void)testBillingAgreement_withClientToken_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    BTPayPalClient *payPalClient = [[BTPayPalClient alloc] initWithAPIClient:apiClient];
 
     [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
@@ -89,7 +89,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     // Simulate SFAuthenicationSession completing
     NSURL *returnURL = [NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture];
-    [payPalDriver handleBrowserSwitchReturnURL:returnURL
+    [payPalClient handleBrowserSwitchReturnURL:returnURL
                                    paymentType:BTPayPalPaymentTypeCheckout
                                     completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);

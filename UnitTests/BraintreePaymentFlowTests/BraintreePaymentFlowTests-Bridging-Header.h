@@ -1,1 +1,1 @@
-#import <BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h>
+#import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>

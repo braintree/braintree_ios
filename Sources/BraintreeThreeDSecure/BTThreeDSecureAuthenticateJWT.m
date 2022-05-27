@@ -1,5 +1,5 @@
 #import "BTThreeDSecureAuthenticateJWT.h"
-#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods

@@ -16,35 +16,35 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Domain for PayPal errors.
  */
-extern NSString *const BTPayPalDriverErrorDomain;
+extern NSString *const BTPayPalErrorDomain;
 
 /**
  Error codes associated with PayPal.
  */
-typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
+typedef NS_ENUM(NSInteger, BTPayPalErrorType) {
     /// Unknown error
-    BTPayPalDriverErrorTypeUnknown = 0,
+    BTPayPalErrorTypeUnknown = 0,
 
     /// PayPal is disabled in configuration
-    BTPayPalDriverErrorTypeDisabled,
+    BTPayPalErrorTypeDisabled,
 
     /// Invalid request, e.g. missing PayPal request
-    BTPayPalDriverErrorTypeInvalidRequest,
+    BTPayPalErrorTypeInvalidRequest,
     
     /// Braintree SDK is integrated incorrectly
-    BTPayPalDriverErrorTypeIntegration,
+    BTPayPalErrorTypeIntegration,
 
     /// Payment flow was canceled, typically initiated by the user when exiting early from the flow.
-    BTPayPalDriverErrorTypeCanceled
+    BTPayPalErrorTypeCanceled
 };
 
 /** 
  Used to tokenize PayPal accounts.
 */
-@interface BTPayPalDriver : NSObject
+@interface BTPayPalClient : NSObject
 
 /**
- Initialize a new PayPal driver instance.
+ Initialize a new PayPal client instance.
 
  @param apiClient The API client
 */
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
  server when this method completes without any additional user interaction.
 
- On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalDriverErrorTypeCanceled`.
+ On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will be `BTPayPalClientErrorTypeCanceled`.
 
  @param request Either a BTPayPalCheckoutRequest or a BTPayPalVaultRequest
  @param completionBlock This completion will be invoked exactly once when tokenization is complete or an error occurs.

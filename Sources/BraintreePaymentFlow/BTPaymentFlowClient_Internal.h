@@ -1,16 +1,16 @@
 #if __has_include(<Braintree/BraintreePaymentFlow.h>)
-#import <Braintree/BTPaymentFlowDriver.h>
+#import <Braintree/BTPaymentFlowClient.h>
 #else
-#import <BraintreePaymentFlow/BTPaymentFlowDriver.h>
+#import <BraintreePaymentFlow/BTPaymentFlowClient.h>
 #endif
 
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
 
-@interface BTPaymentFlowDriver ()
+@interface BTPaymentFlowClient ()
 
 /**
- Set up the BTPaymentFlowDriver with a request object and a completion block without starting the flow.
+ Set up the BTPaymentFlowClient with a request object and a completion block without starting the flow.
 
  @param request A BTPaymentFlowRequest to set on the BTPaymentFlow
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.

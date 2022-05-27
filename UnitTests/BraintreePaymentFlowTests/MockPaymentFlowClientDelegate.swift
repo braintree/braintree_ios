@@ -1,7 +1,7 @@
 import XCTest
 import BraintreeTestShared
 
-class MockPaymentFlowDriverDelegate: BTPaymentFlowDriverDelegate {
+class MockPaymentFlowClientDelegate: BTPaymentFlowClientDelegate {
     var _returnURLScheme = ""
 
     var onPaymentWithURLHandler: ((URL?, Error?) -> Void)?

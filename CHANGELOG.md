@@ -7,16 +7,34 @@
   * Require Carthage 0.38.0+ and xcframeworks via `carthage update --use-xcframeworks`
   * Require Xcode 13
     * Bump Swift Tools Version to 5.5 for CocoaPods & SPM
+  * BraintreeCore
+    * Renamed `BTAppContextSwitchDriver` protocol to `BTAppContextSwitchClient
+    * `BTViewControllerPresentingDelegate` protocol now takes in the `client` parameter instead of `driver`
   * BraintreeVenmo
+    * Renamed `BTVenmoDriver` to `BTVenmoClient`
+    * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`
+    * Renamed `BTVenmoDriverErrorType` to `BTVenmoErrorType`
+    * All errors are now prefixed with `BTVenmoError` instead of `BTVenmoDriverError`
     * Remove `.unspecified` case from `BTVenmoPaymentMethodUsage` enum
     * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
   * BraintreePayPal
-    * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalDriver.tokenizePayPalAccount`
-    * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalDriver.tokenizePayPalAccount`
+    * Renamed `BTPayPalDriver` to `BTPayPalClient`
+    * Renamed `BTPayPalDriverErrorDomain` to `BTPayPalErrorDomain`
+    * Renamed `BTPayPalDriverErrorType` to `BTPayPalErrorType`
+    * All errors are now prefixed with `BTPayPalError` instead of `BTPayPalDriverError`
+    * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalClient.tokenizePayPalAccount`
+    * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`
   * BraintreeAmericanExpress
     * Remove `BTAmericanExpressErrorDomain` global constant
-    * Remove `BTAmericanExpressErrorType` 
+    * Remove `BTAmericanExpressErrorType`
     * Make `BTAmericanExpressRewardsBalance` initializer private
+  * BraintreePaymentFlow
+    * Renamed `BTPaymentFlowDriver` to `BTPaymentFlowClient`
+    * Renamed `BTPaymentFlowDriverErrorDomain` to `BTPaymentFlowErrorDomain`
+    * Renamed `BTPaymentFlowDriverErrorType` to `BTPaymentFlowErrorType`
+    * All errors are now prefixed with `BTPaymentFlowError` instead of `BTPaymentFlowDriverError`
+    * Renamed `BTPaymentFlowDriverDelegate` protocol to `BTPaymentFlowClientDelegate`
+    * `handleRequest` in delegate protocol now takes in `paymentClientDelegate` parameter instead of `paymentDriverDelegate`
 
 ## unreleased
 * Fix potential crash when http request fails with no error but empty data (thanks @cltnschlosser)

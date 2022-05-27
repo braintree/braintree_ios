@@ -13,44 +13,44 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Domain for Venmo errors.
  */
-extern NSString * const BTVenmoDriverErrorDomain;
+extern NSString * const BTVenmoErrorDomain;
 
 /**
  Error codes associated with Venmo.
  */
-typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
+typedef NS_ENUM(NSInteger, BTVenmoErrorType) {
     /// Unknown error
-    BTVenmoDriverErrorTypeUnknown = 0,
+    BTVenmoErrorTypeUnknown = 0,
     
     /// Venmo is disabled in configuration
-    BTVenmoDriverErrorTypeDisabled,
+    BTVenmoErrorTypeDisabled,
     
     /// App is not installed on device
-    BTVenmoDriverErrorTypeAppNotAvailable,
+    BTVenmoErrorTypeAppNotAvailable,
     
     /// Bundle display name must be present
-    BTVenmoDriverErrorTypeBundleDisplayNameMissing,
+    BTVenmoErrorTypeBundleDisplayNameMissing,
     
     /// UIApplication failed to switch to Venmo app
-    BTVenmoDriverErrorTypeAppSwitchFailed,
+    BTVenmoErrorTypeAppSwitchFailed,
     
     /// Return URL was invalid
-    BTVenmoDriverErrorTypeInvalidReturnURL,
+    BTVenmoErrorTypeInvalidReturnURL,
     
     /// Braintree SDK is integrated incorrectly
-    BTVenmoDriverErrorTypeIntegration,
+    BTVenmoErrorTypeIntegration,
     
     /// Request URL was invalid, configuration may be missing required values
-    BTVenmoDriverErrorTypeInvalidRequestURL,
+    BTVenmoErrorTypeInvalidRequestURL,
 };
 
 /**
  Used to process Venmo payments
  */
-@interface BTVenmoDriver : NSObject <BTAppContextSwitchDriver>
+@interface BTVenmoClient : NSObject <BTAppContextSwitchClient>
 
 /**
- Initialize a new Venmo driver instance.
+ Initialize a new Venmo client instance.
 
  @param apiClient The API client
 */

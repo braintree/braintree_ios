@@ -13,11 +13,11 @@ class BTPaymentFlow_Tests: XCTestCase {
     }
 
     func testInformDelegatePresentingViewControllerRequestPresent_setsVCDismissButtonStyleToCancel() {
-        let paymentFlowDriver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        let paymentFlowClient = BTPaymentFlowClient(apiClient: mockAPIClient)
         let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
-        paymentFlowDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        paymentFlowDriver.informDelegatePresentingViewControllerRequestPresent(URL(string:"http://sample.com"))
+        paymentFlowClient.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+        paymentFlowClient.informDelegatePresentingViewControllerRequestPresent(URL(string:"http://sample.com"))
 
         let buttonStyle = (viewControllerPresentingDelegate.lastViewController as! SFSafariViewController).dismissButtonStyle
         XCTAssertEqual(buttonStyle, .cancel)

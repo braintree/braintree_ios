@@ -11,9 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTThreeDSecureRequest ()
 
 /**
- Set the BTPaymentFlowDriverDelegate for handling the driver events.
+ Set the BTPaymentFlowClientDelegate for handling the client events.
  */
-@property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
+@property (nonatomic, weak) id<BTPaymentFlowClientDelegate> paymentFlowClientDelegate;
 
 /**
  The dfReferenceID for the session. Exposed for testing.

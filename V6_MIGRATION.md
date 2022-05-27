@@ -7,14 +7,39 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
-2. [Venmo](#venmo)
-3. [Carthage](#carthage)
+2. [Carthage](#carthage)
+3. [Braintree Core](#braintree-core)
+4. [Venmo](#venmo)
+5. [PayPal](#paypal)
 
 ## Supported Versions
 
 v6 supports a minimum deployment target of iOS 13+. It requires the use of Xcode 13+. If your application contains Objective-C code, the `Enable Modules` build setting must be set to `YES`.
 
+## Carthage
+
+v6 requires Carthage v0.38.0+, which adds support for xcframework binary dependencies.
+
+```
+carthage update --use-xcframeworks
+```
+
+## Braintree Core
+`BTAppContextSwitchDriver` has been renamed to `BTAppContextSwitchClient`
+
+`BTViewControllerPresentingDelegate` protocol functions `paymentDriver` are renamed to `paymentClient` now takes in the `client` parameter instead of `driver`:
+```
+public func paymentClient(_ client: Any, requestsDismissalOf viewController: UIViewController) {
+    // implementation here
+}
+
+public func paymentClient(_ client: Any, requestsPresentationOf viewController: UIViewController) {
+    // implementation here
+}
+```
+
 ## Venmo
+`BTVenmoDriver` has been renamed to `BTVenmoClient`
 
 `BTVenmoRequest` must now be initialized with a `paymentMethodUsage`. 
 
@@ -27,19 +52,26 @@ let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
 venmoRequest.profileID = "my-profile-id"
 venmoRequest.vault = true
 
-venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccountNonce, error) -> Void in
-  if (error != nil) {
-    // handle error
-  }
-
-  // transact with nonce on server
+venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccountNonce, error in
+    guard let venmoAccountNonce = venmoAccountNonce else {
+        // handle error
+    }
+    // send nonce to server
 }
 ```
 
-## Carthage
+## PayPal
+`BTPayPalDriver` has been renamed to `BTPayPalClient`
 
-v6 requires Carthage v0.38.0+, which adds support for xcframework binary dependencies.
-
+Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`:
 ```
-carthage update --use-xcframeworks
+let payPalClient = BTPayPalClient(apiClient: <MY_BTAPICLIENT>)
+let request = BTPayPalCheckoutRequest(amount: "1")
+
+payPalClient.tokenizePayPalAccount(with: request) { payPalAccountNonce, error in
+    guard let payPalAccountNonce = payPalAccountNonce else {
+        // handle error
+    }
+    // send nonce to server
+}
 ```

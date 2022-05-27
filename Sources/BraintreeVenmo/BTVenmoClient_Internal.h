@@ -1,10 +1,10 @@
 #if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BTVenmoDriver.h>
+#import <Braintree/BTVenmoClient.h>
 #else
-#import <BraintreeVenmo/BTVenmoDriver.h>
+#import <BraintreeVenmo/BTVenmoClient.h>
 #endif
 
-@interface BTVenmoDriver ()
+@interface BTVenmoClient ()
 
 /**
  Defaults to [UIApplication sharedApplication], but exposed for unit tests to inject test doubles
@@ -24,7 +24,7 @@
 @property (nonatomic, strong) UIDevice *device;
 
 /**
- Defaults to use [BTAppContextSwitchDriver sharedInstance].returnURLScheme, but exposed for unit tests to stub returnURLScheme.
+ Defaults to use [BTAppContextSwitchClient sharedInstance].returnURLScheme, but exposed for unit tests to stub returnURLScheme.
 */
 @property (nonatomic, copy) NSString *returnURLScheme;
 

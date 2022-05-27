@@ -18,15 +18,15 @@ class BraintreeDemoPayPalVaultViewController: BraintreeDemoPaymentButtonBaseView
     }
     
     @objc func tappedPayPalVault(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - Vault using BTPayPalDriver")
+        progressBlock("Tapped PayPal - Vault using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
-        let driver = BTPayPalDriver(apiClient: apiClient)
+        let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalVaultRequest()
         request.activeWindow = self.view.window
         
-        driver.tokenizePayPalAccount(with: request) { nonce, error in
+        client.tokenizePayPalAccount(with: request) { nonce, error in
             sender.isEnabled = true
             
             guard let nonce = nonce else {

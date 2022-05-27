@@ -2,13 +2,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark - BTAppContextSwitchDriver protocol
+#pragma mark - BTAppContextSwitchClient protocol
 
 /**
  :nodoc: A protocol for handling the return from gathering payment information from a browser or another app.
  @note The app context may switch to a SFSafariViewController or to a native app, such as Venmo.
 */
-@protocol BTAppContextSwitchDriver
+@protocol BTAppContextSwitchClient
 
 @required
 
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - BTAppContextSwitcher
 
 /**
- Handles return URLs when returning from app context switch and routes the return URL to the correct app context switch driver class.
+ Handles return URLs when returning from app context switch and routes the return URL to the correct app context switch client class.
  @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID. When your app returns from app switch, the app delegate should call  `handleOpenURLContext:` (or `handleOpenURL` if not using SceneDelegate)
 */
 @interface BTAppContextSwitcher : NSObject
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Registers a class that knows how to handle a return from app context switch
 */
-- (void)registerAppContextSwitchDriver:(Class<BTAppContextSwitchDriver>)driver;
+- (void)registerAppContextSwitchClient:(Class<BTAppContextSwitchClient>)client;
 
 @end
 

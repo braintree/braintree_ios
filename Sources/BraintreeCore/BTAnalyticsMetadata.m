@@ -174,7 +174,7 @@
         return NO;
     }
 
-    if (!NSClassFromString(@"BTVenmoDriver")) {
+    if (!NSClassFromString(@"BTVenmoClient")) {
         return NO;
     }
     

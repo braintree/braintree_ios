@@ -1,17 +1,17 @@
 import XCTest
 import BraintreeTestShared
 
-class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
+class BTPaymentFlowClient_ThreeDSecure_Tests: XCTestCase {
 
     var mockAPIClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))!
     var threeDSecureRequest = BTThreeDSecureRequest()
-    var driver: BTPaymentFlowDriver!
+    var client: BTPaymentFlowClient!
 
     override func setUp() {
         super.setUp()
         threeDSecureRequest.amount = 10.0
         threeDSecureRequest.nonce = "fake-card-nonce"
-        driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        client = BTPaymentFlowClient(apiClient: mockAPIClient)
     }
 
     // MARK: - performThreeDSecureLookup
@@ -46,7 +46,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         billingAddress.postalCode = "54321"
         threeDSecureRequest.billingAddress = billingAddress
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["requestedThreeDSecureVersion"] as! String, "2")
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as! String, "df-reference-id")
@@ -87,7 +87,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
 
         threeDSecureRequest.cardAddChallenge = .notRequested
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
 
             expectation.fulfill()
@@ -103,7 +103,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.dfReferenceID = "df-reference-id"
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as? Bool)
 
             expectation.fulfill()
@@ -138,7 +138,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: String.Encoding.utf8)!)
         let expectation = self.expectation(description: "willCallCompletion")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { result, error in
+        client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
             XCTAssertNotNil(result)
             XCTAssertNotNil(result?.lookup)
             XCTAssertNotNil(result?.tokenizedCard)
@@ -154,7 +154,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "lookup fails with errors")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
         }
@@ -167,7 +167,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Post fails with error.")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { result, error in
+        client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
             expectation.fulfill()
         }
@@ -195,7 +195,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain:BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: userInfo)
         let expectation = self.expectation(description: "Post fails with error code 422.")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { result, error in
+        client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
             let e = error! as NSError
 
             XCTAssertEqual(e.domain, BTThreeDSecureFlowErrorDomain)
@@ -214,7 +214,7 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
         
         let expectation = self.expectation(description: "Callback envoked")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { result, error in
+        client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             expectation.fulfill()
         }
