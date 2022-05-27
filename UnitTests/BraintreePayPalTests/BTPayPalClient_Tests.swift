@@ -34,8 +34,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, BTPayPalClientErrorDomain)
-            XCTAssertEqual(error.code, BTPayPalClientErrorType.integration.rawValue)
+            XCTAssertEqual(error.domain, BTPayPalErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalErrorType.integration.rawValue)
             expectation.fulfill()
         }
 
@@ -49,8 +49,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, BTPayPalClientErrorDomain)
-            XCTAssertEqual(error.code, BTPayPalClientErrorType.integration.rawValue)
+            XCTAssertEqual(error.domain, BTPayPalErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalErrorType.integration.rawValue)
             XCTAssertEqual(error.localizedDescription, "BTPayPalClient failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest.")
             expectation.fulfill()
         }
@@ -86,8 +86,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, BTPayPalClientErrorDomain)
-            XCTAssertEqual(error.code, BTPayPalClientErrorType.disabled.rawValue)
+            XCTAssertEqual(error.domain, BTPayPalErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalErrorType.disabled.rawValue)
             XCTAssertEqual(error.localizedDescription, "PayPal is not enabled for this merchant")
             expectation.fulfill()
         }
@@ -223,8 +223,8 @@ class BTPayPalClient_Tests: XCTestCase {
 
         payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
             XCTAssertNil(nonce)
-            XCTAssertEqual((error! as NSError).domain, BTPayPalClientErrorDomain)
-            XCTAssertEqual((error! as NSError).code, BTPayPalClientErrorType.unknown.rawValue)
+            XCTAssertEqual((error! as NSError).domain, BTPayPalErrorDomain)
+            XCTAssertEqual((error! as NSError).code, BTPayPalErrorType.unknown.rawValue)
             XCTAssertEqual((error! as NSError).localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://")
             expectation.fulfill()
         }
@@ -300,8 +300,8 @@ class BTPayPalClient_Tests: XCTestCase {
 
         payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (nonce, error) in
             XCTAssertNil(nonce)
-            XCTAssertEqual((error! as NSError).domain, BTPayPalClientErrorDomain)
-            XCTAssertEqual((error! as NSError).code, BTPayPalClientErrorType.canceled.rawValue)
+            XCTAssertEqual((error! as NSError).domain, BTPayPalErrorDomain)
+            XCTAssertEqual((error! as NSError).code, BTPayPalErrorType.canceled.rawValue)
             expectation.fulfill()
         }
 
@@ -317,8 +317,8 @@ class BTPayPalClient_Tests: XCTestCase {
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertNotNil(error)
-            XCTAssertEqual(error.domain, BTPayPalClientErrorDomain)
-            XCTAssertEqual(error.code, BTPayPalClientErrorType.unknown.rawValue)
+            XCTAssertEqual(error.domain, BTPayPalErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalErrorType.unknown.rawValue)
             continuationExpectation.fulfill()
         }
 

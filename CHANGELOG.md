@@ -9,7 +9,7 @@
     * Bump Swift Tools Version to 5.5 for CocoaPods & SPM
   * BraintreeCore
     * Renamed `BTAppContextSwitchDriver` protocol to `BTAppContextSwitchClient
-    * `BTViewControllerPresentingDelegate` protocol now takes in the `client` parameter instead of `driver``
+    * `BTViewControllerPresentingDelegate` protocol now takes in the `client` parameter instead of `driver`
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoClientErrorDomain`
@@ -19,9 +19,9 @@
     * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
   * BraintreePayPal
     * Renamed `BTPayPalDriver` to `BTPayPalClient`
-    * Renamed `BTPayPalDriverErrorDomain` to `BTPayPalClientErrorDomain`
-    * Renamed `BTPayPalDriverErrorType` to `BTPayPalClientErrorType`
-    * All errors are now prefixed with `BTPayPalClientError` instead of `BTPayPalDriverError`
+    * Renamed `BTPayPalDriverErrorDomain` to `BTPayPalErrorDomain`
+    * Renamed `BTPayPalDriverErrorType` to `BTPayPalErrorType`
+    * All errors are now prefixed with `BTPayPalError` instead of `BTPayPalDriverError`
     * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalClient.tokenizePayPalAccount`
     * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`
   * BraintreeAmericanExpress

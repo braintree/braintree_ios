@@ -16,26 +16,26 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Domain for PayPal errors.
  */
-extern NSString *const BTPayPalClientErrorDomain;
+extern NSString *const BTPayPalErrorDomain;
 
 /**
  Error codes associated with PayPal.
  */
-typedef NS_ENUM(NSInteger, BTPayPalClientErrorType) {
+typedef NS_ENUM(NSInteger, BTPayPalErrorType) {
     /// Unknown error
-    BTPayPalClientErrorTypeUnknown = 0,
+    BTPayPalErrorTypeUnknown = 0,
 
     /// PayPal is disabled in configuration
-    BTPayPalClientErrorTypeDisabled,
+    BTPayPalErrorTypeDisabled,
 
     /// Invalid request, e.g. missing PayPal request
-    BTPayPalClientErrorTypeInvalidRequest,
+    BTPayPalErrorTypeInvalidRequest,
     
     /// Braintree SDK is integrated incorrectly
-    BTPayPalClientErrorTypeIntegration,
+    BTPayPalErrorTypeIntegration,
 
     /// Payment flow was canceled, typically initiated by the user when exiting early from the flow.
-    BTPayPalClientErrorTypeCanceled
+    BTPayPalErrorTypeCanceled
 };
 
 /** 
