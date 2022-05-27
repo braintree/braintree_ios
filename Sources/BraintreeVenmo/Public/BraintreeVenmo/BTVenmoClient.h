@@ -13,35 +13,35 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Domain for Venmo errors.
  */
-extern NSString * const BTVenmoClientErrorDomain;
+extern NSString * const BTVenmoErrorDomain;
 
 /**
  Error codes associated with Venmo.
  */
-typedef NS_ENUM(NSInteger, BTVenmoClientErrorType) {
+typedef NS_ENUM(NSInteger, BTVenmoErrorType) {
     /// Unknown error
-    BTVenmoClientErrorTypeUnknown = 0,
+    BTVenmoErrorTypeUnknown = 0,
     
     /// Venmo is disabled in configuration
-    BTVenmoClientErrorTypeDisabled,
+    BTVenmoErrorTypeDisabled,
     
     /// App is not installed on device
-    BTVenmoClientErrorTypeAppNotAvailable,
+    BTVenmoErrorTypeAppNotAvailable,
     
     /// Bundle display name must be present
-    BTVenmoClientErrorTypeBundleDisplayNameMissing,
+    BTVenmoErrorTypeBundleDisplayNameMissing,
     
     /// UIApplication failed to switch to Venmo app
-    BTVenmoClientErrorTypeAppSwitchFailed,
+    BTVenmoErrorTypeAppSwitchFailed,
     
     /// Return URL was invalid
-    BTVenmoClientErrorTypeInvalidReturnURL,
+    BTVenmoErrorTypeInvalidReturnURL,
     
     /// Braintree SDK is integrated incorrectly
-    BTVenmoClientErrorTypeIntegration,
+    BTVenmoErrorTypeIntegration,
     
     /// Request URL was invalid, configuration may be missing required values
-    BTVenmoClientErrorTypeInvalidRequestURL,
+    BTVenmoErrorTypeInvalidRequestURL,
 };
 
 /**

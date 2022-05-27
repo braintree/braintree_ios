@@ -33,7 +33,7 @@
 
 @end
 
-NSString * const BTVenmoClientErrorDomain = @"com.braintreepayments.BTVenmoClientErrorDomain";
+NSString * const BTVenmoErrorDomain = @"com.braintreepayments.BTVenmoErrorDomain";
 NSString * const BTVenmoAppStoreUrl = @"https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428";
 NSInteger const NetworkConnectionLostCode = -1005;
 
@@ -95,16 +95,16 @@ static BTVenmoClient *appSwitchedClient;
 
 - (void)tokenizeVenmoAccountWithVenmoRequest:(BTVenmoRequest *)venmoRequest completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
     if (!venmoRequest) {
-        NSError *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                             code:BTVenmoClientErrorTypeIntegration
+        NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                             code:BTVenmoErrorTypeIntegration
                                          userInfo:@{NSLocalizedDescriptionKey: @"BTVenmoClient failed because BTVenmoRequest is nil."}];
         completionBlock(nil, error);
         return;
     }
 
     if (!self.apiClient) {
-        NSError *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                             code:BTVenmoClientErrorTypeIntegration
+        NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                             code:BTVenmoErrorTypeIntegration
                                          userInfo:@{NSLocalizedDescriptionKey: @"BTVenmoClient failed because BTAPIClient is nil."}];
         completionBlock(nil, error);
         return;
@@ -112,8 +112,8 @@ static BTVenmoClient *appSwitchedClient;
 
     if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
         [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"];
-        NSError *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                             code:BTVenmoClientErrorTypeAppNotAvailable
+        NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                             code:BTVenmoErrorTypeAppNotAvailable
                                          userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
         completionBlock(nil, error);
         return;
@@ -162,8 +162,8 @@ static BTVenmoClient *appSwitchedClient;
                 if (err.code == NETWORK_CONNECTION_LOST_CODE) {
                     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                 }
-                NSError *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                                     code:BTVenmoClientErrorTypeInvalidRequestURL
+                NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                                     code:BTVenmoErrorTypeInvalidRequestURL
                                                  userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
                 completionBlock(nil, error);
                 return;
@@ -171,8 +171,8 @@ static BTVenmoClient *appSwitchedClient;
             
             NSString *paymentContextID = [body[@"data"][@"createVenmoPaymentContext"][@"venmoPaymentContext"][@"id"] asString];
             if (paymentContextID == nil) {
-                NSError *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                                     code:BTVenmoClientErrorTypeInvalidRequestURL
+                NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                                     code:BTVenmoErrorTypeInvalidRequestURL
                                                  userInfo:@{NSLocalizedDescriptionKey: @"Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."}];
                 completionBlock(nil, error);
                 return;
@@ -221,8 +221,8 @@ static BTVenmoClient *appSwitchedClient;
 
 - (void)performAppSwitch:(NSURL *)appSwitchURL shouldVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock {
     if (!appSwitchURL) {
-        NSError *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                             code:BTVenmoClientErrorTypeInvalidRequestURL
+        NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                             code:BTVenmoErrorTypeInvalidRequestURL
                                          userInfo:@{NSLocalizedDescriptionKey: @"Failed to create Venmo app switch request URL."}];
         completionBlock(nil, error);
         return;
@@ -242,8 +242,8 @@ static BTVenmoClient *appSwitchedClient;
         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.success"];
     } else {
         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.failure"];
-        NSError *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                    code:BTVenmoClientErrorTypeAppSwitchFailed
+        NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                    code:BTVenmoErrorTypeAppSwitchFailed
                                 userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
         completionBlock(nil, error);
     }
@@ -301,9 +301,9 @@ static BTVenmoClient *appSwitchedClient;
 
             NSError *error = nil;
             if (!returnURL.nonce) {
-                error = [NSError errorWithDomain:BTVenmoClientErrorDomain code:BTVenmoClientErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];
+                error = [NSError errorWithDomain:BTVenmoErrorDomain code:BTVenmoErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];
             } else if (!returnURL.username) {
-                error = [NSError errorWithDomain:BTVenmoClientErrorDomain code:BTVenmoClientErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing username"}];
+                error = [NSError errorWithDomain:BTVenmoErrorDomain code:BTVenmoErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing username"}];
             }
 
             if (error) {
@@ -364,8 +364,8 @@ static BTVenmoClient *appSwitchedClient;
     if (!configuration.isVenmoEnabled) {
         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.disabled"];
         if (error) {
-            *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                         code:BTVenmoClientErrorTypeDisabled
+            *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                         code:BTVenmoErrorTypeDisabled
                                      userInfo:@{ NSLocalizedDescriptionKey:@"Venmo is not enabled for this merchant account." }];
         }
         return NO;
@@ -374,8 +374,8 @@ static BTVenmoClient *appSwitchedClient;
     if (![self isiOSAppAvailableForAppSwitch]) {
         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.unavailable"];
         if (error) {
-            *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                         code:BTVenmoClientErrorTypeAppNotAvailable
+            *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                         code:BTVenmoErrorTypeAppNotAvailable
                                      userInfo:@{ NSLocalizedDescriptionKey:@"The Venmo app is not installed on this device, or it is not configured or available for app switch." }];
         }
         return NO;
@@ -384,8 +384,8 @@ static BTVenmoClient *appSwitchedClient;
     NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     if (!bundleDisplayName) {
         if (error) {
-            *error = [NSError errorWithDomain:BTVenmoClientErrorDomain
-                                         code:BTVenmoClientErrorTypeBundleDisplayNameMissing
+            *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                         code:BTVenmoErrorTypeBundleDisplayNameMissing
                                      userInfo:@{NSLocalizedDescriptionKey: @"CFBundleDisplayName must be non-nil. Please set 'Bundle display name' in your Info.plist."}];
         }
         return NO;

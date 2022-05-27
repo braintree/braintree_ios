@@ -38,8 +38,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTVenmoClientErrorDomain)
-            XCTAssertEqual(error.code, BTVenmoClientErrorType.integration.rawValue)
+            XCTAssertEqual(error.domain, BTVenmoErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoErrorType.integration.rawValue)
             expectation.fulfill()
         }
 
@@ -68,8 +68,8 @@ class BTVenmoClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "tokenization callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTVenmoClientErrorDomain)
-            XCTAssertEqual(error.code, BTVenmoClientErrorType.disabled.rawValue)
+            XCTAssertEqual(error.domain, BTVenmoErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoErrorType.disabled.rawValue)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
@@ -83,8 +83,8 @@ class BTVenmoClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "tokenization callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTVenmoClientErrorDomain)
-            XCTAssertEqual(error.code, BTVenmoClientErrorType.disabled.rawValue)
+            XCTAssertEqual(error.domain, BTVenmoErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoErrorType.disabled.rawValue)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
@@ -108,8 +108,8 @@ class BTVenmoClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "authorization callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTVenmoClientErrorDomain)
-            XCTAssertEqual(error.code, BTVenmoClientErrorType.appNotAvailable.rawValue)
+            XCTAssertEqual(error.domain, BTVenmoErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoErrorType.appNotAvailable.rawValue)
             expectation.fulfill()
         }
         
@@ -204,8 +204,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoClientErrorDomain")
-            XCTAssertEqual(error.code, BTVenmoClientErrorType.invalidRequestURL.rawValue)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
+            XCTAssertEqual(error.code, BTVenmoErrorType.invalidRequestURL.rawValue)
             XCTAssertEqual(error.localizedDescription, "Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support.")
             expectation.fulfill()
         }
@@ -226,8 +226,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoClientErrorDomain")
-            XCTAssertEqual(error.code, BTVenmoClientErrorType.invalidRequestURL.rawValue)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
+            XCTAssertEqual(error.code, BTVenmoErrorType.invalidRequestURL.rawValue)
             XCTAssertEqual(error.localizedDescription, "Failed to fetch a Venmo paymentContextID while constructing the requestURL.")
             expectation.fulfill()
         }

@@ -12,9 +12,9 @@
     * `BTViewControllerPresentingDelegate` protocol now takes in the `client` parameter instead of `driver`
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
-    * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoClientErrorDomain`
-    * Renamed `BTVenmoDriverErrorType` to `BTVenmoClientErrorType`
-    * All errors are now prefixed with `BTVenmoClientError` instead of `BTVenmoDriverError`
+    * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`
+    * Renamed `BTVenmoDriverErrorType` to `BTVenmoErrorType`
+    * All errors are now prefixed with `BTVenmoError` instead of `BTVenmoDriverError`
     * Remove `.unspecified` case from `BTVenmoPaymentMethodUsage` enum
     * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
   * BraintreePayPal
