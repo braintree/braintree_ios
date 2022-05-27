@@ -28,8 +28,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.invalidReturnURL.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.invalidReturnURL.rawValue)
             expectation.fulfill()
         }
 
@@ -46,8 +46,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.disabled.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.disabled.rawValue)
             expectation.fulfill()
         }
 
@@ -66,8 +66,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.integration.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.integration.rawValue)
             expectation.fulfill()
         }
 
@@ -86,8 +86,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.integration.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.integration.rawValue)
             expectation.fulfill()
         }
 
@@ -106,8 +106,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.integration.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.integration.rawValue)
             expectation.fulfill()
         }
 
@@ -211,8 +211,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.appSwitchFailed.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.appSwitchFailed.rawValue)
             expectation.fulfill()
         }
 
@@ -233,8 +233,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.appSwitchFailed.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.appSwitchFailed.rawValue)
             expectation.fulfill()
         }
 
@@ -389,8 +389,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
         var paymentFinishedExpectation: XCTestExpectation? = nil
         client.startPaymentFlow(localPaymentRequest) { (result, error) in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTPaymentFlowClientErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowClientErrorType.canceled.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.canceled.rawValue)
             paymentFinishedExpectation!.fulfill()
         }
 

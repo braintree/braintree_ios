@@ -71,23 +71,23 @@
 
         if ([self.paymentFlowClientDelegate returnURLScheme] == nil || [[self.paymentFlowClientDelegate returnURLScheme] isEqualToString:@""]) {
             [[BTLogger sharedLogger] critical:@"Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
-                                                 code:BTPaymentFlowClientErrorTypeInvalidReturnURL
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeInvalidReturnURL
                                              userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app or browser switch."}];
         } else if (![configuration isLocalPaymentEnabled]) {
             [[BTLogger sharedLogger] critical:@"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
-                                                 code:BTPaymentFlowClientErrorTypeDisabled
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeDisabled
                                              userInfo:@{NSLocalizedDescriptionKey: @"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."}];
         } else if (localPaymentRequest.localPaymentFlowDelegate == nil) {
             [[BTLogger sharedLogger] critical:@"BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
-                                                 code:BTPaymentFlowClientErrorTypeIntegration
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeIntegration
                                              userInfo:@{NSLocalizedDescriptionKey: @"Failed to begin payment flow: BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."}];
         } else if (localPaymentRequest.amount == nil || localPaymentRequest.paymentType == nil) {
             [[BTLogger sharedLogger] critical:@"BTLocalPaymentRequest amount and paymentType can not be nil."];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
-                                                 code:BTPaymentFlowClientErrorTypeIntegration
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeIntegration
                                              userInfo:@{NSLocalizedDescriptionKey: @"Failed to begin payment flow: BTLocalPaymentRequest amount and paymentType can not be nil."}];
         }
         
@@ -170,8 +170,8 @@
                      }];
                  } else {
                      [[BTLogger sharedLogger] critical:@"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."];
-                     NSError *error = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
-                                                          code:BTPaymentFlowClientErrorTypeAppSwitchFailed
+                     NSError *error = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                          code:BTPaymentFlowErrorTypeAppSwitchFailed
                                                       userInfo:@{NSLocalizedDescriptionKey: @"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."}];
                      [delegate onPaymentComplete:nil error:error];
                      return;
@@ -190,8 +190,8 @@
 - (void)handleOpenURL:(__unused NSURL *)url {
     if ([url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment/cancel"]) {
         // canceled
-        NSError *error = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
-                                             code:BTPaymentFlowClientErrorTypeCanceled
+        NSError *error = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                             code:BTPaymentFlowErrorTypeCanceled
                                          userInfo:@{}];
         [self.paymentFlowClientDelegate onPaymentComplete:nil error:error];
     } else {

@@ -30,9 +30,9 @@
     * Make `BTAmericanExpressRewardsBalance` initializer private
   * BraintreePaymentFlow
     * Renamed `BTPaymentFlowDriver` to `BTPaymentFlowClient`
-    * Renamed `BTPaymentFlowDriverErrorDomain` to `BTPaymentFlowClientErrorDomain`
-    * Renamed `BTPaymentFlowDriverErrorType` to `BTPaymentFlowClientErrorType`
-    * All errors are now prefixed with `BTPaymentFlowClientError` instead of `BTPaymentFlowDriverError`
+    * Renamed `BTPaymentFlowDriverErrorDomain` to `BTPaymentFlowErrorDomain`
+    * Renamed `BTPaymentFlowDriverErrorType` to `BTPaymentFlowErrorType`
+    * All errors are now prefixed with `BTPaymentFlowError` instead of `BTPaymentFlowDriverError`
     * Renamed `BTPaymentFlowDriverDelegate` protocol to `BTPaymentFlowClientDelegate`
     * `handleRequest` in delegate protocol now takes in `paymentClientDelegate` parameter instead of `paymentDriverDelegate`
 

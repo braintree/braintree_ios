@@ -31,7 +31,7 @@
 
 @end
 
-NSString * const BTPaymentFlowClientErrorDomain = @"com.braintreepayments.BTPaymentFlowClientErrorDomain";
+NSString * const BTPaymentFlowErrorDomain = @"com.braintreepayments.BTPaymentFlowErrorDomain";
 
 @implementation BTPaymentFlowClient
 
@@ -128,8 +128,8 @@ static BTPaymentFlowClient *paymentFlowClient;
 
 - (void)onPaymentCancel {
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.canceled", [self.paymentFlowRequestDelegate paymentFlowName]]];
-    NSError *error = [NSError errorWithDomain:BTPaymentFlowClientErrorDomain
-                                         code:BTPaymentFlowClientErrorTypeCanceled
+    NSError *error = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                         code:BTPaymentFlowErrorTypeCanceled
                                      userInfo:@{NSLocalizedDescriptionKey: @"Payment flow was canceled by the user."}];
     self.paymentFlowCompletionBlock(nil, error);
     paymentFlowClient = nil;

@@ -130,8 +130,8 @@
             break;
         }
         case CardinalResponseActionCodeCancel: {
-            [self callFailureHandlerWithErrorDomain:BTPaymentFlowClientErrorDomain
-                                          errorCode:BTPaymentFlowClientErrorTypeCanceled
+            [self callFailureHandlerWithErrorDomain:BTPaymentFlowErrorDomain
+                                          errorCode:BTPaymentFlowErrorTypeCanceled
                                       errorUserInfo:nil
                                      failureHandler:self.failureHandler];
             break;

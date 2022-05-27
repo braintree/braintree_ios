@@ -14,29 +14,29 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Payment flow error domain
  */
-extern NSString * const BTPaymentFlowClientErrorDomain;
+extern NSString * const BTPaymentFlowErrorDomain;
 
 /**
  Errors associated with payment flows.
  */
-typedef NS_ENUM(NSInteger, BTPaymentFlowClientErrorType) {
+typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
     /// PaymentFlow unknown error.
-    BTPaymentFlowClientErrorTypeUnknown = 0,
+    BTPaymentFlowErrorTypeUnknown = 0,
     
     /// PaymentFlow is disabled in configuration.
-    BTPaymentFlowClientErrorTypeDisabled,
+    BTPaymentFlowErrorTypeDisabled,
     
     /// UIApplication failed to switch to browser.
-    BTPaymentFlowClientErrorTypeAppSwitchFailed,
+    BTPaymentFlowErrorTypeAppSwitchFailed,
     
     /// Return URL was invalid.
-    BTPaymentFlowClientErrorTypeInvalidReturnURL,
+    BTPaymentFlowErrorTypeInvalidReturnURL,
     
     /// Braintree SDK is integrated incorrectly.
-    BTPaymentFlowClientErrorTypeIntegration,
+    BTPaymentFlowErrorTypeIntegration,
 
     /// Payment flow was canceled, typically initiated by the user when exiting early from the flow.
-    BTPaymentFlowClientErrorTypeCanceled,
+    BTPaymentFlowErrorTypeCanceled,
 };
 
 /**
