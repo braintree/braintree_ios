@@ -32,7 +32,7 @@
     * Renamed `BTPaymentFlowDriver` to `BTPaymentFlowClient`
     * Renamed `BTPaymentFlowDriverErrorDomain` to `BTPaymentFlowClientErrorDomain`
     * Renamed `BTPaymentFlowDriverErrorType` to `BTPaymentFlowClientErrorType`
-    * All errors are now refixed with `BTPaymentFlowClientError` instead of `BTPaymentFlowDriverError`
+    * All errors are now prefixed with `BTPaymentFlowClientError` instead of `BTPaymentFlowDriverError`
     * Renamed `BTPaymentFlowDriverDelegate` protocol to `BTPaymentFlowClientDelegate`
     * `handleRequest` in delegate protocol now takes in `paymentClientDelegate` parameter instead of `paymentDriverDelegate`
 
