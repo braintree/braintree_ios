@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Update Cardinal SDK to version 2.2.5-3
+
 ## 5.9.0 (2022-04-14)
 * Venmo
   * Reduce network connection lost error frequency on older iOS and Venmo app versions
