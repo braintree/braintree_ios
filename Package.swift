@@ -53,7 +53,7 @@ let package = Package(
         ),
         .library(
             name: "KountDataCollector",
-            targets: ["KountDataCollector", "KountDataCollectorFramework"]
+            targets: ["KountDataCollector"]
         )
     ],
     dependencies: [
@@ -118,11 +118,11 @@ let package = Package(
         ),
         .target(
             name: "KountDataCollector",
-            dependencies: ["KountDataCollectorFramework"],
+            dependencies: ["KountDataCollector"],
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
-            name: "KountDataCollectorFramework",
+            name: "KountDataCollector",
             path: "Frameworks/XCFrameworks/KountDataCollector.xcframework"
         ),
         .target(
