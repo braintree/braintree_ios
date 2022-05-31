@@ -2119,6 +2119,16 @@
 			path = BraintreeCoreTests;
 			sourceTree = "<group>";
 		};
+		BE57E0E52846B0E1002CFBAC /* KountDataCollector */ = {
+			isa = PBXGroup;
+			children = (
+				42F3F63A2603AC0900401B0D /* KDataCollector.h */,
+				42F3F6432603AC0A00401B0D /* KountAnalyticsViewController.h */,
+				BEA3BE812846690C00846415 /* KountDataCollector.h */,
+			);
+			path = KountDataCollector;
+			sourceTree = "<group>";
+		};
 		BEA1B425284167AE00994F61 /* KountDataCollector */ = {
 			isa = PBXGroup;
 			children = (
@@ -2130,9 +2140,7 @@
 		BEA3BE8528466B1300846415 /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				42F3F63A2603AC0900401B0D /* KDataCollector.h */,
-				42F3F6432603AC0A00401B0D /* KountAnalyticsViewController.h */,
-				BEA3BE812846690C00846415 /* KountDataCollector.h */,
+				BE57E0E52846B0E1002CFBAC /* KountDataCollector */,
 			);
 			path = Public;
 			sourceTree = "<group>";

@@ -92,7 +92,7 @@ Pod::Spec.new do |s|
 
  s.subspec "KountDataCollector" do |s|
     s.source_files = "Sources/KountDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/KountDataCollector/Public/*.h"
+    s.public_header_files = "Sources/KountDataCollector/Public/KountDataCollector/*.h"
     s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
   end
 
