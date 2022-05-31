@@ -118,7 +118,7 @@ let package = Package(
         ),
         .target(
             name: "KountDataCollector",
-            dependencies: ["KountDataCollector", "KountDataCollectorFramework"],
+            dependencies: ["KountDataCollectorFramework"],
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
