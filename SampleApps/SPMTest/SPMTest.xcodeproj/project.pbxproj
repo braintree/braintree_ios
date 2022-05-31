@@ -24,6 +24,7 @@
 		80D0491D2668312D00B53FDE /* BraintreeUnionPay in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0491C2668312D00B53FDE /* BraintreeUnionPay */; };
 		80D0491F2668312D00B53FDE /* BraintreeCard in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0491E2668312D00B53FDE /* BraintreeCard */; };
 		80D049212668312D00B53FDE /* BraintreeVenmo in Frameworks */ = {isa = PBXBuildFile; productRef = 80D049202668312D00B53FDE /* BraintreeVenmo */; };
+		BEA3BE8428466A0100846415 /* KountDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = BEA3BE8328466A0100846415 /* KountDataCollector */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEA3BE8428466A0100846415 /* KountDataCollector in Frameworks */,
 				80D049212668312D00B53FDE /* BraintreeVenmo in Frameworks */,
 				80D049172668312D00B53FDE /* BraintreeCore in Frameworks */,
 				80D0491D2668312D00B53FDE /* BraintreeUnionPay in Frameworks */,
@@ -127,6 +129,7 @@
 				80D0491C2668312D00B53FDE /* BraintreeUnionPay */,
 				80D0491E2668312D00B53FDE /* BraintreeCard */,
 				80D049202668312D00B53FDE /* BraintreeVenmo */,
+				BEA3BE8328466A0100846415 /* KountDataCollector */,
 			);
 			productName = SPMTest;
 			productReference = 80214E002551FB5A00695A6F /* SPMTest.app */;
@@ -408,7 +411,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braintree/braintree_ios";
 			requirement = {
-				branch = master;
+				branch = "kount-module";
 				kind = branch;
 			};
 		};
@@ -469,6 +472,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeVenmo;
+		};
+		BEA3BE8328466A0100846415 /* KountDataCollector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = KountDataCollector;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

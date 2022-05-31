@@ -116,6 +116,10 @@ let package = Package(
             dependencies: ["BraintreeCore"],
             publicHeadersPath: "Public"
         ),
+        .target(
+            name: "KountDataCollector",
+            publicHeadersPath: "Public"
+        ),
         .binaryTarget(
             name: "KountDataCollector",
             path: "Frameworks/XCFrameworks/KountDataCollector.xcframework"
