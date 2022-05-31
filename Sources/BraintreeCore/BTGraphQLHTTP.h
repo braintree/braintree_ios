@@ -23,6 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface BTGraphQLHTTP : BTHTTP
 
+- (void)handleRequestCompletion:(nullable NSData *)data
+                       response:(nullable NSURLResponse *)response
+                          error:(nullable NSError *)error
+                completionBlock:(void (^)(BTJSON * _Nonnull, NSHTTPURLResponse * _Nonnull, NSError * _Nonnull))completionBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

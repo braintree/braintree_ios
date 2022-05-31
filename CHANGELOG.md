@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Fix potential crash when http request fails with no error but empty data (thanks @cltnschlosser)
 * Update Cardinal SDK to version 2.2.5-3
 
 ## 5.9.0 (2022-04-14)
