@@ -119,6 +119,7 @@ let package = Package(
         .target(
             name: "KountDataCollectorWrapper",
             dependencies: ["KountDataCollector"],
+            path: "Sources/KountDataCollector",
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
