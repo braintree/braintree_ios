@@ -343,14 +343,11 @@
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
 		BE9F444427C6C75E00A117D5 /* BTCacheDateValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */; };
 		BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */; };
-		BEA1B4132841679200994F61 /* BTDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */; };
-		BEA1B4142841679200994F61 /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
 		BEA1B4172841679200994F61 /* KountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B8AA5926E01D2F0036DF57 /* KountDataCollector.xcframework */; };
 		BEA1B41A2841679200994F61 /* KDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F63A2603AC0900401B0D /* KDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEA1B4262841682500994F61 /* KountAnalyticsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F6432603AC0A00401B0D /* KountAnalyticsViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEA3BE822846691100846415 /* KountDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = BEA3BE812846690C00846415 /* KountDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BECF129F284171B6002C3A04 /* KountDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* KountDataCollector.framework */; platformFilter = ios; };
-		BECF12A0284171B6002C3A04 /* KountDataCollector.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* KountDataCollector.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BECF129F284171B6002C3A04 /* KountDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* KountDataCollector.framework */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -656,7 +653,7 @@
 			remoteGlobalIDString = A7B462E01C3D9C2200048423;
 			remoteInfo = PayPalDataCollector;
 		};
-		BECF12A1284171B6002C3A04 /* PBXContainerItemProxy */ = {
+		BE57E0E92847A147002CFBAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -681,7 +678,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BECF12A0284171B6002C3A04 /* KountDataCollector.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2475,8 +2471,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE57E0EA2847A147002CFBAC /* PBXTargetDependency */,
 				41935DE81D528B2C008D48FB /* PBXTargetDependency */,
-				BECF12A2284171B6002C3A04 /* PBXTargetDependency */,
 			);
 			name = BraintreeDataCollector;
 			productName = BraintreeDataCollector;
@@ -3604,8 +3600,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEA1B4132841679200994F61 /* BTDataCollector.m in Sources */,
-				BEA1B4142841679200994F61 /* BTConfiguration+DataCollector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3844,11 +3838,10 @@
 			target = A7B462E01C3D9C2200048423 /* PayPalDataCollector */;
 			targetProxy = A9EC7194252BC14000FF7D05 /* PBXContainerItemProxy */;
 		};
-		BECF12A2284171B6002C3A04 /* PBXTargetDependency */ = {
+		BE57E0EA2847A147002CFBAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			platformFilter = ios;
 			target = BEA1B40F2841679200994F61 /* KountDataCollector */;
-			targetProxy = BECF12A1284171B6002C3A04 /* PBXContainerItemProxy */;
+			targetProxy = BE57E0E92847A147002CFBAC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -6546,10 +6539,7 @@
 					"$(PROJECT_DIR)/Sources/KountDataCollector",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.KountDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6609,10 +6599,7 @@
 					"$(PROJECT_DIR)/Sources/KountDataCollector",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.KountDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

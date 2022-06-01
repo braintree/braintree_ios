@@ -25,7 +25,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreeDataCollector",
-            targets: ["BraintreeDataCollector"]
+            targets: ["BraintreeDataCollector", "KountDataCollectorWrapper"]
         ),
         .library(
             name: "BraintreePaymentFlow",
@@ -52,8 +52,8 @@ let package = Package(
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
         ),
         .library(
-            name: "KountDataCollector",
-            targets: ["KountDataCollector", "KountDataCollectorFramework"]
+            name: "KountDataCollectorWrapper",
+            targets: ["KountDataCollectorWrapper", "KountDataCollector"]
         )
     ],
     dependencies: [
@@ -83,7 +83,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeDataCollector",
-            dependencies: ["BraintreeCore", "KountDataCollector"],
+            dependencies: ["BraintreeCore", "KountDataCollectorWrapper"],
             publicHeadersPath: "Public"
         ),
         .target(
@@ -117,12 +117,12 @@ let package = Package(
             publicHeadersPath: "Public"
         ),
         .target(
-            name: "KountDataCollector",
-            dependencies: ["KountDataCollectorFramework"],
+            name: "KountDataCollectorWrapper",
+            dependencies: ["KountDataCollector"],
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
-            name: "KountDataCollectorFramework",
+            name: "KountDataCollector",
             path: "Frameworks/XCFrameworks/KountDataCollector.xcframework"
         ),
         .target(
