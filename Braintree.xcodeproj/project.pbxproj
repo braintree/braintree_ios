@@ -341,6 +341,7 @@
 		BC20A8FB2385F8640077AF56 /* BTPreferredPaymentMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = BC20A8F92385F8640077AF56 /* BTPreferredPaymentMethods.m */; };
 		BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
+		BE57E0F02847C833002CFBAC /* BTKountDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57E0EF2847C833002CFBAC /* BTKountDataCollector.m */; };
 		BE9F444427C6C75E00A117D5 /* BTCacheDateValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */; };
 		BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */; };
 		BEA1B4172841679200994F61 /* KountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B8AA5926E01D2F0036DF57 /* KountDataCollector.xcframework */; };
@@ -1059,6 +1060,7 @@
 		BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPreferredPaymentMethodsResult.h; sourceTree = "<group>"; };
 		BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPreferredPaymentMethodsResult.m; sourceTree = "<group>"; };
 		BC6F67D02386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPreferredPaymentMethods_Tests.swift; sourceTree = "<group>"; };
+		BE57E0EF2847C833002CFBAC /* BTKountDataCollector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTKountDataCollector.m; sourceTree = "<group>"; };
 		BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator.m; sourceTree = "<group>"; };
 		BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCacheDateValidator_Internal.h; sourceTree = "<group>"; };
 		BEA1B4232841679200994F61 /* KountDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KountDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2128,6 +2130,7 @@
 		BEA1B425284167AE00994F61 /* KountDataCollector */ = {
 			isa = PBXGroup;
 			children = (
+				BE57E0EF2847C833002CFBAC /* BTKountDataCollector.m */,
 				BEA3BE8528466B1300846415 /* Public */,
 			);
 			path = KountDataCollector;
@@ -3600,6 +3603,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE57E0F02847C833002CFBAC /* BTKountDataCollector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
