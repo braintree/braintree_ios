@@ -87,7 +87,6 @@
 		A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A74D4AFE1BFBB3FB00BF36CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A74D4B001BFBB3FB00BF36CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BEA3BE7E2846619E00846415 /* KountDataCollector */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KountDataCollector; path = ../../Sources/KountDataCollector; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +116,6 @@
 		03BFA5C81FB2F0BB0003ABCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BEA3BE7E2846619E00846415 /* KountDataCollector */,
 				4299259D266189010085F77D /* BraintreeAmericanExpress.xcframework */,
 				4299259F266189010085F77D /* BraintreeApplePay.xcframework */,
 				429925A5266189010085F77D /* BraintreeCard.xcframework */,
