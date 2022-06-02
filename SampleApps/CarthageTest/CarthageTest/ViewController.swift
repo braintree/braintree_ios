@@ -10,7 +10,7 @@ import BraintreeThreeDSecure
 import BraintreeUnionPay
 import BraintreeVenmo
 import PayPalDataCollector
-import KountDataCollector
+import BraintreeKountDataCollector
 
 class ViewController: UIViewController {
 

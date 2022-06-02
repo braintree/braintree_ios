@@ -347,7 +347,7 @@
 		BEA1B4172841679200994F61 /* KountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B8AA5926E01D2F0036DF57 /* KountDataCollector.xcframework */; };
 		BEA1B41A2841679200994F61 /* KDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F63A2603AC0900401B0D /* KDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEA1B4262841682500994F61 /* KountAnalyticsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F6432603AC0A00401B0D /* KountAnalyticsViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BEA3BE822846691100846415 /* KountDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = BEA3BE812846690C00846415 /* KountDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BEA3BE822846691100846415 /* BraintreeKountDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = BEA3BE812846690C00846415 /* BraintreeKountDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BECF129F284171B6002C3A04 /* BraintreeKountDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -1064,7 +1064,7 @@
 		BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator.m; sourceTree = "<group>"; };
 		BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCacheDateValidator_Internal.h; sourceTree = "<group>"; };
 		BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeKountDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BEA3BE812846690C00846415 /* KountDataCollector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KountDataCollector.h; sourceTree = "<group>"; };
+		BEA3BE812846690C00846415 /* BraintreeKountDataCollector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeKountDataCollector.h; sourceTree = "<group>"; };
 		BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2122,7 +2122,7 @@
 			children = (
 				42F3F63A2603AC0900401B0D /* KDataCollector.h */,
 				42F3F6432603AC0A00401B0D /* KountAnalyticsViewController.h */,
-				BEA3BE812846690C00846415 /* KountDataCollector.h */,
+				BEA3BE812846690C00846415 /* BraintreeKountDataCollector.h */,
 			);
 			path = BraintreeKountDataCollector;
 			sourceTree = "<group>";
@@ -2356,7 +2356,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEA3BE822846691100846415 /* KountDataCollector.h in Headers */,
+				BEA3BE822846691100846415 /* BraintreeKountDataCollector.h in Headers */,
 				BEA1B41A2841679200994F61 /* KDataCollector.h in Headers */,
 				BEA1B4262841682500994F61 /* KountAnalyticsViewController.h in Headers */,
 			);

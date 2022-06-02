@@ -1,7 +1,7 @@
-#if __has_include(<Braintree/KountDataCollector.h>)
+#if __has_include(<Braintree/BraintreeKountDataCollector.h>)
 #import <Braintree/KountDataCollector.h>
 #else
-#import <BraintreeKountDataCollector/KountDataCollector.h>
+#import <BraintreeKountDataCollector/BraintreeKountDataCollector.h>
 #endif
 
 /// For Swift Package Manager we need a dummy .m file as we cannot have a module with only .h files.

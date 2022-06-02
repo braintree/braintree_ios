@@ -4,12 +4,12 @@
 #if __has_include(<Braintree/BraintreeDataCollector.h>)
 #import <Braintree/BTConfiguration+DataCollector.h>
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/KountDataCollector.h>
+#import <Braintree/BraintreeKountDataCollector.h>
 
 #else
 #import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeKountDataCollector/KountDataCollector.h>
+#import <BraintreeKountDataCollector/BraintreeKountDataCollector.h>
 #endif
 
 typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
