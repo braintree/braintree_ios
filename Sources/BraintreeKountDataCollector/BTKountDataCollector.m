@@ -1,5 +1,5 @@
 #if __has_include(<Braintree/BraintreeKountDataCollector.h>)
-#import <Braintree/KountDataCollector.h>
+#import <Braintree/BraintreeKountDataCollector.h>
 #else
 #import <BraintreeKountDataCollector/BraintreeKountDataCollector.h>
 #endif

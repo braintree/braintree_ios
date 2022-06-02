@@ -5,7 +5,6 @@
 #import <Braintree/BTConfiguration+DataCollector.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BraintreeKountDataCollector.h>
-
 #else
 #import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
 #import <BraintreeCore/BraintreeCore.h>

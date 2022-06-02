@@ -38,8 +38,8 @@
 		A74D4AFA1BFBB3FB00BF36CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AF81BFBB3FB00BF36CD /* Main.storyboard */; };
 		A74D4AFC1BFBB3FB00BF36CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */; };
 		A74D4AFF1BFBB3FB00BF36CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFD1BFBB3FB00BF36CD /* LaunchScreen.storyboard */; };
-		BE57E13128491ED2002CFBAC /* BraintreeKountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; };
-		BE57E13228491ED2002CFBAC /* BraintreeKountDataCollector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BE57E1332849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; };
+		BE57E1342849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,7 +57,7 @@
 				429925C0266189020085F77D /* BraintreePayPal.xcframework in Embed Frameworks */,
 				429925BA266189020085F77D /* BraintreeVenmo.xcframework in Embed Frameworks */,
 				429925BC266189020085F77D /* BraintreeCard.xcframework in Embed Frameworks */,
-				BE57E13228491ED2002CFBAC /* BraintreeKountDataCollector.xcframework in Embed Frameworks */,
+				BE57E1342849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Embed Frameworks */,
 				429925BE266189020085F77D /* CardinalMobile.xcframework in Embed Frameworks */,
 				429925C2266189020085F77D /* BraintreeThreeDSecure.xcframework in Embed Frameworks */,
 				429925AE266189010085F77D /* BraintreeDataCollector.xcframework in Embed Frameworks */,
@@ -106,7 +106,7 @@
 				429925BF266189020085F77D /* BraintreePayPal.xcframework in Frameworks */,
 				429925B9266189020085F77D /* BraintreeVenmo.xcframework in Frameworks */,
 				429925BB266189020085F77D /* BraintreeCard.xcframework in Frameworks */,
-				BE57E13128491ED2002CFBAC /* BraintreeKountDataCollector.xcframework in Frameworks */,
+				BE57E1332849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Frameworks */,
 				429925BD266189020085F77D /* CardinalMobile.xcframework in Frameworks */,
 				429925C1266189020085F77D /* BraintreeThreeDSecure.xcframework in Frameworks */,
 				429925AD266189010085F77D /* BraintreeDataCollector.xcframework in Frameworks */,
