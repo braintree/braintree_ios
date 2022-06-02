@@ -2,6 +2,6 @@
 #import <Braintree/KDataCollector.h>
 #import <Braintree/KountAnalyticsViewController.h>
 #else
-#import <KountDataCollector/KDataCollector.h>
-#import <KountDataCollector/KountAnalyticsViewController.h>
+#import <BraintreeKountDataCollector/KDataCollector.h>
+#import <BraintreeKountDataCollector/KountAnalyticsViewController.h>
 #endif
