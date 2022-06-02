@@ -38,8 +38,6 @@
 		A74D4AFA1BFBB3FB00BF36CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AF81BFBB3FB00BF36CD /* Main.storyboard */; };
 		A74D4AFC1BFBB3FB00BF36CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */; };
 		A74D4AFF1BFBB3FB00BF36CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFD1BFBB3FB00BF36CD /* LaunchScreen.storyboard */; };
-		BE57E10C2847F6CA002CFBAC /* KountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E10B2847F6CA002CFBAC /* KountDataCollector.xcframework */; };
-		BE57E10D2847F6CA002CFBAC /* KountDataCollector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E10B2847F6CA002CFBAC /* KountDataCollector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,7 +58,6 @@
 				429925BE266189020085F77D /* CardinalMobile.xcframework in Embed Frameworks */,
 				429925C2266189020085F77D /* BraintreeThreeDSecure.xcframework in Embed Frameworks */,
 				429925AE266189010085F77D /* BraintreeDataCollector.xcframework in Embed Frameworks */,
-				BE57E10D2847F6CA002CFBAC /* KountDataCollector.xcframework in Embed Frameworks */,
 				429925AA266189010085F77D /* PayPalDataCollector.xcframework in Embed Frameworks */,
 				429925AC266189010085F77D /* BraintreeAmericanExpress.xcframework in Embed Frameworks */,
 			);
@@ -109,7 +106,6 @@
 				429925BD266189020085F77D /* CardinalMobile.xcframework in Frameworks */,
 				429925C1266189020085F77D /* BraintreeThreeDSecure.xcframework in Frameworks */,
 				429925AD266189010085F77D /* BraintreeDataCollector.xcframework in Frameworks */,
-				BE57E10C2847F6CA002CFBAC /* KountDataCollector.xcframework in Frameworks */,
 				429925A9266189010085F77D /* PayPalDataCollector.xcframework in Frameworks */,
 				429925AB266189010085F77D /* BraintreeAmericanExpress.xcframework in Frameworks */,
 			);

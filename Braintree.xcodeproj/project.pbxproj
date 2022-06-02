@@ -348,7 +348,7 @@
 		BEA1B41A2841679200994F61 /* KDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F63A2603AC0900401B0D /* KDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEA1B4262841682500994F61 /* KountAnalyticsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 42F3F6432603AC0A00401B0D /* KountAnalyticsViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEA3BE822846691100846415 /* KountDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = BEA3BE812846690C00846415 /* KountDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BECF129F284171B6002C3A04 /* KountDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* KountDataCollector.framework */; };
+		BECF129F284171B6002C3A04 /* BraintreeKountDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -1063,7 +1063,7 @@
 		BE57E0EF2847C833002CFBAC /* BTKountDataCollector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTKountDataCollector.m; sourceTree = "<group>"; };
 		BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator.m; sourceTree = "<group>"; };
 		BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCacheDateValidator_Internal.h; sourceTree = "<group>"; };
-		BEA1B4232841679200994F61 /* KountDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KountDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeKountDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA3BE812846690C00846415 /* KountDataCollector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KountDataCollector.h; sourceTree = "<group>"; };
 		BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
@@ -1124,7 +1124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BECF129F284171B6002C3A04 /* KountDataCollector.framework in Frameworks */,
+				BECF129F284171B6002C3A04 /* BraintreeKountDataCollector.framework in Frameworks */,
 				41935DE61D528B25008D48FB /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1656,7 +1656,7 @@
 				A91E1EAC24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				4164B9891C9B6553006AE861 /* BraintreeUnionPay */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
-				BEA1B425284167AE00994F61 /* KountDataCollector */,
+				BEA1B425284167AE00994F61 /* BraintreeKountDataCollector */,
 				80AEE9D82540C3C1008CCA4F /* PayPalDataCollector */,
 			);
 			path = Sources;
@@ -1769,7 +1769,7 @@
 				A91E1EAB24FEEF21007540E5 /* BraintreeThreeDSecure.framework */,
 				A91E1EF224FEF2E3007540E5 /* BraintreeThreeDSecureTests.xctest */,
 				A9B241FC2507D156000FAA3F /* PayPalDataCollectorTests.xctest */,
-				BEA1B4232841679200994F61 /* KountDataCollector.framework */,
+				BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2117,29 +2117,29 @@
 			path = BraintreeCoreTests;
 			sourceTree = "<group>";
 		};
-		BE57E0E52846B0E1002CFBAC /* KountDataCollector */ = {
+		BE57E0E52846B0E1002CFBAC /* BraintreeKountDataCollector */ = {
 			isa = PBXGroup;
 			children = (
 				42F3F63A2603AC0900401B0D /* KDataCollector.h */,
 				42F3F6432603AC0A00401B0D /* KountAnalyticsViewController.h */,
 				BEA3BE812846690C00846415 /* KountDataCollector.h */,
 			);
-			path = KountDataCollector;
+			path = BraintreeKountDataCollector;
 			sourceTree = "<group>";
 		};
-		BEA1B425284167AE00994F61 /* KountDataCollector */ = {
+		BEA1B425284167AE00994F61 /* BraintreeKountDataCollector */ = {
 			isa = PBXGroup;
 			children = (
 				BE57E0EF2847C833002CFBAC /* BTKountDataCollector.m */,
 				BEA3BE8528466B1300846415 /* Public */,
 			);
-			path = KountDataCollector;
+			path = BraintreeKountDataCollector;
 			sourceTree = "<group>";
 		};
 		BEA3BE8528466B1300846415 /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				BE57E0E52846B0E1002CFBAC /* KountDataCollector */,
+				BE57E0E52846B0E1002CFBAC /* BraintreeKountDataCollector */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -2836,9 +2836,9 @@
 			productReference = A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BEA1B40F2841679200994F61 /* KountDataCollector */ = {
+		BEA1B40F2841679200994F61 /* BraintreeKountDataCollector */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BEA1B4202841679200994F61 /* Build configuration list for PBXNativeTarget "KountDataCollector" */;
+			buildConfigurationList = BEA1B4202841679200994F61 /* Build configuration list for PBXNativeTarget "BraintreeKountDataCollector" */;
 			buildPhases = (
 				BEA1B4122841679200994F61 /* Sources */,
 				BEA1B4152841679200994F61 /* Frameworks */,
@@ -2849,9 +2849,9 @@
 			);
 			dependencies = (
 			);
-			name = KountDataCollector;
+			name = BraintreeKountDataCollector;
 			productName = KountDataCollector;
-			productReference = BEA1B4232841679200994F61 /* KountDataCollector.framework */;
+			productReference = BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -2979,7 +2979,7 @@
 				A7B462E01C3D9C2200048423 /* PayPalDataCollector */,
 				A9B241FB2507D156000FAA3F /* PayPalDataCollectorTests */,
 				A7ABD6521B702FD800A1223C /* IntegrationTests */,
-				BEA1B40F2841679200994F61 /* KountDataCollector */,
+				BEA1B40F2841679200994F61 /* BraintreeKountDataCollector */,
 			);
 		};
 /* End PBXProject section */
@@ -3844,7 +3844,7 @@
 		};
 		BE57E0EA2847A147002CFBAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BEA1B40F2841679200994F61 /* KountDataCollector */;
+			target = BEA1B40F2841679200994F61 /* BraintreeKountDataCollector */;
 			targetProxy = BE57E0E92847A147002CFBAC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -6538,7 +6538,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.KountDataCollector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeKountDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -6598,7 +6598,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.KountDataCollector;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeKountDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
@@ -6837,7 +6837,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BEA1B4202841679200994F61 /* Build configuration list for PBXNativeTarget "KountDataCollector" */ = {
+		BEA1B4202841679200994F61 /* Build configuration list for PBXNativeTarget "BraintreeKountDataCollector" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BEA1B4212841679200994F61 /* Debug */,

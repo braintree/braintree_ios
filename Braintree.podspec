@@ -91,8 +91,8 @@ Pod::Spec.new do |s|
   end
 
  s.subspec "KountDataCollector" do |s|
-    s.source_files = "Sources/KountDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/KountDataCollector/Public/KountDataCollector/*.h"
+    s.source_files = "Sources/BraintreeKountDataCollector/**/*.{h,m}"
+    s.public_header_files = "Sources/BraintreeKountDataCollector/Public/BraintreeKountDataCollector/*.h"
     s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
   end
 

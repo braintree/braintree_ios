@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BEA1B40F2841679200994F61"
-               BuildableName = "KountDataCollector.framework"
-               BlueprintName = "KountDataCollector"
+               BuildableName = "BraintreeKountDataCollector.framework"
+               BlueprintName = "BraintreeKountDataCollector"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BEA1B40F2841679200994F61"
-            BuildableName = "KountDataCollector.framework"
-            BlueprintName = "KountDataCollector"
+            BuildableName = "BraintreeKountDataCollector.framework"
+            BlueprintName = "BraintreeKountDataCollector"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

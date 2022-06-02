@@ -9,7 +9,7 @@
 #else
 #import <BraintreeDataCollector/BTConfiguration+DataCollector.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <KountDataCollector/KountDataCollector.h>
+#import <BraintreeKountDataCollector/KountDataCollector.h>
 #endif
 
 typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {

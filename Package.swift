@@ -25,7 +25,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreeDataCollector",
-            targets: ["BraintreeDataCollector", "KountDataCollectorWrapper"]
+            targets: ["BraintreeDataCollector", "BraintreeKountDataCollector"]
         ),
         .library(
             name: "BraintreePaymentFlow",
@@ -52,8 +52,8 @@ let package = Package(
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
         ),
         .library(
-            name: "KountDataCollectorWrapper",
-            targets: ["KountDataCollectorWrapper", "KountDataCollector"]
+            name: "BraintreeKountDataCollector",
+            targets: ["BraintreeKountDataCollector", "KountDataCollector"]
         )
     ],
     dependencies: [
@@ -83,7 +83,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeDataCollector",
-            dependencies: ["BraintreeCore", "KountDataCollectorWrapper"],
+            dependencies: ["BraintreeCore", "BraintreeKountDataCollector"],
             publicHeadersPath: "Public"
         ),
         .target(
@@ -117,9 +117,8 @@ let package = Package(
             publicHeadersPath: "Public"
         ),
         .target(
-            name: "KountDataCollectorWrapper",
+            name: "BraintreeKountDataCollector",
             dependencies: ["KountDataCollector"],
-            path: "Sources/KountDataCollector",
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
