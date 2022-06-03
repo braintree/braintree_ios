@@ -176,6 +176,8 @@
         request.billingAddress = billingAddress;
         request.email = @"test@example.com";
         request.shippingMethod = BTThreeDSecureShippingMethodSameDay;
+        
+        // MARK: v2 Customization
 
         BTThreeDSecureV2UICustomization *ui = [BTThreeDSecureV2UICustomization new];
         BTThreeDSecureV2ToolbarCustomization *toolbarCustomization = [BTThreeDSecureV2ToolbarCustomization new];
@@ -185,12 +187,34 @@
         [toolbarCustomization setTextColor:@"#222222"];
         [toolbarCustomization setTextFontSize:18];
         [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
+        
+        BTThreeDSecureV2ButtonCustomization *buttonCustomization = [BTThreeDSecureV2ButtonCustomization new];
+        [buttonCustomization setBackgroundColor:@"#FFC0CB"];
+        [buttonCustomization setCornerRadius:20];
+        
+        BTThreeDSecureV2TextBoxCustomization *textBoxCustomization = [BTThreeDSecureV2TextBoxCustomization new];
+        [textBoxCustomization setBorderColor:@"#ADD8E6"];
+        [textBoxCustomization setCornerRadius:10];
+        [textBoxCustomization setBorderWidth:5];
+        
+        BTThreeDSecureV2LabelCustomization *labelCustomization = [BTThreeDSecureV2LabelCustomization new];
+        [labelCustomization setHeadingTextColor:@"#A020F0"];
+        [labelCustomization setHeadingTextFontSize:24];
+        [labelCustomization setHeadingTextFontName:@"AmericanTypewriter"];
+        
         [ui setToolbarCustomization:toolbarCustomization];
+        [ui setButtonCustomization:buttonCustomization buttonType:ButtonTypeVerify];
+        [ui setTextBoxCustomization:textBoxCustomization];
+        [ui setLabelCustomization:labelCustomization];
+
         request.v2UICustomization = ui;
 
+        // MARK: v1 Customization
+        
         BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
         v1UICustomization.redirectButtonText = @"Return to Demo App";
         v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";
+
         request.v1UICustomization = v1UICustomization;
 
         [self.paymentFlowClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
