@@ -3,7 +3,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-@objc public extension BTConfiguration {
+extension BTConfiguration {
 
     /// Indicates whether Kount is enabled for the merchant account.
     var isKountEnabled: Bool {

@@ -61,7 +61,7 @@ import BraintreeKountDataCollector
                 let merchantID = self.fraudMerchantID != nil ? self.fraudMerchantID : configuration.kountMerchantID!
                 self.kount?.merchantID = Int(merchantID ?? "60000") ?? 60000
                 
-                let deviceSessionID: String = self.generateSessionID()                
+                let deviceSessionID: String = self.generateSessionID()
                 let dataDictionary: NSMutableDictionary = [:]
 
                 dataDictionary["device_session_id"] = deviceSessionID
