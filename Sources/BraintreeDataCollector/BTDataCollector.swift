@@ -57,15 +57,14 @@ import BraintreeKountDataCollector
                 let braintreeEnvironment: BTDataCollectorEnvironment = self.environmentFromString(configuration.environment ?? "production")
                 self.setDataCollectorEnvironment(as: self.collectorEnvironment(environment: braintreeEnvironment))
                 
-                // TODO: refactor this
-                let merchantID = self.fraudMerchantID != nil ? self.fraudMerchantID : configuration.kountMerchantID!
-                self.kount?.merchantID = Int(merchantID ?? "60000") ?? 60000
+                guard let kountMerchantID = self.fraudMerchantID != nil ? self.fraudMerchantID : configuration.kountMerchantID else { return }
+                self.kount?.merchantID = Int(kountMerchantID) ?? 60000
                 
                 let deviceSessionID: String = self.generateSessionID()
                 let dataDictionary: NSMutableDictionary = [:]
 
                 dataDictionary["device_session_id"] = deviceSessionID
-                dataDictionary["fraud_merchant_id"] = merchantID
+                dataDictionary["fraud_merchant_id"] = kountMerchantID
                 
                 self.kount?.collect(forSession: deviceSessionID)
                 
