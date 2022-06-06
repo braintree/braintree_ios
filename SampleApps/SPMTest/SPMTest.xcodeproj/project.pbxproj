@@ -1,0 +1,476 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		80214E042551FB5A00695A6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E032551FB5A00695A6F /* AppDelegate.swift */; };
+		80214E062551FB5A00695A6F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E052551FB5A00695A6F /* SceneDelegate.swift */; };
+		80214E082551FB5A00695A6F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E072551FB5A00695A6F /* ViewController.swift */; };
+		80214E0B2551FB5A00695A6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80214E092551FB5A00695A6F /* Main.storyboard */; };
+		80214E0D2551FB5C00695A6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80214E0C2551FB5C00695A6F /* Assets.xcassets */; };
+		80214E102551FB5C00695A6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80214E0E2551FB5C00695A6F /* LaunchScreen.storyboard */; };
+		80D0490D2668312D00B53FDE /* BraintreePaymentFlow in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0490C2668312D00B53FDE /* BraintreePaymentFlow */; };
+		80D0490F2668312D00B53FDE /* BraintreeAmericanExpress in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0490E2668312D00B53FDE /* BraintreeAmericanExpress */; };
+		80D049112668312D00B53FDE /* BraintreeThreeDSecure in Frameworks */ = {isa = PBXBuildFile; productRef = 80D049102668312D00B53FDE /* BraintreeThreeDSecure */; };
+		80D049132668312D00B53FDE /* BraintreeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = 80D049122668312D00B53FDE /* BraintreeApplePay */; };
+		80D049152668312D00B53FDE /* BraintreePayPal in Frameworks */ = {isa = PBXBuildFile; productRef = 80D049142668312D00B53FDE /* BraintreePayPal */; };
+		80D049172668312D00B53FDE /* BraintreeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 80D049162668312D00B53FDE /* BraintreeCore */; };
+		80D049192668312D00B53FDE /* PayPalDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 80D049182668312D00B53FDE /* PayPalDataCollector */; };
+		80D0491B2668312D00B53FDE /* BraintreeDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0491A2668312D00B53FDE /* BraintreeDataCollector */; };
+		80D0491D2668312D00B53FDE /* BraintreeUnionPay in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0491C2668312D00B53FDE /* BraintreeUnionPay */; };
+		80D0491F2668312D00B53FDE /* BraintreeCard in Frameworks */ = {isa = PBXBuildFile; productRef = 80D0491E2668312D00B53FDE /* BraintreeCard */; };
+		80D049212668312D00B53FDE /* BraintreeVenmo in Frameworks */ = {isa = PBXBuildFile; productRef = 80D049202668312D00B53FDE /* BraintreeVenmo */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		42C1D7CC25C8B34C00C33708 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/CardinalMobile.framework; sourceTree = "<group>"; };
+		80214E002551FB5A00695A6F /* SPMTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPMTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		80214E032551FB5A00695A6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		80214E052551FB5A00695A6F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		80214E072551FB5A00695A6F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		80214E0A2551FB5A00695A6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		80214E0C2551FB5C00695A6F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		80214E0F2551FB5C00695A6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		80214E112551FB5C00695A6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		80214DFD2551FB5A00695A6F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80D049212668312D00B53FDE /* BraintreeVenmo in Frameworks */,
+				80D049172668312D00B53FDE /* BraintreeCore in Frameworks */,
+				80D0491D2668312D00B53FDE /* BraintreeUnionPay in Frameworks */,
+				80D049112668312D00B53FDE /* BraintreeThreeDSecure in Frameworks */,
+				80D049132668312D00B53FDE /* BraintreeApplePay in Frameworks */,
+				80D0491B2668312D00B53FDE /* BraintreeDataCollector in Frameworks */,
+				80D049152668312D00B53FDE /* BraintreePayPal in Frameworks */,
+				80D0490F2668312D00B53FDE /* BraintreeAmericanExpress in Frameworks */,
+				80D0490D2668312D00B53FDE /* BraintreePaymentFlow in Frameworks */,
+				80D049192668312D00B53FDE /* PayPalDataCollector in Frameworks */,
+				80D0491F2668312D00B53FDE /* BraintreeCard in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42C2D3002583D8CF00E525AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				42C1D7CC25C8B34C00C33708 /* CardinalMobile.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		80214DF72551FB5A00695A6F = {
+			isa = PBXGroup;
+			children = (
+				80214E022551FB5A00695A6F /* SPMTest */,
+				80214E012551FB5A00695A6F /* Products */,
+				42C2D3002583D8CF00E525AE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		80214E012551FB5A00695A6F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				80214E002551FB5A00695A6F /* SPMTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		80214E022551FB5A00695A6F /* SPMTest */ = {
+			isa = PBXGroup;
+			children = (
+				80214E032551FB5A00695A6F /* AppDelegate.swift */,
+				80214E052551FB5A00695A6F /* SceneDelegate.swift */,
+				80214E072551FB5A00695A6F /* ViewController.swift */,
+				80214E092551FB5A00695A6F /* Main.storyboard */,
+				80214E0C2551FB5C00695A6F /* Assets.xcassets */,
+				80214E0E2551FB5C00695A6F /* LaunchScreen.storyboard */,
+				80214E112551FB5C00695A6F /* Info.plist */,
+			);
+			path = SPMTest;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		80214DFF2551FB5A00695A6F /* SPMTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80214E142551FB5C00695A6F /* Build configuration list for PBXNativeTarget "SPMTest" */;
+			buildPhases = (
+				80214DFC2551FB5A00695A6F /* Sources */,
+				80214DFD2551FB5A00695A6F /* Frameworks */,
+				80214DFE2551FB5A00695A6F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SPMTest;
+			packageProductDependencies = (
+				80D0490C2668312D00B53FDE /* BraintreePaymentFlow */,
+				80D0490E2668312D00B53FDE /* BraintreeAmericanExpress */,
+				80D049102668312D00B53FDE /* BraintreeThreeDSecure */,
+				80D049122668312D00B53FDE /* BraintreeApplePay */,
+				80D049142668312D00B53FDE /* BraintreePayPal */,
+				80D049162668312D00B53FDE /* BraintreeCore */,
+				80D049182668312D00B53FDE /* PayPalDataCollector */,
+				80D0491A2668312D00B53FDE /* BraintreeDataCollector */,
+				80D0491C2668312D00B53FDE /* BraintreeUnionPay */,
+				80D0491E2668312D00B53FDE /* BraintreeCard */,
+				80D049202668312D00B53FDE /* BraintreeVenmo */,
+			);
+			productName = SPMTest;
+			productReference = 80214E002551FB5A00695A6F /* SPMTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		80214DF82551FB5A00695A6F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1210;
+				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					80214DFF2551FB5A00695A6F = {
+						CreatedOnToolsVersion = 12.1;
+					};
+				};
+			};
+			buildConfigurationList = 80214DFB2551FB5A00695A6F /* Build configuration list for PBXProject "SPMTest" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 80214DF72551FB5A00695A6F;
+			packageReferences = (
+				80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */,
+			);
+			productRefGroup = 80214E012551FB5A00695A6F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				80214DFF2551FB5A00695A6F /* SPMTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		80214DFE2551FB5A00695A6F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80214E102551FB5C00695A6F /* LaunchScreen.storyboard in Resources */,
+				80214E0D2551FB5C00695A6F /* Assets.xcassets in Resources */,
+				80214E0B2551FB5A00695A6F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		80214DFC2551FB5A00695A6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80214E082551FB5A00695A6F /* ViewController.swift in Sources */,
+				80214E042551FB5A00695A6F /* AppDelegate.swift in Sources */,
+				80214E062551FB5A00695A6F /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		80214E092551FB5A00695A6F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				80214E0A2551FB5A00695A6F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		80214E0E2551FB5C00695A6F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				80214E0F2551FB5C00695A6F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		80214E122551FB5C00695A6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		80214E132551FB5C00695A6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		80214E152551FB5C00695A6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				INFOPLIST_FILE = SPMTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.SPMTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+			};
+			name = Debug;
+		};
+		80214E162551FB5C00695A6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				INFOPLIST_FILE = SPMTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.SPMTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		80214DFB2551FB5A00695A6F /* Build configuration list for PBXProject "SPMTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80214E122551FB5C00695A6F /* Debug */,
+				80214E132551FB5C00695A6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80214E142551FB5C00695A6F /* Build configuration list for PBXNativeTarget "SPMTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80214E152551FB5C00695A6F /* Debug */,
+				80214E162551FB5C00695A6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braintree/braintree_ios";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		80D0490C2668312D00B53FDE /* BraintreePaymentFlow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreePaymentFlow;
+		};
+		80D0490E2668312D00B53FDE /* BraintreeAmericanExpress */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeAmericanExpress;
+		};
+		80D049102668312D00B53FDE /* BraintreeThreeDSecure */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeThreeDSecure;
+		};
+		80D049122668312D00B53FDE /* BraintreeApplePay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeApplePay;
+		};
+		80D049142668312D00B53FDE /* BraintreePayPal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreePayPal;
+		};
+		80D049162668312D00B53FDE /* BraintreeCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeCore;
+		};
+		80D049182668312D00B53FDE /* PayPalDataCollector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = PayPalDataCollector;
+		};
+		80D0491A2668312D00B53FDE /* BraintreeDataCollector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeDataCollector;
+		};
+		80D0491C2668312D00B53FDE /* BraintreeUnionPay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeUnionPay;
+		};
+		80D0491E2668312D00B53FDE /* BraintreeCard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeCard;
+		};
+		80D049202668312D00B53FDE /* BraintreeVenmo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80D0490B2668312D00B53FDE /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreeVenmo;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 80214DF82551FB5A00695A6F /* Project object */;
+}
