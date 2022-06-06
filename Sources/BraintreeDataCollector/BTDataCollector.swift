@@ -17,6 +17,7 @@ import BraintreeKountDataCollector
 
     private var fraudMerchantID: String?
     private let apiClient: BTAPIClient
+    private let defaultKountMerchantID: Int = 60000
     
     // TODO: overriding load() has been deprecated for a while. Right now we are using it to load PPDataCollector if needed in this class. Since these 2 classes will be combined, leaving this out for now.
     
@@ -36,7 +37,7 @@ import BraintreeKountDataCollector
     /// - Note: If you do not call this method, a generic Braintree value will be used.
     public func setFraudMerchantID(_ merchantID: String) {
         fraudMerchantID = merchantID
-        kount?.merchantID = Int(merchantID) ?? 60000
+        kount?.merchantID = Int(merchantID) ?? defaultKountMerchantID
     }
     
     ///  Collects device data based on your merchant configuration.
@@ -55,13 +56,13 @@ import BraintreeKountDataCollector
                 self.setDataCollectorEnvironment(as: self.collectorEnvironment(environment: braintreeEnvironment))
                 
                 guard let kountMerchantID = self.fraudMerchantID != nil ? self.fraudMerchantID : configuration.kountMerchantID else { return }
-                self.kount?.merchantID = Int(kountMerchantID) ?? 60000
+                self.kount?.merchantID = Int(kountMerchantID) ?? self.defaultKountMerchantID
                 
                 let deviceSessionID: String = self.generateSessionID()
-                let dataDictionary: NSMutableDictionary = [:]
-
-                dataDictionary["device_session_id"] = deviceSessionID
-                dataDictionary["fraud_merchant_id"] = kountMerchantID
+                let dataDictionary: [String: String] = [
+                    "device_session_id": deviceSessionID,
+                    "fraud_merchant_id": kountMerchantID
+                ]
                 
                 self.kount?.collect(forSession: deviceSessionID)
                 
