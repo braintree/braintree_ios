@@ -16,13 +16,11 @@ import BraintreeKountDataCollector
     var kount: KDataCollector?
 
     private var fraudMerchantID: String?
-    
     private let apiClient: BTAPIClient
     
     // TODO: overriding load() has been deprecated for a while. Right now we are using it to load PPDataCollector if needed in this class. Since these 2 classes will be combined, leaving this out for now.
-    // TODO: add in
     
-    ///  Initializes a `BTDataCollector` instance with a BTAPIClient.
+    ///  Initializes a `BTDataCollector` instance with a `BTAPIClient`.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
@@ -45,9 +43,8 @@ import BraintreeKountDataCollector
     ///
     /// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
     /// calling it when the customer initiates checkout is also fine.
-
     /// Use the return value on your server, e.g. with `Transaction.sale`.
-    /// - Parameter completion:  A completion block that returns a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
+    /// - Parameter completion:  A completion block that returns a device data string that should be passed into server-side calls, such as `Transaction.sale`.
     public func collectDeviceData(_ completion: @escaping (String) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self = self else { return }
