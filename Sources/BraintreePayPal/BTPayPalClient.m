@@ -69,7 +69,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 @interface BTPayPalClient () <ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, assign) BOOL returnedToAppAfterPermissionAlert;
-@property (nonatomic, strong) BTDataCollector *dataCollector;
 
 @end
 
@@ -177,7 +176,8 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             NSString *pairingID = [self.class tokenFromApprovalURL:approvalUrl];
 
-            self.clientMetadataID = self.payPalRequest.riskCorrelationId ? self.payPalRequest.riskCorrelationId : [self.dataCollector clientMetadataID:pairingID];
+            BTDataCollector *dataCollector = [[BTDataCollector alloc]initWithAPIClient:self.apiClient];
+            self.clientMetadataID = self.payPalRequest.riskCorrelationId ? self.payPalRequest.riskCorrelationId : [dataCollector clientMetadataID:pairingID];
 
             BOOL analyticsSuccess = error ? NO : YES;
 

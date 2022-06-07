@@ -333,6 +333,8 @@
 		BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */; };
 		BE70A963284FA3F000F6D3F7 /* BTDataCollectorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */; };
 		BE70A965284FA9DE00F6D3F7 /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */; };
+		BE70A983284FC07C00F6D3F7 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
+		BE70A984284FC08900F6D3F7 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
 		BE9F444427C6C75E00A117D5 /* BTCacheDateValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */; };
 		BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */; };
 		BEA1B4172841679200994F61 /* KountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B8AA5926E01D2F0036DF57 /* KountDataCollector.xcframework */; };
@@ -624,6 +626,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = BEA1B40F2841679200994F61;
 			remoteInfo = KountDataCollector;
+		};
+		BE70A981284FC07200F6D3F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
+			remoteInfo = BraintreeDataCollector;
+		};
+		BE70A985284FC09100F6D3F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
+			remoteInfo = BraintreeDataCollector;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1031,6 +1047,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE70A983284FC07C00F6D3F7 /* BraintreeDataCollector.framework in Frameworks */,
 				03502C9B1E9C0D3900F15EE6 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1056,6 +1073,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE70A984284FC08900F6D3F7 /* BraintreeDataCollector.framework in Frameworks */,
 				2D941D5B1B5D5F170016EFB4 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2249,6 +2267,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE70A982284FC07200F6D3F7 /* PBXTargetDependency */,
 				03C2FDBA1E9C2C0700151DFD /* PBXTargetDependency */,
 			);
 			name = BraintreePaymentFlow;
@@ -2287,6 +2306,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE70A986284FC09100F6D3F7 /* PBXTargetDependency */,
 				2D941D5A1B5D5F140016EFB4 /* PBXTargetDependency */,
 			);
 			name = BraintreePayPal;
@@ -3623,6 +3643,16 @@
 			isa = PBXTargetDependency;
 			target = BEA1B40F2841679200994F61 /* BraintreeKountDataCollector */;
 			targetProxy = BE57E0E92847A147002CFBAC /* PBXContainerItemProxy */;
+		};
+		BE70A982284FC07200F6D3F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
+			targetProxy = BE70A981284FC07200F6D3F7 /* PBXContainerItemProxy */;
+		};
+		BE70A986284FC09100F6D3F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
+			targetProxy = BE70A985284FC09100F6D3F7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -51,7 +51,6 @@
 @property (nonatomic, copy, nullable) NSString *paymentID;
 @property (nonatomic, weak) id<BTPaymentFlowClientDelegate> paymentFlowClientDelegate;
 @property (nonatomic, strong) NSString *correlationID;
-@property (nonatomic, strong) BTDataCollector *dataCollector;
 
 @end
 
@@ -66,7 +65,8 @@
             return;
         }
         
-        self.correlationID = [self.dataCollector clientMetadataID:nil];
+        BTDataCollector *dataCollector = [[BTDataCollector alloc]initWithAPIClient:apiClient];
+        self.correlationID = [dataCollector clientMetadataID:nil];
 
         NSError *integrationError;
 
