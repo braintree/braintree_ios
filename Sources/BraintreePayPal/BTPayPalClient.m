@@ -37,7 +37,7 @@
 /* Use @import for SPM support
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
-@import PayPalDataCollector;
+@import BraintreeDataCollector;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -46,7 +46,7 @@
 #import "Braintree-Swift.h"
 
 #else                                            // Carthage
-#import <PayPalDataCollector/PayPalDataCollector-Swift.h>
+#import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
 #endif
 
 NSString *const BTPayPalErrorDomain = @"com.braintreepayments.BTPayPalErrorDomain";
@@ -69,6 +69,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 @interface BTPayPalClient () <ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, assign) BOOL returnedToAppAfterPermissionAlert;
+@property (nonatomic, strong) BTDataCollector *dataCollector;
 
 @end
 
@@ -176,7 +177,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             NSString *pairingID = [self.class tokenFromApprovalURL:approvalUrl];
 
-            self.clientMetadataID = self.payPalRequest.riskCorrelationId ? self.payPalRequest.riskCorrelationId : [PPDataCollector clientMetadataID:pairingID isSandbox:[configuration.environment isEqualToString:@"sandbox"]];
+            self.clientMetadataID = self.payPalRequest.riskCorrelationId ? self.payPalRequest.riskCorrelationId : [self.dataCollector clientMetadataID:pairingID];
 
             BOOL analyticsSuccess = error ? NO : YES;
 
