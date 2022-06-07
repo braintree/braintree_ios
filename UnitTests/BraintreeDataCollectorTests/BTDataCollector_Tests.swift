@@ -46,9 +46,9 @@ class BTDataCollector_Tests: XCTestCase {
         
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
-        
+
         let dataCollector = BTDataCollector(apiClient: mockAPIClient)
-        
+
         let expectation = self.expectation(description: "Returns fraud data")
         dataCollector.collectDeviceData { deviceData, _ in
             if let deviceData = deviceData {
