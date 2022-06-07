@@ -26,11 +26,11 @@
 - (void)testCollectDeviceData_returnsAllFraudData {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     
-    [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
-        // TODO: update this when we add PayPalDataCollector to BraintreeDataCollector
-        // XCTAssertTrue([deviceData containsString:@"correlation_id"]);
+    [self.dataCollector collectDeviceData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
+        XCTAssertTrue([deviceData containsString:@"correlation_id"]);
         XCTAssertTrue([deviceData containsString:@"device_session_id"]);
         XCTAssertTrue([deviceData containsString:@"fraud_merchant_id"]);
+        XCTAssertNil(error);
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
