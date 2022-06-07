@@ -205,14 +205,18 @@ import BraintreeKountDataCollector
 
         let mangnesEnvironment = getMagnesEnvironment(from: config)
 
-        try? MagnesSDK.shared().setUp(setEnviroment: mangnesEnvironment,
-                                      setOptionalAppGuid: deviceIdentifier(),
-                                      disableRemoteConfiguration: false,
-                                      disableBeacon: disableBeacon,
-                                      magnesSource: .BRAINTREE)
+        try? MagnesSDK.shared().setUp(
+            setEnviroment: mangnesEnvironment,
+            setOptionalAppGuid: deviceIdentifier(),
+            disableRemoteConfiguration: false,
+            disableBeacon: disableBeacon,
+            magnesSource: .BRAINTREE
+        )
 
-        let result = try? MagnesSDK.shared().collectAndSubmit(withPayPalClientMetadataId: clientMetadataID ?? "",
-                                                              withAdditionalData: data ?? [:])
+        let result = try? MagnesSDK.shared().collectAndSubmit(
+            withPayPalClientMetadataId: clientMetadataID ?? "",
+            withAdditionalData: data ?? [:]
+        )
 
         return result?.getPayPalClientMetaDataId() ?? ""
     }
