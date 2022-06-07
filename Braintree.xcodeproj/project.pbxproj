@@ -331,6 +331,8 @@
 		BE57E10F2847F872002CFBAC /* BTConfiguration+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E10E2847F872002CFBAC /* BTConfiguration+Extension.swift */; };
 		BE57E1112847F8A0002CFBAC /* BTDataCollectorEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1102847F8A0002CFBAC /* BTDataCollectorEnvironment.swift */; };
 		BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */; };
+		BE70A963284FA3F000F6D3F7 /* BTDataCollectorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */; };
+		BE70A965284FA9DE00F6D3F7 /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */; };
 		BE9F444427C6C75E00A117D5 /* BTCacheDateValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */; };
 		BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */; };
 		BEA1B4172841679200994F61 /* KountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B8AA5926E01D2F0036DF57 /* KountDataCollector.xcframework */; };
@@ -1014,6 +1016,8 @@
 		BE57E10E2847F872002CFBAC /* BTConfiguration+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+Extension.swift"; sourceTree = "<group>"; };
 		BE57E1102847F8A0002CFBAC /* BTDataCollectorEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollectorEnvironment.swift; sourceTree = "<group>"; };
 		BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollector.swift; sourceTree = "<group>"; };
+		BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollectorError.swift; sourceTree = "<group>"; };
+		BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTDataCollector.swift; sourceTree = "<group>"; };
 		BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator.m; sourceTree = "<group>"; };
 		BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCacheDateValidator_Internal.h; sourceTree = "<group>"; };
 		BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeKountDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1694,6 +1698,7 @@
 				BE57E10E2847F872002CFBAC /* BTConfiguration+Extension.swift */,
 				BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */,
 				BE57E1102847F8A0002CFBAC /* BTDataCollectorEnvironment.swift */,
+				BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */,
 			);
 			path = BraintreeDataCollector;
 			sourceTree = "<group>";
@@ -1935,6 +1940,7 @@
 			children = (
 				844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */,
 				A9E5C1A224FD5A7C00EE691F /* Info.plist */,
+				BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */,
 			);
 			path = BraintreeDataCollectorTests;
 			sourceTree = "<group>";
@@ -3152,6 +3158,7 @@
 			files = (
 				BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */,
 				BE57E10F2847F872002CFBAC /* BTConfiguration+Extension.swift in Sources */,
+				BE70A963284FA3F000F6D3F7 /* BTDataCollectorError.swift in Sources */,
 				BE57E1112847F8A0002CFBAC /* BTDataCollectorEnvironment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3336,6 +3343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9E5C1A924FD5B7F00EE691F /* BTDataCollector_Tests.swift in Sources */,
+				BE70A965284FA9DE00F6D3F7 /* MockBTDataCollector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

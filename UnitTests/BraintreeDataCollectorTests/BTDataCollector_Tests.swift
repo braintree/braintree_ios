@@ -220,6 +220,90 @@ class BTDataCollector_Tests: XCTestCase {
         XCTAssertNotNil(dataCollector.generateClientMetadataID(with: configuration))
         XCTAssertEqual(dataCollector.getMagnesEnvironment(from: dataCollector.config), MagnesSDK.Environment.LIVE)
     }
+    
+    func testCollectDeviceData_fetchConfigurationReturnsError_returnError() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+
+        mockDataCollector.cannedDataCollectorError = NSError(domain: "FakeConfigError", code: 1, userInfo: [NSLocalizedDescriptionKey:"Fake description"])
+
+        let expectation = self.expectation(description: "Returns error")
+        mockDataCollector.collectDeviceData { _, error in
+            if let error = error as NSError? {
+                XCTAssertEqual(error.domain, "FakeConfigError")
+                XCTAssertEqual(error.code, 1)
+                XCTAssertEqual(error.localizedDescription, "Fake description")
+                expectation.fulfill()
+            } else {
+                XCTFail("We Should have received an error")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testCollectDeviceData_invalidKountMerchantID_returnError() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+        
+        mockDataCollector.cannedDataCollectorError = BTDataCollectorError.noKountMerchantID
+
+        let expectation = self.expectation(description: "Returns error")
+        mockDataCollector.collectDeviceData(kountMerchantID: "aaaa") { _, error in
+            if let error = error as NSError? {
+                XCTAssertEqual(error.domain, BTDataCollectorError.errorDomain)
+                XCTAssertEqual(error.code, BTDataCollectorError.noKountMerchantID.errorCode)
+                XCTAssertEqual(error.localizedDescription, BTDataCollectorError.noKountMerchantID.localizedDescription)
+                expectation.fulfill()
+            } else {
+                XCTFail("We Should have received an error")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testCollectDeviceData_invalidJSON_returnError() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+        
+        mockDataCollector.cannedDataCollectorError = BTDataCollectorError.jsonSerializationFailure
+
+        let expectation = self.expectation(description: "Returns error")
+        mockDataCollector.collectDeviceData { _, error in
+            if let error = error as NSError? {
+                XCTAssertEqual(error.domain, BTDataCollectorError.errorDomain)
+                XCTAssertEqual(error.code, BTDataCollectorError.jsonSerializationFailure.errorCode)
+                XCTAssertEqual(error.localizedDescription, BTDataCollectorError.jsonSerializationFailure.localizedDescription)
+                expectation.fulfill()
+            } else {
+                XCTFail("We Should have received an error")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testCollectDeviceData_encodingError_returnError() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+        
+        mockDataCollector.cannedDataCollectorError = BTDataCollectorError.encodingFailure
+
+        let expectation = self.expectation(description: "Returns error")
+        mockDataCollector.collectDeviceData { _, error in
+            if let error = error as NSError? {
+                XCTAssertEqual(error.domain, BTDataCollectorError.errorDomain)
+                XCTAssertEqual(error.code, BTDataCollectorError.encodingFailure.errorCode)
+                XCTAssertEqual(error.localizedDescription, BTDataCollectorError.encodingFailure.localizedDescription)
+                expectation.fulfill()
+            } else {
+                XCTFail("We Should have received an error")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
 }
 
 class FakeDeviceCollectorSDK: KDataCollector {

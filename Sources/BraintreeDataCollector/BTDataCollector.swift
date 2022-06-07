@@ -63,14 +63,17 @@ import BraintreeKountDataCollector
         kount?.merchantID = Int(kountMerchantID ?? String(defaultKountMerchantID)) ?? defaultKountMerchantID
 
         fetchConfiguration { configuration, error in
-            guard let configuration = configuration else { return }
+            guard let configuration = configuration else {
+                completion(nil, error)
+                return
+            }
 
             if configuration.isKountEnabled {
                 let braintreeEnvironment: BTDataCollectorEnvironment = self.environmentFromString(configuration.environment ?? "production")
                 self.setDataCollectorEnvironment(as: self.collectorEnvironment(environment: braintreeEnvironment))
 
                 guard let kountMerchantID = self.fraudMerchantID != nil ? self.fraudMerchantID : configuration.kountMerchantID else {
-                    // TODO: return error
+                    completion(nil, BTDataCollectorError.noKountMerchantID)
                     return
                 }
 
@@ -87,28 +90,27 @@ import BraintreeKountDataCollector
                 self.kount?.collect(forSession: deviceSessionID)
 
                 guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
-                    // TODO: return error
+                    completion(nil, BTDataCollectorError.jsonSerializationFailure)
                     return
                 }
 
                 guard let deviceData = String(data: jsonData, encoding: .utf8) else {
-                    // TODO: return error
+                    completion(nil, BTDataCollectorError.encodingFailure)
                     return
                 }
 
                 completion(deviceData, nil)
             } else {
-                // TODO: do we just need correlation ID if Kount is not enabled??
                 let clientMetadataID: String = self.generateClientMetadataID(with: configuration)
                 let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
 
                 guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
-                    // TODO: return error
+                    completion(nil, BTDataCollectorError.jsonSerializationFailure)
                     return
                 }
 
                 guard let deviceData = String(data: jsonData, encoding: .utf8) else {
-                    // TODO: return error
+                    completion(nil, BTDataCollectorError.encodingFailure)
                     return
                 }
 
@@ -122,12 +124,11 @@ import BraintreeKountDataCollector
     func fetchConfiguration(completion: @escaping (BTConfiguration?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration = configuration else {
-                // TODO: return error
                 completion(nil, error)
                 return
             }
-            
-            completion(configuration, error)
+
+            completion(configuration, nil)
         }
     }
     
