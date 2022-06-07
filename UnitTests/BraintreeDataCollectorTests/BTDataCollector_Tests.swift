@@ -154,64 +154,72 @@ class BTDataCollector_Tests: XCTestCase {
     }
 
     func testClientMetadataValue_whenUsingPairingID_isDifferentWhenSubsequentCallsDoNotSpecifyPairingID() {
+        let config: [String : Any] = [
+            "environment":"sandbox"
+        ]
+        
+        let configuration = BTConfiguration(json: BTJSON(value: config))
         let pairingID = "random pairing id"
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let dataCollector = BTDataCollector(apiClient: mockAPIClient)
 
         XCTAssertEqual(pairingID, dataCollector.clientMetadataID(pairingID))
-        XCTAssertNotEqual(pairingID, dataCollector.generateClientMetadataID(with: BTConfiguration(json: BTJSON(value: [:]))))
+        XCTAssertNotEqual(pairingID, dataCollector.generateClientMetadataID(with: configuration))
         XCTAssertNotEqual(pairingID, dataCollector.clientMetadataID(nil))
     }
-//
-//    func testClientMetadataValue_isRegeneratedOnNonNullPairingID() {
-//        let cmid = PPDataCollector.generateClientMetadataID(isSandbox: false)
-//        XCTAssertEqual(PPDataCollector.mangnesEnvironment, MagnesSDK.Environment.LIVE)
-//        let cmid2 = PPDataCollector.clientMetadataID("some pairing id")
-//        XCTAssertNotEqual(cmid, cmid2)
-//    }
-//
-//    func testClientMetadataID_noEnvironmentPassed_returnsLive() {
-//        let dataCollector = PPDataCollector.self
-//
-//        XCTAssertEqual(dataCollector.clientMetadataID("a-pairing-id"), "a-pairing-id")
-//        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.LIVE)
-//    }
-//
-//    func testClientMetadataID_environmentPassed_returnsEnvironment() {
-//        let dataCollector = PPDataCollector.self
-//
-//        XCTAssertEqual(dataCollector.clientMetadataID("a-pairing-id", isSandbox: true), "a-pairing-id")
-//        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.SANDBOX)
-//    }
-//
-//    func testCollectPayPalDeviceData_noEnvironmentPassed_returnsLive() {
-//        let dataCollector = PPDataCollector.self
-//
-//        XCTAssertNotNil(dataCollector.collectPayPalDeviceData())
-//        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.LIVE)
-//    }
-//
-//    func testCollectPayPalDeviceData_environmentPassed_returnsEnvironment() {
-//        let dataCollector = PPDataCollector.self
-//
-//        XCTAssertNotNil(dataCollector.collectPayPalDeviceData(isSandbox: false))
-//        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.LIVE)
-//    }
-//
-//    func testSandboxGenerateClientMetadataID_returnsEnvironmentSandbox() {
-//        let dataCollector = PPDataCollector.self
-//
-//        XCTAssertNotNil(dataCollector.sandboxGenerateClientMetadataID())
-//        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.SANDBOX)
-//    }
-//
-//    func testGenerateClientMetadataID_returnsEnvironmentProduction() {
-//        let dataCollector = PPDataCollector.self
-//
-//        XCTAssertNotNil(dataCollector.generateClientMetadataID())
-//        XCTAssertEqual(dataCollector.mangnesEnvironment, MagnesSDK.Environment.LIVE)
-//
-//    }
+
+    func testClientMetadataValue_isRegeneratedOnNonNullPairingID() {
+        let config: [String : Any] = [
+            "environment":"sandbox"
+        ]
+        
+        let configuration = BTConfiguration(json: BTJSON(value: config))
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+
+        let clientMetaDataID = dataCollector.generateClientMetadataID(with: configuration)
+        let clientMetaDataID2 = dataCollector.clientMetadataID("some pairing id")
+        XCTAssertNotEqual(clientMetaDataID, clientMetaDataID2)
+    }
+
+    func testClientMetadataID_sandboxPassedToConfig_returnsSandbox() {
+        let config: [String : Any] = [
+            "environment":"sandbox"
+        ]
+        
+        let configuration = BTConfiguration(json: BTJSON(value: config))
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+
+        XCTAssertNotNil(dataCollector.generateClientMetadataID(with: configuration))
+        XCTAssertEqual(dataCollector.getMagnesEnvironment(from: dataCollector.config), MagnesSDK.Environment.SANDBOX)
+    }
+    
+    func testClientMetadataID_productionPassedToConfig_returnsProduction() {
+        let config: [String : Any] = [
+            "environment":"production"
+        ]
+        
+        let configuration = BTConfiguration(json: BTJSON(value: config))
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+
+        XCTAssertNotNil(dataCollector.generateClientMetadataID(with: configuration))
+        XCTAssertEqual(dataCollector.getMagnesEnvironment(from: dataCollector.config), MagnesSDK.Environment.LIVE)
+    }
+
+    func testClientMetadataID_invalidValuePassedToConfig_returnsDefaultLive() {
+        let config: [String : Any] = [
+            "environment":"fake-env"
+        ]
+        
+        let configuration = BTConfiguration(json: BTJSON(value: config))
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+
+        XCTAssertNotNil(dataCollector.generateClientMetadataID(with: configuration))
+        XCTAssertEqual(dataCollector.getMagnesEnvironment(from: dataCollector.config), MagnesSDK.Environment.LIVE)
+    }
 }
 
 class FakeDeviceCollectorSDK: KDataCollector {

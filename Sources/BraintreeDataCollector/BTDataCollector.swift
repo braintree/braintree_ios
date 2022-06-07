@@ -16,13 +16,12 @@ import BraintreeKountDataCollector
     
     /// The Kount SDK device collector, exposed internally for testing
     var kount: KDataCollector?
+    var config: BTConfiguration?
 
     private var fraudMerchantID: String?
     private let apiClient: BTAPIClient
     private let defaultKountMerchantID: Int = 60000
-    
-    // TODO: overriding load() has been deprecated for a while. Right now we are using it to load PPDataCollector if needed in this class. Since these 2 classes will be combined, leaving this out for now.
-    
+
     ///  Initializes a `BTDataCollector` instance with a `BTAPIClient`.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
@@ -195,13 +194,11 @@ import BraintreeKountDataCollector
     }
     
     func generateClientMetadataID(_ clientMetadataID: String?, disableBeacon: Bool, configuration: BTConfiguration?, data: [String : String]?) -> String {
-        var config: BTConfiguration?
-        
         if configuration != nil {
             config = configuration
         } else {
             fetchConfiguration { configuration, _ in
-                config = configuration
+                self.config = configuration
             }
         }
 

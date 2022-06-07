@@ -1,7 +1,6 @@
 #import "BraintreeDemoBTDataCollectorViewController.h"
 #import "Demo-Swift.h"
 @import BraintreeDataCollector;
-@import PayPalDataCollector;
 @import CoreLocation;
 
 @interface BraintreeDemoBTDataCollectorViewController ()
