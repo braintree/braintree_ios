@@ -48,25 +48,21 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeDataCollector/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/KountDataCollector"
+    s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
   end
 
   s.subspec "PaymentFlow" do |s|
     s.source_files = "Sources/BraintreePaymentFlow/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPalDataCollector"
+    s.dependency "Braintree/DataCollector"
   end
 
   s.subspec "PayPal" do |s|
     s.source_files = "Sources/BraintreePayPal/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreePayPal/Public/BraintreePayPal/*.h"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPalDataCollector"
-  end
-
-  s.subspec "PayPalDataCollector" do |s|
-    s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+    s.dependency "Braintree/DataCollector"
   end
 
   s.subspec "ThreeDSecure" do |s|
