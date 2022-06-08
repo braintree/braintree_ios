@@ -1,12 +1,11 @@
 import Foundation
+import PayPalCheckout
 
 @objcMembers
 public class BTPayPalNativeCheckoutRequest: NSObject {
-    public let returnURL: String
     public let amount: String
     
-    public init(returnURL: String, amount: String) {
-        self.returnURL = returnURL
+    public init(amount: String) {
         self.amount = amount
     }
 }

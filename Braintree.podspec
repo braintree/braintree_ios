@@ -74,6 +74,8 @@ Pod::Spec.new do |s|
   s.subspec "PayPalNativeCheckout" do |s|
     s.source_files = "Sources/BraintreePayPalNativeCheckout/*.swift"
     s.dependency "Braintree/Core"
+    s.dependency "Braintree/PayPal"
+    s.dependency "PayPalCheckout"
   end
 
   s.subspec "ThreeDSecure" do |s|

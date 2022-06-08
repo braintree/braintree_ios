@@ -72,6 +72,7 @@
 		2DE12F581B59C36900EA1BCF /* BTPostalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = A72E134B1B44630C002703DD /* BTPostalAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F591B59C36900EA1BCF /* BTPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = A72E134C1B44630C002703DD /* BTPostalAddress.m */; };
 		2DE12F5A1B59C36900EA1BCF /* BTPaymentMethodNonce.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D061B3DE3B40024F9AB /* BTPaymentMethodNonce.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3DF38AE628514CD700225F2A /* BTPayPalNativeCheckoutDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AE528514CD700225F2A /* BTPayPalNativeCheckoutDriver.swift */; };
 		41211EF81BA0E45300DB1705 /* BTPaymentMethodNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 41211EF61BA0E45300DB1705 /* BTPaymentMethodNonce.m */; };
 		412A51B0201FD0A500A5B302 /* BTGraphQLHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */; };
 		412A51B2201FD0C400A5B302 /* BTGraphQLHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 412A51B1201FD0C400A5B302 /* BTGraphQLHTTP.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -754,6 +755,7 @@
 		2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DE12F0B1B59BE0100EA1BCF /* BraintreeCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BraintreeCore.h; sourceTree = "<group>"; };
 		2DE12F0D1B59BE0100EA1BCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DF38AE528514CD700225F2A /* BTPayPalNativeCheckoutDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeCheckoutDriver.swift; sourceTree = "<group>"; };
 		41211EF61BA0E45300DB1705 /* BTPaymentMethodNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentMethodNonce.m; sourceTree = "<group>"; };
 		412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTGraphQLHTTP.m; sourceTree = "<group>"; };
 		412A51B1201FD0C400A5B302 /* BTGraphQLHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTGraphQLHTTP.h; sourceTree = "<group>"; };
@@ -1763,6 +1765,7 @@
 			children = (
 				9CE51787282D52A30013C740 /* BTPayPalNativeCheckoutClient.swift */,
 				57108A192834280A004EB870 /* BTPayPalNativeCheckoutRequest.swift */,
+				3DF38AE528514CD700225F2A /* BTPayPalNativeCheckoutDriver.swift */,
 				57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutNonce.swift */,
 			);
 			path = BraintreePayPalNativeCheckout;
@@ -2520,6 +2523,8 @@
 				9CE51767282D51DD0013C740 /* PBXTargetDependency */,
 			);
 			name = BraintreePayPalNativeCheckout;
+			packageProductDependencies = (
+			);
 			productName = BraintreeCard;
 			productReference = 9CE51784282D51DD0013C740 /* BraintreePayPalNativeCheckout.framework */;
 			productType = "com.apple.product-type.framework";
@@ -3017,6 +3022,8 @@
 				no_NO,
 			);
 			mainGroup = A75DA343192138F000D997A2;
+			packageReferences = (
+			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -3420,6 +3427,7 @@
 				9CE51788282D52A30013C740 /* BTPayPalNativeCheckoutClient.swift in Sources */,
 				57108A1C28342BC1004EB870 /* BTPayPalNativeCheckoutNonce.swift in Sources */,
 				57108A1A2834280A004EB870 /* BTPayPalNativeCheckoutRequest.swift in Sources */,
+				3DF38AE628514CD700225F2A /* BTPayPalNativeCheckoutDriver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

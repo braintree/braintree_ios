@@ -57,6 +57,7 @@ let package = Package(
         )
     ],
     dependencies: [
+      .package(url: "https://github.com/paypal/paypalcheckout-ios.git",from: "0.94.0")
         // Dependencies declare other packages that this package depends on.
     ],
     targets: [
@@ -100,7 +101,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreePayPalNativeCheckout",
-            dependencies: ["BraintreeCore"],
+            dependencies: ["BraintreeCore", "PayPalCheckout", "BraintreePayPal"],
             path: "Sources/BraintreePayPalNativeCheckout"
         ),
         .target(

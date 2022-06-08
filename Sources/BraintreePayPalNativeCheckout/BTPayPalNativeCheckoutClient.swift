@@ -2,6 +2,10 @@ import Foundation
 #if canImport(BraintreeCore)
 import BraintreeCore
 #endif
+#if canImport(BraintreePayPal)
+import BraintreePayPal
+#endif
+
 
 @objcMembers
 public class BTPayPalNativeCheckoutClient: NSObject {
