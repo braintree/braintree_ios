@@ -65,7 +65,7 @@
             return;
         }
         
-        BTDataCollector *dataCollector = [[BTDataCollector alloc]initWithAPIClient:apiClient];
+        BTDataCollector *dataCollector = [[BTDataCollector alloc] initWithAPIClient:apiClient];
         self.correlationID = [dataCollector clientMetadataID:nil];
 
         NSError *integrationError;

@@ -176,7 +176,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
             NSString *pairingID = [self.class tokenFromApprovalURL:approvalUrl];
 
-            BTDataCollector *dataCollector = [[BTDataCollector alloc]initWithAPIClient:self.apiClient];
+            BTDataCollector *dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
             self.clientMetadataID = self.payPalRequest.riskCorrelationId ? self.payPalRequest.riskCorrelationId : [dataCollector clientMetadataID:pairingID];
 
             BOOL analyticsSuccess = error ? NO : YES;
