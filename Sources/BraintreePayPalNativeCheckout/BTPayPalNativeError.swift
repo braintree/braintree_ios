@@ -34,9 +34,6 @@ import Foundation
     /// Failed to parse tokenization result
     case parsingTokenizationResultFailed
 
-    /// PayPalCheckoutSDK did not provide a return URL
-    case returnURLNotFound
-
     public var errorDescription: String? {
         switch self {
         case .invalidRequest:
@@ -59,8 +56,6 @@ import Foundation
             return "Tokenization with the Braintree Gateway failed."
         case .parsingTokenizationResultFailed:
             return "Failed to parse tokenization result."
-        case .returnURLNotFound:
-            return "PayPalCheckout SDK did not provide a return URL."
         }
     }
 }

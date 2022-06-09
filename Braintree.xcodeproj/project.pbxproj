@@ -82,6 +82,7 @@
 		3DF38AF428524A0800225F2A /* BTPayPalNativeCheckoutClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AF328524A0800225F2A /* BTPayPalNativeCheckoutClient.swift */; };
 		3DF38AF628524A6500225F2A /* BTPayPalNativeCheckoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AF528524A6500225F2A /* BTPayPalNativeCheckoutRequest.swift */; };
 		3DF38AF828524AD200225F2A /* BTPayPalNativeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AF728524AD200225F2A /* BTPayPalNativeRequest.swift */; };
+		3DF38AFB2852539D00225F2A /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = 3DF38AFA2852539D00225F2A /* PayPalCheckout */; };
 		41211EF81BA0E45300DB1705 /* BTPaymentMethodNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 41211EF61BA0E45300DB1705 /* BTPaymentMethodNonce.m */; };
 		412A51B0201FD0A500A5B302 /* BTGraphQLHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */; };
 		412A51B2201FD0C400A5B302 /* BTGraphQLHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 412A51B1201FD0C400A5B302 /* BTGraphQLHTTP.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1151,6 +1152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CE51772282D51DD0013C740 /* BraintreeCore.framework in Frameworks */,
+				3DF38AFB2852539D00225F2A /* PayPalCheckout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2545,6 +2547,7 @@
 			);
 			name = BraintreePayPalNativeCheckout;
 			packageProductDependencies = (
+				3DF38AFA2852539D00225F2A /* PayPalCheckout */,
 			);
 			productName = BraintreeCard;
 			productReference = 9CE51784282D51DD0013C740 /* BraintreePayPalNativeCheckout.framework */;
@@ -3044,6 +3047,7 @@
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			packageReferences = (
+				3DF38AF92852539D00225F2A /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
 			projectDirPath = "";
@@ -7059,6 +7063,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3DF38AF92852539D00225F2A /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paypal/paypalcheckout-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.94.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3DF38AFA2852539D00225F2A /* PayPalCheckout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3DF38AF92852539D00225F2A /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */;
+			productName = PayPalCheckout;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A75DA344192138F000D997A2 /* Project object */;
 }

@@ -3,13 +3,11 @@ import BraintreePayPal
 
 class BTPayPalNativeTokenizationRequest {
 
-    private let returnURL: String
     private let request: BTPayPalRequest
     private let correlationID: String
     private let clientMetadata: BTClientMetadata
 
-    init(returnURL: String, request: BTPayPalRequest, correlationID: String, clientMetadata: BTClientMetadata) {
-        self.returnURL = returnURL
+    init(request: BTPayPalRequest, correlationID: String, clientMetadata: BTClientMetadata) {
         self.request = request
         self.correlationID = correlationID
         self.clientMetadata = clientMetadata
@@ -23,9 +21,6 @@ class BTPayPalNativeTokenizationRequest {
                 "paypal_sdk_version": "version"
             ],
             "response_type": "web",
-            "response": [
-                "webURL": returnURL
-            ],
             "correlation_id": correlationID,
         ]
 

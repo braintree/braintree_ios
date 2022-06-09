@@ -29,7 +29,7 @@ import PayPalCheckout
      - Parameter completion The completion will be invoked exactly once: when tokenization is complete or an error occurs.
     */
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
-    public func tokenizePayPalAccount(with nativeRequest: BTPayPalRequest, completion: @escaping (BTPayPalNativeAccountNonce?, NSError?) -> Void) {
+    public func tokenizePayPalAccount(with nativeRequest: BTPayPalRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, NSError?) -> Void) {
         guard let request = nativeRequest as? (BTPayPalRequest & BTPayPalNativeRequest) else {
             completion(nil, BTPayPalNativeError.invalidRequest as NSError)
             return
@@ -39,13 +39,14 @@ import PayPalCheckout
         orderCreationClient.createOrder(with: request) { [weak self] result in
             switch result {
             case .success(let order):
-                let payPalNativeConfig = PayPalCheckout.CheckoutConfig(clientID: order.payPalClientID,
-                                                                       returnUrl: request.payPalReturnURL,
-                                                                       createOrder: nil,
-                                                                       onApprove: nil,
-                                                                       onCancel: nil,
-                                                                       onError: nil,
-                                                                       environment: order.environment)
+              let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
+                clientID: order.payPalClientID,
+                createOrder: nil,
+                onApprove: nil,
+                onCancel: nil,
+                onError: nil,
+                environment: order.environment
+              )
 
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
                 PayPalCheckout.Checkout.showsExitAlert = false
@@ -76,14 +77,10 @@ import PayPalCheckout
 
     private let apiClient: BTAPIClient
 
-    private func tokenize(approval: PayPalCheckout.Approval, request: BTPayPalRequest, completion: @escaping (BTPayPalNativeAccountNonce?, NSError?) -> Void) {
-        guard let returnURL = approval.data.returnURL?.absoluteString else {
-            completion(nil, BTPayPalNativeError.returnURLNotFound as NSError)
-            return
-        }
+    private func tokenize(approval: PayPalCheckout.Approval, request: BTPayPalRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, NSError?) -> Void) {
 
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: apiClient)
-        tokenizationClient.tokenize(returnURL: returnURL, request: request) { result in
+        tokenizationClient.tokenize(request: request) { result in
             switch result {
             case .success(let nonce):
                 completion(nonce, nil)

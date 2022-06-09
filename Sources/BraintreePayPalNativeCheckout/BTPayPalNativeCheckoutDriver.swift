@@ -12,13 +12,13 @@ public class BTPayPalNativeCheckoutDriver {
 
   public func requestBillingAgreement(
     _ request: BTPayPalNativeCheckoutRequest,
-    completion: @escaping((BTPayPalNativeCheckoutNonce?, Error?) -> Void)) {
+    completion: @escaping((BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)) {
 //      [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
   }
 
   public func requestOneTimePayment(
     _ request: BTPayPalNativeCheckoutRequest,
-    completion: @escaping((BTPayPalNativeCheckoutNonce?, Error?) -> Void)) {
+    completion: @escaping((BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)) {
 //      [self tokenizePayPalAccountWithPayPalRequest:request completion:completionBlock];
   }
 }
