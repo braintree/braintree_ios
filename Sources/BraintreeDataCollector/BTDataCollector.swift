@@ -126,7 +126,7 @@ import BraintreeKountDataCollector
             completion(configuration, error)
         }
     }
-    
+
     func setDataCollectorEnvironment(as environment: KEnvironment) {
         kount?.environment = environment
     }
