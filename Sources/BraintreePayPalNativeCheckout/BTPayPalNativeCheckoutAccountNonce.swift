@@ -1,7 +1,7 @@
 import Foundation
 
 @objcMembers
-public class BTPayPalNativeCheckoutNonce: NSObject {
+public class BTPayPalNativeCheckoutAccountNonce: NSObject {
     public let nonce: String
     
     init(nonce: String) {
