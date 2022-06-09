@@ -123,12 +123,7 @@ import BraintreeKountDataCollector
     
     func fetchConfiguration(completion: @escaping (BTConfiguration?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            guard let configuration = configuration else {
-                completion(nil, error)
-                return
-            }
-
-            completion(configuration, nil)
+            completion(configuration, error)
         }
     }
     
