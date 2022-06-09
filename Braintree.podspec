@@ -45,8 +45,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "DataCollector" do |s|
-    s.source_files = "Sources/BraintreeDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeDataCollector/Public/BraintreeDataCollector/*.h"
+    s.source_files = "Sources/BraintreeDataCollector/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/KountDataCollector"
   end
