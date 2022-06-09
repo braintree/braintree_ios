@@ -13,7 +13,6 @@ class BTPayPalNativeTokenizationClient {
     func tokenize(request: BTPayPalRequest,
                   completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeError>) -> Void) {
 
-      apiClient.metadata
         let tokenizationRequest = BTPayPalNativeTokenizationRequest(request: request,
                                                                     correlationID: State.correlationIDs.riskCorrelationID ?? "",
                                                                     clientMetadata: apiClient.metadata)
