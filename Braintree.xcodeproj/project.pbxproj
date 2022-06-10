@@ -115,6 +115,8 @@
 		42FC237125CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */; };
 		460C0C220F594AE8EE205E57 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		570B93B02853980C0041BAFE /* BTAPIClientSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93AF2853980C0041BAFE /* BTAPIClientSwift.swift */; };
+		570B93D72853C29A0041BAFE /* BTLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93D62853C29A0041BAFE /* BTLogger.swift */; };
+		570B93D92853C6180041BAFE /* BTLogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93D82853C6180041BAFE /* BTLogLevel.swift */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
 		8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */; };
 		804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */; };
@@ -804,6 +806,8 @@
 		541AEE40A1F01913E0638CC9 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeCoreSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		570B93AF2853980C0041BAFE /* BTAPIClientSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientSwift.swift; sourceTree = "<group>"; };
+		570B93D62853C29A0041BAFE /* BTLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLogger.swift; sourceTree = "<group>"; };
+		570B93D82853C6180041BAFE /* BTLogLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLogLevel.swift; sourceTree = "<group>"; };
 		59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+ThreeDSecure.h"; sourceTree = "<group>"; };
 		80036F7C21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTConfiguration+ThreeDSecure.m"; sourceTree = "<group>"; };
@@ -1552,6 +1556,8 @@
 			isa = PBXGroup;
 			children = (
 				570B93AF2853980C0041BAFE /* BTAPIClientSwift.swift */,
+				570B93D62853C29A0041BAFE /* BTLogger.swift */,
+				570B93D82853C6180041BAFE /* BTLogLevel.swift */,
 			);
 			path = BraintreeCoreSwift;
 			sourceTree = "<group>";
@@ -3215,6 +3221,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				570B93B02853980C0041BAFE /* BTAPIClientSwift.swift in Sources */,
+				570B93D92853C6180041BAFE /* BTLogLevel.swift in Sources */,
+				570B93D72853C29A0041BAFE /* BTLogger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
