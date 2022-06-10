@@ -3,7 +3,7 @@ import Foundation
 ///  Braintree leveled logger
 @objcMembers public class BTLogger: NSObject {
     
-    var level: BTLogLevel
+    var level: BTLogLevel = .info
     var message: String?
     
     private init(logLevel: BTLogLevel) {
@@ -35,9 +35,7 @@ import Foundation
         log(level: .debug, message: message)
     }
     
-    private func log(level: BTLogLevel, message: String) {
-        guard level.rawValue <= self.level.rawValue else { return }
-        
+    private func log(level: BTLogLevel = .info, message: String) {
         self.message = message
         NSLog("[BraintreeSDK] %@ %@", level.description?.uppercased() ?? "", message)
     }

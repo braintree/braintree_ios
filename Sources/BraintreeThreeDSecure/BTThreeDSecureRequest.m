@@ -110,14 +110,14 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
         NSError *integrationError;
 
         if (self.versionRequested == BTThreeDSecureVersion2 && !configuration.cardinalAuthenticationJWT) {
-            [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."];
+            [[BTLogger alloc] critical:@"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."];
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."}];
         }
 
         if (!self.amount || [self.amount isEqualToNumber:NSDecimalNumber.notANumber]) {
-            [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest amount can not be nil or NaN."];
+            [[BTLogger alloc] critical:@"BTThreeDSecureRequest amount can not be nil or NaN."];
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil or NaN."}];

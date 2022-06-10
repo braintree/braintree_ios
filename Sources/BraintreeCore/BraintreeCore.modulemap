@@ -11,6 +11,5 @@ framework module BraintreeCore {
         header "BTAPIHTTP.h"
         header "BTHTTP.h"
         header "BTGraphQLHTTP.h"
-        header "BTLogger_Internal.h"
     }
 }
