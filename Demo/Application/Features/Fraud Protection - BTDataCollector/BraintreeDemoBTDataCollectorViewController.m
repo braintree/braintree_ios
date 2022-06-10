@@ -1,7 +1,6 @@
 #import "BraintreeDemoBTDataCollectorViewController.h"
 #import "Demo-Swift.h"
 @import BraintreeDataCollector;
-@import PayPalDataCollector;
 @import CoreLocation;
 
 @interface BraintreeDemoBTDataCollectorViewController ()
@@ -11,6 +10,7 @@
 @property (nonatomic, strong) UILabel *dataLabel;
 @property (nonatomic, strong) BTAPIClient *apiClient;
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSString *kountMerchantID;
 
 @end
 
@@ -27,7 +27,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    self.kountMerchantID = @"60001";
     self.title = NSLocalizedString(@"BTDataCollector Protection", nil);
 
     UIButton *collectButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -36,18 +37,11 @@
                       action:@selector(tappedCollect)
             forControlEvents:UIControlEventTouchUpInside];
 
-    UIButton *collectPayPalButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [collectPayPalButton setTitle:NSLocalizedString(@"Collect PayPal Data", nil) forState:UIControlStateNormal];
-    [collectPayPalButton addTarget:self
-                            action:@selector(tappedCollectPayPal)
-                  forControlEvents:UIControlEventTouchUpInside];
-
     self.dataLabel = [[UILabel alloc] init];
     self.dataLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.dataLabel.numberOfLines = 0;
 
     UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[collectButton,
-                                                                             collectPayPalButton,
                                                                              self.dataLabel]];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.axis = UILayoutConstraintAxisVertical;
@@ -75,29 +69,10 @@
 
 - (IBAction)tappedCollect {
     self.progressBlock(@"Started collecting all data...");
-    [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
+    [self.dataCollector collectDeviceDataWithKountMerchantID:self.kountMerchantID :^(NSString * _Nullable deviceData, NSError * _Nullable error) {
         self.dataLabel.text = deviceData;
         self.progressBlock(@"Collected all device data!");
     }];
-}
-
-- (IBAction)tappedCollectPayPal {
-    BOOL isSandbox;
-    
-    switch (BraintreeDemoSettings.currentEnvironment) {
-        case BraintreeDemoEnvironmentSandbox:
-            isSandbox = TRUE;
-            break;
-        case BraintreeDemoEnvironmentProduction:
-            isSandbox = FALSE;
-            break;
-        case BraintreeDemoEnvironmentCustom:
-            isSandbox = FALSE;
-            break;
-    };
-    
-    self.dataLabel.text = [PPDataCollector collectPayPalDeviceDataWithIsSandbox:isSandbox];
-    self.progressBlock(@"Collected PayPal clientMetadataID!");
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {

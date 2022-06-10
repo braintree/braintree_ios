@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		429925A9266189010085F77D /* PayPalDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259C266189010085F77D /* PayPalDataCollector.xcframework */; };
-		429925AA266189010085F77D /* PayPalDataCollector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259C266189010085F77D /* PayPalDataCollector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		429925AB266189010085F77D /* BraintreeAmericanExpress.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259D266189010085F77D /* BraintreeAmericanExpress.xcframework */; };
 		429925AC266189010085F77D /* BraintreeAmericanExpress.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259D266189010085F77D /* BraintreeAmericanExpress.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		429925AD266189010085F77D /* BraintreeDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259E266189010085F77D /* BraintreeDataCollector.xcframework */; };
@@ -36,10 +34,10 @@
 		A74D4AFA1BFBB3FB00BF36CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AF81BFBB3FB00BF36CD /* Main.storyboard */; };
 		A74D4AFC1BFBB3FB00BF36CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */; };
 		A74D4AFF1BFBB3FB00BF36CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFD1BFBB3FB00BF36CD /* LaunchScreen.storyboard */; };
-		BE57E1332849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; };
-		BE57E1342849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE57E0E32846A4FF002CFBAC /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */; };
 		BE57E0E42846A4FF002CFBAC /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BE57E1332849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; };
+		BE57E1342849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,10 +57,8 @@
 				429925BA266189020085F77D /* BraintreeVenmo.xcframework in Embed Frameworks */,
 				429925BC266189020085F77D /* BraintreeCard.xcframework in Embed Frameworks */,
 				BE57E1342849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Embed Frameworks */,
-				429925BE266189020085F77D /* CardinalMobile.xcframework in Embed Frameworks */,
 				429925C2266189020085F77D /* BraintreeThreeDSecure.xcframework in Embed Frameworks */,
 				429925AE266189010085F77D /* BraintreeDataCollector.xcframework in Embed Frameworks */,
-				429925AA266189010085F77D /* PayPalDataCollector.xcframework in Embed Frameworks */,
 				429925AC266189010085F77D /* BraintreeAmericanExpress.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -71,7 +67,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4299259C266189010085F77D /* PayPalDataCollector.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalDataCollector.xcframework; path = Carthage/Build/PayPalDataCollector.xcframework; sourceTree = "<group>"; };
 		4299259D266189010085F77D /* BraintreeAmericanExpress.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeAmericanExpress.xcframework; path = Carthage/Build/BraintreeAmericanExpress.xcframework; sourceTree = "<group>"; };
 		4299259E266189010085F77D /* BraintreeDataCollector.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeDataCollector.xcframework; path = Carthage/Build/BraintreeDataCollector.xcframework; sourceTree = "<group>"; };
 		4299259F266189010085F77D /* BraintreeApplePay.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeApplePay.xcframework; path = Carthage/Build/BraintreeApplePay.xcframework; sourceTree = "<group>"; };
@@ -91,8 +86,8 @@
 		A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A74D4AFE1BFBB3FB00BF36CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A74D4B001BFBB3FB00BF36CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeKountDataCollector.xcframework; path = Carthage/Build/BraintreeKountDataCollector.xcframework; sourceTree = "<group>"; };
 		BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../../Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
+		BE57E13028491ED2002CFBAC /* BraintreeKountDataCollector.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeKountDataCollector.xcframework; path = Carthage/Build/BraintreeKountDataCollector.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,10 +105,8 @@
 				429925B9266189020085F77D /* BraintreeVenmo.xcframework in Frameworks */,
 				429925BB266189020085F77D /* BraintreeCard.xcframework in Frameworks */,
 				BE57E1332849247E002CFBAC /* BraintreeKountDataCollector.xcframework in Frameworks */,
-				429925BD266189020085F77D /* CardinalMobile.xcframework in Frameworks */,
 				429925C1266189020085F77D /* BraintreeThreeDSecure.xcframework in Frameworks */,
 				429925AD266189010085F77D /* BraintreeDataCollector.xcframework in Frameworks */,
-				429925A9266189010085F77D /* PayPalDataCollector.xcframework in Frameworks */,
 				429925AB266189010085F77D /* BraintreeAmericanExpress.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,7 +130,6 @@
 				429925A3266189010085F77D /* BraintreeUnionPay.xcframework */,
 				429925A4266189010085F77D /* BraintreeVenmo.xcframework */,
 				429925A6266189010085F77D /* CardinalMobile.xcframework */,
-				4299259C266189010085F77D /* PayPalDataCollector.xcframework */,
 				429925A0266189010085F77D /* PPRiskMagnes.xcframework */,
 			);
 			name = Frameworks;

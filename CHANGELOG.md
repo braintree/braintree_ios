@@ -35,6 +35,11 @@
     * All errors are now prefixed with `BTPaymentFlowError` instead of `BTPaymentFlowDriverError`
     * Renamed `BTPaymentFlowDriverDelegate` protocol to `BTPaymentFlowClientDelegate`
     * `handleRequest` in delegate protocol now takes in `paymentClientDelegate` parameter instead of `paymentDriverDelegate`
+  * PayPalDataCollector
+    * Removed `PayPalDataCollector` module
+  * BraintreeDataCollector
+    * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
+    * Merchants should use the new `collectDeviceData` function for data collection
 
 ## unreleased
 * Fix potential crash when http request fails with no error but empty data (thanks @cltnschlosser)

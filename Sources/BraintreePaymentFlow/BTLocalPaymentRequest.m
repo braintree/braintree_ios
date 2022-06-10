@@ -34,7 +34,7 @@
 /* Use @import for SPM support
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
-@import PayPalDataCollector;
+@import BraintreeDataCollector;
 
 #elif __has_include("Braintree-Swift.h")              // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -43,7 +43,7 @@
 #import "Braintree-Swift.h"
 
 #else                                                 // Carthage
-#import <PayPalDataCollector/PayPalDataCollector-Swift.h>
+#import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
 #endif
 
 @interface BTLocalPaymentRequest ()
@@ -64,8 +64,9 @@
             [delegate onPaymentComplete:nil error:configurationError];
             return;
         }
-
-        self.correlationID = [PPDataCollector clientMetadataID:nil isSandbox:[configuration.environment isEqualToString:@"sandbox"]];
+        
+        BTDataCollector *dataCollector = [[BTDataCollector alloc] initWithAPIClient:apiClient];
+        self.correlationID = [dataCollector clientMetadataID:nil];
 
         NSError *integrationError;
 
