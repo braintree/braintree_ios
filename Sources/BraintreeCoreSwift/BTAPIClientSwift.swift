@@ -1,5 +1,5 @@
 import Foundation
 
-public class BTAPIClientSwift: NSObject {
+@objcMembers public class BTAPIClientSwift: NSObject {
     
 }
