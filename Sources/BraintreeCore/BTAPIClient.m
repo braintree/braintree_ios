@@ -4,7 +4,6 @@
 #import "BTAPIHTTP.h"
 #import "BTGraphQLHTTP.h"
 #import "BTHTTP.h"
-#import "BTLogger_Internal.h"
 #import "BTPaymentMethodNonceParser.h"
 
 #if __has_include(<Braintree/BraintreeCore.h>)
@@ -36,7 +35,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent {
     if(![authorization isKindOfClass:[NSString class]]) {
         NSString *reason = @"BTClient could not initialize because the provided authorization was invalid";
-        [[BTLogger sharedLogger] error:reason];
+        [[BTLogger alloc] error:reason];
         return nil;
     }
 
@@ -48,7 +47,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
                 if (!baseURL) {
                     NSString *reason = @"BTClient could not initialize because the provided tokenization key was invalid";
-                    [[BTLogger sharedLogger] error:reason];
+                    [[BTLogger alloc] error:reason];
                     return nil;
                 }
 
@@ -64,9 +63,11 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             case BTAPIClientAuthorizationTypeClientToken: {
                 NSError *error;
                 _clientToken = [[BTClientToken alloc] initWithClientToken:authorization error:&error];
-                if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
+                if (error) {
+                    [[BTLogger alloc] error:error.localizedDescription];
+                }
                 if (!_clientToken) {
-                    [[BTLogger sharedLogger] error:@"BTClient could not initialize because the provided clientToken was invalid"];
+                    [[BTLogger alloc] error:@"BTClient could not initialize because the provided clientToken was invalid"];
                     return nil;
                 }
 

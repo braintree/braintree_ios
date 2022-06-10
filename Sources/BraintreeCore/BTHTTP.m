@@ -1,7 +1,6 @@
 #import "BTHTTP.h"
 #import "Braintree-Version.h"
 #import "BTAPIPinnedCertificates.h"
-#import "BTLogger_Internal.h"
 #import "BTCacheDateValidator_Internal.h"
 #include <sys/sysctl.h>
 

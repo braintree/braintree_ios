@@ -1,5 +1,6 @@
 import Foundation
 
+///  Braintree leveled logger
 @objcMembers public class BTLogger: NSObject {
     
     var level: BTLogLevel
@@ -10,34 +11,34 @@ import Foundation
         super.init()
     }
     
-    public func log(format: String, _ args: [String]) {
-        log(level: level, format: format, args: args)
+    public func log(_ message: String) {
+        log(level: level, message: message)
     }
     
-    public func critical(format: String, _ args: [String]) {
-        log(level: .critical, format: format, args: args)
+    public func critical(_ message: String) {
+        log(level: .critical, message: message)
     }
     
-    public func error(format: String, _ args: [String]) {
-        log(level: .error, format: format, args: args)
+    public func error(_ message: String) {
+        log(level: .error, message: message)
     }
     
-    public func warning(format: String, args: [String]) {
-        log(level: .warning, format: format, args: args)
+    public func warning(_ message: String) {
+        log(level: .warning, message: message)
     }
     
-    public func info(format: String, _ args: [String]) {
-        log(level: .info, format: format, args: args)
+    public func info(_ message: String) {
+        log(level: .info, message: message)
     }
     
-    public func debug(format: String, _ args: [String]) {
-        log(level: .debug, format: format, args: args)
+    public func debug(_ message: String) {
+        log(level: .debug, message: message)
     }
     
-    private func log(level: BTLogLevel, format: String, args: [String]) {
+    private func log(level: BTLogLevel, message: String) {
         guard level.rawValue <= self.level.rawValue else { return }
         
-        message = String(format: format, arguments: args)
-        NSLog("[BraintreeSDK] %@ %@", level.description?.uppercased() ?? "", message ?? "")
+        self.message = message
+        NSLog("[BraintreeSDK] %@ %@", level.description?.uppercased() ?? "", message)
     }
 }

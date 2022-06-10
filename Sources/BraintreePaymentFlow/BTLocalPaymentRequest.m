@@ -6,7 +6,6 @@
 #import <Braintree/BTLocalPaymentRequest.h>
 #import <Braintree/BTConfiguration+LocalPayment.h>
 #import <Braintree/BTLocalPaymentResult.h>
-#import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
 
@@ -14,7 +13,6 @@
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
 
@@ -22,7 +20,6 @@
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
 #endif

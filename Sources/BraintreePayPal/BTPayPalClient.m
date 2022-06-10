@@ -9,7 +9,6 @@
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
-#import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
 
@@ -17,7 +16,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTPaymentMethodNonceParser.h"
-#import "../BraintreeCore/BTLogger_Internal.h"
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 
@@ -25,7 +23,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
-#import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #endif
