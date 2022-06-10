@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
   s.subspec "Core" do |s|
     s.source_files  = "Sources/BraintreeCore/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeCore/Public/BraintreeCore/*.h"
-    s.dependency = "Braintree/CoreSwift"
+    s.dependency "Braintree/CoreSwift"
   end
 
   s.subspec "CoreSwift" do |s|
