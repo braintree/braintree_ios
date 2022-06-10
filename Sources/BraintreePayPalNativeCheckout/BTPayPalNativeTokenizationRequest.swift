@@ -5,12 +5,10 @@ class BTPayPalNativeTokenizationRequest {
 
     private let request: BTPayPalRequest
     private let correlationID: String
-    private let clientMetadata: BTClientMetadata
 
-    init(request: BTPayPalRequest, correlationID: String, clientMetadata: BTClientMetadata) {
+    init(request: BTPayPalRequest, correlationID: String) {
         self.request = request
         self.correlationID = correlationID
-        self.clientMetadata = clientMetadata
     }
 
     func parameters() -> [String : Any] {
@@ -24,17 +22,11 @@ class BTPayPalNativeTokenizationRequest {
             "correlation_id": correlationID,
         ]
 
-        let meta: [String : Any] = [
-            "source": clientMetadata.sourceString,
-            "integration": clientMetadata.integrationString,
-            "sessionId": clientMetadata.sessionID,
-        ]
-
         if let checkoutRequest = request as? BTPayPalNativeCheckoutRequest {
             account["options"] = ["validate" : false]
             account["intent"] = checkoutRequest.intentAsString
         }
 
-        return ["paypal_account": account, "_meta": meta]
+        return ["paypal_account": account]
     }
 }
