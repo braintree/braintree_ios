@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
     s.dependency = "Braintree/CoreSwift"
   end
 
-  s.subspect "CoreSwift" do |s|
+  s.subspec "CoreSwift" do |s|
     s.source_files = "Sources/BraintreeCoreSwift/*.swift"
   end
 
