@@ -60,7 +60,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.customerID = generateRandomCustomerID()
         sepaDirectDebitRequest.mandateType = .oneOff
         sepaDirectDebitRequest.billingAddress = billingAddress
-        sepaDirectDebitRequest.merchantAccountID = "eur_pwpp_multi_account_merchant_account"
+        sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
         
         if #available(iOS 13.0, *) {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
@@ -90,12 +90,13 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     }
     
     private func generateRandomIBAN() -> String {
-        let length = 25
-        let characters = "0123456789"
-        let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
-        let randomString = String(randomCharacters)
-
-        return "FR" + randomString
+//        let length = 25
+//        let characters = "0123456789"
+//        let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
+//        let randomString = String(randomCharacters)
+//
+//        return "FR" + randomString
+        "FR7618106000321234566666608"
     }
 }
 

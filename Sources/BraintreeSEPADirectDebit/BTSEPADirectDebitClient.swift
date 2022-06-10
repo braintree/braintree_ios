@@ -19,7 +19,7 @@ import BraintreeCore
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.sepaDirectDebitAPI = SEPADirectDebitAPI()
+        self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession =  WebAuthenticationSession()
     }
     
@@ -57,7 +57,8 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.tokenize(createMandateResult: createMandateResult, completion: completion)
                 return
-            } else if let url = URL(string: createMandateResult.approvalURL) {
+                // TODO: don't force unwrap
+            } else if let url = URL(string: createMandateResult.approvalURL!) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSession(url: url, context: context) { success, error in
                     switch success {
@@ -103,7 +104,8 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.tokenize(createMandateResult: createMandateResult, completion: completion)
                 return
-            } else if let url = URL(string: createMandateResult.approvalURL) {
+                // TODO: don't force unwrap
+            } else if let url = URL(string: createMandateResult.approvalURL!) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSessionWithoutContext(url: url) { success, error in
                     switch success {

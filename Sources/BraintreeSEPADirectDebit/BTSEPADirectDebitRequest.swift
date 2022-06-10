@@ -11,7 +11,7 @@ import BraintreeCore
         case sepaDebit = "sepa_debit"
         case accountHolderName = "account_holder_name"
         case iban
-        case customerID = "customer_id"
+        case customerID = "merchant_or_partner_customer_id"
         case mandateType = "mandate_type"
         case billingAddress = "billing_address"
         case merchantAccountID = "merchant_account_id"
@@ -46,9 +46,9 @@ import BraintreeCore
     /// Optional. A non-default merchant account to use for tokenization.
     public var merchantAccountID: String?
     
-    private var cancelURL: String
+    var cancelURL: String
     
-    private var returnURL: String
+    var returnURL: String
 
     /// Initialize a new SEPA Direct Debit request.
     /// - Parameters:
