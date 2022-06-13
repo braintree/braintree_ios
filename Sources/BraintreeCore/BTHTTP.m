@@ -8,10 +8,12 @@
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTHTTPErrors.h>
 #import <Braintree/BTJSON.h>
+#import <Braintree/BraintreeCoreSwift-Swift.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTHTTPErrors.h>
 #import <BraintreeCore/BTJSON.h>
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 @interface BTHTTP () <NSURLSessionDelegate>
