@@ -35,7 +35,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent {
     if(![authorization isKindOfClass:[NSString class]]) {
         NSString *reason = @"BTClient could not initialize because the provided authorization was invalid";
-        [[BTLogger alloc] error:reason];
+        NSLog(@"%@ Missing analytics session metadata - will not send event  %@", [BTLogLevelDescription stringFor:BTLogLevelError], reason);
         return nil;
     }
 
@@ -47,7 +47,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
                 if (!baseURL) {
                     NSString *reason = @"BTClient could not initialize because the provided tokenization key was invalid";
-                    [[BTLogger alloc] error:reason];
+                    NSLog(@"%@ Missing analytics session metadata - will not send event  %@", [BTLogLevelDescription stringFor:BTLogLevelError], reason);
                     return nil;
                 }
 
@@ -64,10 +64,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 NSError *error;
                 _clientToken = [[BTClientToken alloc] initWithClientToken:authorization error:&error];
                 if (error) {
-                    [[BTLogger alloc] error:error.localizedDescription];
+                    NSLog(@"%@ Missing analytics session metadata - will not send event  %@", [BTLogLevelDescription stringFor:BTLogLevelError], error.localizedDescription);
                 }
                 if (!_clientToken) {
-                    [[BTLogger alloc] error:@"BTClient could not initialize because the provided clientToken was invalid"];
+                    NSLog(@"%@ BTClient could not initialize because the provided clientToken was invalid", [BTLogLevelDescription stringFor:BTLogLevelError]);
                     return nil;
                 }
 

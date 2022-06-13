@@ -75,7 +75,7 @@ static BTPaymentFlowClient *paymentFlowClient;
         self.safariViewController.dismissButtonStyle = SFSafariViewControllerDismissButtonStyleCancel;
         [self.viewControllerPresentingDelegate paymentClient:self requestsPresentationOfViewController:self.safariViewController];
     } else {
-        [[BTLogger alloc] critical:@"Unable to display View Controller to continue payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        NSLog(@"%@ Unable to display View Controller to continue payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
     }
 }
 
@@ -84,7 +84,7 @@ static BTPaymentFlowClient *paymentFlowClient;
         [self.viewControllerPresentingDelegate paymentClient:self requestsDismissalOfViewController:self.safariViewController];
         self.safariViewController = nil;
     } else {
-        [[BTLogger alloc] critical:@"Unable to dismiss View Controller to end payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        NSLog(@"%@ Unable to dismiss View Controller to end payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
     }
 }
 

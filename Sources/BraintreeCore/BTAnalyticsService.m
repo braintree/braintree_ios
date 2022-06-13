@@ -155,14 +155,14 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 - (void)flush:(void (^)(NSError *))completionBlock {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         if (error) {
-            [[BTLogger alloc] warning:[NSString stringWithFormat:@"Failed to send analytics event. Remote configuration fetch failed. %@", error.localizedDescription]];
+            NSLog(@"%@ Failed to send analytics event. Remote configuration fetch failed. %@", [BTLogLevelDescription stringFor:BTLogLevelWarning],  error.localizedDescription);
             if (completionBlock) completionBlock(error);
             return;
         }
         
         NSURL *analyticsURL = [configuration.json[@"analytics"][@"url"] asURL];
         if (!analyticsURL) {
-            [[BTLogger alloc] debug:@"Skipping sending analytics event - analytics is disabled in remote configuration"];
+            NSLog(@"%@ Skipping sending analytics event - analytics is disabled in remote configuration", [BTLogLevelDescription stringFor:BTLogLevelDebug]);
             NSError *error = [NSError errorWithDomain:BTAnalyticsServiceErrorDomain code:BTAnalyticsServiceErrorTypeMissingAnalyticsURL userInfo:@{ NSLocalizedDescriptionKey : @"Analytics is disabled in remote configuration" }];
             if (completionBlock) completionBlock(error);
             return;
@@ -176,7 +176,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
             }
             if (!self.http) {
                 NSError *error = [NSError errorWithDomain:BTAnalyticsServiceErrorDomain code:BTAnalyticsServiceErrorTypeInvalidAPIClient userInfo:@{ NSLocalizedDescriptionKey : @"API client must have client token or tokenization key" }];
-                [[BTLogger alloc] warning:error.localizedDescription];
+                NSLog(@"%@ %@", [BTLogLevelDescription stringFor:BTLogLevelWarning], error.localizedDescription);
                 if (completionBlock) completionBlock(error);
                 return;
             }
@@ -226,7 +226,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 
                 [self.http POST:@"/" parameters:postParameters completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                     if (error != nil) {
-                        [[BTLogger alloc] warning:[NSString stringWithFormat:@"Failed to flush analytics events: %@", error.localizedDescription]];
+                        NSLog(@"%@ Failed to flush analytics events: %@", [BTLogLevelDescription stringFor:BTLogLevelWarning],  error.localizedDescription);
                     }
                     if (completionBlock) completionBlock(error);
                 }];
@@ -249,7 +249,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                                                              source:self.apiClient.metadata.sourceString
                                                         integration:self.apiClient.metadata.integrationString];
     if (!session) {
-        [[BTLogger alloc] warning:[NSString stringWithFormat:@"Missing analytics session metadata - will not send event %@", event.kind]];
+        NSLog(@"%@ Missing analytics session metadata - will not send event  %@", [BTLogLevelDescription stringFor:BTLogLevelWarning],  event.kind);
         return;
     }
 

@@ -3,6 +3,7 @@ import UIKit
 import BraintreeTestShared
 import BraintreeVenmo
 import BraintreeCore.Private
+@testable import BraintreeCoreSwift
 
 class BTVenmoClient_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
@@ -94,16 +95,10 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance().returnURLScheme = ""
 
-        
-        var criticalMessageLogged = false
-        BTLogger.shared().logBlock = {
-            (level: BTLogLevel, message: String?) in
-            if (level == BTLogLevel.critical && message == "Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]") {
-                criticalMessageLogged = true
-            }
-            BTLogger.shared().logBlock = nil
-            return
-        }
+        let expectedMessage: String = "Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"
+        let logger = BTLogger()
+
+        logger.critical(expectedMessage)
         
         let expectation = self.expectation(description: "authorization callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
@@ -113,7 +108,7 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
         
-        XCTAssertTrue(criticalMessageLogged)
+        XCTAssertEqual(logger.message, expectedMessage)
         
         waitForExpectations(timeout: 2, handler: nil)
     }

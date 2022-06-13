@@ -1,6 +1,7 @@
 import Foundation
 
-enum BTLogLevel: Int {
+@objc public enum BTLogLevel: Int, CaseIterable {
+    
     /// Suppress all log output
     case none
     
@@ -18,26 +19,4 @@ enum BTLogLevel: Int {
     
     /// Log debugging statements (anything and everything)
     case debug
-    
-    var description: String? {
-        switch self {
-        case .none:
-            return nil
-            
-        case .critical:
-            return "Critical"
-            
-        case .error:
-            return "Error"
-            
-        case .warning:
-            return "Warning"
-            
-        case .info:
-            return "Info"
-            
-        case .debug:
-            return "Debug"
-        }
-    }
 }

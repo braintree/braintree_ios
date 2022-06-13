@@ -158,7 +158,7 @@
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;
-        request.amount = nil;
+        request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
         request.versionRequested = BTThreeDSecureVersion2;
         request.accountType = BTThreeDSecureAccountTypeCredit;

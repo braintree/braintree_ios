@@ -1,42 +1,27 @@
 import Foundation
 
-///  Braintree leveled logger
-@objcMembers public class BTLogger: NSObject {
+/// Wrapper for accessing the string value of the log level
+@objcMembers public class BTLogLevelDescription: NSObject {
     
-    var level: BTLogLevel = .info
-    var message: String?
-    
-    private init(logLevel: BTLogLevel) {
-        level = logLevel
-        super.init()
-    }
-    
-    public func log(_ message: String) {
-        log(level: level, message: message)
-    }
-    
-    public func critical(_ message: String) {
-        log(level: .critical, message: message)
-    }
-    
-    public func error(_ message: String) {
-        log(level: .error, message: message)
-    }
-    
-    public func warning(_ message: String) {
-        log(level: .warning, message: message)
-    }
-    
-    public func info(_ message: String) {
-        log(level: .info, message: message)
-    }
-    
-    public func debug(_ message: String) {
-        log(level: .debug, message: message)
-    }
-    
-    private func log(level: BTLogLevel = .info, message: String) {
-        self.message = message
-        NSLog("[BraintreeSDK] %@ %@", level.description?.uppercased() ?? "", message)
+    public static func string(for level: BTLogLevel) -> String? {
+        switch level {
+        case .none:
+            return nil
+            
+        case .critical:
+            return "[BraintreeSDK] CRITICAL"
+            
+        case .error:
+            return "[BraintreeSDK] ERROR"
+            
+        case .warning:
+            return "[BraintreeSDK] WARNING"
+            
+        case .info:
+            return "[BraintreeSDK] INFO"
+            
+        case .debug:
+            return "[BraintreeSDK] DEBUG"
+        }
     }
 }
