@@ -21,8 +21,8 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         
         let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
         
-        let request = BTPayPalNativeCheckoutRequest(amount: "")
-        payPalNativeCheckoutClient.tokenize(request: request) { nonce, error in
+        let request = BTPayPalNativeCheckoutRequest(amount: "4.30")
+        payPalNativeCheckoutClient.tokenizePayPalAccount(with: request) { nonce, error in
             sender.isEnabled = true
             
             guard let nonce = nonce else {
