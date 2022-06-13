@@ -91,14 +91,9 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testTokenizeVenmoAccount_whenReturnURLSchemeIsNil_logsCriticalMessageAndCallsBackWithError() {
+    func testTokenizeVenmoAccount_whenReturnURLSchemeIsNil_andCallsBackWithError() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance().returnURLScheme = ""
-
-        let expectedMessage: String = "Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"
-        let logger = BTLogger()
-
-        logger.critical(expectedMessage)
         
         let expectation = self.expectation(description: "authorization callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
@@ -107,9 +102,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(error.code, BTVenmoErrorType.appNotAvailable.rawValue)
             expectation.fulfill()
         }
-        
-        XCTAssertEqual(logger.message, expectedMessage)
-        
+
         waitForExpectations(timeout: 2, handler: nil)
     }
 
