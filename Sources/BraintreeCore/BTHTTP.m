@@ -8,12 +8,10 @@
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTHTTPErrors.h>
 #import <Braintree/BTJSON.h>
-#import <Braintree/BTURLUtils.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTHTTPErrors.h>
 #import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTURLUtils.h>
 #endif
 
 @interface BTHTTP () <NSURLSessionDelegate>
@@ -236,7 +234,7 @@
 
     if ([method isEqualToString:@"GET"] || [method isEqualToString:@"DELETE"]) {
         if (isNotDataURL) {
-            components.percentEncodedQuery = [BTURLUtils queryStringWithDictionary:parameters];
+            components.percentEncodedQuery =[BTURLUtilsSwift queryStringWithDictionary:parameters];
         }
         request = [NSMutableURLRequest requestWithURL:components.URL];
     } else {

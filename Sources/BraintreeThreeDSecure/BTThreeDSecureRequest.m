@@ -235,7 +235,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
 }
 
 - (void)handleOpenURL:(NSURL *)url {
-    NSString *jsonAuthResponse = [BTURLUtils queryParametersForURL:url][@"auth_response"];
+    NSString *jsonAuthResponse = [BTURLUtilsSwift queryParametersForURL:url][@"auth_response"];
     if (!jsonAuthResponse || jsonAuthResponse.length == 0) {
         [self.paymentFlowClientDelegate.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.missing-auth-response"]];
         [self.paymentFlowClientDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
