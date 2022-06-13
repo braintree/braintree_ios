@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCoreSwift
 
 class BTURLUtils_Tests: XCTestCase {
     // MARK: - queryParametersForURL:
@@ -8,14 +9,14 @@ class BTURLUtils_Tests: XCTestCase {
         
         let expectedParameters: [String : String] = ["auth_response":"{\"paymentMethod\":{\"type\":\"CreditCard\",\"nonce\":\"9619abd3-7792-05c7-74e4-848b583de1fa=\"}}"]
         
-        XCTAssertEqual(BTURLUtils.queryParameters(for: url).count, expectedParameters.count)
-        XCTAssertEqual(BTURLUtils.queryParameters(for: url)["auth_response"], expectedParameters["auth_response"])
+        XCTAssertEqual(BTURLUtilsSwift.queryParameters(for: url).count, expectedParameters.count)
+        XCTAssertEqual(BTURLUtilsSwift.queryParameters(for: url)["auth_response"], expectedParameters["auth_response"])
     }
     
     func testQueryParametersForURL_returnsEmptyDictionary_whenURLDoesNotHaveQueryParameters() {
         let url = URL(string: "url-scheme://x-callback-url/braintree/threedsecure")!
         
-        XCTAssertEqual(BTURLUtils.queryParameters(for: url), [:])
+        XCTAssertEqual(BTURLUtilsSwift.queryParameters(for: url), [:])
     }
     
     func testQueryParametersForURL_decodesPlusSignAsSpace() {
