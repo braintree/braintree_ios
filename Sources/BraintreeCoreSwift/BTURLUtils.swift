@@ -1,8 +1,9 @@
 import Foundation
 
-@objc public class BTURLUtilsSwift: NSObject {
+@objc public class BTURLUtils: NSObject {
   
-    @objc public static func queryStringWithDictionary(_ dict: NSDictionary) -> String {
+    @objc(queryStringWithDictionary:)
+    public static func queryString(from dict: NSDictionary) -> String {
         var queryString: String = ""
         for (rawKey, value) in dict {
             guard let key = rawKey as? String else {
@@ -28,7 +29,8 @@ import Foundation
         return String(queryString.dropLast())
     }
     
-    @objc public static func queryParametersForURL(_ url: URL) -> [String: String] {
+    @objc(queryParametersForURL:)
+    public static func queryParameters(for url: URL) -> [String: String] {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         var parameters: [String: String] = [:]
         
