@@ -11,6 +11,10 @@ import BraintreePayPal
  Options for the PayPal Vault flow.
  */
 @objc public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest, BTPayPalNativeRequest {
+  func parameters(with configuration: BTConfiguration) -> [AnyHashable : Any] {
+    [:]
+  }
+
 
     // MARK: - Public
 

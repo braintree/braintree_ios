@@ -1,10 +1,8 @@
-import Foundation
+import BraintreePayPal
 
-@objcMembers
-public class BTPayPalNativeCheckoutAccountNonce: NSObject {
-    public let nonce: String
-    
-    init(nonce: String) {
-        self.nonce = nonce
-    }
+/**
+ Contains information about a PayPal payment method.
+ */
+@objc public class BTPayPalNativeCheckoutAccountNonce: BTPayPalAccountNonce {
+
 }
