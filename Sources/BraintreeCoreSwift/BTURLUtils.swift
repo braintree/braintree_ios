@@ -46,6 +46,9 @@ import Foundation
     }
     
     static func encode(_ string: String) -> String {
-        string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        // See Section 2.2. http://www.ietf.org/rfc/rfc2396.txt
+        var characterSet = CharacterSet.urlQueryAllowed
+        characterSet.remove(charactersIn: ";/?:@&=+$,")
+        return string.addingPercentEncoding(withAllowedCharacters: characterSet) ?? ""
     }
 }
