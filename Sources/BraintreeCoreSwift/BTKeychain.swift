@@ -1,7 +1,7 @@
 import Foundation
 import Security
 
-@objc public class BTKeychainSwift: NSObject {
+@objc public class BTKeychain: NSObject {
     
     @objc public static func setString(_ string: String, forKey key: String) -> Bool {
         let data: Data = string.data(using: .utf8) ?? Data()
