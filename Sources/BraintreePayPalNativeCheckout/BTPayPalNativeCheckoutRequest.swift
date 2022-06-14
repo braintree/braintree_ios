@@ -4,8 +4,8 @@ import BraintreePayPal
  Options for the PayPal Checkout and PayPal Checkout with Vault flows.
  */
 @objc public class BTPayPalNativeCheckoutRequest: BTPayPalCheckoutRequest, BTPayPalNativeRequest {
-    private let callbackHostAndPath = "onetouch/v1/"
-    private let callbackURLScheme = "sdk.ios.braintree"
+
+    let paymentType: BTPayPalPaymentType = .checkout
 
     /**
      Initializes a PayPal Checkout request.
@@ -63,6 +63,8 @@ import BraintreePayPal
             "recipient_name": shippingAddressOverride?.recipientName,
         ].compactMapValues { $0 }
 
+        // Combining the base parameters with the parameters defined here - if there is a conflict,
+        // choose the values defined here
         return baseParams.merging(paypalParams, uniquingKeysWith: { _, new in new })
     }
 }

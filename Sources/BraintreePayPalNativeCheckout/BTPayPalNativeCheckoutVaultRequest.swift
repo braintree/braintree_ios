@@ -14,6 +14,8 @@ import BraintreePayPal
 
     let hermesPath: String
 
+    let paymentType: BTPayPalPaymentType = .vault
+
     /**
      Initializes a PayPal Vault request.
 
@@ -28,6 +30,7 @@ import BraintreePayPal
     func parameters(with configuration: BTConfiguration) -> [AnyHashable : Any] {
 
         let baseParams = getBaseParameters(with: configuration)
+
         // Should only include shipping params if they exist
         let shippingParams: [AnyHashable: Any?]? = {
             if let shippingOverride = shippingAddressOverride {
@@ -53,6 +56,9 @@ import BraintreePayPal
         ]
 
         let prunedParams = params.compactMapValues { $0 }
+
+        // Combining the base parameters with the parameters defined here - if there is a conflict,
+        // choose the values defined here
         return baseParams.merging(prunedParams) {_, new in new }
     }
 }

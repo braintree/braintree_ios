@@ -3,10 +3,14 @@ import BraintreePayPal
 
 protocol BTPayPalNativeRequest {
     var hermesPath: String { get }
+    var paymentType: BTPayPalPaymentType { get }
 
     func parameters(with configuration: BTConfiguration) -> [AnyHashable: Any]
 }
 
+/// Since Swift types do not have access to the Objective-c internal headers of the other Braintree modules,
+/// We use this protocol extension to provide a shared implementation of the `parameters(with: BTConfiguration)`
+/// function on the `BTPayPalRequest` type
 extension BTPayPalNativeRequest where Self: BTPayPalRequest {
     func getBaseParameters(with configuration: BTConfiguration) -> [AnyHashable: Any] {
         let callbackHostAndPath = "onetouch/v1/"

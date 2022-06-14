@@ -44,31 +44,30 @@ import PayPalCheckout
             case .success(let order):
                 let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
                     clientID: order.payPalClientID,
-                    createOrder: nil,
-                    onApprove: nil,
-                    onCancel: nil,
-                    onError: nil,
+                    createOrder: { action in
+                        switch request.paymentType {
+                        case .checkout:
+                            action.set(orderId: order.orderID)
+                        case .vault:
+                            action.set(billingAgreementToken: order.orderID)
+                        @unknown default:
+                            completion(nil, BTPayPalNativeError.invalidRequest as NSError)
+                        }
+                    },
+                    onApprove: { [weak self] approval in
+                        self?.tokenize(approval: approval, request: request, completion: completion)
+                    },
+                    onCancel: {
+                        completion(nil, BTPayPalNativeError.canceled as NSError)
+                    },
+                    onError: { error in
+                        completion(nil, BTPayPalNativeError.checkoutSDKFailed as NSError)
+                    },
                     environment: order.environment
                 )
 
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
-                PayPalCheckout.Checkout.showsExitAlert = false
-
-                PayPalCheckout.Checkout.start(presentingViewController: nil, createOrder: { action in
-                    if request is BTPayPalNativeCheckoutRequest {
-                        action.set(orderId: order.orderID)
-                    } else if request is BTPayPalNativeVaultRequest {
-                        action.set(billingAgreementToken: order.orderID)
-                    }
-                }, onApprove: { [weak self] approval in
-                    self?.tokenize(approval: approval, request: request, completion: completion)
-                }, onCancel: {
-                    completion(nil, BTPayPalNativeError.canceled as NSError)
-                    return
-                }, onError: { error in
-                    completion(nil, BTPayPalNativeError.checkoutSDKFailed as NSError)
-                    return
-                })
+                PayPalCheckout.Checkout.start()
             case .failure(let error):
                 completion(nil, error as NSError)
                 return
