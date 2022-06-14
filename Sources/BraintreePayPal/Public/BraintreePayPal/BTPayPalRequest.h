@@ -4,6 +4,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
+    BTPayPalPaymentTypeCheckout,
+    BTPayPalPaymentTypeVault
+};
+
 /**
  Use this option to specify the PayPal page to display when a user lands on the PayPal site to complete the payment.
 */
