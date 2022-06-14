@@ -5,16 +5,6 @@ import BraintreePayPalNativeCheckout
 class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
     lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 
-    lazy var payPalVaultButton: UIButton = {
-        let payPalCheckoutButton = UIButton(type: .system)
-        payPalCheckoutButton.setTitle("Vault Checkout", for: .normal)
-        payPalCheckoutButton.setTitleColor(.blue, for: .normal)
-        payPalCheckoutButton.setTitleColor(.lightGray, for: .highlighted)
-        payPalCheckoutButton.setTitleColor(.lightGray, for: .disabled)
-        payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalVault), for: .touchUpInside)
-        return payPalCheckoutButton
-    }()
-
     override func createPaymentButton() -> UIView! {
         let payPalCheckoutButton = UIButton(type: .system)
         payPalCheckoutButton.setTitle("One Time Checkout", for: .normal)
@@ -22,17 +12,21 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         payPalCheckoutButton.setTitleColor(.lightGray, for: .highlighted)
         payPalCheckoutButton.setTitleColor(.lightGray, for: .disabled)
         payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalCheckout), for: .touchUpInside)
-        return payPalCheckoutButton
-    }
+        payPalCheckoutButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        let payPalVaultButton = UIButton(type: .system)
+        payPalVaultButton.setTitle("Vault Checkout", for: .normal)
+        payPalVaultButton.setTitleColor(.blue, for: .normal)
+        payPalVaultButton.setTitleColor(.lightGray, for: .highlighted)
+        payPalVaultButton.setTitleColor(.lightGray, for: .disabled)
+        payPalVaultButton.addTarget(self, action: #selector(tappedPayPalVault), for: .touchUpInside)
+        payPalVaultButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        view.addSubview(payPalVaultButton)
-        NSLayoutConstraint.activate([
-            payPalVaultButton.topAnchor.constraint(equalTo: paymentButton.bottomAnchor, constant: 40),
-            payPalVaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+        let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, payPalVaultButton])
+        stackView.axis = .vertical
+        stackView.spacing = 40
+
+        return stackView
     }
     
     @objc func tappedPayPalCheckout(_ sender: UIButton) {
@@ -57,7 +51,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalVaultRequest()
+        let request = BTPayPalNativeVaultRequest()
         request.activeWindow = self.view.window
 
         payPalNativeCheckoutClient.tokenizePayPalAccount(with: request) { nonce, error in
