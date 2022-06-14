@@ -11,24 +11,48 @@ import BraintreePayPal
  Options for the PayPal Vault flow.
  */
 @objc public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest, BTPayPalNativeRequest {
-  func parameters(with configuration: BTConfiguration) -> [AnyHashable : Any] {
-    [:]
-  }
 
-
-    // MARK: - Public
+    let hermesPath: String
 
     /**
      Initializes a PayPal Vault request.
 
      - Returns: A PayPal Vault request.
      */
-  @objc public override init() {
+    @objc public override init() {
         self.hermesPath = "v1/paypal_hermes/setup_billing_agreement"
+
         super.init()
     }
 
-    // MARK: - Internal
+    func parameters(with configuration: BTConfiguration) -> [AnyHashable : Any] {
 
-    let hermesPath: String
+        let baseParams = getBaseParameters(with: configuration)
+        // Should only include shipping params if they exist
+        let shippingParams: [AnyHashable: Any?]? = {
+            if let shippingOverride = shippingAddressOverride {
+                return [
+                  "line1": shippingOverride.streetAddress,
+                  "line2": shippingOverride.extendedAddress,
+                  "city": shippingOverride.locality,
+                  "state": shippingOverride.region,
+                  "postal_code": shippingOverride.postalCode,
+                  "country_code": shippingOverride.countryCodeAlpha2,
+                  "recipient_name": shippingOverride.recipientName,
+                ]
+            }
+            else {
+                return nil
+            }
+        }()
+
+        let params: [AnyHashable : Any?] = [
+          "description": self.billingAgreementDescription,
+          "offer_paypal_credit": offerCredit,
+          "shipping_address": shippingParams,
+        ]
+
+        let prunedParams = params.compactMapValues { $0 }
+        return baseParams.merging(prunedParams) {_, new in new }
+    }
 }
