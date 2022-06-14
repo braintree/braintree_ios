@@ -341,6 +341,7 @@
 		BEA3BE822846691100846415 /* BraintreeKountDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = BEA3BE812846690C00846415 /* BraintreeKountDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BECF129F284171B6002C3A04 /* BraintreeKountDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */; };
 		BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7493528579BAC0074C818 /* BTURLUtils.swift */; };
+		BED749392858CEC60074C818 /* BTKeychainSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED749382858CEC60074C818 /* BTKeychainSwift.swift */; };
 		BEFD1AF4284F92130070076E /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -1038,6 +1039,7 @@
 		BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeKountDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA3BE812846690C00846415 /* BraintreeKountDataCollector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeKountDataCollector.h; sourceTree = "<group>"; };
 		BED7493528579BAC0074C818 /* BTURLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLUtils.swift; sourceTree = "<group>"; };
+		BED749382858CEC60074C818 /* BTKeychainSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTKeychainSwift.swift; sourceTree = "<group>"; };
 		BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1553,6 +1555,7 @@
 				570B93D82853C6180041BAFE /* BTLogLevel.swift */,
 				570B93D62853C29A0041BAFE /* BTLogLevelDescription.swift */,
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
+				BED749382858CEC60074C818 /* BTKeychainSwift.swift */,
 			);
 			path = BraintreeCoreSwift;
 			sourceTree = "<group>";
@@ -3213,6 +3216,7 @@
 				570B93B02853980C0041BAFE /* BTAPIClientSwift.swift in Sources */,
 				570B93D92853C6180041BAFE /* BTLogLevel.swift in Sources */,
 				570B93D72853C29A0041BAFE /* BTLogLevelDescription.swift in Sources */,
+				BED749392858CEC60074C818 /* BTKeychainSwift.swift in Sources */,
 				BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

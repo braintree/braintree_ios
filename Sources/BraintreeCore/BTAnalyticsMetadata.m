@@ -1,6 +1,7 @@
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
 #import "BTKeychain.h"
+#import "BraintreeCoreSwift/BraintreeCoreSwift-Swift.h"
 
 #import <UIKit/UIKit.h>
 #import <sys/utsname.h>
@@ -124,10 +125,10 @@
 - (NSString *)deviceAppGeneratedPersistentUuid {
     @try {
         static NSString *deviceAppGeneratedPersistentUuidKeychainKey = @"deviceAppGeneratedPersistentUuid";
-        NSString *savedIdentifier = [BTKeychain stringForKey:deviceAppGeneratedPersistentUuidKeychainKey];
+        NSString *savedIdentifier = [BTKeychainSwift stringForKey:deviceAppGeneratedPersistentUuidKeychainKey];
         if (savedIdentifier.length == 0) {
             savedIdentifier = [[NSUUID UUID] UUIDString];
-            BOOL setDidSucceed = [BTKeychain setString:savedIdentifier
+            BOOL setDidSucceed = [BTKeychainSwift setString:savedIdentifier
                                                 forKey:deviceAppGeneratedPersistentUuidKeychainKey];
             if (!setDidSucceed) {
                 return nil;

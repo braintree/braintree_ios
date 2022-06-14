@@ -270,10 +270,10 @@
 - (NSString *)deviceAppGeneratedPersistentUuid {
     @try {
         static NSString *deviceAppGeneratedPersistentUuidKeychainKey = @"deviceAppGeneratedPersistentUuid";
-        NSString *savedIdentifier = [BTKeychain stringForKey:deviceAppGeneratedPersistentUuidKeychainKey];
+        NSString *savedIdentifier = [BTKeychainSwift stringForKey:deviceAppGeneratedPersistentUuidKeychainKey];
         if (savedIdentifier.length == 0) {
             savedIdentifier = [[NSUUID UUID] UUIDString];
-            BOOL setDidSucceed = [BTKeychain setString:savedIdentifier
+            BOOL setDidSucceed = [BTKeychainSwift setString:savedIdentifier
                                                 forKey:deviceAppGeneratedPersistentUuidKeychainKey];
             if (!setDidSucceed) {
                 return nil;
