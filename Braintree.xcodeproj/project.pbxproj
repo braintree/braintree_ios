@@ -322,7 +322,6 @@
 		BC20A8FB2385F8640077AF56 /* BTPreferredPaymentMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = BC20A8F92385F8640077AF56 /* BTPreferredPaymentMethods.m */; };
 		BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
-		BE46D3622853DE2B009F8209 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE57E0F02847C833002CFBAC /* BTKountDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57E0EF2847C833002CFBAC /* BTKountDataCollector.m */; };
 		BE57E10F2847F872002CFBAC /* BTConfiguration+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E10E2847F872002CFBAC /* BTConfiguration+Extension.swift */; };
 		BE57E1112847F8A0002CFBAC /* BTDataCollectorEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1102847F8A0002CFBAC /* BTDataCollectorEnvironment.swift */; };
@@ -340,6 +339,7 @@
 		BECF129F284171B6002C3A04 /* BraintreeKountDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1B4232841679200994F61 /* BraintreeKountDataCollector.framework */; };
 		BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7493528579BAC0074C818 /* BTURLUtils.swift */; };
 		BED749392858CEC60074C818 /* BTKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED749382858CEC60074C818 /* BTKeychain.swift */; };
+		BED7495A285A6E460074C818 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BEFD1AF4284F92130070076E /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = EEF1DE881E858A31001BB924 /* BTEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -618,13 +618,6 @@
 			remoteGlobalIDString = A903E1A524F9D34000C314E1;
 			remoteInfo = BraintreeTestShared;
 		};
-		BE46D3602853DE23009F8209 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 570B936A285397520041BAFE;
-			remoteInfo = BraintreeCoreSwift;
-		};
 		BE57E0E92847A147002CFBAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -645,6 +638,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
 			remoteInfo = BraintreeDataCollector;
+		};
+		BED7495C285A6E460074C818 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 570B936A285397520041BAFE;
+			remoteInfo = BraintreeCoreSwift;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1080,7 +1080,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE46D3622853DE2B009F8209 /* BraintreeCoreSwift.framework in Frameworks */,
+				BED7495A285A6E460074C818 /* BraintreeCoreSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2328,7 +2328,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				BE46D3612853DE23009F8209 /* PBXTargetDependency */,
+				BED7495D285A6E460074C818 /* PBXTargetDependency */,
 			);
 			name = BraintreeCore;
 			productName = BraintreeCore;
@@ -3679,11 +3679,6 @@
 			target = A903E1A524F9D34000C314E1 /* BraintreeTestShared */;
 			targetProxy = A9E80A9D24FEF40700196BD3 /* PBXContainerItemProxy */;
 		};
-		BE46D3612853DE23009F8209 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
-			targetProxy = BE46D3602853DE23009F8209 /* PBXContainerItemProxy */;
-		};
 		BE57E0EA2847A147002CFBAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BEA1B40F2841679200994F61 /* BraintreeKountDataCollector */;
@@ -3698,6 +3693,11 @@
 			isa = PBXTargetDependency;
 			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
 			targetProxy = BE70A985284FC09100F6D3F7 /* PBXContainerItemProxy */;
+		};
+		BED7495D285A6E460074C818 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
+			targetProxy = BED7495C285A6E460074C818 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -4288,6 +4288,7 @@
 		570B93AA285397520041BAFE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4351,6 +4352,7 @@
 		570B93AB285397520041BAFE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

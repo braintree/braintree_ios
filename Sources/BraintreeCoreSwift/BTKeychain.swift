@@ -1,14 +1,14 @@
 import Foundation
 import Security
 
-@objc public class BTKeychain: NSObject {
+@objcMembers public class BTKeychain: NSObject {
     
-    @objc public static func setString(_ string: String, forKey key: String) -> Bool {
+    public static func setString(_ string: String, forKey key: String) -> Bool {
         let data: Data = string.data(using: .utf8) ?? Data()
         return setData(data, forKey: key)
     }
     
-    @objc public static func stringForKey(_ key: String) -> String {
+    public static func stringForKey(_ key: String) -> String {
         let data: Data = dataForKey(key) ?? Data()
         guard let dataString = String(data: data, encoding: .utf8) else { return "" }
         return dataString
