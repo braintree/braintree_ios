@@ -24,7 +24,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 
         let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, payPalVaultButton])
         stackView.axis = .vertical
-        stackView.spacing = 40
+        stackView.spacing = 5
 
         return stackView
     }

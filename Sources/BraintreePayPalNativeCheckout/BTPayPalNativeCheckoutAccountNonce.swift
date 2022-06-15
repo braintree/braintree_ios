@@ -51,14 +51,15 @@ import BraintreePayPal
     let payerID: String?
 
     init?(json: BTJSON) {
-        if let localNonce = json["nonce"].asString() {
+        let paypalAccounts = json["paypalAccounts"][0]
+        if let localNonce = paypalAccounts["nonce"].asString() {
             self.nonce = localNonce
-            isDefault = json["default"].isTrue
+            isDefault = paypalAccounts["default"].isTrue
         } else {
             return nil
         }
 
-        let details = json["details"]
+        let details = paypalAccounts["details"]
 
         let payerInfo = details["payerInfo"]
 
