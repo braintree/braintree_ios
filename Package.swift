@@ -21,7 +21,11 @@ let package = Package(
         ),
         .library(
             name: "BraintreeCore",
-            targets: ["BraintreeCore"]
+            targets: ["BraintreeCore", "BraintreeCoreSwift"]
+        ),
+        .library(
+            name: "BraintreeCoreSwift",
+            targets: ["BraintreeCoreSwift"]
         ),
         .library(
             name: "BraintreeDataCollector",
@@ -74,8 +78,12 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCore",
+            dependencies: ["BraintreeCoreSwift"],
             exclude: ["Info.plist"],
             publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreeCoreSwift"
         ),
         .target(
             name: "BraintreeDataCollector",

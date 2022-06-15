@@ -19,6 +19,8 @@
 		42C574D525FA6CAC008B3681 /* AppSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574D425FA6CAC008B3681 /* AppSwitcher.swift */; };
 		42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */; };
 		42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */; };
+		570B93D42853A6D30041BAFE /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */; };
+		570B93D52853A6D30041BAFE /* BraintreeCoreSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; };
 		803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EB256DAF9A00ACE692 /* BraintreeApplePay.framework */; };
@@ -104,6 +106,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */,
+				570B93D52853A6D30041BAFE /* BraintreeCoreSwift.framework in Embed Frameworks */,
 				9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */,
 				803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
@@ -138,6 +141,7 @@
 		42D47A132554679D0012BAF1 /* BraintreeDemoSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSceneDelegate.h; sourceTree = "<group>"; };
 		42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSceneDelegate.m; sourceTree = "<group>"; };
 		42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../Frameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
+		570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCoreSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeAmericanExpress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +230,7 @@
 				803D64FB256DAF9A00ACE692 /* BraintreeCore.framework in Frameworks */,
 				9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */,
 				803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */,
+				570B93D42853A6D30041BAFE /* BraintreeCoreSwift.framework in Frameworks */,
 				9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */,
 				803D6501256DAF9A00ACE692 /* BraintreePayPal.framework in Frameworks */,
 				803D64FD256DAF9A00ACE692 /* BraintreeDataCollector.framework in Frameworks */,
@@ -508,6 +513,7 @@
 		A0988FFB24DB44D60095EEEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */,
 				BE57E114284912D6002CFBAC /* BraintreeKountDataCollector.framework */,
 				BEA1B42728416C5800994F61 /* KountDataCollector.framework */,
 				9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */,
