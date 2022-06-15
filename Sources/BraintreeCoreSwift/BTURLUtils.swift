@@ -9,20 +9,21 @@ import Foundation
             guard let key = rawKey as? String else {
                 continue
             }
-            let encodedKey = encode(key)
+
+            let encodedKey = encode(key.description)
             
             if let arrayValue = value as? [String] {
                 for item in arrayValue {
-                    queryString.append("\(encodedKey)%%5B%%5D=\(encode(item))&")
+                    queryString = queryString.appendingFormat("%@%%5B%%5D=%@&", encodedKey, encode(item.description))
                 }
             } else if let dictValue = value as? [String: String] {
-                for (subkey, subvalue) in dictValue {
-                    queryString.append("\(encodedKey)%%5B\(encode(subkey))%%5D=\(encode(subvalue))&")
+                for (subKey, subValue) in dictValue {
+                    queryString = queryString.appendingFormat("%@%%5B%@%%5D=%@&", encodedKey, encode(subKey.description), encode(subValue.description))
                 }
             } else if let _ = value as? NSNull {
-                queryString.append("\(encodedKey)=&")
+                queryString = queryString.appendingFormat("%@=&", encodedKey)
             } else {
-                queryString.append("\(encodedKey)=\(encode(String(describing: value)))&")
+                queryString = queryString.appendingFormat("%@=%@&", encodedKey, encode(String(describing: value).description))
             }
         }
         
