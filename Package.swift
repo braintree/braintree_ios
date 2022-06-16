@@ -37,7 +37,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreePayPalNativeCheckout",
-            targets: ["BraintreePayPalNativeCheckout", "PayPalCheckout"]
+            targets: ["BraintreePayPalNativeCheckout"]
         ),
         .library(
             name: "BraintreeThreeDSecure",
@@ -100,7 +100,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreePayPalNativeCheckout",
-            dependencies: ["BraintreeCore", "PayPalCheckout", "BraintreePayPal"],
+            dependencies: ["BraintreeCore", "paypalcheckout-ios", "BraintreePayPal"],
             path: "Sources/BraintreePayPalNativeCheckout"
         ),
         .target(
