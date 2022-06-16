@@ -411,7 +411,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braintree/braintree_ios";
 			requirement = {
-				branch = "create-nxo-module-2";
+				branch = "nxo-feature";
 				kind = branch;
 			};
 		};
