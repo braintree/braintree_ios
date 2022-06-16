@@ -37,7 +37,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreePayPalNativeCheckout",
-            targets: ["BraintreePayPalNativeCheckout"]
+            targets: ["BraintreePayPalNativeCheckout", "PayPalCheckout"]
         ),
         .library(
             name: "BraintreeThreeDSecure",
@@ -58,7 +58,6 @@ let package = Package(
     ],
     dependencies: [
       .package(url: "https://github.com/paypal/paypalcheckout-ios.git",from: "0.94.0")
-        // Dependencies declare other packages that this package depends on.
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

@@ -83,6 +83,7 @@
 		3DF38AFB2852539D00225F2A /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = 3DF38AFA2852539D00225F2A /* PayPalCheckout */; };
 		3DF38AFD28590B5600225F2A /* BTPayPalNativeCheckoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AFC28590B5600225F2A /* BTPayPalNativeCheckoutRequest.swift */; };
 		3DF4B4CA285A74200072DC60 /* BTPayPalNativeCheckoutVaultRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B4C9285A74200072DC60 /* BTPayPalNativeCheckoutVaultRequest_Tests.swift */; };
+		3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; };
 		41211EF81BA0E45300DB1705 /* BTPaymentMethodNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 41211EF61BA0E45300DB1705 /* BTPaymentMethodNonce.m */; };
 		412A51B0201FD0A500A5B302 /* BTGraphQLHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */; };
 		412A51B2201FD0C400A5B302 /* BTGraphQLHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 412A51B1201FD0C400A5B302 /* BTGraphQLHTTP.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -381,6 +382,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
 			remoteInfo = BraintreeCore;
+		};
+		3DF4B4CB285B77960072DC60 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D941D371B59C76A0016EFB4;
+			remoteInfo = BraintreePayPal;
 		};
 		4164B9B21C9B68D2006AE861 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1151,6 +1159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */,
 				9CE51772282D51DD0013C740 /* BraintreeCore.framework in Frameworks */,
 				3DF38AFB2852539D00225F2A /* PayPalCheckout in Frameworks */,
 			);
@@ -2543,6 +2552,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3DF4B4CC285B77960072DC60 /* PBXTargetDependency */,
 				9CE51767282D51DD0013C740 /* PBXTargetDependency */,
 			);
 			name = BraintreePayPalNativeCheckout;
@@ -3742,6 +3752,11 @@
 			isa = PBXTargetDependency;
 			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
 			targetProxy = 2D941D591B5D5F140016EFB4 /* PBXContainerItemProxy */;
+		};
+		3DF4B4CC285B77960072DC60 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D941D371B59C76A0016EFB4 /* BraintreePayPal */;
+			targetProxy = 3DF4B4CB285B77960072DC60 /* PBXContainerItemProxy */;
 		};
 		4164B9B31C9B68D2006AE861 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
