@@ -1,5 +1,10 @@
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
+
+#if canImport(BraintreePayPal)
 import BraintreePayPal
+#endif
 
 class BTPayPalNativeTokenizationRequest {
 

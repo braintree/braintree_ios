@@ -1,4 +1,6 @@
+#if canImport(BraintreePayPal)
 import BraintreePayPal
+#endif
 
 /**
  Options for the PayPal Checkout and PayPal Checkout with Vault flows.

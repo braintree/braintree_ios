@@ -1,12 +1,7 @@
-//
-//  BTPayPalNativeCheckoutVaultRequest.swift
-//  BraintreePayPalNativeCheckout
-//
-//  Created by Jones, Jon on 6/9/22.
-//
-
-import Foundation
+#if canImport(BraintreePayPal)
 import BraintreePayPal
+#endif
+
 /**
  Options for the PayPal Vault flow.
  */

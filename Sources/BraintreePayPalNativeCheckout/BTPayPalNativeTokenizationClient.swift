@@ -1,6 +1,12 @@
+#if canImport(BraintreeCore)
 import BraintreeCore
-import PayPalCheckout
+#endif
+
+#if canImport(BraintreePayPal)
 import BraintreePayPal
+#endif
+
+import PayPalCheckout
 
 class BTPayPalNativeTokenizationClient {
 

@@ -1,4 +1,6 @@
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
 
 struct BTPayPalNativeHermesResponse {
 
