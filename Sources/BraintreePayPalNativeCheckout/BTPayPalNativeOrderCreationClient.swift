@@ -22,7 +22,10 @@ class BTPayPalNativeOrderCreationClient {
         self.apiClient = apiClient
     }
 
-    func createOrder(with request: BTPayPalRequest & BTPayPalNativeRequest, completion: @escaping (Result<BTPayPalNativeOrder, BTPayPalNativeError>) -> Void) {
+    func createOrder(
+        with request: BTPayPalRequest & BTPayPalNativeRequest,
+        completion: @escaping (Result<BTPayPalNativeOrder, BTPayPalNativeError>) -> Void)
+    {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let config = configuration, error == nil else {
                 completion(.failure(.fetchConfigurationFailed))
@@ -53,15 +56,20 @@ class BTPayPalNativeOrderCreationClient {
                 return
             }
 
-            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: config)) { json, response, error in
+            self.apiClient.post(
+                request.hermesPath,
+                parameters: request.parameters(with: config))
+            { json, response, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
                     completion(.failure(.orderCreationFailed))
                     return
                 }
 
-                let order = BTPayPalNativeOrder(payPalClientID: payPalClientID,
-                                                environment: environment,
-                                                orderID: hermesResponse.orderID)
+                let order = BTPayPalNativeOrder(
+                    payPalClientID: payPalClientID,
+                    environment: environment,
+                    orderID: hermesResponse.orderID
+                )
                 completion(.success(order))
             }
         }
