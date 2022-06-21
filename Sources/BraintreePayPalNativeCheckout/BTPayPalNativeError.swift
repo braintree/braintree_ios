@@ -1,8 +1,6 @@
 import Foundation
 
-/**
- Error returned from the native PayPal flow
- */
+/// Error returned from the native PayPal flow
 @objc public enum BTPayPalNativeError: Int, LocalizedError {
     /// Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest
     case invalidRequest

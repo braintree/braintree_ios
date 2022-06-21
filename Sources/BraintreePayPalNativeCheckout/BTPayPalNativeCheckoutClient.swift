@@ -15,25 +15,19 @@ import PayPalCheckout
 
     // MARK: - Public
 
-    /**
-     Initializes a PayPal Native client.
-
-     - Parameter apiClient: The Braintree API client
-
-     - Returns: A PayPal Native client
-     */
+    ///  Initializes a PayPal Native client.
+    /// - Parameter apiClient: The Braintree API client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
 
-    /**
-     Tokenize a PayPal account for vault or checkout. On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`. On failure or user cancelation you will receive an error. If the user cancels out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
-
-     - Parameter nativeRequest Either a BTPayPalNativeCheckoutRequest or a BTPayPalNativeVaultRequest
-
-     - Parameter completion The completion will be invoked exactly once: when tokenization is complete or an error occurs.
-     */
+    /// Tokenize a PayPal account for vault or checkout. On success, you will receive an instance of
+    /// `BTPayPalNativeCheckoutAccountNonce`. On failure or user cancelation you will receive an error. If the user cancels
+    /// out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
+    /// - Parameters:
+    ///   - nativeRequest: Either a BTPayPalNativeCheckoutRequest or a BTPayPalNativeVaultRequest
+    ///   - completion: The completion will be invoked exactly once: when tokenization is complete or an error occurs.
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
         with nativeRequest: BTPayPalRequest,

@@ -10,46 +10,30 @@ import BraintreePayPal
     public let type: String = "PayPal"
     public let nonce: String
     public let isDefault: Bool
-    /**
-     Payer's email address.
-     */
+
+    /// Payer's email address.
     public let email: String?
 
-    /**
-     Payer's first name.
-     */
+    /// Payer's first name.
     public let firstName: String?
 
-    /**
-     Payer's last name.
-     */
+    /// Payer's last name.
     public let lastName: String?
 
-    /**
-     Payer's phone number.
-     */
+    /// Payer's phone number.
     public let phone: String?
 
-    /**
-     The billing address.
-     */
+    /// The billing address.
     public let billingAddress: BTPostalAddress?
 
-    /**
-     The shipping address.
-     */
+    /// The shipping address.
     public let shippingAddress: BTPostalAddress?
 
-    /**
-     Client metadata id associated with this transaction.
-     */
+    /// Client metadata id associated with this transaction.
     public let clientMetadataID: String?
 
-    /**
-     Optional. Payer id associated with this transaction.
-
-     Will be provided for Vault and Checkout.
-     */
+    /// Optional. Payer id associated with this transaction.
+    /// Will be provided for Vault and Checkout.
     let payerID: String?
 
     init?(json: BTJSON) {

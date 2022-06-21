@@ -9,20 +9,6 @@ import BraintreePayPal
 
     let paymentType: BTPayPalPaymentType = .checkout
 
-    /**
-     Initializes a PayPal Checkout request.
-
-     - Parameter amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
-
-     - Returns: A PayPal Checkout request.
-     */
-    @objc public override init(amount: String) {
-        self.hermesPath = "v1/paypal_hermes/create_payment_resource"
-        super.init(amount: amount)
-    }
-
-    // MARK: - Internal
-
     let hermesPath: String
 
     var intentAsString: String {
@@ -34,6 +20,14 @@ import BraintreePayPal
         default:
             return "authorize"
         }
+    }
+
+    /// Initializes a PayPal Checkout request.
+    /// - Parameter amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain
+    /// exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
+    @objc public override init(amount: String) {
+        self.hermesPath = "v1/paypal_hermes/create_payment_resource"
+        super.init(amount: amount)
     }
 
     func parameters(with configuration: BTConfiguration) -> [AnyHashable: Any] {

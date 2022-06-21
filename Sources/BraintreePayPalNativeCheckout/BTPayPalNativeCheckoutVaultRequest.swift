@@ -11,11 +11,7 @@ import BraintreePayPal
 
     let paymentType: BTPayPalPaymentType = .vault
 
-    /**
-     Initializes a PayPal Vault request.
-
-     - Returns: A PayPal Vault request.
-     */
+    /// Initializes a PayPal Vault request.
     @objc public override init() {
         self.hermesPath = "v1/paypal_hermes/setup_billing_agreement"
 
