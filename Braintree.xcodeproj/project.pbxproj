@@ -80,7 +80,6 @@
 		3DF38AF2285249AE00225F2A /* BTPayPalNativeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AF1285249AE00225F2A /* BTPayPalNativeError.swift */; };
 		3DF38AF428524A0800225F2A /* BTPayPalNativeCheckoutClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AF328524A0800225F2A /* BTPayPalNativeCheckoutClient.swift */; };
 		3DF38AF828524AD200225F2A /* BTPayPalNativeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AF728524AD200225F2A /* BTPayPalNativeRequest.swift */; };
-		3DF38AFB2852539D00225F2A /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = 3DF38AFA2852539D00225F2A /* PayPalCheckout */; };
 		3DF38AFD28590B5600225F2A /* BTPayPalNativeCheckoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AFC28590B5600225F2A /* BTPayPalNativeCheckoutRequest.swift */; };
 		3DF4B4CA285A74200072DC60 /* BTPayPalNativeCheckoutVaultRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B4C9285A74200072DC60 /* BTPayPalNativeCheckoutVaultRequest_Tests.swift */; };
 		3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; };
@@ -1163,7 +1162,6 @@
 			files = (
 				3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */,
 				9CE51772282D51DD0013C740 /* BraintreeCore.framework in Frameworks */,
-				3DF38AFB2852539D00225F2A /* PayPalCheckout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2561,7 +2559,6 @@
 			);
 			name = BraintreePayPalNativeCheckout;
 			packageProductDependencies = (
-				3DF38AFA2852539D00225F2A /* PayPalCheckout */,
 			);
 			productName = BraintreeCard;
 			productReference = 9CE51784282D51DD0013C740 /* BraintreePayPalNativeCheckout.framework */;
@@ -3061,7 +3058,6 @@
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			packageReferences = (
-				3DF38AF92852539D00225F2A /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
 			projectDirPath = "";
@@ -7082,25 +7078,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		3DF38AF92852539D00225F2A /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/paypal/paypalcheckout-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.94.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		3DF38AFA2852539D00225F2A /* PayPalCheckout */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3DF38AF92852539D00225F2A /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */;
-			productName = PayPalCheckout;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A75DA344192138F000D997A2 /* Project object */;
 }
