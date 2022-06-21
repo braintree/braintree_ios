@@ -2,9 +2,7 @@
 import BraintreePayPal
 #endif
 
-/**
- Contains information about a PayPal payment method.
- */
+/// Contains information about a PayPal payment method.
 @objc public class BTPayPalNativeCheckoutAccountNonce: NSObject {
 
     public let type: String = "PayPal"
