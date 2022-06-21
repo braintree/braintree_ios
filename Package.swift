@@ -101,9 +101,9 @@ let package = Package(
         .target(
             name: "BraintreePayPalNativeCheckout",
             dependencies: [
-              .target(name: "BraintreeCore"),
-              .target(name: "BraintreePayPal"),
-              .product(name: "PayPalCheckout", package: "paypalcheckout-ios")
+              "BraintreeCore",
+              "BraintreePayPal",
+              "PayPalCheckout"
             ],
             path: "Sources/BraintreePayPalNativeCheckout"
         ),
