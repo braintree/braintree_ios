@@ -8,9 +8,7 @@ import BraintreePayPal
 
 import PayPalCheckout
 
-/**
- Client used to collect PayPal payment methods. If possible, this client will present a native flow; otherwise, it will fall back to a web flow.
- */
+/// Client used to collect PayPal payment methods. If possible, this client will present a native flow; otherwise, it will fall back to a web flow.
 @objc public class BTPayPalNativeCheckoutClient: NSObject {
 
     // MARK: - Public

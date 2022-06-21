@@ -2,9 +2,7 @@
 import BraintreePayPal
 #endif
 
-/**
- Options for the PayPal Vault flow.
- */
+/// Options for the PayPal Vault flow.
 @objc public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest, BTPayPalNativeRequest {
 
     let hermesPath: String

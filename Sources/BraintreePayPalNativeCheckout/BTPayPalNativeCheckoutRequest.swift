@@ -2,9 +2,7 @@
 import BraintreePayPal
 #endif
 
-/**
- Options for the PayPal Checkout and PayPal Checkout with Vault flows.
- */
+/// Options for the PayPal Checkout and PayPal Checkout with Vault flows.
 @objc public class BTPayPalNativeCheckoutRequest: BTPayPalCheckoutRequest, BTPayPalNativeRequest {
 
     let paymentType: BTPayPalPaymentType = .checkout
