@@ -5,16 +5,8 @@ import BraintreePayPal
 /// Options for the PayPal Vault flow.
 @objc public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest, BTPayPalNativeRequest {
 
-    let hermesPath: String
-
+    let hermesPath: String = "v1/paypal_hermes/setup_billing_agreement"
     let paymentType: BTPayPalPaymentType = .vault
-
-    /// Initializes a PayPal Vault request.
-    @objc public override init() {
-        self.hermesPath = "v1/paypal_hermes/setup_billing_agreement"
-
-        super.init()
-    }
 
     func parameters(with configuration: BTConfiguration) -> [AnyHashable : Any] {
 
