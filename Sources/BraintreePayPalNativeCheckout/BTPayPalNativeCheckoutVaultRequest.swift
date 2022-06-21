@@ -24,8 +24,7 @@ import BraintreePayPal
                   "country_code": shippingOverride.countryCodeAlpha2,
                   "recipient_name": shippingOverride.recipientName,
                 ]
-            }
-            else {
+            } else {
                 return nil
             }
         }()
