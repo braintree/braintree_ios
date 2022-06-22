@@ -35,6 +35,7 @@
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
 @import BraintreeDataCollector;
+@import BraintreeCoreSwift;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
