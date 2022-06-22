@@ -4,6 +4,7 @@
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTVenmoRequest_Internal.h"
 
+// Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BTConfiguration+Venmo.h>
 #import <Braintree/BraintreeCore.h>
@@ -22,6 +23,14 @@
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
 
+#endif
+
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+#else // Carthage or Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 @interface BTVenmoClient ()

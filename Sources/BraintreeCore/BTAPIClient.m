@@ -18,6 +18,13 @@
 #import <BraintreeCore/BTPaymentMethodNonce.h>
 #endif
 
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+#else // Carthage or Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
+#endif
+
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
 @interface BTAPIClient ()

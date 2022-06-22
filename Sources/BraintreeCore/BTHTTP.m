@@ -4,15 +4,21 @@
 #import "BTCacheDateValidator_Internal.h"
 #include <sys/sysctl.h>
 
-#if __has_include(<Braintree/BraintreeCore.h>)
+// Objective-C Module Imports
+#if __has_include(<Braintree/BraintreeCore.h>) // Cocoapods
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTHTTPErrors.h>
 #import <Braintree/BTJSON.h>
-#import <Braintree/BraintreeCoreSwift-Swift.h>
-#else
+#else // Carthage or Local Builds
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTHTTPErrors.h>
 #import <BraintreeCore/BTJSON.h>
+#endif
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+#else // Carthage or Local Builds
 #import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 

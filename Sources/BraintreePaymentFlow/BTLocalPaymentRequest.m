@@ -2,6 +2,7 @@
 #import "BTPaymentFlowClient+LocalPayment_Internal.h"
 #import <SafariServices/SafariServices.h>
 
+//Objective-C Module imports
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTLocalPaymentRequest.h>
 #import <Braintree/BTConfiguration+LocalPayment.h>
@@ -16,7 +17,7 @@
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
 
-#else                                                 // Carthage
+#else                                                 // Carthage and Local Builds
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
@@ -24,7 +25,9 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods
+
+//Swift Module imports
+#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods-generated Swift Header
 #import <Braintree/Braintree-Swift.h>
 
 #elif SWIFT_PACKAGE                                   // SPM
@@ -39,9 +42,11 @@
  */
 #import "Braintree-Swift.h"
 
-#else                                                 // Carthage
+#else                                                 // Carthage and Local Builds
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
+
 
 @interface BTLocalPaymentRequest ()
 

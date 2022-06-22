@@ -7,6 +7,7 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
+// Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>
@@ -37,6 +38,13 @@
 #import <BraintreeCore/Braintree-Version.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
+#endif
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+#else // Carthage and Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>

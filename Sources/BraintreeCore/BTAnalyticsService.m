@@ -3,6 +3,7 @@
 #import "BTAPIClient_Internal.h"
 #import "BTHTTP.h"
 
+// Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTClientMetadata.h>
 #import <Braintree/BTClientToken.h>
@@ -16,6 +17,13 @@
 #endif
 
 #import <UIKit/UIKit.h>
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+#else // Carthage or Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
+#endif
 
 #pragma mark - BTAnalyticsEvent
 

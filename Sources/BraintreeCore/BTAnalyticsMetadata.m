@@ -1,6 +1,12 @@
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
-#import "BraintreeCoreSwift/BraintreeCoreSwift-Swift.h"
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) //Cocoapods-genereated Swift Header
+#import <Braintree/Braintree-Swift.h>
+#else // Carthage or Local builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
+#endif
 
 #import <UIKit/UIKit.h>
 #import <sys/utsname.h>
