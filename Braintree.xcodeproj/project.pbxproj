@@ -4602,9 +4602,7 @@
 				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Build/**",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build",
 					"$(inherited)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4672,9 +4670,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Build/**",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build",
 					"$(inherited)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
