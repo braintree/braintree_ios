@@ -19,7 +19,7 @@ class SEPADirectDebitAPI {
         let json: [String: Any] = [
             "sepa_debit": [
                 "merchant_or_partner_customer_id": sepaDirectDebitRequest.customerID ?? "",
-                "mandate_type": sepaDirectDebitRequest.mandateType?.rawValue ?? "",
+                "mandate_type": sepaDirectDebitRequest.mandateType?.description ?? "",
                 "account_holder_name": sepaDirectDebitRequest.accountHolderName ?? "",
                 "iban": sepaDirectDebitRequest.iban ?? "",
                 "merchant_account_id": sepaDirectDebitRequest.merchantAccountID ?? "",
@@ -66,7 +66,7 @@ class SEPADirectDebitAPI {
             ]
         ]
 
-        apiClient.post("client_api/v1/payment_methods/sepa_debit_accounts", parameters: json) { body, response, error in
+        apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: json) { body, response, error in
             self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.tokenize.started")
             if let error = error {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.tokenize.error")
