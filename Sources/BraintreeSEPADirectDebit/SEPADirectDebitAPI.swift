@@ -35,27 +35,27 @@ class SEPADirectDebitAPI {
                 ]
             ]
         ]
-        
+
         apiClient.post("v1/sepa_debit", parameters: json) { body, response, error in
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.create-mandate.started")
             if let error = error {
-                // TODO: send analytics
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.create-mandate.error")
                 completion(nil, error)
                 return
             }
-            
+
             guard let body = body else {
-                // TODO: send analytics
-                // TODO: send error here
-                 completion(nil, nil)
-                 return
-             }
-            
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.create-mandate.no-body.error")
+                completion(nil, SEPADirectDebitError.noBodyReturned)
+                return
+            }
+
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.create-mandate.success")
             let result = CreateMandateResult(json: body)
             completion(result, nil)
-            
         }
     }
-    
+
     func tokenize(createMandateResult: CreateMandateResult, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
         let json: [String: Any] = [
             "sepa_debit_account": [
@@ -65,24 +65,24 @@ class SEPADirectDebitAPI {
                 "mandate_type": createMandateResult.mandateType
             ]
         ]
-        
+
         apiClient.post("client_api/v1/payment_methods/sepa_debit_accounts", parameters: json) { body, response, error in
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.tokenize.started")
             if let error = error {
-                // TODO: send analytics
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.tokenize.error")
                 completion(nil, error)
                 return
             }
-            
+
             guard let body = body else {
-                // TODO: send analytics
-                // TODO: send error here
-                 completion(nil, nil)
-                 return
-             }
-            
+                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.tokenize.no-body.error")
+                completion(nil, SEPADirectDebitError.noBodyReturned)
+                return
+            }
+
+            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.tokenize.success")
             let result = BTSEPADirectDebitNonce(json: body)
             completion(result, nil)
-            
         }
     }
 }

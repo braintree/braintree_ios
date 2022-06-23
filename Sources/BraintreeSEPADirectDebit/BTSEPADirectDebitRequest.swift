@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// Parameters for creating a SEPA Direct Debit tokenization request.
-@objcMembers public class BTSEPADirectDebitRequest: NSObject, Encodable {
+@objcMembers public class BTSEPADirectDebitRequest: NSObject {
     
     private enum CodingKeys: String, CodingKey {
         case sepaDebit = "sepa_debit"
@@ -78,27 +78,5 @@ import BraintreeCore
 
         self.cancelURL = bundleID.appending("://sepa/cancel")
         self.returnURL = bundleID.appending("://sepa/success")
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(cancelURL, forKey: .cancelURL)
-        try container.encode(returnURL, forKey: .returnURL)
-        try container.encodeIfPresent(merchantAccountID, forKey: .merchantAccountID)
-
-        var sepaDebitContainer = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .sepaDebit)
-        try sepaDebitContainer.encodeIfPresent(accountHolderName, forKey: .accountHolderName)
-        try sepaDebitContainer.encodeIfPresent(customerID, forKey: .customerID)
-        try sepaDebitContainer.encodeIfPresent(iban, forKey: .iban)
-        try sepaDebitContainer.encodeIfPresent(mandateType?.description, forKey: .mandateType)
-        try sepaDebitContainer.encodeIfPresent(iban, forKey: .iban)
-
-        var billingAddressContainer = sepaDebitContainer.nestedContainer(keyedBy: AddressKeys.self, forKey: .billingAddress)
-        try billingAddressContainer.encodeIfPresent(billingAddress?.streetAddress, forKey: .streetAddress)
-        try billingAddressContainer.encodeIfPresent(billingAddress?.extendedAddress, forKey: .extendedAddress)
-        try billingAddressContainer.encodeIfPresent(billingAddress?.locality, forKey: .locality)
-        try billingAddressContainer.encodeIfPresent(billingAddress?.region, forKey: .region)
-        try billingAddressContainer.encodeIfPresent(billingAddress?.postalCode, forKey: .postalCode)
-        try billingAddressContainer.encodeIfPresent(billingAddress?.countryCodeAlpha2, forKey: .countryCodeAlpha2)
     }
 }

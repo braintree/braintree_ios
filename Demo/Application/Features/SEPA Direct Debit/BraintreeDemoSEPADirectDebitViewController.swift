@@ -53,10 +53,10 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         billingAddress.region = "Annaberg-buchholz"
         billingAddress.postalCode = "09456"
         billingAddress.countryCodeAlpha2 = "FR"
-        
+
         let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
         sepaDirectDebitRequest.accountHolderName = "John Doe"
-        sepaDirectDebitRequest.iban = generateRandomIBAN()
+        sepaDirectDebitRequest.iban = "FR7618106000321234566666608"
         sepaDirectDebitRequest.customerID = generateRandomCustomerID()
         sepaDirectDebitRequest.mandateType = .oneOff
         sepaDirectDebitRequest.billingAddress = billingAddress
@@ -87,16 +87,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     
     private func generateRandomCustomerID() -> String {
         String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(20))
-    }
-    
-    private func generateRandomIBAN() -> String {
-//        let length = 25
-//        let characters = "0123456789"
-//        let randomCharacters = (0..<length).map{ _ in characters.randomElement()! }
-//        let randomString = String(randomCharacters)
-//
-//        return "FR" + randomString
-        "FR7618106000321234566666608"
     }
 }
 
