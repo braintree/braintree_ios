@@ -25,7 +25,6 @@
 
 #endif
 
-
 // Swift Module Imports
 #if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
 #import <Braintree/Braintree-Swift.h>
