@@ -208,4 +208,19 @@ class BTPaymentFlowDriver_ThreeDSecure_Tests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
     }
+    
+    func testPerformThreeDSecureLookup_whenNetworkConnectionLost_sendsAnalytics() {
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        
+        let expectation = self.expectation(description: "Callback envoked")
+
+        driver.performThreeDSecureLookup(threeDSecureRequest) { result, error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.lookup.network-connection.failure"))
+    }
 }

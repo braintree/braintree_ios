@@ -134,6 +134,9 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
+                if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                    [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.network-connection.failure"];
+                }
                 completionBlock(nil, error);
                 [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.tokenization"];
                 return;

@@ -6,6 +6,8 @@
 #import <BraintreeCore/BTClientMetadata.h>
 #endif
 
+#define NETWORK_CONNECTION_LOST_CODE -1005
+
 @class BTConfiguration;
 @class BTJSON;
 
