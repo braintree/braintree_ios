@@ -22,9 +22,6 @@ class SEPADirectDebitAPI {
                 "mandate_type": sepaDirectDebitRequest.mandateType?.description ?? "",
                 "account_holder_name": sepaDirectDebitRequest.accountHolderName ?? "",
                 "iban": sepaDirectDebitRequest.iban ?? "",
-                "merchant_account_id": sepaDirectDebitRequest.merchantAccountID ?? "",
-                "cancel_url": sepaDirectDebitRequest.cancelURL,
-                "return_url": sepaDirectDebitRequest.returnURL,
                 "billing_address": [
                     "address_line_1": sepaDirectDebitRequest.billingAddress?.streetAddress,
                     "address_line_2": sepaDirectDebitRequest.billingAddress?.extendedAddress,
@@ -33,7 +30,10 @@ class SEPADirectDebitAPI {
                     "postal_code": sepaDirectDebitRequest.billingAddress?.postalCode,
                     "country_code": sepaDirectDebitRequest.billingAddress?.countryCodeAlpha2
                 ]
-            ]
+            ],
+            "merchant_account_id": sepaDirectDebitRequest.merchantAccountID ?? "",
+            "cancel_url": sepaDirectDebitRequest.cancelURL,
+            "return_url": sepaDirectDebitRequest.returnURL
         ]
 
         apiClient.post("v1/sepa_debit", parameters: json) { body, response, error in
