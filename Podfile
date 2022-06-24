@@ -21,6 +21,11 @@ abstract_target 'Tests' do
   target 'BraintreeCoreTests'
 end
 
+target 'BraintreePayPalNativeCheckout' do
+  use_frameworks!
+  pod 'PayPalCheckout', '~> 0.94.0'
+end
+
 # https://github.com/CocoaPods/CocoaPods/issues/7314
 post_install do |pi|
   pi.pods_project.targets.each do |t|
