@@ -21,12 +21,6 @@ abstract_target 'Tests' do
   target 'BraintreeCoreTests'
 end
 
-target 'BraintreePayPalNativeCheckoutTests' do
-  use_frameworks!
-  # Install the pod here in order to have the transitive dependency on PayPalCheckout correctly linked
-  pod 'Braintree/PayPalNativeCheckout', :path => './'
-end
-
 # https://github.com/CocoaPods/CocoaPods/issues/7314
 post_install do |pi|
   pi.pods_project.targets.each do |t|
