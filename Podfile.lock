@@ -1,4 +1,13 @@
 PODS:
+  - Braintree/Core (5.9.0)
+  - Braintree/PayPal (5.9.0):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+  - Braintree/PayPalDataCollector (5.9.0)
+  - Braintree/PayPalNativeCheckout (5.9.0):
+    - Braintree/Core
+    - Braintree/PayPal
+    - PayPalCheckout (~> 0.94.0)
   - Expecta (1.0.6)
   - InAppSettingsKit (3.1.4)
   - OCMock (3.7.1)
@@ -20,11 +29,11 @@ PODS:
   - xcbeautify (0.8.1)
 
 DEPENDENCIES:
+  - Braintree/PayPalNativeCheckout (from `./`)
   - Expecta
   - InAppSettingsKit
   - OCMock
   - OHHTTPStubs
-  - PayPalCheckout (~> 0.94.0)
   - Specta
   - xcbeautify
 
@@ -38,7 +47,12 @@ SPEC REPOS:
     - Specta
     - xcbeautify
 
+EXTERNAL SOURCES:
+  Braintree:
+    :path: "./"
+
 SPEC CHECKSUMS:
+  Braintree: c7411ad4d23bc155efcd95ed46f27fa272deef18
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: 01fb9774c74a11fefc521f29cb2338909e1c2b61
   OCMock: 75fbeaa46a9b11f8c182bbb1d1f7e9a35ccc9955
@@ -47,6 +61,6 @@ SPEC CHECKSUMS:
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: a3b03e4a38eb1a5766a83a7a3c53915a233572e3
 
-PODFILE CHECKSUM: 7c3ce8e20d34e06c0b0690b91d78ba7fce421de5
+PODFILE CHECKSUM: 40b38defed6ad935d06beb87785673709900dac7
 
 COCOAPODS: 1.11.2

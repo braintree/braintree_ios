@@ -72,8 +72,6 @@
 		2DE12F581B59C36900EA1BCF /* BTPostalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = A72E134B1B44630C002703DD /* BTPostalAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F591B59C36900EA1BCF /* BTPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = A72E134C1B44630C002703DD /* BTPostalAddress.m */; };
 		2DE12F5A1B59C36900EA1BCF /* BTPaymentMethodNonce.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D061B3DE3B40024F9AB /* BTPaymentMethodNonce.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		31AC204B597A614D3F439BDA /* Pods_BraintreePayPalNativeCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42FF6347F69D75F82324869 /* Pods_BraintreePayPalNativeCheckout.framework */; };
-		3DAB592C28664099003A7BC5 /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAB592B28664099003A7BC5 /* PayPalCheckout.xcframework */; };
 		3DF38AE828523F7500225F2A /* BTPayPalNativeCheckoutVaultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AE728523F7500225F2A /* BTPayPalNativeCheckoutVaultRequest.swift */; };
 		3DF38AEA28523FC300225F2A /* BTPayPalNativeTokenizationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AE928523FC300225F2A /* BTPayPalNativeTokenizationRequest.swift */; };
 		3DF38AEC2852421B00225F2A /* BTPayPalNativeTokenizationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF38AEB2852421B00225F2A /* BTPayPalNativeTokenizationClient.swift */; };
@@ -355,6 +353,7 @@
 		A9E80A9F24FEF40C00196BD3 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		A9E80AA324FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */; };
 		A9EC7192252BC14000FF7D05 /* PayPalDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B463051C3D9C2200048423 /* PayPalDataCollector.framework */; };
+		B318DF019AF25C61ECDD2948 /* Pods_BraintreePayPalNativeCheckoutTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8474B6E4A6A67223DE01FE /* Pods_BraintreePayPalNativeCheckoutTests.framework */; };
 		B476D0E0348F26CFD4601F12 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0D8D6AC50E52E0BD8E140C /* Pods_Tests_IntegrationTests.framework */; };
 		B61F67801CE4C20F0051A3BD /* BTConfiguration+DataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B61F67811CE4C20F0051A3BD /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
@@ -756,6 +755,7 @@
 		03F921BD200EB9230076CD80 /* BTThreeDSecurePostalAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecurePostalAddress.m; sourceTree = "<group>"; };
 		03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecurePostalAddress_Tests.swift; sourceTree = "<group>"; };
 		0C19A08EC10BBBE9B14E2A28 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.debug.xcconfig"; sourceTree = "<group>"; };
+		15B35BDB0C7BD713F5354B56 /* Pods-BraintreePayPalNativeCheckoutTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BraintreePayPalNativeCheckoutTests.debug.xcconfig"; path = "Target Support Files/Pods-BraintreePayPalNativeCheckoutTests/Pods-BraintreePayPalNativeCheckoutTests.debug.xcconfig"; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16C42B681B3DDFE00028A3B4 /* BTAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTAPIClient.h; sourceTree = "<group>"; };
 		16C42B691B3DDFE00028A3B4 /* BTAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTAPIClient.m; sourceTree = "<group>"; };
@@ -867,6 +867,7 @@
 		57108A0E2832E1DE004EB870 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeCheckoutAccountNonce.swift; sourceTree = "<group>"; };
 		587BD47952A3B29E7950C52A /* Pods-Tests-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-UnitTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
+		7D8474B6E4A6A67223DE01FE /* Pods_BraintreePayPalNativeCheckoutTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BraintreePayPalNativeCheckoutTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+ThreeDSecure.h"; sourceTree = "<group>"; };
 		80036F7C21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTConfiguration+ThreeDSecure.m"; sourceTree = "<group>"; };
 		800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAuthenticateJWT_Tests.swift; sourceTree = "<group>"; };
@@ -1089,7 +1090,6 @@
 		A9E5C22824FD6D0800EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9E5C23524FD703B00EE691F /* BraintreeCoreTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeCoreTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalPaymentRequestDelegate.swift; sourceTree = "<group>"; };
-		B42FF6347F69D75F82324869 /* Pods_BraintreePayPalNativeCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BraintreePayPalNativeCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4584BADDADFDB323C4E41B4 /* Pods-Tests-IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+DataCollector.h"; sourceTree = "<group>"; };
 		B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "BTConfiguration+DataCollector.m"; path = "Public/BTConfiguration+DataCollector.m"; sourceTree = "<group>"; };
@@ -1102,12 +1102,11 @@
 		BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPreferredPaymentMethodsResult.h; sourceTree = "<group>"; };
 		BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPreferredPaymentMethodsResult.m; sourceTree = "<group>"; };
 		BC6F67D02386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPreferredPaymentMethods_Tests.swift; sourceTree = "<group>"; };
-		BDDC171E07AC02A816F9837A /* Pods-BraintreePayPalNativeCheckout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BraintreePayPalNativeCheckout.release.xcconfig"; path = "Target Support Files/Pods-BraintreePayPalNativeCheckout/Pods-BraintreePayPalNativeCheckout.release.xcconfig"; sourceTree = "<group>"; };
 		BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator.m; sourceTree = "<group>"; };
 		BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCacheDateValidator_Internal.h; sourceTree = "<group>"; };
 		BF0D8D6AC50E52E0BD8E140C /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8CC981A1FD4AD9A818F86F5 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
-		CAFFC96C1DCFA218B3FDB771 /* Pods-BraintreePayPalNativeCheckout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BraintreePayPalNativeCheckout.debug.xcconfig"; path = "Target Support Files/Pods-BraintreePayPalNativeCheckout/Pods-BraintreePayPalNativeCheckout.debug.xcconfig"; sourceTree = "<group>"; };
+		E077D997D5081F01A7259069 /* Pods-BraintreePayPalNativeCheckoutTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BraintreePayPalNativeCheckoutTests.release.xcconfig"; path = "Target Support Files/Pods-BraintreePayPalNativeCheckoutTests/Pods-BraintreePayPalNativeCheckoutTests.release.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1168,8 +1167,6 @@
 			files = (
 				3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */,
 				9CE51772282D51DD0013C740 /* BraintreeCore.framework in Frameworks */,
-				3DAB592C28664099003A7BC5 /* PayPalCheckout.xcframework in Frameworks */,
-				31AC204B597A614D3F439BDA /* Pods_BraintreePayPalNativeCheckout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1178,6 +1175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CE5179F282D54030013C740 /* BraintreePayPalNativeCheckout.framework in Frameworks */,
+				B318DF019AF25C61ECDD2948 /* Pods_BraintreePayPalNativeCheckoutTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1687,8 +1685,8 @@
 				B4584BADDADFDB323C4E41B4 /* Pods-Tests-IntegrationTests.release.xcconfig */,
 				55BF6AC8D7291439E78C300F /* Pods-Tests-UnitTests.debug.xcconfig */,
 				587BD47952A3B29E7950C52A /* Pods-Tests-UnitTests.release.xcconfig */,
-				CAFFC96C1DCFA218B3FDB771 /* Pods-BraintreePayPalNativeCheckout.debug.xcconfig */,
-				BDDC171E07AC02A816F9837A /* Pods-BraintreePayPalNativeCheckout.release.xcconfig */,
+				15B35BDB0C7BD713F5354B56 /* Pods-BraintreePayPalNativeCheckoutTests.debug.xcconfig */,
+				E077D997D5081F01A7259069 /* Pods-BraintreePayPalNativeCheckoutTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1901,7 +1899,7 @@
 				A903E1B524F9D37B00C314E1 /* XCTest.framework */,
 				2C17D162FE48C0104E1BE11D /* Pods_Tests_BraintreeCoreTests.framework */,
 				BF0D8D6AC50E52E0BD8E140C /* Pods_Tests_IntegrationTests.framework */,
-				B42FF6347F69D75F82324869 /* Pods_BraintreePayPalNativeCheckout.framework */,
+				7D8474B6E4A6A67223DE01FE /* Pods_BraintreePayPalNativeCheckoutTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2558,7 +2556,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9CE51781282D51DD0013C740 /* Build configuration list for PBXNativeTarget "BraintreePayPalNativeCheckout" */;
 			buildPhases = (
-				C55B08E296CFA69BA33F0AFC /* [CP] Check Pods Manifest.lock */,
 				9CE51769282D51DD0013C740 /* Sources */,
 				9CE51771282D51DD0013C740 /* Frameworks */,
 				9CE51773282D51DD0013C740 /* Headers */,
@@ -2579,9 +2576,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9CE517A2282D54030013C740 /* Build configuration list for PBXNativeTarget "BraintreePayPalNativeCheckoutTests" */;
 			buildPhases = (
+				650D3D0C35EFE6ED910AFF35 /* [CP] Check Pods Manifest.lock */,
 				9CE51797282D54030013C740 /* Sources */,
 				9CE51798282D54030013C740 /* Frameworks */,
 				9CE51799282D54030013C740 /* Resources */,
+				576E184113BFF74D798B7C6E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3288,6 +3287,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		576E184113BFF74D798B7C6E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BraintreePayPalNativeCheckoutTests/Pods-BraintreePayPalNativeCheckoutTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Braintree/Braintree.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PayPalCheckout/PayPalCheckout.framework/PayPalCheckout",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Braintree.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PayPalCheckout.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BraintreePayPalNativeCheckoutTests/Pods-BraintreePayPalNativeCheckoutTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5DD84D1A956339FDAF419EC7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3304,6 +3323,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Tests-IntegrationTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		650D3D0C35EFE6ED910AFF35 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BraintreePayPalNativeCheckoutTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3354,28 +3395,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C55B08E296CFA69BA33F0AFC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BraintreePayPalNativeCheckout-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D2400D69D1A49A0D367A46B0 /* [CP] Embed Pods Frameworks */ = {
@@ -4607,7 +4626,6 @@
 		};
 		9CE51782282D51DD0013C740 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CAFFC96C1DCFA218B3FDB771 /* Pods-BraintreePayPalNativeCheckout.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4677,7 +4695,6 @@
 		};
 		9CE51783282D51DD0013C740 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BDDC171E07AC02A816F9837A /* Pods-BraintreePayPalNativeCheckout.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4707,6 +4724,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Carthage/Build",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
 					"$(inherited)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4741,6 +4759,7 @@
 		};
 		9CE517A3282D54030013C740 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15B35BDB0C7BD713F5354B56 /* Pods-BraintreePayPalNativeCheckoutTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4790,6 +4809,7 @@
 		};
 		9CE517A4282D54030013C740 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E077D997D5081F01A7259069 /* Pods-BraintreePayPalNativeCheckoutTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
