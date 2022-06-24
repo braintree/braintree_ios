@@ -1,5 +1,8 @@
 import XCTest
 
-class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
+@testable import BraintreePayPalNativeCheckout
 
+class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
+    func testAutomatic() {
+    }
 }
