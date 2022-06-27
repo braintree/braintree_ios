@@ -14,9 +14,14 @@ import BraintreePayPal
 
      - Parameter amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
 
+     - Parameter shippingCallback: Optional. Used for shipping changes and shipping change actions.
+
      - Returns: A PayPal Checkout request.
      */
-    @objc public override init(amount: String) {
+  @objc public override init(
+      amount: String,
+      shippingCallback: (PayPalCheckout.ShippingChange, PayPalCheckout.ShippingChangeAction) -> Void)?
+    {
         self.hermesPath = "v1/paypal_hermes/create_payment_resource"
         super.init(amount: amount)
     }
@@ -24,6 +29,8 @@ import BraintreePayPal
     // MARK: - Internal
 
     let hermesPath: String
+
+    var shippingCallback: (PayPalCheckout.ShippingChange, PayPalCheckout.ShippingChangeAction) -> Void)? = nil
 
     var intentAsString: String {
         switch intent {

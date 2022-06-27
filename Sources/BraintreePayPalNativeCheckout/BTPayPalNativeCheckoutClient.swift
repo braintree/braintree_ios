@@ -36,7 +36,7 @@ import PayPalCheckout
      */
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
-        with nativeRequest: BTPayPalRequest,
+        with nativeRequest: BTPayPalNativeCheckoutRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, NSError?) -> Void
     ) {
         guard let request = nativeRequest as? (BTPayPalRequest & BTPayPalNativeRequest) else {
@@ -60,6 +60,7 @@ import PayPalCheckout
                             completion(nil, BTPayPalNativeError.invalidRequest as NSError)
                         }
                     },
+                    onShippingChange: nativeRequest.shippingCallback,
                     onApprove: { [weak self] approval in
                         self?.tokenize(approval: approval, request: request, completion: completion)
                     },
