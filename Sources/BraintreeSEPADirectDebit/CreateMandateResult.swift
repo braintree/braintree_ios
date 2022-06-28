@@ -9,7 +9,6 @@ struct CreateMandateResult {
     /// Defaulting the approval URL to the string "null" if the API returns nil for this field because the mandate has already been approved.
     /// Swift automatically converts the string "null" to nil, so we want to convert it back to indicate that the mandate was already approved.
     /// This also allows us to still handle an actually nil approval URL if needed vs treating it like an already approved mandate.
-    // TODO: Do we need this still?
     static let mandateAlreadyApprovedURLString: String = "null"
     
     /// The approval URL used to present the mandate to the customer.
@@ -28,8 +27,8 @@ struct CreateMandateResult {
     let mandateType: String?
     
     init(json: BTJSON) {
-        self.approvalURL = json["message"]["body"]["sepaDebitAccount"]["approvalUrl"].asString()
-        self.ibanLastFour = json["message"]["body"]["sepaDebitAccount"]["ibanLastChars"].asString()
+        self.approvalURL = json["message"]["body"]["sepaDebitAccount"]["approvalUrl"].asString() ?? CreateMandateResult.mandateAlreadyApprovedURLString
+        self.ibanLastFour = json["message"]["body"]["sepaDebitAccount"]["last4"].asString()
         self.customerID = json["message"]["body"]["sepaDebitAccount"]["merchantOrPartnerCustomerId"].asString()
         self.bankReferenceToken = json["message"]["body"]["sepaDebitAccount"]["bankReferenceToken"].asString()
         self.mandateType = json["message"]["body"]["sepaDebitAccount"]["mandateType"].asString()
