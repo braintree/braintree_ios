@@ -88,7 +88,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "ibanLastFour": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -138,7 +138,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "ibanLastFour": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -185,7 +185,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "ibanLastFour": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -234,7 +234,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -281,7 +281,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -321,7 +321,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -423,7 +423,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "   ",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -467,7 +467,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "   ",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -511,7 +511,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -555,7 +555,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -595,7 +595,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "null",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -609,7 +609,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -652,7 +652,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "null",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -666,7 +666,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -705,7 +705,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -719,7 +719,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -762,7 +762,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -776,7 +776,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -815,7 +815,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "null",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -864,7 +864,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "nil",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -909,7 +909,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"
@@ -958,7 +958,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "body": [
                         "sepaDebitAccount": [
                             "approvalUrl": "https://example-success",
-                            "ibanLastChars": "1234",
+                            "last4": "1234",
                             "merchantOrPartnerCustomerId": "a-customer-id",
                             "bankReferenceToken": "a-bank-reference-token",
                             "mandateType": "ONE_OFF"

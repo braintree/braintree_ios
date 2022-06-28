@@ -99,7 +99,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
