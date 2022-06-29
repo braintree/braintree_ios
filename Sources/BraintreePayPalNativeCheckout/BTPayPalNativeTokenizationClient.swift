@@ -28,8 +28,8 @@ class BTPayPalNativeTokenizationClient {
 
         apiClient.post(
             "v1/payment_methods/paypal_accounts",
-            parameters: tokenizationRequest.parameters())
-        { body, _, error in
+            parameters: tokenizationRequest.parameters()
+        ) { body, _, error in
             guard let json = body, error == nil else {
                 completion(.failure(.tokenizationFailed))
                 return
