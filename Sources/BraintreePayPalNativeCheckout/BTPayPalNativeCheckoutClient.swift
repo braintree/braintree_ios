@@ -72,7 +72,7 @@ import PayPalCheckout
         }
     }
 
-    private func tokenize(approval: PayPalCheckout.Approval, request: BTPayPalRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, NSError?) -> Void) {
+    private func tokenize(approval: PayPalCheckout.Approval, request: BTPayPalRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
 
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: apiClient)
         tokenizationClient.tokenize(request: request) { result in
@@ -80,7 +80,7 @@ import PayPalCheckout
             case .success(let nonce):
                 completion(nonce, nil)
             case .failure(let error):
-                completion(nil, error as NSError)
+                completion(nil, error)
             }
         }
     }
