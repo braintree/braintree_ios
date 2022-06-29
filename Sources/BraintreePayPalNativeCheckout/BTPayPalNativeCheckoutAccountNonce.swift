@@ -44,7 +44,6 @@ import BraintreePayPal
         }
 
         let details = paypalAccounts["details"]
-
         let payerInfo = details["payerInfo"]
 
         clientMetadataID = details["correlationId"].asString()
@@ -57,7 +56,6 @@ import BraintreePayPal
         let shippingAddressJSON = details["payerInfo"]["shippingAddress"]
         let accountAddressJSON =  details["payerInfo"]["accountAddress"]
         shippingAddress = Self.addressFromJSON(shippingAddressJSON) ?? Self.accountAddressFromJSON(accountAddressJSON)
-
 
         let billingAddressJSON = details["payerInfo"]["billingAddress"]
         billingAddress = Self.addressFromJSON(billingAddressJSON)
