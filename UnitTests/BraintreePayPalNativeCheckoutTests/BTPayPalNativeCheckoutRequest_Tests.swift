@@ -1,10 +1,3 @@
-//
-//  BTPayPalNativeCheckoutRequest_Tests.swift
-//  BraintreePayPalNativeCheckoutTests
-//
-//  Created by Jones, Jon on 6/28/22.
-//
-
 import XCTest
 @testable import BraintreePayPalNativeCheckout
 @testable import BraintreeCore
