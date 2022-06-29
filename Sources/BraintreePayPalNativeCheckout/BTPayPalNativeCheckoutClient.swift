@@ -29,10 +29,10 @@ import PayPalCheckout
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
         with nativeRequest: BTPayPalRequest,
-        completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, NSError?) -> Void
+        completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         guard let request = nativeRequest as? (BTPayPalRequest & BTPayPalNativeRequest) else {
-            completion(nil, BTPayPalNativeError.invalidRequest as NSError)
+            completion(nil, BTPayPalNativeError.invalidRequest)
             return
         }
 
@@ -49,17 +49,17 @@ import PayPalCheckout
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
                         @unknown default:
-                            completion(nil, BTPayPalNativeError.invalidRequest as NSError)
+                            completion(nil, BTPayPalNativeError.invalidRequest)
                         }
                     },
                     onApprove: { [weak self] approval in
                         self?.tokenize(approval: approval, request: request, completion: completion)
                     },
                     onCancel: {
-                        completion(nil, BTPayPalNativeError.canceled as NSError)
+                        completion(nil, BTPayPalNativeError.canceled)
                     },
                     onError: { error in
-                        completion(nil, BTPayPalNativeError.checkoutSDKFailed as NSError)
+                        completion(nil, BTPayPalNativeError.checkoutSDKFailed)
                     },
                     environment: order.environment
                 )
@@ -67,8 +67,7 @@ import PayPalCheckout
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
-                completion(nil, error as NSError)
-                return
+                completion(nil, error)
             }
         }
     }
