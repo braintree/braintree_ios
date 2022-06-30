@@ -159,6 +159,12 @@
 
             break;
         }
+        case BraintreeDemoAuthTypeMockedPayPalTokenizationKey: {
+            NSString *tokenizationKey;
+            tokenizationKey = @"sandbox_q7v35n9n_555d2htrfsnnmfb3";
+            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:tokenizationKey];
+            return;
+        }
     }
 }
 
