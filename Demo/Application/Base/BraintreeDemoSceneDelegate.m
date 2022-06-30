@@ -24,7 +24,7 @@
     for (UIOpenURLContext *urlContext in URLContexts) {
         NSURL *url = [urlContext URL];
         if ([url.scheme localizedCaseInsensitiveCompare:@"com.braintreepayments.Demo.payments"] == NSOrderedSame) {
-            [BTAppContextSwitcher handleOpenURLContext:urlContext];
+            [[BTAppContextSwitcher sharedInstance] handleOpenURLContext:urlContext];
         }
     }
 }

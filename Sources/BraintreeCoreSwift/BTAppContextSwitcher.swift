@@ -13,19 +13,9 @@ import UIKit
     //TODO: Optimize this, it was a set in Objc
     private var appContextSwitchClients = [BTAppContextSwitchClient]()
     
-    @objc(setReturnURLScheme:)
-    public static func setReturnURL(scheme: String) {
-        sharedInstance.returnURLScheme = scheme
-    }
-    
-    @objc(handleOpenURL:)
-    public static func handleOpen(_ url: URL) -> Bool {
-        sharedInstance.handleOpen(url)
-    }
-    
     @objc(handleOpenURLContext:)
-    public static func handleOpenURL(context: UIOpenURLContext) -> Bool {
-        sharedInstance.handleOpen(context.url)
+    public func handleOpenURL(context: UIOpenURLContext) -> Bool {
+        handleOpen(context.url)
     }
     
     @objc(handleOpenURL:)

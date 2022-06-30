@@ -11,7 +11,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     [self setupAppearance];
     [self registerDefaultsFromSettings];
 
-    [BTAppContextSwitcher setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
+    [[BTAppContextSwitcher sharedInstance] setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:@"magnes.debug.mode"];
