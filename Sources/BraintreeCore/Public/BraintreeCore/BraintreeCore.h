@@ -25,7 +25,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <Braintree/BTPreferredPaymentMethodsResult.h>
 #else
 #import <BraintreeCore/BTAPIClient.h>
-#import <BraintreeCore/BTAppContextSwitcher.h>
 #import <BraintreeCore/BTBinData.h>
 #import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTClientToken.h>

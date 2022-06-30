@@ -1,6 +1,6 @@
 import Foundation
 
-@objc public protocol BTAppContextSwitchClientSwift {
+@objc public protocol BTAppContextSwitchClient {
     
     /// :nodoc: Determine whether the return URL can be handled.
     /// - Parameter returnURL: the URL you receive in  `scene(_:openURLContexts:)` (or `application(_:open:options:)` if not using SceneDelegate) when returning to your app
