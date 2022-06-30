@@ -1,7 +1,11 @@
 import Foundation
 
 /// Error returned from the native PayPal flow
-enum BTPayPalNativeError: Int, Error, CustomNSError, LocalizedError  {
+enum BTPayPalNativeError: Error, CustomNSError, LocalizedError, Equatable  {
+    static func == (lhs: BTPayPalNativeError, rhs: BTPayPalNativeError) -> Bool {
+        lhs.errorCode == rhs.errorCode
+    }
+
     /// Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest
     case invalidRequest
 
@@ -18,7 +22,7 @@ enum BTPayPalNativeError: Int, Error, CustomNSError, LocalizedError  {
     case invalidEnvironment
 
     /// Failed to create PayPal order
-    case orderCreationFailed
+    case orderCreationFailed(Error)
 
     /// PayPal flow was canceled by the user
     case canceled
@@ -27,17 +31,42 @@ enum BTPayPalNativeError: Int, Error, CustomNSError, LocalizedError  {
     case checkoutSDKFailed
 
     /// Tokenization with the Braintree Gateway failed
-    case tokenizationFailed
+    case tokenizationFailed(Error)
 
     /// Failed to parse tokenization result
     case parsingTokenizationResultFailed
+
+    case invalidJSONResponse
 
     static var errorDomain: String {
         "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain"
     }
 
     var errorCode: Int {
-        rawValue
+        switch self {
+        case .invalidRequest:
+            return 0
+        case .fetchConfigurationFailed:
+            return 1
+        case .payPalNotEnabled:
+            return 2
+        case .payPalClientIDNotFound:
+            return 3
+        case .invalidEnvironment:
+            return 4
+        case .orderCreationFailed:
+            return 5
+        case .canceled:
+            return 6
+        case .checkoutSDKFailed:
+            return 7
+        case .tokenizationFailed:
+            return 8
+        case .parsingTokenizationResultFailed:
+            return 9
+        case .invalidJSONResponse:
+            return 10
+        }
     }
 
     public var errorDescription: String? {
@@ -52,16 +81,18 @@ enum BTPayPalNativeError: Int, Error, CustomNSError, LocalizedError  {
             return "Could not find PayPal client ID in Braintree configuration."
         case .invalidEnvironment:
             return "Invalid environment identifier found in the Braintree configuration."
-        case .orderCreationFailed:
-            return "Failed to create PayPal order."
+        case .orderCreationFailed(let error):
+            return "Failed to create PayPal order. Reason: \(error.localizedDescription)"
         case .canceled:
             return "PayPal flow was canceled by the user."
         case .checkoutSDKFailed:
             return "PayPalCheckout SDK returned an error."
-        case .tokenizationFailed:
-            return "Tokenization with the Braintree Gateway failed."
+        case .tokenizationFailed(let error):
+            return "Tokenization with the Braintree Gateway failed: \(error.localizedDescription)"
         case .parsingTokenizationResultFailed:
             return "Failed to parse tokenization result."
+        case .invalidJSONResponse:
+            return "Invalid JSON response."
         }
     }
 }

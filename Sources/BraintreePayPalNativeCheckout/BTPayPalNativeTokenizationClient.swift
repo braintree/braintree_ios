@@ -31,7 +31,8 @@ class BTPayPalNativeTokenizationClient {
             parameters: tokenizationRequest.parameters()
         ) { body, _, error in
             guard let json = body, error == nil else {
-                completion(.failure(.tokenizationFailed))
+                let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse
+                completion(.failure(.tokenizationFailed(underlyingError)))
                 return
             }
 

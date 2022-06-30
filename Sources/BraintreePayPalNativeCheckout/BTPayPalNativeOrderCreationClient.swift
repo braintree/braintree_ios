@@ -61,7 +61,8 @@ class BTPayPalNativeOrderCreationClient {
                 parameters: request.parameters(with: config)
             ) { json, response, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
-                    completion(.failure(.orderCreationFailed))
+                    let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse
+                    completion(.failure(.orderCreationFailed(underlyingError)))
                     return
                 }
 
