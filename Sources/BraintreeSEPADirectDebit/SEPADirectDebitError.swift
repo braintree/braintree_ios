@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with SEPA Direct Debit.
-enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
+enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
@@ -32,31 +32,7 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
     }
 
     var errorCode: Int {
-        switch self {
-        case .unknown:
-            return 0
-            
-        case .webFlowCanceled:
-            return 1
-            
-        case .presentationContextInvalid:
-            return 2
-            
-        case .resultURLInvalid:
-            return 3
-
-        case .resultReturnedNil:
-            return 4
-            
-        case .approvalURLInvalid:
-            return 5
-            
-        case .authenticationResultNil:
-            return 6
-            
-        case .noBodyReturned:
-            return 7
-        }
+        rawValue
     }
 
     var errorDescription: String? {
