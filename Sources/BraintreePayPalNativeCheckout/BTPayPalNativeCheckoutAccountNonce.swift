@@ -76,7 +76,6 @@ import BraintreePayPal
         return address
     }
 
-
     private static func accountAddressFromJSON(_ addressJSON: BTJSON) -> BTPostalAddress? {
         if (!addressJSON.isObject) {
             return nil

@@ -73,7 +73,6 @@ import PayPalCheckout
     }
 
     private func tokenize(approval: PayPalCheckout.Approval, request: BTPayPalRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
-
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: apiClient)
         tokenizationClient.tokenize(request: request) { result in
             switch result {

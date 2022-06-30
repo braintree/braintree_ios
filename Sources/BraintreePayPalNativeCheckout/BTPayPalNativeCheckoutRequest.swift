@@ -51,6 +51,6 @@ import BraintreePayPal
 
         // Combining the base parameters with the parameters defined here - if there is a conflict,
         // choose the values defined here
-        return baseParams.merging(paypalParams, uniquingKeysWith: { _, new in new })
+        return baseParams.merging(paypalParams) { _, new in new }
     }
 }
