@@ -41,7 +41,7 @@
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection
 
-## unreleased
+## 5.10.0 (2022-06-06)
 * Fix potential crash when http request fails with no error but empty data (thanks @cltnschlosser)
 * Update Cardinal SDK to version 2.2.5-3
 
