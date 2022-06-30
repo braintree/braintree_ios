@@ -12,7 +12,7 @@ struct CreateMandateResult {
     static let mandateAlreadyApprovedURLString: String = "null"
     
     /// The approval URL used to present the mandate to the customer.
-    let approvalURL: String?
+    let approvalURL: String
 
     /// The last four digits of the IBAN.
     let ibanLastFour: String?

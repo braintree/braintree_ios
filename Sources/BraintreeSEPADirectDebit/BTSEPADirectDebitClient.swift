@@ -57,7 +57,7 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.tokenize(createMandateResult: createMandateResult, completion: completion)
                 return
-            } else if let url = URL(string: createMandateResult.approvalURL ?? "") {
+            } else if let url = URL(string: createMandateResult.approvalURL) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSession(url: url, context: context) { success, error in
                     switch success {
@@ -103,7 +103,7 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.tokenize(createMandateResult: createMandateResult, completion: completion)
                 return
-            } else if let url = URL(string: createMandateResult.approvalURL ?? "") {
+            } else if let url = URL(string: createMandateResult.approvalURL) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSessionWithoutContext(url: url) { success, error in
                     switch success {
