@@ -82,7 +82,7 @@ enum BTPayPalNativeError: Error, CustomNSError, LocalizedError, Equatable  {
         case .invalidEnvironment:
             return "Invalid environment identifier found in the Braintree configuration."
         case .orderCreationFailed(let error):
-            return "Failed to create PayPal order. Reason: \(error.localizedDescription)"
+            return "Failed to create PayPal order: \(error.localizedDescription)"
         case .canceled:
             return "PayPal flow was canceled by the user."
         case .checkoutSDKFailed:
