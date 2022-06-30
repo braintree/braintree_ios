@@ -3,100 +3,11 @@ import BraintreeCore
 import BraintreeTestShared
 import PPRiskMagnes
 @testable import BraintreeDataCollector
-@testable import BraintreeKountDataCollector
 
 class BTDataCollector_Tests: XCTestCase {
 
-    func testSetFraudMerchantID_overridesMerchantID() {
-        let config: [String : Any] = [
-            "environment":"development",
-            "kount": [
-                "kountMerchantId": "500000"
-            ]
-        ]
-
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
-
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
-        let expectation = self.expectation(description: "Returns fraud data")
-        
-        dataCollector.collectDeviceData(kountMerchantID: "500001") { deviceData, _ in
-            if let deviceData = deviceData {
-                let json = BTJSON(data: deviceData.data(using: .utf8)!)
-                XCTAssertEqual((json["fraud_merchant_id"]).asString(), "500001")
-                XCTAssert((json["device_session_id"]).asString()!.count >= 32)
-                 XCTAssert((json["correlation_id"] as AnyObject).asString()!.count > 0)
-                expectation.fulfill()
-            } else {
-                XCTFail("We should return the expected data")
-            }
-        }
-        
-        waitForExpectations(timeout: 2)
-    }
-
-    func testCollectDeviceData_whenMerchantConfiguredForKount_collectsAllData() {
-        let config: [String : Any] = [
-            "environment": "development",
-            "kount": [
-                "kountMerchantId": "500000"
-            ]
-        ]
-        
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
-
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
-
-        let expectation = self.expectation(description: "Returns fraud data")
-        dataCollector.collectDeviceData { deviceData, _ in
-            if let deviceData = deviceData {
-                let json = BTJSON(data: deviceData.data(using: .utf8)!)
-                XCTAssertEqual((json["fraud_merchant_id"]).asString(), "500000")
-                XCTAssert((json["device_session_id"]).asString()!.count >= 32)
-                 XCTAssert((json["correlation_id"] as AnyObject).asString()!.count > 0)
-                expectation.fulfill()
-            } else {
-                XCTFail("We should return the expected data")
-            }
-        }
-        
-        waitForExpectations(timeout: 2)
-    }
-
-    func testCollectDeviceData_whenMerchantConfiguredForKount_setsMerchantIDOnKount() {
-        let config: [String : Any] = [
-            "environment": "sandbox",
-            "kount": [
-                "kountMerchantId": "500000"
-            ]
-        ]
-
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
-
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
-        let stubKount = FakeDeviceCollectorSDK()
-        dataCollector.kount = stubKount
-
-        let expectation = self.expectation(description: "Returns fraud data")
-        dataCollector.collectDeviceData { _, _ in
-            XCTAssertEqual(500000, stubKount.merchantID)
-            XCTAssertEqual(KEnvironment.test, stubKount.environment)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testCollectDeviceData_whenMerchantNotConfiguredForKount_doesNotCollectKountData() {
-        let config: [String: Any] = [
-            "environment": "development",
-            "kount": [
-                "kountMerchantId": nil
-            ]
-        ]
+    func testCollectDeviceData_collectsAllData() {
+        let config: [String: Any] = ["environment": "development"]
         
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
@@ -138,19 +49,6 @@ class BTDataCollector_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
-    }
-
-    func testClientMetadata_isNotJSON() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
-        let sessionID = dataCollector.generateSessionID()
-        
-        guard let clientMetadataIDJSONData = sessionID.data(using: .utf8) else {
-            XCTFail("Data should be returned as expected")
-            return
-        }
-
-        XCTAssertThrowsError(try JSONSerialization.jsonObject(with: clientMetadataIDJSONData, options: .mutableContainers))
     }
 
     func testClientMetadataValue_whenUsingPairingID_isDifferentWhenSubsequentCallsDoNotSpecifyPairingID() {
@@ -242,27 +140,6 @@ class BTDataCollector_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
     
-    func testCollectDeviceData_invalidKountMerchantID_returnError() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
-        
-        mockDataCollector.cannedDataCollectorError = BTDataCollectorError.noKountMerchantID
-
-        let expectation = self.expectation(description: "Returns error")
-        mockDataCollector.collectDeviceData(kountMerchantID: "aaaa") { _, error in
-            if let error = error as NSError? {
-                XCTAssertEqual(error.domain, BTDataCollectorError.errorDomain)
-                XCTAssertEqual(error.code, BTDataCollectorError.noKountMerchantID.errorCode)
-                XCTAssertEqual(error.localizedDescription, BTDataCollectorError.noKountMerchantID.localizedDescription)
-                expectation.fulfill()
-            } else {
-                XCTFail("We Should have received an error")
-            }
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-    
     func testCollectDeviceData_invalidJSON_returnError() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
@@ -303,20 +180,5 @@ class BTDataCollector_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
-    }
-}
-
-class FakeDeviceCollectorSDK: KDataCollector {
-    
-    var lastCollectSessionID: String?
-    var forceError = false
-
-    override func collect(forSession sessionID: String, completion completionBlock: ((String, Bool, Error?) -> Void)? = nil) {
-        lastCollectSessionID = sessionID
-        if forceError {
-            completionBlock?("1981", false, NSError(domain: "Fake", code: 1981, userInfo: nil))
-        } else {
-            completionBlock?(sessionID, true, nil)
-        }
     }
 }
