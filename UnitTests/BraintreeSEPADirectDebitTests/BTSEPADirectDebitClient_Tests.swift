@@ -30,8 +30,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
 
     func testTokenizeWithPresentationContext_callsCreateMandateWithError_returnsError_andSendsAnalytics() {
         let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: mockAPIClient)
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        mockSepaDirectDebitAPI.cannedCreateMandateError = NSError(
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        mockAPIClient.cannedResponseError = NSError(
             domain: "CannedError",
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "This is a create mandate fake error"]
@@ -57,8 +57,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_callsCreateMandateWithError_returnsError_andSendsAnalytics() {
         let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: mockAPIClient)
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        mockSepaDirectDebitAPI.cannedCreateMandateError = NSError(
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        mockAPIClient.cannedResponseError = NSError(
             domain: "CannedError",
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "This is a create mandate fake error"]
@@ -80,14 +80,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenizeWithPresentationContext_handleWebAuthenticationSessionResultCalledWithCanceledSession_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
         
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "ibanLastFour": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
@@ -103,8 +111,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
 
         if #available(iOS 13.0, *) {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: MockViewController()) { nonce, error in
@@ -124,14 +130,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_handleWebAuthenticationSessionResultCalledWithCanceledSession_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "ibanLastFour": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
@@ -147,9 +161,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        
+
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
@@ -165,14 +177,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     @available(iOS 13.0, *)
     func testTokenizeWithPresentationContext_handleWebAuthenticationSessionResultCalledWithInvalidContext_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "ibanLastFour": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
@@ -188,8 +208,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
 
         sepaDirectDebitClient.tokenize(
             request: sepaDirectDebitRequest,
@@ -208,14 +226,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_handleWebAuthenticationSessionResultCalledWithInvalidContext_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
@@ -232,8 +258,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
         
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
@@ -249,14 +273,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     @available(iOS 13.0, *)
     func testTokenizeWithPresentationContext_handleWebAuthenticationSessionResultCalledWithInvalidResponseURL_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "invalid-url")
@@ -266,8 +298,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
 
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: MockViewController()) { nonce, error in
             if error != nil, let error = error as NSError? {
@@ -283,14 +313,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_handleWebAuthenticationSessionResultCalledWithInvalidResponseURL_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "invalid-url")
@@ -300,8 +338,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
 
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
@@ -318,14 +354,12 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     @available(iOS 13.0, *)
     func testTokenizeWithPresentationContext_handleCreateMandateReturnsNoErrorOrResult_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult: CreateMandateResult? = nil
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
 
         mockWebAuthenticationSession.cannedErrorResponse = NSError(
             domain: SEPADirectDebitError.errorDomain,
-            code: SEPADirectDebitError.resultReturnedNil.errorCode,
-            userInfo: ["Description": "Mock resultReturnedNil error description."]
+            code: SEPADirectDebitError.noBodyReturned.errorCode,
+            userInfo: ["Description": "Mock noBodyReturned error description."]
         )
 
         let sepaDirectDebitClient = BTSEPADirectDebitClient(
@@ -334,13 +368,13 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
         
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
+        mockAPIClient.cannedResponseBody = nil
 
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: MockViewController()) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
-                XCTAssertEqual(error.code, SEPADirectDebitError.resultReturnedNil.errorCode)
-                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.resultReturnedNil.localizedDescription)
+                XCTAssertEqual(error.code, SEPADirectDebitError.noBodyReturned.errorCode)
+                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.noBodyReturned.localizedDescription)
                 XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
@@ -350,13 +384,11 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_handleCreateMandateReturnsNoErrorOrResult_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult: CreateMandateResult? = nil
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
 
         mockWebAuthenticationSession.cannedErrorResponse = NSError(
             domain: SEPADirectDebitError.errorDomain,
-            code: SEPADirectDebitError.resultReturnedNil.errorCode,
+            code: SEPADirectDebitError.noBodyReturned.errorCode,
             userInfo: ["Description": "Mock resultReturnedNil error description."]
         )
 
@@ -366,13 +398,13 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
         
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
+        mockAPIClient.cannedResponseBody = nil
 
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
-                XCTAssertEqual(error.code, SEPADirectDebitError.resultReturnedNil.errorCode)
-                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.resultReturnedNil.localizedDescription)
+                XCTAssertEqual(error.code, SEPADirectDebitError.noBodyReturned.errorCode)
+                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.noBodyReturned.localizedDescription)
                 XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
@@ -383,14 +415,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     @available(iOS 13.0, *)
     func testTokenizeWithPresentationContext_handleCreateMandateReturnsInvalidURL_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "   ",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "   ",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedErrorResponse = NSError(
@@ -404,8 +444,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
 
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: MockViewController()) { nonce, error in
             if error != nil, let error = error as NSError? {
@@ -421,14 +459,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_handleCreateMandateReturnsInvalidURL_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "   ",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "   ",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedErrorResponse = NSError(
@@ -442,8 +488,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
 
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
@@ -459,14 +503,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenizeWithPresentationContext_handleWebAuthenticationSessionSuccessURLInvalid_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedResponseURL = nil
@@ -476,8 +528,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
 
         if #available(iOS 13.0, *) {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: MockViewController()) { nonce, error in
@@ -497,14 +547,22 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_handleWebAuthenticationSessionSuccessURLInvalid_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
         
         mockWebAuthenticationSession.cannedResponseURL = nil
@@ -514,8 +572,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             webAuthenticationSession: mockWebAuthenticationSession,
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
-        
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
         
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
@@ -531,21 +587,29 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenizeWithPresentationContext_callsTokenizeWithAlreadyApprovedMandate_returnsSuccess_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "null",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "null",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
         
-        let json = BTJSON(
+        let mockTokenizeResponse = BTJSON(
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -553,8 +617,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         )
         
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizePaymentMethodNonce = BTSEPADirectDebitNonce(json: json)
+        mockAPIClient.cannedResponseBody = BTJSON(value: mockTokenizeResponse)
         
         let sepaDirectDebitClient = BTSEPADirectDebitClient(
             apiClient: mockAPIClient,
@@ -581,21 +644,29 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_callsTokenizeWithAlreadyApprovedMandate_returnsSuccess_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "null",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "null",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
         
-        let json = BTJSON(
+        let mockTokenizeResponse = BTJSON(
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -603,9 +674,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         )
         
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizePaymentMethodNonce = BTSEPADirectDebitNonce(json: json)
-        
+        mockAPIClient.cannedResponseBody = BTJSON(value: mockTokenizeResponse)
+
         let sepaDirectDebitClient = BTSEPADirectDebitClient(
             apiClient: mockAPIClient,
             webAuthenticationSession: mockWebAuthenticationSession,
@@ -627,21 +697,29 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenizeWithPresentationContext_callsTokenize_returnsSuccess_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
         
-        let json = BTJSON(
+        let mockTokenizeResponse = BTJSON(
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -649,9 +727,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         )
         
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizePaymentMethodNonce = BTSEPADirectDebitNonce(json: json)
-        
+        mockAPIClient.cannedResponseBody = BTJSON(value: mockTokenizeResponse)
+
         let sepaDirectDebitClient = BTSEPADirectDebitClient(
             apiClient: mockAPIClient,
             webAuthenticationSession: mockWebAuthenticationSession,
@@ -677,21 +754,29 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_callsTokenize_returnsSuccess_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
-        
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
         
-        let json = BTJSON(
+        let mockTokenizeResponse = BTJSON(
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "ibanLastChars": "1234",
+                    "last4": "1234",
                     "customerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
@@ -699,9 +784,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         )
         
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizePaymentMethodNonce = BTSEPADirectDebitNonce(json: json)
-        
+        mockAPIClient.cannedResponseBody = BTJSON(value: mockTokenizeResponse)
+
         let sepaDirectDebitClient = BTSEPADirectDebitClient(
             apiClient: mockAPIClient,
             webAuthenticationSession: mockWebAuthenticationSession,
@@ -723,19 +807,26 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenizeWithPresentationContext_callsTokenizeWithAlreadyApprovedMandate_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
 
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "nil",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "null",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizeError = NSError(
+        mockAPIClient.cannedResponseError = NSError(
             domain: "CannedError",
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "This is a fake tokenize request error"]
@@ -753,7 +844,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     XCTAssertEqual(error.domain, "CannedError")
                     XCTAssertEqual(error.code, 0)
                     XCTAssertEqual(error.localizedDescription, "This is a fake tokenize request error")
-                    XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.tokenize.failure")
+                    XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
                 } else if nonce != nil {
                     XCTFail("This request should be return an error.")
                 }
@@ -765,19 +856,26 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_callsTokenizeWithAlreadyApprovedMandate_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
 
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "nil",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "nil",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizeError = NSError(
+        mockAPIClient.cannedResponseError = NSError(
             domain: "CannedError",
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "This is a fake tokenize request error"]
@@ -794,7 +892,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
                 XCTAssertEqual(error.localizedDescription, "This is a fake tokenize request error")
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.tokenize.failure")
+                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
             } else if nonce != nil {
                 XCTFail("This request should be return an error.")
             }
@@ -803,19 +901,26 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenizeWithPresentationContext_callsTokenize_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
 
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizeError = NSError(
+        mockAPIClient.cannedResponseError = NSError(
             domain: "CannedError",
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "This is a fake tokenize request error"]
@@ -833,7 +938,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     XCTAssertEqual(error.domain, "CannedError")
                     XCTAssertEqual(error.code, 0)
                     XCTAssertEqual(error.localizedDescription, "This is a fake tokenize request error")
-                    XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.tokenize.failure")
+                    XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
                 } else if nonce != nil {
                     XCTFail("This request should be return an error.")
                 }
@@ -845,19 +950,26 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     func testTokenize_callsTokenize_returnsError_andSendsAnalytics() {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        let mockSepaDirectDebitAPI = MockSEPADirectDebitAPI()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
 
-        let mockCreateMandateResult = CreateMandateResult(
-            approvalURL: "https://example-success",
-            ibanLastFour: "1234",
-            customerID: "a-customer-id",
-            bankReferenceToken: "a-bank-reference-token",
-            mandateType: "ONE_OFF"
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "https://example-success",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
         )
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
-        mockSepaDirectDebitAPI.cannedCreateMandateResult = mockCreateMandateResult
-        mockSepaDirectDebitAPI.cannedTokenizeError = NSError(
+        mockAPIClient.cannedResponseError = NSError(
             domain: "CannedError",
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "This is a fake tokenize request error"]
@@ -874,7 +986,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
                 XCTAssertEqual(error.localizedDescription, "This is a fake tokenize request error")
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.tokenize.failure")
+                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
             } else if nonce != nil {
                 XCTFail("This request should be return an error.")
             }

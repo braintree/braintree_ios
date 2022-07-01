@@ -1,13 +1,10 @@
 import Foundation
 
 ///  Error details associated with SEPA Direct Debit.
-enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
+enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
-
-    /// The result was invalid
-    case invalidResult
 
     /// SEPA Direct Debit flow was canceled by the user.
     case webFlowCanceled
@@ -26,58 +23,22 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
 
     /// The web authentication session result was nil and no error was returned.
     case authenticationResultNil
-
-    /// The BTSEPADirectDebitRequest could not be encoded.
-    case encodingFailure
-
-    /// The request could not be serialized.
-    case jsonSerializationFailure
+    
+    /// A body was not returned from the API during the request.
+    case noBodyReturned
 
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
     }
 
     var errorCode: Int {
-        switch self {
-        case .unknown:
-            return 0
-            
-        case .invalidResult:
-            return 1
-            
-        case .webFlowCanceled:
-            return 2
-            
-        case .presentationContextInvalid:
-            return 3
-            
-        case .resultURLInvalid:
-            return 4
-
-        case .resultReturnedNil:
-            return 5
-            
-        case .approvalURLInvalid:
-            return 6
-            
-        case .authenticationResultNil:
-            return 7
-
-        case .encodingFailure:
-            return 8
-            
-        case .jsonSerializationFailure:
-            return 9
-        }
+        rawValue
     }
 
     var errorDescription: String? {
         switch self {
         case .unknown:
             return "An unknown error occurred. Please contact support."
-            
-        case .invalidResult:
-            return "There was an error decoding a required field in the result."
             
         case .webFlowCanceled:
             return "SEPA Direct Debit flow was canceled by the user."
@@ -96,12 +57,9 @@ enum SEPADirectDebitError: Error, CustomNSError, LocalizedError {
             
         case .authenticationResultNil:
             return "The web authentication session result was nil and no error was returned."
-
-        case .encodingFailure:
-            return "The BTSEPADirectDebitRequest could not be encoded."
             
-        case .jsonSerializationFailure:
-            return "The request could not be serialized."
+        case .noBodyReturned:
+            return "A body was not returned from the API during the request."
         }
     }
 }

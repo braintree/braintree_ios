@@ -19,7 +19,7 @@ import BraintreeCore
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.sepaDirectDebitAPI = SEPADirectDebitAPI()
+        self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession =  WebAuthenticationSession()
     }
     
