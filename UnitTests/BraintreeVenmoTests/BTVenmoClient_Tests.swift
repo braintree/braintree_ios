@@ -565,7 +565,7 @@ class BTVenmoClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let venmoClient = BTVenmoClient(apiClient: apiClient)
         
-        XCTAssertEqual(venmoClient.apiClient.metadata.integration, BTClientMetadataIntegrationType.custom)
+        XCTAssertEqual(venmoClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)
     }
     
     func testTokenizeVenmoAccount_whenNetworkConnectionLost_sendsAnalytics() {

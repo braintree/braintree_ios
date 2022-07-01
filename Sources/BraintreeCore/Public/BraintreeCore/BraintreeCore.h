@@ -10,7 +10,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <Braintree/BTAPIClient.h>
 #import <Braintree/BTAppContextSwitcher.h>
 #import <Braintree/BTBinData.h>
-#import <Braintree/BTClientMetadata.h>
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>
 #import <Braintree/BTEnums.h>
@@ -26,7 +25,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #else
 #import <BraintreeCore/BTAPIClient.h>
 #import <BraintreeCore/BTBinData.h>
-#import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTEnums.h>

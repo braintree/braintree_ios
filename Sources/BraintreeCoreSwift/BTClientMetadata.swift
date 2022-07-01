@@ -14,52 +14,30 @@ import Foundation
 /// should use `mutableCopy` to create a new copy based on the existing session
 /// and then update the object as needed.
 
-@objcMembers public class BTClientMetadataSwift: NSObject {
+@objcMembers public class BTClientMetadata: NSObject, NSMutableCopying {
     
     /// Integration type
-    public var integration: BTClientMetadataIntegrationTypeSwift
+    public var integration: BTClientMetadataIntegration
     
     /// Integration source
-    public var source: BTClientMetadataSourceTypeSwift
+    public var source: BTClientMetadataSource
     
     /// Auto-generated UUID
     public var sessionID: String
     
     /// String representation of the integration
-    // NEXT_MAJOR_VERSION: v7, move into enum BTClientMetadataIntegrationType
     public var integrationString: String {
-        switch self.integration {
-        case .unknown:
-            return "unknown"
-        case .dropIn:
-            return "dropin"
-        case .dropIn2:
-            return "dropin2"
-        case .custom:
-            return "custom"
-        }
+        integration.stringValue
     }
     
     /// String representation of the source
-    // NEXT_MAJOR_VERSION: v7, move into enum BTClientMetadataSourceType
     public var sourceString: String {
-        switch self.source {
-        case .unknown:
-            return "unknown"
-        case .form:
-            return "form"
-        case .payPalApp:
-            return "paypal-app"
-        case .payPalBrowser:
-            return "paypal-browser"
-        case .venmoApp:
-            return "venmo-app"
-        }
+        source.stringValue
     }
     
     /// Additional metadata parameters
     public var parameters: [String: Any] {
-        return [
+        [
             "integration": self.integrationString,
             "source": self.sourceString,
             "sessionId": self.sessionID
@@ -71,5 +49,22 @@ import Foundation
         self.source = .unknown
         self.sessionID = UUID().uuidString.replacingOccurrences(of: "-", with: "")
         super.init()
+    }
+    
+    public func mutableCopy(with zone: NSZone? = nil) -> Any {
+        let result = BTMutableClientMetadata()
+        result.integration = self.integration
+        result.source = self.source
+        result.sessionID = self.sessionID
+        return result
+    }
+    
+    @objc(copyWithZone:)
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let result = BTClientMetadata()
+        result.integration = self.integration
+        result.source = self.source
+        result.sessionID = self.sessionID
+        return result
     }
 }

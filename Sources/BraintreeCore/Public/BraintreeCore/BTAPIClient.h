@@ -1,9 +1,23 @@
 #import <Foundation/Foundation.h>
 
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTClientMetadata.h>
-#else
-#import <BraintreeCore/BTClientMetadata.h>
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCoreSwift;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else // Carthage or Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 #define NETWORK_CONNECTION_LOST_CODE -1005
@@ -68,8 +82,8 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
  This provides a way to override an API client's source and integration metadata, which
  is captured and sent to Braintree as part of the analytics we track.
 */
-- (instancetype)copyWithSource:(BTClientMetadataSourceType)source
-                   integration:(BTClientMetadataIntegrationType)integration;
+- (instancetype)copyWithSource:(BTClientMetadataSource)source
+                   integration:(BTClientMetadataIntegration)integration;
 
 /**
  Provides configuration data as a `BTJSON` object.

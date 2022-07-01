@@ -5,12 +5,10 @@
 
 // Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTClientMetadata.h>
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>
 #import <Braintree/BTJSON.h>
 #else
-#import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTJSON.h>

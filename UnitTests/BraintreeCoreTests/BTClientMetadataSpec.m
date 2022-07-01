@@ -1,4 +1,4 @@
-#import "BTClientMetadata.h"
+@import BraintreeCoreSwift;
 @import Specta;
 @import Expecta;
 
@@ -18,7 +18,7 @@ describe(@"string values", ^{
                                   };
 
         for (NSNumber *sourceNumber in sources) {
-            m.source = (BTClientMetadataSourceType)sourceNumber.integerValue;
+            m.source = (BTClientMetadataSource)sourceNumber.integerValue;
             XCTAssertEqualObjects(m.sourceString, sources[sourceNumber]);
         }
     });
