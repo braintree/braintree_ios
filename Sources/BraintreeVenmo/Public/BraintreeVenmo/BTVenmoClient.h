@@ -101,6 +101,12 @@ typedef NS_ENUM(NSInteger, BTVenmoErrorType) {
  */
 - (void)openVenmoAppPageInAppStore;
 
+/// :nodoc: exposed for unit testing
++ (void)handleReturnURL:(NSURL * _Nonnull)url;
+
+/// :nodoc: exposed for unit testing
++ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url SWIFT_WARN_UNUSED_RESULT;
+
 @end
 
 NS_ASSUME_NONNULL_END

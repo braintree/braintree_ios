@@ -166,6 +166,12 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
+/// :nodoc: exposed for unit testing
++ (void)handleReturnURL:(NSURL * _Nonnull)url;
+
+/// :nodoc: exposed for unit testing
++ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url SWIFT_WARN_UNUSED_RESULT;
+
 @end
 
 NS_ASSUME_NONNULL_END
