@@ -1,1 +1,1 @@
-git "file:///Users/jdesmarais/Desktop/PayPal/braintree_ios" "next-major-version"
+github "braintree/braintree_ios" "next-major-version"
