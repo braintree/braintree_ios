@@ -368,7 +368,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -398,7 +398,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -429,7 +429,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -480,7 +480,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
 
         paymentFinishedExpectation = self.expectation(description: "Payment finished with error")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "an-error-url")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "an-error-url")!)
 
         waitForExpectations(timeout: 2)
 

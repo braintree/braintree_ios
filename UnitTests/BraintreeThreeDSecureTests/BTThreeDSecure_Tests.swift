@@ -22,7 +22,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     // MARK: - ThreeDSecure Authentication Tests
 
     func testStartPayment_displaysSafariViewControllerWhenAvailable_andRequiresAuthentication() {
-        BTAppContextSwitcher.setReturnURLScheme("com.braintreepayments.Demo.payments")
+        MockAppContextSwitchClient.returnURL = "com.braintreepayments.Demo.payments"
         
         let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         
@@ -246,7 +246,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
         
         paymentFinishedExpectation = self.expectation(description: "Start payment expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,%22description%22:%22ending+in+02%22,%22consumed%22:false,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true,%22status%22:%22authenticate_successful%22,%22enrolled%22:%22Y%22%7D,%22details%22:%7B%22lastTwo%22:%2202%22,%22lastFour%22:%220002%22,%22cardType%22:%22Visa%22%7D,%22bin_data%22:%7B%22prepaid%22:%22Unknown%22,%22healthcare%22:%22Unknown%22,%22debit%22:%22Unknown%22,%22durbin_regulated%22:%22Unknown%22,%22commercial%22:%22Unknown%22,%22payroll%22:%22Unknown%22,%22issuing_bank%22:%22Unknown%22,%22country_of_issuance%22:%22Unknown%22,%22product_id%22:%22Unknown%22%7D%7D,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true%7D,%22success%22:true%7D")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,%22description%22:%22ending+in+02%22,%22consumed%22:false,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true,%22status%22:%22authenticate_successful%22,%22enrolled%22:%22Y%22%7D,%22details%22:%7B%22lastTwo%22:%2202%22,%22lastFour%22:%220002%22,%22cardType%22:%22Visa%22%7D,%22bin_data%22:%7B%22prepaid%22:%22Unknown%22,%22healthcare%22:%22Unknown%22,%22debit%22:%22Unknown%22,%22durbin_regulated%22:%22Unknown%22,%22commercial%22:%22Unknown%22,%22payroll%22:%22Unknown%22,%22issuing_bank%22:%22Unknown%22,%22country_of_issuance%22:%22Unknown%22,%22product_id%22:%22Unknown%22%7D%7D,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true%7D,%22success%22:true%7D")!)
         
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -277,7 +277,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
         
         paymentFinishedExpectation = self.expectation(description: "Start payment expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22threeDSecureInfo%22:%7B%22liabilityShifted%22:false,%22liabilityShiftPossible%22:true%7D,%22error%22:%7B%22message%22:%22Failed+to+authenticate,+please+try+a+different+form+of+payment.%22%7D,%22success%22:false%7D")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22threeDSecureInfo%22:%7B%22liabilityShifted%22:false,%22liabilityShiftPossible%22:true%7D,%22error%22:%7B%22message%22:%22Failed+to+authenticate,+please+try+a+different+form+of+payment.%22%7D,%22success%22:false%7D")!)
         
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -309,7 +309,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Start payment expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?no-auth=bad-response")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?no-auth=bad-response")!)
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -343,7 +343,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Start payment expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,BAD-JSON")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,BAD-JSON")!)
 
         waitForExpectations(timeout: 2, handler: nil)
 
@@ -377,7 +377,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         paymentFinishedExpectation = self.expectation(description: "Start payment expectation")
-        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%22STRING%22")!)
+        MockAppContextSwitchClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%22STRING%22")!)
 
         waitForExpectations(timeout: 2, handler: nil)
 
