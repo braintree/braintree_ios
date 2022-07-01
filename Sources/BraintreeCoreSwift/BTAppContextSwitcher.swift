@@ -22,6 +22,7 @@ import UIKit
     public func handleOpen(_ url: URL) -> Bool {
         for appContextSwitchClient in appContextSwitchClients {
             if appContextSwitchClient.canHandleReturnURL(url) {
+                appContextSwitchClient.handleReturnURL(url)
                 return true
             }
         }
