@@ -269,7 +269,7 @@ class BTVenmoClient_Tests: XCTestCase {
             ]
         ])
 
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
 
         self.waitForExpectations(timeout: 1)
     }
@@ -291,7 +291,7 @@ class BTVenmoClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
         mockAPIClient.cannedResponseError = NSError(domain: "some-domain", code: 1, userInfo: nil)
 
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
 
         self.waitForExpectations(timeout: 1)
     }
@@ -314,7 +314,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
 
         self.waitForExpectations(timeout: 2, handler: nil)
     }
@@ -340,7 +340,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         
         self.waitForExpectations(timeout: 2, handler: nil)
     }
@@ -358,7 +358,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
             expectation.fulfill()
         }
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
 
         self.waitForExpectations(timeout: 2, handler: nil)
     }
@@ -378,7 +378,7 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         self.waitForExpectations(timeout: 2, handler: nil)
     }
 
@@ -395,7 +395,7 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
         
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         self.waitForExpectations(timeout: 2, handler: nil)
     }
     
@@ -437,7 +437,7 @@ class BTVenmoClient_Tests: XCTestCase {
             ]]
         ])
 
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         self.waitForExpectations(timeout: 2, handler: nil)
     }
     
@@ -478,7 +478,7 @@ class BTVenmoClient_Tests: XCTestCase {
             ]]
         ])
 
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         self.waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.vault.success")
@@ -503,7 +503,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseError = NSError(domain: "Fake Error", code: 400, userInfo: nil)
 
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         self.waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.vault.failure")
@@ -521,7 +521,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertNil(error)
             expectation.fulfill()
         }
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
 
         self.waitForExpectations(timeout: 2, handler: nil)
     }
@@ -612,23 +612,23 @@ class BTVenmoClient_Tests: XCTestCase {
     func testCanHandleReturnURL_withValidHost_andValidPath_returnsTrue() {
         let host = "x-callback-url"
         let path = "/vzero/auth/venmo/"
-        XCTAssertTrue(MockAppContextSwitchClient.canHandleReturnURL(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
+        XCTAssertTrue(BTVenmoClient.canHandleReturnURL(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
     }
 
     func testCanHandleReturnURL_withInvalidHost_andValidPath_returnsFalse() {
         let host = "bad-host"
         let path = "/vzero/auth/venmo/"
-        XCTAssertFalse(MockAppContextSwitchClient.canHandleReturnURL(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
+        XCTAssertFalse(BTVenmoClient.canHandleReturnURL(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
     }
 
     func testCanHandleReturnURL_withValidHost_andInvalidPath_returnsFalse() {
         let host = "x-callback-url"
         let path = "/bad/path/"
-        XCTAssertFalse(MockAppContextSwitchClient.canHandleReturnURL(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
+        XCTAssertFalse(BTVenmoClient.canHandleReturnURL(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
     }
 
     func testCanHandleReturnURL_withNoHost_andNoPath_returnsFalse() {
-        XCTAssertFalse(MockAppContextSwitchClient.canHandleReturnURL(URL(string: "fake-scheme://")!))
+        XCTAssertFalse(BTVenmoClient.canHandleReturnURL(URL(string: "fake-scheme://")!))
     }
 
     func testAuthorizeAccountWithTokenizationKey_vaultTrue_willNotAttemptToVault() {
@@ -653,7 +653,7 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        MockAppContextSwitchClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
         self.waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.appswitch.handle.success")

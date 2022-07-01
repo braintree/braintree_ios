@@ -1,5 +1,4 @@
 import XCTest
-import BraintreeTestShared
 @testable import BraintreeCoreSwift
 
 class BTAppContextSwitcher_Tests: XCTestCase {
@@ -88,4 +87,19 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         XCTAssertFalse(handled)
     }
 
+}
+
+@objcMembers class MockAppContextSwitchClient: BTAppContextSwitchClient {
+    static var cannedCanHandle = false
+    static var lastCanHandleURL: URL?
+    static var lastHandleReturnURL: URL?
+
+    static func canHandleReturnURL(_ url: URL) -> Bool {
+        lastCanHandleURL = url
+        return cannedCanHandle
+    }
+    
+    static func handleReturnURL(_ url: URL) {
+        lastHandleReturnURL = url
+    }
 }
