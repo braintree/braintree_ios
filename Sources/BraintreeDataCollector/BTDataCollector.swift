@@ -7,28 +7,18 @@ import Security
 import BraintreeCore
 #endif
 
-#if canImport(BraintreeKountDataCollector)
-import BraintreeKountDataCollector
-#endif
-
 /// Braintree's advanced fraud protection solution.
 @objcMembers public class BTDataCollector: NSObject {
     
-    /// The Kount SDK device collector, exposed internally for testing
-    var kount: KDataCollector?
     var config: BTConfiguration?
 
-    private var fraudMerchantID: String?
     private let apiClient: BTAPIClient
-    private let defaultKountMerchantID: Int = 60000
 
     ///  Initializes a `BTDataCollector` instance with a `BTAPIClient`.
     /// - Parameter apiClient: An instance of `BTAPIClient`
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        super.init()
-        setUpKountWithDebugOn(false)
     }
     
     // MARK: Public methods
@@ -48,74 +38,26 @@ import BraintreeKountDataCollector
     ///  Use the return value on your server, e.g. with `Transaction.sale`.
     ///  - Parameter completion:  A completion block that returns a device data string that should be passed into server-side calls, such as `Transaction.sale`.
     public func collectDeviceData(_ completion: @escaping (String? , Error?) -> Void) {
-        collectDeviceData(kountMerchantID: nil, completion)
-    }
-    
-    /// This method should only be used by legacy merchants approved to use Kount Custom. Collects device data based on your merchant configuration.
-    ///
-    ///  We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
-    ///  calling it when the customer initiates checkout is also fine.
-    ///  Use the return value on your server, e.g. with `Transaction.sale`.
-    ///  - Parameter completion:  A completion block that returns a device data string that should be passed into server-side calls, such as `Transaction.sale`.
-    ///  - Parameter kountMerchantID: The fraudMerchantID you have established with your Braintree account manager. If you do not pass this value, a generic Braintree value will be used.
-    public func collectDeviceData(kountMerchantID: String?, _ completion: @escaping (String? , Error?) -> Void) {
-        fraudMerchantID = kountMerchantID
-        kount?.merchantID = Int(kountMerchantID ?? String(defaultKountMerchantID)) ?? defaultKountMerchantID
-
         fetchConfiguration { configuration, error in
             guard let configuration = configuration else {
                 completion(nil, error)
                 return
             }
-
-            if configuration.isKountEnabled {
-                let braintreeEnvironment: BTDataCollectorEnvironment = self.environmentFromString(configuration.environment ?? "production")
-                self.setDataCollectorEnvironment(as: self.collectorEnvironment(environment: braintreeEnvironment))
-
-                guard let kountMerchantID = self.fraudMerchantID != nil ? self.fraudMerchantID : configuration.kountMerchantID else {
-                    completion(nil, BTDataCollectorError.noKountMerchantID)
-                    return
-                }
-
-                self.kount?.merchantID = Int(kountMerchantID) ?? self.defaultKountMerchantID
-                
-                let deviceSessionID: String = self.generateSessionID()
-                let clientMetadataID: String = self.generateClientMetadataID(with: configuration)
-                let dataDictionary: [String: String] = [
-                    "device_session_id": deviceSessionID,
-                    "fraud_merchant_id": kountMerchantID,
-                    "correlation_id": clientMetadataID
-                ]
-                
-                self.kount?.collect(forSession: deviceSessionID)
-
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
-                    completion(nil, BTDataCollectorError.jsonSerializationFailure)
-                    return
-                }
-
-                guard let deviceData = String(data: jsonData, encoding: .utf8) else {
-                    completion(nil, BTDataCollectorError.encodingFailure)
-                    return
-                }
-
-                completion(deviceData, nil)
-            } else {
-                let clientMetadataID: String = self.generateClientMetadataID(with: configuration)
-                let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
-
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
-                    completion(nil, BTDataCollectorError.jsonSerializationFailure)
-                    return
-                }
-
-                guard let deviceData = String(data: jsonData, encoding: .utf8) else {
-                    completion(nil, BTDataCollectorError.encodingFailure)
-                    return
-                }
-
-                completion(deviceData, nil)
+            
+            let clientMetadataID: String = self.generateClientMetadataID(with: configuration)
+            let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
+            
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
+                completion(nil, BTDataCollectorError.jsonSerializationFailure)
+                return
             }
+            
+            guard let deviceData = String(data: jsonData, encoding: .utf8) else {
+                completion(nil, BTDataCollectorError.encodingFailure)
+                return
+            }
+            
+            completion(deviceData, nil)
         }
     }
     
@@ -124,53 +66,6 @@ import BraintreeKountDataCollector
     func fetchConfiguration(completion: @escaping (BTConfiguration?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             completion(configuration, error)
-        }
-    }
-
-    func setDataCollectorEnvironment(as environment: KEnvironment) {
-        kount?.environment = environment
-    }
-
-    func setUpKountWithDebugOn(_ debugLogging: Bool) {
-        kount = KDataCollector.shared()
-        kount?.debug = debugLogging
-        
-        var locationStatus: CLAuthorizationStatus = .notDetermined
-        let manager = CLLocationManager()
-
-        if #available(iOS 14, *) {
-            locationStatus = manager.authorizationStatus
-        } else {
-            locationStatus = CLLocationManager.authorizationStatus()
-        }
-        
-        if locationStatus != .authorizedWhenInUse && locationStatus != .authorizedAlways || CLLocationManager.locationServicesEnabled() {
-            kount?.locationCollectorConfig = .skip
-        }
-    }
-    
-    func generateSessionID() -> String {
-        UUID().uuidString.replacingOccurrences(of: "-", with: "")
-    }
-    
-    func environmentFromString(_ environment: String) -> BTDataCollectorEnvironment {
-        if environment == "production" {
-            return .production
-        } else if environment == "sandbox" {
-            return .sandbox
-        } else if environment == "qa" {
-            return .qa
-        } else {
-            return .development
-        }
-    }
-    
-    func collectorEnvironment(environment: BTDataCollectorEnvironment) -> KEnvironment {
-        switch environment {
-        case .production:
-            return .production
-        default:
-            return .test
         }
     }
 

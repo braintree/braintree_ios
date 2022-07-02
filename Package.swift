@@ -29,7 +29,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreeDataCollector",
-            targets: ["BraintreeDataCollector", "BraintreeKountDataCollector", "PPRiskMagnes"]
+            targets: ["BraintreeDataCollector", "PPRiskMagnes"]
         ),
         .library(
             name: "BraintreePaymentFlow",
@@ -51,10 +51,6 @@ let package = Package(
             name: "BraintreeVenmo",
             targets: ["BraintreeVenmo"]
         ),
-        .library(
-            name: "BraintreeKountDataCollector",
-            targets: ["BraintreeKountDataCollector", "KountDataCollector"]
-        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -87,7 +83,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeDataCollector",
-            dependencies: ["BraintreeCore", "BraintreeKountDataCollector", "PPRiskMagnes"]
+            dependencies: ["BraintreeCore", "PPRiskMagnes"]
         ),
         .target(
             name: "BraintreePaymentFlow",
@@ -118,15 +114,6 @@ let package = Package(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
             publicHeadersPath: "Public"
-        ),
-        .target(
-            name: "BraintreeKountDataCollector",
-            dependencies: ["KountDataCollector"],
-            publicHeadersPath: "Public"
-        ),
-        .binaryTarget(
-            name: "KountDataCollector",
-            path: "Frameworks/XCFrameworks/KountDataCollector.xcframework"
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
