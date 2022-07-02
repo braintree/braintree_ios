@@ -10,7 +10,6 @@
 @property (nonatomic, strong) UILabel *dataLabel;
 @property (nonatomic, strong) BTAPIClient *apiClient;
 @property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) NSString *kountMerchantID;
 
 @end
 
@@ -28,7 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.kountMerchantID = @"60001";
     self.title = NSLocalizedString(@"BTDataCollector Protection", nil);
 
     UIButton *collectButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -69,7 +67,7 @@
 
 - (IBAction)tappedCollect {
     self.progressBlock(@"Started collecting all data...");
-    [self.dataCollector collectDeviceDataWithKountMerchantID:self.kountMerchantID :^(NSString * _Nullable deviceData, NSError * _Nullable error) {
+    [self.dataCollector collectDeviceData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
         self.dataLabel.text = deviceData;
         self.progressBlock(@"Collected all device data!");
     }];

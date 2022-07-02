@@ -36,10 +36,11 @@
     * Renamed `BTPaymentFlowDriverDelegate` protocol to `BTPaymentFlowClientDelegate`
     * `handleRequest` in delegate protocol now takes in `paymentClientDelegate` parameter instead of `paymentDriverDelegate`
   * PayPalDataCollector
-    * Removed `PayPalDataCollector` module
+    * Removed `PayPalDataCollector` module in favor of single `BraintreeDataCollector`
   * BraintreeDataCollector
+    * Kount is no longer supported through the SDK
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
-    * Merchants should use the new `collectDeviceData` function for data collection
+    * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
 
 ## 5.10.0 (2022-06-06)
 * Fix potential crash when http request fails with no error but empty data (thanks @cltnschlosser)
