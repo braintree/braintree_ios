@@ -205,4 +205,20 @@ class BTPreferredPaymentMethods_Tests: XCTestCase {
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
+    
+    func testFetchPreferredPaymentMethods_whenNetworkConnectionLost_sendsAnalytics() {
+        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["graphQL": ["url": "https://graphql.com"]])
+
+        let preferredPaymentMethods = BTPreferredPaymentMethods(apiClient: mockAPIClient)
+        preferredPaymentMethods.application = fakeApplication
+
+        let expectation = self.expectation(description: "Callback invoked")
+        preferredPaymentMethods.fetch { result in
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.preferred-payment-methods.network-connection.failure"))
+    }
 }
