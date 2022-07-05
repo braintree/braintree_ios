@@ -19,7 +19,6 @@ import Security
     }
     
     static func setData(_ data: Data, forKey key: String) -> Bool {
-        var success: Bool = true
         let formattedKey: String = keychainForKey(key)
         
         var existsQueryDictionary: [CFString: Any] = [
@@ -37,7 +36,7 @@ import Security
             status = SecItemAdd(existsQueryDictionary as CFDictionary, nil)
             
             if status != errSecSuccess {
-                success = false
+                return false
             }
         } else if status == errSecSuccess {
             let attributeDictionary = [kSecValueData: data] as CFDictionary
@@ -45,13 +44,13 @@ import Security
             status = SecItemUpdate(existsQueryDictionary as CFDictionary, attributeDictionary)
             
             if status != errSecSuccess {
-                success = false
+                return false
             }
         } else {
-            success = false
+            return false
         }
 
-        return success
+        return true
     }
     
     static func dataForKey(_ key: String) -> Data? {
