@@ -45,6 +45,7 @@
 
 #else                                            // Carthage
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 NSString *const BTPayPalErrorDomain = @"com.braintreepayments.BTPayPalErrorDomain";
