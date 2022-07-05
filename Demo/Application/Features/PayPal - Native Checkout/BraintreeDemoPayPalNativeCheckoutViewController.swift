@@ -1,9 +1,27 @@
 import Foundation
 import UIKit
 import BraintreePayPalNativeCheckout
+import PayPalCheckout
 
 class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
     lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+
+    let shippingOptions = [
+        ShippingMethod(
+          id: "1",
+          label: "Shipping",
+          selected: true,
+          type: .shipping,
+          amount: UnitAmount(currencyCode: .usd, value: "1.23")
+        ),
+        ShippingMethod(
+          id: "2",
+          label: "Pickup",
+          selected: false,
+          type: .pickup,
+          amount: UnitAmount(currencyCode: .usd, value: "0")
+        ),
+    ]
 
     override func createPaymentButton() -> UIView! {
         let payPalCheckoutButton = UIButton(type: .system)
@@ -33,8 +51,17 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         progressBlock("Tapped PayPal - Native Checkout using BTPayPalNativeCheckout")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
-                
+
+        let patchRequest = PatchRequest()
+        patchRequest.replace(shippingOptions: shippingOptions)
+      
         let request = BTPayPalNativeCheckoutRequest(amount: "4.30")
+        request.isShippingAddressEditable = true
+        request.isShippingAddressRequired = true
+        request.onShippingChange = { change, action in
+            action.patch(request: patchRequest) { _, _ in }
+        }
+
         payPalNativeCheckoutClient.tokenizePayPalAccount(with: request) { nonce, error in
             sender.isEnabled = true
             

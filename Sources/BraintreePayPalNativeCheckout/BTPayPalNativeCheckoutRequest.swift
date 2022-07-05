@@ -2,6 +2,8 @@
 import BraintreePayPal
 #endif
 
+import PayPalCheckout
+
 /**
  Options for the PayPal Checkout and PayPal Checkout with Vault flows.
  */
@@ -18,19 +20,15 @@ import BraintreePayPal
 
      - Returns: A PayPal Checkout request.
      */
-  @objc public override init(
-      amount: String,
-      shippingCallback: (PayPalCheckout.ShippingChange, PayPalCheckout.ShippingChangeAction) -> Void)?
-    {
+  @objc public override init(amount: String) {
         self.hermesPath = "v1/paypal_hermes/create_payment_resource"
         super.init(amount: amount)
     }
 
     // MARK: - Internal
+    public var onShippingChange: ((PayPalCheckout.ShippingChange, PayPalCheckout.ShippingChangeAction) -> Void)?
 
     let hermesPath: String
-
-    var shippingCallback: (PayPalCheckout.ShippingChange, PayPalCheckout.ShippingChangeAction) -> Void)? = nil
 
     var intentAsString: String {
         switch intent {

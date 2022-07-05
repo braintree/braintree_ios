@@ -36,13 +36,15 @@ import PayPalCheckout
      */
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
-        with nativeRequest: BTPayPalNativeCheckoutRequest,
+        with nativeRequest: BTPayPalRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, NSError?) -> Void
     ) {
         guard let request = nativeRequest as? (BTPayPalRequest & BTPayPalNativeRequest) else {
             completion(nil, BTPayPalNativeError.invalidRequest as NSError)
             return
         }
+
+        let onShippingChange = (request as? BTPayPalNativeCheckoutRequest)?.onShippingChange
 
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
@@ -60,10 +62,10 @@ import PayPalCheckout
                             completion(nil, BTPayPalNativeError.invalidRequest as NSError)
                         }
                     },
-                    onShippingChange: nativeRequest.shippingCallback,
                     onApprove: { [weak self] approval in
                         self?.tokenize(approval: approval, request: request, completion: completion)
                     },
+                    onShippingChange: onShippingChange,
                     onCancel: {
                         completion(nil, BTPayPalNativeError.canceled as NSError)
                     },
@@ -74,7 +76,8 @@ import PayPalCheckout
                 )
 
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
-                PayPalCheckout.Checkout.start()
+                PayPalCheckout.Checkout.start(onShippingChange: onShippingChange)
+
             case .failure(let error):
                 completion(nil, error as NSError)
                 return
