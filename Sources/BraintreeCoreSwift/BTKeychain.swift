@@ -15,7 +15,7 @@ import Security
     }
     
     static func keychainForKey(_ key: String) -> String {
-        String(format: "com.braintreepayments.Braintree-API.", key)
+        "com.braintreepayments.Braintree-API.\(key)"
     }
     
     static func setData(_ data: Data, forKey key: String) -> Bool {
