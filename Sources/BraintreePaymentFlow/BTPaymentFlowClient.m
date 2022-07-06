@@ -1,24 +1,42 @@
 #import "BTPaymentFlowClient_Internal.h"
 #import <SafariServices/SafariServices.h>
 
+// Objective-C Module Imports
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowRequest.h>
 #import <Braintree/BTPaymentFlowResult.h>
-#import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
-#import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
-#import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 
+#endif
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) //Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCoreSwift;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else // Carthage and Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 @interface BTPaymentFlowClient () <SFSafariViewControllerDelegate>
@@ -78,7 +96,7 @@ static BTPaymentFlowClient *paymentFlowClient;
         self.safariViewController.dismissButtonStyle = SFSafariViewControllerDismissButtonStyleCancel;
         [self.viewControllerPresentingDelegate paymentClient:self requestsPresentationOfViewController:self.safariViewController];
     } else {
-        [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        NSLog(@"%@ Unable to display View Controller to continue payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
     }
 }
 
@@ -87,7 +105,7 @@ static BTPaymentFlowClient *paymentFlowClient;
         [self.viewControllerPresentingDelegate paymentClient:self requestsDismissalOfViewController:self.safariViewController];
         self.safariViewController = nil;
     } else {
-        [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        NSLog(@"%@ Unable to dismiss View Controller to end payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
     }
 }
 

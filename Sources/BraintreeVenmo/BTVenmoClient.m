@@ -4,27 +4,45 @@
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTVenmoRequest_Internal.h"
 
+// Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BTConfiguration+Venmo.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
-#import <Braintree/BTLogger_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTPaymentMethodNonceParser.h"
-#import "../BraintreeCore/BTLogger_Internal.h"
 
 #else // Carthage
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
-#import <BraintreeCore/BTLogger_Internal.h>
 
+#endif
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCoreSwift;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else // Carthage or Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 @interface BTVenmoClient ()
@@ -111,14 +129,14 @@ static BTVenmoClient *appSwitchedClient;
     }
 
     if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
-        [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"];
+        NSLog(@"%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
         NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
                                              code:BTVenmoErrorTypeAppNotAvailable
                                          userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
         completionBlock(nil, error);
         return;
     } else if (!self.bundle.bundleIdentifier || ![self.returnURLScheme hasPrefix:self.bundle.bundleIdentifier]) {
-        [[BTLogger sharedLogger] critical:@"Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];
+        NSLog(@"%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [BTLogLevelDescription stringFor:BTLogLevelCritical], [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme);
     }
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {

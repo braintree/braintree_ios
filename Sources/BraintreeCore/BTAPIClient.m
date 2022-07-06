@@ -4,7 +4,6 @@
 #import "BTAPIHTTP.h"
 #import "BTGraphQLHTTP.h"
 #import "BTHTTP.h"
-#import "BTLogger_Internal.h"
 #import "BTPaymentMethodNonceParser.h"
 
 #if __has_include(<Braintree/BraintreeCore.h>)
@@ -17,6 +16,26 @@
 #import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>
+#endif
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCoreSwift;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else // Carthage or Local Builds
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
@@ -36,7 +55,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent {
     if(![authorization isKindOfClass:[NSString class]]) {
         NSString *reason = @"BTClient could not initialize because the provided authorization was invalid";
-        [[BTLogger sharedLogger] error:reason];
+        NSLog(@"%@ Missing analytics session metadata - will not send event  %@", [BTLogLevelDescription stringFor:BTLogLevelError], reason);
         return nil;
     }
 
@@ -48,7 +67,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
                 if (!baseURL) {
                     NSString *reason = @"BTClient could not initialize because the provided tokenization key was invalid";
-                    [[BTLogger sharedLogger] error:reason];
+                    NSLog(@"%@ Missing analytics session metadata - will not send event  %@", [BTLogLevelDescription stringFor:BTLogLevelError], reason);
                     return nil;
                 }
 
@@ -64,9 +83,11 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             case BTAPIClientAuthorizationTypeClientToken: {
                 NSError *error;
                 _clientToken = [[BTClientToken alloc] initWithClientToken:authorization error:&error];
-                if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
+                if (error) {
+                    NSLog(@"%@ Missing analytics session metadata - will not send event  %@", [BTLogLevelDescription stringFor:BTLogLevelError], error.localizedDescription);
+                }
                 if (!_clientToken) {
-                    [[BTLogger sharedLogger] error:@"BTClient could not initialize because the provided clientToken was invalid"];
+                    NSLog(@"%@ BTClient could not initialize because the provided clientToken was invalid", [BTLogLevelDescription stringFor:BTLogLevelError]);
                     return nil;
                 }
 

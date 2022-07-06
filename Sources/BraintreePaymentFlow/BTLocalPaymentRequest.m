@@ -2,11 +2,11 @@
 #import "BTPaymentFlowClient+LocalPayment_Internal.h"
 #import <SafariServices/SafariServices.h>
 
+//Objective-C Module imports
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTLocalPaymentRequest.h>
 #import <Braintree/BTConfiguration+LocalPayment.h>
 #import <Braintree/BTLocalPaymentResult.h>
-#import <Braintree/BTLogger_Internal.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
 
@@ -14,20 +14,20 @@
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import "../BraintreeCore/BTLogger_Internal.h"
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
 
-#else                                                 // Carthage
+#else                                                 // Carthage and Local Builds
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods
+
+//Swift Module imports
+#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods-generated Swift Header
 #import <Braintree/Braintree-Swift.h>
 
 #elif SWIFT_PACKAGE                                   // SPM
@@ -35,6 +35,7 @@
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
 @import BraintreeDataCollector;
+@import BraintreeCoreSwift;
 
 #elif __has_include("Braintree-Swift.h")              // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -42,9 +43,11 @@
  */
 #import "Braintree-Swift.h"
 
-#else                                                 // Carthage
+#else                                                 // Carthage and Local Builds
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
+
 
 @interface BTLocalPaymentRequest ()
 
@@ -71,22 +74,22 @@
         NSError *integrationError;
 
         if ([self.paymentFlowClientDelegate returnURLScheme] == nil || [[self.paymentFlowClientDelegate returnURLScheme] isEqualToString:@""]) {
-            [[BTLogger sharedLogger] critical:@"Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"];
+            NSLog(@"%@ Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
                                                  code:BTPaymentFlowErrorTypeInvalidReturnURL
                                              userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app or browser switch."}];
         } else if (![configuration isLocalPaymentEnabled]) {
-            [[BTLogger sharedLogger] critical:@"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."];
+            NSLog(@"%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
                                                  code:BTPaymentFlowErrorTypeDisabled
                                              userInfo:@{NSLocalizedDescriptionKey: @"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."}];
         } else if (localPaymentRequest.localPaymentFlowDelegate == nil) {
-            [[BTLogger sharedLogger] critical:@"BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."];
+            NSLog(@"%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
                                                  code:BTPaymentFlowErrorTypeIntegration
                                              userInfo:@{NSLocalizedDescriptionKey: @"Failed to begin payment flow: BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."}];
         } else if (localPaymentRequest.amount == nil || localPaymentRequest.paymentType == nil) {
-            [[BTLogger sharedLogger] critical:@"BTLocalPaymentRequest amount and paymentType can not be nil."];
+            NSLog(@"%@ BTLocalPaymentRequest amount and paymentType can not be nil.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
                                                  code:BTPaymentFlowErrorTypeIntegration
                                              userInfo:@{NSLocalizedDescriptionKey: @"Failed to begin payment flow: BTLocalPaymentRequest amount and paymentType can not be nil."}];
@@ -170,7 +173,7 @@
                          [delegate onPaymentWithURL:url error:error];
                      }];
                  } else {
-                     [[BTLogger sharedLogger] critical:@"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."];
+                     NSLog(@"%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
                      NSError *error = [NSError errorWithDomain:BTPaymentFlowErrorDomain
                                                           code:BTPaymentFlowErrorTypeAppSwitchFailed
                                                       userInfo:@{NSLocalizedDescriptionKey: @"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."}];

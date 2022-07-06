@@ -1,9 +1,9 @@
 #import "BTAnalyticsService.h"
 #import "BTHTTP.h"
 #import "Braintree-Version.h"
-#import "BTKeychain.h"
 @import BraintreeCore;
 @import BraintreeTestShared;
+@import BraintreeCoreSwift;
 @import XCTest;
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
