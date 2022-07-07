@@ -54,7 +54,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 
         let patchRequest = PatchRequest()
         patchRequest.replace(shippingOptions: shippingOptions)
-      
+
         let request = BTPayPalNativeCheckoutRequest(amount: "4.30")
         request.isShippingAddressEditable = true
         request.isShippingAddressRequired = true
