@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "5.9.0"
+  s.version          = "5.10.0"
   s.summary          = "Braintree iOS SDK: Helps you accept card and alternative payments in your iOS app."
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -52,7 +52,6 @@ Pod::Spec.new do |s|
   s.subspec "DataCollector" do |s|
     s.source_files = "Sources/BraintreeDataCollector/*.swift"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/KountDataCollector"
     s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
   end
 
@@ -88,12 +87,6 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
     s.dependency "Braintree/Core"
-  end
-
- s.subspec "KountDataCollector" do |s|
-    s.source_files = "Sources/BraintreeKountDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeKountDataCollector/Public/BraintreeKountDataCollector/*.h"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
   end
 
 end

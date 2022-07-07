@@ -78,6 +78,8 @@ payPalClient.tokenizePayPalAccount(with: request) { payPalAccountNonce, error in
 ```
 
 ## Data Collector
+Note: Kount is no longer supported through the SDK in this version. Kount will continue to be supported in v5 of the SDK.
+
 `PayPalDataCollector` module has been removed. All data collection for payment flows will use the `BraintreeDataCollector` module.
 
 For merchants collecting device data for PayPal and Local Payment methods will now need to replace the `PayPalDataCollector` module with the `BraintreeDataCollector` module in their integration.
@@ -87,18 +89,6 @@ The new integration for collecting device data will look like the following:
 let dataCollector = BTDataCollector(apiClient: <MY_BTAPICLIENT>)
 
 dataCollector.collectDeviceData { deviceData, _ in
-    guard let deviceData = deviceData else {
-        // handle error
-    }
-    // Send deviceData to your server
-}
-```
-
-For merchants using a legacy Kount custom integration, the following method can be used to pass in your Kount Custom merchant ID provided by your account manager:
-```
-let dataCollector = BTDataCollector(apiClient: <MY_BTAPICLIENT>)
-
-dataCollector.collectDeviceData(kountMerchantID: <MY_KOUNT_CUSTOM_MERCHANT_ID>) { deviceData, _ in
     guard let deviceData = deviceData else {
         // handle error
     }

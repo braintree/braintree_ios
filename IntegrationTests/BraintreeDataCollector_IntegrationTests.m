@@ -1,6 +1,5 @@
 #import "BraintreeDataCollector/BraintreeDataCollector-Swift.h"
 #import "BraintreeCore/BTAPIClient.h"
-#import "KDataCollector.h"
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
@@ -28,8 +27,6 @@
     
     [self.dataCollector collectDeviceData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
         XCTAssertTrue([deviceData containsString:@"correlation_id"]);
-        XCTAssertTrue([deviceData containsString:@"device_session_id"]);
-        XCTAssertTrue([deviceData containsString:@"fraud_merchant_id"]);
         XCTAssertNil(error);
         [expectation fulfill];
     }];
