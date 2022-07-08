@@ -13,11 +13,17 @@ import UIKit
     public var returnURLScheme: String = ""
     private var appContextSwitchClients = [BTAppContextSwitchClient.Type]()
     
+    /// :nodoc: Determine whether the return URL can be handled.
+    /// - Parameters: url the URL you receive in  `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate) when returning to your app
+    /// - Returns: `true` when the SDK can process the return URL
     @objc(handleOpenURLContext:)
     public func handleOpenURL(context: UIOpenURLContext) -> Bool {
         handleOpen(context.url)
     }
     
+    /// :nodoc: Complete payment flow after returning from app or browser switch.
+    /// - Parameter url:  The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate)
+    /// - Returns: `true` when the SDK has handled the URL successfully
     @objc(handleOpenURL:)
     public func handleOpen(_ url: URL) -> Bool {
         for appContextSwitchClient in appContextSwitchClients {
@@ -29,6 +35,8 @@ import UIKit
         return false
     }
     
+    /// Registers a class `Type` that can handle a return from app context switch with a static method.
+    /// - Parameter client: A class `Type` that implements `BTAppContextSwitchClient`, the methods of which will be invoked statically on the class.
     @objc(registerAppContextSwitchClient:)
     public func register(_ client: BTAppContextSwitchClient.Type) {
         appContextSwitchClients.append(client)

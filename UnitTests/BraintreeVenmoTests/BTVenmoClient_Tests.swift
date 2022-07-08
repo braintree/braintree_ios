@@ -93,7 +93,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_whenReturnURLSchemeIsNil_andCallsBackWithError() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.sharedInstance().returnURLScheme = ""
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = ""
         
         let expectation = self.expectation(description: "authorization callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in

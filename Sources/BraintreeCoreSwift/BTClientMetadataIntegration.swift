@@ -12,6 +12,7 @@
     /// Unknown Integration
     case unknown
     
+    /// String value representing the integration.
     var stringValue: String {
         switch self {
         case .unknown:

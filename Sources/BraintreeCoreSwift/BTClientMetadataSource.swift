@@ -16,6 +16,7 @@
     /// Form
     case form
     
+    /// String value representing the source.
     var stringValue: String {
         switch self {
         case .unknown:

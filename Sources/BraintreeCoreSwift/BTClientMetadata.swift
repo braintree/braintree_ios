@@ -51,6 +51,7 @@ import Foundation
         super.init()
     }
     
+    /// Create a copy as `BTMutableClientMetadata`
     public func mutableCopy(with zone: NSZone? = nil) -> Any {
         let result = BTMutableClientMetadata()
         result.integration = self.integration
@@ -59,6 +60,7 @@ import Foundation
         return result
     }
     
+    /// Creates a copy of `BTClientMetadata`
     @objc(copyWithZone:)
     public func copy(with zone: NSZone? = nil) -> Any {
         let result = BTClientMetadata()
