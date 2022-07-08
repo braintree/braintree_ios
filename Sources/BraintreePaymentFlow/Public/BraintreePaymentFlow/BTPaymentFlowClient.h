@@ -6,26 +6,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-// Swift Module Imports
-#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
-#import <Braintree/Braintree-Swift.h>
-
-#elif SWIFT_PACKAGE                              // SPM
-/* Use @import for SPM support
- * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
- */
-@import BraintreeCoreSwift;
-
-#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
-/* Use quoted style when importing Swift headers for ReactNative support
- * See https://github.com/braintree/braintree_ios/issues/671
- */
-#import "Braintree-Swift.h"
-
-#else // Carthage or Local Builds
-#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
-#endif
-
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
 
@@ -35,6 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
  Payment flow error domain
  */
 extern NSString * const BTPaymentFlowErrorDomain;
+
+@protocol BTAppContextSwitchClient <NSObject>
+
++ (void)handleReturnURL:(NSURL * _Nonnull)url;
++ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url;
+
+@end
 
 /**
  Errors associated with payment flows.
@@ -165,12 +152,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  A required delegate to control the presentation and dismissal of view controllers.
  */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
-
-/// :nodoc: exposed for unit testing
-+ (void)handleReturnURL:(NSURL * _Nonnull)url;
-
-/// :nodoc: exposed for unit testing
-+ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url SWIFT_WARN_UNUSED_RESULT;
 
 @end
 
