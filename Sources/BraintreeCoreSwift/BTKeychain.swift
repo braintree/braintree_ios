@@ -4,7 +4,6 @@ import Security
 /// Wraps access to the iOS Keychain
 @objcMembers public class BTKeychain: NSObject {
     
-    
     /// Saves a `String` to the keychain.
     /// - Parameters:
     ///   - string: the `String` to be saved to the keychain
@@ -30,7 +29,6 @@ import Security
     static func keychainForKey(_ key: String) -> String {
         "com.braintreepayments.Braintree-API.\(key)"
     }
-    
     
     /// Saves `Data` to the keychain with a given `key`.
     /// - Parameters:
