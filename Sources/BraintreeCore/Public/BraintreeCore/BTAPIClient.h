@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#if !__has_include(<Braintree/BraintreeCore.h>) && !SWIFT_PACKAGE
+#if !__has_include(<Braintree/BraintreeCore.h>) || !SWIFT_PACKAGE
 #import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
