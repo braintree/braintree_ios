@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 /// Represents the metadata associated with a session for posting along with payment data during tokenization.
 ///
 /// When a payment method is tokenized, the client api accepts parameters under
@@ -13,7 +11,6 @@ import Foundation
 /// the sessionID should remain constant. To achieve this, users of this class
 /// should use `mutableCopy` to create a new copy based on the existing session
 /// and then update the object as needed.
-
 @objcMembers public class BTClientMetadata: NSObject, NSMutableCopying {
     
     /// Integration type

@@ -23,7 +23,6 @@
 #import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
-
 @implementation BraintreeDemoSceneDelegate
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {

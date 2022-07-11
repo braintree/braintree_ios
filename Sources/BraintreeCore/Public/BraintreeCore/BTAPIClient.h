@@ -13,7 +13,6 @@
 typedef NS_ENUM(NSInteger, BTClientMetadataSource);
 typedef NS_ENUM(NSInteger, BTClientMetadataIntegration);
 
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**

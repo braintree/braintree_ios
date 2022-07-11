@@ -98,7 +98,7 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         lastCanHandleURL = url
         return cannedCanHandle
     }
-    
+
     static func handleReturnURL(_ url: URL) {
         lastHandleReturnURL = url
     }
