@@ -14,7 +14,7 @@ class PayPal_Vault_UITests: XCTestCase {
         super.setUp()
         continueAfterFailure = false
         app.launchArguments.append("-EnvironmentSandbox")
-        app.launchArguments.append("-TokenizationKey")
+        app.launchArguments.append("-MockedPayPalTokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalVaultViewController")
         app.launch()
         

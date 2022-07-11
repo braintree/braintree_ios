@@ -166,6 +166,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                   parameters:[request parametersWithConfiguration:configuration]
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
+                if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                    [self.apiClient sendAnalyticsEvent:@"ios.paypal.tokenize.network-connection.failure"];
+                }
                 NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;
                 if (error.userInfo[NSLocalizedDescriptionKey] == nil && errorDetailsIssue != nil) {
                     NSMutableDictionary *dictionary = [error.userInfo mutableCopy];
@@ -577,6 +580,9 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
               parameters:parameters
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
+            if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                [self.apiClient sendAnalyticsEvent:@"ios.paypal.handle-browser-switch.network-connection.failure"];
+            }
             [self sendAnalyticsEventForTokenizationFailureForPaymentType:paymentType];
             if (completionBlock) {
                 completionBlock(nil, error);
