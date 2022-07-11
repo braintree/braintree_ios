@@ -45,7 +45,7 @@
 #import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
-@interface BTVenmoClient ()
+@interface BTVenmoClient () <BTAppContextSwitchClient>
 
 @property (nonatomic, copy) void (^appSwitchCompletionBlock)(BTVenmoAccountNonce *, NSError *);
 

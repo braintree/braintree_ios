@@ -1,4 +1,7 @@
 #import <Foundation/Foundation.h>
+#if !__has_include(<Braintree/BraintreeCore.h>)
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
+#endif
 
 #define NETWORK_CONNECTION_LOST_CODE -1005
 

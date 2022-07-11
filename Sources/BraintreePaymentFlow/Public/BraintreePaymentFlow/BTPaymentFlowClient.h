@@ -16,13 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern NSString * const BTPaymentFlowErrorDomain;
 
-@protocol BTAppContextSwitchClient <NSObject>
-
-+ (void)handleReturnURL:(NSURL * _Nonnull)url;
-+ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url;
-
-@end
-
 /**
  Errors associated with payment flows.
  */
@@ -126,7 +119,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  
  Handles the app switching and shared logic for payment flows that use web or app switching.
  */
-@interface BTPaymentFlowClient : NSObject <BTAppContextSwitchClient, BTPaymentFlowClientDelegate>
+@interface BTPaymentFlowClient : NSObject <BTPaymentFlowClientDelegate>
 
 /**
  Initialize a new BTPaymentFlowClient instance.
@@ -152,6 +145,16 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  A required delegate to control the presentation and dismissal of view controllers.
  */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
+
+/**
+ :nodoc: Exposed for testing
+*/
++ (void)handleReturnURL:(NSURL * _Nonnull)url;
+
+/**
+ :nodoc: Exposed for testing
+*/
++ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url;
 
 @end
 
