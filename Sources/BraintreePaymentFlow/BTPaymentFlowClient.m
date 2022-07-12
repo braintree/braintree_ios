@@ -111,7 +111,7 @@ static BTPaymentFlowClient *paymentFlowClient;
 
 #pragma mark - App switch
 
-+ (void)handleReturnURLWithURL:(NSURL *)url {
++ (void)handleReturnURL:(NSURL *)url {
     [paymentFlowClient handleOpenURL:url];
 }
 
