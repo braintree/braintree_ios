@@ -36,6 +36,8 @@ import PayPalCheckout
             return
         }
 
+        let onShippingChange = (request as? BTPayPalNativeCheckoutRequest)?.onShippingChange
+
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
             switch result {
@@ -55,6 +57,7 @@ import PayPalCheckout
                     onApprove: { [weak self] approval in
                         self?.tokenize(approval: approval, request: request, completion: completion)
                     },
+                    onShippingChange: onShippingChange,
                     onCancel: {
                         completion(nil, BTPayPalNativeError.canceled)
                     },
@@ -65,7 +68,8 @@ import PayPalCheckout
                 )
 
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
-                PayPalCheckout.Checkout.start()
+                PayPalCheckout.Checkout.start(onShippingChange: onShippingChange)
+
             case .failure(let error):
                 completion(nil, error)
             }

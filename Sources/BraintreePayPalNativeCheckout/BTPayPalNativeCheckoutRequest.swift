@@ -2,12 +2,33 @@
 import BraintreePayPal
 #endif
 
-/// Options for the PayPal Checkout and PayPal Checkout with Vault flows.
+import PayPalCheckout
+
+/**
+ Options for the PayPal Checkout and PayPal Checkout with Vault flows.
+ */
 @objc public class BTPayPalNativeCheckoutRequest: BTPayPalCheckoutRequest, BTPayPalNativeRequest {
 
     let paymentType: BTPayPalPaymentType = .checkout
 
-    let hermesPath: String = "v1/paypal_hermes/create_payment_resource"
+    /**
+     Initializes a PayPal Checkout request.
+
+     - Parameter amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
+
+     - Parameter shippingCallback: Optional. Used for shipping changes and shipping change actions.
+
+     - Returns: A PayPal Checkout request.
+     */
+  @objc public override init(amount: String) {
+        self.hermesPath = "v1/paypal_hermes/create_payment_resource"
+        super.init(amount: amount)
+    }
+
+    // MARK: - Internal
+    public var onShippingChange: ((PayPalCheckout.ShippingChange, PayPalCheckout.ShippingChangeAction) -> Void)?
+
+    let hermesPath: String
 
     var intentAsString: String {
         switch intent {
