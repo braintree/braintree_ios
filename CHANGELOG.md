@@ -13,6 +13,7 @@
     * Renamed `BTClientMetadataSourceType` to `BTClientMetadataSource`
     * Renamed `BTClientMetadataIntegrationType` to `BTClientMetadataIntegration`
     * Removed static wrapper methods from `BTAppContextSwitcher`
+    * Replaced `BTLogger` with `BTLogLevel` and `BTLogLevelDescription`
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`
