@@ -1,5 +1,5 @@
-@testable import BraintreeCore
-@testable import BraintreeCore.Private
+import BraintreeCore
+import BraintreeCore.Private
 import BraintreeCoreSwift
 
 public class MockAPIClient : BTAPIClient {
