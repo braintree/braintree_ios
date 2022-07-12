@@ -70,7 +70,7 @@ import Security
         return true
     }
     
-    /// Read`Data` from keychain.
+    /// Read `Data` from keychain.
     /// - Parameter key: the key associated to the desired `Data`value in the keychain.
     /// - Returns: The `Data` associated to `key`, `nil` otherwise.
     static func dataForKey(_ key: String) -> Data? {
