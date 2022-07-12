@@ -84,12 +84,12 @@ typedef NS_ENUM(NSInteger, BTVenmoErrorType) {
 /**
  :nodoc: Exposed for testing
 */
-+ (void)handleReturnURL:(NSURL * _Nonnull)url;
++ (void)handleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(handleReturnURL(_:));
 
 /**
  :nodoc: Exposed for testing
 */
-+ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url;
++ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(canHandleReturnURL(_:));
 
 @end
 
