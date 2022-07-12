@@ -12,7 +12,6 @@ import BraintreeVenmo
 import PayPalDataCollector
 import BraintreeSEPADirectDebit
 
-
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
