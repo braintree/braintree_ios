@@ -17,7 +17,6 @@
 		033248CE2123DD1A009F2B31 /* BTConfiguration+LocalPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 033248C92123DD1A009F2B31 /* BTConfiguration+LocalPayment.m */; };
 		034CF88721501E24003C0616 /* BTConfiguration+Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 034CF88621501E24003C0616 /* BTConfiguration+Card.m */; };
 		034CF88A21501EA5003C0616 /* BTConfiguration+Card.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF88921501E91003C0616 /* BTConfiguration+Card.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		03502C9B1E9C0D3900F15EE6 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		0357C4881F96873200E63851 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		038C7FD21EA1648900241ABE /* BTPaymentFlowClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C7FBC1EA1648900241ABE /* BTPaymentFlowClient.m */; };
 		038C7FD31EA1648900241ABE /* BTPaymentFlowClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FBD1EA1648900241ABE /* BTPaymentFlowClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -324,6 +323,8 @@
 		BC20A8FB2385F8640077AF56 /* BTPreferredPaymentMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = BC20A8F92385F8640077AF56 /* BTPreferredPaymentMethods.m */; };
 		BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
+		BE10B8D1287DBEE900F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
+		BE10B8D6287DC1FF00F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE57E1112847F8A0002CFBAC /* BTDataCollectorEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1102847F8A0002CFBAC /* BTDataCollectorEnvironment.swift */; };
 		BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */; };
 		BE70A963284FA3F000F6D3F7 /* BTDataCollectorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */; };
@@ -332,6 +333,7 @@
 		BE70A987285285F900F6D3F7 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
 		BE9F444427C6C75E00A117D5 /* BTCacheDateValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */; };
 		BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */; };
+		BEA57069287DBD30009B9247 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; platformFilter = ios; };
 		BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7493528579BAC0074C818 /* BTURLUtils.swift */; };
 		BED749392858CEC60074C818 /* BTKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED749382858CEC60074C818 /* BTKeychain.swift */; };
 		BED7495A285A6E460074C818 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
@@ -612,6 +614,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = A903E1A524F9D34000C314E1;
 			remoteInfo = BraintreeTestShared;
+		};
+		BE10B8D2287DBEF000F7B3B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 570B936A285397520041BAFE;
+			remoteInfo = BraintreeCoreSwift;
+		};
+		BE10B8D4287DC1F700F7B3B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 570B936A285397520041BAFE;
+			remoteInfo = BraintreeCoreSwift;
 		};
 		BE70A981284FC07200F6D3F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1029,8 +1045,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE10B8D1287DBEE900F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */,
+				BEA57069287DBD30009B9247 /* BraintreeCore.framework in Frameworks */,
 				BE70A983284FC07C00F6D3F7 /* BraintreeDataCollector.framework in Frameworks */,
-				03502C9B1E9C0D3900F15EE6 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1096,6 +1113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE10B8D6287DC1FF00F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */,
 				80CC038A263210D700C4E6E0 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2204,6 +2222,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE10B8D3287DBEF000F7B3B2 /* PBXTargetDependency */,
 				BE70A982284FC07200F6D3F7 /* PBXTargetDependency */,
 				03C2FDBA1E9C2C0700151DFD /* PBXTargetDependency */,
 			);
@@ -2339,6 +2358,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE10B8D5287DC1F700F7B3B2 /* PBXTargetDependency */,
 				80CC038D263210D700C4E6E0 /* PBXTargetDependency */,
 			);
 			name = BraintreeVenmo;
@@ -3581,6 +3601,16 @@
 			isa = PBXTargetDependency;
 			target = A903E1A524F9D34000C314E1 /* BraintreeTestShared */;
 			targetProxy = A9E80A9D24FEF40700196BD3 /* PBXContainerItemProxy */;
+		};
+		BE10B8D3287DBEF000F7B3B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
+			targetProxy = BE10B8D2287DBEF000F7B3B2 /* PBXContainerItemProxy */;
+		};
+		BE10B8D5287DC1F700F7B3B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
+			targetProxy = BE10B8D4287DC1F700F7B3B2 /* PBXContainerItemProxy */;
 		};
 		BE70A982284FC07200F6D3F7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

@@ -1,6 +1,6 @@
 @testable import BraintreeCore
 @testable import BraintreeCore.Private
-@testable import BraintreeCoreSwift
+import BraintreeCoreSwift
 
 public class MockAPIClient : BTAPIClient {
     public var lastPOSTPath = ""
