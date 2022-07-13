@@ -16,6 +16,7 @@ class SEPADirectDebitAPI {
         sepaDirectDebitRequest: BTSEPADirectDebitRequest,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
+        let billingAddress = sepaDirectDebitRequest.billingAddress
         let json: [String: Any] = [
             "sepa_debit": [
                 "merchant_or_partner_customer_id": sepaDirectDebitRequest.customerID ?? "",
@@ -23,12 +24,12 @@ class SEPADirectDebitAPI {
                 "account_holder_name": sepaDirectDebitRequest.accountHolderName ?? "",
                 "iban": sepaDirectDebitRequest.iban ?? "",
                 "billing_address": [
-                    "address_line_1": sepaDirectDebitRequest.billingAddress?.streetAddress,
-                    "address_line_2": sepaDirectDebitRequest.billingAddress?.extendedAddress,
-                    "admin_area_1": sepaDirectDebitRequest.billingAddress?.locality,
-                    "admin_area_2": sepaDirectDebitRequest.billingAddress?.region,
-                    "postal_code": sepaDirectDebitRequest.billingAddress?.postalCode,
-                    "country_code": sepaDirectDebitRequest.billingAddress?.countryCodeAlpha2
+                    "address_line_1": billingAddress?.streetAddress,
+                    "address_line_2": billingAddress?.extendedAddress,
+                    "admin_area_1": billingAddress?.locality,
+                    "admin_area_2": billingAddress?.region,
+                    "postal_code": billingAddress?.postalCode,
+                    "country_code": billingAddress?.countryCodeAlpha2
                 ]
             ],
             "merchant_account_id": sepaDirectDebitRequest.merchantAccountID ?? "",
