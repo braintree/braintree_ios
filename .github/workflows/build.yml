@@ -1,5 +1,8 @@
 name: Build
 on: [pull_request, workflow_dispatch]
+concurrency:
+  group: build-${{ github.event.pull_request.number }} 
+  cancel-in-progress: true
 jobs:
   cocoapods:
     name: CocoaPods (Xcode 12.5)
