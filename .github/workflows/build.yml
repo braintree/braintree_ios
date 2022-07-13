@@ -1,7 +1,7 @@
 name: Build
 on: [pull_request, workflow_dispatch]
 concurrency:
-  group: ${{ github.event.pull_request.number || github.ref }}
+  group: Build-${{ github.event.pull_request.number || github.head_ref }}
   cancel-in-progress: true
 jobs:
   cocoapods:
