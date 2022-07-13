@@ -32,7 +32,7 @@ jobs:
       - name: Use current branch
         run: echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
       - name: Run carthage build
-         run: carthage build --no-skip-current --use-xcframeworks
+        run: carthage build --no-skip-current --use-xcframeworks
       - name: Run carthage update
         run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
@@ -82,7 +82,7 @@ jobs:
       - name: Use current branch
         run: echo 'git "file://'$PWD'" "'$GITHUB_HEAD_REF'"' > SampleApps/CarthageTest/Cartfile
       - name: Run carthage build
-         run: carthage build --no-skip-current --use-xcframeworks
+        run: carthage build --no-skip-current --use-xcframeworks
       - name: Run carthage update
         run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
