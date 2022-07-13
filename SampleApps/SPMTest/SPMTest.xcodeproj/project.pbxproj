@@ -13,18 +13,18 @@
 		80214E0B2551FB5A00695A6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80214E092551FB5A00695A6F /* Main.storyboard */; };
 		80214E0D2551FB5C00695A6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80214E0C2551FB5C00695A6F /* Assets.xcassets */; };
 		80214E102551FB5C00695A6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80214E0E2551FB5C00695A6F /* LaunchScreen.storyboard */; };
-		BE777AA627D9112900487D23 /* BraintreeAmericanExpress in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AA527D9112900487D23 /* BraintreeAmericanExpress */; };
-		BE777AA827D9112900487D23 /* BraintreeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AA727D9112900487D23 /* BraintreeApplePay */; };
-		BE777AAA27D9112900487D23 /* BraintreeCard in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AA927D9112900487D23 /* BraintreeCard */; };
-		BE777AAC27D9112900487D23 /* BraintreeCore in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AAB27D9112900487D23 /* BraintreeCore */; };
-		BE777AAE27D9112900487D23 /* BraintreeDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AAD27D9112900487D23 /* BraintreeDataCollector */; };
-		BE777AB027D9112900487D23 /* BraintreePayPal in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AAF27D9112900487D23 /* BraintreePayPal */; };
-		BE777AB227D9112900487D23 /* BraintreePaymentFlow in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AB127D9112900487D23 /* BraintreePaymentFlow */; };
-		BE777AB427D9112900487D23 /* BraintreeSEPADirectDebit in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AB327D9112900487D23 /* BraintreeSEPADirectDebit */; };
-		BE777AB627D9112900487D23 /* BraintreeThreeDSecure in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AB527D9112900487D23 /* BraintreeThreeDSecure */; };
-		BE777AB827D9112900487D23 /* BraintreeUnionPay in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AB727D9112900487D23 /* BraintreeUnionPay */; };
-		BE777ABA27D9112900487D23 /* BraintreeVenmo in Frameworks */ = {isa = PBXBuildFile; productRef = BE777AB927D9112900487D23 /* BraintreeVenmo */; };
-		BE777ABC27D9112900487D23 /* PayPalDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = BE777ABB27D9112900487D23 /* PayPalDataCollector */; };
+		BE10B8D9287F34FD00F7B3B2 /* BraintreeAmericanExpress in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8D8287F34FD00F7B3B2 /* BraintreeAmericanExpress */; };
+		BE10B8DB287F34FD00F7B3B2 /* BraintreeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8DA287F34FD00F7B3B2 /* BraintreeApplePay */; };
+		BE10B8DD287F34FD00F7B3B2 /* BraintreeCard in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8DC287F34FD00F7B3B2 /* BraintreeCard */; };
+		BE10B8DF287F34FD00F7B3B2 /* BraintreeCore in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8DE287F34FD00F7B3B2 /* BraintreeCore */; };
+		BE10B8E1287F34FD00F7B3B2 /* BraintreeDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8E0287F34FD00F7B3B2 /* BraintreeDataCollector */; };
+		BE10B8E3287F34FD00F7B3B2 /* BraintreePayPal in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8E2287F34FD00F7B3B2 /* BraintreePayPal */; };
+		BE10B8E5287F34FD00F7B3B2 /* BraintreePaymentFlow in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8E4287F34FD00F7B3B2 /* BraintreePaymentFlow */; };
+		BE10B8E7287F34FD00F7B3B2 /* BraintreeSEPADirectDebit in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8E6287F34FD00F7B3B2 /* BraintreeSEPADirectDebit */; };
+		BE10B8E9287F34FD00F7B3B2 /* BraintreeThreeDSecure in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8E8287F34FD00F7B3B2 /* BraintreeThreeDSecure */; };
+		BE10B8EB287F34FD00F7B3B2 /* BraintreeUnionPay in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8EA287F34FD00F7B3B2 /* BraintreeUnionPay */; };
+		BE10B8ED287F34FD00F7B3B2 /* BraintreeVenmo in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8EC287F34FD00F7B3B2 /* BraintreeVenmo */; };
+		BE10B8EF287F34FD00F7B3B2 /* PayPalDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = BE10B8EE287F34FD00F7B3B2 /* PayPalDataCollector */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,18 +46,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE777ABA27D9112900487D23 /* BraintreeVenmo in Frameworks */,
-				BE777AB427D9112900487D23 /* BraintreeSEPADirectDebit in Frameworks */,
-				BE777AAE27D9112900487D23 /* BraintreeDataCollector in Frameworks */,
-				BE777AB827D9112900487D23 /* BraintreeUnionPay in Frameworks */,
-				BE777AAA27D9112900487D23 /* BraintreeCard in Frameworks */,
-				BE777AB027D9112900487D23 /* BraintreePayPal in Frameworks */,
-				BE777AA627D9112900487D23 /* BraintreeAmericanExpress in Frameworks */,
-				BE777AAC27D9112900487D23 /* BraintreeCore in Frameworks */,
-				BE777AB627D9112900487D23 /* BraintreeThreeDSecure in Frameworks */,
-				BE777AA827D9112900487D23 /* BraintreeApplePay in Frameworks */,
-				BE777AB227D9112900487D23 /* BraintreePaymentFlow in Frameworks */,
-				BE777ABC27D9112900487D23 /* PayPalDataCollector in Frameworks */,
+				BE10B8ED287F34FD00F7B3B2 /* BraintreeVenmo in Frameworks */,
+				BE10B8E7287F34FD00F7B3B2 /* BraintreeSEPADirectDebit in Frameworks */,
+				BE10B8E1287F34FD00F7B3B2 /* BraintreeDataCollector in Frameworks */,
+				BE10B8EB287F34FD00F7B3B2 /* BraintreeUnionPay in Frameworks */,
+				BE10B8DD287F34FD00F7B3B2 /* BraintreeCard in Frameworks */,
+				BE10B8E3287F34FD00F7B3B2 /* BraintreePayPal in Frameworks */,
+				BE10B8D9287F34FD00F7B3B2 /* BraintreeAmericanExpress in Frameworks */,
+				BE10B8DF287F34FD00F7B3B2 /* BraintreeCore in Frameworks */,
+				BE10B8E9287F34FD00F7B3B2 /* BraintreeThreeDSecure in Frameworks */,
+				BE10B8DB287F34FD00F7B3B2 /* BraintreeApplePay in Frameworks */,
+				BE10B8E5287F34FD00F7B3B2 /* BraintreePaymentFlow in Frameworks */,
+				BE10B8EF287F34FD00F7B3B2 /* PayPalDataCollector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,18 +130,18 @@
 			);
 			name = SPMTest;
 			packageProductDependencies = (
-				BE777AA527D9112900487D23 /* BraintreeAmericanExpress */,
-				BE777AA727D9112900487D23 /* BraintreeApplePay */,
-				BE777AA927D9112900487D23 /* BraintreeCard */,
-				BE777AAB27D9112900487D23 /* BraintreeCore */,
-				BE777AAD27D9112900487D23 /* BraintreeDataCollector */,
-				BE777AAF27D9112900487D23 /* BraintreePayPal */,
-				BE777AB127D9112900487D23 /* BraintreePaymentFlow */,
-				BE777AB327D9112900487D23 /* BraintreeSEPADirectDebit */,
-				BE777AB527D9112900487D23 /* BraintreeThreeDSecure */,
-				BE777AB727D9112900487D23 /* BraintreeUnionPay */,
-				BE777AB927D9112900487D23 /* BraintreeVenmo */,
-				BE777ABB27D9112900487D23 /* PayPalDataCollector */,
+				BE10B8D8287F34FD00F7B3B2 /* BraintreeAmericanExpress */,
+				BE10B8DA287F34FD00F7B3B2 /* BraintreeApplePay */,
+				BE10B8DC287F34FD00F7B3B2 /* BraintreeCard */,
+				BE10B8DE287F34FD00F7B3B2 /* BraintreeCore */,
+				BE10B8E0287F34FD00F7B3B2 /* BraintreeDataCollector */,
+				BE10B8E2287F34FD00F7B3B2 /* BraintreePayPal */,
+				BE10B8E4287F34FD00F7B3B2 /* BraintreePaymentFlow */,
+				BE10B8E6287F34FD00F7B3B2 /* BraintreeSEPADirectDebit */,
+				BE10B8E8287F34FD00F7B3B2 /* BraintreeThreeDSecure */,
+				BE10B8EA287F34FD00F7B3B2 /* BraintreeUnionPay */,
+				BE10B8EC287F34FD00F7B3B2 /* BraintreeVenmo */,
+				BE10B8EE287F34FD00F7B3B2 /* PayPalDataCollector */,
 			);
 			productName = SPMTest;
 			productReference = 80214E002551FB5A00695A6F /* SPMTest.app */;
@@ -171,7 +171,7 @@
 			);
 			mainGroup = 80214DF72551FB5A00695A6F;
 			packageReferences = (
-				BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */,
+				BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */,
 			);
 			productRefGroup = 80214E012551FB5A00695A6F /* Products */;
 			projectDirPath = "";
@@ -419,75 +419,75 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */ = {
+		BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braintree/braintree_ios";
 			requirement = {
-				branch = "sepa-feature";
+				branch = master;
 				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BE777AA527D9112900487D23 /* BraintreeAmericanExpress */ = {
+		BE10B8D8287F34FD00F7B3B2 /* BraintreeAmericanExpress */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeAmericanExpress;
 		};
-		BE777AA727D9112900487D23 /* BraintreeApplePay */ = {
+		BE10B8DA287F34FD00F7B3B2 /* BraintreeApplePay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeApplePay;
 		};
-		BE777AA927D9112900487D23 /* BraintreeCard */ = {
+		BE10B8DC287F34FD00F7B3B2 /* BraintreeCard */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeCard;
 		};
-		BE777AAB27D9112900487D23 /* BraintreeCore */ = {
+		BE10B8DE287F34FD00F7B3B2 /* BraintreeCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeCore;
 		};
-		BE777AAD27D9112900487D23 /* BraintreeDataCollector */ = {
+		BE10B8E0287F34FD00F7B3B2 /* BraintreeDataCollector */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeDataCollector;
 		};
-		BE777AAF27D9112900487D23 /* BraintreePayPal */ = {
+		BE10B8E2287F34FD00F7B3B2 /* BraintreePayPal */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreePayPal;
 		};
-		BE777AB127D9112900487D23 /* BraintreePaymentFlow */ = {
+		BE10B8E4287F34FD00F7B3B2 /* BraintreePaymentFlow */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreePaymentFlow;
 		};
-		BE777AB327D9112900487D23 /* BraintreeSEPADirectDebit */ = {
+		BE10B8E6287F34FD00F7B3B2 /* BraintreeSEPADirectDebit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeSEPADirectDebit;
 		};
-		BE777AB527D9112900487D23 /* BraintreeThreeDSecure */ = {
+		BE10B8E8287F34FD00F7B3B2 /* BraintreeThreeDSecure */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeThreeDSecure;
 		};
-		BE777AB727D9112900487D23 /* BraintreeUnionPay */ = {
+		BE10B8EA287F34FD00F7B3B2 /* BraintreeUnionPay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeUnionPay;
 		};
-		BE777AB927D9112900487D23 /* BraintreeVenmo */ = {
+		BE10B8EC287F34FD00F7B3B2 /* BraintreeVenmo */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeVenmo;
 		};
-		BE777ABB27D9112900487D23 /* PayPalDataCollector */ = {
+		BE10B8EE287F34FD00F7B3B2 /* PayPalDataCollector */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			package = BE10B8D7287F34FD00F7B3B2 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = PayPalDataCollector;
 		};
 /* End XCSwiftPackageProductDependency section */
