@@ -7,6 +7,7 @@
 
 @property (nonatomic, weak) void (^progressBlock)(NSString *newStatus);
 @property (nonatomic, weak) void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce);
+@property (nonatomic, weak) void (^nonceStringCompletionBlock)(NSString *paymentMethodNonceString);
 @property (nonatomic, weak) void (^transactionBlock)(void);
 
 @end

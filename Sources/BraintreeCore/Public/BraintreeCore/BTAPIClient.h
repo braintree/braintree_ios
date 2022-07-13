@@ -157,6 +157,11 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
  */
 - (instancetype)init __attribute__((unavailable("Use initWithAuthorization: instead.")));
 
+/**
+ :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+*/
+- (void)sendAnalyticsEvent:(NSString *)eventName;
+
 @end
 
 NS_ASSUME_NONNULL_END

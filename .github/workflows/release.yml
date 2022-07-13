@@ -74,7 +74,7 @@ jobs:
         run: |
           rm -rf SampleApps/SPMTest
           ./carthage.sh build --no-skip-current
-          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
+          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADirectDebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
           git checkout SampleApps/SPMTest
 
       - name: Upload Carthage pre-built frameworks to GitHub release
@@ -116,6 +116,8 @@ jobs:
           gem install jazzy
           brew install sourcekitten
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-sepa-direct-debit.json
+
           sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
             -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \
             -I $(pwd)/Sources/BraintreeAmericanExpress/Public \
