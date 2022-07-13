@@ -1,8 +1,5 @@
 name: Tests
 on: [pull_request, workflow_dispatch]
-concurrency:
-  group: Tests-{{ github.event.pull_request.number || github.head_ref }}
-  cancel-in-progress: true
 jobs:
   unit_test_job:
     name: Unit
