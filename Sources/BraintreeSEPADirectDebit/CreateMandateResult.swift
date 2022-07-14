@@ -16,7 +16,6 @@ struct CreateMandateResult {
 
     /// The last four digits of the IBAN.
     let ibanLastFour: String?
-    
 
     /// The customer ID of the user.
     let customerID: String?
