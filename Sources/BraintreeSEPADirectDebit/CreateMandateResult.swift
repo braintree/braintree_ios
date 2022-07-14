@@ -14,6 +14,7 @@ struct CreateMandateResult {
     /// The approval URL used to present the mandate to the customer.
     let approvalURL: String
 
+    
     /// The last four digits of the IBAN.
     let ibanLastFour: String?
 
