@@ -30,6 +30,7 @@
 				<string>iDEAL</string>
 				<string>Amex</string>
 				<string>Preferred Payment Methods</string>
+				<string>SEPA Direct Debit</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -46,6 +47,7 @@
 				<string>BraintreeDemoIdealViewController</string>
 				<string>BraintreeDemoAmexViewController</string>
 				<string>BraintreeDemoPreferredPaymentMethodsViewController</string>
+				<string>BraintreeDemoSEPADirectDebitViewController</string>
 			</array>
 		</dict>
 		<dict>

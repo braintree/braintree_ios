@@ -74,7 +74,7 @@ jobs:
         run: |
           rm -rf SampleApps/SPMTest
           ./carthage.sh build --no-skip-current
-          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" --output Braintree.framework.zip
+          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADirectDebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" "BraintreePayPalNativeCheckout" --output Braintree.framework.zip
           git checkout SampleApps/SPMTest
 
       - name: Upload Carthage pre-built frameworks to GitHub release
@@ -119,9 +119,10 @@ jobs:
           # run sourcekitten on each Swift module individually
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > pay-pal-data-collector.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPalNativeCheckout -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-pay-pal-native-checkout.json
-          
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-sepa-direct-debit.json
+
           # merge sourcekitten output
-          jq -s '.[0] + .[1]' pay-pal-data-collector.json braintree-pay-pal-native-checkout.json > swiftDoc.json
+          jq -s '.[0] + .[1] + .[2]' pay-pal-data-collector.json braintree-pay-pal-native-checkout.json braintree-sepa-direct-debit.json > swiftDoc.json
 
           sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
             -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \

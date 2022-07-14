@@ -40,6 +40,10 @@ let package = Package(
             targets: ["BraintreePayPalNativeCheckout"]
         ),
         .library(
+            name: "BraintreeSEPADirectDebit",
+            targets: ["BraintreeSEPADirectDebit"]
+        ),
+        .library(
             name: "BraintreeThreeDSecure",
             targets: ["BraintreeThreeDSecure", "CardinalMobile", "PPRiskMagnes"]
         ),
@@ -101,11 +105,16 @@ let package = Package(
         .target(
             name: "BraintreePayPalNativeCheckout",
             dependencies: [
-              "BraintreeCore",
-              "BraintreePayPal",
-              "PayPalCheckout",
+                "BraintreeCore",
+                "BraintreePayPal",
+                "PayPalCheckout",
             ],
             path: "Sources/BraintreePayPalNativeCheckout"
+        ),
+        .target(
+            name: "BraintreeSEPADirectDebit",
+            dependencies: ["BraintreeCore"],
+            path: "Sources/BraintreeSEPADirectDebit"
         ),
         .target(
             name: "BraintreeThreeDSecure",

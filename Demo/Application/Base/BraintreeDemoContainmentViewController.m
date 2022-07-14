@@ -74,9 +74,6 @@
 }
 
 - (void)updateStatus:(NSString *)status {
-    [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
-    [(UIButton *)self.statusItem.customView setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
-    NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
     dispatch_async(dispatch_get_main_queue(), ^{
         [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
         [(UIButton *)self.statusItem.customView setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
@@ -89,7 +86,7 @@
 
 - (void)tappedStatus {
     NSLog(@"Tapped status!");
-    
+
     if (self.latestTokenizedPayment || self.latestTokenizedPaymentString) {
         NSString *nonce = self.latestTokenizedPaymentString != nil ? self.latestTokenizedPaymentString : self.latestTokenizedPayment.nonce;
         NSString *merchantAccountID = nil;
