@@ -78,7 +78,6 @@ jobs:
           rm -rf Carthage/Build/BraintreeTestShared.xcframework
           zip -r Braintree.xcframework.zip Carthage
           git checkout SampleApps/SPMTest
-
       - name: Upload Carthage pre-built xcframeworks to GitHub release
         uses: actions/upload-release-asset@v1
         env:
@@ -99,6 +98,8 @@ jobs:
           gem install jazzy
           brew install sourcekitten
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > swiftDoc.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-sepa-direct-debit.json
+
           sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
             -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \
             -I $(pwd)/Sources/BraintreeAmericanExpress/Public \

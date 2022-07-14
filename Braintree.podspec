@@ -69,6 +69,11 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/DataCollector"
   end
 
+  s.subspec "SEPADirectDebit" do |s|
+    s.source_files = "Sources/BraintreeSEPADirectDebit/*.swift"
+    s.dependency "Braintree/Core"
+  end
+
   s.subspec "ThreeDSecure" do |s|
     s.source_files = "Sources/BraintreeThreeDSecure/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/*.h"
