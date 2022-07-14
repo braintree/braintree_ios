@@ -3,22 +3,7 @@
 @import BraintreeCore;
 @import BraintreeTestShared;
 @import XCTest;
-
-@interface StubBTClientMetadata : BTClientMetadata
-
-@property (nonatomic, assign) BTClientMetadataIntegrationType integration;
-@property (nonatomic, assign) BTClientMetadataSourceType source;
-@property (nonatomic, copy) NSString *sessionID;
-
-@end
-
-@implementation StubBTClientMetadata
-
-@synthesize integration = _integration;
-@synthesize source = _source;
-@synthesize sessionID = _sessionID;
-
-@end
+@import BraintreeCoreSwift;
 
 @interface BTFakeAnalyticsService : BTAnalyticsService
 

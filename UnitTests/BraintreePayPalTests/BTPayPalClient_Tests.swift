@@ -1,6 +1,7 @@
 import XCTest
 import BraintreePayPal
 import BraintreeTestShared
+@testable import BraintreeCoreSwift
 
 class BTPayPalClient_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient!
@@ -625,7 +626,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let payPalClient = BTPayPalClient(apiClient: apiClient)
 
-        XCTAssertEqual(payPalClient.apiClient?.metadata.integration, BTClientMetadataIntegrationType.custom)
+        XCTAssertEqual(payPalClient.apiClient?.metadata.integration, BTClientMetadataIntegration.custom)
     }
 
     func testHandleBrowserSwitchReturn_vault_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {

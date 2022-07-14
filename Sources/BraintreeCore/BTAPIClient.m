@@ -136,8 +136,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 }
 
 // NEXT_MAJOR_VERSION: remove this unused method
-- (instancetype)copyWithSource:(BTClientMetadataSourceType)source
-                   integration:(BTClientMetadataIntegrationType)integration
+- (instancetype)copyWithSource:(BTClientMetadataSource)source
+                   integration:(BTClientMetadataIntegration)integration
 {
     BTAPIClient *copiedClient;
 

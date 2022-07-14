@@ -4,6 +4,7 @@
 @import BraintreePayPal;
 @import OCMock;
 @import XCTest;
+@import BraintreeCoreSwift;
 
 @interface BraintreePayPal_IntegrationTests : XCTestCase
 

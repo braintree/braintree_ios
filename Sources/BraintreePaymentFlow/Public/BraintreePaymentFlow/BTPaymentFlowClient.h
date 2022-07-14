@@ -119,7 +119,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  
  Handles the app switching and shared logic for payment flows that use web or app switching.
  */
-@interface BTPaymentFlowClient : NSObject <BTAppContextSwitchClient, BTPaymentFlowClientDelegate>
+@interface BTPaymentFlowClient : NSObject <BTPaymentFlowClientDelegate>
 
 /**
  Initialize a new BTPaymentFlowClient instance.
@@ -145,6 +145,16 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  A required delegate to control the presentation and dismissal of view controllers.
  */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
+
+/**
+ :nodoc: Exposed for testing
+*/
++ (void)handleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(handleReturnURL(_:));
+
+/**
+ :nodoc: Exposed for testing
+*/
++ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(canHandleReturnURL(_:));
 
 @end
 

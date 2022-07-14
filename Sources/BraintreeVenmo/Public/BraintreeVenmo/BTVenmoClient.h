@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, BTVenmoErrorType) {
 /**
  Used to process Venmo payments
  */
-@interface BTVenmoClient : NSObject <BTAppContextSwitchClient>
+@interface BTVenmoClient : NSObject
 
 /**
  Initialize a new Venmo client instance.
@@ -80,6 +80,16 @@ typedef NS_ENUM(NSInteger, BTVenmoErrorType) {
  Switches to the iTunes App Store to download the Venmo app.
  */
 - (void)openVenmoAppPageInAppStore;
+
+/**
+ :nodoc: Exposed for testing
+*/
++ (void)handleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(handleReturnURL(_:));
+
+/**
+ :nodoc: Exposed for testing
+*/
++ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(canHandleReturnURL(_:));
 
 @end
 

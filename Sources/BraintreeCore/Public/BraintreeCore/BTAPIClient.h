@@ -1,17 +1,17 @@
 #import <Foundation/Foundation.h>
 
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTClientMetadata.h>
-#else
-#import <BraintreeCore/BTClientMetadata.h>
+#if __has_include(<BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>)
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 #define NETWORK_CONNECTION_LOST_CODE -1005
 
 @class BTConfiguration;
 @class BTJSON;
-
 @class BTPaymentMethodNonce;
+
+typedef NS_ENUM(NSInteger, BTClientMetadataSource);
+typedef NS_ENUM(NSInteger, BTClientMetadataIntegration);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -68,8 +68,8 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
  This provides a way to override an API client's source and integration metadata, which
  is captured and sent to Braintree as part of the analytics we track.
 */
-- (instancetype)copyWithSource:(BTClientMetadataSourceType)source
-                   integration:(BTClientMetadataIntegrationType)integration;
+- (instancetype)copyWithSource:(BTClientMetadataSource)source
+                   integration:(BTClientMetadataIntegration)integration;
 
 /**
  Provides configuration data as a `BTJSON` object.

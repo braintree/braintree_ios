@@ -39,7 +39,7 @@
 #import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
-@interface BTPaymentFlowClient () <SFSafariViewControllerDelegate>
+@interface BTPaymentFlowClient () <SFSafariViewControllerDelegate, BTAppContextSwitchClient>
 
 @property (nonatomic, copy) void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *);
 @property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
