@@ -56,6 +56,9 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     return json;
 }
 
+// json === ["foo": 1, "bar": 2]
+// json["foo"] == 1
+
 - (BTJSON *)objectAtIndexedSubscript:(NSUInteger)idx {
     BTJSON *json = [[BTJSON alloc] initWithValue:_value];
     json.subscripts = [self.subscripts arrayByAddingObject:@(idx)];
