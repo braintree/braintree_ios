@@ -65,5 +65,74 @@ import Foundation
         }
     }
     
-
+    public func asString() -> String? {
+        value as? String
+    }
+    
+    public func asBool() -> Bool? {
+        value as? Bool
+    }
+    
+    public func asIntegerOrZero() -> Int? {
+        value as? Int
+    }
+    
+    public func asDictionary() -> [String: BTJSONSwift]? {
+        value as? [String: BTJSONSwift]
+    }
+    
+    public func asStringArray() -> [String]? {
+        value as? [String]
+    }
+    
+    public func asURL() -> URL? {
+        guard let urlString = value as? String else {
+            return nil
+        }
+        return URL(string: urlString)
+    }
+    
+    public func asEnum(mapping: [String: Int], orDefault: Int) -> Int {
+        guard let key = value as? String,
+              let result = mapping[key] else {
+            return orDefault
+        }
+        return result
+    }
+    
+    func asNumber() -> NSNumber? {
+        value as? NSNumber
+    }
+    
+    func isString() -> Bool {
+        value is String
+    }
+    
+    func isBool() -> Bool {
+        value is Bool
+    }
+    
+    func isNumber() -> Bool {
+        value is NSNumber
+    }
+    
+    func isArray() -> Bool {
+        value is Array<Any>
+    }
+    
+    func isObject() -> Bool {
+        value is [String: Any]
+    }
+    
+    func isTrue() -> Bool {
+        value as? Bool == true
+    }
+    
+    func isFalse() -> Bool {
+        value as? Bool == false
+    }
+    
+    func isNull() -> Bool {
+        value is NSNull
+    }
 }
