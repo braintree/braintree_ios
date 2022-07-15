@@ -1,11 +1,14 @@
 import Foundation
 
 enum BTJSONErrorSwift: Error, CustomNSError, LocalizedError {
+
+    /// JSONSerialization failure
+    case jsonSerializationFailure
     
-    /// Unknown value
+    /// Invalid index
     case indexInvalid(Int)
     
-    /// Invalid value
+    /// Invalid key
     case keyInvalid(String)
     
     static var errorDomain: String {
@@ -14,15 +17,19 @@ enum BTJSONErrorSwift: Error, CustomNSError, LocalizedError {
     
     var errorCode: Int {
         switch self {
-        case .indexInvalid(_):
+        case .jsonSerializationFailure:
             return 0
-        case .keyInvalid(_):
+        case .indexInvalid(_):
             return 1
+        case .keyInvalid(_):
+            return 2
         }
     }
     
     var errorDescription: String? {
         switch self {
+        case .jsonSerializationFailure:
+            return "Failed to serialize JSON data in initilizer"
         case .indexInvalid(let index):
             return "Attempted to index into a value that is not an array using index \(index)"
         case .keyInvalid(let key):

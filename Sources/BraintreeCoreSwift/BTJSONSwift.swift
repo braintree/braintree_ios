@@ -39,100 +39,194 @@ import Foundation
 ///    json["baz"] = [ 1, 2, 3 ] // json.asJSON => { "foo": ["bar"], "baz": [1,2,3] }
 ///    json["quux"] = NSSet() // json.isError => true, json.asJSON => throws NSError(domain: BTJSONErrorDomain, code: BTJSONErrorInvalidData)
 /// ```
-@objc public class BTJSONSwift: NSObject  {
-    let value: Any
-    
-    init(value: Any) {
+@objcMembers public class BTJSONSwift: NSObject {
+    var value: Any? = [:]
+
+    // MARK: Initializers
+
+    public override init() { }
+
+    ///  Initialize with a value.
+    /// - Parameter value: The value to initialize with.
+    public convenience init(value: Any?) {
+        self.init()
         self.value = value
     }
-    
-    subscript(index: Int) -> BTJSONSwift {
-        get {
-            guard let value = value as? [Any] else {
-                return BTJSONSwift(value: BTJSONErrorSwift.indexInvalid(index))
-            }
-            return BTJSONSwift(value: value[index])
+
+    /// Initialize with data.
+    /// - Parameter data: The `Data` to initialize with.
+    public convenience init(data: Data) {
+        guard let value = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else {
+            self.init(value: BTJSONErrorSwift.jsonSerializationFailure)
+            return
         }
+
+        self.init(value: value)
     }
-    
-    subscript(key: String) -> BTJSONSwift {
-        get {
-            guard let value = value as? [String: Any],
-                  let unwrappedResult = value[key] else {
-                return BTJSONSwift(value: BTJSONErrorSwift.keyInvalid(key))
-            }
-            return BTJSONSwift(value: unwrappedResult)
+
+    // MARK: Subscripting
+
+    ///  Indexes into the JSON as if the current value is an object
+    ///
+    /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
+    public subscript(index: Int) -> BTJSONSwift {
+        guard let value = value as? [Any] else {
+            return BTJSONSwift(value: BTJSONErrorSwift.indexInvalid(index))
         }
+        return BTJSONSwift(value: value[index])
     }
-    
+
+    /// Indexes into the JSON as if the current value is an array
+    ///
+    /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
+    public subscript(key: String) -> BTJSONSwift {
+        guard let value = value as? [String: Any],
+              let unwrappedResult = value[key] else {
+            return BTJSONSwift(value: BTJSONErrorSwift.keyInvalid(key))
+        }
+        return BTJSONSwift(value: unwrappedResult)
+    }
+
+    // MARK: Validity Checks
+
+    /// The `BTJSON` as a `NSError`.
+    /// - Returns: A `NSError` representing the `BTJSON` instance.
+    public func asError() -> NSError? {
+        value as? NSError
+    }
+
+    // MARK: JSON Type Casts
+
+    /// The `BTJSON` as a `String`
+    /// - Returns: A `String` representing the `BTJSON` instance
     public func asString() -> String? {
         value as? String
     }
-    
+
+    /// The `BTJOSN` as a `Bool`
+    /// - Returns: A `Bool` representing the `BTJSON` instance
     public func asBool() -> Bool? {
         value as? Bool
     }
-    
-    public func asIntegerOrZero() -> Int? {
-        value as? Int
+
+    /// The `BTJOSN` as a `[BTJSONSwift]`
+    /// - Returns: A `[BTJSONSwift]` representing the `BTJSON` instance
+    public func asArray() -> [BTJSONSwift]? {
+        var array: NSMutableArray? = nil
+
+        if value is [Any], let arrayValue = value as? [Any] {
+            for element in arrayValue {
+                array?.add(BTJSONSwift(value: element))
+            }
+        } else {
+            array = nil
+        }
+
+        return array as? [BTJSONSwift]
     }
-    
-    public func asDictionary() -> [String: BTJSONSwift]? {
-        value as? [String: BTJSONSwift]
+
+    /// The `BTJOSN` as a `NSNumber`
+    /// - Returns: A `NSNumber` representing the `BTJSON` instance
+    public func asNumber() -> NSNumber? {
+        value as? NSNumber
     }
-    
-    public func asStringArray() -> [String]? {
-        value as? [String]
-    }
-    
+
+    // MARK: JSON Extension Type Casts
+
+    /// The `BTJOSN` as a `URL`
+    /// - Returns: A `URL` representing the `BTJSON` instance
     public func asURL() -> URL? {
         guard let urlString = value as? String else {
             return nil
         }
         return URL(string: urlString)
     }
-    
-    public func asEnum(mapping: [String: Int], orDefault: Int) -> Int {
+
+    /// The `BTJOSN` as a `[String]`
+    /// - Returns: A `[String]` representing the `BTJSON` instance
+    public func asStringArray() -> [String]? {
+        value as? [String]
+    }
+
+    /// The `BTJOSN` as a `[String: BTJSONSwift]`
+    /// - Returns: A `[String: BTJSONSwift]` representing the `BTJSON` instance
+    public func asDictionary() -> [String: BTJSONSwift]? {
+        value as? [String: BTJSONSwift]
+    }
+
+    /// The `BTJOSN` as a `Int`
+    /// - Returns: A `Int` representing the `BTJSON` instance
+    public func asIntegerOrZero() -> Int? {
+        value as? Int
+    }
+
+    /// The `BTJSON` as an `Enum`
+    /// - Parameters:
+    ///   - mapping: The mapping dictionary used to convert the value
+    ///   - orDefault: The default value if conversion fails
+    /// - Returns: An `Enum` representing the `BTJSON` instance
+    public func asEnum(_ mapping: [String: Any], orDefault: Int) -> Int {
         guard let key = value as? String,
-              let result = mapping[key] else {
+              let result: Int = mapping[key] as? Int else {
             return orDefault
         }
+
         return result
     }
-    
-    func asNumber() -> NSNumber? {
-        value as? NSNumber
-    }
-    
-    func isString() -> Bool {
+
+    // MARK: JSON Type Checks
+
+    /// Checks if the `BTJSON` is a `String`
+    /// - Returns: `true` if this instance of `BTJSON` is a valid `String`
+    public var isString: Bool {
         value is String
     }
-    
-    func isBool() -> Bool {
+
+    /// Checks if the `BTJSON` is a `Bool`
+    /// - Returns: `true` if this instance of `BTJSON` is a valid `Bool`
+    public var isBool: Bool {
         value is Bool
     }
-    
-    func isNumber() -> Bool {
+
+    /// Checks if the `BTJSON` is a `NSNumber`
+    /// - Returns: `true` if this instance of `BTJSON` is a valid `NSNumber`
+    public var isNumber: Bool {
         value is NSNumber
     }
-    
-    func isArray() -> Bool {
-        value is Array<Any>
+
+    /// Checks if the `BTJSON` is a `[Any]`
+    /// - Returns: `true` if this instance of `BTJSON` is a valid `[Any]`
+    public var isArray: Bool {
+        value is [Any]
     }
-    
-    func isObject() -> Bool {
+
+    /// Checks if the `BTJSON` is a `[String: Any]`
+    /// - Returns: `true` if this instance of `BTJSON` is a valid `[String: Any]`
+    public var isObject: Bool {
         value is [String: Any]
     }
-    
-    func isTrue() -> Bool {
+
+    /// Checks if the `BTJSON` is an error.
+    /// - Returns: `true` if this instance of `BTJSON` is not valid.
+    public var isError: Bool {
+        value is NSError
+    }
+
+    /// Checks if the `BTJSON` is a value representing `true`
+    /// - Returns: `true` if this instance of `BTJSON` is `true`
+    public var isTrue: Bool {
         value as? Bool == true
     }
-    
-    func isFalse() -> Bool {
+
+    /// Checks if the `BTJSON` is a value representing `false`
+    /// - Returns: `true` if this instance of `BTJSON` is `false`
+    public var isFalse: Bool {
         value as? Bool == false
     }
-    
-    func isNull() -> Bool {
+
+    /// Checks if the `BTJSON` is a value representing `nil`
+    /// - Returns: `true` if this instance of `BTJSON` is `nil`
+    public var isNull: Bool {
         value is NSNull
     }
 }

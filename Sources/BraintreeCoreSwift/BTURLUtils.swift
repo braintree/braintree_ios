@@ -55,7 +55,7 @@ import Foundation
         return parameters
     }
     
-    static private func encode(_ string: String) -> String {
+    private static func encode(_ string: String) -> String {
         // See Section 2.2. http://www.ietf.org/rfc/rfc2396.txt
         var characterSet = CharacterSet.urlQueryAllowed
         characterSet.remove(charactersIn: ";/?:@&=+$,")
