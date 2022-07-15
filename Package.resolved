@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/paypal/paypalcheckout-ios",
         "state": {
           "branch": null,
-          "revision": "d88ffb7d7192580d669a836f4ccef3f04bcef7f0",
-          "version": "0.94.0"
+          "revision": "122a8a67f30b55768321e3cb3d30ce6792585063",
+          "version": "0.100.0"
         }
       }
     ]
