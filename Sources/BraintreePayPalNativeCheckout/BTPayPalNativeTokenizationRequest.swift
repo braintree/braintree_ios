@@ -18,7 +18,9 @@ class BTPayPalNativeTokenizationRequest {
         self.correlationID = correlationID
     }
 
-    func parameters(approvalData: ApprovalData) -> [String : Any] {
+    // The return URL is vended from the Native Checkout SDK and is consumed
+    // by the Braintree Gateway to consume payment details
+    func parameters(returnURL: String?) -> [String : Any] {
         var account: [String : Any] = [
             "client": [
                 "platform": "iOS",
@@ -26,7 +28,7 @@ class BTPayPalNativeTokenizationRequest {
                 "paypal_sdk_version": "version"
             ],
             "response": [
-                "webURL": approvalData.returnURL?.absoluteString ?? "",
+                "webURL": returnURL ?? "",
             ],
             "response_type": "web",
             "correlation_id": correlationID,

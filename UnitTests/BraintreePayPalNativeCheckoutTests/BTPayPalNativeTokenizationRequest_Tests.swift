@@ -13,9 +13,10 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
             correlationID: correlationId
         )
 
-        let account = try XCTUnwrap(request.parameters()["paypal_account"] as? [String: Any])
+        let account = try XCTUnwrap(request.parameters(returnURL: "a-fake-return-url")["paypal_account"] as? [String: Any])
 
         let client = account["client"] as? [String: String]
+        let response = account["response"] as? [String: String]
 
         XCTAssertEqual(client?["platform"], "iOS")
         XCTAssertEqual(client?["product_name"], "PayPal")
@@ -24,5 +25,6 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
         XCTAssertEqual(account["correlation_id"] as? String, correlationId)
         XCTAssertEqual(account["options"] as? [String: Bool], ["validate": false])
         XCTAssertEqual(account["intent"] as? String, checkoutRequest.intentAsString)
+        XCTAssertEqual(response?["webURL"], "a-fake-return-url")
     }
 }
