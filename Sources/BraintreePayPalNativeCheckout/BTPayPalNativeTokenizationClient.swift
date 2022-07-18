@@ -18,6 +18,7 @@ class BTPayPalNativeTokenizationClient {
 
     func tokenize(
         request: BTPayPalRequest,
+        approvalData: ApprovalData,
         completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeError>) -> Void)
     {
 
@@ -28,7 +29,7 @@ class BTPayPalNativeTokenizationClient {
 
         apiClient.post(
             "v1/payment_methods/paypal_accounts",
-            parameters: tokenizationRequest.parameters()
+            parameters: tokenizationRequest.parameters(approvalData: approvalData)
         ) { body, _, error in
             guard let json = body, error == nil else {
                 let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse

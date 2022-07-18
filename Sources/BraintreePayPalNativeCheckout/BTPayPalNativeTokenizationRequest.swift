@@ -6,6 +6,8 @@ import BraintreeCore
 import BraintreePayPal
 #endif
 
+import PayPalCheckout
+
 class BTPayPalNativeTokenizationRequest {
 
     private let request: BTPayPalRequest
@@ -16,12 +18,15 @@ class BTPayPalNativeTokenizationRequest {
         self.correlationID = correlationID
     }
 
-    func parameters() -> [String : Any] {
+    func parameters(approvalData: ApprovalData) -> [String : Any] {
         var account: [String : Any] = [
             "client": [
                 "platform": "iOS",
                 "product_name": "PayPal",
                 "paypal_sdk_version": "version"
+            ],
+            "response": [
+                "webURL": approvalData.returnURL?.absoluteString ?? "",
             ],
             "response_type": "web",
             "correlation_id": correlationID,
