@@ -56,12 +56,12 @@ import Foundation
     /// Initialize with data.
     /// - Parameter data: The `Data` to initialize with.
     public convenience init(data: Data) {
-        guard let value = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else {
-            self.init(value: BTJSONErrorSwift.jsonSerializationFailure)
-            return
+        do {
+            let value = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            self.init(value: value)
+        } catch {
+            self.init(value: error)
         }
-
-        self.init(value: value)
     }
 
     // MARK: JSON Type Checks
@@ -126,7 +126,12 @@ import Foundation
     ///
     /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
     public subscript(index: Int) -> BTJSONSwift {
-        guard let value = value as? [Any] else {
+        if value is NSError {
+            return BTJSONSwift(value: value)
+        }
+
+        guard let value = value as? [Any],
+                index < value.count else {
             return BTJSONSwift(value: BTJSONErrorSwift.indexInvalid(index))
         }
         return BTJSONSwift(value: value[index])
@@ -136,6 +141,10 @@ import Foundation
     ///
     /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
     public subscript(key: String) -> BTJSONSwift {
+        if value is NSError {
+            return BTJSONSwift(value: value)
+        }
+
         guard let value = value as? [String: Any],
               let unwrappedResult = value[key] else {
             return BTJSONSwift(value: BTJSONErrorSwift.keyInvalid(key))
