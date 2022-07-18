@@ -1,8 +1,5 @@
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTJSON.h>
-#else
-#import <BraintreeCore/BTJSON.h>
-#endif
+#import <Foundation/Foundation.h>
+@class BTJSON;
 
 NS_ASSUME_NONNULL_BEGIN
 

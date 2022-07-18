@@ -1,6 +1,6 @@
 import Foundation
 
-enum BTJSONErrorSwift: Error, CustomNSError, LocalizedError {
+enum BTJSONError: Error, CustomNSError, LocalizedError {
 
     /// JSONSerialization failure
     case jsonSerializationFailure

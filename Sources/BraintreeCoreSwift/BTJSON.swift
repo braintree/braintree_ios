@@ -39,7 +39,7 @@ import Foundation
 ///    json["baz"] = [ 1, 2, 3 ] // json.asJSON => { "foo": ["bar"], "baz": [1,2,3] }
 ///    json["quux"] = NSSet() // json.isError => true, json.asJSON => throws NSError(domain: BTJSONErrorDomain, code: BTJSONErrorInvalidData)
 /// ```
-@objcMembers public class BTJSONSwift: NSObject {
+@objcMembers public class BTJSON: NSObject {
     var value: Any? = [:]
 
     // MARK: Initializers
@@ -125,31 +125,31 @@ import Foundation
     ///  Indexes into the JSON as if the current value is an object
     ///
     /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
-    public subscript(index: Int) -> BTJSONSwift {
+    public subscript(index: Int) -> BTJSON {
         if value is NSError {
-            return BTJSONSwift(value: value)
+            return BTJSON(value: value)
         }
 
         guard let value = value as? [Any],
                 index < value.count else {
-            return BTJSONSwift(value: BTJSONErrorSwift.indexInvalid(index))
+            return BTJSON(value: BTJSONError.indexInvalid(index))
         }
-        return BTJSONSwift(value: value[index])
+        return BTJSON(value: value[index])
     }
 
     /// Indexes into the JSON as if the current value is an array
     ///
     /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
-    public subscript(key: String) -> BTJSONSwift {
+    public subscript(key: String) -> BTJSON {
         if value is NSError {
-            return BTJSONSwift(value: value)
+            return BTJSON(value: value)
         }
 
         guard let value = value as? [String: Any],
               let unwrappedResult = value[key] else {
-            return BTJSONSwift(value: BTJSONErrorSwift.keyInvalid(key))
+            return BTJSON(value: BTJSONError.keyInvalid(key))
         }
-        return BTJSONSwift(value: unwrappedResult)
+        return BTJSON(value: unwrappedResult)
     }
 
     // MARK: Validity Checks
@@ -174,20 +174,20 @@ import Foundation
         value as? Bool
     }
 
-    /// The `BTJOSN` as a `[BTJSONSwift]`
-    /// - Returns: A `[BTJSONSwift]` representing the `BTJSON` instance
-    public func asArray() -> [BTJSONSwift]? {
+    /// The `BTJOSN` as a `[BTJSON]`
+    /// - Returns: A `[BTJSON]` representing the `BTJSON` instance
+    public func asArray() -> [BTJSON]? {
         var array: NSMutableArray? = []
 
         if value is [Any], let arrayValue = value as? [Any] {
             for element in arrayValue {
-                array?.add(BTJSONSwift(value: element))
+                array?.add(BTJSON(value: element))
             }
         } else {
             array = nil
         }
 
-        return array as? [BTJSONSwift]
+        return array as? [BTJSON]
     }
 
     /// The `BTJOSN` as a `NSNumber`
@@ -221,7 +221,7 @@ import Foundation
 
     /// The `BTJOSN` as a `Int`
     /// - Returns: A `Int` representing the `BTJSON` instance
-    public func asIntegerOrZero() -> Int? {
+    public func asIntegerOrZero() -> Int {
         let number = value as? NSNumber ?? 0
         return number.intValue
     }

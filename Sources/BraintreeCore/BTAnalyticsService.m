@@ -7,11 +7,9 @@
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>
-#import <Braintree/BTJSON.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
-#import <BraintreeCore/BTJSON.h>
 #endif
 
 #import <UIKit/UIKit.h>

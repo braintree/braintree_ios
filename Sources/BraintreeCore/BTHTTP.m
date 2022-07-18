@@ -8,11 +8,9 @@
 #if __has_include(<Braintree/BraintreeCore.h>) // Cocoapods
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTHTTPErrors.h>
-#import <Braintree/BTJSON.h>
 #else // Carthage or Local Builds
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTJSON.h>
 #endif
 
 // Swift Module Imports
