@@ -213,10 +213,10 @@ import Foundation
         value as? [String]
     }
 
-    /// The `BTJOSN` as a `[String: BTJSONSwift]`
-    /// - Returns: A `[String: BTJSONSwift]` representing the `BTJSON` instance
-    public func asDictionary() -> [String: BTJSONSwift]? {
-        value as? [String: BTJSONSwift]
+    /// The `BTJOSN` as a `NSDictionary`
+    /// - Returns: A `NSDictionary` representing the `BTJSON` instance
+    public func asDictionary() -> NSDictionary? {
+        value as? NSDictionary
     }
 
     /// The `BTJOSN` as a `Int`
