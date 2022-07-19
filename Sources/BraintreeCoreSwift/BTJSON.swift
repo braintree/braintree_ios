@@ -127,7 +127,7 @@ import Foundation
     /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
     public subscript(index: Int) -> BTJSON {
         if value is NSError {
-            return BTJSON(value: value)
+            return self
         }
 
         guard let value = value as? [Any],
@@ -142,7 +142,7 @@ import Foundation
     /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
     public subscript(key: String) -> BTJSON {
         if value is NSError {
-            return BTJSON(value: value)
+            return self
         }
 
         guard let value = value as? [String: Any],
@@ -168,13 +168,13 @@ import Foundation
         value as? String
     }
 
-    /// The `BTJOSN` as a `Bool`
+    /// The `BTJSON` as a `Bool`
     /// - Returns: A `Bool` representing the `BTJSON` instance
     public func asBool() -> Bool? {
         value as? Bool
     }
 
-    /// The `BTJOSN` as a `[BTJSON]`
+    /// The `BTJSON` as a `[BTJSON]`
     /// - Returns: A `[BTJSON]` representing the `BTJSON` instance
     public func asArray() -> [BTJSON]? {
         var array: NSMutableArray? = []
@@ -190,7 +190,7 @@ import Foundation
         return array as? [BTJSON]
     }
 
-    /// The `BTJOSN` as a `NSNumber`
+    /// The `BTJSON` as a `NSNumber`
     /// - Returns: A `NSNumber` representing the `BTJSON` instance
     public func asNumber() -> NSNumber? {
         value as? NSNumber
@@ -198,7 +198,7 @@ import Foundation
 
     // MARK: JSON Extension Type Casts
 
-    /// The `BTJOSN` as a `URL`
+    /// The `BTJSON` as a `URL`
     /// - Returns: A `URL` representing the `BTJSON` instance
     public func asURL() -> URL? {
         guard let urlString = value as? String else {
@@ -207,19 +207,19 @@ import Foundation
         return URL(string: urlString)
     }
 
-    /// The `BTJOSN` as a `[String]`
+    /// The `BTJSON` as a `[String]`
     /// - Returns: A `[String]` representing the `BTJSON` instance
     public func asStringArray() -> [String]? {
         value as? [String]
     }
 
-    /// The `BTJOSN` as a `NSDictionary`
+    /// The `BTJSON` as a `NSDictionary`
     /// - Returns: A `NSDictionary` representing the `BTJSON` instance
     public func asDictionary() -> NSDictionary? {
         value as? NSDictionary
     }
 
-    /// The `BTJOSN` as a `Int`
+    /// The `BTJSON` as a `Int`
     /// - Returns: A `Int` representing the `BTJSON` instance
     public func asIntegerOrZero() -> Int {
         let number = value as? NSNumber ?? 0
