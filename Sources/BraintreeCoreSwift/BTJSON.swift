@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// A type-safe wrapper around JSON
 /// @see http://www.json.org/
 ///
