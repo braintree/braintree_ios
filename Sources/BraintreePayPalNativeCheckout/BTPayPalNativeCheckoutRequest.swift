@@ -10,25 +10,6 @@ import PayPalCheckout
     let paymentType: BTPayPalPaymentType = .checkout
     
     public var onShippingChange: ((PayPalCheckout.ShippingChange, PayPalCheckout.ShippingChangeAction) -> Void)?
-    
-    public let patchRequest = PatchRequest()
-    
-    public let shippingOptions = [
-        ShippingMethod(
-            id: "1",
-            label: "Shipping",
-            selected: true,
-            type: .shipping,
-            amount: UnitAmount(currencyCode: .usd, value: "1.23")
-        ),
-        ShippingMethod(
-            id: "2",
-            label: "Pickup",
-            selected: false,
-            type: .pickup,
-            amount: UnitAmount(currencyCode: .usd, value: "0")
-        ),
-    ]
 
     /// Initializes a PayPal Checkout request.
     /// - Parameter amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
