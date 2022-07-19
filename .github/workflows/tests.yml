@@ -1,5 +1,8 @@
 name: Tests
 on: [pull_request, workflow_dispatch]
+concurrency:
+  group: tests-${{ github.event.number }} 
+  cancel-in-progress: true
 jobs:
   unit_test_job:
     name: Unit
