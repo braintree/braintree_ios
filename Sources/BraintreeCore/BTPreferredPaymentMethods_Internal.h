@@ -6,6 +6,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BTJSON;
+
 @interface BTPreferredPaymentMethods ()
 
 @property(nonatomic, strong) id application;

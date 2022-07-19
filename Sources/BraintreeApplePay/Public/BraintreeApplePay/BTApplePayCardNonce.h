@@ -6,6 +6,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BTJSON;
+
 /**
  Contains information about a tokenized Apple Pay card.
  */
