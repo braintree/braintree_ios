@@ -1,6 +1,9 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreePayPalNativeCheckout
+  * This module can handle the same flows as the existing `BraintreePayPal` module, but will present the end user with an in-context checkout flow using native UI components.
+  * To get started, create a `BTPayPalNativeCheckoutClient`, and call `tokenizePayPalAccount` with either a `BTPayPalNativeCheckoutRequest` (for one time payment transactions), or a `BTPayPalNativeVaultRequest` (for vaulted flows)
 * BraintreeSEPADirectDebit
   * Add support for SEPA Direct Debit for approved merchants through the Braintree SDK
   * SEPA Direct Debit is only available to select merchants, please contact your Customer Support Manager or Sales to start processing SEPA bank payments

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3DF4B4FD285BE8970072DC60 /* BraintreePayPalNativeCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = 3DF4B4FC285BE8970072DC60 /* BraintreePayPalNativeCheckout */; };
 		80214E042551FB5A00695A6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E032551FB5A00695A6F /* AppDelegate.swift */; };
 		80214E062551FB5A00695A6F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E052551FB5A00695A6F /* SceneDelegate.swift */; };
 		80214E082551FB5A00695A6F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E072551FB5A00695A6F /* ViewController.swift */; };
@@ -46,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DF4B4FD285BE8970072DC60 /* BraintreePayPalNativeCheckout in Frameworks */,
 				BE777ABA27D9112900487D23 /* BraintreeVenmo in Frameworks */,
 				BE777AB427D9112900487D23 /* BraintreeSEPADirectDebit in Frameworks */,
 				BE777AAE27D9112900487D23 /* BraintreeDataCollector in Frameworks */,
@@ -108,7 +110,6 @@
 			isa = PBXGroup;
 			children = (
 				9C1FC8B927CED7DF00E6E14D /* braintree_ios */,
-				9C1FC8BA27CED7FC00E6E14D /* braintree_ios */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -130,6 +131,7 @@
 			);
 			name = SPMTest;
 			packageProductDependencies = (
+				3DF4B4FC285BE8970072DC60 /* BraintreePayPalNativeCheckout */,
 				BE777AA527D9112900487D23 /* BraintreeAmericanExpress */,
 				BE777AA727D9112900487D23 /* BraintreeApplePay */,
 				BE777AA927D9112900487D23 /* BraintreeCard */,
@@ -419,17 +421,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */ = {
+        BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braintree/braintree_ios";
 			requirement = {
-				branch = "sepa-feature";
+				branch = "nxo-feature";
 				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3DF4B4FC285BE8970072DC60 /* BraintreePayPalNativeCheckout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
+			productName = BraintreePayPalNativeCheckout;
+		};
 		BE777AA527D9112900487D23 /* BraintreeAmericanExpress */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BE777AA427D9112900487D23 /* XCRemoteSwiftPackageReference "braintree_ios" */;
