@@ -848,6 +848,7 @@
 		574891EC286F7ECA0020DA36 /* BTClientMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientMetadata.swift; sourceTree = "<group>"; };
 		579DAEC4286E04A700FCE87F /* BTAppContextSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAppContextSwitcher.swift; sourceTree = "<group>"; };
 		579DAEC6286E064500FCE87F /* BTAppContextSwitchClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAppContextSwitchClient.swift; sourceTree = "<group>"; };
+		57A248C028885B29003B8F1B /* BraintreeCoreSwiftImports.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeCoreSwiftImports.h; sourceTree = "<group>"; };
 		57A6059C286F9251007E83DA /* BTMutableClientMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMutableClientMetadata.swift; sourceTree = "<group>"; };
 		59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		80036F7B21F7BAC6003A9F5C /* BTConfiguration+ThreeDSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+ThreeDSecure.h"; sourceTree = "<group>"; };
@@ -1404,6 +1405,7 @@
 				BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */,
 				2DE12F0D1B59BE0100EA1BCF /* Info.plist */,
 				41777D441B8CFEE60026F987 /* Public */,
+				57A248C028885B29003B8F1B /* BraintreeCoreSwiftImports.h */,
 			);
 			path = BraintreeCore;
 			sourceTree = "<group>";
