@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.11.0 (2022-07-20)
 * BraintreeSEPADirectDebit
   * Add support for SEPA Direct Debit for approved merchants through the Braintree SDK
   * SEPA Direct Debit is only available to select merchants, please contact your Customer Support Manager or Sales to start processing SEPA bank payments
