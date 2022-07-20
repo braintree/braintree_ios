@@ -1,5 +1,5 @@
 #import "BraintreeCoreSwiftImports.h"
-"
+
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTBinData.h>
 #else
