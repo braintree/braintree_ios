@@ -1,0 +1,138 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalCheckoutRequest.h",
+      "line": 43,
+      "symbol": "BTPayPalCheckoutRequest",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalCheckoutRequest.h",
+      "line": 45,
+      "symbol": "BTPayPalCheckoutRequest.+new",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalRequest.h",
+      "line": 7,
+      "symbol": "BTPayPalPaymentType",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalRequest.h",
+      "line": 7,
+      "symbol": "BTPayPalPaymentType",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalRequest.h",
+      "line": 8,
+      "symbol": "BTPayPalPaymentType.BTPayPalPaymentTypeCheckout",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPal/Public/BraintreePayPal/BTPayPalRequest.h",
+      "line": 9,
+      "symbol": "BTPayPalPaymentType.BTPayPalPaymentTypeVault",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPalNativeCheckout/BTPayPalNativeCheckoutAccountNonce.swift",
+      "line": 8,
+      "symbol": "BTPayPalNativeCheckoutAccountNonce.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPalNativeCheckout/BTPayPalNativeCheckoutAccountNonce.swift",
+      "line": 9,
+      "symbol": "BTPayPalNativeCheckoutAccountNonce.nonce",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreePayPalNativeCheckout/BTPayPalNativeCheckoutAccountNonce.swift",
+      "line": 10,
+      "symbol": "BTPayPalNativeCheckoutAccountNonce.isDefault",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeSEPADirectDebit/BTSEPADirectDebitClient.swift",
+      "line": 84,
+      "symbol": "BTSEPADirectDebitClient.tokenize(request:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeSEPADirectDebit/BTSEPADirectDebitMandateType.swift",
+      "line": 6,
+      "symbol": "BTSEPADirectDebitMandateType.oneOff",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeSEPADirectDebit/BTSEPADirectDebitMandateType.swift",
+      "line": 7,
+      "symbol": "BTSEPADirectDebitMandateType.recurrent",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeSEPADirectDebit/BTSEPADirectDebitRequest.swift",
+      "line": 41,
+      "symbol": "BTSEPADirectDebitRequest.init(accountHolderName:iban:customerID:mandateType:billingAddress:merchantAccountID:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/BraintreeThreeDSecure.h",
+      "line": 4,
+      "symbol": "BraintreeThreeDSecureVersionNumber",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/BraintreeThreeDSecure.h",
+      "line": 7,
+      "symbol": "BraintreeThreeDSecureVersionString",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/PayPalDataCollector/Public/PayPalDataCollector/PPDataCollector.swift",
+      "line": 21,
+      "symbol": "PPDataCollector.clientMetadataID(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/PayPalDataCollector/Public/PayPalDataCollector/PPDataCollector.swift",
+      "line": 32,
+      "symbol": "PPDataCollector.clientMetadataID(_:isSandbox:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/PayPalDataCollector/Public/PayPalDataCollector/PPDataCollector.swift",
+      "line": 42,
+      "symbol": "PPDataCollector.collectPayPalDeviceData()",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/PayPalDataCollector/Public/PayPalDataCollector/PPDataCollector.swift",
+      "line": 50,
+      "symbol": "PPDataCollector.collectPayPalDeviceData(isSandbox:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/braintree_ios/braintree_ios"
+}
