@@ -73,6 +73,7 @@ jobs:
       - name: Create Carthage pre-built frameworks
         run: |
           rm -rf SampleApps/SPMTest
+          rm -rf /Users/runner/Library/Developer/Xcode/DerivedData
           ./carthage.sh build --no-skip-current
           ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADirectDebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" "BraintreePayPalNativeCheckout" --output Braintree.framework.zip
           git checkout SampleApps/SPMTest
