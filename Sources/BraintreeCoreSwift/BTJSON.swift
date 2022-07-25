@@ -129,8 +129,7 @@ import Foundation
             return self
         }
 
-        guard let value = value as? [Any],
-                index < value.count else {
+        guard let value = value as? [Any], index < value.count else {
             return BTJSON(value: BTJSONError.indexInvalid(index))
         }
         return BTJSON(value: value[index])
