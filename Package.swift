@@ -40,6 +40,10 @@ let package = Package(
             targets: ["BraintreePayPal", "PPRiskMagnes"]
         ),
         .library(
+            name: "BraintreePayPalNativeCheckout",
+            targets: ["BraintreePayPalNativeCheckout"]
+        ),
+        .library(
             name: "BraintreeSEPADirectDebit",
             targets: ["BraintreeSEPADirectDebit"]
         ),
@@ -57,7 +61,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
+        .package(name: "PayPalCheckout", url: "https://github.com/paypal/paypalcheckout-ios", .exact("0.100.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -98,6 +102,15 @@ let package = Package(
             name: "BraintreePayPal",
             dependencies: ["BraintreeCore", "BraintreeDataCollector"],
             publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreePayPalNativeCheckout",
+            dependencies: [
+                "BraintreeCore",
+                "BraintreePayPal",
+                "PayPalCheckout",
+            ],
+            path: "Sources/BraintreePayPalNativeCheckout"
         ),
         .target(
             name: "BraintreeSEPADirectDebit",
