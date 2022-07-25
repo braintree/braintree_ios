@@ -37,17 +37,17 @@ jobs:
         run: cd SampleApps/CarthageTest && carthage update --use-xcframeworks
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
-  spm:
-    name: SPM (Xcode 13)
-    runs-on: macOS-11
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Use Xcode 13
-        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
-      - name: Use current branch
-        run: sed -i '' 's/branch = .*/branch = \"'"$GITHUB_HEAD_REF"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
-      - name: Run swift package resolve
-        run: cd SampleApps/SPMTest && swift package resolve
-      - name: Build & archive SPMTest
-        run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
+#  spm:
+#    name: SPM (Xcode 13)
+#    runs-on: macOS-11
+#    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+#      - name: Use Xcode 13
+#        run: sudo xcode-select -switch /Applications/Xcode_13.0.app
+#      - name: Use current branch
+#        run: sed -i '' 's/branch = .*/branch = \"'"$GITHUB_HEAD_REF"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
+#      - name: Run swift package resolve
+#        run: cd SampleApps/SPMTest && swift package resolve
+#      - name: Build & archive SPMTest
+#        run: xcodebuild -project 'SampleApps/SPMTest/SPMTest.xcodeproj' -scheme 'SPMTest' clean build archive CODE_SIGNING_ALLOWED=NO
