@@ -1,7 +1,7 @@
 #import "BTHTTP.h"
 #import "BTAPIHTTP.h"
-#import <BraintreeCore/BTJSON.h>
 #import <XCTest/XCTest.h>
+@import BraintreeCoreSwift;
 
 @interface BTHTTP_SSLPinning_IntegrationTests : XCTestCase
 @end

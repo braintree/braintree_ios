@@ -2,6 +2,9 @@
 
 ## unreleased (next-major-version)
 * Convert `BraintreeAmericanExpress` module to Swift
+* Convert `BraintreeDataCollector` module to Swift
+* Removed `PayPalDataCollector` module in favor of single `BraintreeDataCollector`
+* Kount is no longer supported through the SDK
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 13+
   * Require Carthage 0.38.0+ and xcframeworks via `carthage update --use-xcframeworks`
@@ -14,6 +17,8 @@
     * Renamed `BTClientMetadataIntegrationType` to `BTClientMetadataIntegration`
     * Removed static wrapper methods from `BTAppContextSwitcher`
     * Replaced `BTLogger` with `BTLogLevel` and `BTLogLevelDescription`
+    * Remove `BTJSONErrorDomain` global constant
+    * Remove `BTJSONErrorCode`
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`

@@ -3,6 +3,10 @@ import Foundation
 import BraintreeCore
 #endif
 
+#if canImport(BraintreeCoreSwift)
+import BraintreeCoreSwift
+#endif
+
 /// Contains information about an American Express rewards balance.
 @objcMembers public class BTAmericanExpressRewardsBalance: NSObject {
 

@@ -1,9 +1,9 @@
+#import "BraintreeCoreSwiftImports.h"
+
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTClientToken.h>
-#import <Braintree/BTJSON.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTJSON.h>
 #endif
 
 NSString *const BTClientTokenKeyVersion = @"version";

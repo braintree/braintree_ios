@@ -2,37 +2,16 @@
 #import "Braintree-Version.h"
 #import "BTAPIPinnedCertificates.h"
 #import "BTCacheDateValidator_Internal.h"
+#import "BraintreeCoreSwiftImports.h"
 #include <sys/sysctl.h>
 
 // Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeCore.h>) // Cocoapods
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTHTTPErrors.h>
-#import <Braintree/BTJSON.h>
 #else // Carthage or Local Builds
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTJSON.h>
-#endif
-
-// Swift Module Imports
-#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
-#import <Braintree/Braintree-Swift.h>
-
-#elif SWIFT_PACKAGE                              // SPM
-/* Use @import for SPM support
- * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
- */
-@import BraintreeCoreSwift;
-
-#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
-/* Use quoted style when importing Swift headers for ReactNative support
- * See https://github.com/braintree/braintree_ios/issues/671
- */
-#import "Braintree-Swift.h"
-
-#else // Carthage or Local Builds
-#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
 @interface BTHTTP () <NSURLSessionDelegate>

@@ -1,3 +1,5 @@
+#import "BraintreeCoreSwiftImports.h"
+
 #if __has_include(<Braintree/BraintreeVenmo.h>)
 #import <Braintree/BTConfiguration+Venmo.h>
 #else

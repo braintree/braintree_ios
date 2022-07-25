@@ -1,6 +1,8 @@
 #import "BTPayPalCheckoutRequest_Internal.h"
 #import "BTPayPalRequest_Internal.h"
 
+#import "BraintreeCoreSwiftImports.h"
+
 @implementation BTPayPalCheckoutRequest
 
 - (instancetype)initWithAmount:(NSString *)amount {

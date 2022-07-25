@@ -1,11 +1,10 @@
 #import "BTPaymentMethodNonceParser.h"
+#import "BraintreeCoreSwiftImports.h"
 
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTPaymentMethodNonce.h>
-#import <Braintree/BTJSON.h>
 #else
 #import <BraintreeCore/BTPaymentMethodNonce.h>
-#import <BraintreeCore/BTJSON.h>
 #endif
 
 @interface BTPaymentMethodNonceParser ()

@@ -14,7 +14,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <Braintree/BTEnums.h>
 #import <Braintree/BTErrors.h>
 #import <Braintree/BTHTTPErrors.h>
-#import <Braintree/BTJSON.h>
 #import <Braintree/BTPostalAddress.h>
 #import <Braintree/BTPaymentMethodNonce.h>
 #import <Braintree/BTPaymentMethodNonce.h>
@@ -29,7 +28,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <BraintreeCore/BTEnums.h>
 #import <BraintreeCore/BTErrors.h>
 #import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTJSON.h>
 #import <BraintreeCore/BTPostalAddress.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>

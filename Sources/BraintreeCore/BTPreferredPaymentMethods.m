@@ -2,7 +2,7 @@
 #import "BTAPIClient_Internal.h"
 #import "BTPreferredPaymentMethodsResult_Internal.h"
 #import "BTConfiguration+GraphQL.h"
-
+#import "BraintreeCoreSwiftImports.h"
 #import <UIKit/UIKit.h>
 
 @interface BTPreferredPaymentMethods()

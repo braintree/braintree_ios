@@ -1,10 +1,5 @@
 #import "BTPreferredPaymentMethodsResult_Internal.h"
-
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTJSON.h>
-#else
-#import <BraintreeCore/BTJSON.h>
-#endif
+#import "BraintreeCoreSwiftImports.h"
 
 @implementation BTPreferredPaymentMethodsResult
 

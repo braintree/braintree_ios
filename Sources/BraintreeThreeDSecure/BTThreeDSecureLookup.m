@@ -1,5 +1,7 @@
 #import "BTThreeDSecureLookup_Internal.h"
 
+#import "BraintreeCoreSwiftImports.h"
+
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BraintreeCore.h>
 #else

@@ -1,6 +1,8 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureLookup_Internal.h"
 
+#import "BraintreeCoreSwiftImports.h"
+
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTCardNonce_Internal.h>

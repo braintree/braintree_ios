@@ -1,3 +1,5 @@
+#import "BraintreeCoreSwiftImports.h"
+
 #if __has_include(<Braintree/BraintreeApplePay.h>)
 #import <Braintree/BTApplePayCardNonce.h>
 #else
