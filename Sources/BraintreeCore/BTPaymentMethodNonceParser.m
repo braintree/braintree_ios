@@ -1,12 +1,6 @@
 #import "BTPaymentMethodNonceParser.h"
 #import "BraintreeCoreSwiftImports.h"
 
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTPaymentMethodNonce.h>
-#else
-#import <BraintreeCore/BTPaymentMethodNonce.h>
-#endif
-
 @interface BTPaymentMethodNonceParser ()
 
 /// Dictionary of JSON parsing blocks keyed by types as strings. The blocks have the following type:

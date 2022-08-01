@@ -9,28 +9,38 @@ import Foundation
 ///  The payment method nonce is a public token that acts as a placeholder for sensitive payments data that
 ///  has been uploaded to Braintree for subsequent processing. The nonce is safe to access on the client and can be
 ///  used on your server to reference the data in Braintree operations, such as Transaction.sale.
-@objc public protocol BTPaymentMethodNonce: AnyObject {
+@objcMembers public class BTPaymentMethodNonce: NSObject {
 
     /// The one-time use payment method nonce
-    var nonce: String { get set }
+    let nonce: String
 
     /// The type of the tokenized data, e.g. PayPal, Venmo, MasterCard, Visa, Amex
-    var type: String { get set }
+    let type: String
 
     /// `true` if this nonce is the customer's default payment method, otherwise `false`
-    var isDefault: Bool { get set }
+    let isDefault: Bool
 
     /// Initialize a new Payment Method Nonce.
     /// - Parameter nonce: A transact-able payment method nonce.
     /// - Returns: A Payment Method Nonce, or `nil` if nonce is nil.
-    @objc optional func initWithNonce(nonce: String) -> BTPaymentMethodNonce?
+    @objc(initWithNonce:)
+    public init(nonce: String) {
+        self.nonce = nonce
+        self.type = "Unknown"
+        self.isDefault = false
+    }
 
     /// Initialize a new Payment Method Nonce.
     /// - Parameters:
     ///   - nonce: A transact-able payment method nonce.
     ///   - type: A string identifying the type of the payment method.
     /// - Returns: A Payment Method Nonce, or `nil` if nonce is nil.
-    @objc optional func initWithNonce(nonce: String, type: String) -> BTPaymentMethodNonce?
+    @objc(initWithNonce:type:)
+    public init(nonce: String, type: String) {
+        self.nonce = nonce
+        self.type = type
+        self.isDefault = false
+    }
 
     /// Initialize a new Payment Method Nonce.
     /// - Parameters:
@@ -38,19 +48,10 @@ import Foundation
     ///   - type: A string identifying the type of the payment method.
     ///   - isDefault: A boolean indicating whether this is a default payment method.
     /// - Returns: A Payment Method Nonce, or `nil` if nonce is nil.
-    @objc optional func initWithNonce(nonce: String, type: String, isDefault: Bool) -> BTPaymentMethodNonce?
-}
-
-extension BTPaymentMethodNonce {
-    func initWithNonce(nonce: String) -> BTPaymentMethodNonce? {
-        self.initWithNonce?(nonce: nonce, type: "Unknown")
-    }
-
-    func initWithNonce(nonce: String, type: String) -> BTPaymentMethodNonce? {
-        self.initWithNonce?(nonce: nonce, type: type)
-    }
-
-    func initWithNonce(nonce: String, type: String, isDefault: Bool) -> BTPaymentMethodNonce? {
-        self.initWithNonce?(nonce: nonce, type: type, isDefault: isDefault)
+    @objc(initWithNonce:type:isDefault:)
+    public init(nonce: String, type: String, isDefault: Bool) {
+        self.nonce = nonce
+        self.type = type
+        self.isDefault = isDefault
     }
 }
