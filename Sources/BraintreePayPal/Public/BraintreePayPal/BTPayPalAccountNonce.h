@@ -9,7 +9,7 @@
 /**
  Contains information about a PayPal payment method
  */
-@interface BTPayPalAccountNonce : NSObject <BTPaymentMethodNonce>
+@interface BTPayPalAccountNonce : NSObject
 
 @property (nonatomic, copy, readwrite) NSString * _Nonnull nonce;
 

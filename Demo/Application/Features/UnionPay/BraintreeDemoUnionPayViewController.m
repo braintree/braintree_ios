@@ -129,7 +129,7 @@
                         return;
                     }
                     
-                    self.completionBlock(tokenizedCard);
+                    self.nonceStringCompletionBlock(tokenizedCard.nonce);
                 }];
             }]];
             
@@ -145,7 +145,7 @@
                     return;
                 }
                 
-                self.completionBlock(tokenizedCard);
+                self.nonceStringCompletionBlock(tokenizedCard.nonce);
             }];
         }
     }];
@@ -174,7 +174,7 @@
             return;
         }
 
-        self.completionBlock(tokenizedCard);
+        self.nonceStringCompletionBlock(tokenizedCard.nonce);
     }];
 }
 

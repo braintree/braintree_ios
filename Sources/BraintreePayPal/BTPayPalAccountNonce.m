@@ -1,6 +1,6 @@
 #import "BTPayPalAccountNonce_Internal.h"
 
-@interface BTPayPalAccountNonce () <BTPaymentMethodNonce>
+@interface BTPayPalAccountNonce ()
 
 @property (nonatomic, readwrite, copy) NSString *email;
 @property (nonatomic, readwrite, copy) NSString *firstName;

@@ -32,8 +32,8 @@ import Foundation
     ///   - type: The tokenization type string
     ///   - withParsingBlock: jsonParsingBlock The block to execute when `parseJSON:type:` is called for the tokenization type.
     ///   This block should return a `BTPaymentMethodNonce` object, or `nil` if the JSON cannot be parsed.
-    public func registerType(_ type: String?, withParsingBlock jsonParsingBlock: @escaping (_ json: BTJSON?) -> BTPaymentMethodNonce?) {
-        JSONParsingBlocks[type ?? ""] = jsonParsingBlock
+    public func registerType(_ type: String?, withParsingBlock: @escaping (_ json: BTJSON?) -> BTPaymentMethodNonce?) {
+        JSONParsingBlocks[type ?? ""] = withParsingBlock
     }
 
     ///  Parses tokenized payment information that has been serialized to JSON, and returns a `BTPaymentMethodNonce` object.
@@ -48,11 +48,11 @@ import Foundation
     /// - Returns: A `BTPaymentMethodNonce` object, or `nil` if the tokenized payment info JSON does not contain a nonce
     public func parseJSON(_ json: BTJSON?, withParsingBlockForType type: String?) -> BTPaymentMethodNonce? {
         if (json?["nonce"].isString) != nil {
-            return [
-                json?["nonce"].asString() ?? "",
-                "Unknown",
-                json?["default"].isTrue ?? false
-            ] as? BTPaymentMethodNonce
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: "Unknown",
+                isDefault: json?["default"].isTrue ?? false
+            )
         }
         return nil
     }

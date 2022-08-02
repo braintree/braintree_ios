@@ -7,7 +7,7 @@
 /**
  Contains information about a Venmo Account payment method
  */
-@interface BTVenmoAccountNonce : NSObject <BTPaymentMethodNonce>
+@interface BTVenmoAccountNonce : NSObject
 
 @property (nonatomic, copy, readwrite) NSString * _Nonnull nonce;
 

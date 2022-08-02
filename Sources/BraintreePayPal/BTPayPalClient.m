@@ -70,13 +70,13 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 @implementation BTPayPalClient
 
-+ (void)load {
-    if (self == [BTPayPalClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPayPalAccountNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
-            return [self payPalAccountFromJSON:payPalAccount];
-        }];
-    }
-}
+//+ (void)load {
+//    if (self == [BTPayPalClient class]) {
+//        [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPayPalAccountNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
+//            return [self payPalAccountFromJSON:payPalAccount];
+//        }];
+//    }
+//}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {

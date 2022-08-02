@@ -32,7 +32,7 @@
         if (venmoAccount) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [venmoAccount debugDescription]);
-            self.completionBlock(venmoAccount);
+            self.nonceStringCompletionBlock(venmoAccount.nonce);
         } else if (error) {
             self.progressBlock(error.localizedDescription);
         } else {

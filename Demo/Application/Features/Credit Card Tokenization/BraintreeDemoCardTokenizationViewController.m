@@ -45,7 +45,7 @@
             return;
         }
 
-        self.completionBlock(tokenized);
+        self.nonceStringCompletionBlock(tokenized.nonce);
     }];
 }
 

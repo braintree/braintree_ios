@@ -39,14 +39,13 @@ NSInteger const NetworkConnectionLostCode = -1005;
 
 static BTVenmoClient *appSwitchedClient;
 
-+ (void)load {
-    if (self == [BTVenmoClient class]) {
-        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTVenmoAccountNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
-            return [BTVenmoAccountNonce venmoAccountWithJSON:venmoJSON];
-        }];
-    }
-}
+//+ (void)load {
+//    if (self == [BTVenmoClient class]) {
+//        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
+//        BTJSON *type = [[BTJSON alloc] initWithValue:@"VenmoAccount"];
+//            return [BTVenmoAccountNonce venmoAccountWithJSON:type];
+//    }
+//}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {

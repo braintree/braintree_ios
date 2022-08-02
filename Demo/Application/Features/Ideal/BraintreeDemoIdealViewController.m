@@ -77,7 +77,7 @@
         } else if (result) {
             BTLocalPaymentResult *localPaymentResult = (BTLocalPaymentResult *)result;
             BTPaymentMethodNonce *nonce = [[BTPaymentMethodNonce alloc] initWithNonce:localPaymentResult.nonce];
-            self.completionBlock(nonce);
+            self.nonceStringCompletionBlock(nonce.nonce);
         }
     };
 

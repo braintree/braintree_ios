@@ -9,7 +9,7 @@
 #import <BraintreeCard/BTThreeDSecureInfo.h>
 #endif
 
-@interface BTCardNonce () <BTPaymentMethodNonce>
+@interface BTCardNonce ()
 @end
 
 @implementation BTCardNonce

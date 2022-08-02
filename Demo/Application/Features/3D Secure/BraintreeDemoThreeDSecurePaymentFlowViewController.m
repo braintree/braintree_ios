@@ -228,7 +228,7 @@
                 }
             } else if (result) {
                 BTThreeDSecureResult *threeDSecureResult = (BTThreeDSecureResult *)result;
-                self.completionBlock(threeDSecureResult.tokenizedCard);
+                self.nonceStringCompletionBlock(threeDSecureResult.tokenizedCard.nonce);
 
                 if (threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible && threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted) {
                     self.progressBlock(@"Liability shift possible and liability shifted");
