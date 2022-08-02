@@ -4,7 +4,6 @@
 #import "BTAPIHTTP.h"
 #import "BTGraphQLHTTP.h"
 #import "BTHTTP.h"
-#import "BTPaymentMethodNonceParser.h"
 #import "BraintreeCoreSwiftImports.h"
 
 #if __has_include(<Braintree/BraintreeCore.h>)

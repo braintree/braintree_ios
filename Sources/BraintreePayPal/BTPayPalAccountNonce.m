@@ -27,7 +27,10 @@
                       payerID:(NSString *)payerID
                     isDefault:(BOOL)isDefault
               creditFinancing:(BTPayPalCreditFinancing *)creditFinancing {
-    if (self = [super initWithNonce:nonce type:@"PayPal" isDefault:isDefault]) {
+    if (self) {
+        _nonce = nonce;
+        _type = @"PayPal";
+        _isDefault = isDefault;
         _email = email;
         _firstName = firstName;
         _lastName = lastName;

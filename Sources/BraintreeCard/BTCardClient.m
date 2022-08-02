@@ -14,13 +14,11 @@
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BTCardRequest.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 #import <BraintreeCore/BraintreeCore.h>
 
 #else // Carthage
 #import <BraintreeCard/BTCardRequest.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BraintreeCore.h>
 
 #endif

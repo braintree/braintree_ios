@@ -12,11 +12,11 @@ import Foundation
     /// Dictionary of JSON parsing blocks keyed by types as strings. The blocks have the following type:
     ///
     /// `BTPaymentMethodNonce *(^)(NSDictionary *json)`
-    var JSONParsingBlocks: [String: BTJSON] = [:]
+    var JSONParsingBlocks: NSMutableDictionary = [:]
 
     /// An array of the tokenization types currently registered
     public func allTypes() -> [String] {
-        JSONParsingBlocks.compactMap { $0.0 }
+        JSONParsingBlocks.compactMap { $0.key as? String }
     }
 
     /// Indicates whether a tokenization type is currently registered
@@ -31,10 +31,8 @@ import Foundation
     ///   - type: The tokenization type string
     ///   - withParsingBlock: jsonParsingBlock The block to execute when `parseJSON:type:` is called for the tokenization type.
     ///   This block should return a `BTPaymentMethodNonce` object, or `nil` if the JSON cannot be parsed.
-    public func registerType(type: String, withParsingBlock: [String: BTJSON]) {
-//        if JSONParsingBlocks {
-//            self.JSONParsingBlocks[type] = JSONParsingBlocks.copy
-//        }
+    public func registerType(_ type: String?, withParsingBlock jsonParsingBlock: @escaping (_ json: BTJSON?) -> BTPaymentMethodNonce?) {
+        JSONParsingBlocks[type ?? ""] = jsonParsingBlock
     }
 
     ///  Parses tokenized payment information that has been serialized to JSON, and returns a `BTPaymentMethodNonce` object.
@@ -47,15 +45,13 @@ import Foundation
     ///   - json: The tokenized payment info, serialized to JSON
     ///   - type: The registered type of the parsing block to use
     /// - Returns: A `BTPaymentMethodNonce` object, or `nil` if the tokenized payment info JSON does not contain a nonce
-    public func parseJSON(json: BTJSON, withParsingBlockForType type: String) -> [BTPaymentMethodNonce]? {
-        if json["nonce"].isString {
-            return [
-                BTPaymentMethodNonce(
-                    nonce: json["nonce"].asString() ?? "",
-                    type: "Unknown",
-                    isDefault: json["default"].isTrue
-                )
-            ]
+    public func parseJSON(_ json: BTJSON?, withParsingBlockForType type: String?) -> BTPaymentMethodNonce? {
+        if (json?["nonce"].isString) != nil {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: "Unknown",
+                isDefault: json?["default"].isTrue ?? false
+            )
         }
         return nil
     }

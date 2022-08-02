@@ -12,7 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Contains information about a tokenized card.
  */
-@interface BTCardNonce : BTPaymentMethodNonce
+@interface BTCardNonce : NSObject
+
+@property (nonatomic, copy, readwrite) NSString * _Nonnull nonce;
+
+@property (nonatomic, copy, readwrite) NSString * _Nullable type;
+
+@property (nonatomic, readwrite, assign) BOOL isDefault;
 
 /**
  The card network.

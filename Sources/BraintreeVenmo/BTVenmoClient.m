@@ -17,13 +17,11 @@
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 
 #else // Carthage
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 
 #endif
 
