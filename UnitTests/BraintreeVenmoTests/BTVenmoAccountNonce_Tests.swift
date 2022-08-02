@@ -46,4 +46,26 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
         XCTAssertEqual(venmoAccountNonce?.lastName, "venmo-last-name")
         XCTAssertEqual(venmoAccountNonce?.phoneNumber, "venmo-phone-number")
     }
+
+    func testBTVenmoAccountNonceWithJSON_createsBTVenmoAccountNonceWithExpectedValues() {
+        let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(
+            with: BTJSON(
+                value: [
+                    "consumed": false,
+                    "description": "VenmoAccount",
+                    "details": ["username": "jane.doe.username@example.com", "cardType": "Discover"],
+                    "isLocked": false,
+                    "nonce": "a-nonce",
+                    "securityQuestions": [],
+                    "type": "VenmoAccount",
+                    "default": true
+                ]
+            )
+        )
+
+        XCTAssertEqual(venmoAccountNonce?.nonce, "a-nonce")
+        XCTAssertEqual(venmoAccountNonce?.type, "Venmo")
+        XCTAssertEqual(venmoAccountNonce?.username, "jane.doe.username@example.com")
+        XCTAssertTrue(venmoAccountNonce!.isDefault)
+    }
 }
