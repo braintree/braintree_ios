@@ -33,4 +33,23 @@ class BTApplePayCardNonce_Tests: XCTestCase {
         XCTAssertEqual(applePayNonce?.type, "ApplePayCard")
     }
 
+    func testBTApplePayCardNonceWithJSON_createsBTApplePayCardNonceWithExpectedValues() {
+        let applePayCardNonce = BTApplePayCardNonce(
+            json: BTJSON(
+                value: [
+                    "consumed": false,
+                    "details": [
+                        "cardType": "American Express"
+                    ],
+                    "isLocked": false,
+                    "nonce": "a-nonce",
+                    "securityQuestions": [],
+                    "type": "ApplePayCard",
+                ]
+            )
+        )
+
+        XCTAssertEqual(applePayCardNonce?.nonce, "a-nonce")
+        XCTAssertEqual(applePayCardNonce?.type, "American Express")
+    }
 }
