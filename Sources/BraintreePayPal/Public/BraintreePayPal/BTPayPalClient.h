@@ -11,7 +11,6 @@
 @class BTPayPalAccountNonce;
 @class BTPayPalRequest;
 @class BTPostalAddress;
-@class PaymentMethodNonceParser;
 
 @protocol BTPaymentMethodNonce;
 
