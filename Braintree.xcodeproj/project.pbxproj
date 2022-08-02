@@ -345,6 +345,7 @@
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
 		BE10B8D1287DBEE900F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE10B8D6287DC1FF00F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
+		BE1AF2AD28997187000D9A56 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; platformFilter = ios; };
 		BE4F788527ECE2BD00FF4C0E /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */; };
 		BE63A3A7288F3026001936DA /* BTPostalAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE63A3A6288F3026001936DA /* BTPostalAddress.swift */; };
@@ -674,6 +675,13 @@
 			remoteInfo = BraintreeCoreSwift;
 		};
 		BE10B8D4287DC1F700F7B3B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 570B936A285397520041BAFE;
+			remoteInfo = BraintreeCoreSwift;
+		};
+		BE1AF2AF28997187000D9A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -1196,6 +1204,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE1AF2AD28997187000D9A56 /* BraintreeCoreSwift.framework in Frameworks */,
 				BE9BD7C52888467700022983 /* BraintreeDataCollector.framework in Frameworks */,
 				2D941D5B1B5D5F170016EFB4 /* BraintreeCore.framework in Frameworks */,
 			);
@@ -2505,6 +2514,7 @@
 			dependencies = (
 				BE70A986284FC09100F6D3F7 /* PBXTargetDependency */,
 				2D941D5A1B5D5F140016EFB4 /* PBXTargetDependency */,
+				BE1AF2B028997187000D9A56 /* PBXTargetDependency */,
 			);
 			name = BraintreePayPal;
 			productName = BraintreePayPal;
@@ -4041,6 +4051,12 @@
 			isa = PBXTargetDependency;
 			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
 			targetProxy = BE10B8D4287DC1F700F7B3B2 /* PBXContainerItemProxy */;
+		};
+		BE1AF2B028997187000D9A56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
+			targetProxy = BE1AF2AF28997187000D9A56 /* PBXContainerItemProxy */;
 		};
 		BE642D7A27CEB8C600694A5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

@@ -7,7 +7,8 @@ import Foundation
 @objcMembers public class BTPaymentMethodNonceParser: NSObject {
 
     /// The singleton instance
-    public static let sharedParser = BTPaymentMethodNonceParser()
+    @objc(sharedParser)
+    public static let shared = BTPaymentMethodNonceParser()
 
     /// Dictionary of JSON parsing blocks keyed by types as strings. The blocks have the following type:
     ///
@@ -15,14 +16,14 @@ import Foundation
     var JSONParsingBlocks: NSMutableDictionary = [:]
 
     /// An array of the tokenization types currently registered
-    public func allTypes() -> [String] {
+    public var allTypes: [String] {
         JSONParsingBlocks.compactMap { $0.key as? String }
     }
 
     /// Indicates whether a tokenization type is currently registered
     /// - Parameter type: The tokenization type string
     /// - Returns: A bool indicating if the payment method type is available.
-    public func isTypeAvailable(type: String) -> Bool {
+    public func isTypeAvailable(_ type: String) -> Bool {
         JSONParsingBlocks[type] != nil
     }
 
@@ -47,11 +48,11 @@ import Foundation
     /// - Returns: A `BTPaymentMethodNonce` object, or `nil` if the tokenized payment info JSON does not contain a nonce
     public func parseJSON(_ json: BTJSON?, withParsingBlockForType type: String?) -> BTPaymentMethodNonce? {
         if (json?["nonce"].isString) != nil {
-            return BTPaymentMethodNonce(
-                nonce: json?["nonce"].asString() ?? "",
-                type: "Unknown",
-                isDefault: json?["default"].isTrue ?? false
-            )
+            return [
+                json?["nonce"].asString() ?? "",
+                "Unknown",
+                json?["default"].isTrue ?? false
+            ] as? BTPaymentMethodNonce
         }
         return nil
     }

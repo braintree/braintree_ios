@@ -33,7 +33,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 + (void)load {
     if (self == [BTCardClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTCardNonce * _Nullable(BTJSON * _Nonnull creditCard) {
             return [BTCardNonce cardNonceWithJSON:creditCard];
         }];
     }

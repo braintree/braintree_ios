@@ -9,6 +9,9 @@
 #import <BraintreeCard/BTThreeDSecureInfo.h>
 #endif
 
+@interface BTCardNonce () <BTPaymentMethodNonce>
+@end
+
 @implementation BTCardNonce
 
 - (instancetype)initWithNonce:(NSString *)nonce
@@ -21,6 +24,7 @@
                     isDefault:(BOOL)isDefault
                      cardJSON:(BTJSON *)cardJSON
               authInsightJSON:(BTJSON *)authInsightJSON {
+    self = [super init];
     if (self) {
         _nonce = nonce;
         _type = [BTCardNonce typeStringFromCardNetwork:cardNetwork];

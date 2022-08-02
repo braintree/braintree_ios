@@ -28,13 +28,12 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 
 #pragma mark - Initialization
 
-+ (void)load {
-    if (self == [BTApplePayClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
-            return [[BTApplePayCardNonce alloc] initWithJSON:applePayCard];
-        }];
-    }
-}
+//+ (void)load {
+//    if (self == [BTApplePayClient class]) {
+//        [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
+//            return [[BTApplePayCardNonce alloc] initWithJSON:applePayCard];
+//    }
+//}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {

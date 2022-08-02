@@ -32,7 +32,6 @@
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
 @import BraintreeDataCollector;
-@import BraintreeCoreSwift;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -42,8 +41,9 @@
 
 #else                                            // Carthage
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
-#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
+
+#import "BraintreeCoreSwiftImports.h"
 
 NSString *const BTPayPalErrorDomain = @"com.braintreepayments.BTPayPalErrorDomain";
 
@@ -72,7 +72,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 
 + (void)load {
     if (self == [BTPayPalClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPayPalAccountNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
             return [self payPalAccountFromJSON:payPalAccount];
         }];
     }

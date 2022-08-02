@@ -42,7 +42,7 @@ static BTVenmoClient *appSwitchedClient;
 + (void)load {
     if (self == [BTVenmoClient class]) {
         [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTVenmoAccountNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
             return [BTVenmoAccountNonce venmoAccountWithJSON:venmoJSON];
         }];
     }

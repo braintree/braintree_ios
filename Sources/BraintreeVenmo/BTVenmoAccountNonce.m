@@ -26,7 +26,7 @@
 #import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
 
-@interface BTVenmoAccountNonce ()
+@interface BTVenmoAccountNonce () <BTPaymentMethodNonce>
 @property (nonatomic, readwrite, copy) NSString *email;
 @property (nonatomic, readwrite, copy) NSString *externalId;
 @property (nonatomic, readwrite, copy) NSString *firstName;

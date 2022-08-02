@@ -33,7 +33,7 @@ class BraintreeDemoPayPalCheckoutViewController: BraintreeDemoPaymentButtonBaseV
                 self.progressBlock(error?.localizedDescription)
                 return
             }
-            self.completionBlock(nonce)
+            self.nonce(nonce)
         }
     }
 }

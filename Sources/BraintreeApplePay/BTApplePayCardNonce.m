@@ -10,6 +10,7 @@
 
 - (instancetype)initWithJSON:(BTJSON *)json {
     NSString *cardType = [json[@"details"][@"cardType"] asString] ?: @"ApplePayCard";
+    self = [super init];
     if (self) {
         _nonce = [json[@"nonce"] asString];
         _type = cardType;
