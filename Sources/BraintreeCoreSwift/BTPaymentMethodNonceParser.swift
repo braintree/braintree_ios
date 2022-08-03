@@ -47,7 +47,7 @@ import Foundation
     ///   - type: The registered type of the parsing block to use
     /// - Returns: A `BTPaymentMethodNonce` object, or `nil` if the tokenized payment info JSON does not contain a nonce
     public func parseJSON(_ json: BTJSON?, withParsingBlockForType type: String?) -> BTPaymentMethodNonce? {
-        if (json?["nonce"].isString) != nil {
+        if json?["nonce"].isString != false {
             return BTPaymentMethodNonce(
                 nonce: json?["nonce"].asString() ?? "",
                 type: "Unknown",
