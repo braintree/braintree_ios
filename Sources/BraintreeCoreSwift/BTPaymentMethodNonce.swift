@@ -9,12 +9,15 @@ import Foundation
 ///  The payment method nonce is a public token that acts as a placeholder for sensitive payments data that
 ///  has been uploaded to Braintree for subsequent processing. The nonce is safe to access on the client and can be
 ///  used on your server to reference the data in Braintree operations, such as Transaction.sale.
-@objcMembers public class BTPaymentMethodNonce: NSObject {
+@objcMembers open class BTPaymentMethodNonce: NSObject {
 
+    /// The payment method nonce.
     public var nonce: String
 
+    /// The string identifying the type of the payment method.
     public var type: String
 
+    /// The boolean indicating whether this is a default payment method.
     public var isDefault: Bool
 
     /// Initialize a new Payment Method Nonce.

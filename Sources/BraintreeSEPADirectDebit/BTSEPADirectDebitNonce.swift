@@ -9,11 +9,8 @@ import BraintreeCoreSwift
 #endif
 
 /// A  payment method nonce representing a SEPA Direct Debit payment.
-@objcMembers public class BTSEPADirectDebitNonce: NSObject {
-    
-    /// The payment method nonce.
-    public let nonce: String
-    
+@objcMembers public class BTSEPADirectDebitNonce: BTPaymentMethodNonce {
+
     /// The IBAN last four characters.
     public let ibanLastFour: String?
     
@@ -27,9 +24,10 @@ import BraintreeCoreSwift
     init?(json: BTJSON) {
         guard let nonce = json["nonce"].asString() else { return nil }
         
-        self.nonce = nonce
         self.ibanLastFour = json["details"]["last4"].asString()
         self.customerID = json["details"]["customerId"].asString()
         self.mandateType = BTSEPADirectDebitMandateType.getMandateType(from: json["details"]["mandateType"].asString())
+
+        super.init(nonce: nonce, type: "SEPADirectDebit")
     }
 }
