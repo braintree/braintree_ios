@@ -24,8 +24,8 @@ import BraintreeCore
         guard let nonce = json["nonce"].asString() else { return nil }
         
         self.nonce = nonce
-        self.ibanLastFour = json["details"]["last4"].asString()
-        self.customerID = json["details"]["customerId"].asString()
+        self.ibanLastFour = json["details"]["ibanLastChars"].asString()
+        self.customerID = json["details"]["merchantOrPartnerCustomerId"].asString()
         self.mandateType = BTSEPADirectDebitMandateType.getMandateType(from: json["details"]["mandateType"].asString())
     }
 }
