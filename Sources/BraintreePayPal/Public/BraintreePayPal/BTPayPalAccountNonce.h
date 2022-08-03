@@ -5,6 +5,7 @@
 #endif
 
 @class BTPayPalCreditFinancing;
+@class BTPayPalCreditFinancingAmount;
 
 /**
  Contains information about a PayPal payment method
@@ -65,5 +66,10 @@
  Will be provided for Vault and Checkout.
  */
 @property (nonatomic, nullable, readonly, strong) BTPayPalCreditFinancing *creditFinancing;
+
+/**
+ Used to initialize a `BTPayPalAccountNonce` with parameters.
+ */
+- (nullable instancetype)initWithJSON:(BTJSON *_Nonnull)json;
 
 @end
