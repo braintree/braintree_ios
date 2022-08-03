@@ -29,7 +29,7 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             return nil
         }
 
-        parser.parseJSON(BTJSON(), withParsingBlockForType: "MyType")
+        let _ = parser.parseJSON(BTJSON(), withParsingBlockForType: "MyType")
 
         waitForExpectations(timeout: 3, handler: nil)
     }
