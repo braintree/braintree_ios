@@ -28,6 +28,6 @@ import BraintreeCoreSwift
         self.customerID = json["details"]["customerId"].asString()
         self.mandateType = BTSEPADirectDebitMandateType.getMandateType(from: json["details"]["mandateType"].asString())
 
-        super.init(nonce: nonce, type: "SEPADirectDebit")
+        super.init(nonce: nonce, type: "SEPADebit")
     }
 }
