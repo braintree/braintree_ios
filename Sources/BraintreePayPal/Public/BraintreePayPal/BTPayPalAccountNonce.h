@@ -12,10 +12,19 @@
  */
 @interface BTPayPalAccountNonce : NSObject
 
-@property (nonatomic, copy, readwrite) NSString * _Nonnull nonce;
+/**
+ The payment method nonce.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nonnull nonce;
 
-@property (nonatomic, copy, readwrite) NSString * _Nullable type;
+/**
+ The string identifying the type of the payment method.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nullable type;
 
+/**
+ The boolean indicating whether this is a default payment method.
+ */
 @property (nonatomic, readwrite, assign) BOOL isDefault;
 
 /**

@@ -14,15 +14,24 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTApplePayCardNonce : NSObject
 
 /**
+ The payment method nonce.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nonnull nonce;
+
+/**
+ The string identifying the type of the payment method.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nullable type;
+
+/**
+ The boolean indicating whether this is a default payment method.
+ */
+@property (nonatomic, readwrite, assign) BOOL isDefault;
+
+/**
  The BIN data for the card number associated with this nonce.
  */
 @property (nonatomic, readonly, strong) BTBinData *binData;
-
-@property (nonatomic, readonly, strong) NSString * _Nonnull nonce;
-
-@property (nonatomic, readonly, strong) NSString * _Nullable type;
-
-@property (nonatomic, readwrite, assign) BOOL isDefault;
 
 /**
  Used to initialize a `BTApplePayCardNonce` with parameters.
