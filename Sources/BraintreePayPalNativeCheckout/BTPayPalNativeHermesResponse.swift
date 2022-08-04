@@ -2,6 +2,10 @@
 import BraintreeCore
 #endif
 
+#if canImport(BraintreeCoreSwift)
+import BraintreeCoreSwift
+#endif
+
 struct BTPayPalNativeHermesResponse {
 
     let orderID: String

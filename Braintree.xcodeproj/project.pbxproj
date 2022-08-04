@@ -342,7 +342,7 @@
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
 		BE10B8D1287DBEE900F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE10B8D6287DC1FF00F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
-		BE1AF2AD28997187000D9A56 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; platformFilter = ios; };
+		BE38CA3B28908A07008B58E3 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE4F788527ECE2BD00FF4C0E /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */; };
 		BE63A3A7288F3026001936DA /* BTPostalAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE63A3A6288F3026001936DA /* BTPostalAddress.swift */; };
@@ -1231,6 +1231,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE38CA3B28908A07008B58E3 /* BraintreeCoreSwift.framework in Frameworks */,
 				3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */,
 				9CE51772282D51DD0013C740 /* BraintreeCore.framework in Frameworks */,
 				3DAB5931286673F9003A7BC5 /* PayPalCheckout in Frameworks */,
@@ -2580,6 +2581,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE38CA3A28908A01008B58E3 /* PBXTargetDependency */,
 				3DF4B4CC285B77960072DC60 /* PBXTargetDependency */,
 				9CE51767282D51DD0013C740 /* PBXTargetDependency */,
 			);
@@ -4040,11 +4042,14 @@
 			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
 			targetProxy = BE10B8D4287DC1F700F7B3B2 /* PBXContainerItemProxy */;
 		};
-		BE1AF2B028997187000D9A56 /* PBXTargetDependency */ = {
+		BE38CA3A28908A01008B58E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			platformFilter = ios;
 			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
-			targetProxy = BE1AF2AF28997187000D9A56 /* PBXContainerItemProxy */;
+			targetProxy = BE38CA3928908A01008B58E3 /* PBXContainerItemProxy */;
+		};
+		BE38CA3D28908A0E008B58E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = BE38CA3C28908A0E008B58E3 /* PayPalCheckout */;
 		};
 		BE642D7A27CEB8C600694A5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4677,7 +4682,7 @@
 		570B93AA285397520041BAFE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4702,6 +4707,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4741,7 +4750,7 @@
 		570B93AB285397520041BAFE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4767,6 +4776,10 @@
 				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "";
@@ -5751,7 +5764,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks/FatFrameworks",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5812,7 +5824,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks/FatFrameworks",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
