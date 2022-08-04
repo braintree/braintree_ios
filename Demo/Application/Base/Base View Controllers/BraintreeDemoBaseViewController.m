@@ -1,5 +1,4 @@
 #import "BraintreeDemoBaseViewController.h"
-@import BraintreeCoreSwift;
 
 @implementation BraintreeDemoBaseViewController
 

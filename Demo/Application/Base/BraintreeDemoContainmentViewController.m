@@ -193,6 +193,7 @@
 
     [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([_currentDemoViewController class])]];
     _currentDemoViewController.progressBlock = [self progressBlock];
+    _currentDemoViewController.completionBlock = [self completionBlock];
     _currentDemoViewController.nonceStringCompletionBlock = [self nonceStringCompletionBlock];
     _currentDemoViewController.transactionBlock = [self transactionBlock];
     

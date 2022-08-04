@@ -9,9 +9,6 @@
 #import <BraintreeCard/BTThreeDSecureInfo.h>
 #endif
 
-@interface BTCardNonce ()
-@end
-
 @implementation BTCardNonce
 
 - (instancetype)initWithNonce:(NSString *)nonce

@@ -12,8 +12,6 @@
 @class BTPayPalRequest;
 @class BTPostalAddress;
 
-@protocol BTPaymentMethodNonce;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**
