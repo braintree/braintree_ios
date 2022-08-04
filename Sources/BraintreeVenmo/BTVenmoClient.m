@@ -38,6 +38,12 @@ NSInteger const NetworkConnectionLostCode = -1005;
 
 static BTVenmoClient *appSwitchedClient;
 
++ (void)load {
+    if (self == [BTVenmoClient class]) {
+        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
+    }
+}
+
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         _apiClient = apiClient;
