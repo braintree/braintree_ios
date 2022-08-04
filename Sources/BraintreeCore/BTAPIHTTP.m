@@ -1,5 +1,5 @@
 #import "BTAPIHTTP.h"
-#import "BTAPIPinnedCertificates.h"
+#import "BraintreeCoreSwiftImports.h"
 
 #define BT_API_VERSION @"2016-10-07"
 
