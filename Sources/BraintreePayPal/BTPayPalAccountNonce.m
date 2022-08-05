@@ -2,6 +2,8 @@
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 
+#import "BraintreeCoreSwiftImports.h"
+
 @interface BTPayPalAccountNonce ()
 
 @property (nonatomic, readwrite, copy) NSString *email;

@@ -340,6 +340,8 @@
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
 		BE10B8D1287DBEE900F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE10B8D6287DC1FF00F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
+		BE2F9846289D5435008EF189 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; platformFilter = ios; };
+		BE2F9847289D5435008EF189 /* BraintreeCoreSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE38CA3B28908A07008B58E3 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE4F788527ECE2BD00FF4C0E /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */; };
@@ -677,7 +679,14 @@
 			remoteGlobalIDString = 570B936A285397520041BAFE;
 			remoteInfo = BraintreeCoreSwift;
 		};
-		BE1AF2AF28997187000D9A56 /* PBXContainerItemProxy */ = {
+		BE2F9845289C5FD0008EF189 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 570B936A285397520041BAFE;
+			remoteInfo = BraintreeCoreSwift;
+		};
+		BE2F9848289D5435008EF189 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -750,6 +759,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE2F984A289D5435008EF189 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BE2F9847289D5435008EF189 /* BraintreeCoreSwift.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BECF12A3284171B6002C3A04 /* Embed Frameworks */ = {
@@ -1196,7 +1216,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE1AF2AD28997187000D9A56 /* BraintreeCoreSwift.framework in Frameworks */,
+				BE2F9846289D5435008EF189 /* BraintreeCoreSwift.framework in Frameworks */,
 				BE9BD7C52888467700022983 /* BraintreeDataCollector.framework in Frameworks */,
 				2D941D5B1B5D5F170016EFB4 /* BraintreeCore.framework in Frameworks */,
 			);
@@ -2496,13 +2516,14 @@
 				2D941D341B59C76A0016EFB4 /* Frameworks */,
 				2D941D351B59C76A0016EFB4 /* Headers */,
 				2D941D361B59C76A0016EFB4 /* Resources */,
+				BE2F984A289D5435008EF189 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				BE70A986284FC09100F6D3F7 /* PBXTargetDependency */,
 				2D941D5A1B5D5F140016EFB4 /* PBXTargetDependency */,
-				BE1AF2B028997187000D9A56 /* PBXTargetDependency */,
+				BE2F9849289D5435008EF189 /* PBXTargetDependency */,
 			);
 			name = BraintreePayPal;
 			productName = BraintreePayPal;
@@ -4038,14 +4059,16 @@
 			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
 			targetProxy = BE10B8D4287DC1F700F7B3B2 /* PBXContainerItemProxy */;
 		};
+		BE2F9849289D5435008EF189 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
+			targetProxy = BE2F9848289D5435008EF189 /* PBXContainerItemProxy */;
+		};
 		BE38CA3A28908A01008B58E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 570B936A285397520041BAFE /* BraintreeCoreSwift */;
-			targetProxy = BE38CA3928908A01008B58E3 /* PBXContainerItemProxy */;
-		};
-		BE38CA3D28908A0E008B58E3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = BE38CA3C28908A0E008B58E3 /* PayPalCheckout */;
+			targetProxy = BE2F9845289C5FD0008EF189 /* PBXContainerItemProxy */;
 		};
 		BE642D7A27CEB8C600694A5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
