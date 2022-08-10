@@ -36,12 +36,13 @@ class BTPayPalNativeOrderCreationClient {
                 return
             }
 
-            guard config.json["paypalEnabled"].isTrue else {
+            guard let paypalEnabled = config.json?["paypalEnabled"].isTrue,
+                  paypalEnabled else {
                 completion(.failure(.payPalNotEnabled))
                 return
             }
 
-            guard let payPalClientID = config.json["paypal"]["clientId"].asString() else {
+            guard let payPalClientID = config.json?["paypal"]["clientId"].asString() else {
                 completion(.failure(.payPalClientIDNotFound))
                 return
             }

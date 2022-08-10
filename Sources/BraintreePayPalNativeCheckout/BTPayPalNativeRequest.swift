@@ -29,7 +29,7 @@ extension BTPayPalNativeRequest where Self: BTPayPalRequest {
 
         let experienceProfile: [String: Any?] = [
             "no_shipping": !isShippingAddressRequired,
-            "brand_name": displayName ?? configuration.json["paypal"]["displayName"].asString(),
+            "brand_name": displayName ?? configuration.json?["paypal"]["displayName"].asString(),
             "locale_code": localeCode,
             "merchant_account_id": merchantAccountID,
             "correlation_id": riskCorrelationId,

@@ -4,17 +4,17 @@ import Foundation
 @objcMembers public class BTConfiguration: NSObject {
 
     /// The merchant account's configuration as a `BTJSON` object
-    public let json: BTJSON
+    public let json: BTJSON?
 
     /// The environment (production or sandbox)
     public var environment: String? {
-        self.json["environment"].asString()
+        self.json?["environment"].asString()
     }
 
     ///  Used to initialize a `BTConfiguration`
     /// - Parameter json: The `BTJSON` to initialize with
     @objc(initWithJSON:)
-    public init(json: BTJSON) {
+    public init(json: BTJSON?) {
         self.json = json
     }
 }
