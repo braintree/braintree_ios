@@ -2,12 +2,6 @@
 #import "Braintree-Version.h"
 #import "BraintreeCoreSwiftImports.h"
 
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTHTTPErrors.h>
-#else
-#import <BraintreeCore/BTHTTPErrors.h>
-#endif
-
 @interface BTGraphQLHTTP ()
 
 @property (nonatomic, copy) NSString *tokenizationKey;
@@ -65,7 +59,7 @@ static NSString *BraintreeVersion = @"2018-03-06";
     }
 
     if (data == nil) {
-        NSError *error = [[NSError alloc] initWithDomain:BTHTTPErrorDomain
+        NSError *error = [[NSError alloc] initWithDomain:BTHTTPError.domain
                                                             code:BTHTTPErrorCodeUnknown
                             userInfo:@{NSLocalizedDescriptionKey: @"An unexpected error occurred with the HTTP request."}];
         [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
@@ -125,11 +119,11 @@ static NSString *BraintreeVersion = @"2018-03-06";
     NSHTTPURLResponse *nestedErrorResponse = [[NSHTTPURLResponse alloc] initWithURL:response.URL statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:httpResponse.allHeaderFields];
 
     // Create errors
-    NSError *returnedError = [[NSError alloc] initWithDomain:BTHTTPErrorDomain
+    NSError *returnedError = [[NSError alloc] initWithDomain:BTHTTPError.domain
                                                         code:errorCode
                                                     userInfo:@{
-                                                               BTHTTPURLResponseKey: nestedErrorResponse,
-                                                               BTHTTPJSONResponseBodyKey: [[BTJSON alloc] initWithValue:[errorBody copy]]
+                                                               BTHTTPError.urlResponseKey: nestedErrorResponse,
+                                                               BTHTTPError.jsonResponseBodyKey: [[BTJSON alloc] initWithValue:[errorBody copy]]
                                                                }];
     [self callCompletionBlock:completionBlock body:[[BTJSON alloc] initWithValue:[errorBody copy]] response:(NSHTTPURLResponse *)response error:returnedError];
 }
@@ -144,7 +138,7 @@ static NSString *BraintreeVersion = @"2018-03-06";
         NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
         if (method) errorUserInfo[@"method"] = method;
         if (parameters) errorUserInfo[@"parameters"] = parameters;
-        completionBlock(nil, nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
+        completionBlock(nil, nil, [NSError errorWithDomain:BTHTTPError.domain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
         return;
     }
 

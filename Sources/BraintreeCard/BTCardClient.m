@@ -87,7 +87,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                      if (error.code == NETWORK_CONNECTION_LOST_CODE) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
                      }
-                     NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                     NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
@@ -118,7 +118,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                      if (error.code == NETWORK_CONNECTION_LOST_CODE) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
                      }
-                     NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                     NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
@@ -174,10 +174,10 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 + (NSDictionary *)validationErrorUserInfo:(NSDictionary *)userInfo {
     NSMutableDictionary *mutableUserInfo = [userInfo mutableCopy];
-    BTJSON *jsonResponse = userInfo[BTHTTPJSONResponseBodyKey];
+    BTJSON *jsonResponse = userInfo[BTHTTPError.jsonResponseBodyKey];
     if ([jsonResponse asDictionary]) {
-        mutableUserInfo[BTCustomerInputBraintreeValidationErrorsKey] = [jsonResponse asDictionary];
-        
+        mutableUserInfo[@"BTCustomerInputBraintreeValidationErrorsKey"] = [jsonResponse asDictionary];
+
         NSString *errorMessage = [jsonResponse[@"error"][@"message"] asString];
         if (errorMessage) {
             mutableUserInfo[NSLocalizedDescriptionKey] = errorMessage;
@@ -238,12 +238,12 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     NSError *callbackError = error;
     BTJSON *errorCode = nil;
     
-    BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPJSONResponseBodyKey];
+    BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPError.jsonResponseBodyKey];
     BTJSON *fieldErrors = [errorResponse[@"fieldErrors"] asArray].firstObject;
     errorCode = [fieldErrors[@"fieldErrors"] asArray].firstObject[@"code"];
 
     if (errorCode == nil) {
-        BTJSON *errorResponse = [errorUserInfo objectForKey:BTHTTPJSONResponseBodyKey];
+        BTJSON *errorResponse = [errorUserInfo objectForKey:BTHTTPError.jsonResponseBodyKey];
         errorCode = [errorResponse[@"errors"] asArray].firstObject[@"extensions"][@"legacyCode"];
     }
 

@@ -6,6 +6,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
     
     var mockAPIClient: MockAPIClient!
     let standardTimeout: TimeInterval = 2
+    let customerInputValidationErrorKey: String = "BTCustomerInputBraintreeValidationErrorsKey"
     
     override func setUp() {
         super.setUp()
@@ -318,9 +319,9 @@ class BTCardClient_UnionPayTests: XCTestCase {
     func testEnrollCard_when422Failure_returnsValidationError() {
         let stubbed422HTTPResponse = HTTPURLResponse(url: URL(string: "someendpoint")!, statusCode: 422, httpVersion: nil, headerFields: nil)!
         let stubbed422ResponseBody = BTJSON(value: ["some": "thing"])
-        mockAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-                                    BTHTTPURLResponseKey: stubbed422HTTPResponse,
-                                    BTHTTPJSONResponseBodyKey: stubbed422ResponseBody])
+        mockAPIClient.cannedResponseError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPError.urlResponseKey: stubbed422HTTPResponse,
+            BTHTTPError.jsonResponseBodyKey: stubbed422ResponseBody])
 
         let cardClient = BTCardClient(apiClient: mockAPIClient)
 
@@ -339,7 +340,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTCardClientErrorType.customerInputInvalid.rawValue)
 
-            guard let inputErrors = (error._userInfo as! NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary else {
+            guard let inputErrors = (error._userInfo as! NSDictionary)[self.customerInputValidationErrorKey] as? NSDictionary else {
                 XCTFail("Expected error userInfo to contain validation errors")
                 return
             }

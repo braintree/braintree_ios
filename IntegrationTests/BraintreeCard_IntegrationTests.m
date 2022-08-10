@@ -89,9 +89,9 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         XCTAssertNil(tokenizedCard);
-        expect(error.domain).to.equal(BTHTTPErrorDomain);
+        expect(error.domain).to.equal(BTHTTPError.domain);
         expect(error.code).to.equal(BTHTTPErrorCodeClientError);
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey];
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPError.urlResponseKey];
         expect(httpResponse.statusCode).to.equal(403);
         [expectation fulfill];
     }];

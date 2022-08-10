@@ -7,10 +7,8 @@
 // Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTClientToken.h>
-#import <Braintree/BTConfiguration.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTConfiguration.h>
 #endif
 
 #import <UIKit/UIKit.h>
