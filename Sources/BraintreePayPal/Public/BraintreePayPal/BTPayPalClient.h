@@ -10,6 +10,7 @@
 
 @class BTPayPalAccountNonce;
 @class BTPayPalRequest;
+@class BTPostalAddress;
 
 NS_ASSUME_NONNULL_BEGIN
 

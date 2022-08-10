@@ -105,7 +105,7 @@
             completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusFailure errors:nil]);
         } else {
             self.label.text = tokenizedApplePayPayment.nonce;
-            self.completionBlock(tokenizedApplePayPayment);
+            self.nonceStringCompletionBlock(tokenizedApplePayPayment.nonce);
             completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusSuccess errors:nil]);
         }
     }];

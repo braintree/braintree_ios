@@ -11,19 +11,16 @@
 #import <Braintree/BTConfiguration+Venmo.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BTPaymentMethodNonceParser.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 
 #else // Carthage
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 
 #endif
 
@@ -44,9 +41,6 @@ static BTVenmoClient *appSwitchedClient;
 + (void)load {
     if (self == [BTVenmoClient class]) {
         [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
-            return [BTVenmoAccountNonce venmoAccountWithJSON:venmoJSON];
-        }];
     }
 }
 

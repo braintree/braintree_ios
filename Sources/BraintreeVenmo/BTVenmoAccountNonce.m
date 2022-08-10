@@ -41,9 +41,10 @@
                                   username:(NSString *)username
                                  isDefault:(BOOL)isDefault
 {
-    if (self = [super initWithNonce:nonce type:@"Venmo" isDefault:isDefault]) {
-        _username = username;
-    }
+    _nonce = nonce;
+    _type = @"Venmo";
+    _isDefault = isDefault;
+    _username = username;
     return self;
 }
 

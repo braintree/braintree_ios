@@ -8,19 +8,16 @@
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
 #import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BTPaymentMethodNonceParser.h>
 #import <Braintree/BraintreeCore.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BTCardRequest.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 #import <BraintreeCore/BraintreeCore.h>
 
 #else // Carthage
 #import <BraintreeCard/BTCardRequest.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreeCore/BraintreeCore.h>
 
 #endif
@@ -32,14 +29,6 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 @end
 
 @implementation BTCardClient
-
-+ (void)load {
-    if (self == [BTCardClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
-            return [BTCardNonce cardNonceWithJSON:creditCard];
-        }];
-    }
-}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (!apiClient) {

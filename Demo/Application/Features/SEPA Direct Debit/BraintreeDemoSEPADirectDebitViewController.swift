@@ -65,7 +65,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         if #available(iOS 13.0, *) {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
                 if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                    self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
+                    self.completionBlock(sepaDirectDebitNonce)
                 } else if let error = error {
                     self.progressBlock(error.localizedDescription)
                 } else {
@@ -75,7 +75,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         } else {
             sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
                 if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                    self.nonceStringCompletionBlock(sepaDirectDebitNonce.nonce)
+                    self.completionBlock(sepaDirectDebitNonce)
                 } else if let error = error {
                     self.progressBlock(error.localizedDescription)
                 } else {

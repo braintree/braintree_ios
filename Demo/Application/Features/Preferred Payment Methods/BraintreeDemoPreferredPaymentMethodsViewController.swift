@@ -81,7 +81,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.completionBlock(n)
+                self.nonceStringCompletionBlock(n.nonce)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -102,7 +102,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.completionBlock(n)
+                self.nonceStringCompletionBlock(n.nonce)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -122,7 +122,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.completionBlock(n)
+                self.nonceStringCompletionBlock(n.nonce)
             } else {
                 self.progressBlock("Canceled")
             }

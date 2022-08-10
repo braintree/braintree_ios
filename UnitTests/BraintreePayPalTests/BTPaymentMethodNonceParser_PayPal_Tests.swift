@@ -1,28 +1,30 @@
 import XCTest
+@testable import BraintreePayPal
 
 class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
     func testSharedParser_whenTypeIsPayPal_returnsPayPalAccountNonce() {
-        let sharedParser = BTPaymentMethodNonceParser.shared()
-        let payPalAccountJSON = BTJSON(value: [
-            "consumed": false,
-            "description": "jane.doe@example.com",
-            "details": [
-                "email": "jane.doe@example.com",
-            ],
-            "isLocked": false,
-            "nonce": "a-nonce",
-            "securityQuestions": [],
-            "type": "PayPalAccount",
-            "default": true
-        ])
+        let payPalAccountNonce = BTPayPalAccountNonce(
+            json: BTJSON(
+                value: [
+                    "consumed": false,
+                    "description": "jane.doe@example.com",
+                    "details": [
+                        "email": "jane.doe@example.com",
+                    ],
+                    "isLocked": false,
+                    "nonce": "a-nonce",
+                    "securityQuestions": [],
+                    "type": "PayPalAccount",
+                    "default": true
+                ]
+            )
+        )
 
-        let payPalAccountNonce = sharedParser.parseJSON(payPalAccountJSON, withParsingBlockForType: "PayPalAccount") as! BTPayPalAccountNonce
-
-        XCTAssertEqual(payPalAccountNonce.nonce, "a-nonce")
-        XCTAssertEqual(payPalAccountNonce.type, "PayPal")
-        XCTAssertEqual(payPalAccountNonce.email, "jane.doe@example.com")
-        XCTAssertTrue(payPalAccountNonce.isDefault)
-        XCTAssertNil(payPalAccountNonce.creditFinancing)
+        XCTAssertEqual(payPalAccountNonce?.nonce, "a-nonce")
+        XCTAssertEqual(payPalAccountNonce?.type, "PayPal")
+        XCTAssertEqual(payPalAccountNonce?.email, "jane.doe@example.com")
+        XCTAssertTrue(payPalAccountNonce!.isDefault)
+        XCTAssertNil(payPalAccountNonce?.creditFinancing)
     }
 
     func testParsePayPalCreditFinancingAmount() {
@@ -92,45 +94,46 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
     }
 
     func testSharedParser_whenTypeIsPayPal_returnsPayPalAccountNonceWithCreditFinancingOffered() {
-        let sharedParser = BTPaymentMethodNonceParser.shared()
-        let payPalAccountJSON = BTJSON(value: [
-            "consumed": false,
-            "description": "jane.doe@example.com",
-            "details": [
-                "email": "jane.doe@example.com",
-                "creditFinancingOffered": [
-                    "cardAmountImmutable": true,
-                    "monthlyPayment": [
-                        "currency": "USD",
-                        "value": "13.88",
+        let payPalAccountNonce = BTPayPalAccountNonce(
+            json: BTJSON(
+                value: [
+                    "consumed": false,
+                    "description": "jane.doe@example.com",
+                    "details": [
+                        "email": "jane.doe@example.com",
+                        "creditFinancingOffered": [
+                            "cardAmountImmutable": true,
+                            "monthlyPayment": [
+                                "currency": "USD",
+                                "value": "13.88",
+                            ],
+                            "payerAcceptance": true,
+                            "term": 18,
+                            "totalCost": [
+                                "currency": "USD",
+                                "value": "250.00",
+                            ],
+                            "totalInterest": [
+                                "currency": "USD",
+                                "value": "0.00",
+                            ],
+                        ],
                     ],
-                    "payerAcceptance": true,
-                    "term": 18,
-                    "totalCost": [
-                        "currency": "USD",
-                        "value": "250.00",
-                    ],
-                    "totalInterest": [
-                        "currency": "USD",
-                        "value": "0.00",
-                    ],
-                ],
-            ],
-            "isLocked": false,
-            "nonce": "a-nonce",
-            "securityQuestions": [],
-            "type": "PayPalAccount",
-            "default": true,
-        ])
+                    "isLocked": false,
+                    "nonce": "a-nonce",
+                    "securityQuestions": [],
+                    "type": "PayPalAccount",
+                    "default": true,
+                ]
+            )
+        )
 
-        let payPalAccountNonce = sharedParser.parseJSON(payPalAccountJSON, withParsingBlockForType: "PayPalAccount") as! BTPayPalAccountNonce
+        XCTAssertEqual(payPalAccountNonce?.nonce, "a-nonce")
+        XCTAssertEqual(payPalAccountNonce?.type, "PayPal")
+        XCTAssertEqual(payPalAccountNonce?.email, "jane.doe@example.com")
+        XCTAssertTrue(payPalAccountNonce!.isDefault)
 
-        XCTAssertEqual(payPalAccountNonce.nonce, "a-nonce")
-        XCTAssertEqual(payPalAccountNonce.type, "PayPal")
-        XCTAssertEqual(payPalAccountNonce.email, "jane.doe@example.com")
-        XCTAssertTrue(payPalAccountNonce.isDefault)
-
-        guard let creditFinancing = payPalAccountNonce.creditFinancing else {
+        guard let creditFinancing = payPalAccountNonce?.creditFinancing else {
             XCTFail("Expected credit financing terms")
             return
         }

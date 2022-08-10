@@ -21,10 +21,11 @@
                     isDefault:(BOOL)isDefault
                      cardJSON:(BTJSON *)cardJSON
               authInsightJSON:(BTJSON *)authInsightJSON {
-    self = [super initWithNonce:nonce
-                           type:[BTCardNonce typeStringFromCardNetwork:cardNetwork]
-                      isDefault:isDefault];
+    self = [super init];
     if (self) {
+        _nonce = nonce;
+        _type = [BTCardNonce typeStringFromCardNetwork:cardNetwork];
+        _isDefault = isDefault;
         _cardNetwork = cardNetwork;
         _expirationMonth = expirationMonth;
         _expirationYear = expirationYear;

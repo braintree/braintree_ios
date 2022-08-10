@@ -8,21 +8,18 @@
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BTPaymentMethodNonceParser.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
 
 #elif SWIFT_PACKAGE                              // SPM
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #endif
@@ -35,7 +32,6 @@
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
 @import BraintreeDataCollector;
-@import BraintreeCoreSwift;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -45,8 +41,9 @@
 
 #else                                            // Carthage
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
-#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 #endif
+
+#import "BraintreeCoreSwiftImports.h"
 
 NSString *const BTPayPalErrorDomain = @"com.braintreepayments.BTPayPalErrorDomain";
 
@@ -72,14 +69,6 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 @end
 
 @implementation BTPayPalClient
-
-+ (void)load {
-    if (self == [BTPayPalClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
-            return [self payPalAccountFromJSON:payPalAccount];
-        }];
-    }
-}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {

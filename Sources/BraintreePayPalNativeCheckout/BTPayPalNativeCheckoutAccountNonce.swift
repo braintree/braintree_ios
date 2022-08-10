@@ -11,11 +11,7 @@ import BraintreePayPal
 #endif
 
 /// Contains information about a PayPal payment method.
-@objc public class BTPayPalNativeCheckoutAccountNonce: NSObject {
-
-    public let type: String = "PayPal"
-    public let nonce: String
-    public let isDefault: Bool
+@objc public class BTPayPalNativeCheckoutAccountNonce: BTPaymentMethodNonce {
 
     /// Payer's email address.
     public let email: String?
@@ -44,13 +40,11 @@ import BraintreePayPal
 
     init?(json: BTJSON) {
         let paypalAccounts = json["paypalAccounts"][0]
-        guard let localNonce = paypalAccounts["nonce"].asString() else {
+        guard let nonce = paypalAccounts["nonce"].asString() else {
             return nil
         }
 
-        self.nonce = localNonce
-        isDefault = paypalAccounts["default"].isTrue
-
+        let isDefault = paypalAccounts["default"].isTrue
         let details = paypalAccounts["details"]
         let payerInfo = details["payerInfo"]
 
@@ -67,6 +61,8 @@ import BraintreePayPal
 
         let billingAddressJSON = details["payerInfo"]["billingAddress"]
         billingAddress = Self.addressFromJSON(billingAddressJSON)
+
+        super.init(nonce: nonce, type: "PayPal", isDefault: isDefault)
     }
 
     private static func addressFromJSON(_ addressJSON: BTJSON) -> BTPostalAddress? {

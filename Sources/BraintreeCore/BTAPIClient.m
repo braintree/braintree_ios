@@ -4,17 +4,14 @@
 #import "BTAPIHTTP.h"
 #import "BTGraphQLHTTP.h"
 #import "BTHTTP.h"
-#import "BTPaymentMethodNonceParser.h"
 #import "BraintreeCoreSwiftImports.h"
 
 #if __has_include(<Braintree/BraintreeCore.h>)
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>
-#import <Braintree/BTPaymentMethodNonce.h>
 #else
 #import <BraintreeCore/BTClientToken.h>
 #import <BraintreeCore/BTConfiguration.h>
-#import <BraintreeCore/BTPaymentMethodNonce.h>
 #endif
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";

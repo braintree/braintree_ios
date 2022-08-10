@@ -6,21 +6,18 @@
 #import <Braintree/BTApplePayCardNonce.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BTPaymentMethodNonceParser.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 
 #else // Carthage
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
 #endif
 
 #import "BraintreeCoreSwiftImports.h"
@@ -30,14 +27,6 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 @implementation BTApplePayClient
 
 #pragma mark - Initialization
-
-+ (void)load {
-    if (self == [BTApplePayClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
-            return [[BTApplePayCardNonce alloc] initWithJSON:applePayCard];
-        }];
-    }
-}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
