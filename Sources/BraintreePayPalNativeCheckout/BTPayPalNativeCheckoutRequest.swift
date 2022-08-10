@@ -45,7 +45,7 @@ import BraintreePayPal
             "intent": intentAsString,
             "amount": amount,
             "offer_pay_later": offerPayLater,
-            "currency_iso_code": currencyCode ?? configuration.json!["paypal"]["currencyIsoCode"].asString(),
+            "currency_iso_code": currencyCode ?? configuration.json?["paypal"]["currencyIsoCode"].asString(),
             "request_billing_agreement": requestBillingAgreement ? true : nil,
             "billing_agreement_details": requestBillingAgreement ? billingAgreementDictionary : nil,
             "line1": shippingAddressOverride?.streetAddress,
