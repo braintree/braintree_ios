@@ -7,16 +7,7 @@
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BraintreeCard.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeUnionPay/BTCardClient+UnionPay.h>
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
-#import <BraintreeUnionPay/BTCardCapabilities.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCard/BTCardClient_Internal.h"
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCard/BraintreeCard.h>
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeUnionPay/BTCardClient+UnionPay.h>
 #import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>

@@ -10,15 +10,7 @@
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
 
-#elif SWIFT_PACKAGE                                   // SPM
-#import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
-#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
-#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import "../BraintreeCore/BTLogger_Internal.h"
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import <BraintreeCore/BraintreeCore.h>
-
-#else                                                 // Carthage
+#else                                                 // Carthage & SPM
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>

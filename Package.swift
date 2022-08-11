@@ -69,17 +69,26 @@ let package = Package(
         .target(
             name: "BraintreeAmericanExpress",
             dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreeApplePay",
             dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreeCard",
             dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreeCore",
@@ -95,26 +104,38 @@ let package = Package(
         .target(
             name: "BraintreePaymentFlow",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreePayPal",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreePayPalNativeCheckout",
             dependencies: [
                 "BraintreeCore",
                 "BraintreePayPal",
-                "PayPalCheckout",
+                "PayPalCheckout"
             ],
-            path: "Sources/BraintreePayPalNativeCheckout"
+            path: "Sources/BraintreePayPalNativeCheckout",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreeSEPADirectDebit",
             dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreeSEPADirectDebit"
+            path: "Sources/BraintreeSEPADirectDebit",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreeThreeDSecure",
@@ -134,7 +155,10 @@ let package = Package(
         .target(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .binaryTarget(
             name: "KountDataCollector",

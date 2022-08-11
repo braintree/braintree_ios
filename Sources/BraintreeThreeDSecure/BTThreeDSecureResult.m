@@ -5,11 +5,7 @@
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTCardNonce_Internal.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCard/BTCardNonce_Internal.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BTCardNonce_Internal.h>
 

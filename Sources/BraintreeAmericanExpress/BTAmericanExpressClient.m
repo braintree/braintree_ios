@@ -5,12 +5,7 @@
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeAmericanExpress/BTAmericanExpressRewardsBalance.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>

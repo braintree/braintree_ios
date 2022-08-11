@@ -4,11 +4,7 @@
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/Braintree-Version.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/Braintree-Version.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/Braintree-Version.h>
 

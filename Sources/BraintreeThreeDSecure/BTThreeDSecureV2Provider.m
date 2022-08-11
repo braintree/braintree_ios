@@ -12,15 +12,7 @@
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>

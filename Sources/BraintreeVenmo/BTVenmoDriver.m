@@ -11,14 +11,7 @@
 #import <Braintree/BTPaymentMethodNonceParser.h>
 #import <Braintree/BTLogger_Internal.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeVenmo/BTConfiguration+Venmo.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
-#import "../BraintreeCore/BTLogger_Internal.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>

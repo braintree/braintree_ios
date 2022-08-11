@@ -8,14 +8,7 @@
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
-#import <BraintreeApplePay/BTApplePayCardNonce.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BraintreeCore.h>

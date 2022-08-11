@@ -18,18 +18,7 @@
 #import <Braintree/Braintree-Version.h>
 #import <Braintree/BTPaymentFlowDriver_Internal.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
-#import <BraintreeCard/BraintreeCard.h>
-#import "../BraintreeCore/BTLogger_Internal.h"
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/Braintree-Version.h"
-#import "../BraintreePaymentFlow/BTPaymentFlowDriver_Internal.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
