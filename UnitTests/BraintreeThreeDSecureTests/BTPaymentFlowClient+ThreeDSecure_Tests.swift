@@ -188,11 +188,11 @@ class BTPaymentFlowClient_ThreeDSecure_Tests: XCTestCase {
             """
 
         let userInfo: [String : AnyObject] = [
-            BTHTTPURLResponseKey: response as AnyObject,
-            BTHTTPJSONResponseBodyKey: BTJSON(data: errorBody.data(using: String.Encoding.utf8)!)
+            BTHTTPError.urlResponseKey: response as AnyObject,
+            BTHTTPError.jsonResponseBodyKey: BTJSON(data: errorBody.data(using: String.Encoding.utf8)!)
         ]
 
-        mockAPIClient.cannedResponseError = NSError(domain:BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: userInfo)
+        mockAPIClient.cannedResponseError = NSError(domain:BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: userInfo)
         let expectation = self.expectation(description: "Post fails with error code 422.")
 
         client.performThreeDSecureLookup(threeDSecureRequest) { result, error in

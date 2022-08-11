@@ -7,10 +7,8 @@
 // Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeCore.h>) // Cocoapods
 #import <Braintree/BTClientToken.h>
-#import <Braintree/BTHTTPErrors.h>
 #else // Carthage or Local Builds
 #import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTHTTPErrors.h>
 #endif
 
 @interface BTHTTP () <NSURLSessionDelegate>
@@ -188,7 +186,7 @@
         if (method) errorUserInfo[@"method"] = method;
         if (aPath) errorUserInfo[@"path"] = aPath;
         if (parameters) errorUserInfo[@"parameters"] = parameters;
-        completionBlock(nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
+        completionBlock(nil, [NSError errorWithDomain:BTHTTPError.domain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
         return;
     }
 
@@ -221,7 +219,7 @@
         if (aPath) errorUserInfo[@"path"] = aPath;
         if (parameters) errorUserInfo[@"parameters"] = parameters;
         errorUserInfo[NSLocalizedFailureReasonErrorKey] = @"fullPathURL was nil";
-        completionBlock(nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
+        completionBlock(nil, [NSError errorWithDomain:BTHTTPError.domain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
         return;
     }
     
@@ -284,7 +282,7 @@
     NSString *responseContentType = [response MIMEType];
 
     NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
-    errorUserInfo[BTHTTPURLResponseKey] = httpResponse;
+    errorUserInfo[BTHTTPError.urlResponseKey] = httpResponse;
 
     if (httpResponse.statusCode >= 400) {
         errorUserInfo[NSLocalizedFailureReasonErrorKey] = [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode];
@@ -293,7 +291,7 @@
         if ([responseContentType isEqualToString:@"application/json"]) {
             json = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
             if (!json.isError) {
-                errorUserInfo[BTHTTPJSONResponseBodyKey] = json;
+                errorUserInfo[BTHTTPError.jsonResponseBodyKey] = json;
                 NSString *errorResponseMessage = [json[@"error"][@"developer_message"] isString] ? [json[@"error"][@"developer_message"] asString] : [json[@"error"][@"message"] asString];
                 if (errorResponseMessage) {
                     errorUserInfo[NSLocalizedDescriptionKey] = errorResponseMessage;
@@ -310,7 +308,7 @@
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = @"Please try again later.";
         }
         
-        NSError *error = [NSError errorWithDomain:BTHTTPErrorDomain
+        NSError *error = [NSError errorWithDomain:BTHTTPError.domain
                                                      code:errorCode
                                                  userInfo:[errorUserInfo copy]];
         [self callCompletionBlock:completionBlock body:json response:httpResponse error:error];
@@ -323,7 +321,7 @@
         if (![responseContentType isEqualToString:@"application/json"]) {
             // Return error for unsupported response type
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = [NSString stringWithFormat:@"BTHTTP only supports application/json responses, received Content-Type: %@", responseContentType];
-            NSError *returnedError = [NSError errorWithDomain:BTHTTPErrorDomain
+            NSError *returnedError = [NSError errorWithDomain:BTHTTPError.domain
                                                          code:BTHTTPErrorCodeResponseContentTypeNotAcceptable
                                                      userInfo:[errorUserInfo copy]];
             [self callCompletionBlock:completionBlock body:nil response:nil error:returnedError];

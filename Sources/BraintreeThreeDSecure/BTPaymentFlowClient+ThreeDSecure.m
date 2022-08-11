@@ -113,12 +113,12 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
                     [self.apiClient sendAnalyticsEvent:@"ios.three-d-secure.lookup.network-connection.failure"];
                 }
                 // Provide more context for card validation error when status code 422
-                if ([error.domain isEqualToString:BTHTTPErrorDomain] &&
+                if ([error.domain isEqualToString:BTHTTPError.domain] &&
                     error.code == BTHTTPErrorCodeClientError &&
-                    ((NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey]).statusCode == 422) {
+                    ((NSHTTPURLResponse *)error.userInfo[BTHTTPError.urlResponseKey]).statusCode == 422) {
 
                     NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
-                    BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
+                    BTJSON *errorBody = error.userInfo[BTHTTPError.jsonResponseBodyKey];
 
                     if ([errorBody[@"error"][@"message"] isString]) {
                         userInfo[NSLocalizedDescriptionKey] = [errorBody[@"error"][@"message"] asString];

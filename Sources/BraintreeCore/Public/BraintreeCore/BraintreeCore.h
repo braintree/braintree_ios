@@ -10,10 +10,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <Braintree/BTAPIClient.h>
 #import <Braintree/BTBinData.h>
 #import <Braintree/BTClientToken.h>
-#import <Braintree/BTConfiguration.h>
 #import <Braintree/BTEnums.h>
-#import <Braintree/BTErrors.h>
-#import <Braintree/BTHTTPErrors.h>
 #import <Braintree/BTViewControllerPresentingDelegate.h>
 #import <Braintree/BTPreferredPaymentMethods.h>
 #import <Braintree/BTPreferredPaymentMethodsResult.h>
@@ -22,10 +19,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <BraintreeCore/BTAPIClient.h>
 #import <BraintreeCore/BTBinData.h>
 #import <BraintreeCore/BTClientToken.h>
-#import <BraintreeCore/BTConfiguration.h>
 #import <BraintreeCore/BTEnums.h>
-#import <BraintreeCore/BTErrors.h>
-#import <BraintreeCore/BTHTTPErrors.h>
 #import <BraintreeCore/BTViewControllerPresentingDelegate.h>
 #import <BraintreeCore/BTPreferredPaymentMethods.h>
 #import <BraintreeCore/BTPreferredPaymentMethodsResult.h>

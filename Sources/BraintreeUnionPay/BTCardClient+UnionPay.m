@@ -111,7 +111,7 @@
                  [self sendUnionPayEvent:@"enrollment-failed"];
                 
                  NSError *callbackError = error;
-                 NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                 NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
                  if (response.statusCode == 422) {
                      callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
                                                          code:BTCardClientErrorTypeCustomerInputInvalid

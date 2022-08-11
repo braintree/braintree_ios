@@ -305,7 +305,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
     [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
-        XCTAssertEqualObjects([error.userInfo[BTHTTPJSONResponseBodyKey] asDictionary], expectedErrorBody);
+        XCTAssertEqualObjects([error.userInfo[BTHTTPError.jsonResponseBodyKey] asDictionary], expectedErrorBody);
         [expectation fulfill];
     }];
 
@@ -348,7 +348,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
     [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
-        XCTAssertEqualObjects([error.userInfo[BTHTTPJSONResponseBodyKey] asDictionary], expectedErrorBody);
+        XCTAssertEqualObjects([error.userInfo[BTHTTPError.jsonResponseBodyKey] asDictionary], expectedErrorBody);
         [expectation fulfill];
     }];
 
@@ -375,7 +375,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
     [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, expectedNestedErrorBody);
-        XCTAssertEqualObjects([error.userInfo[BTHTTPJSONResponseBodyKey] asDictionary], expectedNestedErrorBody);
+        XCTAssertEqualObjects([error.userInfo[BTHTTPError.jsonResponseBodyKey] asDictionary], expectedNestedErrorBody);
         [expectation fulfill];
     }];
 
@@ -397,7 +397,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
     [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
-        XCTAssertEqualObjects([error.userInfo[BTHTTPJSONResponseBodyKey] asDictionary], expectedErrorBody);
+        XCTAssertEqualObjects([error.userInfo[BTHTTPError.jsonResponseBodyKey] asDictionary], expectedErrorBody);
         [expectation fulfill];
     }];
 
@@ -437,10 +437,10 @@
 
         XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
         [http POST:@"" completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-            NSHTTPURLResponse *nestedResponse = error.userInfo[BTHTTPURLResponseKey];
+            NSHTTPURLResponse *nestedResponse = error.userInfo[BTHTTPError.urlResponseKey];
             XCTAssertEqual(nestedResponse.statusCode, expectedStatusCode.longValue);
 
-            XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+            XCTAssertEqualObjects(error.domain, BTHTTPError.domain);
             XCTAssertEqual(error.code, errorCodes[errorType].longValue);
 
             [HTTPStubs removeStub:stub];
@@ -517,7 +517,7 @@
 - (void)testHttpError_withEmptyDataAndNoError_returnsError {
     [http handleRequestCompletion:nil response:nil error:nil completionBlock:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(error.localizedDescription, @"An unexpected error occurred with the HTTP request.");
-        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqualObjects(error.domain, BTHTTPError.domain);
         XCTAssertEqual(error.code, BTHTTPErrorCodeUnknown);
 
     }];

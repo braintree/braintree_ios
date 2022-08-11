@@ -214,7 +214,7 @@ NSURLSession *testURLSession(void) {
     [http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNil(body);
         XCTAssertNil(response);
-        expect(error.domain).to.equal(BTHTTPErrorDomain);
+        expect(error.domain).to.equal(BTHTTPError.domain);
         expect(error.code).to.equal(BTHTTPErrorCodeResponseContentTypeNotAcceptable);
         [expectation fulfill];
     }];
@@ -761,10 +761,10 @@ NSURLSession *testURLSession(void) {
     [http GET:@"403.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, errorBody);
         XCTAssertNotNil(response);
-        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqualObjects(error.domain, BTHTTPError.domain);
         XCTAssertEqual(error.code, BTHTTPErrorCodeClientError);
-        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, errorBody);
-        XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
+        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPError.jsonResponseBodyKey]).asDictionary, errorBody);
+        XCTAssertTrue([error.userInfo[BTHTTPError.urlResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
         XCTAssertEqualObjects(error.localizedDescription, @"This is an error message from the gateway");
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
 
@@ -794,10 +794,10 @@ NSURLSession *testURLSession(void) {
     [http GET:@"400.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, errorBody);
         XCTAssertNotNil(response);
-        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqualObjects(error.domain, BTHTTPError.domain);
         XCTAssertEqual(error.code, BTHTTPErrorCodeClientError);
-        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, errorBody);
-        XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
+        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPError.jsonResponseBodyKey]).asDictionary, errorBody);
+        XCTAssertTrue([error.userInfo[BTHTTPError.urlResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
         XCTAssertEqualObjects(error.localizedDescription, @"This is an error message from the gateway");
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
         
@@ -822,10 +822,10 @@ NSURLSession *testURLSession(void) {
     [http GET:@"429.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, @{});
         XCTAssertNotNil(response);
-        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqualObjects(error.domain, BTHTTPError.domain);
         XCTAssertEqual(error.code, BTHTTPErrorCodeRateLimitError);
-        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, @{});
-        XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
+        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPError.jsonResponseBodyKey]).asDictionary, @{});
+        XCTAssertTrue([error.userInfo[BTHTTPError.urlResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
         XCTAssertEqualObjects(error.userInfo[NSLocalizedDescriptionKey], @"You are being rate-limited.");
         XCTAssertEqualObjects(error.userInfo[NSLocalizedRecoverySuggestionErrorKey], @"Please try again in a few minutes.");
@@ -856,10 +856,10 @@ NSURLSession *testURLSession(void) {
     [http GET:@"403.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body.asDictionary, errorBody);
         XCTAssertNotNil(response);
-        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqualObjects(error.domain, BTHTTPError.domain);
         XCTAssertEqual(error.code, BTHTTPErrorCodeServerError);
-        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, errorBody);
-        XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
+        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPError.jsonResponseBodyKey]).asDictionary, errorBody);
+        XCTAssertTrue([error.userInfo[BTHTTPError.urlResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
         XCTAssertEqualObjects(error.localizedDescription, @"This is an error message from the gateway");
         XCTAssertEqualObjects(error.localizedRecoverySuggestion, @"Please try again later.");
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
@@ -1001,7 +1001,7 @@ NSURLSession *testURLSession(void) {
 
             expect(response).to.beNil();
 
-            expect(error.domain).to.equal(BTHTTPErrorDomain);
+            expect(error.domain).to.equal(BTHTTPError.domain);
             expect(error.code).to.equal(BTHTTPErrorCodeResponseContentTypeNotAcceptable);
 
             [HTTPStubs removeStub:stub];
