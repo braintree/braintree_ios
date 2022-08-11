@@ -141,7 +141,10 @@ let package = Package(
             name: "BraintreeThreeDSecure",
             dependencies: ["BraintreePaymentFlow", "BraintreeCard", "CardinalMobile", "PPRiskMagnes"],
             publicHeadersPath: "Public",
-            cSettings: [.headerSearchPath("V2UICustomization")]
+            cSettings: [
+                .headerSearchPath("V2UICustomization"),
+                .headerSearchPath("../")
+            ]
         ),
         .binaryTarget(
             name: "CardinalMobile",
@@ -150,7 +153,10 @@ let package = Package(
         .target(
             name: "BraintreeUnionPay",
             dependencies: ["BraintreeCard"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            cSettings: [
+                .headerSearchPath("../")
+            ]
         ),
         .target(
             name: "BraintreeVenmo",
