@@ -1722,6 +1722,7 @@
 				574891EA286F7E4F0020DA36 /* BTClientMetadataIntegration.swift */,
 				574891E8286F7D300020DA36 /* BTClientMetadataSource.swift */,
 				BED00CAF28A579D700D74AEC /* BTClientToken.swift */,
+				BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */,
 				BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */,
 				BE5C8C0228A2C183004F9130 /* BTConfiguration+GraphQL.swift */,
 				BEC3F11028A43F500074DF0F /* BTHTTPError.swift */,
@@ -1736,7 +1737,6 @@
 				BE9FB82C28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift */,
 				BE63A3A6288F3026001936DA /* BTPostalAddress.swift */,
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
-				BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */,
 			);
 			path = BraintreeCoreSwift;
 			sourceTree = "<group>";
