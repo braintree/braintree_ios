@@ -1,5 +1,6 @@
 import Foundation
 
+///  Error codes associated with a client token.
 enum BTClientTokenError: Error, CustomNSError, LocalizedError {
 
     /// Authorization fingerprint was not present or invalid
