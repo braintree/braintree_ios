@@ -36,12 +36,15 @@ import Foundation
 
     }
 
-    static private func decodeClientToken(_ rawClientToken: String) throws -> BTJSON {
+    static private func decodeClientToken(_ rawClientToken: String) throws -> BTJSON? {
         let data: Data
+        let isBase64: Bool
         if let base64Data = Data(base64Encoded: rawClientToken) {
             data = base64Data
+            isBase64 = true
         } else if let utf8Data = rawClientToken.data(using: .utf8) {
             data = utf8Data
+            isBase64 = false
         } else {
             throw BTClientTokenError.invalidFormat
         }
@@ -51,16 +54,21 @@ import Foundation
         }
         
         guard let version = clientTokenDict["version"] as? Int else {
-            throw BTClientTokenError.unsupportedVersion
+            throw BTClientTokenError.invalidFormat
         }
         
+        // Version 1 must be utf8, versions 2 & 3 must be base64
         switch version {
         case 1:
-            break // if base64 and hasn't already errored return nil?
+            if isBase64 {
+                throw BTClientTokenError.invalidFormat
+            }
         case 2:
-            break // Fall through
+            fallthrough
         case 3:
-            break // if not base64 and hasn't already errored return nil?
+            if !isBase64 {
+                throw BTClientTokenError.invalidFormat
+            }
         default:
             throw BTClientTokenError.unsupportedVersion
         }
