@@ -25,7 +25,7 @@ enum BTAmericanExpressError: Error, CustomNSError, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unknown:
-            return "An unknown error occured. Please contact support."
+            return "An unknown error occurred. Please contact support."
 
         case .noRewardsData:
             return "No American Express Rewards data was returned. Please contact support."

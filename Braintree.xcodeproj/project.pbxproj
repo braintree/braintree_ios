@@ -364,6 +364,8 @@
 		BED00CA928A4502300D74AEC /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BED00CAC28A4504E00D74AEC /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAD28A5419900D74AEC /* BTBinData.swift */; };
+		BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAF28A579D700D74AEC /* BTClientToken.swift */; };
+		BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */; };
 		BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7493528579BAC0074C818 /* BTURLUtils.swift */; };
 		BED749392858CEC60074C818 /* BTKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED749382858CEC60074C818 /* BTKeychain.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
@@ -1177,6 +1179,8 @@
 		BEC3F11028A43F500074DF0F /* BTHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTPError.swift; sourceTree = "<group>"; };
 		BEC3F11228A4401E0074DF0F /* BTHTTPErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTPErrorCode.swift; sourceTree = "<group>"; };
 		BED00CAD28A5419900D74AEC /* BTBinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTBinData.swift; sourceTree = "<group>"; };
+		BED00CAF28A579D700D74AEC /* BTClientToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken.swift; sourceTree = "<group>"; };
+		BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientTokenError.swift; sourceTree = "<group>"; };
 		BED7493528579BAC0074C818 /* BTURLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLUtils.swift; sourceTree = "<group>"; };
 		BED749382858CEC60074C818 /* BTKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTKeychain.swift; sourceTree = "<group>"; };
 		BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1710,27 +1714,29 @@
 			isa = PBXGroup;
 			children = (
 				570B93AF2853980C0041BAFE /* BTAPIClientSwift.swift */,
+				BE9EC0972899CF040022EC63 /* BTAPIPinnedCertificates.swift */,
 				579DAEC6286E064500FCE87F /* BTAppContextSwitchClient.swift */,
 				579DAEC4286E04A700FCE87F /* BTAppContextSwitcher.swift */,
+				BED00CAD28A5419900D74AEC /* BTBinData.swift */,
 				574891EC286F7ECA0020DA36 /* BTClientMetadata.swift */,
 				574891EA286F7E4F0020DA36 /* BTClientMetadataIntegration.swift */,
 				574891E8286F7D300020DA36 /* BTClientMetadataSource.swift */,
-				BED749382858CEC60074C818 /* BTKeychain.swift */,
-				570B93D82853C6180041BAFE /* BTLogLevel.swift */,
-				570B93D62853C29A0041BAFE /* BTLogLevelDescription.swift */,
-				57A6059C286F9251007E83DA /* BTMutableClientMetadata.swift */,
-				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
-				5708E0A528809AD9007946B9 /* BTJSON.swift */,
-				5708E0A728809BC6007946B9 /* BTJSONError.swift */,
-				BE63A3A6288F3026001936DA /* BTPostalAddress.swift */,
-				BE9FB82A2898324C00D6FE2F /* BTPaymentMethodNonce.swift */,
-				BE9FB82C28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift */,
-				BE9EC0972899CF040022EC63 /* BTAPIPinnedCertificates.swift */,
+				BED00CAF28A579D700D74AEC /* BTClientToken.swift */,
 				BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */,
 				BE5C8C0228A2C183004F9130 /* BTConfiguration+GraphQL.swift */,
 				BEC3F11028A43F500074DF0F /* BTHTTPError.swift */,
 				BEC3F11228A4401E0074DF0F /* BTHTTPErrorCode.swift */,
-				BED00CAD28A5419900D74AEC /* BTBinData.swift */,
+				5708E0A528809AD9007946B9 /* BTJSON.swift */,
+				5708E0A728809BC6007946B9 /* BTJSONError.swift */,
+				BED749382858CEC60074C818 /* BTKeychain.swift */,
+				570B93D82853C6180041BAFE /* BTLogLevel.swift */,
+				570B93D62853C29A0041BAFE /* BTLogLevelDescription.swift */,
+				57A6059C286F9251007E83DA /* BTMutableClientMetadata.swift */,
+				BE9FB82A2898324C00D6FE2F /* BTPaymentMethodNonce.swift */,
+				BE9FB82C28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift */,
+				BE63A3A6288F3026001936DA /* BTPostalAddress.swift */,
+				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
+				BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */,
 			);
 			path = BraintreeCoreSwift;
 			sourceTree = "<group>";
@@ -3504,6 +3510,7 @@
 			files = (
 				BE9FB82D28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift in Sources */,
 				BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */,
+				BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */,
 				570B93B02853980C0041BAFE /* BTAPIClientSwift.swift in Sources */,
 				5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */,
 				574891ED286F7ECA0020DA36 /* BTClientMetadata.swift in Sources */,
@@ -3520,6 +3527,7 @@
 				BE63A3A7288F3026001936DA /* BTPostalAddress.swift in Sources */,
 				BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */,
 				BED749392858CEC60074C818 /* BTKeychain.swift in Sources */,
+				BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */,
 				BE9EC0982899CF040022EC63 /* BTAPIPinnedCertificates.swift in Sources */,
 				574891E9286F7D300020DA36 /* BTClientMetadataSource.swift in Sources */,
 				BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */,
