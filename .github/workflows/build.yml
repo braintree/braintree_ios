@@ -1,5 +1,5 @@
 name: Build
-on: [pull_request, workflow_dispatch]
+on: [pull_request]
 concurrency:
   group: build-${{ github.event.number }} 
   cancel-in-progress: true
