@@ -1,5 +1,5 @@
 name: Build
-on: [pull_request, workflow_dispatch]
+on: [pull_request]
 concurrency:
   group: build-${{ github.event.number }} 
   cancel-in-progress: true
@@ -9,7 +9,10 @@ jobs:
     runs-on: macOS-11
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 12.5
         run: sudo xcode-select -switch /Applications/Xcode_12.5.1.app
       - name: Install CocoaPod dependencies
@@ -21,9 +24,11 @@ jobs:
     runs-on: macOS-11
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 12.5
         run: sudo xcode-select -switch /Applications/Xcode_12.5.1.app
       - name: Remove SPMTest
@@ -45,7 +50,10 @@ jobs:
     runs-on: macOS-11
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 12.5
         run: sudo xcode-select -switch /Applications/Xcode_12.5.1.app
       - name: Use current branch
@@ -59,7 +67,10 @@ jobs:
     runs-on: macOS-11
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+           ref: ${{ github.event.pull_request.head.ref }}
+           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 13
         run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Install CocoaPod dependencies
@@ -71,9 +82,11 @@ jobs:
     runs-on: macOS-11
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 13
         run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Remove SPMTest
@@ -99,7 +112,10 @@ jobs:
     runs-on: macOS-11
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 13
         run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Use current branch
