@@ -45,10 +45,7 @@ In general, we avoid importing **internal headers from other modules**, but occa
 #if __has_include(<Braintree/BraintreeAmericanExpress.h>) // CocoaPods
 #import <Braintree/BTAPIClient_Internal.h>
 
-#elif SWIFT_PACKAGE // SPM
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-
-#else // Carthage
+#else // Carthage & SPM
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
 ```
