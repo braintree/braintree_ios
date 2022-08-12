@@ -2,6 +2,7 @@
 @import BraintreeTestShared;
 @import Expecta;
 @import XCTest;
+@import BraintreeCoreSwift;
 
 @interface BTClientToken_Tests : XCTestCase
 @end
@@ -17,13 +18,13 @@
 }
 
 - (void)testInitialization_withV1RawJSONClientTokens_isSuccessful {
-    BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:[TestClientTokenFactory tokenWithVersion:1 overrides:@{ BTClientTokenKeyConfigURL: @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"}] error:NULL];
+    BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:[TestClientTokenFactory tokenWithVersion:1 overrides:@{ @"configUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"}] error:NULL];
     XCTAssertEqualObjects(clientToken.authorizationFingerprint, @"an_authorization_fingerprint");
     XCTAssertEqualObjects(clientToken.configURL, [NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"]);
 }
 
 - (void)testInitialization_withV2Base64EncodedClientTokens_isSuccessful {
-    BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:[TestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyConfigURL: @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration" }] error:NULL];
+    BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:[TestClientTokenFactory tokenWithVersion:2 overrides:@{ @"configUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration" }] error:NULL];
     XCTAssertEqualObjects(clientToken.authorizationFingerprint, @"an_authorization_fingerprint");
     XCTAssertEqualObjects(clientToken.configURL, [NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"]);
 }
@@ -34,45 +35,44 @@
 
     XCTAssertNil(clientToken);
     XCTAssertEqualObjects(error.domain, BTClientTokenErrorDomain);
-    XCTAssertEqual(error.code, BTClientTokenErrorInvalid);
-    XCTAssertEqualObjects([error.userInfo[NSUnderlyingErrorKey] domain], NSCocoaErrorDomain);
+    XCTAssertEqual(error.code, BTClientTokenErrorInvalidJSON);
 }
 
 #pragma mark - Edge cases
 
 - (void)testInitialization_whenConfigURLIsBlank_returnsError {
-    NSString *clientTokenRawJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyConfigURL: @"" }];
+    NSString *clientTokenRawJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ @"configUrl": @"" }];
     NSError *error;
     BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:clientTokenRawJSON error:&error];
 
     XCTAssertNil(clientToken);
     XCTAssertEqualObjects(error.domain, BTClientTokenErrorDomain);
-    XCTAssertEqual(error.code, BTClientTokenErrorInvalid);
+    XCTAssertEqual(error.code, 1);
     expect([error localizedDescription]).to.contain(@"config url");
 }
 
 - (void)testInitialization_whenAuthorizationFingerprintIsOmitted_returnsError {
-    NSString *clientTokenRawJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: NSNull.null }];
+    NSString *clientTokenRawJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorizationFingerprint": NSNull.null }];
     NSError *error;
 
     BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:clientTokenRawJSON error:&error];
 
     XCTAssertNil(clientToken);
     XCTAssertEqualObjects(error.domain, BTClientTokenErrorDomain);
-    XCTAssertEqual(error.code, BTClientTokenErrorInvalid);
+    XCTAssertEqual(error.code, BTClientTokenErrorInvalidAuthorizationFingerprint);
     expect([error localizedDescription]).to.contain(@"Invalid client token.");
     expect([error localizedFailureReason]).to.contain(@"Authorization fingerprint");
 }
 
 - (void)testInitialization_whenAuthorizationFingerprintIsBlank_returnsError {
-    NSString *clientTokenRawJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"" }];
+    NSString *clientTokenRawJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorizationFingerprint": @"" }];
     NSError *error;
 
     BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:clientTokenRawJSON error:&error];
 
     XCTAssertNil(clientToken);
     XCTAssertEqualObjects(error.domain, BTClientTokenErrorDomain);
-    XCTAssertEqual(error.code, BTClientTokenErrorInvalid);
+    XCTAssertEqual(error.code, BTClientTokenErrorInvalidAuthorizationFingerprint);
     expect([error localizedDescription]).to.contain(@"Invalid client token.");
     expect([error localizedFailureReason]).to.contain(@"Authorization fingerprint");
 }
@@ -81,8 +81,8 @@
 
 - (void)testNSCoding_afterEncodingAndDecodingClientToken_preservesClientTokenDataIntegrity {
     NSString *clientTokenEncodedJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{
-                                                                                                BTClientTokenKeyConfigURL: @"https://api.example.com/client_api/v1/configuration",
-                                                                                                BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key" }];
+                                                                                                @"configUrl": @"https://api.example.com/client_api/v1/configuration",
+                                                                                                @"authorizationFingerprint": @"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key" }];
     BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:clientTokenEncodedJSON error:NULL];
 
     NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initRequiringSecureCoding:YES];
@@ -99,7 +99,7 @@
 #pragma mark - isEqual
 
 - (void)testIsEqual_whenTokensContainTheSameValues_returnsTrue {
-    NSString *clientTokenEncodedJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"abcd" }];
+    NSString *clientTokenEncodedJSON = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorizationFingerprint": @"abcd" }];
     BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:clientTokenEncodedJSON error:NULL];
     BTClientToken *clientToken2 = [[BTClientToken alloc] initWithClientToken:clientTokenEncodedJSON error:NULL];
 
@@ -108,8 +108,8 @@
 }
 
 - (void)testIsEqual_whenTokensDoNotContainTheSameValues_returnsFalse {
-    NSString *clientTokenString1 = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"one_auth_fingerprint" }];
-    NSString *clientTokenString2 = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"different_auth_fingerprint" }];
+    NSString *clientTokenString1 = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorizationFingerprint": @"one_auth_fingerprint" }];
+    NSString *clientTokenString2 = [TestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorizationFingerprint": @"different_auth_fingerprint" }];
     BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:clientTokenString1 error:nil];
     BTClientToken *clientToken2 = [[BTClientToken alloc] initWithClientToken:clientTokenString2 error:nil];
 

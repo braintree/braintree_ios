@@ -4,13 +4,6 @@
 #import "BraintreeCoreSwiftImports.h"
 #include <sys/sysctl.h>
 
-// Objective-C Module Imports
-#if __has_include(<Braintree/BraintreeCore.h>) // Cocoapods
-#import <Braintree/BTClientToken.h>
-#else // Carthage or Local Builds
-#import <BraintreeCore/BTClientToken.h>
-#endif
-
 @interface BTHTTP () <NSURLSessionDelegate>
 
 @property (nonatomic, strong) NSURL *baseURL;

@@ -204,8 +204,6 @@
 		A7C889D81B5F0ACB007A0E9C /* BTCardNonce_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889D71B5F0ACB007A0E9C /* BTCardNonce_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A7C889F91B5F0B6A007A0E9C /* Braintree-Version.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889F81B5F0B6A007A0E9C /* Braintree-Version.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A7CB42D31B73E629002CCFDD /* BraintreePayPal_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB42D21B73E629002CCFDD /* BraintreePayPal_IntegrationTests.m */; };
-		A7D674731B84FDB400ED6C00 /* BTClientToken.h in Headers */ = {isa = PBXBuildFile; fileRef = A7D674711B84FDB400ED6C00 /* BTClientToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A7D674741B84FDB400ED6C00 /* BTClientToken.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D674721B84FDB400ED6C00 /* BTClientToken.m */; };
 		A903E1AA24F9D34000C314E1 /* BraintreeTestShared.h in Headers */ = {isa = PBXBuildFile; fileRef = A903E1A824F9D34000C314E1 /* BraintreeTestShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A903E1AE24F9D35500C314E1 /* FakeBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ED470123A3E9DB00B889A8 /* FakeBundle.swift */; };
 		A903E1B124F9D35500C314E1 /* FakeApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ED46FF23A3E9AE00B889A8 /* FakeApplication.swift */; };
@@ -1097,8 +1095,6 @@
 		A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPTestProtocol.m; sourceTree = "<group>"; };
 		A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTApplePay_Tests.swift; sourceTree = "<group>"; };
 		A7D6746C1B84073300ED6C00 /* MockViewControllerPresentingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockViewControllerPresentingDelegate.swift; sourceTree = "<group>"; };
-		A7D674711B84FDB400ED6C00 /* BTClientToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTClientToken.h; sourceTree = "<group>"; };
-		A7D674721B84FDB400ED6C00 /* BTClientToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientToken.m; sourceTree = "<group>"; };
 		A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTURLUtils_Tests.swift; sourceTree = "<group>"; };
 		A7F96D061B6043B7005A4A09 /* BTVenmoAccountNonce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoAccountNonce.h; sourceTree = "<group>"; };
 		A7F96D071B6043B7005A4A09 /* BTVenmoAccountNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAccountNonce.m; sourceTree = "<group>"; };
@@ -1517,7 +1513,6 @@
 				B6D950051EA0212C00BB42F2 /* BTAPIHTTP.m */,
 				BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */,
 				BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */,
-				A7D674721B84FDB400ED6C00 /* BTClientToken.m */,
 				412A51B1201FD0C400A5B302 /* BTGraphQLHTTP.h */,
 				412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */,
 				A7A6DD401B445550008857E1 /* BTHTTP.h */,
@@ -1624,7 +1619,6 @@
 				3DF4B4CE285B829E0072DC60 /* Braintree.h */,
 				2DE12F0B1B59BE0100EA1BCF /* BraintreeCore.h */,
 				16C42B681B3DDFE00028A3B4 /* BTAPIClient.h */,
-				A7D674711B84FDB400ED6C00 /* BTClientToken.h */,
 				EEF1DE881E858A31001BB924 /* BTEnums.h */,
 				BC20A8F82385F8640077AF56 /* BTPreferredPaymentMethods.h */,
 				BC4850E02385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h */,
@@ -2320,7 +2314,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DF4B4D1285B8EE40072DC60 /* Braintree.h in Headers */,
-				A7D674731B84FDB400ED6C00 /* BTClientToken.h in Headers */,
 				EEF1DE891E858A8D001BB924 /* BTEnums.h in Headers */,
 				BC4850E22385FB3C005DD925 /* BTPreferredPaymentMethodsResult.h in Headers */,
 				BC20A8FA2385F8640077AF56 /* BTPreferredPaymentMethods.h in Headers */,
@@ -3487,7 +3480,6 @@
 				2DE12F441B59C36900EA1BCF /* BTAnalyticsMetadata.m in Sources */,
 				412A51B0201FD0A500A5B302 /* BTGraphQLHTTP.m in Sources */,
 				2DE12F471B59C36900EA1BCF /* BTAPIClient.m in Sources */,
-				A7D674741B84FDB400ED6C00 /* BTClientToken.m in Sources */,
 				B6D950081EA0212C00BB42F2 /* BTAPIHTTP.m in Sources */,
 				BC20A8FB2385F8640077AF56 /* BTPreferredPaymentMethods.m in Sources */,
 				BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */,

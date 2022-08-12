@@ -1,16 +1,13 @@
 import Foundation
 
 ///  Error codes associated with a client token.
-enum BTClientTokenError: Error, CustomNSError, LocalizedError {
+@objc public enum BTClientTokenError: Int, Error, CustomNSError, LocalizedError {
 
     /// Authorization fingerprint was not present or invalid
     case invalidAuthorizationFingerprint
 
     /// Config URL was missing or invalid
     case invalidConfigURL
-
-    /// Underlying error
-    case underlyingError([String: Any])
 
     /// Invalid JSON
     case invalidJSON
@@ -21,28 +18,15 @@ enum BTClientTokenError: Error, CustomNSError, LocalizedError {
     /// Unsupported client token version
     case unsupportedVersion
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTClientTokenErrorDomain"
     }
 
-    var errorCode: Int {
-        switch self {
-        case .invalidAuthorizationFingerprint:
-            return 0
-        case .invalidConfigURL:
-            return 1
-        case .underlyingError(_):
-            return 2
-        case .invalidJSON:
-            return 3
-        case .invalidFormat:
-            return 4
-        case .unsupportedVersion:
-            return 5
-        }
+    public var errorCode: Int {
+        rawValue
     }
 
-    var errorUserInfo: [String : Any] {
+    public var errorUserInfo: [String : Any] {
         switch self {
         case .invalidAuthorizationFingerprint:
             return [
@@ -54,9 +38,6 @@ enum BTClientTokenError: Error, CustomNSError, LocalizedError {
             return [
                 NSLocalizedDescriptionKey: "Invalid client token: config url was missing or invalid. Please ensure your server is generating a valid Braintree ClientToken."
             ]
-            
-        case .underlyingError(let error):
-            return error
 
         case .invalidJSON:
             return [
