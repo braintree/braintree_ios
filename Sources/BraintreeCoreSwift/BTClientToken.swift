@@ -20,7 +20,8 @@ import Foundation
         // Client token must be decoded first because the other values are retrieved from it
         self.json = try Self.decodeClientToken(clientToken)
         
-        guard let authorizationFingerprint = json?["authorizationFingerprint"].asString(), !authorizationFingerprint.isEmpty else {
+        guard let authorizationFingerprint = json?["authorizationFingerprint"].asString(),
+              !authorizationFingerprint.isEmpty else {
             throw BTClientTokenError.invalidAuthorizationFingerprint
         }
         
@@ -49,7 +50,7 @@ import Foundation
         return try toBTJSON(data: data, isBase64: isBase64)
     }
 
-    private static func toBTJSON(data: Data, isBase64: Bool) throws -> BTJSON? {
+    static func toBTJSON(data: Data, isBase64: Bool) throws -> BTJSON? {
         guard let clientTokenJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             throw BTClientTokenError.invalidJSON
         }
@@ -62,13 +63,14 @@ import Foundation
         switch version {
         case 1:
             if isBase64 {
-                throw BTClientTokenError.invalidFormat
+                throw BTClientTokenError.expectedUTF8Encoding
             }
 
         case 2, 3:
             if !isBase64 {
-                throw BTClientTokenError.invalidFormat
+                throw BTClientTokenError.expectedBase64Encoding
             }
+            
         default:
             throw BTClientTokenError.unsupportedVersion
         }

@@ -229,7 +229,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         apiClient.http = mockHTTP
         apiClient.configurationHTTP = mockConfigurationHTTP
 
-        XCTAssertEqual((apiClient.clientToken!.json["version"]).asIntegerOrZero(), 3)
+        XCTAssertEqual(apiClient.clientToken!.json?["version"].asIntegerOrZero(), 3)
 
         let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces() { _,_  in

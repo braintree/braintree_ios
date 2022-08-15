@@ -48,7 +48,7 @@
     XCTAssertNil(clientToken);
     XCTAssertEqualObjects(error.domain, BTClientTokenErrorDomain);
     XCTAssertEqual(error.code, 1);
-    expect([error localizedDescription]).to.contain(@"config url");
+    expect([error localizedDescription]).to.contain(@"config URL");
 }
 
 - (void)testInitialization_whenAuthorizationFingerprintIsOmitted_returnsError {
@@ -61,7 +61,7 @@
     XCTAssertEqualObjects(error.domain, BTClientTokenErrorDomain);
     XCTAssertEqual(error.code, BTClientTokenErrorInvalidAuthorizationFingerprint);
     expect([error localizedDescription]).to.contain(@"Invalid client token.");
-    expect([error localizedFailureReason]).to.contain(@"Authorization fingerprint");
+    expect([error localizedDescription]).to.contain(@"Authorization fingerprint");
 }
 
 - (void)testInitialization_whenAuthorizationFingerprintIsBlank_returnsError {
@@ -74,7 +74,7 @@
     XCTAssertEqualObjects(error.domain, BTClientTokenErrorDomain);
     XCTAssertEqual(error.code, BTClientTokenErrorInvalidAuthorizationFingerprint);
     expect([error localizedDescription]).to.contain(@"Invalid client token.");
-    expect([error localizedFailureReason]).to.contain(@"Authorization fingerprint");
+    expect([error localizedDescription]).to.contain(@"Authorization fingerprint");
 }
 
 #pragma mark - NSCoding
