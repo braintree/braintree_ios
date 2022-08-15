@@ -57,8 +57,7 @@ jobs:
       - name: Use Xcode 12.5
         run: sudo xcode-select -switch /Applications/Xcode_12.5.1.app
       - name: Use current branch
-        run: 
-        -i '' 's/branch = .*/branch = \"'"${GITHUB_HEAD_REF:gs/\//\\\\\/}"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
+        run: sed -i '' 's/branch = .*/branch = \"'"${GITHUB_HEAD_REF:gs/\//\\\\\/}"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
       - name: Run swift package resolve
         run: cd SampleApps/SPMTest && swift package resolve
       - name: Build & archive SPMTest
