@@ -1,6 +1,5 @@
 #import "BTHTTP.h"
 #import "Braintree-Version.h"
-#import "BTCacheDateValidator_Internal.h"
 #import "BraintreeCoreSwiftImports.h"
 #include <sys/sysctl.h>
 

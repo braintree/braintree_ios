@@ -1,5 +1,5 @@
 #import <XCTest/XCTest.h>
-#import "BTCacheDateValidator_Internal.h"
+@import BraintreeCoreSwift;
 
 @interface BTCacheDateValidator_Tests : XCTestCase
 
