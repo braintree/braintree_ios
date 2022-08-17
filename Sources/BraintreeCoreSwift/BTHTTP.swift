@@ -38,7 +38,7 @@ import Security
     func createRequest(
         method: String?,
         path: String?,
-        parameters: NSMutableDictionary?,
+        parameters: NSMutableDictionary = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         var hasHTTPPrefix: Bool = false
@@ -74,10 +74,8 @@ import Security
             fullPathURL = baseURL
         }
 
-        let updatedParameters = parameters ?? [:]
-
         if authorizationFingerprint != "" {
-            updatedParameters["authorization_fingerprint"] = authorizationFingerprint
+            parameters["authorization_fingerprint"] = authorizationFingerprint
         }
 
         guard let fullPathURL = fullPathURL else {
@@ -102,7 +100,7 @@ import Security
         buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: updatedParameters,
+            parameters: parameters,
             isNotDataURL: isNotDataURL
         ) { request, error in
             completion(request, error)
