@@ -12,8 +12,8 @@ import Security
     let cacheDataValidator: BTCacheDateValidator
 
     let baseURL: URL
-    let authorizationFingerprint: String? = ""
-    let tokenizationKey: String? = ""
+    let authorizationFingerprint: String = ""
+    let tokenizationKey: String = ""
 
     /// Initialize `BTHTTP` with the URL for the Braintree API
     /// - Parameter url: The base URL for the Braintree Client API
@@ -58,18 +58,11 @@ import Security
             completion(nil, error)
             return
         }
-
-        let isNotDataURL: Bool = baseURL.scheme != "data"
+        
         let fullPathURL: URL?
-
-        if path != nil && isNotDataURL {
-            guard let path = path else { return }
-
-            if hasHTTPPrefix {
-                fullPathURL = URL(string: path)
-            } else {
-                fullPathURL = baseURL.appendingPathComponent(path)
-            }
+        let isNotDataURL: Bool = baseURL.scheme != "data"
+        if isNotDataURL, let path = path {
+            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
         } else {
             fullPathURL = baseURL
         }
