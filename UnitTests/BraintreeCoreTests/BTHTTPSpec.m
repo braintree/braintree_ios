@@ -1029,8 +1029,8 @@ NSURLSession *testURLSession(void) {
 
 - (void)testReturnsYESIfBTHTTPsHaveTheSameBaseURLAndAuthorizationFingerprint {
     NSURL *baseURL = [NSURL URLWithString:@"an-url://hi"];
-    BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
-    BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTPSwift *http1  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTPSwift *http2  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
 
     expect(http1).to.equal(http2);
 }
@@ -1038,16 +1038,16 @@ NSURLSession *testURLSession(void) {
 - (void)testReturnsNOIfBTHTTPsDoNotHaveTheSameBaseURL {
     NSURL *baseURL1 = [NSURL URLWithString:@"an-url://hi"];
     NSURL *baseURL2 = [NSURL URLWithString:@"an-url://hi-again"];
-    BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
-    BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL2 authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTPSwift *http1  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTPSwift *http2  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL2 authorizationFingerprint:@"test-authorization-fingerprint"];
 
     expect(http1).notTo.equal(http2);
 }
 
 - (void)testReturnsNOIfBTHTTPsDoNotHaveTheSameAuthorizationFingerprint {
     NSURL *baseURL1 = [NSURL URLWithString:@"an-url://hi"];
-    BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
-    BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"OTHER"];
+    BTHTTPSwift *http1  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTPSwift *http2  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"OTHER"];
 
     expect(http1).notTo.equal(http2);
 }

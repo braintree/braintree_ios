@@ -4,13 +4,13 @@ import Security
 /// Performs HTTP methods on the Braintree Client API
 // TODO: once BTAPIHTTP + BTGraphQLHTTP are converted this can be internal + more Swift-y
 // TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
-@objcMembers public class BTHTTPSwift: NSObject, NSCopying {
+@objcMembers public class BTHTTPSwift: NSObject, NSCopying, URLSessionDelegate {
 
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     public var pinnedCertificates: [NSData]? = []
 
     /// Session exposed for testing
-    public var session: URLSession? = nil
+    public var session: URLSession?
 
     /// internal date cache validator for testing
     let cacheDateValidator: BTCacheDateValidator
@@ -40,8 +40,12 @@ import Security
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders()
 
+        let delegateQueue: OperationQueue = OperationQueue()
+        delegateQueue.name = "com.braintreepayments.BTHTTP"
+        delegateQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+
         self.authorizationFingerprint = authorizationFingerprint
-        self.session = URLSession(configuration: configuration)
+        self.session = URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
         self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
     }
 
@@ -56,8 +60,12 @@ import Security
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders()
 
+        let delegateQueue: OperationQueue = OperationQueue()
+        delegateQueue.name = "com.braintreepayments.BTHTTP"
+        delegateQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+
         self.tokenizationKey = tokenizationKey
-        self.session = URLSession(configuration: configuration)
+        self.session = URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
         self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
     }
 
