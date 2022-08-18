@@ -6,34 +6,95 @@ import Security
 @objcMembers public class BTHTTPSwift: NSObject, NSCopying {
 
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
-    let pinnedCertificates: [NSData]? = []
+    var pinnedCertificates: [NSData]? = []
 
     /// internal date cache validator for testing
-    let cacheDataValidator: BTCacheDateValidator
+    let cacheDateValidator: BTCacheDateValidator
 
     let baseURL: URL
-    let authorizationFingerprint: String = ""
+    var authorizationFingerprint: String = ""
     let tokenizationKey: String = ""
+    var session: URLSession? = nil
 
     /// Initialize `BTHTTP` with the URL for the Braintree API
     /// - Parameter url: The base URL for the Braintree Client API
     @objc(initWithBaseURL:)
     public init(url: URL) {
         self.baseURL = url
-        self.cacheDataValidator = BTCacheDateValidator()
+        self.cacheDateValidator = BTCacheDateValidator()
     }
 
-//    /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
-//    /// - Parameters:
-//    ///   - baseURL: The base URL for the Braintree Client API
-//    ///   - authorizationFingerprint: The authorization fingerprint HMAC from a client token
-//    @objc(initWithBaseURL:authorizationFingerprint:)
-//    public convenience init(url: URL, authorizationFingerprint: String) {
-//        self.init(url: url)
-//    }
-//
+    /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
+    /// - Parameters:
+    ///   - baseURL: The base URL for the Braintree Client API
+    ///   - authorizationFingerprint: The authorization fingerprint HMAC from a client token
+    @objc(initWithBaseURL:authorizationFingerprint:)
+    public convenience init(url: URL, authorizationFingerprint: String) {
+        self.init(url: url)
 
-    // MARK: - HTTP helpers
+        let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
+        configuration.httpAdditionalHeaders = defaultHeaders()
+
+        self.authorizationFingerprint = authorizationFingerprint
+        self.session = URLSession(configuration: configuration)
+        self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
+    }
+
+    // MARK: - HTTP Method Helpers
+
+    func httpRequestWithCaching(
+        method: String?,
+        path: String?,
+        parameters: NSMutableDictionary = [:],
+        completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
+    ) {
+        createRequest(method: method, path: path, parameters: parameters) { request, error in
+            guard let request = request else {
+                self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
+                return
+            }
+
+            var cachedResponse: CachedURLResponse? = URLCache.shared.cachedResponse(for: request) ?? nil
+
+            // TODO: don't force unwrap
+            if self.cacheDateValidator.isCacheInvalid(cachedResponse ?? nil) {
+                URLCache.shared.removeAllCachedResponses()
+                cachedResponse = nil
+            }
+
+            // The increase in speed of API calls with cached configuration caused an increase in "network connection lost" errors.
+            // Adding this delay allows us to throttle the network requests slightly to reduce load on the servers and decrease connection lost errors.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if cachedResponse != nil {
+                    self.handleRequestCompletion(data: cachedResponse?.data, request: nil, shouldCache: false, response: cachedResponse?.response, error: nil, completion: completion)
+                } else {
+                    let task: URLSessionTask? = self.session?.dataTask(with: request) { data, response, error in
+                        self.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
+                    }
+                    task?.resume()
+                }
+            }
+        }
+    }
+
+    func httpRequest(
+        method: String?,
+        path: String?,
+        parameters: NSMutableDictionary = [:],
+        completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
+    ) {
+        createRequest(method: method, path: path, parameters: parameters) { request, error in
+            guard let request = request else {
+                self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
+                return
+            }
+
+            let task: URLSessionTask? = self.session?.dataTask(with: request) { data, response, error in
+                self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+            }
+            task?.resume()
+        }
+    }
 
     func createRequest(
         method: String?,
@@ -41,15 +102,11 @@ import Security
         parameters: NSMutableDictionary = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
-        var hasHTTPPrefix: Bool = false
+        let hasHTTPPrefix: Bool = path?.hasPrefix("http") ?? false
+        let baseURLString: String = baseURL.absoluteString
+        var errorUserInfo: [String: Any] = [:]
 
-        if path != nil, let path = path {
-            hasHTTPPrefix = path.hasPrefix("http")
-        }
-
-        if hasHTTPPrefix && (!baseURL.absoluteString.isEmpty || baseURL.absoluteString == "") {
-            var errorUserInfo: [String: Any] = [:]
-
+        if hasHTTPPrefix && (!baseURLString.isEmpty || baseURLString == "") {
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -74,7 +131,6 @@ import Security
         guard let fullPathURL = fullPathURL else {
             /// baseURL can be non-nil (e.g. an empty string) and still return nil for -URLByAppendingPathComponent:
             /// causing a crash when NSURLComponents.componentsWithString is called with nil.
-            var errorUserInfo: [String: Any] = [:]
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -154,12 +210,12 @@ import Security
     }
 
     func handleRequestCompletion(
-        data: Data,
+        data: Data?,
         request: URLRequest?,
         shouldCache: Bool,
         response: URLResponse?,
         error: Error?,
-        completion: @escaping (BTJSON?, URLResponse?, Error?) -> Void
+        completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
     ) {
         /// Handle errors for which the response is irrelevant e.g. SSL, unavailable network, etc.
         guard error == nil else {
@@ -173,6 +229,16 @@ import Security
                 domain: BTHTTPError.domain,
                 code: BTHTTPErrorCode.unknown.rawValue,
                 userInfo: [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
+            )
+            completion(nil, nil, error)
+            return
+        }
+
+        guard let data = data else {
+            let error = NSError(
+                domain: BTHTTPError.domain,
+                code: BTHTTPErrorCode.unknown.rawValue,
+                userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."]
             )
             completion(nil, nil, error)
             return
