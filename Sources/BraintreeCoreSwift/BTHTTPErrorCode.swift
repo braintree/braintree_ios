@@ -18,4 +18,13 @@ import Foundation
 
     /// The response was a 429, indicating a rate limiting error
     case rateLimitError
+
+    /// The data object was unexpectedly nil
+    case dataNotFound
+
+    /// The HTTP response could not be created or is invalid
+    case httpResponseInvalid
+
+    /// The URL string is either malformed or invalid
+    case urlStringInvalid
 }

@@ -6,15 +6,19 @@ import Security
 @objcMembers public class BTHTTPSwift: NSObject, NSCopying {
 
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
-    var pinnedCertificates: [NSData]? = []
+    public var pinnedCertificates: [NSData]? = []
+
+    /// Session exposed for testing
+    public var session: URLSession? = nil
 
     /// internal date cache validator for testing
     let cacheDateValidator: BTCacheDateValidator
 
     let baseURL: URL
     var authorizationFingerprint: String = ""
-    let tokenizationKey: String = ""
-    var session: URLSession? = nil
+    var tokenizationKey: String = ""
+
+    // MARK: Initializers
 
     /// Initialize `BTHTTP` with the URL for the Braintree API
     /// - Parameter url: The base URL for the Braintree Client API
@@ -26,7 +30,7 @@ import Security
 
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
     /// - Parameters:
-    ///   - baseURL: The base URL for the Braintree Client API
+    ///   - url: The base URL for the Braintree Client API
     ///   - authorizationFingerprint: The authorization fingerprint HMAC from a client token
     @objc(initWithBaseURL:authorizationFingerprint:)
     public convenience init(url: URL, authorizationFingerprint: String) {
@@ -40,12 +44,88 @@ import Security
         self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
     }
 
+    /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a tokenizationKey
+    /// - Parameters:
+    ///   - url: The base URL for the Braintree Client API
+    ///   - tokenizationKey: The authorization fingerprint HMAC from a client token
+    @objc(initWithBaseURL:tokenizationKey:)
+    public convenience init(url: URL, tokenizationKey: String) {
+        self.init(url: url)
+
+        let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
+        configuration.httpAdditionalHeaders = defaultHeaders()
+
+        self.tokenizationKey = tokenizationKey
+        self.session = URLSession(configuration: configuration)
+        self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
+    }
+
+    /// Initialize `BTHTTP` with the authorization fingerprint from a client token
+    /// - Parameter clientToken: The client token
+    @objc(initWithClientToken:)
+    public convenience init(clientToken: BTClientToken) {
+        // TODO: force unwrapping fix
+        self.init(url: ((clientToken.json?["clientApiUrl"].asURL() ?? URL(string: ""))!), authorizationFingerprint: clientToken.authorizationFingerprint ?? "")
+    }
+
+    // MARK: - HTTP Methods
+
+    @objc(GET:completion:)
+    public func get(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        get(path, parameters: nil, completion: completion)
+    }
+
+    @objc(GET:parameters:shouldCache:completion:)
+    public func get(_ path: String, parameters: NSMutableDictionary? = nil, shouldCache: Bool, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        if shouldCache {
+            httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
+        } else {
+            httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
+        }
+    }
+
+    @objc(GET:parameters:completion:)
+    public func get(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
+    }
+
+    @objc(POST:completion:)
+    public func post(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        post(path, parameters: nil, completion: completion)
+    }
+
+    @objc(POST:parameters:completion:)
+    public func post(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
+    }
+
+    @objc(PUT:completion:)
+    public func put(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        put(path, parameters: nil, completion: completion)
+    }
+
+    @objc(PUT:parameters:completion:)
+    public func put(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
+    }
+
+    @objc(DELETE:completion:)
+    public func delete(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        delete(path, parameters: nil, completion: completion)
+    }
+
+    @objc(DELETE:parameters:completion:)
+    public func delete(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+        httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
+    }
+
+
     // MARK: - HTTP Method Helpers
 
     func httpRequestWithCaching(
         method: String?,
         path: String?,
-        parameters: NSMutableDictionary = [:],
+        parameters: NSMutableDictionary? = [:],
         completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -80,7 +160,7 @@ import Security
     func httpRequest(
         method: String?,
         path: String?,
-        parameters: NSMutableDictionary = [:],
+        parameters: NSMutableDictionary? = [:],
         completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -99,7 +179,7 @@ import Security
     func createRequest(
         method: String?,
         path: String?,
-        parameters: NSMutableDictionary = [:],
+        parameters: NSMutableDictionary? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         let hasHTTPPrefix: Bool = path?.hasPrefix("http") ?? false
@@ -111,7 +191,8 @@ import Security
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
-            let error = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.missingBaseURL.rawValue, userInfo: errorUserInfo)
+            let error = constructError(code: .missingBaseURL, userInfo: errorUserInfo)
+
             completion(nil, error)
             return
         }
@@ -125,7 +206,7 @@ import Security
         }
 
         if authorizationFingerprint != "" {
-            parameters["authorization_fingerprint"] = authorizationFingerprint
+            parameters?["authorization_fingerprint"] = authorizationFingerprint
         }
 
         guard let fullPathURL = fullPathURL else {
@@ -136,11 +217,7 @@ import Security
             errorUserInfo["parameters"] = parameters
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
 
-            let error = NSError(
-                domain: BTHTTPError.domain,
-                code: BTHTTPErrorCode.missingBaseURL.rawValue,
-                userInfo: errorUserInfo
-            )
+            let error = constructError(code: .missingBaseURL, userInfo: errorUserInfo)
 
             completion(nil, error)
             return
@@ -159,17 +236,17 @@ import Security
     func buildHTTPRequest(
         method: String?,
         url: URL,
-        parameters: NSMutableDictionary,
+        parameters: NSMutableDictionary? = [:],
         isNotDataURL: Bool,
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         guard var components: URLComponents = URLComponents(string: url.absoluteString),
               let url = components.url else {
-            let error = NSError(
-                domain: BTHTTPError.domain,
-                code: BTHTTPErrorCode.unknown.rawValue,
+            let error = constructError(
+                code: .urlStringInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
             )
+
             completion(nil, error)
             return
         }
@@ -179,7 +256,7 @@ import Security
 
         if method == "GET" || method == "DELETE" {
             if isNotDataURL {
-                components.percentEncodedQuery = BTURLUtils.queryString(from: parameters)
+                components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             }
 
             request = URLRequest(url: url)
@@ -189,7 +266,7 @@ import Security
             var bodyData: Data
 
             do {
-                bodyData = try JSONSerialization.data(withJSONObject: parameters)
+                bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
             } catch {
                 completion(nil, error)
                 return
@@ -209,7 +286,7 @@ import Security
         completion(request, nil)
     }
 
-    func handleRequestCompletion(
+    public func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
         shouldCache: Bool,
@@ -225,21 +302,18 @@ import Security
 
         guard let response = response,
               let httpResponse = createHTTPResponse(response: response) else {
-            let error = NSError(
-                domain: BTHTTPError.domain,
-                code: BTHTTPErrorCode.unknown.rawValue,
+            let error = constructError(
+                code: .httpResponseInvalid,
                 userInfo: [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
             )
+
             completion(nil, nil, error)
             return
         }
 
         guard let data = data else {
-            let error = NSError(
-                domain: BTHTTPError.domain,
-                code: BTHTTPErrorCode.unknown.rawValue,
-                userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."]
-            )
+            let error = constructError(code: .dataNotFound, userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."])
+
             completion(nil, nil, error)
             return
         }
@@ -301,17 +375,17 @@ import Security
             }
         }
 
-        var errorCode: Int = response.statusCode >= 500 ? BTHTTPErrorCode.serverError.rawValue : BTHTTPErrorCode.clientError.rawValue
+        var errorCode: BTHTTPErrorCode = response.statusCode >= 500 ? BTHTTPErrorCode.serverError : BTHTTPErrorCode.clientError
 
         if response.statusCode == 429 {
-            errorCode = BTHTTPErrorCode.rateLimitError.rawValue
+            errorCode = BTHTTPErrorCode.rateLimitError
             errorUserInfo[NSLocalizedDescriptionKey] = "You are being rate-limited."
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again in a few minutes."
         } else if response.statusCode >= 500 {
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again later."
         }
 
-        let error = NSError(domain: BTHTTPError.domain, code: errorCode, userInfo: errorUserInfo)
+        let error = constructError(code: errorCode, userInfo: errorUserInfo)
 
         completion(json, error)
     }
@@ -327,12 +401,16 @@ import Security
         if let contentType = responseContentType, contentType != "application/json" {
             // Return error for unsupported response type
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
-            let returnedError: NSError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.responseContentTypeNotAcceptable.rawValue, userInfo: errorUserInfo)
+            let returnedError: NSError = constructError(code: .responseContentTypeNotAcceptable, userInfo: errorUserInfo)
 
             completion(returnedError)
         } else {
             completion(json.asError())
         }
+    }
+
+    func constructError(code: BTHTTPErrorCode, userInfo: [String: Any]) -> NSError {
+        NSError(domain: BTHTTPError.domain, code: code.rawValue, userInfo: userInfo)
     }
 
     // MARK: - Default Headers
@@ -385,7 +463,27 @@ import Security
     // MARK: - NSCopying conformance
 
     public func copy(with zone: NSZone? = nil) -> Any {
-        // TODO: Implement this
-        return ""
+        let copiedHTTP: BTHTTPSwift
+
+        if authorizationFingerprint != "" {
+            copiedHTTP = BTHTTPSwift(url: baseURL, authorizationFingerprint: authorizationFingerprint)
+        } else {
+            copiedHTTP = BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey)
+        }
+
+        copiedHTTP.pinnedCertificates = pinnedCertificates
+        return copiedHTTP
     }
+
+    //    - (instancetype)copyWithZone:(NSZone *)zone {
+    //        BTHTTP *copiedHTTP;
+    //        if (self.authorizationFingerprint) {
+    //            copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL authorizationFingerprint:self.authorizationFingerprint];
+    //        } else {
+    //            copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL tokenizationKey:self.tokenizationKey];
+    //        }
+    //
+    //        copiedHTTP.pinnedCertificates = [_pinnedCertificates copy];
+    //        return copiedHTTP;
+    //    }
 }
