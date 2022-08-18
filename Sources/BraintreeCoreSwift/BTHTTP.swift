@@ -3,6 +3,7 @@ import Security
 
 /// Performs HTTP methods on the Braintree Client API
 // TODO: once BTAPIHTTP + BTGraphQLHTTP are converted this can be internal + more Swift-y
+// TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
 @objcMembers public class BTHTTPSwift: NSObject, NSCopying {
 
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
@@ -76,7 +77,7 @@ import Security
     }
 
     @objc(GET:parameters:shouldCache:completion:)
-    public func get(_ path: String, parameters: NSMutableDictionary? = nil, shouldCache: Bool, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
@@ -85,7 +86,7 @@ import Security
     }
 
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
         httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
     }
 
@@ -95,7 +96,7 @@ import Security
     }
 
     @objc(POST:parameters:completion:)
-    public func post(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
 
@@ -105,7 +106,7 @@ import Security
     }
 
     @objc(PUT:parameters:completion:)
-    public func put(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func put(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
         httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
     }
 
@@ -115,7 +116,7 @@ import Security
     }
 
     @objc(DELETE:parameters:completion:)
-    public func delete(_ path: String, parameters: NSMutableDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func delete(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
         httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
     }
 
@@ -125,7 +126,7 @@ import Security
     func httpRequestWithCaching(
         method: String?,
         path: String?,
-        parameters: NSMutableDictionary? = [:],
+        parameters: NSDictionary? = [:],
         completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -160,7 +161,7 @@ import Security
     func httpRequest(
         method: String?,
         path: String?,
-        parameters: NSMutableDictionary? = [:],
+        parameters: NSDictionary? = [:],
         completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -179,7 +180,7 @@ import Security
     func createRequest(
         method: String?,
         path: String?,
-        parameters: NSMutableDictionary? = [:],
+        parameters: NSDictionary? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         let hasHTTPPrefix: Bool = path?.hasPrefix("http") ?? false
@@ -205,8 +206,10 @@ import Security
             fullPathURL = baseURL
         }
 
+        let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
+
         if authorizationFingerprint != "" {
-            parameters?["authorization_fingerprint"] = authorizationFingerprint
+            mutableParameters["authorization_fingerprint"] = authorizationFingerprint
         }
 
         guard let fullPathURL = fullPathURL else {
@@ -226,7 +229,7 @@ import Security
         buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: parameters,
+            parameters: mutableParameters,
             isNotDataURL: isNotDataURL
         ) { request, error in
             completion(request, error)
