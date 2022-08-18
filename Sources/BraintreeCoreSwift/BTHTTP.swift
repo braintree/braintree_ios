@@ -477,16 +477,4 @@ import Security
         copiedHTTP.pinnedCertificates = pinnedCertificates
         return copiedHTTP
     }
-
-    //    - (instancetype)copyWithZone:(NSZone *)zone {
-    //        BTHTTP *copiedHTTP;
-    //        if (self.authorizationFingerprint) {
-    //            copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL authorizationFingerprint:self.authorizationFingerprint];
-    //        } else {
-    //            copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL tokenizationKey:self.tokenizationKey];
-    //        }
-    //
-    //        copiedHTTP.pinnedCertificates = [_pinnedCertificates copy];
-    //        return copiedHTTP;
-    //    }
 }
