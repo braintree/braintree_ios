@@ -364,7 +364,7 @@ import Security
         // Empty response is valid
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
-            handleJSONResponseError(json: json, response: httpResponse) { error in
+            handleJSONResponseError(json: json, response: response) { error in
                 self.callCompletionBlock(completion, body: nil, response: nil, error: error)
             }
             return
@@ -436,7 +436,7 @@ import Security
 
     func handleJSONResponseError(
         json: BTJSON,
-        response: HTTPURLResponse,
+        response: URLResponse,
         completion: @escaping (Error?) -> Void
     ) {
         let responseContentType: String? = response.mimeType
