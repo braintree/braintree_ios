@@ -18,7 +18,16 @@ import Security
     let baseURL: URL
     var authorizationFingerprint: String = ""
     var tokenizationKey: String = ""
-
+    private var _dispatchQueue: DispatchQueue?
+    public var dispatchQueue: DispatchQueue {
+        get {
+            return _dispatchQueue ?? DispatchQueue.main
+        }
+        set {
+            _dispatchQueue = newValue
+        }
+    }
+    
     // MARK: Initializers
 
     /// Initialize `BTHTTP` with the URL for the Braintree API
@@ -356,12 +365,21 @@ import Security
 
         completion(json, httpResponse, nil)
     }
+    
+    func callCompletionBlock(_ completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void, body: BTJSON?, response: HTTPURLResponse, error: NSError?) {
+        self.dispatchQueue.async {
+            completion(body, response, error)
+        }
+    }
 
     func createHTTPResponse(response: URLResponse) -> HTTPURLResponse? {
-        if let url = response.url, url.scheme == "data" {
-            guard let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil) else { return nil }
-
-            return response
+        if let httpResponse = response as? HTTPURLResponse {
+            return httpResponse
+        } else if let url = response.url, url.scheme == "data" {
+            return HTTPURLResponse(url: url,
+                                   statusCode: 200,
+                                   httpVersion: nil,
+                                   headerFields: nil)
         }
         return nil
     }
