@@ -449,7 +449,6 @@ import Security
 
             completion(returnedError)
         } else {
-            // TODO: testSetsTheContentTypeHeader fails because asError doesn't set the correct domain here
             completion(json.asError())
         }
     }
