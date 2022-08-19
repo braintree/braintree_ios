@@ -462,13 +462,17 @@ import Security
     func defaultHeaders() -> [String: String] {
         [
             "User-Agent": userAgentString(),
-            "Accept": "application/json",
+            "Accept": acceptString(),
             "Accept-Language": acceptLanguageString()
         ]
     }
 
     func userAgentString() -> String {
         "Braintree/iOS/\(BraintreeCoreConstants.braintreeVersion)"
+    }
+    
+    func acceptString() -> String {
+        "application/json"
     }
 
     func acceptLanguageString() -> String {
