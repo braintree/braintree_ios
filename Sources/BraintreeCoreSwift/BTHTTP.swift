@@ -18,6 +18,7 @@ import Security
     let baseURL: URL
     var authorizationFingerprint: String = ""
     var tokenizationKey: String = ""
+    
     private var _dispatchQueue: DispatchQueue?
     public var dispatchQueue: DispatchQueue {
         get {
@@ -260,8 +261,7 @@ import Security
         isNotDataURL: Bool,
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
-        guard var components: URLComponents = URLComponents(string: url.absoluteString),
-              let url = components.url else {
+        guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
             let error = constructError(
                 code: .urlStringInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
@@ -278,10 +278,25 @@ import Security
             if isNotDataURL {
                 components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             }
-
-            request = URLRequest(url: url)
+            guard let urlFromComponents = components.url else {
+                let error = constructError(
+                    code: .urlStringInvalid,
+                    userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
+                )
+                completion(nil, error)
+                return
+            }
+            request = URLRequest(url: urlFromComponents)
         } else {
-            request = URLRequest(url: url)
+            guard let urlFromComponents = components.url else {
+                let error = constructError(
+                    code: .urlStringInvalid,
+                    userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
+                )
+                completion(nil, error)
+                return
+            }
+            request = URLRequest(url: urlFromComponents)
 
             var bodyData: Data
 
@@ -329,21 +344,19 @@ import Security
                 code: .httpResponseInvalid,
                 userInfo: [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
             )
-
-            completion(nil, nil, error)
+            callCompletionBlock(completion, body: nil, response: nil, error: error)
             return
         }
 
         guard let data = data else {
             let error = constructError(code: .dataNotFound, userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."])
-
-            completion(nil, nil, error)
+            callCompletionBlock(completion, body: nil, response: nil, error: error)
             return
         }
 
         if httpResponse.statusCode >= 400 {
             handleHTTPResponseError(response: httpResponse, data: data) { json, error in
-                completion(json, httpResponse, error)
+                self.callCompletionBlock(completion, body: json, response: httpResponse, error: error)
             }
             return
         }
@@ -352,7 +365,7 @@ import Security
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
             handleJSONResponseError(json: json, response: httpResponse) { error in
-                completion(nil, nil, error)
+                self.callCompletionBlock(completion, body: nil, response: nil, error: error)
             }
             return
         }
@@ -365,8 +378,7 @@ import Security
 
             URLCache.shared.storeCachedResponse(cachedURLResponse, for: request)
         }
-
-        completion(json, httpResponse, nil)
+        callCompletionBlock(completion, body: json, response: httpResponse, error: nil)
     }
     
     func callCompletionBlock(_ completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
@@ -437,6 +449,7 @@ import Security
 
             completion(returnedError)
         } else {
+            // TODO: testSetsTheContentTypeHeader fails because asError doesn't set the correct domain here
             completion(json.asError())
         }
     }
