@@ -94,7 +94,7 @@ import Security
     }
 
     @objc(GET:parameters:shouldCache:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
@@ -103,7 +103,7 @@ import Security
     }
 
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?) {
         httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
     }
 
@@ -144,7 +144,7 @@ import Security
         method: String?,
         path: String?,
         parameters: NSDictionary? = [:],
-        completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
+        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
             guard let request = request else {
@@ -179,7 +179,7 @@ import Security
         method: String?,
         path: String?,
         parameters: NSDictionary? = [:],
-        completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
+        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
             guard let request = request else {
@@ -312,11 +312,14 @@ import Security
         shouldCache: Bool,
         response: URLResponse?,
         error: Error?,
-        completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void
+        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
     ) {
+        guard let completion = completion else {
+            return
+        }
         /// Handle errors for which the response is irrelevant e.g. SSL, unavailable network, etc.
         guard error == nil else {
-            completion(nil, nil, error)
+            callCompletionBlock(completion, body: nil, response: nil, error: error)
             return
         }
 
@@ -366,7 +369,7 @@ import Security
         completion(json, httpResponse, nil)
     }
     
-    func callCompletionBlock(_ completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void, body: BTJSON?, response: HTTPURLResponse, error: NSError?) {
+    func callCompletionBlock(_ completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
         self.dispatchQueue.async {
             completion(body, response, error)
         }
