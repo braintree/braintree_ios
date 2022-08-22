@@ -5,7 +5,8 @@ import Security
 // TODO: once BTAPIHTTP + BTGraphQLHTTP are converted this can be internal + more Swift-y
 // TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
 @objcMembers public class BTHTTPSwift: NSObject, NSCopying, URLSessionDelegate {
-
+// TODO: - Mark interval vs private properties accordingly
+// MARK: - Properties
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
