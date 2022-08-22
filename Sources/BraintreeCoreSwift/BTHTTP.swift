@@ -28,6 +28,7 @@ import Security
     let cacheDateValidator: BTCacheDateValidator
     let baseURL: URL
 
+// TODO: - once BTAPIHTTP + BTGraphQLHTTP are converted to Swift, handle error cases for empty or nil credentials before API request is made
     var authorizationFingerprint: String? = ""
     var tokenizationKey: String? = ""
 
