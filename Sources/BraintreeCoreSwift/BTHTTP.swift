@@ -25,14 +25,7 @@ import Security
     }()
 
     /// DispatchQueue exposed for testing
-    public var dispatchQueue: DispatchQueue {
-        get {
-            return _dispatchQueue ?? DispatchQueue.main
-        }
-        set {
-            _dispatchQueue = newValue
-        }
-    }
+    public var dispatchQueue: DispatchQueue = DispatchQueue.main
 
     let cacheDateValidator: BTCacheDateValidator
     let baseURL: URL
@@ -40,8 +33,6 @@ import Security
 // TODO: - once BTAPIHTTP + BTGraphQLHTTP are converted to Swift, handle error cases for empty or nil credentials before API request is made
     var authorizationFingerprint: String? = ""
     var tokenizationKey: String? = ""
-
-    private var _dispatchQueue: DispatchQueue?
     
     // MARK: - Initializers
 
