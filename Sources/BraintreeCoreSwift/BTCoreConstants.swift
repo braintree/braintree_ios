@@ -1,5 +1,5 @@
 import Foundation
 
-public class BraintreeCoreConstants {
+public class BTCoreConstants {
     public static var braintreeVersion: String = "5.11.0"
 }

@@ -6,7 +6,7 @@ import Security
 // TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
 @objcMembers public class BTHTTPSwift: NSObject, NSCopying, URLSessionDelegate {
 
-    public typealias Completion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     public var pinnedCertificates: [NSData]? = []
@@ -14,14 +14,7 @@ import Security
     /// Session exposed for testing
     public var session: URLSession?
 
-    /// internal date cache validator for testing
-    let cacheDateValidator: BTCacheDateValidator
-
-    let baseURL: URL
-    var authorizationFingerprint: String = ""
-    var tokenizationKey: String = ""
-
-    private var _dispatchQueue: DispatchQueue?
+    /// DispatchQueue exposed for testing
     public var dispatchQueue: DispatchQueue {
         get {
             return _dispatchQueue ?? DispatchQueue.main
@@ -30,6 +23,14 @@ import Security
             _dispatchQueue = newValue
         }
     }
+
+    let cacheDateValidator: BTCacheDateValidator
+    let baseURL: URL
+
+    var authorizationFingerprint: String? = ""
+    var tokenizationKey: String? = ""
+
+    private var _dispatchQueue: DispatchQueue?
     
     // MARK: Initializers
 
@@ -85,19 +86,22 @@ import Security
     /// - Parameter clientToken: The client token
     @objc(initWithClientToken:)
     public convenience init(clientToken: BTClientToken) {
-        // TODO: force unwrapping fix
-        self.init(url: ((clientToken.json?["clientApiUrl"].asURL() ?? URL(string: ""))!), authorizationFingerprint: clientToken.authorizationFingerprint ?? "")
+        guard let clientApiURL = clientToken.json?["clientApiUrl"].asURL() else {
+            fatalError("clientApiURL contained in client token is not a valid URL")
+        }
+
+        self.init(url: clientApiURL, authorizationFingerprint: clientToken.authorizationFingerprint ?? "")
     }
 
     // MARK: - HTTP Methods
 
     @objc(GET:completion:)
-    public func get(_ path: String, completion: @escaping Completion) {
+    public func get(_ path: String, completion: @escaping RequestCompletion) {
         get(path, parameters: nil, completion: completion)
     }
 
     @objc(GET:parameters:shouldCache:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: Completion?) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: RequestCompletion?) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
@@ -106,40 +110,39 @@ import Security
     }
 
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, completion: Completion?) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
         httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
     }
 
     @objc(POST:completion:)
-    public func post(_ path: String, completion: @escaping Completion) {
+    public func post(_ path: String, completion: @escaping RequestCompletion) {
         post(path, parameters: nil, completion: completion)
     }
 
     @objc(POST:parameters:completion:)
-    public func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping Completion) {
+    public func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
 
     @objc(PUT:completion:)
-    public func put(_ path: String, completion: @escaping Completion) {
+    public func put(_ path: String, completion: @escaping RequestCompletion) {
         put(path, parameters: nil, completion: completion)
     }
 
     @objc(PUT:parameters:completion:)
-    public func put(_ path: String, parameters: NSDictionary? = nil, completion: @escaping Completion) {
+    public func put(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
     }
 
     @objc(DELETE:completion:)
-    public func delete(_ path: String, completion: @escaping Completion) {
+    public func delete(_ path: String, completion: @escaping RequestCompletion) {
         delete(path, parameters: nil, completion: completion)
     }
 
     @objc(DELETE:parameters:completion:)
-    public func delete(_ path: String, parameters: NSDictionary? = nil, completion: @escaping Completion) {
+    public func delete(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
     }
-
 
     // MARK: - HTTP Method Helpers
 
@@ -147,7 +150,7 @@ import Security
         method: String?,
         path: String?,
         parameters: NSDictionary? = [:],
-        completion: Completion?
+        completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
             guard let request = request else {
@@ -157,7 +160,6 @@ import Security
 
             var cachedResponse: CachedURLResponse? = URLCache.shared.cachedResponse(for: request) ?? nil
 
-            // TODO: don't force unwrap
             if self.cacheDateValidator.isCacheInvalid(cachedResponse ?? nil) {
                 URLCache.shared.removeAllCachedResponses()
                 cachedResponse = nil
@@ -172,6 +174,7 @@ import Security
                     let task: URLSessionTask? = self.session?.dataTask(with: request) { [weak self] data, response, error in
                         self?.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
                     }
+
                     task?.resume()
                 }
             }
@@ -182,7 +185,7 @@ import Security
         method: String?,
         path: String?,
         parameters: NSDictionary? = [:],
-        completion: Completion?
+        completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
             guard let request = request else {
@@ -193,6 +196,7 @@ import Security
             let task: URLSessionTask? = self.session?.dataTask(with: request) { [weak self] data, response, error in
                 self?.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
             }
+
             task?.resume()
         }
     }
@@ -207,7 +211,7 @@ import Security
         let baseURLString: String = baseURL.absoluteString
         var errorUserInfo: [String: Any] = [:]
 
-        if hasHTTPPrefix && (!baseURLString.isEmpty || baseURLString == "") {
+        if hasHTTPPrefix && (baseURLString.isEmpty || baseURLString == "") {
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -220,6 +224,7 @@ import Security
         
         let fullPathURL: URL?
         let isNotDataURL: Bool = baseURL.scheme != "data"
+
         if isNotDataURL, let path = path {
             fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
         } else {
@@ -288,6 +293,7 @@ import Security
                 completion(nil, error)
                 return
             }
+
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
@@ -298,6 +304,7 @@ import Security
                 completion(nil, error)
                 return
             }
+
             request = URLRequest(url: urlFromComponents)
 
             var bodyData: Data
@@ -329,7 +336,7 @@ import Security
         shouldCache: Bool,
         response: URLResponse?,
         error: Error?,
-        completion: Completion?
+        completion: RequestCompletion?
     ) {
         guard let completion = completion else {
             return
@@ -380,10 +387,11 @@ import Security
 
             URLCache.shared.storeCachedResponse(cachedURLResponse, for: request)
         }
+
         callCompletionBlock(with: completion, body: json, response: httpResponse, error: nil)
     }
     
-    func callCompletionBlock(with completion: @escaping Completion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
+    func callCompletionBlock(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
         self.dispatchQueue.async {
             completion(body, response, error)
         }
@@ -472,7 +480,7 @@ import Security
     }
 
     func userAgentString() -> String {
-        "Braintree/iOS/\(BraintreeCoreConstants.braintreeVersion)"
+        "Braintree/iOS/\(BTCoreConstants.braintreeVersion)"
     }
 
     func acceptLanguageString() -> String {
@@ -514,9 +522,9 @@ import Security
         let copiedHTTP: BTHTTPSwift
 
         if authorizationFingerprint != "" {
-            copiedHTTP = BTHTTPSwift(url: baseURL, authorizationFingerprint: authorizationFingerprint)
+            copiedHTTP = BTHTTPSwift(url: baseURL, authorizationFingerprint: authorizationFingerprint ?? "")
         } else {
-            copiedHTTP = BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey)
+            copiedHTTP = BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey ?? "")
         }
 
         copiedHTTP.pinnedCertificates = pinnedCertificates
