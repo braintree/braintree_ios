@@ -532,8 +532,7 @@ import Security
     }
 
     // MARK: - URLSessionDelegate conformance
-
-    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             let domain: String = challenge.protectionSpace.host
             let serverTrust: SecTrust = challenge.protectionSpace.serverTrust!
@@ -547,12 +546,12 @@ import Security
 
             if trusted && error == nil {
                 let credential: URLCredential = URLCredential(trust: serverTrust)
-                return (.useCredential, credential)
+                completionHandler(.useCredential, credential)
             } else {
-                return (.rejectProtectionSpace, nil)
+                completionHandler(.rejectProtectionSpace, nil)
             }
         } else {
-            return (.performDefaultHandling, nil)
+            completionHandler(.performDefaultHandling, nil)
         }
     }
 }
