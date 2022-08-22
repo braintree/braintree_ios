@@ -9,7 +9,7 @@ import Security
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Public Properties
-    /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
+    /// An  array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     public let pinnedCertificates: [NSData]
 
     // TODO: Make internal with Swift test?
@@ -26,7 +26,7 @@ import Security
     }()
 
     // TODO: Make internal with Swift test?
-    /// DispatchQueue exposed for testing
+    /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     public var dispatchQueue: DispatchQueue = DispatchQueue.main
 
     // MARK: - Internal Properties
