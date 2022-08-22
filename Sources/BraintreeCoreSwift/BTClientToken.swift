@@ -105,7 +105,7 @@ import Foundation
         }
     }
 
-    // MARK: - isEqual override
+    // MARK: - NSObject override
 
     public override func isEqual(_ object: Any?) -> Bool {
         guard object is BTClientToken,
