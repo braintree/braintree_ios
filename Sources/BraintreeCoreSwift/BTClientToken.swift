@@ -4,13 +4,13 @@ import Foundation
 @objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying {
 
     /// The client token as a BTJSON object
-    public let json: BTJSON?
+    public let json: BTJSON
 
     /// The extracted authorization fingerprint
-    public let authorizationFingerprint: String?
+    public let authorizationFingerprint: String
 
     /// The extracted configURL
-    public let configURL: URL?
+    public let configURL: URL
 
     /// The original string used to initialize this instance
     public let originalValue: String
@@ -22,12 +22,12 @@ import Foundation
         // Client token must be decoded first because the other values are retrieved from it
         self.json = try Self.decodeClientToken(clientToken)
         
-        guard let authorizationFingerprint = json?["authorizationFingerprint"].asString(),
+        guard let authorizationFingerprint = json["authorizationFingerprint"].asString(),
               !authorizationFingerprint.isEmpty else {
             throw BTClientTokenError.invalidAuthorizationFingerprint
         }
         
-        guard let configURL = json?["configUrl"].asURL() else {
+        guard let configURL = json["configUrl"].asURL() else {
             throw BTClientTokenError.invalidConfigURL
         }
         
@@ -38,7 +38,7 @@ import Foundation
     
     // MARK: - Internal helper functions
 
-    private static func decodeClientToken(_ rawClientToken: String) throws -> BTJSON? {
+    private static func decodeClientToken(_ rawClientToken: String) throws -> BTJSON {
         let data: Data
         let isBase64: Bool
         if let base64Data = Data(base64Encoded: rawClientToken) {
@@ -54,7 +54,7 @@ import Foundation
         return try toBTJSON(data: data, isBase64: isBase64)
     }
 
-    private static func toBTJSON(data: Data, isBase64: Bool) throws -> BTJSON? {
+    private static func toBTJSON(data: Data, isBase64: Bool) throws -> BTJSON {
         guard let clientTokenJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             throw BTClientTokenError.invalidJSON
         }
@@ -113,6 +113,6 @@ import Foundation
             return false
         }
 
-        return self.json?.asDictionary() == otherToken.json?.asDictionary()
+        return self.json.asDictionary() == otherToken.json.asDictionary()
     }
 }
