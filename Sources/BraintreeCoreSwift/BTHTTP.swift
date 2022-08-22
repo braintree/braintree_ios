@@ -154,8 +154,8 @@ import Security
             // The increase in speed of API calls with cached configuration caused an increase in "network connection lost" errors.
             // Adding this delay allows us to throttle the network requests slightly to reduce load on the servers and decrease connection lost errors.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                if cachedResponse != nil {
-                    self.handleRequestCompletion(data: cachedResponse?.data, request: nil, shouldCache: false, response: cachedResponse?.response, error: nil, completion: completion)
+                if let cachedResponse = cachedResponse {
+                    self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
                 } else {
                     let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
                         self?.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
