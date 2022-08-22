@@ -13,7 +13,7 @@ import Security
     public let pinnedCertificates: [NSData]
 
     /// Session exposed for testing
-    lazy public var session: URLSession = {
+    public lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders()
         
