@@ -13,7 +13,7 @@ import Security
     public var pinnedCertificates: [NSData]? = []
 
     /// Session exposed for testing
-    public var session: URLSession?
+    public var session: URLSession
 
     /// DispatchQueue exposed for testing
     public var dispatchQueue: DispatchQueue {
@@ -86,10 +86,10 @@ import Security
 
     /// Initialize `BTHTTP` with the authorization fingerprint from a client token
     /// - Parameter clientToken: The client token
-    @objc(initWithClientToken:)
-    public convenience init(clientToken: BTClientToken) {
+    @objc(initWithClientToken:error:)
+    public convenience init(clientToken: BTClientToken) throws {
         guard let clientApiURL = clientToken.json?["clientApiUrl"].asURL() else {
-            fatalError("clientApiURL contained in client token is not a valid URL")
+            throw Self.constructError(code: .clientApiUrlInvalid, userInfo: [NSLocalizedDescriptionKey: "Client API URL is not a valid URL/"])
         }
 
         self.init(url: clientApiURL, authorizationFingerprint: clientToken.authorizationFingerprint ?? "")
@@ -173,11 +173,11 @@ import Security
                 if cachedResponse != nil {
                     self.handleRequestCompletion(data: cachedResponse?.data, request: nil, shouldCache: false, response: cachedResponse?.response, error: nil, completion: completion)
                 } else {
-                    let task: URLSessionTask? = self.session?.dataTask(with: request) { [weak self] data, response, error in
+                    let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
                         self?.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
                     }
 
-                    task?.resume()
+                    task.resume()
                 }
             }
         }
@@ -195,11 +195,11 @@ import Security
                 return
             }
 
-            let task: URLSessionTask? = self.session?.dataTask(with: request) { [weak self] data, response, error in
+            let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
                 self?.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
             }
 
-            task?.resume()
+            task.resume()
         }
     }
 
@@ -218,7 +218,7 @@ import Security
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
-            let error = constructError(code: .missingBaseURL, userInfo: errorUserInfo)
+            let error = Self.constructError(code: .missingBaseURL, userInfo: errorUserInfo)
 
             completion(nil, error)
             return
@@ -247,7 +247,7 @@ import Security
             errorUserInfo["parameters"] = parameters
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
 
-            let error = constructError(code: .missingBaseURL, userInfo: errorUserInfo)
+            let error = Self.constructError(code: .missingBaseURL, userInfo: errorUserInfo)
 
             completion(nil, error)
             return
@@ -271,7 +271,7 @@ import Security
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
-            let error = constructError(
+            let error = Self.constructError(
                 code: .urlStringInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
             )
@@ -288,7 +288,7 @@ import Security
                 components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             }
             guard let urlFromComponents = components.url else {
-                let error = constructError(
+                let error = Self.constructError(
                     code: .urlStringInvalid,
                     userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
                 )
@@ -299,7 +299,7 @@ import Security
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
-                let error = constructError(
+                let error = Self.constructError(
                     code: .urlStringInvalid,
                     userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
                 )
@@ -351,7 +351,7 @@ import Security
 
         guard let response = response,
               let httpResponse = createHTTPResponse(response: response) else {
-            let error = constructError(
+            let error = Self.constructError(
                 code: .httpResponseInvalid,
                 userInfo: [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
             )
@@ -360,7 +360,7 @@ import Security
         }
 
         guard let data = data else {
-            let error = constructError(code: .dataNotFound, userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."])
+            let error = Self.constructError(code: .dataNotFound, userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."])
             callCompletionBlock(with: completion, body: nil, response: nil, error: error)
             return
         }
@@ -443,7 +443,7 @@ import Security
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again later."
         }
 
-        let error = constructError(code: errorCode, userInfo: errorUserInfo)
+        let error = Self.constructError(code: errorCode, userInfo: errorUserInfo)
 
         completion(json, error)
     }
@@ -459,7 +459,7 @@ import Security
         if let contentType = responseContentType, contentType != "application/json" {
             // Return error for unsupported response type
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
-            let returnedError: NSError = constructError(code: .responseContentTypeNotAcceptable, userInfo: errorUserInfo)
+            let returnedError: NSError = Self.constructError(code: .responseContentTypeNotAcceptable, userInfo: errorUserInfo)
 
             completion(returnedError)
         } else {
@@ -467,7 +467,7 @@ import Security
         }
     }
 
-    func constructError(code: BTHTTPErrorCode, userInfo: [String: Any]) -> NSError {
+    static func constructError(code: BTHTTPErrorCode, userInfo: [String: Any]) -> NSError {
         NSError(domain: BTHTTPError.domain, code: code.rawValue, userInfo: userInfo)
     }
 
@@ -482,7 +482,7 @@ import Security
     }
 
     func userAgentString() -> String {
-        "Braintree/iOS/\(BTCoreConstants.braintreeVersion)"
+        "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)"
     }
 
     func acceptLanguageString() -> String {
