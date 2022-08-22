@@ -27,4 +27,7 @@ import Foundation
 
     /// The URL string is either malformed or invalid
     case urlStringInvalid
+
+    /// The client API URL is either malformed or invalid
+    case clientApiUrlInvalid
 }
