@@ -6,12 +6,13 @@ import Security
 // TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
 @objcMembers public class BTHTTPSwift: NSObject, NSCopying, URLSessionDelegate {
 // TODO: - Mark interval vs private properties accordingly
-// MARK: - Properties
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
+    // MARK: - Public Properties
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     public let pinnedCertificates: [NSData]
 
+    // TODO: Make internal with Swift test?
     /// Session exposed for testing
     public lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
@@ -24,9 +25,11 @@ import Security
         return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
     }()
 
+    // TODO: Make internal with Swift test?
     /// DispatchQueue exposed for testing
     public var dispatchQueue: DispatchQueue = DispatchQueue.main
 
+    // MARK: - Internal Properties
     let cacheDateValidator: BTCacheDateValidator
     let baseURL: URL
 
