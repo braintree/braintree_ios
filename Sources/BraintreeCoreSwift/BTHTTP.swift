@@ -10,10 +10,19 @@ import Security
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
-    public var pinnedCertificates: [NSData]? = []
+    public let pinnedCertificates: [NSData]
 
     /// Session exposed for testing
-    public var session: URLSession
+    lazy public var session: URLSession = {
+        let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
+        configuration.httpAdditionalHeaders = defaultHeaders()
+        
+        let delegateQueue: OperationQueue = OperationQueue()
+        delegateQueue.name = "com.braintreepayments.BTHTTP"
+        delegateQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+        
+        return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
+    }()
 
     /// DispatchQueue exposed for testing
     public var dispatchQueue: DispatchQueue {
@@ -42,6 +51,7 @@ import Security
     public init(url: URL) {
         self.baseURL = url
         self.cacheDateValidator = BTCacheDateValidator()
+        self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
     }
 
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
@@ -51,17 +61,7 @@ import Security
     @objc(initWithBaseURL:authorizationFingerprint:)
     public convenience init(url: URL, authorizationFingerprint: String) {
         self.init(url: url)
-
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-        configuration.httpAdditionalHeaders = defaultHeaders()
-
-        let delegateQueue: OperationQueue = OperationQueue()
-        delegateQueue.name = "com.braintreepayments.BTHTTP"
-        delegateQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
-
         self.authorizationFingerprint = authorizationFingerprint
-        self.session = URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
-        self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
     }
 
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a tokenizationKey
@@ -71,17 +71,7 @@ import Security
     @objc(initWithBaseURL:tokenizationKey:)
     public convenience init(url: URL, tokenizationKey: String) {
         self.init(url: url)
-
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-        configuration.httpAdditionalHeaders = defaultHeaders()
-
-        let delegateQueue: OperationQueue = OperationQueue()
-        delegateQueue.name = "com.braintreepayments.BTHTTP"
-        delegateQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
-
         self.tokenizationKey = tokenizationKey
-        self.session = URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
-        self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
     }
 
     /// Initialize `BTHTTP` with the authorization fingerprint from a client token
@@ -529,7 +519,6 @@ import Security
             copiedHTTP = BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey ?? "")
         }
 
-        copiedHTTP.pinnedCertificates = pinnedCertificates
         return copiedHTTP
     }
 
