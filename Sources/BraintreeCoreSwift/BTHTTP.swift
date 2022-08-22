@@ -6,20 +6,15 @@ import Security
 // TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
 @objcMembers public class BTHTTPSwift: NSObject, NSCopying, URLSessionDelegate {
 
+    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+
     /// An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     public var pinnedCertificates: [NSData]? = []
 
     /// Session exposed for testing
     public var session: URLSession?
 
-    /// internal date cache validator for testing
-    let cacheDateValidator: BTCacheDateValidator
-
-    let baseURL: URL
-    var authorizationFingerprint: String = ""
-    var tokenizationKey: String = ""
-    
-    private var _dispatchQueue: DispatchQueue?
+    /// DispatchQueue exposed for testing
     public var dispatchQueue: DispatchQueue {
         get {
             return _dispatchQueue ?? DispatchQueue.main
@@ -28,6 +23,14 @@ import Security
             _dispatchQueue = newValue
         }
     }
+
+    let cacheDateValidator: BTCacheDateValidator
+    let baseURL: URL
+
+    var authorizationFingerprint: String? = ""
+    var tokenizationKey: String? = ""
+
+    private var _dispatchQueue: DispatchQueue?
     
     // MARK: Initializers
 
@@ -83,19 +86,22 @@ import Security
     /// - Parameter clientToken: The client token
     @objc(initWithClientToken:)
     public convenience init(clientToken: BTClientToken) {
-        // TODO: force unwrapping fix
-        self.init(url: ((clientToken.json?["clientApiUrl"].asURL() ?? URL(string: ""))!), authorizationFingerprint: clientToken.authorizationFingerprint ?? "")
+        guard let clientApiURL = clientToken.json?["clientApiUrl"].asURL() else {
+            fatalError("clientApiURL contained in client token is not a valid URL")
+        }
+
+        self.init(url: clientApiURL, authorizationFingerprint: clientToken.authorizationFingerprint ?? "")
     }
 
     // MARK: - HTTP Methods
 
     @objc(GET:completion:)
-    public func get(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func get(_ path: String, completion: @escaping RequestCompletion) {
         get(path, parameters: nil, completion: completion)
     }
 
     @objc(GET:parameters:shouldCache:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: RequestCompletion?) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
@@ -104,40 +110,39 @@ import Security
     }
 
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?) {
+    public func get(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
         httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
     }
 
     @objc(POST:completion:)
-    public func post(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func post(_ path: String, completion: @escaping RequestCompletion) {
         post(path, parameters: nil, completion: completion)
     }
 
     @objc(POST:parameters:completion:)
-    public func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
 
     @objc(PUT:completion:)
-    public func put(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func put(_ path: String, completion: @escaping RequestCompletion) {
         put(path, parameters: nil, completion: completion)
     }
 
     @objc(PUT:parameters:completion:)
-    public func put(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func put(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
     }
 
     @objc(DELETE:completion:)
-    public func delete(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func delete(_ path: String, completion: @escaping RequestCompletion) {
         delete(path, parameters: nil, completion: completion)
     }
 
     @objc(DELETE:parameters:completion:)
-    public func delete(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
+    public func delete(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
     }
-
 
     // MARK: - HTTP Method Helpers
 
@@ -145,7 +150,7 @@ import Security
         method: String?,
         path: String?,
         parameters: NSDictionary? = [:],
-        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
+        completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
             guard let request = request else {
@@ -155,7 +160,6 @@ import Security
 
             var cachedResponse: CachedURLResponse? = URLCache.shared.cachedResponse(for: request) ?? nil
 
-            // TODO: don't force unwrap
             if self.cacheDateValidator.isCacheInvalid(cachedResponse ?? nil) {
                 URLCache.shared.removeAllCachedResponses()
                 cachedResponse = nil
@@ -167,9 +171,10 @@ import Security
                 if cachedResponse != nil {
                     self.handleRequestCompletion(data: cachedResponse?.data, request: nil, shouldCache: false, response: cachedResponse?.response, error: nil, completion: completion)
                 } else {
-                    let task: URLSessionTask? = self.session?.dataTask(with: request) { data, response, error in
-                        self.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
+                    let task: URLSessionTask? = self.session?.dataTask(with: request) { [weak self] data, response, error in
+                        self?.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
                     }
+
                     task?.resume()
                 }
             }
@@ -180,7 +185,7 @@ import Security
         method: String?,
         path: String?,
         parameters: NSDictionary? = [:],
-        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
+        completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
             guard let request = request else {
@@ -188,9 +193,10 @@ import Security
                 return
             }
 
-            let task: URLSessionTask? = self.session?.dataTask(with: request) { data, response, error in
-                self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+            let task: URLSessionTask? = self.session?.dataTask(with: request) { [weak self] data, response, error in
+                self?.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
             }
+
             task?.resume()
         }
     }
@@ -205,7 +211,7 @@ import Security
         let baseURLString: String = baseURL.absoluteString
         var errorUserInfo: [String: Any] = [:]
 
-        if hasHTTPPrefix && (!baseURLString.isEmpty || baseURLString == "") {
+        if hasHTTPPrefix && (baseURLString.isEmpty || baseURLString == "") {
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -218,6 +224,7 @@ import Security
         
         let fullPathURL: URL?
         let isNotDataURL: Bool = baseURL.scheme != "data"
+
         if isNotDataURL, let path = path {
             fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
         } else {
@@ -286,6 +293,7 @@ import Security
                 completion(nil, error)
                 return
             }
+
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
@@ -296,6 +304,7 @@ import Security
                 completion(nil, error)
                 return
             }
+
             request = URLRequest(url: urlFromComponents)
 
             var bodyData: Data
@@ -327,14 +336,14 @@ import Security
         shouldCache: Bool,
         response: URLResponse?,
         error: Error?,
-        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
+        completion: RequestCompletion?
     ) {
         guard let completion = completion else {
             return
         }
         /// Handle errors for which the response is irrelevant e.g. SSL, unavailable network, etc.
         guard error == nil else {
-            callCompletionBlock(completion, body: nil, response: nil, error: error)
+            callCompletionBlock(with: completion, body: nil, response: nil, error: error)
             return
         }
 
@@ -344,19 +353,19 @@ import Security
                 code: .httpResponseInvalid,
                 userInfo: [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
             )
-            callCompletionBlock(completion, body: nil, response: nil, error: error)
+            callCompletionBlock(with: completion, body: nil, response: nil, error: error)
             return
         }
 
         guard let data = data else {
             let error = constructError(code: .dataNotFound, userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."])
-            callCompletionBlock(completion, body: nil, response: nil, error: error)
+            callCompletionBlock(with: completion, body: nil, response: nil, error: error)
             return
         }
 
         if httpResponse.statusCode >= 400 {
             handleHTTPResponseError(response: httpResponse, data: data) { json, error in
-                self.callCompletionBlock(completion, body: json, response: httpResponse, error: error)
+                self.callCompletionBlock(with: completion, body: json, response: httpResponse, error: error)
             }
             return
         }
@@ -365,7 +374,7 @@ import Security
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
             handleJSONResponseError(json: json, response: response) { error in
-                self.callCompletionBlock(completion, body: nil, response: nil, error: error)
+                self.callCompletionBlock(with: completion, body: nil, response: nil, error: error)
             }
             return
         }
@@ -378,10 +387,11 @@ import Security
 
             URLCache.shared.storeCachedResponse(cachedURLResponse, for: request)
         }
-        callCompletionBlock(completion, body: json, response: httpResponse, error: nil)
+
+        callCompletionBlock(with: completion, body: json, response: httpResponse, error: nil)
     }
     
-    func callCompletionBlock(_ completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
+    func callCompletionBlock(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
         self.dispatchQueue.async {
             completion(body, response, error)
         }
@@ -391,10 +401,12 @@ import Security
         if let httpResponse = response as? HTTPURLResponse {
             return httpResponse
         } else if let url = response.url, url.scheme == "data" {
-            return HTTPURLResponse(url: url,
-                                   statusCode: 200,
-                                   httpVersion: nil,
-                                   headerFields: nil)
+            return HTTPURLResponse(
+                url: url,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            )
         }
         return nil
     }
@@ -468,7 +480,7 @@ import Security
     }
 
     func userAgentString() -> String {
-        "Braintree/iOS/\(BraintreeCoreConstants.braintreeVersion)"
+        "Braintree/iOS/\(BTCoreConstants.braintreeVersion)"
     }
     
     func acceptString() -> String {
@@ -514,12 +526,37 @@ import Security
         let copiedHTTP: BTHTTPSwift
 
         if authorizationFingerprint != "" {
-            copiedHTTP = BTHTTPSwift(url: baseURL, authorizationFingerprint: authorizationFingerprint)
+            copiedHTTP = BTHTTPSwift(url: baseURL, authorizationFingerprint: authorizationFingerprint ?? "")
         } else {
-            copiedHTTP = BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey)
+            copiedHTTP = BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey ?? "")
         }
 
         copiedHTTP.pinnedCertificates = pinnedCertificates
         return copiedHTTP
+    }
+
+    // MARK: - URLSessionDelegate conformance
+
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+            let domain: String = challenge.protectionSpace.host
+            let serverTrust: SecTrust = challenge.protectionSpace.serverTrust!
+
+            let policies = SecPolicyCreateSSL(true, domain as CFString)
+            SecTrustSetPolicies(serverTrust, policies)
+            SecTrustSetAnchorCertificates(serverTrust, self.pinnedCertificates as CFArray?)
+
+            var error: CFError?
+            let trusted: Bool = SecTrustEvaluateWithError(serverTrust, &error)
+
+            if trusted && error == nil {
+                let credential: URLCredential = URLCredential(trust: serverTrust)
+                return (.useCredential, credential)
+            } else {
+                return (.rejectProtectionSpace, nil)
+            }
+        } else {
+            return (.performDefaultHandling, nil)
+        }
     }
 }

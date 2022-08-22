@@ -1,6 +1,6 @@
 import Foundation
 
-// TODO: can this be a struct + internal once we move BTHTTP to swift since it's internal?
+// TODO: This be a struct + internal once we move BTAPIHTTP + BTGraphQLHTTP to swift since it's internal
 @objcMembers public class BTCacheDateValidator: NSObject {
     public let timeToLiveMinutes: Double = 5
 
