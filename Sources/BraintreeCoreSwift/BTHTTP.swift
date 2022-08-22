@@ -34,7 +34,7 @@ import Security
 
     private var _dispatchQueue: DispatchQueue?
     
-    // MARK: Initializers
+    // MARK: - Initializers
 
     /// Initialize `BTHTTP` with the URL for the Braintree API
     /// - Parameter url: The base URL for the Braintree Client API
