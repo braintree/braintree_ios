@@ -19,6 +19,7 @@
     * Replaced `BTLogger` with `BTLogLevel` and `BTLogLevelDescription`
     * Remove `BTJSONErrorDomain` global constant
     * Remove `BTJSONErrorCode`
+    * Move errors returned from `BTClientToken` to dedicated `BTClientTokenError` enum and update `errorCode` values with new error cases 
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`
