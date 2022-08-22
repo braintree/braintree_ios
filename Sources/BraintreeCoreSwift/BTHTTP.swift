@@ -9,7 +9,7 @@ import Security
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Public Properties
-    /// An  array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
+    /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     public let pinnedCertificates: [NSData]
 
     // TODO: Make internal with Swift test?
