@@ -133,7 +133,7 @@ import Security
     // MARK: - HTTP Method Helpers
 
     func httpRequestWithCaching(
-        method: String?,
+        method: String,
         path: String?,
         parameters: NSDictionary? = [:],
         completion: RequestCompletion?
@@ -168,7 +168,7 @@ import Security
     }
 
     func httpRequest(
-        method: String?,
+        method: String,
         path: String?,
         parameters: NSDictionary? = [:],
         completion: RequestCompletion?
@@ -188,7 +188,7 @@ import Security
     }
 
     func createRequest(
-        method: String?,
+        method: String,
         path: String?,
         parameters: NSDictionary? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
@@ -248,7 +248,7 @@ import Security
     }
 
     func buildHTTPRequest(
-        method: String?,
+        method: String,
         url: URL,
         parameters: NSMutableDictionary? = [:],
         isNotDataURL: Bool,
@@ -478,7 +478,7 @@ import Security
     func pinnedCertificateData() -> [NSData]? {
         var certificates: [NSData] = []
 
-        for certificateData in pinnedCertificates ?? [] {
+        for certificateData in pinnedCertificates {
             guard let certificate = SecCertificateCreateWithData(nil, certificateData as CFData) else { return nil }
             let certificateData = SecCertificateCopyData(certificate)
             certificates.append(certificateData)
