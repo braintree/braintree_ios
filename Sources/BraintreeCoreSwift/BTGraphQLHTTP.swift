@@ -57,7 +57,7 @@ import Foundation
         let components = URLComponents(string: self.baseURL.absoluteString)
         let headers = [
             "User-Agent": self.userAgentString(),
-            "Braintree-Version": BraintreeCoreConstants.graphQLVersion,
+            "Braintree-Version": BTCoreConstants.graphQLVersion,
             "Authorization": "Bearer \(self.authorizationFingerprint ?? self.tokenizationKey)",
             "Content-Type": "application/json; charset=utf-8"
         ]

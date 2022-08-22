@@ -31,7 +31,7 @@ import Foundation
             "User-Agent": self.userAgentString(),
             "Accept": self.acceptString(),
             "Accept-Language": self.acceptLanguageString(),
-            "Braintree-Version": \(BraintreeCoreConstants.apiVersion),
+            "Braintree-Version": BTCoreConstants.apiVersion,
             "Authorization": "Bearer \(self.accessToken)"
         ]
     }
