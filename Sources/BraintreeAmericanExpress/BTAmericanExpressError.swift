@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with American Express.
-enum BTAmericanExpressError: Error, CustomNSError, LocalizedError {
+enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
