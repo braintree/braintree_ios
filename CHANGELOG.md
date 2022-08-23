@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeSEPADirectDebit
   * Update nonce to pull in ibanLastFour and customerID as expected
+* BraintreePayPalNativeCheckout
+  * Updating NativeCheckout version from `0.100.0` to `0.102.0`
 
 ## 5.11.0 (2022-07-20)
 * BraintreeSEPADirectDebit
