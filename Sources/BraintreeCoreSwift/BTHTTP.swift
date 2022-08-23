@@ -8,8 +8,8 @@ import Security
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    enum AuthorizationType {
-        case authorizationFingerprint, tokenizationKey
+    private enum AuthorizationType: Equatable {
+        case authorizationFingerprint(String), tokenizationKey(String)
     }
     
     // MARK: - Public Properties
@@ -36,11 +36,9 @@ import Security
     // MARK: - Internal Properties
     let cacheDateValidator = BTCacheDateValidator()
     let baseURL: URL
-    let authType: AuthorizationType
-
-// TODO: - once BTAPIHTTP + BTGraphQLHTTP are converted to Swift, handle error cases for empty or nil credentials before API request is made
-    var authorizationFingerprint: String? = ""
-    var tokenizationKey: String? = ""
+    
+    // MARK: - Private Properties
+    private let authType: AuthorizationType
     
     // MARK: - Initializers
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
@@ -50,8 +48,7 @@ import Security
     @objc(initWithBaseURL:authorizationFingerprint:)
     public init(url: URL, authorizationFingerprint: String) {
         self.baseURL = url
-        self.authType = .authorizationFingerprint
-        self.authorizationFingerprint = authorizationFingerprint
+        self.authType = .authorizationFingerprint(authorizationFingerprint)
     }
 
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a tokenizationKey
@@ -61,8 +58,7 @@ import Security
     @objc(initWithBaseURL:tokenizationKey:)
     public init(url: URL, tokenizationKey: String) {
         self.baseURL = url
-        self.authType = .tokenizationKey
-        self.tokenizationKey = tokenizationKey
+        self.authType = .tokenizationKey(tokenizationKey)
     }
 
     /// Initialize `BTHTTP` with the authorization fingerprint from a client token
@@ -216,8 +212,8 @@ import Security
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
-        if authType == .authorizationFingerprint {
-            mutableParameters["authorization_fingerprint"] = authorizationFingerprint
+        if case .authorizationFingerprint(let fingerprint) = authType {
+            mutableParameters["authorization_fingerprint"] = fingerprint
         }
 
         guard let fullPathURL = fullPathURL else {
@@ -303,8 +299,8 @@ import Security
             headers["Content-Type"] = "application/json; charset=utf-8"
         }
 
-        if authType == .tokenizationKey {
-            headers["Client-Key"] = tokenizationKey
+        if case .tokenizationKey(let key) = authType {
+            headers["Client-Key"] = key
         }
 
         request.allHTTPHeaderFields = headers
@@ -491,10 +487,21 @@ import Security
             return false
         }
         switch authType {
-        case .authorizationFingerprint:
-            return authorizationFingerprint == http.authorizationFingerprint
-        case .tokenizationKey:
-            return tokenizationKey == http.tokenizationKey
+        case .authorizationFingerprint(let fingerprint):
+            switch http.authType {
+            case .authorizationFingerprint(let httpFingerprint):
+                return fingerprint == httpFingerprint
+            case .tokenizationKey:
+                return false
+            }
+            
+        case .tokenizationKey(let key):
+            switch http.authType {
+            case .authorizationFingerprint:
+                return false
+            case .tokenizationKey(let httpKey):
+                return key == httpKey
+            }
         }
     }
 
@@ -511,10 +518,10 @@ import Security
 
     public func copy(with zone: NSZone? = nil) -> Any {
         switch authType {
-        case .authorizationFingerprint:
-            return BTHTTPSwift(url: baseURL, authorizationFingerprint: authorizationFingerprint!)
-        case .tokenizationKey:
-            return BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey!)
+        case .authorizationFingerprint(let fingerprint):
+            return BTHTTPSwift(url: baseURL, authorizationFingerprint: fingerprint)
+        case .tokenizationKey(let key):
+            return BTHTTPSwift(url: baseURL, tokenizationKey: key)
         }
     }
 
