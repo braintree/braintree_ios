@@ -14,12 +14,7 @@ enum BTAmericanExpressError: Error, CustomNSError, LocalizedError {
     }
     
     var errorCode: Int {
-        switch self {
-        case .unknown:
-            return 0
-        case .noRewardsData:
-            return 1
-        }
+        rawValue
     }
 
     var errorDescription: String? {

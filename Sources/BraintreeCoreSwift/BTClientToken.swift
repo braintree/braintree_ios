@@ -67,12 +67,12 @@ import Foundation
         switch version {
         case 1:
             if isBase64 {
-                throw BTClientTokenError.expectedUTF8Encoding
+                throw BTClientTokenError.failedUTF8Decoding
             }
 
         case 2, 3:
             if !isBase64 {
-                throw BTClientTokenError.expectedBase64Encoding
+                throw BTClientTokenError.failedBase64Decoding
             }
             
         default:
