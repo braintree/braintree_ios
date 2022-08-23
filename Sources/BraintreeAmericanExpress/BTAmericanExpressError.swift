@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with American Express.
-enum BTAmericanExpressError: Error, CustomNSError, LocalizedError {
+enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
@@ -14,12 +14,7 @@ enum BTAmericanExpressError: Error, CustomNSError, LocalizedError {
     }
     
     var errorCode: Int {
-        switch self {
-        case .unknown:
-            return 0
-        case .noRewardsData:
-            return 1
-        }
+        rawValue
     }
 
     var errorDescription: String? {
