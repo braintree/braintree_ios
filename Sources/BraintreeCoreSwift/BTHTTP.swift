@@ -141,7 +141,7 @@ import Security
 
     func httpRequestWithCaching(
         method: String,
-        path: String?,
+        path: String,
         parameters: NSDictionary? = [:],
         completion: RequestCompletion?
     ) {
@@ -176,7 +176,7 @@ import Security
 
     func httpRequest(
         method: String,
-        path: String?,
+        path: String,
         parameters: NSDictionary? = [:],
         completion: RequestCompletion?
     ) {
@@ -196,11 +196,11 @@ import Security
 
     func createRequest(
         method: String,
-        path: String?,
+        path: String,
         parameters: NSDictionary? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
-        let hasHTTPPrefix: Bool = path?.hasPrefix("http") ?? false
+        let hasHTTPPrefix: Bool = path.hasPrefix("http")
         let baseURLString: String = baseURL.absoluteString
         var errorUserInfo: [String: Any] = [:]
 
@@ -218,7 +218,7 @@ import Security
         let fullPathURL: URL?
         let isNotDataURL: Bool = baseURL.scheme != "data"
 
-        if isNotDataURL, let path = path {
+        if isNotDataURL {
             fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
         } else {
             fullPathURL = baseURL
