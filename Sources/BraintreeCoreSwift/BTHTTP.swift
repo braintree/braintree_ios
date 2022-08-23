@@ -69,21 +69,21 @@ import Security
     /// - Parameter clientToken: The client token
     @objc(initWithClientToken:error:)
     public convenience init(clientToken: BTClientToken) throws {
-        guard let clientApiURL = clientToken.json?["clientApiUrl"].asURL() else {
+        guard let clientApiURL = clientToken.json["clientApiUrl"].asURL() else {
             throw Self.constructError(
                 code: .clientApiUrlInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "Client API URL is not a valid URL."]
             )
         }
         
-        guard let authorizationFingerprint = clientToken.authorizationFingerprint, !authorizationFingerprint.isEmpty else {
+        if clientToken.authorizationFingerprint.isEmpty {
             throw Self.constructError(
                 code: .invalidAuthorizationFingerprint,
                 userInfo: [NSLocalizedDescriptionKey: "BTClientToken contained an nil or empty authorizationFingerprint."]
             )
         }
 
-        self.init(url: clientApiURL, authorizationFingerprint: authorizationFingerprint)
+        self.init(url: clientApiURL, authorizationFingerprint: clientToken.authorizationFingerprint)
     }
 
     // MARK: - HTTP Methods
