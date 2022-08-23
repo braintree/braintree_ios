@@ -8,9 +8,14 @@ import Security
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
+    private enum ClientAuthorization: Equatable {
+        case authorizationFingerprint(String), tokenizationKey(String)
+    }
+    
     // MARK: - Public Properties
+    
     /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
-    public let pinnedCertificates: [NSData]
+    public let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
 
     // TODO: Make internal with Swift test?
     /// Session exposed for testing
@@ -30,32 +35,24 @@ import Security
     public var dispatchQueue: DispatchQueue = DispatchQueue.main
 
     // MARK: - Internal Properties
-    let cacheDateValidator: BTCacheDateValidator
+    
+    let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
     let baseURL: URL
-
-// TODO: - once BTAPIHTTP + BTGraphQLHTTP are converted to Swift, handle error cases for empty or nil credentials before API request is made
-    var authorizationFingerprint: String? = ""
-    var tokenizationKey: String? = ""
+    
+    // MARK: - Private Properties
+    
+    private let clientAuthorization: ClientAuthorization
     
     // MARK: - Initializers
-
-    /// Initialize `BTHTTP` with the URL for the Braintree API
-    /// - Parameter url: The base URL for the Braintree Client API
-    @objc(initWithBaseURL:)
-    public init(url: URL) {
-        self.baseURL = url
-        self.cacheDateValidator = BTCacheDateValidator()
-        self.pinnedCertificates = BTAPIPinnedCertificates.trustedCertificates()
-    }
-
+    
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
     /// - Parameters:
     ///   - url: The base URL for the Braintree Client API
     ///   - authorizationFingerprint: The authorization fingerprint HMAC from a client token
     @objc(initWithBaseURL:authorizationFingerprint:)
-    public convenience init(url: URL, authorizationFingerprint: String) {
-        self.init(url: url)
-        self.authorizationFingerprint = authorizationFingerprint
+    public init(url: URL, authorizationFingerprint: String) {
+        self.baseURL = url
+        self.clientAuthorization = .authorizationFingerprint(authorizationFingerprint)
     }
 
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a tokenizationKey
@@ -63,9 +60,9 @@ import Security
     ///   - url: The base URL for the Braintree Client API
     ///   - tokenizationKey: The authorization fingerprint HMAC from a client token
     @objc(initWithBaseURL:tokenizationKey:)
-    public convenience init(url: URL, tokenizationKey: String) {
-        self.init(url: url)
-        self.tokenizationKey = tokenizationKey
+    public init(url: URL, tokenizationKey: String) {
+        self.baseURL = url
+        self.clientAuthorization = .tokenizationKey(tokenizationKey)
     }
 
     /// Initialize `BTHTTP` with the authorization fingerprint from a client token
@@ -73,10 +70,20 @@ import Security
     @objc(initWithClientToken:error:)
     public convenience init(clientToken: BTClientToken) throws {
         guard let clientApiURL = clientToken.json?["clientApiUrl"].asURL() else {
-            throw Self.constructError(code: .clientApiUrlInvalid, userInfo: [NSLocalizedDescriptionKey: "Client API URL is not a valid URL/"])
+            throw Self.constructError(
+                code: .clientApiUrlInvalid,
+                userInfo: [NSLocalizedDescriptionKey: "Client API URL is not a valid URL."]
+            )
+        }
+        
+        guard let authorizationFingerprint = clientToken.authorizationFingerprint, !authorizationFingerprint.isEmpty else {
+            throw Self.constructError(
+                code: .invalidAuthorizationFingerprint,
+                userInfo: [NSLocalizedDescriptionKey: "BTClientToken contained an nil or empty authorizationFingerprint."]
+            )
         }
 
-        self.init(url: clientApiURL, authorizationFingerprint: clientToken.authorizationFingerprint ?? "")
+        self.init(url: clientApiURL, authorizationFingerprint: authorizationFingerprint)
     }
 
     // MARK: - HTTP Methods
@@ -219,8 +226,8 @@ import Security
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
-        if authorizationFingerprint != "" {
-            mutableParameters["authorization_fingerprint"] = authorizationFingerprint
+        if case .authorizationFingerprint(let fingerprint) = clientAuthorization {
+            mutableParameters["authorization_fingerprint"] = fingerprint
         }
 
         guard let fullPathURL = fullPathURL else {
@@ -305,9 +312,9 @@ import Security
             request.httpBody = bodyData
             headers["Content-Type"] = "application/json; charset=utf-8"
         }
-
-        if tokenizationKey != "" {
-            headers["Client-Key"] = tokenizationKey
+        
+        if case .tokenizationKey(let key) = clientAuthorization {
+            headers["Client-Key"] = key
         }
 
         request.allHTTPHeaderFields = headers
@@ -488,32 +495,25 @@ import Security
     }
 
     // MARK: - isEqual override
-
-    func isEqualToHTTP(http: BTHTTPSwift) -> Bool {
-        baseURL == http.baseURL && authorizationFingerprint == http.authorizationFingerprint
-    }
-
+    
     public override func isEqual(_ object: Any?) -> Bool {
         guard object is BTHTTPSwift,
               let otherObject = object as? BTHTTPSwift else {
             return false
         }
 
-        return isEqualToHTTP(http: otherObject)
+        return baseURL == otherObject.baseURL && clientAuthorization == otherObject.clientAuthorization
     }
 
     // MARK: - NSCopying conformance
 
     public func copy(with zone: NSZone? = nil) -> Any {
-        let copiedHTTP: BTHTTPSwift
-
-        if authorizationFingerprint != "" {
-            copiedHTTP = BTHTTPSwift(url: baseURL, authorizationFingerprint: authorizationFingerprint ?? "")
-        } else {
-            copiedHTTP = BTHTTPSwift(url: baseURL, tokenizationKey: tokenizationKey ?? "")
+        switch clientAuthorization {
+        case .authorizationFingerprint(let fingerprint):
+            return BTHTTPSwift(url: baseURL, authorizationFingerprint: fingerprint)
+        case .tokenizationKey(let key):
+            return BTHTTPSwift(url: baseURL, tokenizationKey: key)
         }
-
-        return copiedHTTP
     }
 
     // MARK: - URLSessionDelegate conformance
