@@ -8,7 +8,7 @@ import Security
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    private enum AuthorizationType {
+    private enum AuthorizationType: Equatable {
         case authorizationFingerprint(String), tokenizationKey(String)
     }
     
@@ -483,26 +483,7 @@ import Security
     // MARK: - isEqual override
 
     func isEqualToHTTP(http: BTHTTPSwift) -> Bool {
-        guard baseURL == http.baseURL, authType == http.authType else {
-            return false
-        }
-        switch authType {
-        case .authorizationFingerprint(let fingerprint):
-            switch http.authType {
-            case .authorizationFingerprint(let httpFingerprint):
-                return fingerprint == httpFingerprint
-            case .tokenizationKey:
-                return false
-            }
-            
-        case .tokenizationKey(let key):
-            switch http.authType {
-            case .authorizationFingerprint:
-                return false
-            case .tokenizationKey(let httpKey):
-                return key == httpKey
-            }
-        }
+        baseURL == http.baseURL && authType == http.authType
     }
 
     public override func isEqual(_ object: Any?) -> Bool {
