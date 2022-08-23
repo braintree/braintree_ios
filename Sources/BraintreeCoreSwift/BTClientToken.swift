@@ -52,31 +52,27 @@ import Foundation
             data = utf8Data
             isBase64 = false
         } else {
-            throw BTClientTokenError.invalidFormat
+            throw BTClientTokenError.failedDecoding("Base64 or UTF8 encoding is required for Client Token.")
         }
 
-        return try toBTJSON(data: data, isBase64: isBase64)
-    }
-
-    private static func toBTJSON(data: Data, isBase64: Bool) throws -> BTJSON {
         guard let clientTokenJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            throw BTClientTokenError.invalidJSON
+            throw BTClientTokenError.invalidFormat("Invalid JSON. Expected to find an object at JSON root.")
         }
 
         guard let version = clientTokenJSON["version"] as? Int else {
-            throw BTClientTokenError.invalidFormat
+            throw BTClientTokenError.invalidFormat("Invalid version number. Expected to find an integer for key \"version\".")
         }
 
         // Version 1 must be utf8, versions 2 & 3 must be base64
         switch version {
         case 1:
             if isBase64 {
-                throw BTClientTokenError.failedUTF8Decoding
+                throw BTClientTokenError.failedDecoding("UTF8 encoding is required for Client Token version 1.")
             }
 
         case 2, 3:
             if !isBase64 {
-                throw BTClientTokenError.failedBase64Decoding
+                throw BTClientTokenError.failedDecoding("Base64 encoding is required for Client Token versions 2 & 3.")
             }
             
         default:
