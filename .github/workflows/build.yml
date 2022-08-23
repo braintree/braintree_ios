@@ -35,6 +35,7 @@ jobs:
         run: |
           git checkout $GITHUB_HEAD_REF
           rm -rf SampleApps/SPMTest
+          rm -rf /Users/runner/Library/Developer/Xcode/DerivedData
           git add SampleApps/SPMTest
           git commit -m 'Remove SPMTest app to avoid Carthage timeout'
       - name: Use current branch
@@ -93,6 +94,7 @@ jobs:
         run: |
           git checkout $GITHUB_HEAD_REF
           rm -rf SampleApps/SPMTest
+          rm -rf /Users/runner/Library/Developer/Xcode/DerivedData
           git add SampleApps/SPMTest
           git commit -m 'Remove SPMTest app to avoid Carthage timeout'
       - name: Use current branch
