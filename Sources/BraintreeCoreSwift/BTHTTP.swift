@@ -8,7 +8,7 @@ import Security
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    private enum AuthorizationType: Equatable {
+    private enum AuthorizationType {
         case authorizationFingerprint(String), tokenizationKey(String)
     }
     
