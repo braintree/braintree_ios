@@ -216,9 +216,9 @@ import Security
         }
         
         let fullPathURL: URL?
-        let isNotDataURL: Bool = baseURL.scheme != "data"
+        let isDataURL: Bool = baseURL.scheme == "data"
 
-        if isNotDataURL {
+        if !isDataURL {
             fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
         } else {
             fullPathURL = baseURL
@@ -231,8 +231,8 @@ import Security
         }
 
         guard let fullPathURL = fullPathURL else {
-            /// baseURL can be non-nil (e.g. an empty string) and still return nil for -URLByAppendingPathComponent:
-            /// causing a crash when NSURLComponents.componentsWithString is called with nil.
+            // baseURL can be non-nil (e.g. an empty string) and still return nil for -URLByAppendingPathComponent:
+            // causing a crash when NSURLComponents.componentsWithString is called with nil.
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -248,7 +248,7 @@ import Security
             method: method,
             url: fullPathURL,
             parameters: mutableParameters,
-            isNotDataURL: isNotDataURL
+            isDataURL: isDataURL
         ) { request, error in
             completion(request, error)
         }
@@ -258,7 +258,7 @@ import Security
         method: String,
         url: URL,
         parameters: NSMutableDictionary? = [:],
-        isNotDataURL: Bool,
+        isDataURL: Bool,
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
@@ -275,7 +275,7 @@ import Security
         var request: URLRequest
 
         if method == "GET" || method == "DELETE" {
-            if isNotDataURL {
+            if !isDataURL {
                 components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             }
             guard let urlFromComponents = components.url else {
@@ -334,9 +334,9 @@ import Security
         guard let completion = completion else {
             return
         }
-        /// Handle errors for which the response is irrelevant e.g. SSL, unavailable network, etc.
+
         guard error == nil else {
-            callCompletionBlock(with: completion, body: nil, response: nil, error: error)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             return
         }
 
@@ -346,19 +346,19 @@ import Security
                 code: .httpResponseInvalid,
                 userInfo: [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
             )
-            callCompletionBlock(with: completion, body: nil, response: nil, error: error)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             return
         }
 
         guard let data = data else {
             let error = Self.constructError(code: .dataNotFound, userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."])
-            callCompletionBlock(with: completion, body: nil, response: nil, error: error)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             return
         }
 
         if httpResponse.statusCode >= 400 {
-            handleHTTPResponseError(response: httpResponse, data: data) { json, error in
-                self.callCompletionBlock(with: completion, body: json, response: httpResponse, error: error)
+            handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
+                self?.callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
             }
             return
         }
@@ -366,8 +366,8 @@ import Security
         // Empty response is valid
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
-            handleJSONResponseError(json: json, response: response) { error in
-                self.callCompletionBlock(with: completion, body: nil, response: nil, error: error)
+            handleJSONResponseError(json: json, response: response) { [weak self] error in
+                self?.callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             }
             return
         }
@@ -381,10 +381,10 @@ import Security
             URLCache.shared.storeCachedResponse(cachedURLResponse, for: request)
         }
 
-        callCompletionBlock(with: completion, body: json, response: httpResponse, error: nil)
+        callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)
     }
     
-    func callCompletionBlock(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
+    func callCompletionAsync(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
         self.dispatchQueue.async {
             completion(body, response, error)
         }
