@@ -13,8 +13,8 @@ class BTSEPADirectDebitNonce_Tests: XCTestCase {
                     "description": "SEPA Debit",
                     "consumed": false,
                     "details": [
-                        "last4": "1234",
-                        "customerId": "a-customer-id",
+                        "ibanLastChars": "1234",
+                        "merchantOrPartnerCustomerId": "a-customer-id",
                         "mandateType": "ONE_OFF"
                     ]
                 ]

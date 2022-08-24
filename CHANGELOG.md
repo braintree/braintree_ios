@@ -51,6 +51,10 @@
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
 
+## unreleased
+* BraintreeSEPADirectDebit
+  * Update nonce to pull in ibanLastFour and customerID as expected
+
 ## 5.11.0 (2022-07-20)
 * BraintreeSEPADirectDebit
   * Add support for SEPA Direct Debit for approved merchants through the Braintree SDK
