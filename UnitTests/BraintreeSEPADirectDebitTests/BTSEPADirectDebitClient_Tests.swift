@@ -609,8 +609,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "last4": "1234",
-                    "customerId": "a-customer-id",
+                    "ibanLastChars": "1234",
+                    "merchantOrPartnerCustomerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
             ]
@@ -666,8 +666,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "last4": "1234",
-                    "customerId": "a-customer-id",
+                    "ibanLastChars": "1234",
+                    "merchantOrPartnerCustomerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
             ]
@@ -719,8 +719,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "last4": "1234",
-                    "customerId": "a-customer-id",
+                    "ibanLastChars": "1234",
+                    "merchantOrPartnerCustomerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
             ]
@@ -776,8 +776,8 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             value: [
                 "nonce": "a-fake-payment-method-nonce",
                 "details": [
-                    "last4": "1234",
-                    "customerId": "a-customer-id",
+                    "ibanLastChars": "1234",
+                    "merchantOrPartnerCustomerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
             ]
