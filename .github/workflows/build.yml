@@ -1,5 +1,5 @@
 name: Build
-on: [pull_request, workflow_dispatch]
+on: [pull_request]
 concurrency:
   group: build-${{ github.event.number }} 
   cancel-in-progress: true
@@ -21,15 +21,18 @@ jobs:
     runs-on: macOS-11
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 13
         run: sudo xcode-select -switch /Applications/Xcode_13.0.app
       - name: Remove SPMTest
         run: |
           git checkout $GITHUB_HEAD_REF
           rm -rf SampleApps/SPMTest
+          rm -rf /Users/runner/Library/Developer/Xcode/DerivedData
           git add SampleApps/SPMTest
           git commit -m 'Remove SPMTest app to avoid Carthage timeout'
       - name: Use current branch

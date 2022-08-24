@@ -22,11 +22,9 @@
     * Remove `BTAPIClientErrorDomain` global constant
     * Add `BTClientTokenError.invalidAuthorizationFingerprint` error type
     * Add `BTClientTokenError.invalidConfigURL` error type
-    * Add `BTClientTokenError.invalidJSON` error type
     * Add `BTClientTokenError.invalidFormat` error type
     * Add `BTClientTokenError.unsupportedVersion` error type
-    * Add `BTClientTokenError.failedUTF8Decoding` error type
-    * Add `BTClientTokenError.failedBase64Decoding` error type
+    * Add `BTClientTokenError.failedDecoding` error type
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`
@@ -58,6 +56,10 @@
     * Kount is no longer supported through the SDK
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
+
+## unreleased
+* BraintreeSEPADirectDebit
+  * Update nonce to pull in ibanLastFour and customerID as expected
 
 ## 5.11.0 (2022-07-20)
 * BraintreeSEPADirectDebit
