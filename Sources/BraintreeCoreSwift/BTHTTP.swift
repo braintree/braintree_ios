@@ -79,7 +79,7 @@ import Security
         if clientToken.authorizationFingerprint.isEmpty {
             throw Self.constructError(
                 code: .invalidAuthorizationFingerprint,
-                userInfo: [NSLocalizedDescriptionKey: "BTClientToken contained an nil or empty authorizationFingerprint."]
+                userInfo: [NSLocalizedDescriptionKey: "BTClientToken contained a nil or empty authorizationFingerprint."]
             )
         }
 
