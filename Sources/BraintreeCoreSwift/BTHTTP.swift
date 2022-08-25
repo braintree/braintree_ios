@@ -231,8 +231,8 @@ import Security
         }
 
         guard let fullPathURL = fullPathURL else {
-            // baseURL can be non-nil (e.g. an empty string) and still return nil for -URLByAppendingPathComponent:
-            // causing a crash when NSURLComponents.componentsWithString is called with nil.
+            // baseURL can be non-nil (e.g. an empty string) and still return nil for appendingPathComponent(_:)
+            // causing a crash when URLComponents(string:_) is called with nil.
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
