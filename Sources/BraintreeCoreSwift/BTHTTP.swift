@@ -517,6 +517,7 @@ import Security
     }
 
     // MARK: - URLSessionDelegate conformance
+
     public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             let domain: String = challenge.protectionSpace.host
