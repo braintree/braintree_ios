@@ -19,6 +19,12 @@
     * Replaced `BTLogger` with `BTLogLevel` and `BTLogLevelDescription`
     * Remove `BTJSONErrorDomain` global constant
     * Remove `BTJSONErrorCode`
+    * Remove `BTAPIClientErrorDomain` global constant
+    * Add `BTClientTokenError.invalidAuthorizationFingerprint` error type
+    * Add `BTClientTokenError.invalidConfigURL` error type
+    * Add `BTClientTokenError.invalidFormat` error type
+    * Add `BTClientTokenError.unsupportedVersion` error type
+    * Add `BTClientTokenError.failedDecoding` error type
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`

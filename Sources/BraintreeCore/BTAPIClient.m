@@ -6,12 +6,6 @@
 #import "BTHTTP.h"
 #import "BraintreeCoreSwiftImports.h"
 
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTClientToken.h>
-#else
-#import <BraintreeCore/BTClientToken.h>
-#endif
-
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
 @interface BTAPIClient ()

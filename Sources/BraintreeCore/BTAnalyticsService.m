@@ -4,13 +4,6 @@
 #import "BTHTTP.h"
 #import "BraintreeCoreSwiftImports.h"
 
-// Objective-C Module Imports
-#if __has_include(<Braintree/BraintreeCore.h>)
-#import <Braintree/BTClientToken.h>
-#else
-#import <BraintreeCore/BTClientToken.h>
-#endif
-
 #import <UIKit/UIKit.h>
 
 #pragma mark - BTAnalyticsEvent
