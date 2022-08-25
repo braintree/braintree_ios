@@ -46,6 +46,7 @@ import Foundation
     private static func decodeClientToken(_ rawClientToken: String) throws -> BTJSON {
         let data: Data
         let isBase64: Bool
+
         if let base64Data = Data(base64Encoded: rawClientToken) {
             data = base64Data
             isBase64 = true
@@ -64,19 +65,11 @@ import Foundation
             throw BTClientTokenError.invalidFormat("Invalid version number. Expected to find an integer for key \"version\".")
         }
 
-        // Version 1 must be utf8, versions 2 & 3 must be base64
-        switch version {
-        case 1:
-            if isBase64 {
-                throw BTClientTokenError.failedDecoding("UTF8 encoding is required for Client Token version 1.")
-            }
-
-        case 2, 3:
-            if !isBase64 {
-                throw BTClientTokenError.failedDecoding("Base64 encoding is required for Client Token versions 2 & 3.")
-            }
-            
-        default:
+        if version == 1 && isBase64 {
+            throw BTClientTokenError.failedDecoding("UTF8 encoding is required for Client Token version 1.")
+        } else if (version == 2 || version == 3) && !isBase64 {
+            throw BTClientTokenError.failedDecoding("Base64 encoding is required for Client Token versions 2 & 3.")
+        } else if version < 1 || version > 3 {
             throw BTClientTokenError.unsupportedVersion
         }
 
