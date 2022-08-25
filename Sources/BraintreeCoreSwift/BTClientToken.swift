@@ -3,6 +3,7 @@ import Foundation
 /// An authorization string used to initialize the Braintree SDK
 @objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying {
 
+    // TODO: resolve public access modifiers once rest of core is in Swift
     // MARK: - Public Properties
 
     /// The client token as a BTJSON object
