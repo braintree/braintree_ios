@@ -8,8 +8,8 @@ import Security
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    private enum ClientAuthorization: Equatable {
-        case authorizationFingerprint(String), tokenizationKey(String)
+    enum ClientAuthorization: Equatable {
+        case authorizationFingerprint(String), tokenizationKey(String), none // TODO: Remove none
     }
     
     // MARK: - Public Properties
@@ -38,12 +38,15 @@ import Security
     
     let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
     let baseURL: URL
+    var clientAuthorization: ClientAuthorization = .none
     
-    // MARK: - Private Properties
+    // MARK: - Internal Initializer
     
-    private let clientAuthorization: ClientAuthorization
+    init(url: URL) {
+        self.baseURL = url
+    }
     
-    // MARK: - Initializers
+    // MARK: - Public Initializers
     
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
     /// - Parameters:
@@ -517,6 +520,8 @@ import Security
             return BTHTTPSwift(url: baseURL, authorizationFingerprint: fingerprint)
         case .tokenizationKey(let key):
             return BTHTTPSwift(url: baseURL, tokenizationKey: key)
+        case .none:
+            return BTHTTPSwift(url: baseURL) // TODO: Temporary, remove
         }
     }
 
