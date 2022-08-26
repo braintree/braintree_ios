@@ -4,7 +4,8 @@
 * BraintreeSEPADirectDebit
   * Update nonce to pull in ibanLastFour and customerID as expected
 * BraintreePayPalNativeCheckout
-  * Updating NativeCheckout version from `0.100.0` to `0.102.0`
+  * Update NativeCheckout version from `0.100.0` to `0.102.0`
+  * This version update allows US based customers to log into their PayPal account using a one time passcode sent via SMS without needing to authenticate through a webview
 
 ## 5.11.0 (2022-07-20)
 * BraintreeSEPADirectDebit
