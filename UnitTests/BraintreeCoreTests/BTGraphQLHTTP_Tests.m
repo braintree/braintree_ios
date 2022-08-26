@@ -9,13 +9,13 @@
 @end
 
 @implementation BTGraphQLHTTPTests {
-    BTGraphQLHTTP *http;
+    BTGraphQLHTTPSwift *http;
 }
 
 - (void)setUp {
     [super setUp];
 
-    http = [[BTGraphQLHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTGraphQLHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
 }
 
 - (void)tearDown {
@@ -176,7 +176,7 @@
 - (void)testRequests_whenUsingTokenizationKey_sendsItInHeaders {
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
 
-    http = [[BTGraphQLHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_testing_key"];
+    http = [[BTGraphQLHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_testing_key"];
     http.session = [self fakeSession];
 
     [http POST:@"" parameters:nil completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {

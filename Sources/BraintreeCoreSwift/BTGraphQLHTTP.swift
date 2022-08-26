@@ -2,38 +2,44 @@ import Foundation
 
 @objcMembers public class BTGraphQLHTTPSwift: BTHTTPSwift {
 
+    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+
+    // MARK: - Properties
+
+    private let exceptionName: NSExceptionName = NSExceptionName("")
+
     // MARK: - Overrides
 
-    public override func get(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
-        fatalError("GET is unsupported")
+    public override func get(_ path: String, completion: @escaping RequestCompletion) {
+        NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    public override func get(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?) {
-        fatalError("GET is unsupported")
+    public override func get(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
+        NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    public override func post(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
-        self.httpRequest(method: "POST", parameters: nil, completion: completion)
+    public override func post(_ path: String, completion: @escaping RequestCompletion) {
+        httpRequest(method: "POST", parameters: nil, completion: completion)
     }
 
-    public override func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
-        self.httpRequest(method: "POST", parameters: nil, completion: completion)
+    public override func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
+        httpRequest(method: "POST", parameters: nil, completion: completion)
     }
 
-    public override func put(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
-        fatalError("PUT is unsupported")
+    public override func put(_ path: String, completion: @escaping RequestCompletion) {
+        NSException(name: exceptionName, reason: "PUT is unsupported").raise()
     }
 
-    public override func put(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?) {
-        fatalError("PUT is unsupported")
+    public override func put(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
+        NSException(name: exceptionName, reason: "PUT is unsupported").raise()
     }
 
-    public override func delete(_ path: String, completion: @escaping (BTJSON?, HTTPURLResponse?, Error?) -> Void) {
-        fatalError("DELETE is unsupported")
+    public override func delete(_ path: String, completion: @escaping RequestCompletion) {
+        NSException(name: exceptionName, reason: "DELETE is unsupported").raise()
     }
 
-    public override func delete(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?) {
-        fatalError("DELETE is unsupported")
+    public override func delete(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
+        NSException(name: exceptionName, reason: "DELETE is unsupported").raise()
     }
 
     // MARK: - Internal methods
@@ -41,7 +47,7 @@ import Foundation
     func httpRequest(
         method: String,
         parameters: NSDictionary? = [:],
-        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
+        completion: RequestCompletion?
     ) {
         var errorUserInfo: [String: Any] = [:]
 
@@ -75,59 +81,79 @@ import Foundation
         var request: URLRequest
     
         do {
-            let bodyData = try JSONSerialization.data(withJSONObject: parameters as Any)
+            let bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
             // TODO: don't force unwrap
             request = URLRequest(url: components!.url!)
             request.httpBody = bodyData
             request.allHTTPHeaderFields = headers
             request.httpMethod = method
             
-            let task: URLSessionTask? = self.session.dataTask(with: request) { [weak self] data, response, error in
+            let task: URLSessionTask = session.dataTask(with: request) { [weak self] data, response, error in
                 self?.handleRequestCompletion(data: data, response: response, error: error, completion: completion)
             }
-            task?.resume()
+
+            task.resume()
         } catch {
             completion?(nil, nil, error)
         }
     }
 
+    @objc(handleRequestCompletion:response:error:completionBlock:)
     public func handleRequestCompletion(
         data: Data?,
         response: URLResponse?,
         error: Error?,
-        completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
+        completion: RequestCompletion?
     ) {
+        guard let completion = completion else {
+            return
+        }
+
         if let error = error {
             self.callCompletionAsync(
-                with: completion!,
+                with: completion,
                 body: nil,
                 response: response as? HTTPURLResponse,
-                error: error)
+                error: error
+            )
+            return
         }
         
         guard let data = data else {
-            let error = NSError(domain: BTHTTPError.domain,
-                                code: BTHTTPErrorCode.unknown.rawValue,
-                                userInfo: [NSLocalizedDescriptionKey: "An unexpected error occured with the HTTP request."])
-            self.callCompletionAsync(
-                with: completion!,
+            let error = NSError(
+                domain: BTHTTPError.domain,
+                code: BTHTTPErrorCode.unknown.rawValue,
+                userInfo: [NSLocalizedDescriptionKey: "An unexpected error occurred with the HTTP request."]
+            )
+
+            callCompletionAsync(
+                with: completion,
                 body: nil,
                 response: response as? HTTPURLResponse,
-                error: error)
+                error: error
+            )
             return
         }
-       
-        let json = try! JSONSerialization.jsonObject(with: data)
 
-        let body = BTJSON(value: json)
-        
+        let body: BTJSON
+
+        do {
+            let json = try JSONSerialization.jsonObject(with: data)
+            body = BTJSON(value: json)
+        } catch {
+            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+            return
+        }
+
         // Success case
         if let _ = body.asDictionary(), body["error"].asArray() == nil {
             callCompletionAsync(
-                with: completion!,
+                with: completion,
                 body: body,
                 response: response as? HTTPURLResponse,
-                error: nil)
+                error: nil
+            )
+            return
         }
         
         // Error case
@@ -137,10 +163,11 @@ import Foundation
         )
         
         callCompletionAsync(
-            with: completion!,
+            with: completion,
             body: body,
             response: response as? HTTPURLResponse,
-            error: error)
+            error: error
+        )
     }
     
     func parseErrors(body: BTJSON, response: URLResponse) -> NSError {
@@ -211,17 +238,19 @@ import Foundation
         
         // Base case
         if inputPath.count == 1 {
-            let extensions = errorJSON["extensions"].asSwiftDictionary()!
+            let extensions = errorJSON["extensions"].asSwiftDictionary()
             let errorsBody = [
                 "field": field,
                 "message": errorJSON["message"],
-                "code": extensions["legacyCode"]
+                "code": extensions?["legacyCode"]
             ]
-            errors.append(errorsBody)
+
+            errors.append(errorsBody as [String: Any])
             return
         }
         
-        var nestedFieldError: [String: Any]?
+        var nestedFieldError: [String: Any]? = [:]
+        let nestedInputPath = Array(inputPath[1..<inputPath.count])
         // Find nested error that matches the field
         for error in errors {
             if error["field"] as? String == field {
@@ -234,20 +263,10 @@ import Foundation
                 "field": field,
                 "fieldErrors": NSMutableArray()
             ]
-            errors.append(nestedFieldError!)
+
+            errors.append(nestedFieldError ?? [:])
         }
-        
-        let nestedInputPath = Array(inputPath[1..<inputPath.count])
-        
-        
-//        addErrorForInputPath(
-//            inputPath: nestedInputPath,
-//            withGraphQLError: errorJSON,
-//            toArray: &(nestedFieldError!["fieldErrors"] as! [[String: Any]])
-//        )
+
+        addErrorForInputPath(inputPath: nestedInputPath, withGraphQLError: errorJSON, toArray: &errors)
     }
-    
-    
-    
-    
 }
