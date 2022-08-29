@@ -34,6 +34,8 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 static Class PayPalDataCollectorClass;
 
+CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
+
 #pragma mark - Initialization and setup
 
 + (void)load {
@@ -58,20 +60,19 @@ static Class PayPalDataCollectorClass;
 - (void)setUpKountWithDebugOn:(BOOL)debugLogging {
     self.kount = [KDataCollector sharedCollector];
     self.kount.debug = debugLogging;
+
+    if ((locationStatus != kCLAuthorizationStatusAuthorizedWhenInUse && locationStatus != kCLAuthorizationStatusAuthorizedAlways) || ![CLLocationManager locationServicesEnabled]) {
+        self.kount.locationCollectorConfig = KLocationCollectorConfigSkip;
+    }
 }
 
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
-    CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
     if (@available(iOS 14, *)) {
-        locationStatus = [CLLocationManager new].authorizationStatus;
+        locationStatus = manager.authorizationStatus;
     } else {
-        locationStatus = [CLLocationManager authorizationStatus];
-    }
-
-    if ((locationStatus != kCLAuthorizationStatusAuthorizedWhenInUse && locationStatus != kCLAuthorizationStatusAuthorizedAlways) || ![CLLocationManager locationServicesEnabled]) {
-        self.kount.locationCollectorConfig = KLocationCollectorConfigSkip;
+        locationStatus = [manager authorizationStatus];
     }
 }
 
