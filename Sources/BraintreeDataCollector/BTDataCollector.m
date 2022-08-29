@@ -72,7 +72,7 @@ CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
     if (@available(iOS 14, *)) {
         locationStatus = manager.authorizationStatus;
     } else {
-        locationStatus = [manager authorizationStatus];
+        locationStatus = [CLLocationManager authorizationStatus];
     }
 }
 
