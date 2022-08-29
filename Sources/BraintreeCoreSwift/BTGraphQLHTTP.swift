@@ -23,7 +23,7 @@ import Foundation
     }
 
     public override func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "POST", parameters: nil, completion: completion)
+        httpRequest(method: "POST", parameters: parameters, completion: completion)
     }
 
     public override func put(_ path: String, completion: @escaping RequestCompletion) {
@@ -89,7 +89,8 @@ import Foundation
             request.httpMethod = method
             
             let task: URLSessionTask = session.dataTask(with: request) { [weak self] data, response, error in
-                self?.handleRequestCompletion(data: data, response: response, error: error, completion: completion)
+                guard let self = self else { return }
+                self.handleRequestCompletion(data: data, response: response, error: error, completion: completion)
             }
 
             task.resume()
@@ -135,18 +136,11 @@ import Foundation
             return
         }
 
-        let body: BTJSON
-
-        do {
-            let json = try JSONSerialization.jsonObject(with: data)
-            body = BTJSON(value: json)
-        } catch {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
-            return
-        }
+        let json = try? JSONSerialization.jsonObject(with: data)
+        let body = BTJSON(value: json)
 
         // Success case
-        if let _ = body.asDictionary(), body["error"].asArray() == nil {
+        if let _ = body.asDictionary(), body["errors"].asArray() == nil {
             callCompletionAsync(
                 with: completion,
                 body: body,
@@ -188,10 +182,12 @@ import Foundation
                 guard let inputPath = error["extensions"]["inputPath"].asStringArray() else {
                     continue
                 }
+
                 addErrorForInputPath(
-                    inputPath: inputPath,
+                    inputPath: Array(inputPath[1..<inputPath.count]),
                     withGraphQLError: error,
-                    toArray: &errors)
+                    toArray: &errors
+                )
             }
             if errors.count > 0 {
                 errorBody["fieldErrors"] = errors
@@ -216,7 +212,8 @@ import Foundation
             url: response.url!,
             statusCode: statusCode,
             httpVersion: "HTTP/1.1",
-            headerFields: httpResponse.allHeaderFields as? [String: String])
+            headerFields: httpResponse.allHeaderFields as? [String: String]
+        )
         
         return NSError(
             domain: BTHTTPError.domain,
@@ -267,6 +264,10 @@ import Foundation
             errors.append(nestedFieldError ?? [:])
         }
 
-        addErrorForInputPath(inputPath: nestedInputPath, withGraphQLError: errorJSON, toArray: &errors)
+        addErrorForInputPath(
+            inputPath: Array(nestedInputPath[1..<inputPath.count]),
+            withGraphQLError: errorJSON,
+            toArray: &errors
+        )
     }
 }

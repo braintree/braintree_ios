@@ -168,7 +168,8 @@ import Security
                     self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
                 } else {
                     let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
-                        self?.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
+                        guard let self = self else { return }
+                        self.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
                     }
 
                     task.resume()
@@ -190,7 +191,8 @@ import Security
             }
 
             let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
-                self?.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+                guard let self = self else { return }
+                self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
             }
 
             task.resume()
@@ -361,7 +363,8 @@ import Security
 
         if httpResponse.statusCode >= 400 {
             handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
-                self?.callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
+                guard let self = self else { return }
+                self.callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
             }
             return
         }
@@ -370,7 +373,8 @@ import Security
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
             handleJSONResponseError(json: json, response: response) { [weak self] error in
-                self?.callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+                guard let self = self else { return }
+                self.callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             }
             return
         }
