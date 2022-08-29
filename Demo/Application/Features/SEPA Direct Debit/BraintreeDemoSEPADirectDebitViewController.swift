@@ -56,7 +56,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
 
         let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
         sepaDirectDebitRequest.accountHolderName = "John Doe"
-        sepaDirectDebitRequest.iban = "FR7618106000321234566666608"
+        sepaDirectDebitRequest.iban = "FR7630006000014829011031512"
         sepaDirectDebitRequest.customerID = generateRandomCustomerID()
         sepaDirectDebitRequest.mandateType = .oneOff
         sepaDirectDebitRequest.billingAddress = billingAddress
