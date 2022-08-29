@@ -4,9 +4,6 @@ import AuthenticationServices
 class WebAuthenticationSession: NSObject {
 
     var authenticationSession: ASWebAuthenticationSession?
-    
-    @available(iOS 13.0, *)
-    private(set) lazy var presentationContextProvider: ASWebAuthenticationPresentationContextProviding? = nil
 
     @available(iOS 13.0, *)
     func start(
