@@ -37,8 +37,14 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
 
     @available(iOS 13.0, *)
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-      let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-      return window ?? ASPresentationAnchor()
+        if #available(iOS 15, *) {
+            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let window = firstScene?.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        } else {
+            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        }
     }
 
     // MARK: - SEPA Direct Debit implementation
