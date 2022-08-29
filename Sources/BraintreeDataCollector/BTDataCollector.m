@@ -1,6 +1,5 @@
 #import "BTDataCollector_Internal.h"
 #import "KDataCollector.h"
-#import <CoreLocation/CoreLocation.h>
 
 #if __has_include(<Braintree/BraintreeDataCollector.h>)
 #import <Braintree/BTConfiguration+DataCollector.h>
@@ -24,7 +23,7 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
     BTDataCollectorEnvironmentProduction
 };
 
-@interface BTDataCollector ()
+@interface BTDataCollector () <CLLocationManagerDelegate>
 
 @property (nonatomic, copy) NSString *fraudMerchantID;
 @property (nonatomic, copy) BTAPIClient *apiClient;
@@ -47,6 +46,10 @@ static Class PayPalDataCollectorClass;
     if (self = [super init]) {
         [self setUpKountWithDebugOn:NO];
         _apiClient = apiClient;
+        if (@available(iOS 14, *)) {
+            _locationManager = [CLLocationManager new];
+            _locationManager.delegate = self;
+        }
     }
     
     return self;
@@ -55,7 +58,11 @@ static Class PayPalDataCollectorClass;
 - (void)setUpKountWithDebugOn:(BOOL)debugLogging {
     self.kount = [KDataCollector sharedCollector];
     self.kount.debug = debugLogging;
+}
 
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
     CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
     if (@available(iOS 14, *)) {
         locationStatus = [CLLocationManager new].authorizationStatus;
