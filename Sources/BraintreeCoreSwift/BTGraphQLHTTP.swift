@@ -151,20 +151,17 @@ import Foundation
         }
         
         // Error case
-        let error = parseErrors(
-            body: body,
-            response: response!
-        )
-        
-        callCompletionAsync(
-            with: completion,
-            body: body,
-            response: response as? HTTPURLResponse,
-            error: error
-        )
+        parseErrors(body: body, response: response!) { errorJSON, error in
+            self.callCompletionAsync(
+                with: completion,
+                body: BTJSON(value: errorJSON),
+                response: response as? HTTPURLResponse,
+                error: error
+            )
+        }
     }
     
-    func parseErrors(body: BTJSON, response: URLResponse) -> NSError {
+    func parseErrors(body: BTJSON, response: URLResponse, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         let errorJSON = body["errors"][0]
         let errorType = errorJSON["extensions"]["errorType"].asString()
         var statusCode = 0
@@ -215,7 +212,7 @@ import Foundation
             headerFields: httpResponse.allHeaderFields as? [String: String]
         )
         
-        return NSError(
+        let error = NSError(
             domain: BTHTTPError.domain,
             code: errorCode.rawValue,
             userInfo: [
@@ -223,6 +220,8 @@ import Foundation
                 BTHTTPError.jsonResponseBodyKey: errorBody
             ]
         )
+
+        completion(errorBody, error)
     }
 
     /// Walks through the input path recursively and adds field errors to a mutable array
@@ -231,7 +230,7 @@ import Foundation
         withGraphQLError errorJSON: BTJSON,
         toArray errors: inout [[String: Any]]
     ) {
-        let field = inputPath.first!
+        guard let field = inputPath.first else { return }
         
         // Base case
         if inputPath.count == 1 {
@@ -265,7 +264,7 @@ import Foundation
         }
 
         addErrorForInputPath(
-            inputPath: Array(nestedInputPath[1..<inputPath.count]),
+            inputPath: Array(nestedInputPath[1..<nestedInputPath.count]),
             withGraphQLError: errorJSON,
             toArray: &errors
         )
