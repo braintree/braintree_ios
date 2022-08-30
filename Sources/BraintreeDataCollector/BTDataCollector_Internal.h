@@ -14,8 +14,5 @@
 */
 @property (nonatomic, strong, nonnull) KDataCollector *kount;
 
-// TODO: Annotation for only needed for iOS 14
-@property (nonatomic, strong, nonnull) CLLocationManager *locationManager;
-
 @end
 

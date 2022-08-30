@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
     BTDataCollectorEnvironmentProduction
 };
 
-@interface BTDataCollector () <CLLocationManagerDelegate>
+@interface BTDataCollector ()
 
 @property (nonatomic, copy) NSString *fraudMerchantID;
 @property (nonatomic, copy) BTAPIClient *apiClient;
@@ -33,8 +33,6 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 @implementation BTDataCollector
 
 static Class PayPalDataCollectorClass;
-
-CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
 
 #pragma mark - Initialization and setup
 
@@ -48,10 +46,6 @@ CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
     if (self = [super init]) {
         [self setUpKountWithDebugOn:NO];
         _apiClient = apiClient;
-        if (@available(iOS 14, *)) {
-            _locationManager = [CLLocationManager new];
-            _locationManager.delegate = self;
-        }
     }
     
     return self;
@@ -61,18 +55,16 @@ CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
     self.kount = [KDataCollector sharedCollector];
     self.kount.debug = debugLogging;
 
-    if ((locationStatus != kCLAuthorizationStatusAuthorizedWhenInUse && locationStatus != kCLAuthorizationStatusAuthorizedAlways) || ![CLLocationManager locationServicesEnabled]) {
-        self.kount.locationCollectorConfig = KLocationCollectorConfigSkip;
-    }
-}
+    CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
 
-#pragma mark - CLLocationManagerDelegate
-
-- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
     if (@available(iOS 14, *)) {
-        locationStatus = manager.authorizationStatus;
+        locationStatus = [CLLocationManager new].authorizationStatus;
     } else {
         locationStatus = [CLLocationManager authorizationStatus];
+    }
+
+    if ((locationStatus != kCLAuthorizationStatusAuthorizedWhenInUse && locationStatus != kCLAuthorizationStatusAuthorizedAlways) || ![CLLocationManager locationServicesEnabled]) {
+        self.kount.locationCollectorConfig = KLocationCollectorConfigSkip;
     }
 }
 
