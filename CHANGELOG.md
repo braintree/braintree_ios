@@ -20,11 +20,17 @@
     * Remove `BTJSONErrorDomain` global constant
     * Remove `BTJSONErrorCode`
     * Remove `BTAPIClientErrorDomain` global constant
-    * Add `BTClientTokenError.invalidAuthorizationFingerprint` error type
-    * Add `BTClientTokenError.invalidConfigURL` error type
-    * Add `BTClientTokenError.invalidFormat` error type
-    * Add `BTClientTokenError.unsupportedVersion` error type
-    * Add `BTClientTokenError.failedDecoding` error type
+    * Add `BTClientTokenError`s
+        * `.invalidAuthorizationFingerprint`
+        * `.invalidConfigURL`
+        * `.invalidFormat`
+        * `.unsupportedVersion`
+        * `.failedDecoding`
+    * Add `BTHTTPErrorCode`s
+        * `.httpResponseInvalid`
+        * `.urlStringInvalid`
+        * `.clientApiUrlInvalid`
+        * `.invalidAuthorizationFingerprint`
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`

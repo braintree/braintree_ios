@@ -45,9 +45,9 @@ import Security
     init(url: URL) {
         self.baseURL = url
     }
-    
+
     // MARK: - Public Initializers
-    
+
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
     /// - Parameters:
     ///   - url: The base URL for the Braintree Client API
@@ -236,8 +236,8 @@ import Security
         }
 
         guard let fullPathURL = fullPathURL else {
-            // baseURL can be non-nil (e.g. an empty string) and still return nil for -URLByAppendingPathComponent:
-            // causing a crash when NSURLComponents.componentsWithString is called with nil.
+            // baseURL can be non-nil (e.g. an empty string) and still return nil for appendingPathComponent(_:)
+            // causing a crash when URLComponents(string:_) is called with nil.
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -482,7 +482,7 @@ import Security
     func userAgentString() -> String {
         "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)"
     }
-    
+
     func acceptString() -> String {
         "application/json"
     }
@@ -530,6 +530,7 @@ import Security
     }
 
     // MARK: - URLSessionDelegate conformance
+
     public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             let domain: String = challenge.protectionSpace.host
