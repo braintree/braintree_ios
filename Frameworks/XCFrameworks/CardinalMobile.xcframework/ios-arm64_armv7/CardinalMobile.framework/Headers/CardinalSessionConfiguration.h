@@ -172,11 +172,11 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
 @property (nonatomic, strong) UiCustomization *uiCustomization;
 
 /*!
- * @property darkModeUiCustomization UI Customization of Dark Mode Challenge Views
+ * @property darkUiCustomization UI Customization of Dark Mode Challenge Views
  * @brief Set the customization of different UITypes for Dark Mode Challege Views.
  * Default value is nil.
  */
-@property (nonatomic, strong) UiCustomization *darkModeUiCustomization;
+@property (nonatomic, strong) UiCustomization *darkUiCustomization;
 
 /*!
  * @property enableDFSync Synchronize Setup Task with Lasso
