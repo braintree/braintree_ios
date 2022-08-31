@@ -174,7 +174,7 @@ import Foundation
             errorCode = .clientError
             errorBody["error"] = ["message": "Input is invalid"]
             
-            var errors = [[String: Any]]()
+            var errors: [[String: Any]] = [[:]]
             for error in body["errors"].asArray()! {
                 guard let inputPath = error["extensions"]["inputPath"].asStringArray() else {
                     continue
@@ -186,6 +186,7 @@ import Foundation
                     toArray: &errors
                 )
             }
+
             if errors.count > 0 {
                 errorBody["fieldErrors"] = errors
             }
@@ -235,17 +236,20 @@ import Foundation
         // Base case
         if inputPath.count == 1 {
             let extensions = errorJSON["extensions"].asSwiftDictionary()
-            let errorsBody = [
+            var errorsBody: [String: Any] = [
                 "field": field,
-                "message": errorJSON["message"],
-                "code": extensions?["legacyCode"]
+                "message": errorJSON["message"]
             ]
+
+            if extensions?["legacyCode"] != nil {
+                errorsBody["code"] = extensions?["legacyCode"]
+            }
 
             errors.append(errorsBody as [String: Any])
             return
         }
         
-        var nestedFieldError: [String: Any]? = [:]
+        var nestedFieldError: [String: Any] = [:]
         let nestedInputPath = Array(inputPath[1..<inputPath.count])
         // Find nested error that matches the field
         for error in errors {
@@ -253,20 +257,22 @@ import Foundation
                 nestedFieldError = error
             }
         }
+
+        var fieldErrors: [[String: Any]] = [[:]]
         
-        if nestedFieldError == nil {
+        if nestedFieldError.isEmpty == true {
             nestedFieldError = [
                 "field": field,
-                "fieldErrors": NSMutableArray()
+                "fieldErrors": fieldErrors
             ]
 
-            errors.append(nestedFieldError ?? [:])
+            errors.append(nestedFieldError)
         }
 
         addErrorForInputPath(
             inputPath: Array(nestedInputPath[1..<nestedInputPath.count]),
             withGraphQLError: errorJSON,
-            toArray: &errors
+            toArray: &fieldErrors
         )
     }
 }
