@@ -164,9 +164,10 @@ import Foundation
     func parseErrors(body: BTJSON, response: URLResponse, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         let errorJSON = body["errors"][0]
         let errorType = errorJSON["extensions"]["errorType"].asString()
+
         var statusCode = 0
         var errorCode = BTHTTPErrorCode.unknown
-        var errorBody = [String: Any]()
+        var errorBody: [String: Any] = [:]
         
         if let errorType = errorType,
             errorType == "user_error" {
@@ -218,7 +219,7 @@ import Foundation
             code: errorCode.rawValue,
             userInfo: [
                 BTHTTPError.urlResponseKey: nestedErrorResponse as Any,
-                BTHTTPError.jsonResponseBodyKey: errorBody
+                BTHTTPError.jsonResponseBodyKey: BTJSON(value: errorBody)
             ]
         )
 
@@ -231,18 +232,18 @@ import Foundation
         withGraphQLError errorJSON: BTJSON,
         toArray errors: inout [[String: Any]]
     ) {
-        guard let field = inputPath.first else { return }
+        guard let field: String = inputPath.first else { return }
         
         // Base case
         if inputPath.count == 1 {
             let extensions = errorJSON["extensions"].asSwiftDictionary()
-            var errorsBody: [String: Any] = [
+            var errorsBody: [String: String] = [
                 "field": field,
-                "message": errorJSON["message"]
+                "message": errorJSON["message"].asString() ?? ""
             ]
 
             if extensions?["legacyCode"] != nil {
-                errorsBody["code"] = extensions?["legacyCode"]
+                errorsBody["code"] = extensions?["legacyCode"] as? String
             }
 
             errors.append(errorsBody as [String: Any])
@@ -254,7 +255,7 @@ import Foundation
         // Find nested error that matches the field
         for error in errors {
             if error["field"] as? String == field {
-                nestedFieldError = error
+                nestedFieldError = errors.first ?? [:]
             }
         }
 
