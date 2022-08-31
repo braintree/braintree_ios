@@ -23,6 +23,7 @@ import BraintreeCore
         self.webAuthenticationSession =  WebAuthenticationSession()
     }
     
+    /// Internal for testing.
     init(apiClient: BTAPIClient, webAuthenticationSession: WebAuthenticationSession, sepaDirectDebitAPI: SEPADirectDebitAPI) {
         self.apiClient = apiClient
         self.webAuthenticationSession = webAuthenticationSession

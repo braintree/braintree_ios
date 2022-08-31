@@ -1,3 +1,4 @@
+#import <CoreLocation/CoreLocation.h>
 #if __has_include(<Braintree/BraintreeDataCollector.h>)
 #import <Braintree/BTDataCollector.h>
 #else

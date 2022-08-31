@@ -1,6 +1,5 @@
 #import "BTDataCollector_Internal.h"
 #import "KDataCollector.h"
-#import <CoreLocation/CoreLocation.h>
 
 #if __has_include(<Braintree/BraintreeDataCollector.h>)
 #import <Braintree/BTConfiguration+DataCollector.h>
@@ -57,6 +56,7 @@ static Class PayPalDataCollectorClass;
     self.kount.debug = debugLogging;
 
     CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
+
     if (@available(iOS 14, *)) {
         locationStatus = [CLLocationManager new].authorizationStatus;
     } else {
