@@ -516,9 +516,9 @@
 
 - (void)testHttpError_withEmptyDataAndNoError_returnsError {
     [http handleRequestCompletion:nil response:nil error:nil completionBlock:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-        XCTAssertEqualObjects(error.localizedDescription, @"An unexpected error occurred with the HTTP request.");
+        XCTAssertEqualObjects(error.localizedDescription, @"URLResponse was missing on invalid.");
         XCTAssertEqualObjects(error.domain, BTHTTPError.domain);
-        XCTAssertEqual(error.code, BTHTTPErrorCodeUnknown);
+        XCTAssertEqual(error.code, BTHTTPErrorCodeHttpResponseInvalid);
 
     }];
 }

@@ -70,7 +70,24 @@ import Foundation
             authorization = "" 
         }
         
-        let components = URLComponents(string: self.baseURL.absoluteString)
+        guard let components = URLComponents(string: self.baseURL.absoluteString) else {
+            let error = Self.constructError(
+                code: .urlStringInvalid,
+                userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
+            )
+            completion?(nil, nil, error)
+            return
+        }
+
+        guard let urlFromComponents = components.url else {
+            let error = Self.constructError(
+                code: .urlStringInvalid,
+                userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
+            )
+            completion?(nil, nil, error)
+            return
+        }
+
         let headers = [
             "User-Agent": self.userAgentString(),
             "Braintree-Version": BTCoreConstants.graphQLVersion,
@@ -82,8 +99,7 @@ import Foundation
     
         do {
             let bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
-            // TODO: don't force unwrap
-            request = URLRequest(url: components!.url!)
+            request = URLRequest(url: urlFromComponents)
             request.httpBody = bodyData
             request.allHTTPHeaderFields = headers
             request.httpMethod = method
@@ -111,12 +127,16 @@ import Foundation
         }
 
         if let error = error {
-            self.callCompletionAsync(
-                with: completion,
-                body: nil,
-                response: response as? HTTPURLResponse,
-                error: error
+            callCompletionAsync(with: completion, body: nil, response: response as? HTTPURLResponse, error: error)
+            return
+        }
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            let error = Self.constructError(
+                code: .httpResponseInvalid,
+                userInfo: [NSLocalizedDescriptionKey : "URLResponse was missing on invalid."]
             )
+            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             return
         }
         
@@ -127,12 +147,7 @@ import Foundation
                 userInfo: [NSLocalizedDescriptionKey: "An unexpected error occurred with the HTTP request."]
             )
 
-            callCompletionAsync(
-                with: completion,
-                body: nil,
-                response: response as? HTTPURLResponse,
-                error: error
-            )
+            callCompletionAsync(with: completion, body: nil, response: httpResponse, error: error)
             return
         }
 
@@ -141,27 +156,22 @@ import Foundation
 
         // Success case
         if let _ = body.asDictionary(), body["errors"].asArray() == nil {
-            callCompletionAsync(
-                with: completion,
-                body: body,
-                response: response as? HTTPURLResponse,
-                error: nil
-            )
+            callCompletionAsync(with: completion, body: body, response: httpResponse, error: nil)
             return
         }
         
         // Error case
-        parseErrors(body: body, response: response!) { errorJSON, error in
+        parseErrors(body: body, response: httpResponse) { errorJSON, error in
             self.callCompletionAsync(
                 with: completion,
                 body: BTJSON(value: errorJSON),
-                response: response as? HTTPURLResponse,
+                response: httpResponse,
                 error: error
             )
         }
     }
     
-    func parseErrors(body: BTJSON, response: URLResponse, completion: @escaping ([String: Any]?, NSError?) -> Void) {
+    func parseErrors(body: BTJSON, response: HTTPURLResponse, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         let errorJSON = body["errors"][0]
         let errorType = errorJSON["extensions"]["errorType"].asString()
 
@@ -176,7 +186,7 @@ import Foundation
             errorBody["error"] = ["message": "Input is invalid"]
             
             var errors: [[String: Any]] = [[:]]
-            for error in body["errors"].asArray()! {
+            for error in body["errors"].asArray() ?? [] {
                 guard let inputPath = error["extensions"]["inputPath"].asStringArray() else {
                     continue
                 }
@@ -205,14 +215,7 @@ import Foundation
             errorBody["error"] = ["message": "An unexpected error occurred"]
         }
         
-        let httpResponse = response as! HTTPURLResponse
-        
-        let nestedErrorResponse = HTTPURLResponse(
-            url: response.url!,
-            statusCode: statusCode,
-            httpVersion: "HTTP/1.1",
-            headerFields: httpResponse.allHeaderFields as? [String: String]
-        )
+        let nestedErrorResponse = createHTTPResponse(response: response, statusCode: statusCode)
         
         let error = NSError(
             domain: BTHTTPError.domain,
@@ -224,6 +227,18 @@ import Foundation
         )
 
         completion(errorBody, error)
+    }
+
+    func createHTTPResponse(response: URLResponse, statusCode: Int) -> HTTPURLResponse? {
+        if let httpResponse = response as? HTTPURLResponse, let url = response.url {
+            return HTTPURLResponse(
+                url: url,
+                statusCode: statusCode,
+                httpVersion: "HTTP/1.1",
+                headerFields: httpResponse.allHeaderFields as? [String: String]
+            )
+        }
+        return nil
     }
 
     /// Walks through the input path recursively and adds field errors to a mutable array
@@ -251,7 +266,7 @@ import Foundation
         }
         
         var nestedFieldError: [String: Any] = [:]
-        let nestedInputPath = Array(inputPath[1..<inputPath.count])
+
         // Find nested error that matches the field
         for error in errors {
             if error["field"] as? String == field {
@@ -260,7 +275,7 @@ import Foundation
         }
 
         var fieldErrors: [[String: Any]] = [[:]]
-        
+
         if nestedFieldError.isEmpty == true {
             nestedFieldError = [
                 "field": field,
@@ -271,7 +286,7 @@ import Foundation
         }
 
         addErrorForInputPath(
-            inputPath: Array(nestedInputPath[1..<nestedInputPath.count]),
+            inputPath: Array(inputPath[1..<inputPath.count]),
             withGraphQLError: errorJSON,
             toArray: &fieldErrors
         )
