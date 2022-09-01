@@ -1,7 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Adds support for Xcode 14 and iOS 16 
+* Adds support for Xcode 14 and iOS 16
+* Update Cardinal SDK to version 2.2.5-4
 * BraintreeSEPADirectDebit
   * Update nonce to pull in ibanLastFour and customerID as expected
   * Remove unused `presentationContextProvider` (fixes #854)
