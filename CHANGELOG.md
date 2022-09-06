@@ -3,7 +3,7 @@
 ## unreleased
 * Adds support for Xcode 14 and iOS 16 
 * BraintreeSEPADirectDebit
-  * Update nonce to pull in ibanLastFour and customerID as expected
+  * Update `BTSEPADirectDebitNonce` to pull in `ibanLastFour` and `customerID` as expected
   * Remove unused `presentationContextProvider` (fixes #854)
 
 ## 5.11.0 (2022-07-20)
