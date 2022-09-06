@@ -41,7 +41,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
                 XCTAssertEqual(order.payPalClientID, clientId)
                 XCTAssertEqual(order.environment.name, environment)
                 XCTAssertEqual(order.orderID, orderId)
-                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.create-order.success")
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.success")
 
             case .failure:
                 XCTFail("No error should be thrown")
@@ -61,7 +61,6 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .fetchConfigurationFailed)
-                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.create-order.fetch-configuration.failure")
             }
         }
     }
@@ -76,7 +75,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .payPalNotEnabled)
-                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.create-order.paypal-not-enabled.failure")
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.paypal-not-enabled.failure")
             }
         }
     }
@@ -94,7 +93,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .payPalClientIDNotFound)
-                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.create-order.client-id-not-found.failure")
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.client-id-not-found.failure")
             }
         }
     }
@@ -113,7 +112,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .invalidEnvironment)
-                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.create-order.invalid-environment.failure")
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.invalid-environment.failure")
             }
         }
     }
@@ -133,7 +132,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .orderCreationFailed(BTPayPalNativeError.invalidJSONResponse))
-                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.create-order.order-creation.failure")
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.order-creation.failure")
             }
         }
     }

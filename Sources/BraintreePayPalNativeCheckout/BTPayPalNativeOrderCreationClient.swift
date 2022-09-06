@@ -28,19 +28,18 @@ class BTPayPalNativeOrderCreationClient {
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let config = configuration, error == nil else {
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native-checkout.create-order.fetch-configuration.failure")
                 completion(.failure(.fetchConfigurationFailed))
                 return
             }
 
             guard config.json["paypalEnabled"].isTrue else {
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native-checkout.create-order.paypal-not-enabled.failure")
+                self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.paypal-not-enabled.failure")
                 completion(.failure(.payPalNotEnabled))
                 return
             }
 
             guard let payPalClientID = config.json["paypal"]["clientId"].asString() else {
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native-checkout.create-order.client-id-not-found.failure")
+                self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.client-id-not-found.failure")
                 completion(.failure(.payPalClientIDNotFound))
                 return
             }
@@ -55,7 +54,7 @@ class BTPayPalNativeOrderCreationClient {
             }
 
             guard let environment = payPalEnvironment else {
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native-checkout.create-order.invalid-environment.failure")
+                self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.invalid-environment.failure")
                 completion(.failure(.invalidEnvironment))
                 return
             }
@@ -66,7 +65,7 @@ class BTPayPalNativeOrderCreationClient {
             ) { json, response, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
                     let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse
-                    self.apiClient.sendAnalyticsEvent("ios.paypal-native-checkout.create-order.order-creation.failure")
+                    self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.order-creation.failure")
                     completion(.failure(.orderCreationFailed(underlyingError)))
                     return
                 }
@@ -77,7 +76,7 @@ class BTPayPalNativeOrderCreationClient {
                     orderID: hermesResponse.orderID
                 )
 
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native-checkout.create-order.success")
+                self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.success")
                 completion(.success(order))
             }
         }
