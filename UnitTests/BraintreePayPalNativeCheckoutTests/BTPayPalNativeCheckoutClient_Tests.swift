@@ -18,6 +18,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         checkoutClient.tokenizePayPalAccount(with: BTPayPalRequest()) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual(error as? BTPayPalNativeError, .invalidRequest)
+            XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.tokenize.invalid-request.failure")
         }
     }
 
@@ -34,6 +35,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         checkoutClient.tokenizePayPalAccount(with: nativeCheckoutRequest) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual(error as? BTPayPalNativeError, .payPalClientIDNotFound)
+            XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native-checkout.create-order.failure")
         }
     }
 }
