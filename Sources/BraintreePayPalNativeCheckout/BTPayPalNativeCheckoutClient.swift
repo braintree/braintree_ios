@@ -33,7 +33,7 @@ import PayPalCheckout
     ) {
         apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.started")
         guard let request = nativeRequest as? (BTPayPalRequest & BTPayPalNativeRequest) else {
-            apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.invalid-request.failure")
+            apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.invalid-request.failed")
             completion(nil, BTPayPalNativeError.invalidRequest)
             return
         }
@@ -64,7 +64,7 @@ import PayPalCheckout
                         completion(nil, BTPayPalNativeError.canceled)
                     },
                     onError: { error in
-                        self?.apiClient.sendAnalyticsEvent("ios.paypal-native.on-error.failure")
+                        self?.apiClient.sendAnalyticsEvent("ios.paypal-native.on-error.failed")
                         completion(nil, BTPayPalNativeError.checkoutSDKFailed)
                     },
                     environment: order.environment
@@ -73,7 +73,7 @@ import PayPalCheckout
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
-                self?.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.failure")
+                self?.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.failed")
                 completion(nil, error)
             }
         }
@@ -84,10 +84,10 @@ import PayPalCheckout
         tokenizationClient.tokenize(request: request, returnURL: approval.data.returnURL!.absoluteString) { result in
             switch result {
             case .success(let nonce):
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native.on-approve.success")
+                self.apiClient.sendAnalyticsEvent("ios.paypal-native.on-approve.succeeded")
                 completion(nonce, nil)
             case .failure(let error):
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native.on-approve.failure")
+                self.apiClient.sendAnalyticsEvent("ios.paypal-native.on-approve.failed")
                 completion(nil, error)
             }
         }
