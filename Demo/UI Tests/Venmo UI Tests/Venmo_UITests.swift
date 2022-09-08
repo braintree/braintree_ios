@@ -26,7 +26,7 @@ class Venmo_UITests: XCTestCase {
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Failed to store Venmo Account in vault"].waitForExistence(timeout: 15))
+        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 15))
     }
     
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {

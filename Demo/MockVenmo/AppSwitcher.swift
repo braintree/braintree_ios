@@ -14,7 +14,7 @@ class AppSwitcher {
 
         successComponents?.queryItems = [
             URLQueryItem(name: "x-source", value: "Venmo"),
-            URLQueryItem(name: "resource_id", value: "cGF5bWVudGNvbnRleHRfaGg0Y3BjMzl6cTRyZ2pjZyMxYmU5OTBiNC02YTE1LTQ2ZTQtYmNmOS1iYmIwMzY4OWMwMmI=")
+            URLQueryItem(name: "resource_id", value: "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg=")
         ]
 
         return successComponents?.url
