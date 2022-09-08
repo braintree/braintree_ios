@@ -22,7 +22,7 @@ class Venmo_UITests: XCTestCase {
         demoApp.buttons["Venmo (custom button)"].tap()
     }
     
-    func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsToApp() {
+    func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
 
