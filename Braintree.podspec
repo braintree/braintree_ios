@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreePayPalNativeCheckout/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPal"
-    s.dependency "PayPalCheckout", '~> 0.100.0'
+    s.dependency "PayPalCheckout", '= 0.100.0'
   end
 
   s.subspec "ThreeDSecure" do |s|
