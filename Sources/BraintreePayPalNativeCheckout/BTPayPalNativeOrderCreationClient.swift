@@ -65,7 +65,7 @@ class BTPayPalNativeOrderCreationClient {
             ) { json, response, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
                     let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse
-                    self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.order-creation.failed")
+                    self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.hermes-url-request.failed")
                     completion(.failure(.orderCreationFailed(underlyingError)))
                     return
                 }
