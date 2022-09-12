@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.12.0 (2022-09-07)
 * Adds support for Xcode 14 and iOS 16 
 * BraintreeSEPADirectDebit
   * Update `BTSEPADirectDebitNonce` to pull in `ibanLastFour` and `customerID` as expected
