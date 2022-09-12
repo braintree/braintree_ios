@@ -186,14 +186,14 @@ import Foundation
             errorBody["error"] = ["message": "Input is invalid"]
             
             var errors: [[String: Any]] = [[:]]
-            for error in body["errors"].asArray() ?? [] {
-                guard let inputPath = error["extensions"]["inputPath"].asStringArray() else {
+            for errorJSON in body["errors"].asArray() ?? [] {
+                guard let inputPath = errorJSON["extensions"]["inputPath"].asStringArray() else {
                     continue
                 }
 
                 addErrorForInputPath(
                     inputPath: Array(inputPath[1..<inputPath.count]),
-                    withGraphQLError: error,
+                    withGraphQLError: errorJSON,
                     toArray: &errors
                 )
             }
@@ -268,9 +268,9 @@ import Foundation
         var nestedFieldError: [String: Any] = [:]
 
         // Find nested error that matches the field
-        for error in errors {
+        errors.forEach { error in
             if error["field"] as? String == field {
-                nestedFieldError = errors.first ?? [:]
+                nestedFieldError = error
             }
         }
 
