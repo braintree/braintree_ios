@@ -132,7 +132,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .orderCreationFailed(BTPayPalNativeError.invalidJSONResponse))
-                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.order-creation.failed")
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.hermes-url-request.failed")
             }
         }
     }
