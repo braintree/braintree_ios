@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
-  * Fix CocoaPods integrations to pin exact `PayPalCheckout` version `0.100.0`
+  * Fix CocoaPods integrations to pin exact `PayPalCheckout` version
 
 ## 5.12.0 (2022-09-07)
 * Adds support for Xcode 14 and iOS 16 
