@@ -1,21 +1,21 @@
-#import "BTGraphQLHTTP.h"
 #import "BTHTTPTestProtocol.h"
 @import BraintreeCore;
 @import Specta;
 @import Expecta;
 @import OHHTTPStubs;
+@import BraintreeCoreSwift;
 
 @interface BTGraphQLHTTPTests : XCTestCase
 @end
 
 @implementation BTGraphQLHTTPTests {
-    BTGraphQLHTTPSwift *http;
+    BTGraphQLHTTP *http;
 }
 
 - (void)setUp {
     [super setUp];
 
-    http = [[BTGraphQLHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTGraphQLHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
 }
 
 - (void)tearDown {
@@ -176,7 +176,7 @@
 - (void)testRequests_whenUsingTokenizationKey_sendsItInHeaders {
     XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
 
-    http = [[BTGraphQLHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_testing_key"];
+    http = [[BTGraphQLHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_testing_key"];
     http.session = [self fakeSession];
 
     [http POST:@"" parameters:nil completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {

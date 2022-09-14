@@ -4,7 +4,7 @@ import Security
 /// Performs HTTP methods on the Braintree Client API
 // TODO: once BTAPIHTTP + BTGraphQLHTTP are converted this can be internal + more Swift-y
 // TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
-@objcMembers public class BTHTTPSwift: NSObject, NSCopying, URLSessionDelegate {
+@objcMembers public class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -34,10 +34,12 @@ import Security
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     public var dispatchQueue: DispatchQueue = DispatchQueue.main
 
+    // TODO: Make internal after BTAnalyticsService is converted to Swift
+    public let baseURL: URL
+
     // MARK: - Internal Properties
     
     let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
-    let baseURL: URL
     var clientAuthorization: ClientAuthorization = .none
     
     // MARK: - Internal Initializer
@@ -508,8 +510,8 @@ import Security
     // MARK: - isEqual override
     
     public override func isEqual(_ object: Any?) -> Bool {
-        guard object is BTHTTPSwift,
-              let otherObject = object as? BTHTTPSwift else {
+        guard object is BTHTTP,
+              let otherObject = object as? BTHTTP else {
             return false
         }
 
@@ -521,11 +523,11 @@ import Security
     public func copy(with zone: NSZone? = nil) -> Any {
         switch clientAuthorization {
         case .authorizationFingerprint(let fingerprint):
-            return BTHTTPSwift(url: baseURL, authorizationFingerprint: fingerprint)
+            return BTHTTP(url: baseURL, authorizationFingerprint: fingerprint)
         case .tokenizationKey(let key):
-            return BTHTTPSwift(url: baseURL, tokenizationKey: key)
+            return BTHTTP(url: baseURL, tokenizationKey: key)
         case .none:
-            return BTHTTPSwift(url: baseURL) // TODO: Temporary, remove
+            return BTHTTP(url: baseURL) // TODO: Temporary, remove
         }
     }
 

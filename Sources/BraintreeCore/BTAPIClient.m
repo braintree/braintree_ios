@@ -1,9 +1,7 @@
 #import "BTAPIClient_Internal.h"
 #import "BTAnalyticsService.h"
 #import "BTAnalyticsMetadata.h"
-#import "BTAPIHTTP.h"
-#import "BTGraphQLHTTP.h"
-#import "BTHTTP.h"
+
 #import "BraintreeCoreSwiftImports.h"
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
@@ -59,7 +57,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                     return nil;
                 }
 
-                _configurationHTTP = [[BTHTTP alloc] initWithClientToken:self.clientToken];
+//                _configurationHTTP = [[BTHTTP alloc] initWithClientToken:self.clientToken];
+                _configurationHTTP = [[BTHTTP alloc] initWithClientToken:self.clientToken error:&error];
 
                 if (sendAnalyticsEvent) {
                     [self queueAnalyticsEvent:@"ios.started.client-token"];

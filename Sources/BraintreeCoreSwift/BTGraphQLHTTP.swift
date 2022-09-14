@@ -93,7 +93,7 @@ class ChildNode: Node {
 }
 
     
-@objcMembers public class BTGraphQLHTTPSwift: BTHTTPSwift {
+@objcMembers public class BTGraphQLHTTP: BTHTTP {
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 

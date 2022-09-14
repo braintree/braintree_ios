@@ -1,6 +1,6 @@
 #import "BTHTTPTestProtocol.h"
-#import "BTHTTP.h"
 @import BraintreeCore;
+@import BraintreeCoreSwift;
 
 @implementation BTHTTPTestProtocol
 
