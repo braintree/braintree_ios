@@ -275,40 +275,9 @@ class ChildNode: Node {
         if let errorType = errorType, errorType == "user_error" {
             statusCode = 422
             errorCode = .clientError
-//            errorBody["error"] = ["message": "Input is invalid"]
+            errorBody = parseGraphQLError(fromJSON: body)
             
-            let rootNode = RootNode(message: "Input is invalid")
-            
-            var nodes: [String: Node] = [:]
-            
-            var errors: [[String: Any]] = []
-            for errorJSON in body["errors"].asArray() ?? [] {
-                guard var inputPath = errorJSON["extensions"]["inputPath"].asStringArray() else { continue }
-                guard let field = inputPath.last else { continue }
-                guard let message = errorJSON["message"].asString() else { continue }
-                
-                let code = errorJSON["extensions"]["legacyCode"].asString()
-                
-                // discard initial "input" key
-                let keyPath = Array(inputPath[1..<inputPath.count])
-                
-                let childNode = ChildNode(field: field, message: message, code: code)
-                rootNode.insert(childNode, forKeyPath: keyPath)
-                
-//
-//                addErrorForInputPath(
-//                    inputPath: Array(inputPath[1..<inputPath.count]),
-//                    withGraphQLError: errorJSON,
-//                    toArray: &errors
-//                )
-            }
-            
-            if rootNode.children.count > 0 {
-//                errorBody["fieldErrors"] = errors
-                errorBody = rootNode.toDictionary()
-            }
-        } else if let errorType = errorType,
-                errorType == "developer_error" {
+        } else if let errorType = errorType, errorType == "developer_error" {
             statusCode = 403
             errorCode = .clientError
             
@@ -347,93 +316,21 @@ class ChildNode: Node {
         return nil
     }
     
-//    func addErrorForInputPath2(withGraphQLError errors: [BTJSON]) -> [String: Any]? {
-//
-////        let result = NSObject()
-////        result.setValue(<#T##value: Any?##Any?#>, forKeyPath: <#T##String#>)
-//
-//        var errorMap: [String: [ErrorNode]] = [:]
-//        for json in errors {
-//            guard let inputPath = json["extensions"]["inputPath"].asStringArray() else { continue }
-//            guard let field = inputPath.last else { continue }
-//
-//            // discard initial "input" value to get the error key path
-//            let keyPath = Array(inputPath[1..<inputPath.count]).joined(separator: ".")
-//
-//            let extensions = json["extensions"].asSwiftDictionary()
-//            let code = extensions?["legacyCode"] as? String
-//            let message = json["message"].asString() ?? ""
-//
-//            var value = [
-//                "field": field,
-//                "message": message
-//            ]
-//
-//
-//            if errorMap[keyPath] == nil {
-//                errorMap[keyPath] = []
-//            }
-//            errorMap[keyPath]!.append(ErrorNode(field: field, message: message, code: code))
-//        }
-//    }
-    
-    /// Walks through the input path recursively and adds field errors to a mutable array
-    func addErrorForInputPath(
-        inputPath: [String],
-        withGraphQLError errorJSON: BTJSON,
-        toArray errors: inout [[String: Any]]
-    ) {
-        guard let field: String = inputPath.first else { return }
-        
-        // Base case
-        if inputPath.count == 1 {
-            let extensions = errorJSON["extensions"].asSwiftDictionary()
-            var errorsBody: [String: String] = [
-                "field": field,
-                "message": errorJSON["message"].asString() ?? ""
-            ]
-
-            if extensions?["legacyCode"] != nil {
-                errorsBody["code"] = extensions?["legacyCode"] as? String
-            }
-
-            errors.append(errorsBody as [String: Any])
-            return
+    func parseGraphQLError(fromJSON body: BTJSON) -> [String: Any] {
+        let rootNode = RootNode(message: "Input is invalid")
+        for errorJSON in body["errors"].asArray() ?? [] {
+            guard let inputPath = errorJSON["extensions"]["inputPath"].asStringArray() else { continue }
+            guard let field = inputPath.last else { continue }
+            guard let message = errorJSON["message"].asString() else { continue }
+            
+            let code = errorJSON["extensions"]["legacyCode"].asString()
+            
+            // discard initial "input" key
+            let keyPath = Array(inputPath[1..<inputPath.count])
+            
+            let childNode = ChildNode(field: field, message: message, code: code)
+            rootNode.insert(childNode, forKeyPath: keyPath)
         }
-        
-//        var nestedFieldError: [String: Any] = [:]
-
-        // Find nested error that matches the field
-        
-//        for error in errors {
-//            if error["field"] as? String == field {
-//                nestedFieldError = error
-//            }
-//            break
-//        }
-        
-        var fieldErrors: [[String:Any]]!
-        
-        if var nestedFieldError = errors.first(where: { $0["field"] as? String == field }) {
-            fieldErrors = nestedFieldError["fieldErrors"] as? [[String: Any]]
-            addErrorForInputPath(
-                inputPath: Array(inputPath[1..<inputPath.count]),
-                withGraphQLError: errorJSON,
-                toArray: &fieldErrors
-            )
-            nestedFieldError["fieldErrors"] = fieldErrors
-         } else {
-            fieldErrors = []
-             errors.append([
-                "field": field,
-                "fieldErrors": fieldErrors
-            ])
-             addErrorForInputPath(
-                inputPath: Array(inputPath[1..<inputPath.count]),
-                withGraphQLError: errorJSON,
-                toArray: &fieldErrors
-            )
-        }
+        return rootNode.toDictionary()
     }
 }
-    
