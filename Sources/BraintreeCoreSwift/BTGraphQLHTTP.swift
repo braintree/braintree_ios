@@ -1,99 +1,6 @@
 import Foundation
 
-protocol Node: AnyObject {
-    var childOrder: [String] { get set }
-    var children: [String: Node] { get set }
-    func toDictionary() -> [String: Any]
-}
-
-extension Node {
-    
-    func insert(_ node: Node, forKeyPath keyPath: [String]) {
-        guard let firstKey = keyPath.first else { return }
-        
-        if keyPath.count == 1 {
-            childOrder.append(firstKey)
-            children[firstKey] = node
-        } else {
-            if children[firstKey] == nil {
-                childOrder.append(firstKey)
-                children[firstKey] = ParentNode(field: firstKey)
-            }
-            children[firstKey]!.insert(node, forKeyPath: Array(keyPath[1..<keyPath.count]))
-        }
-    }
-}
-
-class RootNode: Node {
-    let message: String
-    var childOrder: [String] = []
-    var children: [String: Node] = [:]
-    
-    init(message: String) {
-        self.message = message
-    }
-    
-    func toDictionary() -> [String: Any] {
-        var result: [String: Any] = ["error": ["message": message ]]
-        if !children.isEmpty {
-            var fieldErrors: [[String: Any]] = []
-            for key in childOrder {
-                guard let child = children[key] else { continue }
-                fieldErrors.append(child.toDictionary())
-            }
-            result["fieldErrors"] = fieldErrors
-        }
-        return result
-    }
-}
-
-class ParentNode: Node {
-    let field: String
-    var childOrder: [String] = []
-    var children: [String: Node] = [:]
-    
-    init(field: String) {
-        self.field = field
-    }
-    
-    func toDictionary() -> [String : Any] {
-        var result: [String: Any] = ["field": field]
-        if (!children.isEmpty) {
-            var fieldErrors: [[String: Any]] = []
-            for key in childOrder {
-                guard let child = children[key] else { continue }
-                fieldErrors.append(child.toDictionary())
-            }
-            result["fieldErrors"] = fieldErrors
-        }
-        return result
-    }
-}
-
-class ChildNode: Node {
-    let field: String
-    let message: String
-    let code: String?
-    var childOrder: [String] = []
-    var children: [String: Node] = [:]
-    
-    init(field: String, message: String, code: String?) {
-        self.field = field
-        self.message = message
-        self.code = code
-    }
-    
-    func toDictionary() -> [String : Any] {
-        var result = ["field": field, "message": message]
-        if let code = code {
-            result["code"] = code
-        }
-        return result
-    }
-}
-
-    
-@objcMembers public class BTGraphQLHTTP: BTHTTP {
+@objcMembers public class BTGraphQLHTTPSwift: BTHTTPSwift {
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -317,7 +224,7 @@ class ChildNode: Node {
     }
     
     func parseGraphQLError(fromJSON body: BTJSON) -> [String: Any] {
-        let rootNode = RootNode(message: "Input is invalid")
+        let errorTree = BTGraphQLErrorTree(message: "Input is invalid")
         for errorJSON in body["errors"].asArray() ?? [] {
             guard let inputPath = errorJSON["extensions"]["inputPath"].asStringArray() else { continue }
             guard let field = inputPath.last else { continue }
@@ -325,12 +232,12 @@ class ChildNode: Node {
             
             let code = errorJSON["extensions"]["legacyCode"].asString()
             
-            // discard initial "input" key
+            // discard initial "input" from key path
             let keyPath = Array(inputPath[1..<inputPath.count])
             
-            let childNode = ChildNode(field: field, message: message, code: code)
-            rootNode.insert(childNode, forKeyPath: keyPath)
+            let errorNode = BTGraphQLSingleErrorNode(field: field, message: message, code: code)
+            errorTree.insert(errorNode, atKeyPath: keyPath)
         }
-        return rootNode.toDictionary()
+        return errorTree.toDictionary()
     }
 }
