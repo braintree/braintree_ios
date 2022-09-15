@@ -1,7 +1,7 @@
-
 import Foundation
 
 class BTGraphQLErrorTree {
+
     let message: String
     let rootNode: BTGraphQLMultiErrorNode = BTGraphQLMultiErrorNode()
     
@@ -14,7 +14,7 @@ class BTGraphQLErrorTree {
         
         var parentNode: BTGraphQLMultiErrorNode = rootNode
         while keys.count > 1 {
-            // shift keys off of keypath
+            // shift keys off of key path
             let field = keys.removeFirst()
             
             if !parentNode.hasChild(forField: field) {

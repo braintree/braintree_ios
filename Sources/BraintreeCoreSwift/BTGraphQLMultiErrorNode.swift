@@ -1,8 +1,8 @@
-
 import Foundation
 
 /// Node used to construct an error tree from GraphQL responses. The order of node insertion is preserved.
 class BTGraphQLMultiErrorNode: BTGraphQLErrorNode {
+
     let field: String
     var childOrder: [String] = []
     var children: [String: BTGraphQLErrorNode] = [:]

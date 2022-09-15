@@ -1,7 +1,7 @@
-
 import Foundation
 
 class BTGraphQLSingleErrorNode: BTGraphQLErrorNode {
+
     let field: String
     let message: String
     let code: String?

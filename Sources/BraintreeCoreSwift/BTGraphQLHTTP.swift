@@ -55,7 +55,6 @@ import Foundation
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
             let error = Self.constructError(code: .missingBaseURL, userInfo: errorUserInfo)
-            // TODO: why not use callCompletion?
             completion?(nil, nil, error)
             return
         }
@@ -136,6 +135,7 @@ import Foundation
                 code: .httpResponseInvalid,
                 userInfo: [NSLocalizedDescriptionKey : "URLResponse was missing on invalid."]
             )
+
             callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             return
         }
