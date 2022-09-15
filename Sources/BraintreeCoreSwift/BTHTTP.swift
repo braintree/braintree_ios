@@ -9,7 +9,7 @@ import Security
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     enum ClientAuthorization: Equatable {
-        case authorizationFingerprint(String), tokenizationKey(String), none // TODO: Remove none
+        case authorizationFingerprint(String), tokenizationKey(String)
     }
     
     // MARK: - Public Properties
@@ -40,7 +40,7 @@ import Security
     // MARK: - Internal Properties
     
     let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
-    var clientAuthorization: ClientAuthorization = .none
+    var clientAuthorization: ClientAuthorization?
     
     // MARK: - Internal Initializer
     
@@ -526,8 +526,8 @@ import Security
             return BTHTTP(url: baseURL, authorizationFingerprint: fingerprint)
         case .tokenizationKey(let key):
             return BTHTTP(url: baseURL, tokenizationKey: key)
-        case .none:
-            return BTHTTP(url: baseURL) // TODO: Temporary, remove
+        default:
+            return BTHTTP(url: baseURL)
         }
     }
 

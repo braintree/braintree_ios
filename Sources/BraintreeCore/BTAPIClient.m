@@ -57,7 +57,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                     return nil;
                 }
 
-//                _configurationHTTP = [[BTHTTP alloc] initWithClientToken:self.clientToken];
                 _configurationHTTP = [[BTHTTP alloc] initWithClientToken:self.clientToken error:&error];
 
                 if (sendAnalyticsEvent) {

@@ -1,8 +1,8 @@
 import Foundation
 
 @objcMembers public class BTAPIHTTP: BTHTTP {
-    
-    var accessToken: String? = ""
+
+    let accessToken: String?
 
     @objc(initWithBaseURL:accessToken:)
     public init(url: URL, accessToken: String? = "") {
