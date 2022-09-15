@@ -80,6 +80,10 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-ClientTokenVersion3"]) {
         [[NSUserDefaults standardUserDefaults] setObject:@"3" forKey:@"BraintreeDemoSettingsClientTokenVersionDefaultsKey"];
     }
+    
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-SkipApplePayContactFields"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"BraintreeDemoRequireApplePayContactFields"];
+    }
     // End checking for testing arguments
     
     
