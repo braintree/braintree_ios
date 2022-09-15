@@ -39,6 +39,7 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
                 XCTAssertEqual(account.nonce, mockNonce)
                 XCTAssertEqual(account.type, "PayPal")
                 XCTAssertEqual(account.clientMetadataID, mockCorrelationId)
+                XCTAssertEqual(mockClient.postedAnalyticsEvents.last, "ios.paypal-native.tokenize.succeeded")
 
             case .failure:
                 XCTFail("Successful mock did not vend a PayPAl account nonce")
@@ -72,6 +73,7 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
                 XCTFail("A response without a nonce string should be a failure")
             case .failure(let error):
                 XCTAssertEqual(error, .parsingTokenizationResultFailed)
+                XCTAssertEqual(mockClient.postedAnalyticsEvents.last, "ios.paypal-native.tokenize.parsing-result.failed")
             }
         }
     }
