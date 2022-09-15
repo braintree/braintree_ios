@@ -77,6 +77,11 @@ class BraintreeDemoSettings: NSObject {
     static var threeDSecureRequiredStatus: BraintreeDemoThreeDSecureRequiredSetting {
         return BraintreeDemoThreeDSecureRequiredSetting(rawValue: UserDefaults.standard.integer(forKey: ThreeDSecureRequiredDefaultsKey)) ?? .requiredIfAttempted
     }
+    
+    @objc
+    static var requireApplePayContactFields: Bool {
+        return UserDefaults.standard.bool(forKey: "BraintreeDemoRequireApplePayContactFields")
+    }
 
     @objc
     static var customerPresent: Bool {

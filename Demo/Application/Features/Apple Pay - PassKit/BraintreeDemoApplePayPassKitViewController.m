@@ -1,4 +1,5 @@
 #import "BraintreeDemoApplePayPassKitViewController.h"
+#import "Demo-Swift.h"
 @import BraintreeApplePay;
 
 @interface BraintreeDemoApplePayPassKitViewController () <PKPaymentAuthorizationViewControllerDelegate>
@@ -56,7 +57,10 @@
 
         // Requiring PKAddressFieldPostalAddress crashes Simulator
         //paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
-        paymentRequest.requiredBillingContactFields = [NSSet setWithObjects:PKContactFieldName, nil];
+        if ([BraintreeDemoSettings requireApplePayContactFields]) {
+            paymentRequest.requiredBillingContactFields = [NSSet setWithObjects:PKContactFieldName, nil];
+            paymentRequest.requiredShippingContactFields = [NSSet setWithObjects:PKContactFieldName, PKContactFieldPhoneNumber, PKContactFieldEmailAddress, nil];
+        }
 
         PKShippingMethod *shippingMethod1 = [PKShippingMethod summaryItemWithLabel:@"✈️ Fast Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"4.99"]];
         shippingMethod1.detail = @"Fast but expensive";
@@ -68,7 +72,6 @@
         shippingMethod3.detail = @"It will make Apple Pay fail";
         shippingMethod3.identifier = @"fail";
         paymentRequest.shippingMethods = @[shippingMethod1, shippingMethod2, shippingMethod3];
-        paymentRequest.requiredShippingContactFields = [NSSet setWithObjects:PKContactFieldName, PKContactFieldPhoneNumber, PKContactFieldEmailAddress, nil];
         paymentRequest.paymentSummaryItems = @[
                                                [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]],
                                                [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod1.amount],
