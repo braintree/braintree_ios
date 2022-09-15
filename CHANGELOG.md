@@ -64,8 +64,14 @@
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
 
 ## unreleased
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix CocoaPods integrations to pin exact `PayPalCheckout` version
+
+## 5.12.0 (2022-09-07)
+* Adds support for Xcode 14 and iOS 16 
 * BraintreeSEPADirectDebit
-  * Update nonce to pull in ibanLastFour and customerID as expected
+  * Update `BTSEPADirectDebitNonce` to pull in `ibanLastFour` and `customerID` as expected
+  * Remove unused `presentationContextProvider` (fixes #854)
 
 ## 5.11.0 (2022-07-20)
 * BraintreeSEPADirectDebit

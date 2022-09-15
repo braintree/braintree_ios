@@ -74,7 +74,14 @@
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {
-    switch ([CLLocationManager authorizationStatus]) {
+    CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
+    if (@available(iOS 14, *)) {
+        locationStatus = [CLLocationManager new].authorizationStatus;
+    } else {
+        locationStatus = [CLLocationManager authorizationStatus];
+    }
+    
+    switch (locationStatus) {
         case kCLAuthorizationStatusNotDetermined:
             [self.locationManager requestWhenInUseAuthorization];
             break;
