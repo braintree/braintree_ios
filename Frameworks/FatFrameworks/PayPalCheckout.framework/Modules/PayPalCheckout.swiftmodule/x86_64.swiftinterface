@@ -140,6 +140,7 @@ public struct UserCheckoutResult : Swift.Decodable, Swift.Equatable {
 @_hasMissingDesignatedInitializers @objc(PPCPaymentFundingEligibilityState) @objcMembers public class PaymentFundingEligibilityState : ObjectiveC.NSObject {
   public typealias PaymentsButtonState = [PayPalCheckout.PaymentButtonFundingSource : [Swift.String : Swift.AnyObject]]
   final public let paymentsButton: PayPalCheckout.PaymentFundingEligibilityState.PaymentsButtonState
+  @objc final public let error: Swift.Error?
   @objc deinit
   @objc override dynamic public init()
 }
@@ -348,7 +349,7 @@ extension Dictionary where Key == PayPalCheckout.ColorType, Value == UIKit.UICol
   public typealias Color = PayPalCheckout.PayPalButton.Color
   public typealias Label = PayPalCheckout.PayPalButton.Label
   @objc override dynamic public init()
-  public init(color: PayPalCheckout.PayPalButtonUIConfiguration.Color = .gold, label: PayPalCheckout.PayPalButtonUIConfiguration.Label? = nil, attributes: PayPalCheckout.PaymentButtonAttributes = .init())
+  @objc public init(color: PayPalCheckout.PayPalButtonUIConfiguration.Color = .gold, label: PayPalCheckout.PayPalButtonUIConfiguration.Label = .none, attributes: PayPalCheckout.PaymentButtonAttributes = .init())
   @objc deinit
 }
 public enum FundingProvider : Swift.String {
@@ -426,6 +427,9 @@ public protocol BankAccount {
 @objc(PPCOrderIntent) public enum OrderIntent : Swift.Int {
   case capture
   case authorize
+  public var stringValue: Swift.String {
+    get
+  }
   public init?(rawValue: Swift.Int)
   public typealias RawValue = Swift.Int
   public var rawValue: Swift.Int {
@@ -486,6 +490,8 @@ public protocol BankAccount {
   public var systemFont13Bold: UIKit.UIFont
   public var boldLinkFont: UIKit.UIFont
   public var subheaderFont: UIKit.UIFont
+  public var textSectionTitleFont: UIKit.UIFont
+  public var textSectionParagraphFont: UIKit.UIFont
   public var cartDetailsLineItemFont: UIKit.UIFont
   public var cartDetailsTaxesAndFeesFont: UIKit.UIFont
   public var colorSheet: PayPalCheckout.ColorSheet
@@ -871,6 +877,7 @@ public enum RequestError : Foundation.LocalizedError {
   case decodingFailure(Swift.Error)
   case statusCode(Swift.Int)
   case unsupported(Swift.String)
+  case requestCancellation
   case other(Swift.Error)
   public var errorDescription: Swift.String? {
     get
@@ -1044,11 +1051,14 @@ public struct FPTIEntry : Swift.Codable {
   public var webFragment: Swift.String?
   public var experimentationExperience: Swift.String?
   public var experimentationTreatment: Swift.String?
-  public init(eventType: PayPalCheckout.FPTIEventType, funnelStage: Swift.String? = nil, fileName: Swift.String = #file, fileFunction: Swift.String = #function, fileLine: Swift.Int = #line, debugId: Swift.String? = nil, errorType: Swift.String? = nil, internalErrorCode: Swift.String? = nil, externalErrorCode: Swift.String? = nil, errorMessage: Swift.String? = nil, errorDetails: Swift.String? = nil, transitionName: Swift.String? = nil, outcome: Swift.String? = nil, stateName: Swift.String? = nil, informationMessage: Swift.String? = nil, parentName: Swift.String? = nil, childName: Swift.String? = nil, viewName: Swift.String? = nil, eventName: Swift.String? = nil, fallbackReason: Swift.String? = nil, fallbackCategory: Swift.String? = nil, fallbackFrom: Swift.String? = nil, fallbackTo: Swift.String? = nil, originScreen: Swift.String? = nil, destinationScreen: Swift.String? = nil, payloadSent: Swift.String? = nil, webFragment: Swift.String? = nil, experimentationExperience: Swift.String? = nil, experimentationTreatment: Swift.String? = nil, usedFundingSource: Swift.String? = nil, ctaContent: Swift.String? = nil, assistiveTouchRunning: Swift.Bool? = nil, grayscaleEnabled: Swift.Bool? = nil, boldTextEnabled: Swift.Bool? = nil, voiceOverRunning: Swift.Bool? = nil, monoAudioEnabled: Swift.Bool? = nil, speakScreenEnabled: Swift.Bool? = nil, invertColorsEnabled: Swift.Bool? = nil, speakSelectionEnabled: Swift.Bool? = nil, reduceMotionEnabled: Swift.Bool? = nil, reduceTransparencyEnabled: Swift.Bool? = nil, darkerSystemColorsEnabled: Swift.Bool? = nil, preferredContentSizeCategory: Swift.String? = nil, currencyCode: Swift.String? = nil, shippingAmount: Swift.String? = nil, totalAmount: Swift.String? = nil, tab: Swift.String? = nil, fieldName: Swift.String? = nil, addressCount: Swift.Int? = nil, queryName: Swift.String? = nil, duration: Swift.Int64? = nil)
+  public init(eventType: PayPalCheckout.FPTIEventType, funnelStage: Swift.String? = nil, fileName: Swift.String = #file, fileFunction: Swift.String = #function, fileLine: Swift.Int = #line, debugId: Swift.String? = nil, errorType: Swift.String? = nil, internalErrorCode: Swift.String? = nil, externalErrorCode: Swift.String? = nil, errorMessage: Swift.String? = nil, errorDetails: Swift.String? = nil, transitionName: Swift.String? = nil, outcome: Swift.String? = nil, stateName: Swift.String? = nil, informationMessage: Swift.String? = nil, parentName: Swift.String? = nil, childName: Swift.String? = nil, viewName: Swift.String? = nil, eventName: Swift.String? = nil, fallbackReason: Swift.String? = nil, fallbackCategory: Swift.String? = nil, fallbackFrom: Swift.String? = nil, fallbackTo: Swift.String? = nil, originScreen: Swift.String? = nil, destinationScreen: Swift.String? = nil, payloadSent: Swift.String? = nil, webFragment: Swift.String? = nil, experimentationExperience: Swift.String? = nil, experimentationTreatment: Swift.String? = nil, usedFundingSource: Swift.String? = nil, ctaContent: Swift.String? = nil, assistiveTouchRunning: Swift.Bool? = nil, grayscaleEnabled: Swift.Bool? = nil, boldTextEnabled: Swift.Bool? = nil, voiceOverRunning: Swift.Bool? = nil, monoAudioEnabled: Swift.Bool? = nil, speakScreenEnabled: Swift.Bool? = nil, invertColorsEnabled: Swift.Bool? = nil, speakSelectionEnabled: Swift.Bool? = nil, reduceMotionEnabled: Swift.Bool? = nil, reduceTransparencyEnabled: Swift.Bool? = nil, darkerSystemColorsEnabled: Swift.Bool? = nil, preferredContentSizeCategory: Swift.String? = nil, currencyCode: Swift.String? = nil, shippingAmount: Swift.String? = nil, totalAmount: Swift.String? = nil, tab: Swift.String? = nil, fieldName: Swift.String? = nil, addressCount: Swift.Int? = nil, queryName: Swift.String? = nil, correlationId: Swift.String? = nil, duration: Swift.Int64? = nil, authSDKVersion: Swift.String? = nil, appGuid: Swift.String? = nil)
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
 @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class HomePage : PayPalCheckout.ContentPage {
+  override public var headerAccessibilityElements: [Any]? {
+    get
+  }
   @objc deinit
 }
 public typealias CustomContentLayout = (PayPalCheckout.ContentView) -> CoreGraphics.CGFloat
@@ -1250,10 +1260,10 @@ public protocol PaymentContingencies {
   var needRealTimeBalanceForBankAccount: PayPalCheckout.OpenBankingContingency? { get }
   var strongCustomerAuthenticationRequired: PayPalCheckout.StrongCustomerAuthenticationRequiredContingency? { get }
 }
-@_hasMissingDesignatedInitializers public class ResolveThreeDSStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.State>.Callback {
-  override public func execute(context: PayPalCheckout.State?, completion: PayPalCheckout.ResolveThreeDSStep.Next?)
+@_hasMissingDesignatedInitializers public class ResolveThreeDSStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.ThreeDSContext>.Callback {
+  override public func execute(context: PayPalCheckout.ThreeDSContext?, completion: PayPalCheckout.ResolveThreeDSStep.Next?)
   @objc deinit
-  override public init(context: PayPalCheckout.State? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.State?, PayPalCheckout.Step<PayPalCheckout.State>.Next?) -> Swift.Void)? = super)
+  override public init(context: PayPalCheckout.ThreeDSContext? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.ThreeDSContext?, PayPalCheckout.Step<PayPalCheckout.ThreeDSContext>.Next?) -> Swift.Void)? = super)
 }
 public typealias GetOrderIdCallback = (Swift.String?, Swift.Error?) -> Swift.Void
 @_hasMissingDesignatedInitializers @objc(PPCCreateOrderAction) @objcMembers public class CreateOrderAction : ObjectiveC.NSObject {
@@ -1319,10 +1329,10 @@ public struct Animation {
   @available(iOS 3.0, *)
   @objc override dynamic public init(image: UIKit.UIImage?, highlightedImage: UIKit.UIImage?)
 }
-@_hasMissingDesignatedInitializers public class SecondaryApprovalStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.State>.Callback {
-  override public func execute(context: PayPalCheckout.State?, completion: PayPalCheckout.SecondaryApprovalStep.Next?)
+@_hasMissingDesignatedInitializers public class SecondaryApprovalStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.ThreeDSContext>.Callback {
+  override public func execute(context: PayPalCheckout.ThreeDSContext?, completion: PayPalCheckout.SecondaryApprovalStep.Next?)
   @objc deinit
-  override public init(context: PayPalCheckout.State? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.State?, PayPalCheckout.Step<PayPalCheckout.State>.Next?) -> Swift.Void)? = super)
+  override public init(context: PayPalCheckout.ThreeDSContext? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.ThreeDSContext?, PayPalCheckout.Step<PayPalCheckout.ThreeDSContext>.Next?) -> Swift.Void)? = super)
 }
 public struct ExternalTracking {
   public let clientID: Swift.String
@@ -1397,11 +1407,15 @@ public enum Transition {
   }
   public enum StartWithSpinner : PayPalCheckout.StaticIdentifiable {
   }
+  public enum Crypto : PayPalCheckout.StaticIdentifiable {
+  }
   public enum Finishing : PayPalCheckout.StaticIdentifiable {
   }
   public enum Shutdown : PayPalCheckout.StaticIdentifiable {
   }
   public enum Error : PayPalCheckout.StaticIdentifiable {
+  }
+  public enum AuthComplete : PayPalCheckout.StaticIdentifiable {
   }
 }
 @objc @_inheritsConvenienceInitializers public class RateChangePolicyHeaderView : PayPalCheckout.UnconstrainedTextLabel {
@@ -1454,6 +1468,15 @@ public struct LogoPositioningConfig : Swift.Equatable {
   public var width: CoreGraphics.CGFloat
   public init(xMultiplier: CoreGraphics.CGFloat, yMultiplier: CoreGraphics.CGFloat, height: CoreGraphics.CGFloat, width: CoreGraphics.CGFloat)
   public static func == (a: PayPalCheckout.LogoPositioningConfig, b: PayPalCheckout.LogoPositioningConfig) -> Swift.Bool
+}
+public enum ThreeDSContext {
+  case checkout
+  case addCard
+  public static func == (a: PayPalCheckout.ThreeDSContext, b: PayPalCheckout.ThreeDSContext) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
 }
 public struct OnCancel : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
@@ -1740,7 +1763,18 @@ public protocol ThreeDomainSecureContingency {
   var method: PayPalCheckout.HTTPMethod? { get }
   var parameter: Swift.String? { get }
   var experience: PayPalCheckout.ThreeDSPaymentExperience? { get }
-  var requestParams: [Swift.String : Swift.String] { get }
+  var requestParams: [Swift.String : Swift.String]? { get }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CryptoRateView : UIKit.UIView, PayPalCheckout.ContentView, PayPalCheckout.ViewModelView, PayPalCheckout.StaticIdentifiable {
+  public func desiredHeight(forWidth availableWidth: CoreGraphics.CGFloat = 0) -> CoreGraphics.CGFloat
+  public var isVisible: Swift.Bool {
+    get
+  }
+  public var isPaysheetRow: Swift.Bool {
+    get
+  }
+  @objc deinit
+  public func updateData()
 }
 public enum NetworkInputType {
   case mapped
@@ -2199,6 +2233,57 @@ public enum I18n {
   @PayPalCheckout.L10n public static var conversionConvertWithCardIssuerPrompt: Swift.String {
     get
   }
+  @PayPalCheckout.L10n public static var cryptoLegalGotIt: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalSellTitle: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalSellPayPalBalance: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalSellMerchantAddsTax: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalRefundTitle: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalRefundsIssuedToPayPalBalance: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalTaxableTitle: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalTaxableTaxStatements: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLegalLegalese: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoSellingAmount: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoExchangeRate: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoDescription: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoRatesAndFees: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoBackupFundingInstrument: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoCta: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLoading1: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var cryptoLoading2: Swift.String {
+    get
+  }
   @PayPalCheckout.L10n public static var department: Swift.String {
     get
   }
@@ -2634,6 +2719,9 @@ public enum I18n {
   @PayPalCheckout.L10n public static var snackBarCardAdded: Swift.String {
     get
   }
+  @PayPalCheckout.L10n public static var snackBarCardAddedWithFIData: Swift.String {
+    get
+  }
   @PayPalCheckout.L10n public static var snackbarEscapeButton: Swift.String {
     get
   }
@@ -2721,6 +2809,12 @@ public enum I18n {
   @PayPalCheckout.L10n public static var threeDSMessageButtonText: Swift.String {
     get
   }
+  @PayPalCheckout.L10n public static var threeDSAddCardFailureAlertTitle: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var threeDSAddCardFailureAlertMessage: Swift.String {
+    get
+  }
   @PayPalCheckout.L10n public static var tooFewCharacters: Swift.String {
     get
   }
@@ -2805,7 +2899,7 @@ public enum Analytics {
 }
 @objc(PPCPaymentButtonContainerDelegate) public protocol PaymentButtonContainerDelegate {
   @objc func onLoading()
-  @objc func onFinish(fundingEligibilityState: PayPalCheckout.PaymentFundingEligibilityState?, error: Swift.Error?)
+  @objc func onFinish(fundingEligibilityState: PayPalCheckout.PaymentFundingEligibilityState)
 }
 public struct OnApprove : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
@@ -2868,10 +2962,10 @@ public typealias PaysheetContainerContentDeducer = (Swift.AnyHashable, PayPalChe
     get
   }
 }
-@_hasMissingDesignatedInitializers public class JWTStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.State>.Callback {
-  override public func execute(context: PayPalCheckout.State?, completion: PayPalCheckout.JWTStep.Next?)
+@_hasMissingDesignatedInitializers public class JWTStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.ThreeDSContext>.Callback {
+  override public func execute(context: PayPalCheckout.ThreeDSContext?, completion: PayPalCheckout.JWTStep.Next?)
   @objc deinit
-  override public init(context: PayPalCheckout.State? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.State?, PayPalCheckout.Step<PayPalCheckout.State>.Next?) -> Swift.Void)? = super)
+  override public init(context: PayPalCheckout.ThreeDSContext? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.ThreeDSContext?, PayPalCheckout.Step<PayPalCheckout.ThreeDSContext>.Next?) -> Swift.Void)? = super)
 }
 @objc(PPCChannel) public enum Channel : Swift.Int, Swift.CaseIterable, Swift.CustomStringConvertible {
   case native
@@ -3028,6 +3122,8 @@ public protocol Address {
   var postalCode: Swift.String? { get }
   var fullAddress: Swift.String { get }
 }
+extension Address {
+}
 public protocol CartAddress : PayPalCheckout.Address {
   var firstName: Swift.String? { get }
   var lastName: Swift.String? { get }
@@ -3162,14 +3258,15 @@ public enum EventTypeData {
   case duplicateButtonSessionID
   case sdkFinishing
   case createOrderSucceeded
-  case errorApproving3DS
+  case errorApproving3DS(PayPalCheckout.ThreeDSContext)
   case fiFailed3DS
   case fundingOptionsChanged(old: [PayPalCheckout.FundingOption], new: [PayPalCheckout.FundingOption])
   case paysheetDidAppear
   case paysheetWillDisappear
   case attemptNativeAddCard
   case onGenericError
-  case addCardApproved
+  case addCardError(isThreeDSFlow: Swift.Bool)
+  case addCardApproved(PayPalCheckout.FundingInstrument?)
   case addCardStateUpdated(isProcessing: Swift.Bool)
   case treatmentsUpdated
   case countrySelected
@@ -3178,6 +3275,8 @@ public enum EventTypeData {
   case keyboardWillShow(keyboardHeight: CoreGraphics.CGFloat, duration: Foundation.TimeInterval)
   case keyboardWillHide
   case cardinalNotPresent
+  case cryptoUpdated
+  case ctaButtonUpdated(PayPalCheckout.FIModelBase)
   case billingBalanceToggled(isOn: Swift.Bool)
 }
 public protocol CheckoutSessionFlags {
@@ -3206,13 +3305,13 @@ public protocol CheckoutSessionFlags {
   @objc override dynamic public init()
 }
 @_hasMissingDesignatedInitializers @objc(PPCPaymentButtonContainer) @objcMembers public class PaymentButtonContainer : UIKit.UIView, PayPalCheckout.PaymentButtonDelegate {
-  @objc public var onCreateOrder: PayPalCheckout.CheckoutConfig.CreateOrderCallback?
+  @objc public var createOrder: PayPalCheckout.CheckoutConfig.CreateOrderCallback?
   @objc public var onApproval: PayPalCheckout.CheckoutConfig.ApprovalCallback?
   @objc public var onCancel: PayPalCheckout.CheckoutConfig.CancelCallback?
   @objc public var onError: PayPalCheckout.CheckoutConfig.ErrorCallback?
   @objc public var onShippingChange: PayPalCheckout.CheckoutConfig.ShippingChangeCallback?
   @objc public init(payPalButtonUIConfiguration: PayPalCheckout.PayPalButtonUIConfiguration = .init(), payPalCreditButtonUIConfiguration: PayPalCheckout.PayPalCreditButtonUIConfiguration = .init(), payLaterButtonUIConfiguration: PayPalCheckout.PayLaterButtonUIConfiguration = .init(), delegate: PayPalCheckout.PaymentButtonContainerDelegate? = nil)
-  @objc public func setup(onCreateOrder: PayPalCheckout.CheckoutConfig.CreateOrderCallback? = nil, onApproval: PayPalCheckout.CheckoutConfig.ApprovalCallback? = nil, onCancel: PayPalCheckout.CheckoutConfig.CancelCallback? = nil, onError: PayPalCheckout.CheckoutConfig.ErrorCallback? = nil, onShippingChange: PayPalCheckout.CheckoutConfig.ShippingChangeCallback? = nil)
+  @objc public func setup(createOrder: PayPalCheckout.CheckoutConfig.CreateOrderCallback? = nil, onApproval: PayPalCheckout.CheckoutConfig.ApprovalCallback? = nil, onCancel: PayPalCheckout.CheckoutConfig.CancelCallback? = nil, onError: PayPalCheckout.CheckoutConfig.ErrorCallback? = nil, onShippingChange: PayPalCheckout.CheckoutConfig.ShippingChangeCallback? = nil)
   @objc public func configurePayPalButton(with configuration: PayPalCheckout.PayPalButtonUIConfiguration)
   @objc public func configurePayPalCreditButton(with configuration: PayPalCheckout.PayPalCreditButtonUIConfiguration)
   @objc public func configurePayLaterButton(with configuration: PayPalCheckout.PayLaterButtonUIConfiguration)
@@ -3221,6 +3320,9 @@ public protocol CheckoutSessionFlags {
   @objc public func button(_ button: PayPalCheckout.PaymentButton, changedEligibilityStatus status: PayPalCheckout.PaymentButtonEligibilityStatus)
   @objc deinit
   @objc override dynamic public init(frame: CoreGraphics.CGRect)
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CryptoLegalInfoPage : PayPalCheckout.ContentPage {
+  @objc deinit
 }
 @_hasMissingDesignatedInitializers @objc(PPCBillingActionData) @objcMembers public class BillingActionData : ObjectiveC.NSObject {
   @objc final public let billingId: Swift.String
@@ -3267,6 +3369,7 @@ extension String {
   }
   public func boundingHeight(forWidth: CoreGraphics.CGFloat, font: UIKit.UIFont = .preferredFont(forTextStyle: .body), options: UIKit.NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading], attributes: [Foundation.NSAttributedString.Key : Any]? = nil, context: UIKit.NSStringDrawingContext? = nil) -> CoreGraphics.CGFloat
   public func height(withConstrainedWidth width: CoreGraphics.CGFloat, font: UIKit.UIFont) -> CoreGraphics.CGFloat
+  public static func secureRandomIdentifier() -> Swift.String
 }
 @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class UndefinedPage : PayPalCheckout.ContentPage {
   public static var instance: PayPalCheckout.UndefinedPage
@@ -3707,6 +3810,9 @@ public enum BankAccountType : Swift.String, Swift.Codable, Swift.CaseIterable {
   case thb
   case usd
   public static func currencyCode(from stringValue: Swift.String) -> PayPalCheckout.CurrencyCode?
+  public var stringValue: Swift.String {
+    get
+  }
   public init?(rawValue: Swift.Int)
   public typealias AllCases = [PayPalCheckout.CurrencyCode]
   public typealias RawValue = Swift.Int
@@ -3927,10 +4033,10 @@ extension SequenceProcessor : PayPalCheckout.CheckoutProcess where Context == Pa
   public func insert(_ item: PayPalCheckout.SequenceProcessor<Context>.Callback, at index: Swift.Int)
   public func remove(at index: Swift.Int) -> PayPalCheckout.SequenceProcessor<Context>.Callback
 }
-@_hasMissingDesignatedInitializers public class CardinalStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.State>.Callback {
-  override public func execute(context: PayPalCheckout.State?, completion: PayPalCheckout.CardinalStep.Next?)
+@_hasMissingDesignatedInitializers public class CardinalStep : PayPalCheckout.SequenceProcessor<PayPalCheckout.ThreeDSContext>.Callback {
+  override public func execute(context: PayPalCheckout.ThreeDSContext?, completion: PayPalCheckout.CardinalStep.Next?)
   @objc deinit
-  override public init(context: PayPalCheckout.State? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.State?, PayPalCheckout.Step<PayPalCheckout.State>.Next?) -> Swift.Void)? = super)
+  override public init(context: PayPalCheckout.ThreeDSContext? = super, name: Swift.String? = super, _ function: ((PayPalCheckout.ThreeDSContext?, PayPalCheckout.Step<PayPalCheckout.ThreeDSContext>.Next?) -> Swift.Void)? = super)
 }
 public enum NetworkSynchronicity {
   case synchronous
@@ -4099,6 +4205,9 @@ public protocol Cart {
     case none
     case `continue`
     case payNow
+    public var stringValue: Swift.String? {
+      get
+    }
     public init?(rawValue: Swift.Int)
     public typealias RawValue = Swift.Int
     public var rawValue: Swift.Int {
@@ -4447,6 +4556,7 @@ public enum EventType : Swift.String, Swift.CaseIterable, Swift.CustomStringConv
   case paysheetWillDisappear
   case attemptNativeAddCard
   case onGenericError
+  case addCardError
   case addCardApproved
   case addCardStateUpdated
   case treatmentsUpdated
@@ -4456,6 +4566,8 @@ public enum EventType : Swift.String, Swift.CaseIterable, Swift.CustomStringConv
   case keyboardWillShow
   case keyboardWillHide
   case cardinalNotPresent
+  case cryptoUpdated
+  case ctaButtonUpdated
   case billingBalanceToggled
   public var description: Swift.String {
     get
@@ -4532,6 +4644,8 @@ extension PayPalCheckout.ProcessingInstruction : Swift.RawRepresentable {}
 extension PayPalCheckout.PaymentButtonColor : Swift.Equatable {}
 extension PayPalCheckout.PaymentButtonColor : Swift.Hashable {}
 extension PayPalCheckout.PaymentButtonColor : Swift.RawRepresentable {}
+extension PayPalCheckout.ThreeDSContext : Swift.Equatable {}
+extension PayPalCheckout.ThreeDSContext : Swift.Hashable {}
 extension PayPalCheckout.ColorType : Swift.Equatable {}
 extension PayPalCheckout.ColorType : Swift.Hashable {}
 extension PayPalCheckout.NetworkStatus : Swift.Equatable {}

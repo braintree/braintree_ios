@@ -861,6 +861,13 @@ SWIFT_CLASS_NAMED("CreateOrderAction")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+
+SWIFT_CLASS("_TtC14PayPalCheckout14CryptoRateView")
+@interface CryptoRateView : UIView
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
+@end
+
 /// An enum of the possible values to be passed as the curency code.
 /// <a href="https://developer.paypal.com/docs/api/orders/v2/#definition-currency_code">Currency code enum documentation guide</a>
 typedef SWIFT_ENUM_NAMED(NSInteger, PPCCurrencyCode, "CurrencyCode", open) {
@@ -1712,6 +1719,7 @@ typedef SWIFT_ENUM_NAMED(NSInteger, PPCPayPalButtonLabel, "Label", open) {
 SWIFT_CLASS_NAMED("PayPalButtonUIConfiguration")
 @interface PPCPayPalButtonUIConfiguration : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithColor:(enum PPCPayPalButtonColor)color label:(enum PPCPayPalButtonLabel)label attributes:(PPCPaymentButtonAttributes * _Nonnull)attributes OBJC_DESIGNATED_INITIALIZER;
 @end
 
 enum PPCPayPalCreditButtonColor : NSInteger;
@@ -1838,8 +1846,8 @@ enum PPCPaymentButtonEligibilityStatus : NSInteger;
 /// and implement the PaymentButtonContainerDelegate
 SWIFT_CLASS_NAMED("PaymentButtonContainer")
 @interface PPCPaymentButtonContainer : UIView
-/// A closure that gets executed when Checkout calls create order.
-@property (nonatomic, copy) void (^ _Nullable onCreateOrder)(PPCCreateOrderAction * _Nonnull);
+/// A closure provided to create an order based on an action item.
+@property (nonatomic, copy) void (^ _Nullable createOrder)(PPCCreateOrderAction * _Nonnull);
 /// A closure that gets executed when Checkout was approved.
 @property (nonatomic, copy) void (^ _Nullable onApproval)(PPCApproval * _Nonnull);
 /// A closure that gets executed when Checkout was cancelled.
@@ -1860,17 +1868,17 @@ SWIFT_CLASS_NAMED("PaymentButtonContainer")
 - (nonnull instancetype)initWithPayPalButtonUIConfiguration:(PPCPayPalButtonUIConfiguration * _Nonnull)payPalButtonUIConfiguration payPalCreditButtonUIConfiguration:(PPCPayPalCreditButtonUIConfiguration * _Nonnull)payPalCreditButtonUIConfiguration payLaterButtonUIConfiguration:(PPCPayLaterButtonUIConfiguration * _Nonnull)payLaterButtonUIConfiguration delegate:(id <PPCPaymentButtonContainerDelegate> _Nullable)delegate OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
 /// Configures the callback closures.
-/// \param onCreateOrder create order callback will be used on Checkout.start()
+/// \param createOrder Callback to either supply an order token or order details to the Checkout SDK.
 ///
-/// \param onApproval approval callback will be used on Checkout.start()
+/// \param onApproval This will be called when the transaction has been approved.
 ///
-/// \param onCancel cancel callback will be used on Checkout.start()
+/// \param onCancel This will be called when transaction has been cancelled.
 ///
-/// \param onError error callback will be used on Checkout.start()
+/// \param onError This will be called when an error cannot be recovered from, and the transaction has been cancelled.
 ///
-/// \param onShippingChange shipping change callback will be used on Checkout.start()
+/// \param onShippingChange This will be called when the user selects a new shipping address or shipping method.
 ///
-- (void)setupOnCreateOrder:(void (^ _Nullable)(PPCCreateOrderAction * _Nonnull))onCreateOrder onApproval:(void (^ _Nullable)(PPCApproval * _Nonnull))onApproval onCancel:(void (^ _Nullable)(void))onCancel onError:(void (^ _Nullable)(PPCErrorInfo * _Nonnull))onError onShippingChange:(void (^ _Nullable)(PPCShippingChange * _Nonnull, PPCShippingChangeAction * _Nonnull))onShippingChange;
+- (void)setupWithCreateOrder:(void (^ _Nullable)(PPCCreateOrderAction * _Nonnull))createOrder onApproval:(void (^ _Nullable)(PPCApproval * _Nonnull))onApproval onCancel:(void (^ _Nullable)(void))onCancel onError:(void (^ _Nullable)(PPCErrorInfo * _Nonnull))onError onShippingChange:(void (^ _Nullable)(PPCShippingChange * _Nonnull, PPCShippingChangeAction * _Nonnull))onShippingChange;
 /// Update payPalButtonUI the attributes programmatically and override the values.
 /// \param configuration Instance to update the payPalButtonUI
 ///
@@ -1901,10 +1909,7 @@ SWIFT_PROTOCOL_NAMED("PaymentButtonContainerDelegate")
 /// [PAYPAL], [PAYPAL_CREDIT] or [PAY_LATER] and whether the button is eligible or not
 /// indication for which button is eligible.
 ///
-/// \param error Returned with error message if failure occurs and could not render the native smart
-/// payments button.
-///
-- (void)onFinishWithFundingEligibilityState:(PPCPaymentFundingEligibilityState * _Nullable)fundingEligibilityState error:(NSError * _Nullable)error;
+- (void)onFinishWithFundingEligibilityState:(PPCPaymentFundingEligibilityState * _Nonnull)fundingEligibilityState;
 @end
 
 /// Edges for the Smart Payment Button, these affect the corner radius.
@@ -1965,6 +1970,8 @@ typedef SWIFT_ENUM_NAMED(NSInteger, PPCPaymentButtonSize, "PaymentButtonSize", o
 /// Each funding will have the reasons for eligibility/ineligibility
 SWIFT_CLASS_NAMED("PaymentFundingEligibilityState")
 @interface PPCPaymentFundingEligibilityState : NSObject
+/// If the response has failed or received any kind of error.
+@property (nonatomic, readonly) NSError * _Nullable error;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -3420,6 +3427,13 @@ SWIFT_CLASS_NAMED("CreateOrderAction")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+
+SWIFT_CLASS("_TtC14PayPalCheckout14CryptoRateView")
+@interface CryptoRateView : UIView
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
+@end
+
 /// An enum of the possible values to be passed as the curency code.
 /// <a href="https://developer.paypal.com/docs/api/orders/v2/#definition-currency_code">Currency code enum documentation guide</a>
 typedef SWIFT_ENUM_NAMED(NSInteger, PPCCurrencyCode, "CurrencyCode", open) {
@@ -4271,6 +4285,7 @@ typedef SWIFT_ENUM_NAMED(NSInteger, PPCPayPalButtonLabel, "Label", open) {
 SWIFT_CLASS_NAMED("PayPalButtonUIConfiguration")
 @interface PPCPayPalButtonUIConfiguration : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithColor:(enum PPCPayPalButtonColor)color label:(enum PPCPayPalButtonLabel)label attributes:(PPCPaymentButtonAttributes * _Nonnull)attributes OBJC_DESIGNATED_INITIALIZER;
 @end
 
 enum PPCPayPalCreditButtonColor : NSInteger;
@@ -4397,8 +4412,8 @@ enum PPCPaymentButtonEligibilityStatus : NSInteger;
 /// and implement the PaymentButtonContainerDelegate
 SWIFT_CLASS_NAMED("PaymentButtonContainer")
 @interface PPCPaymentButtonContainer : UIView
-/// A closure that gets executed when Checkout calls create order.
-@property (nonatomic, copy) void (^ _Nullable onCreateOrder)(PPCCreateOrderAction * _Nonnull);
+/// A closure provided to create an order based on an action item.
+@property (nonatomic, copy) void (^ _Nullable createOrder)(PPCCreateOrderAction * _Nonnull);
 /// A closure that gets executed when Checkout was approved.
 @property (nonatomic, copy) void (^ _Nullable onApproval)(PPCApproval * _Nonnull);
 /// A closure that gets executed when Checkout was cancelled.
@@ -4419,17 +4434,17 @@ SWIFT_CLASS_NAMED("PaymentButtonContainer")
 - (nonnull instancetype)initWithPayPalButtonUIConfiguration:(PPCPayPalButtonUIConfiguration * _Nonnull)payPalButtonUIConfiguration payPalCreditButtonUIConfiguration:(PPCPayPalCreditButtonUIConfiguration * _Nonnull)payPalCreditButtonUIConfiguration payLaterButtonUIConfiguration:(PPCPayLaterButtonUIConfiguration * _Nonnull)payLaterButtonUIConfiguration delegate:(id <PPCPaymentButtonContainerDelegate> _Nullable)delegate OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
 /// Configures the callback closures.
-/// \param onCreateOrder create order callback will be used on Checkout.start()
+/// \param createOrder Callback to either supply an order token or order details to the Checkout SDK.
 ///
-/// \param onApproval approval callback will be used on Checkout.start()
+/// \param onApproval This will be called when the transaction has been approved.
 ///
-/// \param onCancel cancel callback will be used on Checkout.start()
+/// \param onCancel This will be called when transaction has been cancelled.
 ///
-/// \param onError error callback will be used on Checkout.start()
+/// \param onError This will be called when an error cannot be recovered from, and the transaction has been cancelled.
 ///
-/// \param onShippingChange shipping change callback will be used on Checkout.start()
+/// \param onShippingChange This will be called when the user selects a new shipping address or shipping method.
 ///
-- (void)setupOnCreateOrder:(void (^ _Nullable)(PPCCreateOrderAction * _Nonnull))onCreateOrder onApproval:(void (^ _Nullable)(PPCApproval * _Nonnull))onApproval onCancel:(void (^ _Nullable)(void))onCancel onError:(void (^ _Nullable)(PPCErrorInfo * _Nonnull))onError onShippingChange:(void (^ _Nullable)(PPCShippingChange * _Nonnull, PPCShippingChangeAction * _Nonnull))onShippingChange;
+- (void)setupWithCreateOrder:(void (^ _Nullable)(PPCCreateOrderAction * _Nonnull))createOrder onApproval:(void (^ _Nullable)(PPCApproval * _Nonnull))onApproval onCancel:(void (^ _Nullable)(void))onCancel onError:(void (^ _Nullable)(PPCErrorInfo * _Nonnull))onError onShippingChange:(void (^ _Nullable)(PPCShippingChange * _Nonnull, PPCShippingChangeAction * _Nonnull))onShippingChange;
 /// Update payPalButtonUI the attributes programmatically and override the values.
 /// \param configuration Instance to update the payPalButtonUI
 ///
@@ -4460,10 +4475,7 @@ SWIFT_PROTOCOL_NAMED("PaymentButtonContainerDelegate")
 /// [PAYPAL], [PAYPAL_CREDIT] or [PAY_LATER] and whether the button is eligible or not
 /// indication for which button is eligible.
 ///
-/// \param error Returned with error message if failure occurs and could not render the native smart
-/// payments button.
-///
-- (void)onFinishWithFundingEligibilityState:(PPCPaymentFundingEligibilityState * _Nullable)fundingEligibilityState error:(NSError * _Nullable)error;
+- (void)onFinishWithFundingEligibilityState:(PPCPaymentFundingEligibilityState * _Nonnull)fundingEligibilityState;
 @end
 
 /// Edges for the Smart Payment Button, these affect the corner radius.
@@ -4524,6 +4536,8 @@ typedef SWIFT_ENUM_NAMED(NSInteger, PPCPaymentButtonSize, "PaymentButtonSize", o
 /// Each funding will have the reasons for eligibility/ineligibility
 SWIFT_CLASS_NAMED("PaymentFundingEligibilityState")
 @interface PPCPaymentFundingEligibilityState : NSObject
+/// If the response has failed or received any kind of error.
+@property (nonatomic, readonly) NSError * _Nullable error;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
