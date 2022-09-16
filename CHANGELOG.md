@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix CocoaPods integrations to pin exact `PayPalCheckout` version
   * Update NativeCheckout version from 0.100.0 to 0.106.0
