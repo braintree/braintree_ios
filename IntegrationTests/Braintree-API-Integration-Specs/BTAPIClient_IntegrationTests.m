@@ -22,6 +22,8 @@
 
 - (void)testFetchConfiguration_withClientToken_returnsTheConfiguration {
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
+    NSURL *baseURL = [[NSURL alloc] initWithString:@"example.com"];
+    client.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:baseURL accessToken:@"fakeAccessToken"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [client fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {

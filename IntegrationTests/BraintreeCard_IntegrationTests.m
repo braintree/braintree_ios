@@ -4,6 +4,7 @@
 #import <BraintreeCard/BraintreeCard.h>
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
+#import "BTAPIClient_Internal.h"
 
 @interface BTCardClient_IntegrationTests : XCTestCase
 @end
@@ -29,6 +30,9 @@
 - (void)testTokenizeCard_whenCardIsInvalidAndValidationIsEnabled_failsWithExpectedValidationError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+
+    NSURL *baseURL = [[NSURL alloc] initWithString:@"example.com"];
+    apiClient.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:baseURL accessToken:@"fakeAccessToken"];
     
     BTCard *card = [BTCard new];
     card.number = @"123";
@@ -104,6 +108,9 @@
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTCard *card = [self validCard];
     card.shouldValidate = YES;
+
+    NSURL *baseURL = [[NSURL alloc] initWithString:@"example.com"];
+    apiClient.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:baseURL accessToken:@"fakeAccessToken"];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
