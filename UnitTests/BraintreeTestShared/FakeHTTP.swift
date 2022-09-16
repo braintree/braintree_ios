@@ -14,8 +14,8 @@ import BraintreeCore
     @objc public var cannedStatusCode: Int = 0
     public var cannedError: Error?
 
-    override required init(url: URL) {
-        super.init(url: url)
+    override required init(url: URL = URL(string: "example.com")!) {
+        super.init(url: URL(string: "example.com")!)
     }
 
     @objc public static func fakeHTTP() -> FakeHTTP {
@@ -25,7 +25,7 @@ import BraintreeCore
     @objc public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWith response: Any, statusCode: Int) {
         stubMethod = httpMethod
         stubEndpoint = endpoint
-        cannedResponse = BTJSON.init(value: response)
+        cannedResponse = BTJSON(value: response)
         cannedStatusCode = statusCode
     }
 
@@ -100,9 +100,10 @@ import BraintreeCore
 @objc public class FakeGraphQLHTTP: BTGraphQLHTTP {
     var POSTRequestCount: Int = 0
     @objc public var lastRequestParameters: NSDictionary?
+    @objc public var cannedConfiguration: BTJSON?
 
     required override init(url: URL) {
-        super.init(url: url)
+        super.init(url: URL(string: "example.com")!)
     }
 
     @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
@@ -112,25 +113,26 @@ import BraintreeCore
     public override func post(_ path: String, parameters: NSDictionary?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
-        completion!(nil, nil, nil)
+        completion!(self.cannedConfiguration, nil, nil)
     }
 }
 
 @objc public class FakeAPIHTTP: BTAPIHTTP {
     var POSTRequestCount: Int = 0
     @objc public var lastRequestParameters: NSDictionary?
+    @objc public var cannedConfiguration: BTJSON?
 
-    required override init(url: URL, accessToken: String? = "") {
-        super.init(url: url, accessToken: "")
+    required override init(url: URL? = URL(string: "example.com")!, accessToken: String? = "") {
+        super.init(url: URL(string: "example.com")!, accessToken: "sampleAccessToken")
     }
 
     @objc public static func fakeHTTP() -> FakeAPIHTTP {
-        self.init(url: URL(string: "http://fake.com")!, accessToken: "")
+        return self.init(url: URL(string: "http://fake.com")!)
     }
 
     public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
-        completion!(nil, nil, nil)
+        completion!(self.cannedConfiguration, nil, nil)
     }
 }

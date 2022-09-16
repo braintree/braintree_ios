@@ -71,7 +71,13 @@
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     FakeHTTP *fakeConfigurationHTTP = [FakeHTTP fakeHTTP];
-    fakeConfigurationHTTP.cannedConfiguration = [[BTJSON alloc] initWithValue:@{ @"test": @YES }];
+    fakeConfigurationHTTP.cannedConfiguration = [[BTJSON alloc] initWithValue:@{
+        @"clientApiUrl": @"https://www.example.com/client/api",
+        @"braintreeApi": @{
+            @"accessToken": @"sample_access_token",
+            @"url": @"https://www.example.com/braintree/api"
+        }
+    }];
     fakeConfigurationHTTP.cannedStatusCode = 200;
     apiClient.configurationHTTP = fakeConfigurationHTTP;
 
@@ -80,7 +86,7 @@
         XCTAssertNil(error);
 
         XCTAssertGreaterThanOrEqual(fakeConfigurationHTTP.GETRequestCount, 1);
-        XCTAssertTrue([configuration.json[@"test"] isTrue]);
+        XCTAssertEqual([configuration.json[@"clientApiUrl"] asString], @"https://www.example.com/client/api");
         [expectation fulfill];
     }];
 
@@ -149,6 +155,7 @@
     // Override apiClient.http so that requests don't fail
     apiClient.configurationHTTP = fake;
     apiClient.http = fake;
+    apiClient.braintreeAPI = [FakeAPIHTTP fakeHTTP];
     [fake stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{ } statusCode:200];
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"Fetch configuration"];
@@ -213,6 +220,7 @@
     apiClient.http = mockHTTP;
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = stubConfigurationHTTP;
+    apiClient.braintreeAPI = [FakeAPIHTTP fakeHTTP];
     [stubConfigurationHTTP stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
 
     BTClientMetadata *metadata = apiClient.metadata;
@@ -234,6 +242,13 @@
     apiClient.braintreeAPI = mockAPIHTTP;
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = stubConfigurationHTTP;
+    stubConfigurationHTTP.cannedConfiguration = [[BTJSON alloc] initWithValue:@{
+        @"clientApiUrl": @"https://www.example.com/client/api",
+        @"braintreeApi": @{
+            @"accessToken": @"sample_access_token",
+            @"url": @"https://www.example.com/braintree/api"
+        }
+    }];
     [stubConfigurationHTTP stubRequestWithMethod:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"POST callback"];
@@ -251,6 +266,11 @@
     apiClient.graphQL = mockGraphQLHTTP;
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = stubConfigurationHTTP;
+    apiClient.braintreeAPI = [FakeAPIHTTP fakeHTTP];
+    stubConfigurationHTTP.cannedConfiguration = [[BTJSON alloc] initWithValue:@{
+        @"clientApiUrl": @"https://www.example.com/client/api"
+    }];
+
     [stubConfigurationHTTP stubRequestWithMethod:@"GET"
                             toEndpoint:@"/client_api/v1/configuration"
                            respondWith:@{
