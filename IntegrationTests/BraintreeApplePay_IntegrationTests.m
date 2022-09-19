@@ -1,4 +1,3 @@
-#import "BTAPIClient_Internal.h"
 #import <BraintreeApplePay/BraintreeApplePay.h>
 #import "BTNonceValidationHelper.h"
 #import <PassKit/PassKit.h>

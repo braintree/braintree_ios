@@ -545,7 +545,6 @@ import Security
 
             let policies: [SecPolicy] = [SecPolicyCreateSSL(true, domain as CFString)]
             SecTrustSetPolicies(serverTrust, policies as CFArray)
-
             SecTrustSetAnchorCertificates(serverTrust, pinnedCertificateData() as CFArray)
 
             var error: CFError?

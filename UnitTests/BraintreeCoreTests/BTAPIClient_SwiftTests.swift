@@ -86,7 +86,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id", sendAnalyticsEvent: false)!
         let mockHTTP = FakeHTTP.fakeHTTP()
-
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockHTTP
 

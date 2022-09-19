@@ -251,7 +251,6 @@
     apiClient.graphQL = mockGraphQLHTTP;
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.configurationHTTP = stubConfigurationHTTP;
-
     [stubConfigurationHTTP stubRequestWithMethod:@"GET"
                             toEndpoint:@"/client_api/v1/configuration"
                            respondWith:@{

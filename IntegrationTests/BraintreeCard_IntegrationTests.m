@@ -4,7 +4,6 @@
 #import <BraintreeCard/BraintreeCard.h>
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
-#import "BTAPIClient_Internal.h"
 
 @interface BTCardClient_IntegrationTests : XCTestCase
 @end
@@ -122,7 +121,7 @@
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTCard *card = [self validCard];
     card.shouldValidate = YES;
-
+    
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
