@@ -127,7 +127,7 @@ import BraintreeCore
     }
 
     @objc public static func fakeHTTP() -> FakeAPIHTTP {
-        return self.init(url: URL(string: "http://fake.com")!)
+        self.init(url: URL(string: "http://fake.com")!)
     }
 
     public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {

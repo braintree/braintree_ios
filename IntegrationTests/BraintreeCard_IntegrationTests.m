@@ -128,6 +128,10 @@
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTCard *card = [self validCard];
     card.shouldValidate = YES;
+
+    NSError *error = NULL;
+    BTClientToken *clientToken = [[BTClientToken alloc] initWithClientToken:SANDBOX_CLIENT_TOKEN_VERSION_3 error:&error];
+    apiClient.http = [[BTHTTP alloc] initWithClientToken:clientToken error:&error];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
