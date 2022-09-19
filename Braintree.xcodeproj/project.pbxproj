@@ -128,7 +128,6 @@
 		80B6190D28C9535F00FB5022 /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */; };
 		80B6191028C9538B00FB5022 /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */; platformFilter = ios; };
 		80CC038A263210D700C4E6E0 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
-		80D667C527274403002851DF /* (null) in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; };
 		80FF7B242587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B222587DBE1001C32EF /* BTThreeDSecureV2UICustomization.m */; };
 		80FF7B4C2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B4A2587DD35001C32EF /* BTThreeDSecureV2ToolbarCustomization.m */; };
 		80FF7B742587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7B722587DE20001C32EF /* BTThreeDSecureV2LabelCustomization.m */; };
@@ -978,8 +977,6 @@
 		80A79DD425CA04CB00A9E9A2 /* BTVenmoRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoRequest.h; sourceTree = "<group>"; };
 		80A79DD525CA04CB00A9E9A2 /* BTVenmoRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoRequest.m; sourceTree = "<group>"; };
 		80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = Frameworks/XCFrameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
-		80BB0C84241937A5003C8BA9 /* BTURLUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTURLUtils.h; sourceTree = "<group>"; };
-		80BB0C85241937A5003C8BA9 /* BTURLUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTURLUtils.m; sourceTree = "<group>"; };
 		80C4AC4F26B33017000552C2 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/FatFrameworks/CardinalMobile.framework; sourceTree = "<group>"; };
 		80D667C427274403002851DF /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		80DBE69423A931A600373230 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -1348,7 +1345,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80D667C527274403002851DF /* (null) in Frameworks */,
 				A9E80A9F24FEF40C00196BD3 /* BraintreeTestShared.framework in Frameworks */,
 				A91E1EF724FEF2E4007540E5 /* BraintreeThreeDSecure.framework in Frameworks */,
 			);
