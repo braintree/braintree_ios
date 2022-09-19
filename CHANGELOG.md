@@ -63,9 +63,13 @@
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
 
-## unreleased
+## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix CocoaPods integrations to pin exact `PayPalCheckout` version
+  * Update NativeCheckout version from 0.100.0 to 0.106.0
+  * This version update allows US based customers with a confirmed phone number to log into their PayPal account using a one time passcode sent via SMS without needing to authenticate through a webview.
+  * Update Package.swift to use local `PayPalCheckout` dependency instead of fetching remotely.
+    * Fixes a bug where all Braintree merchants using SPM (including those not using the `BraintreePayPalNativeCheckout` module), would get `PayPalCheckout` in their projects.
 
 ## 5.12.0 (2022-09-07)
 * Adds support for Xcode 14 and iOS 16 
