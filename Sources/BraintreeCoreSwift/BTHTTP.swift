@@ -501,13 +501,12 @@ import Security
 
     // MARK: - Helper functions
 
-    func pinnedCertificateData() -> [NSData]? {
-        var certificates: [NSData] = []
+    func pinnedCertificateData() -> [SecCertificate] {
+        var certificates: [SecCertificate] = []
 
         for certificateData in pinnedCertificates {
-            guard let certificate = SecCertificateCreateWithData(nil, certificateData as CFData) else { return nil }
-            let certificateData = SecCertificateCopyData(certificate)
-            certificates.append(certificateData)
+            guard let certificate = SecCertificateCreateWithData(nil, certificateData as CFData) else { return [] }
+            certificates.append(certificate)
         }
 
         return certificates
@@ -544,9 +543,11 @@ import Security
             let domain: String = challenge.protectionSpace.host
             let serverTrust: SecTrust = challenge.protectionSpace.serverTrust!
 
-            let policies = SecPolicyCreateSSL(true, domain as CFString)
-            SecTrustSetPolicies(serverTrust, policies)
-            SecTrustSetAnchorCertificates(serverTrust, self.pinnedCertificates as CFArray?)
+            let policies: [SecPolicy] = [SecPolicyCreateSSL(true, domain as CFString)]
+            SecTrustSetPolicies(serverTrust, policies as CFArray)
+
+            let pinnedCertificates = pinnedCertificateData()
+            SecTrustSetAnchorCertificates(serverTrust, pinnedCertificates as CFArray)
 
             var error: CFError?
             let trusted: Bool = SecTrustEvaluateWithError(serverTrust, &error)
