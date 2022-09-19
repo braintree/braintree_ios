@@ -290,21 +290,23 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             if (!self.braintreeAPI) {
                 NSURL *apiURL = [configuration.json[@"braintreeApi"][@"url"] asURL];
                 NSString *accessToken = [configuration.json[@"braintreeApi"][@"accessToken"] asString];
-                self.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:apiURL accessToken:accessToken];
+                if (apiURL && accessToken) {
+                    self.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:apiURL accessToken:accessToken];
+                }
             }
             if (!self.http) {
                 NSURL *baseURL = [configuration.json[@"clientApiUrl"] asURL];
-                if (self.clientToken) {
+                if (self.clientToken && baseURL) {
                     self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-                } else if (self.tokenizationKey) {
+                } else if (self.tokenizationKey && baseURL) {
                     self.http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:self.tokenizationKey];
                 }
             }
             if (!self.graphQL) {
                 NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:configuration.environment];
-                if (self.clientToken) {
+                if (self.clientToken && graphQLBaseURL) {
                     self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-                } else if (self.tokenizationKey) {
+                } else if (self.tokenizationKey && graphQLBaseURL) {
                     self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL tokenizationKey:self.tokenizationKey];
                 }
             }
