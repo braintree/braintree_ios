@@ -103,7 +103,7 @@ import BraintreeCore
     @objc public var cannedConfiguration: BTJSON?
 
     required override init(url: URL) {
-        super.init(url: URL(string: "example.com")!)
+        super.init(url: url)
     }
 
     @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
@@ -122,8 +122,8 @@ import BraintreeCore
     @objc public var lastRequestParameters: NSDictionary?
     @objc public var cannedConfiguration: BTJSON?
 
-    required override init(url: URL? = URL(string: "example.com")!, accessToken: String? = "") {
-        super.init(url: URL(string: "example.com")!, accessToken: "sampleAccessToken")
+    required override init(url: URL, accessToken: String? = "") {
+        super.init(url: url, accessToken: accessToken)
     }
 
     @objc public static func fakeHTTP() -> FakeAPIHTTP {

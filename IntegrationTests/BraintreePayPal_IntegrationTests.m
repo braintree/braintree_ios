@@ -39,8 +39,6 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testOneTimePayment_withClientToken_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTPayPalClient *payPalClient = [[BTPayPalClient alloc] initWithAPIClient:apiClient];
-    NSURL *baseURL = [[NSURL alloc] initWithString:@"example.com"];
-    apiClient.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:baseURL accessToken:@"fakeAccessToken"];
 
     [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
@@ -85,8 +83,6 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testBillingAgreement_withClientToken_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTPayPalClient *payPalClient = [[BTPayPalClient alloc] initWithAPIClient:apiClient];
-    NSURL *baseURL = [[NSURL alloc] initWithString:@"example.com"];
-    apiClient.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:baseURL accessToken:@"fakeAccessToken"];
 
     [BTAppContextSwitcher sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 

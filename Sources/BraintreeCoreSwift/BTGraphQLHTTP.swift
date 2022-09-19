@@ -1,5 +1,6 @@
 import Foundation
 
+// TODO: Make internal once rest of core is in Swift
 @objcMembers public class BTGraphQLHTTP: BTHTTP {
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
@@ -60,16 +61,16 @@ import Foundation
         }
         
         let authorization: String
-        switch self.clientAuthorization {
+        switch clientAuthorization {
         case .authorizationFingerprint(let fingerprint):
             authorization = fingerprint
         case .tokenizationKey(let key):
             authorization = key
-        case .none:
+        default:
             authorization = "" 
         }
         
-        guard let components = URLComponents(string: self.baseURL.absoluteString) else {
+        guard let components = URLComponents(string: baseURL.absoluteString) else {
             let error = Self.constructError(
                 code: .urlStringInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
@@ -88,7 +89,7 @@ import Foundation
         }
 
         let headers = [
-            "User-Agent": self.userAgentString(),
+            "User-Agent": userAgentString(),
             "Braintree-Version": BTCoreConstants.graphQLVersion,
             "Authorization": "Bearer \(authorization)",
             "Content-Type": "application/json; charset=utf-8"

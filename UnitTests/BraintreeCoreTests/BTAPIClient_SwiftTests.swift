@@ -7,15 +7,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
-        mockConfigurationHTTP.cannedConfiguration = BTJSON(
-            value: [
-                "clientApiUrl": "https://www.example.com/client/api",
-                "braintreeApi": [
-                    "accessToken": "sample_access_token",
-                    "url": "https://www.example.com/braintree/api"
-                ]
-            ]
-        )
     }
 
     // MARK: - Initialization
@@ -95,15 +86,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id", sendAnalyticsEvent: false)!
         let mockHTTP = FakeHTTP.fakeHTTP()
-        mockHTTP.cannedConfiguration = BTJSON(
-            value: [
-                "clientApiUrl": "https://www.example.com/client/api",
-                "braintreeApi": [
-                    "accessToken": "sample_access_token",
-                    "url": "https://www.example.com/braintree/api"
-                ]
-            ]
-        )
 
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [], statusCode: 200)
         apiClient.configurationHTTP = mockHTTP
@@ -247,7 +229,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
         apiClient.configurationHTTP = mockConfigurationHTTP
-        apiClient.braintreeAPI = FakeAPIHTTP.fakeHTTP()
 
         XCTAssertEqual(apiClient.clientToken!.json["version"].asIntegerOrZero(), 3)
 
@@ -269,7 +250,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
         apiClient.configurationHTTP = mockConfigurationHTTP
-        apiClient.braintreeAPI = FakeAPIHTTP.fakeHTTP()
 
         let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(true) { _,_  in
@@ -288,7 +268,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
         apiClient.configurationHTTP = mockConfigurationHTTP
-        apiClient.braintreeAPI = FakeAPIHTTP.fakeHTTP()
 
         let expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(false) { _,_  in

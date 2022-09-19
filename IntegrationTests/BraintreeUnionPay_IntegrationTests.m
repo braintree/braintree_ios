@@ -2,7 +2,6 @@
 #import "IntegrationTests-Swift.h"
 #import <BraintreeUnionPay/BraintreeUnionPay.h>
 #import <XCTest/XCTest.h>
-@import BraintreeCoreSwift;
 
 @interface BraintreeUnionPay_IntegrationTests : XCTestCase
 @property (nonatomic, strong) BTCardClient *cardClient;

@@ -28,8 +28,6 @@
 - (void)testTokenizeApplePayPayment_whenApplePayDisabledInControlPanel_returnsError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY_APPLE_PAY_DISABLED];
     BTApplePayClient *client = [[BTApplePayClient alloc] initWithAPIClient:apiClient];
-    NSURL *baseURL = [[NSURL alloc] initWithString:@"example.com"];
-    apiClient.braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:baseURL accessToken:@"fakeAccessToken"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Apple Pay payment"];
     [client tokenizeApplePayPayment:[[PKPayment alloc] init]

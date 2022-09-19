@@ -216,12 +216,6 @@ import Foundation
     public func asDictionary() -> NSDictionary? {
         value as? NSDictionary
     }
-    
-    /// The `BTJSON` as a `[String: Any]?`
-    /// - Returns: An optional `[String: Any]` representing the `BTJSON` instance
-    public func asSwiftDictionary() -> [String: Any]? {
-        value as? [String: Any]
-    }
 
     /// The `BTJSON` as a `Int`
     /// - Returns: A `Int` representing the `BTJSON` instance
