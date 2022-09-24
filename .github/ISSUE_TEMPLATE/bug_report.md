@@ -3,8 +3,6 @@ name: Bug report
 about: Create a report to help us improve
 ---
 
-<!-- Only open an issue here if you think you've found an issue with our SDK. If you need help troubleshooting your integration, reach out to Braintree Support at https://help.braintreepayments.com. -->
-
 **Integration Details (please complete the following information):**
  - Braintree SDK Version: [e.g. 5.4.0]
  - Environment: [e.g. Sandbox or Production]
