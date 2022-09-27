@@ -48,7 +48,7 @@ import Foundation
     func httpRequest(
         method: String,
         parameters: NSDictionary? = [:],
-        completion: RequestCompletion?
+        completion: @escaping RequestCompletion
     ) {
         var errorUserInfo: [String: Any] = [:]
 
@@ -56,7 +56,7 @@ import Foundation
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
             let error = Self.constructError(code: .missingBaseURL, userInfo: errorUserInfo)
-            completion?(nil, nil, error)
+            completion(nil, nil, error)
             return
         }
         
@@ -75,7 +75,7 @@ import Foundation
                 code: .urlStringInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
             )
-            completion?(nil, nil, error)
+            completion(nil, nil, error)
             return
         }
 
@@ -84,7 +84,7 @@ import Foundation
                 code: .urlStringInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
             )
-            completion?(nil, nil, error)
+            completion(nil, nil, error)
             return
         }
 
@@ -111,7 +111,7 @@ import Foundation
 
             task.resume()
         } catch {
-            completion?(nil, nil, error)
+            completion(nil, nil, error)
         }
     }
 
