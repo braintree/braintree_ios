@@ -1,16 +1,16 @@
 import Foundation
 
-@objcMembers public class Helpers: NSObject {
+@objc class Helpers : NSObject {
 
-    public static let _sharedInstance = Helpers()
+    private static let _sharedInstance = Helpers()
 
     private override init() {}
 
-    public class func sharedInstance() -> Helpers {
-        Self._sharedInstance
+    @objc class func sharedInstance() -> Helpers {
+        return Helpers._sharedInstance
     }
 
-    public func futureYear() -> String {
+    @objc func futureYear() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy"
         return dateFormatter.string(from: Date())
