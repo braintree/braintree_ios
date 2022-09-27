@@ -103,7 +103,8 @@ import Foundation
             request.httpBody = bodyData
             request.allHTTPHeaderFields = headers
             request.httpMethod = method
-            
+
+            // Perform the actual request
             let task: URLSessionTask = session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self = self else { return }
                 self.handleRequestCompletion(data: data, response: response, error: error, completion: completion)
