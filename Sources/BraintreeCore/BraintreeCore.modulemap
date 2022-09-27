@@ -1,5 +1,6 @@
 // This modulemap allows us to give BraintreeTestShared access to internal headers in BraintreeCore.
 
+// TODO: remove module map once BraintreeCore is converted to Swift
 framework module BraintreeCore {
     umbrella header "BraintreeCore.h"
 

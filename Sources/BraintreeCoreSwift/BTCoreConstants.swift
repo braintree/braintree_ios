@@ -3,6 +3,7 @@ import Foundation
 /// :nodoc:
 public class BTCoreConstants {
 
+    // TODO: update release script to update this constant during the release process
     /// :nodoc:
     public static var braintreeSDKVersion: String = "5.11.0"
 
