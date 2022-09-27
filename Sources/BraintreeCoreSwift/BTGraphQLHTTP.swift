@@ -89,7 +89,7 @@ import Foundation
         }
 
         let headers = [
-            "User-Agent": userAgentString(),
+            "User-Agent": userAgentString,
             "Braintree-Version": BTCoreConstants.graphQLVersion,
             "Authorization": "Bearer \(authorization)",
             "Content-Type": "application/json; charset=utf-8"

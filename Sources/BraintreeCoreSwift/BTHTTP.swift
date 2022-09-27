@@ -21,7 +21,7 @@ import Security
     /// Session exposed for testing
     public lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-        configuration.httpAdditionalHeaders = defaultHeaders()
+        configuration.httpAdditionalHeaders = defaultHeaders
         
         let delegateQueue: OperationQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
@@ -41,6 +41,26 @@ import Security
     
     let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
     var clientAuthorization: ClientAuthorization?
+
+    var defaultHeaders: [String: String] {
+        [
+            "User-Agent": userAgentString,
+            "Accept": acceptString,
+            "Accept-Language": acceptLanguageString
+        ]
+    }
+
+    var userAgentString: String {
+        "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)"
+    }
+
+    var acceptString: String {
+        "application/json"
+    }
+
+    var acceptLanguageString: String {
+        "\(Locale.current.languageCode ?? "en")-\(Locale.current.regionCode ?? "US")"
+    }
     
     // MARK: - Internal Initializer
     
@@ -284,7 +304,7 @@ import Security
             return
         }
 
-        var headers: [String: String] = defaultHeaders()
+        var headers: [String: String] = defaultHeaders
         var request: URLRequest
 
         if method == "GET" || method == "DELETE" {
@@ -475,28 +495,6 @@ import Security
 
     static func constructError(code: BTHTTPErrorCode, userInfo: [String: Any]) -> NSError {
         NSError(domain: BTHTTPError.domain, code: code.rawValue, userInfo: userInfo)
-    }
-
-    // MARK: - Default Headers
-
-    func defaultHeaders() -> [String: String] {
-        [
-            "User-Agent": userAgentString(),
-            "Accept": acceptString(),
-            "Accept-Language": acceptLanguageString()
-        ]
-    }
-
-    func userAgentString() -> String {
-        "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)"
-    }
-
-    func acceptString() -> String {
-        "application/json"
-    }
-
-    func acceptLanguageString() -> String {
-        "\(Locale.current.languageCode ?? "en")-\(Locale.current.regionCode ?? "US")"
     }
 
     // MARK: - Helper functions
