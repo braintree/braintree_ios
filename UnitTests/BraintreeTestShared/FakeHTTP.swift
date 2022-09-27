@@ -122,12 +122,12 @@ import BraintreeCore
     @objc public var lastRequestParameters: NSDictionary?
     @objc public var cannedConfiguration: BTJSON?
 
-    required override init(url: URL, accessToken: String? = "") {
+    required override init(url: URL, accessToken: String) {
         super.init(url: url, accessToken: accessToken)
     }
 
     @objc public static func fakeHTTP() -> FakeAPIHTTP {
-        self.init(url: URL(string: "http://fake.com")!)
+        self.init(url: URL(string: "http://fake.com")!, accessToken: "")
     }
 
     public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
