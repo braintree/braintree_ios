@@ -123,9 +123,7 @@ import Foundation
         error: Error?,
         completion: RequestCompletion?
     ) {
-        guard let completion = completion else {
-            return
-        }
+        guard let completion = completion else { return }
 
         if let error = error {
             callCompletionAsync(with: completion, body: nil, response: response as? HTTPURLResponse, error: error)

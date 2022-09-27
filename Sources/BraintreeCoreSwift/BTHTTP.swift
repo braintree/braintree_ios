@@ -364,9 +364,7 @@ import Security
         error: Error?,
         completion: RequestCompletion?
     ) {
-        guard let completion = completion else {
-            return
-        }
+        guard let completion = completion else { return }
 
         guard error == nil else {
             callCompletionAsync(with: completion, body: nil, response: nil, error: error)
