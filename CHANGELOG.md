@@ -63,6 +63,10 @@
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
 
+## unreleased
+* Remove `ENABLE_BITCODE` from framework target build settings
+  * _The App Store no longer accepts bitcode submissions from Xcode 14_
+
 ## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix CocoaPods integrations to pin exact `PayPalCheckout` version

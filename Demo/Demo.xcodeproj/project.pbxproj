@@ -161,7 +161,6 @@
 		803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeThreeDSecure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64F2256DAF9A00ACE692 /* BraintreeUnionPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeUnionPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeVenmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PayPalDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803FB9DD26D93146002BF92D /* BTCardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardFormView.swift; sourceTree = "<group>"; };
 		80581A5D2553152A00006F53 /* Venmo_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venmo_UITests.swift; sourceTree = "<group>"; };
 		9C030582267BDF9E00DB7A68 /* Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Demo.entitlements; sourceTree = "<group>"; };
@@ -547,7 +546,6 @@
 				803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */,
 				803D64F2256DAF9A00ACE692 /* BraintreeUnionPay.framework */,
 				803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */,
-				803D64F4256DAF9A00ACE692 /* PayPalDataCollector.framework */,
 				428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */,
 				6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */,
 			);
