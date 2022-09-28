@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Remove `ENABLE_BITCODE` from framework target build settings
+  * _The App Store no longer accepts bitcode submissions from Xcode 14_
+
 ## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix CocoaPods integrations to pin exact `PayPalCheckout` version
