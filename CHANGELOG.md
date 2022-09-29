@@ -3,6 +3,8 @@
 ## unreleased
 * Remove `ENABLE_BITCODE` from framework target build settings
   * _The App Store no longer accepts bitcode submissions from Xcode 14_
+* BraintreePayPalNativeCheckout (BETA)
+  * Remove exit survey when canceling Native Checkout flow
 
 ## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
