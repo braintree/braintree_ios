@@ -71,6 +71,9 @@ import PayPalCheckout
                 )
 
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
+                
+                NotificationCenter.default.post(name: Notification.Name("brain_tree_source_event"), object: nil)
+              
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
                 self?.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.failed")
