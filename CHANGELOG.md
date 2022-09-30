@@ -5,7 +5,7 @@
   * _The App Store no longer accepts bitcode submissions from Xcode 14_
 * BraintreePayPalNativeCheckout (BETA)
   * Update NativeCheckout version from 0.106.0 to 0.108.0
-  * Fixes a re-authorization issue blocking some users from passing authentication
+  * Fixes an issue where merchants with multiple client IDs would fallback to web on subsequent checkout sessions
 
 ## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
