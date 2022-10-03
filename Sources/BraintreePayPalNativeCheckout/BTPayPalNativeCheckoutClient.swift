@@ -48,6 +48,7 @@ import PayPalCheckout
                     createOrder: { action in
                         switch request.paymentType {
                         case .checkout:
+                          print("JUSTIN ------ \(order.orderID)")
                             action.set(orderId: order.orderID)
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
