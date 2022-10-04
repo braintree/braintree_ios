@@ -47,7 +47,7 @@ import PayPalCheckout
                     clientID: order.payPalClientID,
                     createOrder: { action in
                         switch request.paymentType {
-                        case .checkout:                          
+                        case .checkout:
                             action.set(orderId: order.orderID)
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
