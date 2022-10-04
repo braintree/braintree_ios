@@ -70,6 +70,7 @@ import PayPalCheckout
                     environment: order.environment
                 )
 
+                PayPalCheckout.Checkout.showsExitAlert = false
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
                 
                 NotificationCenter.default.post(name: Notification.Name("brain_tree_source_event"), object: nil)

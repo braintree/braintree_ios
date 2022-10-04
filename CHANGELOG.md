@@ -6,6 +6,7 @@
 * BraintreePayPalNativeCheckout (BETA)
   * Update NativeCheckout version from 0.106.0 to 0.108.0
   * Fixes an issue where merchants with multiple client IDs would fallback to web on subsequent checkout sessions
+  * Remove exit survey when canceling Native Checkout flow
 
 ## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
