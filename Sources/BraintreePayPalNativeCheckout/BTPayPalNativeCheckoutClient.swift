@@ -70,6 +70,7 @@ import PayPalCheckout
                     environment: order.environment
                 )
 
+                PayPalCheckout.Checkout.showsExitAlert = false
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
