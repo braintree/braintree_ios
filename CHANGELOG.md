@@ -5,6 +5,8 @@
   * _The App Store no longer accepts bitcode submissions from Xcode 14_
 * BraintreePayPalNativeCheckout (BETA)
   * Remove exit survey when canceling Native Checkout flow
+* BraintreeSEPADirectDebit
+  * Resolve Invalid Bundle error when uploading to the App Store
 
 ## 5.13.0 (2022-09-16)
 * BraintreePayPalNativeCheckout (BETA)
