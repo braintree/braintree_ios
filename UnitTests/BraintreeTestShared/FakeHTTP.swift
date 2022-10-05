@@ -43,21 +43,21 @@ import BraintreeCore
 
         if cannedError != nil {
             dispatchQueue.async {
-                completion!(nil, nil, self.cannedError)
+                completion?(nil, nil, self.cannedError)
             }
         } else {
             let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
                 if path.contains("v1/configuration") {
-                    completion!(self.cannedConfiguration, httpResponse, nil)
+                    completion?(self.cannedConfiguration, httpResponse, nil)
                 } else {
-                    completion!(self.cannedResponse, httpResponse, nil)
+                    completion?(self.cannedResponse, httpResponse, nil)
                 }
             }
         }
     }
     
-    public override func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: BTHTTP.RequestCompletion?) {
         GETRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters
@@ -65,15 +65,15 @@ import BraintreeCore
 
         if cannedError != nil {
             dispatchQueue.async {
-                completion!(nil, nil, self.cannedError)
+                completion?(nil, nil, self.cannedError)
             }
         } else {
             let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
                 if path.contains("v1/configuration") {
-                    completion!(self.cannedConfiguration, httpResponse, nil)
+                    completion?(self.cannedConfiguration, httpResponse, nil)
                 } else {
-                    completion!(self.cannedResponse, httpResponse, nil)
+                    completion?(self.cannedResponse, httpResponse, nil)
                 }
             }
         }
@@ -86,12 +86,12 @@ import BraintreeCore
         lastRequestMethod = "POST"
         if cannedError != nil {
             dispatchQueue.async {
-                completion!(nil, nil, self.cannedError)
+                completion?(nil, nil, self.cannedError)
             }
         } else {
             let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
-                completion!(self.cannedResponse, httpResponse, nil)
+                completion?(self.cannedResponse, httpResponse, nil)
             }
         }
     }
@@ -113,7 +113,7 @@ import BraintreeCore
     public override func post(_ path: String, parameters: NSDictionary?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
-        completion!(self.cannedConfiguration, nil, nil)
+        completion?(self.cannedConfiguration, nil, nil)
     }
 }
 
@@ -133,6 +133,6 @@ import BraintreeCore
     public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
-        completion!(self.cannedConfiguration, nil, nil)
+        completion?(self.cannedConfiguration, nil, nil)
     }
 }
