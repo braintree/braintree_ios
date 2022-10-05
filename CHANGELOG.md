@@ -4,6 +4,8 @@
 * Remove `ENABLE_BITCODE` from framework target build settings
   * _The App Store no longer accepts bitcode submissions from Xcode 14_
 * BraintreePayPalNativeCheckout (BETA)
+  * Update NativeCheckout version from 0.106.0 to 0.108.0
+  * Fixes an issue where merchants with multiple client IDs would fallback to web on subsequent checkout sessions
   * Remove exit survey when canceling Native Checkout flow
 * BraintreeSEPADirectDebit
   * Resolve Invalid Bundle error when uploading to the App Store
