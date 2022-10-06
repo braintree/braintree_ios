@@ -50,7 +50,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     
     @objc func sepaDirectDebitButtonTapped() {
         self.progressBlock("Tapped SEPA Direct Debit")
-        
+
         let billingAddress = BTPostalAddress()
         billingAddress.streetAddress = "Kantstraße 70"
         billingAddress.extendedAddress = "#170"
@@ -58,7 +58,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         billingAddress.region = "Annaberg-buchholz"
         billingAddress.postalCode = "09456"
         billingAddress.countryCodeAlpha2 = "FR"
-        
+
         let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
         sepaDirectDebitRequest.accountHolderName = "John Doe"
         sepaDirectDebitRequest.iban = "FR7630006000014829011031512"
@@ -66,7 +66,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.mandateType = .oneOff
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
-        
+
         sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
             if let sepaDirectDebitNonce = sepaDirectDebitNonce {
                 self.completionBlock(sepaDirectDebitNonce)
