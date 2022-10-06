@@ -195,12 +195,10 @@ import Security
                 if let cachedResponse = cachedResponse {
                     self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
                 } else {
-                    let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
+                    self.session.dataTask(with: request) { [weak self] data, response, error in
                         guard let self = self else { return }
                         self.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
-                    }
-
-                    task.resume()
+                    }.resume()
                 }
             }
         }
@@ -218,12 +216,10 @@ import Security
                 return
             }
 
-            let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
+            self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self = self else { return }
                 self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
-            }
-
-            task.resume()
+            }.resume()
         }
     }
 

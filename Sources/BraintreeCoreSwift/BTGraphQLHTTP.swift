@@ -105,12 +105,10 @@ import Foundation
             request.httpMethod = method
 
             // Perform the actual request
-            let task: URLSessionTask = session.dataTask(with: request) { [weak self] data, response, error in
+            session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self = self else { return }
                 self.handleRequestCompletion(data: data, response: response, error: error, completion: completion)
-            }
-
-            task.resume()
+            }.resume()
         } catch {
             completion(nil, nil, error)
         }
