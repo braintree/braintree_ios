@@ -324,6 +324,7 @@
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
 		BE10B8D1287DBEE900F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE10B8D6287DC1FF00F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
+		BE139DB928EF12CF0044CD8C /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */; };
 		BE178DA328B52740005B9C09 /* BTClientToken_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */; };
 		BE24C66628D906090067B11A /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE24C66528D906090067B11A /* CardinalMobile.xcframework */; };
 		BE24C66728D906090067B11A /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE24C66528D906090067B11A /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1166,6 +1167,7 @@
 		BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI.swift; sourceTree = "<group>"; };
 		BE24C66528D906090067B11A /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Demo/../Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE24C66928E335C30067B11A /* IntegrationTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IntegrationTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTConfiguration.swift; sourceTree = "<group>"; };
 		BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollector.swift; sourceTree = "<group>"; };
 		BE5C8C0228A2C183004F9130 /* BTConfiguration+GraphQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+GraphQL.swift"; sourceTree = "<group>"; };
@@ -1344,9 +1346,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE139DB928EF12CF0044CD8C /* CardinalMobile.xcframework in Frameworks */,
 				A91E1EDA24FEF1EA007540E5 /* BraintreeCard.framework in Frameworks */,
 				A91E1EC124FEEFA0007540E5 /* BraintreePaymentFlow.framework in Frameworks */,
-				BE24C66628D906090067B11A /* CardinalMobile.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1921,7 +1923,7 @@
 		A75DA3531921394200D997A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BE24C66528D906090067B11A /* CardinalMobile.xcframework */,
+				BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */,
 				80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */,
 				9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */,
 				162174E1192D9220008DC35D /* CoreGraphics.framework */,
@@ -6909,7 +6911,6 @@
 		BEF3F17A27CE9EC600072467 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -6979,7 +6980,6 @@
 		BEF3F17B27CE9EC600072467 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
