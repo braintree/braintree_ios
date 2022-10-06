@@ -6,10 +6,10 @@
 * Removed `PayPalDataCollector` module in favor of single `BraintreeDataCollector`
 * Kount is no longer supported through the SDK
 * Breaking Changes
-  * Bump minimum supported deployment target to iOS 13+
+  * Bump minimum supported deployment target to iOS 14+
   * Require Carthage 0.38.0+ and xcframeworks via `carthage update --use-xcframeworks`
-  * Require Xcode 13
-    * Bump Swift Tools Version to 5.5 for CocoaPods & SPM
+  * Require Xcode 14
+    * Bump Swift Tools Version to 5.7 for CocoaPods & SPM
   * BraintreeCore
     * Renamed `BTAppContextSwitchDriver` protocol to `BTAppContextSwitchClient
     * `BTViewControllerPresentingDelegate` protocol now takes in the `client` parameter instead of `driver`
