@@ -35,7 +35,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     
     // MARK: - ASWebAuthenticationPresentationContextProviding conformance
 
-    @available(iOS 13.0, *)
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if #available(iOS 15, *) {
             let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -51,7 +50,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     
     @objc func sepaDirectDebitButtonTapped() {
         self.progressBlock("Tapped SEPA Direct Debit")
-
+        
         let billingAddress = BTPostalAddress()
         billingAddress.streetAddress = "Kantstraße 70"
         billingAddress.extendedAddress = "#170"
@@ -59,7 +58,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         billingAddress.region = "Annaberg-buchholz"
         billingAddress.postalCode = "09456"
         billingAddress.countryCodeAlpha2 = "FR"
-
+        
         let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
         sepaDirectDebitRequest.accountHolderName = "John Doe"
         sepaDirectDebitRequest.iban = "FR7630006000014829011031512"
@@ -68,29 +67,17 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
         
-        if #available(iOS 13.0, *) {
-            sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
-                if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                    self.completionBlock(sepaDirectDebitNonce)
-                } else if let error = error {
-                    self.progressBlock(error.localizedDescription)
-                } else {
-                    self.progressBlock("Canceled")
-                }
-            }
-        } else {
-            sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-                if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                    self.completionBlock(sepaDirectDebitNonce)
-                } else if let error = error {
-                    self.progressBlock(error.localizedDescription)
-                } else {
-                    self.progressBlock("Canceled")
-                }
+        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
+            if let sepaDirectDebitNonce = sepaDirectDebitNonce {
+                self.completionBlock(sepaDirectDebitNonce)
+            } else if let error = error {
+                self.progressBlock(error.localizedDescription)
+            } else {
+                self.progressBlock("Canceled")
             }
         }
     }
-    
+
     private func generateRandomCustomerID() -> String {
         String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(20))
     }
