@@ -487,6 +487,7 @@ import Security
         }
     }
 
+    // TODO: Update errors per DTBTSDK-1898
     static func constructError(code: BTHTTPErrorCode, userInfo: [String: Any]) -> NSError {
         NSError(domain: BTHTTPError.domain, code: code.rawValue, userInfo: userInfo)
     }
