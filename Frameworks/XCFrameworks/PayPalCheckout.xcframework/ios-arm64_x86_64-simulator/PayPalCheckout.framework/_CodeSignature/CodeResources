@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		pwQTOUW8Xc+1JtjgnqaM/K8Jly0=
+		36IlFbInxLK3xqw8AymFQFni4ZA=
 		</data>
 		<key>Headers/PayPalCheckout-Swift.h</key>
 		<data>
@@ -14,55 +14,55 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		NNLFgm8paNM+A4/CdBs69AF7vNg=
+		AWUFx3HmVl7U70eZr/m1HmSmEGQ=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		pqVuSce2Am6wxB+kXee/3Rgf3iQ=
+		ZUgHKClo1zUusuChdb+MgXE+CvE=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		vXoymfUWujkLOzx/LL7RgoXi6EM=
+		TMmfH0V1lYPqFcKDUTWXlGlJm4k=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		F2PJh2oG7hpx5j5wCzHTOCAnjuA=
+		aBB1q/hiEsyLMpztfXVLk4HKUVg=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		pqVuSce2Am6wxB+kXee/3Rgf3iQ=
+		ZUgHKClo1zUusuChdb+MgXE+CvE=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		vXoymfUWujkLOzx/LL7RgoXi6EM=
+		TMmfH0V1lYPqFcKDUTWXlGlJm4k=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		F2PJh2oG7hpx5j5wCzHTOCAnjuA=
+		aBB1q/hiEsyLMpztfXVLk4HKUVg=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		eJmfwQWuIwI5l3lLIi8Lxco1uXk=
+		RthnkuujO8EzRoIio9E3oOTlvsg=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		QdjYyOvulzZUv6uLbPDOl1fQAgI=
+		yTRlL0WNl/L2FCQHkTFZbg7PTjk=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		t2jxH+hEqAmbnWJAN2x2GgpXj5k=
+		sguEwIwdmuI2F8v5zHlx3achSXE=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		eJmfwQWuIwI5l3lLIi8Lxco1uXk=
+		RthnkuujO8EzRoIio9E3oOTlvsg=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		QdjYyOvulzZUv6uLbPDOl1fQAgI=
+		yTRlL0WNl/L2FCQHkTFZbg7PTjk=
 		</data>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		t2jxH+hEqAmbnWJAN2x2GgpXj5k=
+		sguEwIwdmuI2F8v5zHlx3achSXE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -1060,7 +1060,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			dkFdYXvxIw4H3iIv4P2ohKYfT3w=
+			O0ePi15bqbRXfuyjT5pgbdKxGOI=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1267,7 +1267,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ngyJj5Wg75DcvhZ0oCYyVc2UhQY=
+			a+cNaL/DBZVnOrQQ/qztxYmvNi8=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -2003,7 +2003,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			nKPngEi1Hf1tJcUZ/nUUzdmbvNQG5ea5z5EbmGJv/4w=
+			in5GYzqSJ0ikVBPPk3VxAoPRDNtbpu0FMNAKhJKsH+E=
 			</data>
 		</dict>
 		<key>Headers/PayPalCheckout-Swift.h</key>
@@ -2017,84 +2017,84 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			6JlvhGx9FVjgZmxmWTUeFFJGu4zv12QdJQjlb/NcPsE=
+			+t3dek2qYGFHwPVWMSvfp69YSWoNSybrjxw/tbjM5cA=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8fmATkm/LXbjU0vCduLC72C2ps5gMAQQvSZ2ozMq4QI=
+			P4iVY4HCtSq6gVCjwd24UpORHlbCKESn0u7EMP1j7kQ=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SOaWn5gnR1Nko+ra0UsIuUK0GSvdU4+dvWm9A8hBJVA=
+			Epw7PzcV1MHQ093k9LRv4gwlQAhztUFtfd9WEDhe6ng=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			6JlvhGx9FVjgZmxmWTUeFFJGu4zv12QdJQjlb/NcPsE=
+			+t3dek2qYGFHwPVWMSvfp69YSWoNSybrjxw/tbjM5cA=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8fmATkm/LXbjU0vCduLC72C2ps5gMAQQvSZ2ozMq4QI=
+			P4iVY4HCtSq6gVCjwd24UpORHlbCKESn0u7EMP1j7kQ=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SOaWn5gnR1Nko+ra0UsIuUK0GSvdU4+dvWm9A8hBJVA=
+			Epw7PzcV1MHQ093k9LRv4gwlQAhztUFtfd9WEDhe6ng=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RRLIM8xKKlRgUCVKQTloh8dXUqNVt/6EQdrFHfBU5wQ=
+			Qj3ScrKasqE9A6XLYCToCH0QVFafZKKbT5QTbE9Bwi4=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FjVTxCjjPKAfI4p6eCAZr0CaCsMmO4h5uW4lgOjjC2Q=
+			spynQSt2Gv9eEfFEV1DBli0FkcS3FwdMgKYfUGqROOU=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			K5MrvttQ/4OEZGnj0TUYPN/NJwjNyzYJUD04HgwTtK4=
+			eeOBXRgrzYGEPijoBlvy83e0jouo5UEBL8Dae3mVqwE=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RRLIM8xKKlRgUCVKQTloh8dXUqNVt/6EQdrFHfBU5wQ=
+			Qj3ScrKasqE9A6XLYCToCH0QVFafZKKbT5QTbE9Bwi4=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FjVTxCjjPKAfI4p6eCAZr0CaCsMmO4h5uW4lgOjjC2Q=
+			spynQSt2Gv9eEfFEV1DBli0FkcS3FwdMgKYfUGqROOU=
 			</data>
 		</dict>
 		<key>Modules/PayPalCheckout.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			K5MrvttQ/4OEZGnj0TUYPN/NJwjNyzYJUD04HgwTtK4=
+			eeOBXRgrzYGEPijoBlvy83e0jouo5UEBL8Dae3mVqwE=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -3108,7 +3108,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			O3Wvf8iKrUm6NNJuvb3lRJi2QPP+z5YQw4a4xEJ41hE=
+			C0+biWpHLtgRlDSHyUNQtREc7ea16A2xk3BgqkqNKrw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -3315,7 +3315,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			MeqUyP/oX7WL97fFlD3Dz4OryGz77kZhO8E2WtziyuI=
+			jauA+DCw7vFZX+MrpR1/lYLd1qZhztLG14dPlNDVeYM=
 			</data>
 			<key>optional</key>
 			<true/>
