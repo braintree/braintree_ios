@@ -326,6 +326,7 @@
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
 		BE10B8D1287DBEE900F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
 		BE10B8D6287DC1FF00F7B3B2 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; };
+		BE139DB928EF12CF0044CD8C /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */; };
 		BE178DA328B52740005B9C09 /* BTClientToken_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */; };
 		BE2F9846289D5435008EF189 /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; platformFilter = ios; };
 		BE2F9847289D5435008EF189 /* BraintreeCoreSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCoreSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -976,10 +977,6 @@
 		80A79DD425CA04CB00A9E9A2 /* BTVenmoRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoRequest.h; sourceTree = "<group>"; };
 		80A79DD525CA04CB00A9E9A2 /* BTVenmoRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoRequest.m; sourceTree = "<group>"; };
 		80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = Frameworks/XCFrameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
-		80BB0C84241937A5003C8BA9 /* BTURLUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTURLUtils.h; sourceTree = "<group>"; };
-		80BB0C85241937A5003C8BA9 /* BTURLUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTURLUtils.m; sourceTree = "<group>"; };
-		80C4AC4F26B33017000552C2 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/FatFrameworks/CardinalMobile.framework; sourceTree = "<group>"; };
-		80D667C427274403002851DF /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		80DBE69423A931A600373230 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		80DBE69623A9323200373230 /* IntegrationTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IntegrationTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureRequest_Internal.h; sourceTree = "<group>"; };
@@ -1157,6 +1154,7 @@
 		BC6F67D02386EA63009838E9 /* BTPreferredPaymentMethods_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPreferredPaymentMethods_Tests.swift; sourceTree = "<group>"; };
 		BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMandateResult.swift; sourceTree = "<group>"; };
 		BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI.swift; sourceTree = "<group>"; };
+		BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTConfiguration.swift; sourceTree = "<group>"; };
 		BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollector.swift; sourceTree = "<group>"; };
 		BE5C8C0228A2C183004F9130 /* BTConfiguration+GraphQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+GraphQL.swift"; sourceTree = "<group>"; };
@@ -1335,9 +1333,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE139DB928EF12CF0044CD8C /* CardinalMobile.xcframework in Frameworks */,
 				A91E1EDA24FEF1EA007540E5 /* BraintreeCard.framework in Frameworks */,
 				A91E1EC124FEEFA0007540E5 /* BraintreePaymentFlow.framework in Frameworks */,
-				80B8AA6426E0235F0036DF57 /* CardinalMobile.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1913,7 +1911,7 @@
 		A75DA3531921394200D997A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3DAB592B28664099003A7BC5 /* PayPalCheckout.xcframework */,
+				BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */,
 				80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */,
 				9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */,
 				162174E1192D9220008DC35D /* CoreGraphics.framework */,
