@@ -1984,6 +1984,18 @@ public enum I18n {
   @PayPalCheckout.L10n public static var additionalInformation: Swift.String {
     get
   }
+  @PayPalCheckout.L10n public static var addressCorrectionTitle: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var addressCorrectionSubtitle: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var addressCorrectionEntered: Swift.String {
+    get
+  }
+  @PayPalCheckout.L10n public static var addressCorrectionRecommended: Swift.String {
+    get
+  }
   @PayPalCheckout.L10n public static var backButton: Swift.String {
     get
   }
@@ -3135,7 +3147,7 @@ public protocol CartAddress : PayPalCheckout.Address {
   var postalCode: Swift.String? { get }
   var fullAddress: Swift.String { get }
 }
-public protocol ShippingAddress : PayPalCheckout.Address {
+public protocol ShippingAddress : PayPalCheckout.Address, PayPalCheckout.PortableAddress {
   var addressID: Swift.String? { get }
   var fullName: Swift.String? { get }
   var isPrimary: Swift.Bool { get }
@@ -3184,7 +3196,7 @@ public enum AddressType : Swift.String, Swift.Codable {
   @objc(setConfig:) public static func set(config: PayPalCheckout.CheckoutConfig)
   @objc(setCurrencyCode:) public static func setCurrencyCode(_ currency: PayPalCheckout.CurrencyCode)
   @objc(startWithPresentingViewController:createOrder:onApprove:onShippingChange:onCancel:onError:) public static func start(presentingViewController: UIKit.UIViewController? = nil, createOrder: PayPalCheckout.CheckoutConfig.CreateOrderCallback? = nil, onApprove: PayPalCheckout.CheckoutConfig.ApprovalCallback? = nil, onShippingChange: PayPalCheckout.CheckoutConfig.ShippingChangeCallback? = nil, onCancel: PayPalCheckout.CheckoutConfig.CancelCallback? = nil, onError: PayPalCheckout.CheckoutConfig.ErrorCallback? = nil)
-  public static func addShippingAddress(givenName: Swift.String, familyName: Swift.String, address: PayPalCheckout.Address, completion: ((Swift.Result<PayPalCheckout.UserCheckoutResult, PayPalCheckout.RequestError>) -> Swift.Void)? = nil)
+  public static func addShippingAddress(givenName: Swift.String, familyName: Swift.String, address: PayPalCheckout.Address? = nil, portableAddress: PayPalCheckout.PortableAddress? = nil, completion: ((Swift.Result<PayPalCheckout.UserCheckoutResult, PayPalCheckout.RequestError>) -> Swift.Void)? = nil)
   @available(*, deprecated, message: "Use the new Checkout.changeShipping function")
   public static func changeShippingAddress(to address: PayPalCheckout.ShippingAddress)
   public static func changeShipping(shippingAddress: PayPalCheckout.ShippingAddress? = nil, shippingMethod: PayPalCheckout.ShippingMethod? = nil)
@@ -3223,6 +3235,17 @@ public protocol ActionableRow {
 }
 extension ActionableRow {
   public func shouldSelectRow() -> Swift.Bool
+}
+public protocol PortableAddress {
+  var addressLine1: Swift.String? { get }
+  var addressLine2: Swift.String? { get }
+  var addressLine3: Swift.String? { get }
+  var adminArea1: Swift.String? { get }
+  var adminArea2: Swift.String? { get }
+  var adminArea3: Swift.String? { get }
+  var adminArea4: Swift.String? { get }
+  var postalCode: Swift.String? { get }
+  var countryCode: Swift.String? { get }
 }
 public enum EventTypeData {
   case gqlPayload(Swift.Result<PayPalCheckout.UserCheckoutResult, Swift.Error>)
@@ -3278,6 +3301,7 @@ public enum EventTypeData {
   case cryptoUpdated
   case ctaButtonUpdated(PayPalCheckout.FIModelBase)
   case billingBalanceToggled(isOn: Swift.Bool)
+  case addressValidated(firstName: Swift.String, lastName: Swift.String, enteredAddress: PayPalCheckout.Address, recommendedAddress: PayPalCheckout.Address)
 }
 public protocol CheckoutSessionFlags {
   var allowChangePaymentMethod: Swift.Bool { get }
@@ -3370,6 +3394,7 @@ extension String {
   public func boundingHeight(forWidth: CoreGraphics.CGFloat, font: UIKit.UIFont = .preferredFont(forTextStyle: .body), options: UIKit.NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading], attributes: [Foundation.NSAttributedString.Key : Any]? = nil, context: UIKit.NSStringDrawingContext? = nil) -> CoreGraphics.CGFloat
   public func height(withConstrainedWidth width: CoreGraphics.CGFloat, font: UIKit.UIFont) -> CoreGraphics.CGFloat
   public static func secureRandomIdentifier() -> Swift.String
+  public static func buildFullAddress(line1: Swift.String? = nil, line2: Swift.String? = nil, city: Swift.String? = nil, state: Swift.String? = nil, postalCode: Swift.String? = nil, country: Swift.String? = nil) -> Swift.String
 }
 @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class UndefinedPage : PayPalCheckout.ContentPage {
   public static var instance: PayPalCheckout.UndefinedPage
@@ -3420,8 +3445,16 @@ public struct PlaceDetails : Swift.Decodable, Swift.Equatable, PayPalCheckout.Ad
   public let line2: Swift.String?
   public let city: Swift.String?
   public let state: Swift.String?
-  public let postalCode: Swift.String?
   public let country: Swift.String?
+  public let addressLine1: Swift.String?
+  public let addressLine2: Swift.String?
+  public let addressLine3: Swift.String?
+  public let adminArea1: Swift.String?
+  public let adminArea2: Swift.String?
+  public let adminArea3: Swift.String?
+  public let adminArea4: Swift.String?
+  public let countryCode: Swift.String?
+  public let postalCode: Swift.String?
   public let fullAddress: Swift.String
   public init(from decoder: Swift.Decoder) throws
   public static func == (a: PayPalCheckout.PlaceDetails, b: PayPalCheckout.PlaceDetails) -> Swift.Bool
@@ -4569,6 +4602,7 @@ public enum EventType : Swift.String, Swift.CaseIterable, Swift.CustomStringConv
   case cryptoUpdated
   case ctaButtonUpdated
   case billingBalanceToggled
+  case addressValidated
   public var description: Swift.String {
     get
   }
