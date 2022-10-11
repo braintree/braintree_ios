@@ -1,12 +1,11 @@
 import Foundation
 
-// TODO: This be a struct + internal once we move BTAPIHTTP + BTGraphQLHTTP to swift since it's internal
-@objcMembers public class BTCacheDateValidator: NSObject {
-    public let timeToLiveMinutes: Double = 5
+class BTCacheDateValidator {
 
+    let timeToLiveMinutes: Double = 5
     let dateFormatter: DateFormatter = DateFormatter()
 
-    public func isCacheInvalid(_ cachedConfigurationResponse: CachedURLResponse?) -> Bool {
+    func isCacheInvalid(_ cachedConfigurationResponse: CachedURLResponse?) -> Bool {
         dateFormatter.dateFormat = "EEE',' dd' 'MMM' 'yyyy HH':'mm':'ss zzz"
 
         // Invalidate cached configuration after 5 minutes

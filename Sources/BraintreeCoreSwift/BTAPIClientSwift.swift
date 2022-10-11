@@ -8,7 +8,7 @@ import Foundation
 
     // MARK: - Internal Properties
 
-    var tokenizationKey: String? = ""
+    var tokenizationKey: String?
     var clientToken: BTClientToken?
     var configurationHTTP: BTHTTP?
     var metadata: BTClientMetadata?
@@ -16,7 +16,7 @@ import Foundation
     var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
-    var session: URLSession = {
+    var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
         configurationQueue.name = "com.braintreepayments.BTAPIClient"
 
@@ -29,7 +29,7 @@ import Foundation
         // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
         configuration.requestCachePolicy = .useProtocolCachePolicy
         return URLSession(configuration: configuration)
-    }()
+    }
 
     // MARK: - Initializers
 
@@ -170,6 +170,7 @@ import Foundation
                     }
                 }
             }
+
             completion(configuration, nil)
         }
     }
@@ -214,6 +215,7 @@ import Foundation
                     paymentMethodNonces?.append(paymentMethodNonce)
                 }
             }
+
             completion(paymentMethodNonces, nil)
         }
     }
@@ -278,7 +280,7 @@ import Foundation
 
     ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public func sendAnalyticsEvent(_ eventName: String) {
-        // TODO: implement
+        // TODO: Implement when BTAnalyticsService is converted to Swift
     }
 
     // MARK: Analytics Internal Methods
@@ -421,7 +423,6 @@ import Foundation
     }
 
     func httpForType(_ httpType: BTAPIClientHTTPTypeSwift) -> BTHTTP {
-        // TODO: don't force unwrap
         switch httpType {
         case .gateway:
             return http!
