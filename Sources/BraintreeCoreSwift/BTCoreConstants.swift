@@ -12,4 +12,6 @@ public class BTCoreConstants {
     
     /// :nodoc:
     public static var graphQLVersion: String = "2018-03-06"
+
+    static var networkConnectionLostCode: Int = -1005
 }
