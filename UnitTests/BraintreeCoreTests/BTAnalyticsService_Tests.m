@@ -1,5 +1,4 @@
 #import "BTAnalyticsService.h"
-#import "BTHTTP.h"
 #import "Braintree-Version.h"
 @import BraintreeCore;
 @import BraintreeTestShared;

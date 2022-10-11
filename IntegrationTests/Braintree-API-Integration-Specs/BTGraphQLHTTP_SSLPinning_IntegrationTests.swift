@@ -1,10 +1,11 @@
 import Foundation
 import XCTest
+import BraintreeCoreSwift
 
 class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
 
     func testBTGraphQLHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let graphqlHttp = BTGraphQLHTTP(baseURL: URL(string: "https://payments.braintree-api.com")!, tokenizationKey: "")
+        let graphqlHttp = BTGraphQLHTTP(url: URL(string: "https://payments.braintree-api.com")!, tokenizationKey: "")
 
         let expectation = self.expectation(description: "Callback invoked")
 
@@ -17,7 +18,7 @@ class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
     }
 
     func testBTGraphQLHTTP_whenUsingSandboxEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let graphqlHttp = BTGraphQLHTTP(baseURL: URL(string: "https://payments.sandbox.braintree-api.com")!, tokenizationKey: "")
+        let graphqlHttp = BTGraphQLHTTP(url: URL(string: "https://payments.sandbox.braintree-api.com")!, tokenizationKey: "")
 
         let expectation = self.expectation(description: "Callback invoked")
 

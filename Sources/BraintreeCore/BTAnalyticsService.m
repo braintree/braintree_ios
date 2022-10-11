@@ -1,7 +1,6 @@
 #import "BTAnalyticsService.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTAPIClient_Internal.h"
-#import "BTHTTP.h"
 #import "BraintreeCoreSwiftImports.h"
 
 #import <UIKit/UIKit.h>

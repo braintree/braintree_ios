@@ -1,5 +1,3 @@
-#import "BTHTTP.h"
-#import "BTAPIHTTP.h"
 #import <XCTest/XCTest.h>
 @import BraintreeCoreSwift;
 

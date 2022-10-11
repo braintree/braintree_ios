@@ -4,11 +4,11 @@ import Security
 /// Performs HTTP methods on the Braintree Client API
 // TODO: once BTAPIHTTP + BTGraphQLHTTP are converted this can be internal + more Swift-y
 // TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
-@objcMembers public class BTHTTPSwift: NSObject, NSCopying, URLSessionDelegate {
+@objcMembers public class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    private enum ClientAuthorization: Equatable {
+    enum ClientAuthorization: Equatable {
         case authorizationFingerprint(String), tokenizationKey(String)
     }
     
@@ -21,7 +21,7 @@ import Security
     /// Session exposed for testing
     public lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-        configuration.httpAdditionalHeaders = defaultHeaders()
+        configuration.httpAdditionalHeaders = defaultHeaders
         
         let delegateQueue: OperationQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
@@ -34,17 +34,42 @@ import Security
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     public var dispatchQueue: DispatchQueue = DispatchQueue.main
 
+    // TODO: Make internal after BTAnalyticsService is converted to Swift
+    public let baseURL: URL
+
     // MARK: - Internal Properties
     
     let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
-    let baseURL: URL
+    var clientAuthorization: ClientAuthorization?
+
+    var defaultHeaders: [String: String] {
+        [
+            "User-Agent": userAgentString,
+            "Accept": acceptString,
+            "Accept-Language": acceptLanguageString
+        ]
+    }
+
+    var userAgentString: String {
+        "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)"
+    }
+
+    var acceptString: String {
+        "application/json"
+    }
+
+    var acceptLanguageString: String {
+        "\(Locale.current.languageCode ?? "en")-\(Locale.current.regionCode ?? "US")"
+    }
     
-    // MARK: - Private Properties
+    // MARK: - Internal Initializer
     
-    private let clientAuthorization: ClientAuthorization
-    
-    // MARK: - Initializers
-    
+    init(url: URL) {
+        self.baseURL = url
+    }
+
+    // MARK: - Public Initializers
+
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
     /// - Parameters:
     ///   - url: The base URL for the Braintree Client API
@@ -69,7 +94,13 @@ import Security
     /// - Parameter clientToken: The client token
     @objc(initWithClientToken:error:)
     public convenience init(clientToken: BTClientToken) throws {
-        guard let clientApiURL = clientToken.json["clientApiUrl"].asURL() else {
+        let url: URL
+
+        if let clientApiURL = clientToken.json["clientApiUrl"].asURL() {
+            url = clientApiURL
+        } else if let configURL = clientToken.json["configUrl"].asURL() {
+            url = configURL
+        } else {
             throw Self.constructError(
                 code: .clientApiUrlInvalid,
                 userInfo: [NSLocalizedDescriptionKey: "Client API URL is not a valid URL."]
@@ -83,7 +114,7 @@ import Security
             )
         }
 
-        self.init(url: clientApiURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+        self.init(url: url, authorizationFingerprint: clientToken.authorizationFingerprint)
     }
 
     // MARK: - HTTP Methods
@@ -164,11 +195,10 @@ import Security
                 if let cachedResponse = cachedResponse {
                     self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
                 } else {
-                    let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
-                        self?.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
-                    }
-
-                    task.resume()
+                    self.session.dataTask(with: request) { [weak self] data, response, error in
+                        guard let self = self else { return }
+                        self.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
+                    }.resume()
                 }
             }
         }
@@ -186,11 +216,10 @@ import Security
                 return
             }
 
-            let task: URLSessionTask = self.session.dataTask(with: request) { [weak self] data, response, error in
-                self?.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
-            }
-
-            task.resume()
+            self.session.dataTask(with: request) { [weak self] data, response, error in
+                guard let self = self else { return }
+                self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+            }.resume()
         }
     }
 
@@ -271,7 +300,7 @@ import Security
             return
         }
 
-        var headers: [String: String] = defaultHeaders()
+        var headers: [String: String] = defaultHeaders
         var request: URLRequest
 
         if method == "GET" || method == "DELETE" {
@@ -331,9 +360,7 @@ import Security
         error: Error?,
         completion: RequestCompletion?
     ) {
-        guard let completion = completion else {
-            return
-        }
+        guard let completion = completion else { return }
 
         guard error == nil else {
             callCompletionAsync(with: completion, body: nil, response: nil, error: error)
@@ -358,7 +385,8 @@ import Security
 
         if httpResponse.statusCode >= 400 {
             handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
-                self?.callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
+                guard let self = self else { return }
+                self.callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
             }
             return
         }
@@ -367,7 +395,8 @@ import Security
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
             handleJSONResponseError(json: json, response: response) { [weak self] error in
-                self?.callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+                guard let self = self else { return }
+                self.callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             }
             return
         }
@@ -458,37 +487,19 @@ import Security
         }
     }
 
+    // TODO: Update errors per DTBTSDK-1898
     static func constructError(code: BTHTTPErrorCode, userInfo: [String: Any]) -> NSError {
         NSError(domain: BTHTTPError.domain, code: code.rawValue, userInfo: userInfo)
     }
 
-    // MARK: - Default Headers
-
-    func defaultHeaders() -> [String: String] {
-        [
-            "User-Agent": userAgentString(),
-            "Accept": "application/json",
-            "Accept-Language": acceptLanguageString()
-        ]
-    }
-
-    func userAgentString() -> String {
-        "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)"
-    }
-
-    func acceptLanguageString() -> String {
-        "\(Locale.current.languageCode ?? "en")-\(Locale.current.regionCode ?? "US")"
-    }
-
     // MARK: - Helper functions
 
-    func pinnedCertificateData() -> [NSData]? {
-        var certificates: [NSData] = []
+    func pinnedCertificateData() -> [SecCertificate] {
+        var certificates: [SecCertificate] = []
 
         for certificateData in pinnedCertificates {
-            guard let certificate = SecCertificateCreateWithData(nil, certificateData as CFData) else { return nil }
-            let certificateData = SecCertificateCopyData(certificate)
-            certificates.append(certificateData)
+            guard let certificate = SecCertificateCreateWithData(nil, certificateData as CFData) else { return [] }
+            certificates.append(certificate)
         }
 
         return certificates
@@ -497,8 +508,8 @@ import Security
     // MARK: - isEqual override
     
     public override func isEqual(_ object: Any?) -> Bool {
-        guard object is BTHTTPSwift,
-              let otherObject = object as? BTHTTPSwift else {
+        guard object is BTHTTP,
+              let otherObject = object as? BTHTTP else {
             return false
         }
 
@@ -510,9 +521,11 @@ import Security
     public func copy(with zone: NSZone? = nil) -> Any {
         switch clientAuthorization {
         case .authorizationFingerprint(let fingerprint):
-            return BTHTTPSwift(url: baseURL, authorizationFingerprint: fingerprint)
+            return BTHTTP(url: baseURL, authorizationFingerprint: fingerprint)
         case .tokenizationKey(let key):
-            return BTHTTPSwift(url: baseURL, tokenizationKey: key)
+            return BTHTTP(url: baseURL, tokenizationKey: key)
+        default:
+            return BTHTTP(url: baseURL)
         }
     }
 
@@ -523,9 +536,9 @@ import Security
             let domain: String = challenge.protectionSpace.host
             let serverTrust: SecTrust = challenge.protectionSpace.serverTrust!
 
-            let policies = SecPolicyCreateSSL(true, domain as CFString)
-            SecTrustSetPolicies(serverTrust, policies)
-            SecTrustSetAnchorCertificates(serverTrust, self.pinnedCertificates as CFArray?)
+            let policies: [SecPolicy] = [SecPolicyCreateSSL(true, domain as CFString)]
+            SecTrustSetPolicies(serverTrust, policies as CFArray)
+            SecTrustSetAnchorCertificates(serverTrust, pinnedCertificateData() as CFArray)
 
             var error: CFError?
             let trusted: Bool = SecTrustEvaluateWithError(serverTrust, &error)
