@@ -1,4 +1,3 @@
-#import "BTHTTP.h"
 #import "BTHTTPTestProtocol.h"
 @import BraintreeCore;
 @import Specta;
@@ -51,7 +50,7 @@ NSURLSession *testURLSession(void) {
 @end
 
 @implementation BTHTTPSpec {
-    BTHTTPSwift *http;
+    BTHTTP *http;
     id<HTTPStubsDescriptor> stubDescriptor;
 }
 
@@ -60,7 +59,7 @@ NSURLSession *testURLSession(void) {
 - (void)setUp {
     [super setUp];
 
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
     http.session = testURLSession();
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
@@ -140,7 +139,7 @@ NSURLSession *testURLSession(void) {
 
 - (void)testReturnsTheData {
     waitUntil(^(DoneCallback done) {
-        self->http = [[BTHTTPSwift alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
+        self->http = [[BTHTTP alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
 
         [self->http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
@@ -157,7 +156,7 @@ NSURLSession *testURLSession(void) {
 - (void)testIgnoresPOSTData {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
 
-    http = [[BTHTTPSwift alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
 
     [http POST:@"/" parameters:@{@"a-post-param":@"POST"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNotNil(body);
@@ -175,7 +174,7 @@ NSURLSession *testURLSession(void) {
 - (void)testIgnoresGETParameters {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
 
-    http = [[BTHTTPSwift alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
 
     [http GET:@"/" parameters:@{@"a-get-param": @"GET"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNotNil(body);
@@ -191,7 +190,7 @@ NSURLSession *testURLSession(void) {
 - (void)testIgnoresTheSpecifiedPath {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
 
-    http = [[BTHTTPSwift alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
 
     [http GET:@"/resource" completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNotNil(body);
@@ -210,7 +209,7 @@ NSURLSession *testURLSession(void) {
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
 
-    http = [[BTHTTPSwift alloc] initWithBaseURL:dataURL authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:dataURL authorizationFingerprint:@"test-authorization-fingerprint"];
 
     [http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNil(body);
@@ -226,7 +225,7 @@ NSURLSession *testURLSession(void) {
 - (void)testSetsTheResponseStatusCode {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
 
-    http = [[BTHTTPSwift alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
 
     [http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNotNil(body);
@@ -245,7 +244,7 @@ NSURLSession *testURLSession(void) {
 
     NSString *dataURLString = [NSString stringWithFormat:@"data:application/json;base64,%@", @"BAD-BASE-64-STRING"];
 
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:dataURLString] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:dataURLString] authorizationFingerprint:@"test-authorization-fingerprint"];
     [http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
         XCTAssertNil(body);
         XCTAssertNil(response);
@@ -448,7 +447,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testGETRequests_whenBTHTTPInitializedWithTokenizationKey_sendTokenizationKeyInHeader {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -481,7 +480,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testPOSTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -514,7 +513,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testPUTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -547,7 +546,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testDELETERequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -719,7 +718,7 @@ NSURLSession *testURLSession(void) {
 #pragma mark response code parser
 
 - (void)testInterprets2xxAsACompletionWithSuccess {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
@@ -744,7 +743,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testResponseCodeParsing_whenStatusCodeIs4xx_returnsError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
     NSDictionary *errorBody = @{
                                 @"error": @{
                                         @"message": @"This is an error message from the gateway"
@@ -777,7 +776,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testResponseCodeParsingFromBraintreeAPI_whenStatusCodeIs4xx_returnsError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
     NSDictionary *errorBody = @{
                                 @"error": @{
                                         @"developer_message": @"This is an error message from the gateway"
@@ -810,7 +809,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testResponseCodeParsing_whenStatusCodeIs429_returnsRateLimitError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
     
@@ -839,7 +838,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testResponseCodeParsing_whenStatusCodeIs5xx_returnsError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
     NSDictionary *errorBody = @{
                                 @"error": @{
                                         @"message": @"This is an error message from the gateway"
@@ -874,7 +873,7 @@ NSURLSession *testURLSession(void) {
 
 
 - (void)testInterpretsTheNetworkBeingDownAsAnError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
@@ -895,7 +894,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testInterpretsTheServerBeingUnavailableAsAnError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
@@ -919,7 +918,7 @@ NSURLSession *testURLSession(void) {
 #pragma mark response body parser
 
 - (void)testParsesAJSONResponseBody {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
@@ -942,7 +941,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testAcceptsEmptyResponses {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
@@ -965,7 +964,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testInterpretsInvalidJSONResponsesAsAJSONError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
@@ -986,7 +985,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testInterpretsNonJSONResponsesAsAContentTypeNotAcceptableError {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         id<HTTPStubsDescriptor>stub = [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
@@ -1012,7 +1011,7 @@ NSURLSession *testURLSession(void) {
 }
 
 - (void)testNoopsForANilCompletionBlock {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     waitUntil(^(DoneCallback done){
         setAsyncSpecTimeout(2);
@@ -1029,8 +1028,8 @@ NSURLSession *testURLSession(void) {
 
 - (void)testReturnsYESIfBTHTTPsHaveTheSameBaseURLAndAuthorizationFingerprint {
     NSURL *baseURL = [NSURL URLWithString:@"an-url://hi"];
-    BTHTTPSwift *http1  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
-    BTHTTPSwift *http2  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:@"test-authorization-fingerprint"];
 
     expect(http1).to.equal(http2);
 }
@@ -1038,16 +1037,16 @@ NSURLSession *testURLSession(void) {
 - (void)testReturnsNOIfBTHTTPsDoNotHaveTheSameBaseURL {
     NSURL *baseURL1 = [NSURL URLWithString:@"an-url://hi"];
     NSURL *baseURL2 = [NSURL URLWithString:@"an-url://hi-again"];
-    BTHTTPSwift *http1  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
-    BTHTTPSwift *http2  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL2 authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL2 authorizationFingerprint:@"test-authorization-fingerprint"];
 
     expect(http1).notTo.equal(http2);
 }
 
 - (void)testReturnsNOIfBTHTTPsDoNotHaveTheSameAuthorizationFingerprint {
     NSURL *baseURL1 = [NSURL URLWithString:@"an-url://hi"];
-    BTHTTPSwift *http1  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
-    BTHTTPSwift *http2  = [[BTHTTPSwift alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"OTHER"];
+    BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"test-authorization-fingerprint"];
+    BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL1 authorizationFingerprint:@"OTHER"];
 
     expect(http1).notTo.equal(http2);
 }
@@ -1055,21 +1054,21 @@ NSURLSession *testURLSession(void) {
 #pragma mark copy
 
 - (void)testReturnsADifferentInstance {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
 
     expect(self->http).toNot.beIdenticalTo([http copy]);
 }
 
 - (void)testReturnsAnEqualInstance {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
     
     expect([self->http copy]).to.equal(http);
 }
 
 - (void)testReturnedInstanceHasTheSameCertificates {
-    http = [[BTHTTPSwift alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
     
-    BTHTTPSwift *copiedHTTP = [http copy];
+    BTHTTP *copiedHTTP = [http copy];
     expect(copiedHTTP.pinnedCertificates).to.equal(http.pinnedCertificates);
 }
 

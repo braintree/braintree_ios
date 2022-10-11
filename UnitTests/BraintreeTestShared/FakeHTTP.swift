@@ -1,12 +1,12 @@
 import BraintreeCore
-import BraintreeCore.Private
+@testable import BraintreeCoreSwift
 
 @objc public class FakeHTTP: BTHTTP {
     @objc public var GETRequestCount: Int = 0
     @objc public var POSTRequestCount: Int = 0
     @objc public var lastRequestEndpoint: String?
     public var lastRequestMethod: String?
-    @objc public var lastRequestParameters: Dictionary<AnyHashable, Any>?
+    @objc public var lastRequestParameters: NSDictionary?
     var stubMethod: String?
     var stubEndpoint: String?
     public var cannedResponse: BTJSON?
@@ -14,18 +14,18 @@ import BraintreeCore.Private
     @objc public var cannedStatusCode: Int = 0
     public var cannedError: Error?
 
-    required override init(baseURL: URL) {
-        super.init(baseURL: baseURL)
+    override required init(url: URL = URL(string: "example.com")!) {
+        super.init(url: URL(string: "example.com")!)
     }
 
     @objc public static func fakeHTTP() -> FakeHTTP {
-        return self.init(baseURL: URL.init(string: "http://fake.com")!)
+        self.init(url: URL(string: "http://fake.com")!)
     }
 
     @objc public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWith response: Any, statusCode: Int) {
         stubMethod = httpMethod
         stubEndpoint = endpoint
-        cannedResponse = BTJSON.init(value: response)
+        cannedResponse = BTJSON(value: response)
         cannedStatusCode = statusCode
     }
 
@@ -35,63 +35,63 @@ import BraintreeCore.Private
         cannedError = error
     }
 
-    public override func get(_ endpoint: String, parameters: [String : String]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         GETRequestCount += 1
-        lastRequestEndpoint = endpoint
+        lastRequestEndpoint = path
         lastRequestParameters = parameters
         lastRequestMethod = "GET"
 
         if cannedError != nil {
             dispatchQueue.async {
-                completionBlock!(nil, nil, self.cannedError)
+                completion?(nil, nil, self.cannedError)
             }
         } else {
-            let httpResponse = HTTPURLResponse.init(url: URL.init(string: endpoint)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
-                if endpoint.contains("v1/configuration") {
-                    completionBlock!(self.cannedConfiguration, httpResponse, nil)
+                if path.contains("v1/configuration") {
+                    completion?(self.cannedConfiguration, httpResponse, nil)
                 } else {
-                    completionBlock!(self.cannedResponse, httpResponse, nil)
+                    completion?(self.cannedResponse, httpResponse, nil)
                 }
             }
         }
     }
     
-    public override func get(_ endpoint: String, parameters: [String : String]?, shouldCache: Bool, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: BTHTTP.RequestCompletion?) {
         GETRequestCount += 1
-        lastRequestEndpoint = endpoint
+        lastRequestEndpoint = path
         lastRequestParameters = parameters
         lastRequestMethod = "GET"
 
         if cannedError != nil {
             dispatchQueue.async {
-                completionBlock!(nil, nil, self.cannedError)
+                completion?(nil, nil, self.cannedError)
             }
         } else {
-            let httpResponse = HTTPURLResponse.init(url: URL.init(string: endpoint)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
-                if endpoint.contains("v1/configuration") {
-                    completionBlock!(self.cannedConfiguration, httpResponse, nil)
+                if path.contains("v1/configuration") {
+                    completion?(self.cannedConfiguration, httpResponse, nil)
                 } else {
-                    completionBlock!(self.cannedResponse, httpResponse, nil)
+                    completion?(self.cannedResponse, httpResponse, nil)
                 }
             }
         }
     }
 
-    public override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
-        lastRequestEndpoint = endpoint
+        lastRequestEndpoint = path
         lastRequestParameters = parameters
         lastRequestMethod = "POST"
         if cannedError != nil {
             dispatchQueue.async {
-                completionBlock!(nil, nil, self.cannedError)
+                completion?(nil, nil, self.cannedError)
             }
         } else {
-            let httpResponse = HTTPURLResponse.init(url: URL.init(string: endpoint)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
-                completionBlock!(self.cannedResponse, httpResponse, nil)
+                completion?(self.cannedResponse, httpResponse, nil)
             }
         }
     }
@@ -99,38 +99,40 @@ import BraintreeCore.Private
 
 @objc public class FakeGraphQLHTTP: BTGraphQLHTTP {
     var POSTRequestCount: Int = 0
-    @objc public var lastRequestParameters: Dictionary<AnyHashable, Any>?
+    @objc public var lastRequestParameters: NSDictionary?
+    @objc public var cannedConfiguration: BTJSON?
 
-    required override init(baseURL: URL) {
-        super.init(baseURL: baseURL)
+    required override init(url: URL) {
+        super.init(url: url)
     }
 
     @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
-        return self.init(baseURL: URL.init(string: "http://fake.com")!)
+        self.init(url: URL(string: "http://fake.com")!)
     }
 
-    public override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: NSDictionary?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
-        completionBlock!(nil, nil, nil)
+        completion?(self.cannedConfiguration, nil, nil)
     }
 }
 
 @objc public class FakeAPIHTTP: BTAPIHTTP {
     var POSTRequestCount: Int = 0
-    @objc public var lastRequestParameters: Dictionary<AnyHashable, Any>?
+    @objc public var lastRequestParameters: NSDictionary?
+    @objc public var cannedConfiguration: BTJSON?
 
-    required override init(baseURL: URL) {
-        super.init(baseURL: baseURL)
+    required override init(url: URL, accessToken: String) {
+        super.init(url: url, accessToken: accessToken)
     }
 
     @objc public static func fakeHTTP() -> FakeAPIHTTP {
-        return self.init(baseURL: URL.init(string: "http://fake.com")!)
+        self.init(url: URL(string: "http://fake.com")!, accessToken: "")
     }
 
-    public override func post(_ endpoint: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
-        completionBlock!(nil, nil, nil)
+        completion?(self.cannedConfiguration, nil, nil)
     }
 }
