@@ -96,9 +96,9 @@ import Security
     public convenience init(clientToken: BTClientToken) throws {
         let url: URL
 
-        if clientToken.json["clientApiUrl"].asURL() != nil, let clientApiURL = clientToken.json["clientApiUrl"].asURL() {
+        if let clientApiURL = clientToken.json["clientApiUrl"].asURL() {
             url = clientApiURL
-        } else if clientToken.json["configUrl"].asURL() != nil, let configURL = clientToken.json["configUrl"].asURL() {
+        } else if let configURL = clientToken.json["configUrl"].asURL() {
             url = configURL
         } else {
             throw Self.constructError(

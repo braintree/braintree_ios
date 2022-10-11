@@ -218,11 +218,13 @@ import Foundation
                 headerFields: httpResponse.allHeaderFields as? [String: String]
             )
         }
+
         return nil
     }
     
     func parseGraphQLError(fromJSON body: BTJSON) -> [String: Any] {
         let errorTree = BTGraphQLErrorTree(message: "Input is invalid")
+
         for errorJSON in body["errors"].asArray() ?? [] {
             guard let inputPath = errorJSON["extensions"]["inputPath"].asStringArray() else { continue }
             guard let field = inputPath.last else { continue }
@@ -236,6 +238,7 @@ import Foundation
             let errorNode = BTGraphQLSingleErrorNode(field: field, message: message, code: code)
             errorTree.insert(errorNode, atKeyPath: keyPath)
         }
+
         return errorTree.toDictionary()
     }
 }
