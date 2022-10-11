@@ -10,8 +10,13 @@ import Foundation
 
     var tokenizationKey: String?
     var clientToken: BTClientToken?
-    var configurationHTTP: BTHTTP?
+
+    /// Client metadata that is used for tracking the client session
     var metadata: BTClientMetadata?
+
+    /// Used to fetch and store configurations in the URL Cache of the session
+    var configurationHTTP: BTHTTP?
+
     var http: BTHTTP?
     var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
@@ -259,7 +264,7 @@ import Foundation
                 return
             }
 
-            self.httpForType(httpType).get(path, parameters: parameters, completion: completion)
+            self.httpForType(httpType)?.get(path, parameters: parameters, completion: completion)
         }
     }
 
@@ -274,7 +279,7 @@ import Foundation
                 return
             }
 
-            self.httpForType(httpType).post(path, parameters: parameters, completion: completion)
+            self.httpForType(httpType)?.post(path, parameters: parameters, completion: completion)
         }
     }
 
@@ -284,7 +289,7 @@ import Foundation
     }
 
     // MARK: Analytics Internal Methods
-
+    // TODO: Implement when BTAnalyticsService is converted to Swift
 
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
     /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
@@ -422,14 +427,14 @@ import Foundation
         return components.url
     }
 
-    func httpForType(_ httpType: BTAPIClientHTTPTypeSwift) -> BTHTTP {
+    func httpForType(_ httpType: BTAPIClientHTTPTypeSwift) -> BTHTTP? {
         switch httpType {
         case .gateway:
-            return http!
+            return http
         case .braintreeAPI:
-            return apiHTTP!
+            return apiHTTP
         case .graphQLAPI:
-            return graphQLHTTP!
+            return graphQLHTTP
         }
     }
 }
