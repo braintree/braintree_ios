@@ -1,6 +1,6 @@
 import Foundation
 
-class BTCacheDateValidator {
+struct BTCacheDateValidator {
 
     let timeToLiveMinutes: Double = 5
     let dateFormatter: DateFormatter = DateFormatter()
