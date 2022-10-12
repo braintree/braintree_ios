@@ -2,6 +2,7 @@ import Foundation
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
+// TODO: rename once Objective-C files are deleted
 @objcMembers public class BTAPIClientSwift: NSObject {
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void

@@ -1,6 +1,7 @@
 import Foundation
 
 /// :nodoc:
+// TODO: rename once Objective-C files are deleted
 @objc public enum BTAPIClientHTTPTypeSwift: Int {
     /// Use the Gateway
     case gateway
