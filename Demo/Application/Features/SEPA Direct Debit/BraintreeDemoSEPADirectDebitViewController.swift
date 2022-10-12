@@ -35,7 +35,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     
     // MARK: - ASWebAuthenticationPresentationContextProviding conformance
 
-    @available(iOS 13.0, *)
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if #available(iOS 15, *) {
             let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -67,30 +66,18 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.mandateType = .oneOff
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
-        
-        if #available(iOS 13.0, *) {
-            sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
-                if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                    self.completionBlock(sepaDirectDebitNonce)
-                } else if let error = error {
-                    self.progressBlock(error.localizedDescription)
-                } else {
-                    self.progressBlock("Canceled")
-                }
-            }
-        } else {
-            sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-                if let sepaDirectDebitNonce = sepaDirectDebitNonce {
-                    self.completionBlock(sepaDirectDebitNonce)
-                } else if let error = error {
-                    self.progressBlock(error.localizedDescription)
-                } else {
-                    self.progressBlock("Canceled")
-                }
+
+        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
+            if let sepaDirectDebitNonce = sepaDirectDebitNonce {
+                self.completionBlock(sepaDirectDebitNonce)
+            } else if let error = error {
+                self.progressBlock(error.localizedDescription)
+            } else {
+                self.progressBlock("Canceled")
             }
         }
     }
-    
+
     private func generateRandomCustomerID() -> String {
         String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(20))
     }
