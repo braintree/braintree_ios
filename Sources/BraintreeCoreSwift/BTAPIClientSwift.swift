@@ -200,9 +200,9 @@ import Foundation
         }
 
         let defaultFirstValue: String = defaultFirst ? "true" : "false"
-        let parameters = [
+        let parameters: [String: Any] = [
             "default_first": defaultFirstValue,
-            "session_id": metadata?.sessionID
+            "session_id": metadata?.sessionID ?? ""
         ]
 
         get("v1/payment_methods", parameters: parameters) { body, response, error in
