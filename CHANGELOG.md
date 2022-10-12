@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased 
+* BraintreePayPalDataCollector
+  * Update PPRiskMagnes with a version of 5.4.0 with `ENABLE_BITCODE` removed
+    * _The App Store no longer accepts bitcode submissions from Xcode 14_
+
 ## 5.14.0 (2022-10-05)
 * Remove `ENABLE_BITCODE` from framework target build settings
   * _The App Store no longer accepts bitcode submissions from Xcode 14_
