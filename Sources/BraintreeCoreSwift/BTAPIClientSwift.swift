@@ -133,7 +133,7 @@ import Foundation
             configPath = clientToken.configURL.absoluteString
         }
 
-        let parameters: NSDictionary = ["configVersion": "3"]
+        let parameters: [String: Any] = ["configVersion": "3"]
 
         configurationHTTP?.get(configPath, parameters: parameters, shouldCache: true) { [weak self] body, response, error in
             guard let self else { return }
@@ -205,7 +205,7 @@ import Foundation
             "session_id": metadata?.sessionID
         ]
 
-        get("v1/payment_methods", parameters: parameters as NSDictionary) { body, response, error in
+        get("v1/payment_methods", parameters: parameters) { body, response, error in
             if let error {
                 completion(nil, error)
                 return
@@ -236,7 +236,7 @@ import Foundation
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         get(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
@@ -250,13 +250,13 @@ import Foundation
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
     @objc(POST:parameters:completion:)
-    public func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
+    public func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         post(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
     /// :nodoc:
     @objc(GET:parameters:httpType:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -271,7 +271,7 @@ import Foundation
 
     /// :nodoc:
     @objc(POST:parameters:httpType:completion:)
-    public func post(_ path: String, parameters: NSDictionary? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
+    public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 

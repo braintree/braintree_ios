@@ -3,7 +3,6 @@ import Security
 
 /// Performs HTTP methods on the Braintree Client API
 // TODO: once BTAPIHTTP + BTGraphQLHTTP are converted this can be internal + more Swift-y
-// TODO: When BTAPIHTTP + BTGraphQL are converted we should update the dictionaries to [String: Any]
 @objcMembers public class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 // TODO: - Mark interval vs private properties accordingly
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
@@ -125,7 +124,7 @@ import Security
     }
 
     @objc(GET:parameters:shouldCache:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: RequestCompletion?) {
+    public func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool, completion: RequestCompletion?) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
@@ -134,7 +133,7 @@ import Security
     }
 
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
+    public func get(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
     }
 
@@ -144,7 +143,7 @@ import Security
     }
 
     @objc(POST:parameters:completion:)
-    public func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
+    public func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
 
@@ -154,7 +153,7 @@ import Security
     }
 
     @objc(PUT:parameters:completion:)
-    public func put(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
+    public func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
     }
 
@@ -164,7 +163,7 @@ import Security
     }
 
     @objc(DELETE:parameters:completion:)
-    public func delete(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
+    public func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
     }
 
@@ -173,7 +172,7 @@ import Security
     func httpRequestWithCaching(
         method: String,
         path: String,
-        parameters: NSDictionary? = [:],
+        parameters: [String: Any]? = [:],
         completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -207,7 +206,7 @@ import Security
     func httpRequest(
         method: String,
         path: String,
-        parameters: NSDictionary? = [:],
+        parameters: [String: Any]? = [:],
         completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -226,7 +225,7 @@ import Security
     func createRequest(
         method: String,
         path: String,
-        parameters: NSDictionary? = [:],
+        parameters: [String: Any]? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         let hasHTTPPrefix: Bool = path.hasPrefix("http")

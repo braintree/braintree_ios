@@ -15,7 +15,7 @@ import Foundation
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    public override func get(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
+    public override func get(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
@@ -23,7 +23,7 @@ import Foundation
         httpRequest(method: "POST", parameters: nil, completion: completion)
     }
 
-    public override func post(_ path: String, parameters: NSDictionary? = nil, completion: @escaping RequestCompletion) {
+    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", parameters: parameters, completion: completion)
     }
 
@@ -31,7 +31,7 @@ import Foundation
         NSException(name: exceptionName, reason: "PUT is unsupported").raise()
     }
 
-    public override func put(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
+    public override func put(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         NSException(name: exceptionName, reason: "PUT is unsupported").raise()
     }
 
@@ -39,7 +39,7 @@ import Foundation
         NSException(name: exceptionName, reason: "DELETE is unsupported").raise()
     }
 
-    public override func delete(_ path: String, parameters: NSDictionary? = nil, completion: RequestCompletion?) {
+    public override func delete(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         NSException(name: exceptionName, reason: "DELETE is unsupported").raise()
     }
 
@@ -47,7 +47,7 @@ import Foundation
     
     func httpRequest(
         method: String,
-        parameters: NSDictionary? = [:],
+        parameters: [String: Any]? = [:],
         completion: @escaping RequestCompletion
     ) {
         var errorUserInfo: [String: Any] = [:]
