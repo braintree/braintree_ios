@@ -15,7 +15,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 
 ## Supported Versions
 
-v6 supports a minimum deployment target of iOS 13+. It requires the use of Xcode 13+. If your application contains Objective-C code, the `Enable Modules` build setting must be set to `YES`.
+v6 supports a minimum deployment target of iOS 14+. It requires the use of Xcode 14+ and Swift version 5.7+. If your application contains Objective-C code, the `Enable Modules` build setting must be set to `YES`.
 
 ## Carthage
 
