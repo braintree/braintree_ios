@@ -37,17 +37,10 @@ import Foundation
         return URLSession(configuration: configuration)
     }
 
-    // MARK: - Initializers
-
-    /// Initialize a new API client.
-    /// - Parameter authorization: Your tokenization key, client token, or PayPal ID Token. Passing an invalid value may return `nil`.
-    @objc(initWithAuthorization:)
-    public convenience init?(authorization: String) {
-        self.init(authorization: authorization, sendAnalyticsEvent: true)
-    }
+    // MARK: - Initializer
 
     @objc(initWithAuthorization:sendAnalyticsEvent:)
-    public init?(authorization: String, sendAnalyticsEvent: Bool) {
+    public init?(authorization: String, sendAnalyticsEvent: Bool = true) {
         super.init()
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
