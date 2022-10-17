@@ -7,8 +7,7 @@
 @property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
 @property (nonatomic, strong) BTCardFormView *cardFormView;
-@property (nonatomic, strong) UIButton *autofillButton3DS1;
-@property (nonatomic, strong) UIButton *autofillButton3DS2;
+@property (nonatomic, strong) UIButton *autofillButton3DS;
 @property (nonatomic) int callbackCount;
 
 @end
@@ -23,18 +22,12 @@
     [self.view addSubview:self.cardFormView];
     self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardFormView.hidePhoneNumberField = YES;
-    
-    self.autofillButton3DS1 = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.autofillButton3DS1.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.autofillButton3DS1 setTitle:NSLocalizedString(@"Autofill 3DS v1 Card", nil) forState:UIControlStateNormal];
-    [self.autofillButton3DS1 addTarget:self action:@selector(tappedToAutofill3DS1Card) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.autofillButton3DS1];
-    
-    self.autofillButton3DS2 = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.autofillButton3DS2.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.autofillButton3DS2 setTitle:NSLocalizedString(@"Autofill 3DS v2 Card", nil) forState:UIControlStateNormal];
-    [self.autofillButton3DS2 addTarget:self action:@selector(tappedToAutofill3DS2Card) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.autofillButton3DS2];
+
+    self.autofillButton3DS = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.autofillButton3DS.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.autofillButton3DS setTitle:NSLocalizedString(@"Autofill 3DS Card", nil) forState:UIControlStateNormal];
+    [self.autofillButton3DS addTarget:self action:@selector(tappedToAutofill3DSCard) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.autofillButton3DS];
 
     [NSLayoutConstraint activateConstraints:@[
         [self.cardFormView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
@@ -42,13 +35,9 @@
         [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
         [self.cardFormView.heightAnchor constraintEqualToConstant:200],
         
-        [self.autofillButton3DS1.topAnchor constraintEqualToAnchor:self.cardFormView.bottomAnchor constant:10],
-        [self.autofillButton3DS1.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:10],
-        [self.autofillButton3DS1.heightAnchor constraintEqualToConstant:30],
-        
-        [self.autofillButton3DS2.topAnchor constraintEqualToAnchor:self.autofillButton3DS1.bottomAnchor constant:10],
-        [self.autofillButton3DS2.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:10],
-        [self.autofillButton3DS2.heightAnchor constraintEqualToConstant:30]
+        [self.autofillButton3DS.topAnchor constraintEqualToAnchor:self.cardFormView.bottomAnchor constant:10],
+        [self.autofillButton3DS.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:10],
+        [self.autofillButton3DS.heightAnchor constraintEqualToConstant:30],
     ]];
 }
 
@@ -109,14 +98,7 @@
     self.callbackCountLabel.text = [NSString stringWithFormat:@"Callback Count: %i", self.callbackCount];
 }
 
--(void)tappedToAutofill3DS1Card {
-    self.cardFormView.cardNumberTextField.text = @"4000000000000002";
-    self.cardFormView.expirationTextField.text = self.generateFutureDate;
-    self.cardFormView.cvvTextField.text = @"123";
-    self.cardFormView.postalCodeTextField.text = @"12345";
-}
-
--(void)tappedToAutofill3DS2Card {
+-(void)tappedToAutofill3DSCard {
     self.cardFormView.cardNumberTextField.text = @"4000000000001091";
     self.cardFormView.expirationTextField.text = self.generateFutureDate;
     self.cardFormView.cvvTextField.text = @"123";
@@ -208,14 +190,6 @@
         [ui setLabelCustomization:labelCustomization];
 
         request.v2UICustomization = ui;
-
-        // MARK: v1 Customization
-        
-        BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
-        v1UICustomization.redirectButtonText = @"Return to Demo App";
-        v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";
-
-        request.v1UICustomization = v1UICustomization;
 
         [self.paymentFlowClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
