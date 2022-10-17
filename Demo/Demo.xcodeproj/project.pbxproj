@@ -72,7 +72,6 @@
 		A0988FF724DB44B20095EEEE /* BraintreeDemoUnionPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F8824DB44B10095EEEE /* BraintreeDemoUnionPayViewController.m */; };
 		A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0988F8D24DB44B10095EEEE /* Images.xcassets */; };
 		A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */; };
-		A9B5ABEE24EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */; };
 		A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */; };
 		A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07A24EC290F002F6FF2 /* PayPal_Vault_UITests.swift */; };
 		A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */; };
@@ -85,6 +84,7 @@
 		BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */; };
 		BE9BD75928872E4D00022983 /* BraintreeSEPADirectDebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */; };
 		BE9BD75A28872E4D00022983 /* BraintreeSEPADirectDebit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BEE2E4AA28FDD54D00C03FDD /* ThreeDSecure_V1_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4A928FDD54D00C03FDD /* ThreeDSecure_V1_UITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,7 +211,6 @@
 		A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoMerchantAPIClient.swift; sourceTree = "<group>"; };
 		A9B5ABDE24EB2A2200A4E1C8 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9B5ABE224EB2A2200A4E1C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V1_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Checkout_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07A24EC290F002F6FF2 /* PayPal_Vault_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Vault_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V2_UITests.swift; sourceTree = "<group>"; };
@@ -222,6 +221,7 @@
 		BE4F788F27EE3C1D00FF4C0E /* BraintreeDemoPayPalPayLaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPayPalPayLaterViewController.swift; sourceTree = "<group>"; };
 		BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSEPADirectDebitViewController.swift; sourceTree = "<group>"; };
 		BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEE2E4A928FDD54D00C03FDD /* ThreeDSecure_V1_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V1_UITests.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -583,9 +583,9 @@
 		A9C4E07724EC2899002F6FF2 /* ThreeDSecure UI Tests */ = {
 			isa = PBXGroup;
 			children = (
-				A9B5ABE924EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift */,
 				A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */,
 				A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */,
+				BEE2E4A928FDD54D00C03FDD /* ThreeDSecure_V1_UITests.swift */,
 			);
 			path = "ThreeDSecure UI Tests";
 			sourceTree = "<group>";
@@ -870,13 +870,13 @@
 			files = (
 				A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */,
 				42456E3F25474B620018374E /* DateGenerator.swift in Sources */,
+				BEE2E4AA28FDD54D00C03FDD /* ThreeDSecure_V1_UITests.swift in Sources */,
 				A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */,
 				80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */,
 				A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */,
 				A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */,
 				42456E3E25474B620018374E /* BTUITest.swift in Sources */,
 				42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */,
-				A9B5ABEE24EB2A3200A4E1C8 /* ThreeDSecure_V1_UITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
