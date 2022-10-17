@@ -61,7 +61,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
 
         app.cardinalSubmitButton.forceTapElement()
 
-        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
+        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout: 30)
     }
 
      func testThreeDSecurePaymentFlowV2_acceptsPassword_failsToAuthenticateNonce_dueToCardinalError() {
@@ -78,7 +78,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
 
          app.cardinalSubmitButton.forceTapElement()
 
-         waitForElementToAppear(app.internalErrorMessage)
+         waitForElementToAppear(app.internalErrorMessage, timeout:30)
      }
 
      func testThreeDSecurePaymentFlowV2_returnsToApp_whenCancelTapped() {
