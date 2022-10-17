@@ -204,14 +204,14 @@ import Foundation
                 return
             }
 
-            var paymentMethodNonces: [BTPaymentMethodNonce]? = []
+            var paymentMethodNonces: [BTPaymentMethodNonce] = []
 
             body?["paymentMethods"].asArray()?.forEach { paymentInfo in
                 let type: String? = paymentInfo["type"].asString()
                 let paymentMethodNonce: BTPaymentMethodNonce? = BTPaymentMethodNonceParser.shared.parseJSON(paymentInfo, withParsingBlockForType: type)
 
                 if let paymentMethodNonce {
-                    paymentMethodNonces?.append(paymentMethodNonce)
+                    paymentMethodNonces.append(paymentMethodNonce)
                 }
             }
 
@@ -258,7 +258,7 @@ import Foundation
                 return
             }
 
-            self.httpForType(httpType)?.get(path, parameters: parameters, completion: completion)
+            self.http(for: httpType)?.get(path, parameters: parameters, completion: completion)
         }
     }
 
@@ -273,7 +273,7 @@ import Foundation
                 return
             }
 
-            self.httpForType(httpType)?.post(path, parameters: parameters, completion: completion)
+            self.http(for: httpType)?.post(path, parameters: parameters, completion: completion)
         }
     }
 
@@ -421,7 +421,7 @@ import Foundation
         return components.url
     }
 
-    func httpForType(_ httpType: BTAPIClientHTTPTypeSwift) -> BTHTTP? {
+    func http(for httpType: BTAPIClientHTTPTypeSwift) -> BTHTTP? {
         switch httpType {
         case .gateway:
             return http
