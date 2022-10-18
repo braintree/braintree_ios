@@ -5,7 +5,7 @@ import XCTest
 final class BTAnalyticsMetadata_Tests: XCTestCase {
 
     func testMetadataContainsAllData() {
-        let metadata = BTAnalyticsMetadataSwift.metadata
+        let metadata = BTAnalyticsMetadata.metadata
 
         XCTAssertEqual(metadata["platform"] as? String, "iOS")
         XCTAssertNotNil(metadata["platformVersion"] as? String)
