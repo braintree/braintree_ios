@@ -6,7 +6,7 @@ import BraintreeCore
     @objc public var POSTRequestCount: Int = 0
     @objc public var lastRequestEndpoint: String?
     public var lastRequestMethod: String?
-    @objc public var lastRequestParameters: NSDictionary?
+    @objc public var lastRequestParameters: [String: Any]?
     var stubMethod: String?
     var stubEndpoint: String?
     public var cannedResponse: BTJSON?
@@ -35,7 +35,7 @@ import BraintreeCore
         cannedError = error
     }
 
-    public override func get(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         GETRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters
@@ -57,7 +57,7 @@ import BraintreeCore
         }
     }
     
-    public override func get(_ path: String, parameters: NSDictionary? = nil, shouldCache: Bool, completion: BTHTTP.RequestCompletion?) {
+    public override func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool, completion: BTHTTP.RequestCompletion?) {
         GETRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters
@@ -79,7 +79,7 @@ import BraintreeCore
         }
     }
 
-    public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters
@@ -99,7 +99,7 @@ import BraintreeCore
 
 @objc public class FakeGraphQLHTTP: BTGraphQLHTTP {
     var POSTRequestCount: Int = 0
-    @objc public var lastRequestParameters: NSDictionary?
+    @objc public var lastRequestParameters: [String: Any]?
     @objc public var cannedConfiguration: BTJSON?
 
     required override init(url: URL) {
@@ -110,7 +110,7 @@ import BraintreeCore
         self.init(url: URL(string: "http://fake.com")!)
     }
 
-    public override func post(_ path: String, parameters: NSDictionary?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
         completion?(self.cannedConfiguration, nil, nil)
@@ -119,7 +119,7 @@ import BraintreeCore
 
 @objc public class FakeAPIHTTP: BTAPIHTTP {
     var POSTRequestCount: Int = 0
-    @objc public var lastRequestParameters: NSDictionary?
+    @objc public var lastRequestParameters: [String: Any]?
     @objc public var cannedConfiguration: BTJSON?
 
     required override init(url: URL, accessToken: String) {
@@ -130,7 +130,7 @@ import BraintreeCore
         self.init(url: URL(string: "http://fake.com")!, accessToken: "")
     }
 
-    public override func post(_ path: String, parameters: NSDictionary? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
         completion?(self.cannedConfiguration, nil, nil)
