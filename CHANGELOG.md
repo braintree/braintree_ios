@@ -1,7 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
-* Fixed the nesting of two keys in the `getBaseParameters` dictionary in the BraintreePayPalNativecheckout module
+## unreleased
+* BraintreePayPalNativeCheckout (BETA)
+  * Fixed the nesting of two keys in the `getBaseParameters` dictionary in the BraintreePayPalNativecheckout module
 
 ## 5.14.0 (2022-10-05)
 * Remove `ENABLE_BITCODE` from framework target build settings
