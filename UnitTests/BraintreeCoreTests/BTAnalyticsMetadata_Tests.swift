@@ -14,7 +14,7 @@ final class BTAnalyticsMetadata_Tests: XCTestCase {
         XCTAssertNotNil(metadata["merchantAppName"] as? String)
         XCTAssertNotNil(metadata["merchantAppVersion"] as? String)
         XCTAssertEqual(metadata["deviceManufacturer"] as? String, "Apple")
-        XCTAssertEqual(metadata["deviceModel"] as? String, "arm64")
+        XCTAssertNotNil(metadata["deviceModel"] as? String)
         XCTAssertNotNil(metadata["deviceAppGeneratedPersistentUuid"] as? String)
         XCTAssertNotNil(metadata["iosIdentifierForVendor"] as? String)
         XCTAssertNotNil(metadata["iosPackageManager"] as? String)
