@@ -61,6 +61,56 @@ class ThreeDSecure_V2_UITests: XCTestCase {
 
         app.cardinalSubmitButton.forceTapElement()
 
-        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
+        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout: 30)
     }
+
+     func testThreeDSecurePaymentFlowV2_acceptsPassword_failsToAuthenticateNonce_dueToCardinalError() {
+         app.enterCardDetailsWith(cardNumber: "4000000000001125")
+         app.tokenizeButton.tap()
+
+         waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
+
+         let textField = app.textFields.element(boundBy: 0)
+         waitForElementToBeHittable(textField)
+         textField.forceTapElement()
+         sleep(2)
+         textField.typeText("1234")
+
+         app.cardinalSubmitButton.forceTapElement()
+
+         waitForElementToAppear(app.internalErrorMessage, timeout:30)
+     }
+
+     func testThreeDSecurePaymentFlowV2_returnsToApp_whenCancelTapped() {
+         app.enterCardDetailsWith(cardNumber: "4000000000001091")
+         app.tokenizeButton.tap()
+
+         waitForElementToAppear(app.buttons["Close"])
+
+         app.buttons["Close"].forceTapElement()
+
+         waitForElementToAppear(app.buttons["Canceled 🎲"])
+     }
+
+     func testThreeDSecurePaymentFlowV2_bypassedAuthentication() {
+         app.enterCardDetailsWith(cardNumber: "4000000000001083")
+         app.tokenizeButton.tap()
+         sleep(2)
+
+         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
+     }
+
+     func testThreeDSecurePaymentFlowV2_lookupError() {
+         app.enterCardDetailsWith(cardNumber: "4000000000001034")
+         app.tokenizeButton.tap()
+
+         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
+     }
+
+     func testThreeDSecurePaymentFlowV2_timeout() {
+         app.enterCardDetailsWith(cardNumber: "4000000000001075")
+         app.tokenizeButton.tap()
+
+         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout:30)
+     }
 }
