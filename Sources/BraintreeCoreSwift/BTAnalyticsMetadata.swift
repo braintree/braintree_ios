@@ -1,8 +1,6 @@
-import Foundation
 import UIKit
 
-// TODO: convert to internal (and maybe struct) when BTAnalyticsSession is converted to Swift
-@objcMembers public class BTAnalyticsMetadata: NSObject {
+struct BTAnalyticsMetadata {
 
     // MARK: Metadata Properties
 
@@ -120,8 +118,7 @@ import UIKit
 
     // MARK: - Construct Metadata
 
-    // TODO: make internal when BTAnalyticsSession is converted to Swift
-    public static var metadata: [String: Any] {
+    static var metadata: [String: Any] {
         [
             "platform": platform,
             "platformVersion": platformVersion,

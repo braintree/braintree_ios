@@ -2,8 +2,7 @@ import Foundation
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
-// TODO: rename once Objective-C files are deleted
-@objcMembers public class BTAPIClientSwift: NSObject {
+@objcMembers public class BTAPIClient: NSObject {
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -21,6 +20,13 @@ import Foundation
     var http: BTHTTP?
     var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
+
+    /// Exposed for testing analytics
+    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
+    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
+    var analyticsService: BTAnalyticsService? {
+        self.analyticsService ?? BTAnalyticsService(apiClient: self, flushThreshold: 5)
+    }
 
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
@@ -58,7 +64,7 @@ import Foundation
 
             tokenizationKey = authorization
             configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
-            // queueAnalyticsEvent("ios.started.client-key") // TODO: uncomment when analytics is converted
+            queueAnalyticsEvent("ios.started.client-key")
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
@@ -70,7 +76,7 @@ import Foundation
                 return nil
             }
 
-            // queueAnalyticsEvent("ios.started.client-token") // TODO: uncomment when analytics is converted
+            queueAnalyticsEvent("ios.started.client-token")
         }
 
         metadata = BTClientMetadata()
@@ -278,37 +284,37 @@ import Foundation
     }
 
     ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    public func sendAnalyticsEvent(_ eventName: String) {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
+    public func sendAnalyticsEvent(_ eventKind: String) {
+        analyticsService?.sendAnalyticsEvent(eventKind, completion: nil)
     }
 
     // MARK: Analytics Internal Methods
-    // TODO: Implement when BTAnalyticsService is converted to Swift
 
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    /// - Returns: A `BTAnalyticsService` instance
-//    func analyticsService() -> BTAnalyticsService {
-//        // TODO: Implement when BTAnalyticsService is converted to Swift
-//    }
-
-    func queueAnalyticsEvent() {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
+    func queueAnalyticsEvent(_ eventKind: String) {
+        analyticsService?.sendAnalyticsEvent(eventKind)
     }
 
     func metadataParameters() -> [String: Any] {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
-        return [:]
+        metadata?.parameters.merging(BTAnalyticsMetadata.metadata) { _, new in new } ?? [:]
     }
 
     func graphQLMetadata() -> [String: Any] {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
-        return [:]
+        metadata?.parameters ?? [:]
     }
 
-    func metaParametersWith(parameters: [String: Any], forHTTPType: BTAPIClientHTTPTypeSwift) -> [String: Any] {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
-        return [:]
+    func metaParametersWith(_ parameters: [String: Any], forHTTPType httpType: BTAPIClientHTTPTypeSwift) -> [String: Any] {
+        var mutableParameters: [String: Any] = parameters
+
+        switch httpType {
+        case .gateway:
+            mutableParameters["_meta"] = metadataParameters()
+            return mutableParameters
+        case .braintreeAPI:
+            return parameters
+        case .graphQLAPI:
+            mutableParameters["clientSdkMetadata"] = graphQLMetadata()
+            return mutableParameters
+        }
     }
 
     // MARK: - Internal Static Methods
