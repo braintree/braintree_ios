@@ -82,8 +82,8 @@
 		BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE777AC327D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift */; };
 		BE9BD75928872E4D00022983 /* BraintreeSEPADirectDebit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */; };
 		BE9BD75A28872E4D00022983 /* BraintreeSEPADirectDebit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BEE2E4BC290043D100C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4BB290043D100C03FDD /* PayPalCheckout */; };
 		BEE2E4AA28FDD54D00C03FDD /* ThreeDSecure_V1_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4A928FDD54D00C03FDD /* ThreeDSecure_V1_UITests.swift */; };
+		BEE2E4BC290043D100C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4BB290043D100C03FDD /* PayPalCheckout */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1242,7 +1242,7 @@
 			repositoryURL = "https://github.com/paypal/paypalcheckout-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 0.109.0;
+				version = 0.108.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
