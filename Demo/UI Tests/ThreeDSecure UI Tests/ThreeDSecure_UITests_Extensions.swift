@@ -49,6 +49,10 @@ internal extension XCUIApplication {
         return buttons["An unexpected error occurred"]
     }
 
+    var internalErrorMessage: XCUIElement {
+        return buttons["Internal Error."]
+    }
+
     func enterCardDetailsWith(cardNumber: String, expirationDate: String = DateGenerator.sharedInstance.futureDate()) {
         cardNumberTextField.tap()
         cardNumberTextField.typeText(cardNumber)
