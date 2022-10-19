@@ -1,6 +1,5 @@
 #import "BTAPIClient_Internal.h"
 #import "BTAnalyticsService.h"
-#import "BTAnalyticsMetadata.h"
 
 #import "BraintreeCoreSwiftImports.h"
 
