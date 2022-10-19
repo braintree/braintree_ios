@@ -6,33 +6,21 @@ import UIKit
 
     // MARK: Metadata Properties
 
-    static var platform: String {
-        "iOS"
-    }
+    static let platform: String = "iOS"
+    static let platformVersion: String = UIDevice.current.systemVersion
+    static let sdkVersion: String = BTCoreConstants.braintreeSDKVersion
+    static let merchantAppID: String = Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? ""
+    static let merchantAppVersion: String = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? ""
+    static let merchantAppName: String = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? ""
+    static let deviceManufacturer: String = "Apple"
+    static let iOSIdentifierForVendor: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
+    static let iOSBaseSDK: String = "\(__IPHONE_OS_VERSION_MAX_ALLOWED)"
+    static let iOSDeviceName: String = UIDevice.current.name
+    static let iOSSystemName: String = UIDevice.current.systemName
+    static let isVenmoInstalled: Bool = UIApplication.shared.canOpenURL(URL(string: "com.venmo.touch.v2://x-callback-url/vzero/auth")!)
+    static let isAppExtension: Bool = Bundle.main.bundleURL.pathExtension == "appex"
 
-    static var platformVersion: String {
-        UIDevice.current.systemVersion
-    }
-
-    static var sdkVersion: String {
-        BTCoreConstants.braintreeSDKVersion
-    }
-
-    static var merchantAppID: String {
-        Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? ""
-    }
-
-    static var merchantAppVersion: String {
-        Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? ""
-    }
-
-    static var merchantAppName: String {
-        Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? ""
-    }
-
-    static var deviceManufacturer: String {
-        "Apple"
-    }
+    // MARK: Metadata Computed Properties
 
     static var deviceModel: String {
         var systemInfo = utsname()
@@ -43,10 +31,6 @@ import UIKit
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
         return identifier
-    }
-
-    static var iOSIdentifierForVendor: String {
-        UIDevice.current.identifierForVendor?.uuidString ?? ""
     }
 
     static var iOSPackageManager: String {
@@ -71,18 +55,6 @@ import UIKit
         }
 
         return String(formattedVersionNumber)
-    }
-
-    static var iOSBaseSDK: String {
-        "\(__IPHONE_OS_VERSION_MAX_ALLOWED)"
-    }
-
-    static var iOSDeviceName: String {
-        UIDevice.current.name
-    }
-
-    static var iOSSystemName: String {
-        UIDevice.current.systemName
     }
 
     static var deviceAppGeneratedPersistentUUID: String {
@@ -132,10 +104,6 @@ import UIKit
         }
     }
 
-    static var isVenmoInstalled: Bool {
-        UIApplication.shared.canOpenURL(URL(string: "com.venmo.touch.v2://x-callback-url/vzero/auth")!)
-    }
-
     static var dropInVersion: String {
         var dropInVersion: String = ""
         let localizationBundlePath = Bundle.main.path(forResource: "Braintree-UIKit-Localization", ofType: "bundle")
@@ -148,10 +116,6 @@ import UIKit
             }
         }
         return dropInVersion
-    }
-
-    static var isAppExtension: Bool {
-        Bundle.main.bundleURL.pathExtension == "appex"
     }
 
     // MARK: - Construct Metadata
