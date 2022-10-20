@@ -8,6 +8,7 @@ inhibit_all_warnings!
 target 'Demo' do
   project 'Demo/Demo'
   pod 'InAppSettingsKit'
+  pod 'PayPalCheckout', '0.108.0'
 end
 
 abstract_target 'Tests' do
