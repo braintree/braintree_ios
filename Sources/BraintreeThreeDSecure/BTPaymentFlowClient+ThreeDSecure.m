@@ -106,7 +106,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             
             if (error) {
-                if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                if (error.code == BTCoreConstants.networkConnectionLostCode) {
                     [self.apiClient sendAnalyticsEvent:@"ios.three-d-secure.lookup.network-connection.failure"];
                 }
                 // Provide more context for card validation error when status code 422

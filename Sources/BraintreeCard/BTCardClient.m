@@ -1,9 +1,9 @@
+#import "BraintreeCoreSwiftImports.h"
+
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
 #import "BTConfiguration+Card.h"
-
-#import "BraintreeCoreSwiftImports.h"
 
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
@@ -81,7 +81,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
              {
                  if (error) {
-                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
                      }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
@@ -112,7 +112,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
              {
                  if (error != nil) {
-                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
                      }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];

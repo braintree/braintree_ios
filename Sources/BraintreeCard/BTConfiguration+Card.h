@@ -4,8 +4,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-@class BTConfiguration;
-
 /**
  BTConfiguration category for Card.
  */

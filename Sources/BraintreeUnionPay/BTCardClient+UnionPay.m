@@ -102,7 +102,7 @@
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
-                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                 if (error.code == BTCoreConstants.networkConnectionLostCode) {
                      [self.apiClient sendAnalyticsEvent:@"ios.union-pay.network-connection.failure"];
                  }
                  [self sendUnionPayEvent:@"enrollment-failed"];

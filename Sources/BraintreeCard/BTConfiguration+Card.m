@@ -1,6 +1,6 @@
-#import "BTConfiguration+Card.h"
-
 #import "BraintreeCoreSwiftImports.h"
+
+#import "BTConfiguration+Card.h"
 
 @implementation BTConfiguration (Card)
 
