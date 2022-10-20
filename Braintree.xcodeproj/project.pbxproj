@@ -102,7 +102,6 @@
 		460C0C220F594AE8EE205E57 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A528809AD9007946B9 /* BTJSON.swift */; };
 		5708E0A828809BC6007946B9 /* BTJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A728809BC6007946B9 /* BTJSONError.swift */; };
-		570B93B02853980C0041BAFE /* BTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93AF2853980C0041BAFE /* BTAPIClient.swift */; };
 		570B93D72853C29A0041BAFE /* BTLogLevelDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93D62853C29A0041BAFE /* BTLogLevelDescription.swift */; };
 		570B93D92853C6180041BAFE /* BTLogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93D82853C6180041BAFE /* BTLogLevel.swift */; };
 		57108A1C28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift */; };
@@ -367,8 +366,9 @@
 		BEE2E4A728FDB64400C03FDD /* BTAnalyticsService_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */; };
 		BEE2E4B228FE360300C03FDD /* BTAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4B128FE360300C03FDD /* BTAnalyticsEvent.swift */; };
 		BEE2E4E229007EB900C03FDD /* BTAnalyticsSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E129007EB900C03FDD /* BTAnalyticsSession.swift */; };
-		BEE2E4E429007FF100C03FDD /* BTAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */; };
 		BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */; };
+		BEF1089029019CAE003B2FDA /* BTAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */; };
+		BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93AF2853980C0041BAFE /* BTAPIClient.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
 		BEFD1AF4284F92130070076E /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */; };
@@ -3518,12 +3518,12 @@
 				BEE2E4B228FE360300C03FDD /* BTAnalyticsEvent.swift in Sources */,
 				57CBBCE628B02FE80037F4EE /* BTAPIHTTP.swift in Sources */,
 				BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */,
-				570B93B02853980C0041BAFE /* BTAPIClient.swift in Sources */,
 				5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */,
 				574891ED286F7ECA0020DA36 /* BTClientMetadata.swift in Sources */,
 				BE24C66E28E49A730067B11A /* BTAPIClientError.swift in Sources */,
 				BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */,
 				BECE564928F99FD2001B0F25 /* BTAnalyticsMetadata.swift in Sources */,
+				BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */,
 				BC17F9C028D255B9004B18CC /* BTGraphQLSingleErrorNode.swift in Sources */,
 				BE5C8C0328A2C183004F9130 /* BTConfiguration+GraphQL.swift in Sources */,
 				BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */,
@@ -3547,7 +3547,7 @@
 				BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */,
 				BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */,
 				BE9EC0982899CF040022EC63 /* BTAPIPinnedCertificates.swift in Sources */,
-				BEE2E4E429007FF100C03FDD /* BTAnalyticsService.swift in Sources */,
+				BEF1089029019CAE003B2FDA /* BTAnalyticsService.swift in Sources */,
 				574891E9286F7D300020DA36 /* BTClientMetadataSource.swift in Sources */,
 				BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */,
 				BE698EA028AA8DCB001D9B10 /* BTHTTP.swift in Sources */,

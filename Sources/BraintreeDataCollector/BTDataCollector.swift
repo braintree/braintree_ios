@@ -7,6 +7,10 @@ import Security
 import BraintreeCore
 #endif
 
+#if canImport(BraintreeCoreSwift)
+import BraintreeCoreSwift
+#endif
+
 /// Braintree's advanced fraud protection solution.
 @objcMembers public class BTDataCollector: NSObject {
     

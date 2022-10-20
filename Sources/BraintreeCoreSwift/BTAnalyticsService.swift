@@ -4,8 +4,6 @@ class BTAnalyticsService {
 
     // MARK: - Internal Properties
 
-    let apiClient: BTAPIClient
-
     /// A serial dispatch queue that synchronizes access to `analyticsSessions`
     let sessionsQueue: DispatchQueue = DispatchQueue(label: "com.braintreepayments.BTAnalyticsService")
 
@@ -19,6 +17,8 @@ class BTAnalyticsService {
     /// are sent from only one session. In practice, BTAPIClient.metadata.sessionID should never change, so this
     /// is defensive.
     var analyticsSessions: [String: BTAnalyticsSession] = [:]
+
+    private let apiClient: BTAPIClient
 
     // MARK: - Initializer
 
@@ -55,87 +55,99 @@ class BTAnalyticsService {
     }
 
     func flush(_ completion: ((Error?) -> Void)? = { _ in }) {
-//        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-//            guard let configuration, error == nil else {
-//                if let completion {
-//                    completion(error?.localizedDescription)
-//                    return
-//                }
-//            }
-//
-//            guard let analyticsURL = configuration.json["analytics"]["url"].asURL() else {
-//                completion(BTAnalyticsServiceError.missingAnalyticsURL)
-//                return
-//            }
-//
-//            if let http {
-//                if let clientToken = apiClient.clientToken {
-//                    http = BTHTTP(url: analyticsURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-//                } else if let tokenizationKey = apiClient.tokenizationKey {
-//                    http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
-//                }
-//            } else {
-//                completion(BTAnalyticsServiceError.invalidAPIClient)
-//                return
-//            }
-//
-//            // A special value passed in by unit tests to prevent BTHTTP from actually posting
-//            if http?.baseURL == "test://do-not-send.url" {
-//                completion(nil)
-//                return
-//            }
-//
-//            sessionsQueue.async {
-//                if analyticsSessions.count == 0 {
-//                    completion(nil)
-//                    return
-//                }
-//
-//                var willPostAnalyticsEvent: Bool = false
-//
-//                analyticsSessions.keys.forEach { sessionID in
-//                    let session = analyticsSessions[sessionID]
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            guard let configuration, error == nil else {
+                if let completion, let error {
+                    completion(error)
+                }
+                return
+            }
+
+            guard let analyticsURL = configuration.json?["analytics"]["url"].asURL() else {
+                if let completion {
+                    completion(BTAnalyticsServiceError.missingAnalyticsURL)
+                }
+                return
+            }
+
+            if self.http != nil {
+                if let clientToken = self.apiClient.clientToken {
+                    self.http = BTHTTP(url: analyticsURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                } else if let tokenizationKey = self.apiClient.tokenizationKey {
+                    self.http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
+                }
+            } else {
+                if let completion {
+                    completion(BTAnalyticsServiceError.invalidAPIClient)
+                    return
+                }
+            }
+
+            // A special value passed in by unit tests to prevent BTHTTP from actually posting
+            if self.http?.baseURL.absoluteString == "test://do-not-send.url" {
+                if let completion {
+                    completion(nil)
+                    return
+                }
+            }
+
+            self.sessionsQueue.async {
+                if self.analyticsSessions.count == 0 {
+                    if let completion {
+                        completion(nil)
+                        return
+                    }
+                }
+
+                var willPostAnalyticsEvent: Bool = false
+
+                self.analyticsSessions.keys.forEach { sessionID in
+                    var session = self.analyticsSessions[sessionID]
 //                    if session?.events.count == 0 {
 //                        continue
 //                    }
-//
-//                    willPostAnalyticsEvent = true
-//
-//                    var metadataParameters: [String: Any] = [
-//                        "sessionId": session?.sessionID,
-//                        "integrationType": session?.integration,
-//                        "source": session?.source
-//                    ]
-//
-//                    var postParameters: [String: Any] = [:]
-//
-//                    if session?.events {
-//                        // Map array of BTAnalyticsEvent to JSON
-//                        postParameters["analytics"] = session?.events["json"]
-//                    }
-//
-//                    postParameters["_meta"] = metadataParameters
-//
-//                    if let authorizationFingerprint = apiClient.clientToken?.authorizationFingerprint {
-//                        postParameters["authorization_fingerprint"] = authorizationFingerprint
-//                    } else if let tokenizationKey = apiClient.tokenizationKey {
-//                        postParameters["tokenization_key"] = tokenizationKey
-//                    }
-//
-//                    session?.events.removeAllObjects()
-//
-//                    http?.post("/", parameters: postParameters) { body, response, error in
-//                        if let error {
-//                            completion(error.localizedDescription)
-//                        }
-//                    }
-//                }
-//
-//                if !willPostAnalyticsEvent {
-//                    completion(nil)
-//                }
-//            }
-//        }
+
+                    willPostAnalyticsEvent = true
+
+                    let metadataParameters: [String: Any] = [
+                        "sessionId": session?.sessionID ?? "",
+                        "integrationType": session?.integration ?? "",
+                        "source": session?.source ?? ""
+                    ]
+
+                    var postParameters: [String: Any] = [:]
+
+                    if let sessionEvents = session?.events {
+                        // Map array of BTAnalyticsEvent to JSON
+                        postParameters["analytics"] = sessionEvents.map { $0.json }
+                    }
+
+                    postParameters["_meta"] = metadataParameters
+
+                    if let authorizationFingerprint = self.apiClient.clientToken?.authorizationFingerprint {
+                        postParameters["authorization_fingerprint"] = authorizationFingerprint
+                    } else if let tokenizationKey = self.apiClient.tokenizationKey {
+                        postParameters["tokenization_key"] = tokenizationKey
+                    }
+
+                    session?.events.removeAll()
+
+                    self.http?.post("/", parameters: postParameters) { body, response, error in
+                        if let error {
+                            if let completion {
+                                completion(error)
+                            }
+                        }
+                    }
+                }
+
+                if !willPostAnalyticsEvent {
+                    if let completion {
+                        completion(nil)
+                    }
+                }
+            }
+        }
     }
 
     // MARK: - Helpers

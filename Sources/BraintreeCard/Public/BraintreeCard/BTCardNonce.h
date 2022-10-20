@@ -6,6 +6,7 @@
 
 @class BTThreeDSecureInfo;
 @class BTAuthenticationInsight;
+@class BTBinData;
 
 NS_ASSUME_NONNULL_BEGIN
 

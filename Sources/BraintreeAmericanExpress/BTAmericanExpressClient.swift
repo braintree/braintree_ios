@@ -1,6 +1,11 @@
 import Foundation
+
 #if canImport(BraintreeCore)
 import BraintreeCore
+#endif
+
+#if canImport(BraintreeCoreSwift)
+import BraintreeCoreSwift
 #endif
 
 ///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
