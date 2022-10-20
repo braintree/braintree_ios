@@ -145,7 +145,6 @@
 		5A741654B0F515134D184C08 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED6B5783E5FAAF1A78834A9 /* Pods_Tests_IntegrationTests.framework */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
 		80132D732900D5E20088D30D /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAB592B28664099003A7BC5 /* PayPalCheckout.xcframework */; };
-		80132D742900D5E20088D30D /* PayPalCheckout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAB592B28664099003A7BC5 /* PayPalCheckout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */; };
 		80252BD627299FE0002E0D84 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
@@ -739,17 +738,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		80132D752900D5E20088D30D /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				80132D742900D5E20088D30D /* PayPalCheckout.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A9E80AA024FEF45400196BD3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2671,7 +2659,6 @@
 				9CE51771282D51DD0013C740 /* Frameworks */,
 				9CE51773282D51DD0013C740 /* Headers */,
 				9CE51780282D51DD0013C740 /* Resources */,
-				80132D752900D5E20088D30D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
