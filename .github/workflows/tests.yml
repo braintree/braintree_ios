@@ -15,8 +15,6 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 14
         run: sudo xcode-select -switch /Applications/Xcode_14.0.app
-      - name: Install Package dependencies
-        run: swift package resolve
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
@@ -47,8 +45,6 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 14
         run: sudo xcode-select -switch /Applications/Xcode_14.0.app
-      - name: Install Package dependencies
-        run: swift package resolve
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
