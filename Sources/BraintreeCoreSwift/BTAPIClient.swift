@@ -6,13 +6,18 @@ import Foundation
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    // MARK: - Internal Properties
+    // MARK: - Public Properties
 
-    var tokenizationKey: String?
-    var clientToken: BTClientToken?
+    /// The tokenization key used to authorize the APIClient
+    public var tokenizationKey: String?
+
+    /// The client token used to authorize the APIClient
+    public var clientToken: BTClientToken?
 
     /// Client metadata that is used for tracking the client session
-    var metadata: BTClientMetadata?
+    public var metadata: BTClientMetadata?
+
+    // MARK: - Internal Properties
 
     /// Used to fetch and store configurations in the URL Cache of the session
     var configurationHTTP: BTHTTP?
@@ -43,10 +48,16 @@ import Foundation
         return URLSession(configuration: configuration)
     }
 
-    // MARK: - Initializer
+    // MARK: - Initializers
 
-    @objc(initWithAuthorization:sendAnalyticsEvent:)
-    public init?(authorization: String, sendAnalyticsEvent: Bool = true) {
+    /// Initialize a new API client.
+    /// - Parameter authorization: Your tokenization key, client token, or PayPal ID Token. Passing an invalid value may return `nil`.
+    @objc(initWithAuthorization:)
+    public convenience init?(authorization: String) {
+        self.init(authorization: authorization, sendAnalyticsEvent: true)
+    }
+
+    init?(authorization: String, sendAnalyticsEvent: Bool) {
         super.init()
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
@@ -255,7 +266,7 @@ import Foundation
 
     /// :nodoc:
     @objc(GET:parameters:httpType:completion:)
-    public func get(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPType, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -270,7 +281,7 @@ import Foundation
 
     /// :nodoc:
     @objc(POST:parameters:httpType:completion:)
-    public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
+    public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPType, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -302,7 +313,7 @@ import Foundation
         metadata?.parameters ?? [:]
     }
 
-    func metaParametersWith(_ parameters: [String: Any], forHTTPType httpType: BTAPIClientHTTPTypeSwift) -> [String: Any] {
+    func metaParametersWith(_ parameters: [String: Any], forHTTPType httpType: BTAPIClientHTTPType) -> [String: Any] {
         var mutableParameters: [String: Any] = parameters
 
         switch httpType {
@@ -369,7 +380,7 @@ import Foundation
         environment.lowercased() == "development" ? "http" : "https"
     }
 
-    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPTypeSwift) -> String? {
+    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPType) -> String? {
         var host: String? = nil
         let environmentLowercased: String = environment.lowercased()
 
@@ -427,7 +438,7 @@ import Foundation
         return components.url
     }
 
-    func http(for httpType: BTAPIClientHTTPTypeSwift) -> BTHTTP? {
+    func http(for httpType: BTAPIClientHTTPType) -> BTHTTP? {
         switch httpType {
         case .gateway:
             return http

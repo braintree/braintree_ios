@@ -5,19 +5,16 @@
 #import <Braintree/BTConfiguration+ApplePay.h>
 #import <Braintree/BTApplePayCardNonce.h>
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
 
 #import "BraintreeCoreSwiftImports.h"

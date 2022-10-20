@@ -7,17 +7,14 @@
 
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
-#import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BTCardRequest.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
 
 #else // Carthage
 #import <BraintreeCard/BTCardRequest.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
 
 #endif

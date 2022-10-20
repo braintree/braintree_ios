@@ -10,17 +10,14 @@
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BTConfiguration+Venmo.h>
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 
 #endif
 
@@ -153,7 +150,7 @@ static BTVenmoClient *appSwitchedClient;
         
         [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
             if (err) {
-                if (err.code == NETWORK_CONNECTION_LOST_CODE) {
+                if (err.code == BTCoreConstants.networkConnectionLostCode) {
                     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                 }
                 NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain

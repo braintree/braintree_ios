@@ -15,7 +15,6 @@ struct BTAnalyticsMetadata {
     static let iOSBaseSDK: String = "\(__IPHONE_OS_VERSION_MAX_ALLOWED)"
     static let iOSDeviceName: String = UIDevice.current.name
     static let iOSSystemName: String = UIDevice.current.systemName
-    static let isVenmoInstalled: Bool = UIApplication.shared.canOpenURL(URL(string: "com.venmo.touch.v2://x-callback-url/vzero/auth")!)
     static let isAppExtension: Bool = Bundle.main.bundleURL.pathExtension == "appex"
 
     // MARK: Metadata Computed Properties
@@ -100,6 +99,11 @@ struct BTAnalyticsMetadata {
         default:
             return "Unknown"
         }
+    }
+
+    static var isVenmoInstalled: Bool {
+        guard let venmoURL = URL(string: "com.venmo.touch.v2://x-callback-url/vzero/auth") else { return false }
+        return UIApplication.shared.canOpenURL(venmoURL)
     }
 
     static var dropInVersion: String {
