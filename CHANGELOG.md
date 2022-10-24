@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
-  * Update Package.swift to use binary dependency of `PayPalCheckout` and pulling in the `PayPalCheckout.xcframework.zip` from the `PayPalCheckout` release directly
+  * Update Package.swift to fetch `PayPalCheckout` binary dependency directly instead of hosting copy in `braintree_ios` repo
 
 ## 5.14.0 (2022-10-05)
 * Remove `ENABLE_BITCODE` from framework target build settings
