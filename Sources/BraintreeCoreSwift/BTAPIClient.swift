@@ -313,21 +313,6 @@ import Foundation
         metadata?.parameters ?? [:]
     }
 
-    func metaParametersWith(_ parameters: [String: Any], forHTTPType httpType: BTAPIClientHTTPType) -> [String: Any] {
-        var mutableParameters: [String: Any] = parameters
-
-        switch httpType {
-        case .gateway:
-            mutableParameters["_meta"] = metadataParameters()
-            return mutableParameters
-        case .braintreeAPI:
-            return parameters
-        case .graphQLAPI:
-            mutableParameters["clientSdkMetadata"] = graphQLMetadata()
-            return mutableParameters
-        }
-    }
-
     // MARK: - Internal Static Methods
 
     static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {

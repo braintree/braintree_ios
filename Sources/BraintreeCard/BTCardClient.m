@@ -1,9 +1,9 @@
-#import "BraintreeCoreSwiftImports.h"
-
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
 #import "BTConfiguration+Card.h"
+
+#import "BraintreeCoreSwiftImports.h"
 
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>

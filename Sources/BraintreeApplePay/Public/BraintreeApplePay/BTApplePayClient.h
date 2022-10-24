@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 @class BTAPIClient;
 @class BTApplePayCardNonce;
+@class BTConfiguration;
 @class PKPayment;
 @class PKPaymentRequest;
 

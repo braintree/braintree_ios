@@ -6,6 +6,8 @@
 #import <BraintreePayPal/BTPayPalAccountNonce.h>
 #endif
 
+@class BTPostalAddress;
+
 @interface BTPayPalAccountNonce ()
 
 - (instancetype)initWithNonce:(NSString *)nonce

@@ -1,4 +1,5 @@
 #import "BTPaymentFlowClient_Internal.h"
+#import "BraintreeCoreSwiftImports.h"
 
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowClient+LocalPayment.h>

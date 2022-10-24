@@ -6,6 +6,8 @@
 
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
+@class BTPostalAddress;
+@class BTJSON;
 
 /**
  Contains information about a PayPal payment method
