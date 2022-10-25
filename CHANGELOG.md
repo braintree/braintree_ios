@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Resolve depreciation warning with `UIApplication.sharedApplication` for iOS 15+ targets (fixes #884) 
+
 ## 5.14.0 (2022-10-05)
 * Remove `ENABLE_BITCODE` from framework target build settings
   * _The App Store no longer accepts bitcode submissions from Xcode 14_
