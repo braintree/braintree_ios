@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
-  * Fixed the nesting of two keys in the `getBaseParameters` dictionary in the BraintreePayPalNativecheckout module
+  * Fix `merchant_account_id` and `correlation_id` keys to be nested at the top level of the internal create order request
 
 ## 5.14.0 (2022-10-05)
 * Remove `ENABLE_BITCODE` from framework target build settings
