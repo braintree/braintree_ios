@@ -101,16 +101,13 @@ let package = Package(
         ),
         .target(
             name: "BraintreePayPalNativeCheckout",
-            dependencies: [
-                "BraintreeCore",
-                "BraintreePayPal",
-                "PayPalCheckout",
-            ],
+            dependencies: ["BraintreeCore", "BraintreePayPal", "PayPalCheckout"],
             path: "Sources/BraintreePayPalNativeCheckout"
         ),
         .binaryTarget(
             name: "PayPalCheckout",
-            path: "Frameworks/XCFrameworks/PayPalCheckout.xcframework"
+            url: "https://github.com/paypal/paypalcheckout-ios/releases/download/0.108.0/PayPalCheckout.xcframework.zip",
+            checksum: "f186036ec1b180f9cb84a48ea00ca5835a3fce3af8d112b1e3067fa9d56dcf78"
         ),
         .target(
             name: "BraintreeSEPADirectDebit",
