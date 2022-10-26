@@ -1,4 +1,0 @@
-framework module PayPalCheckout {
-  header "PayPalCheckout-Swift.h"
-  requires objc
-}

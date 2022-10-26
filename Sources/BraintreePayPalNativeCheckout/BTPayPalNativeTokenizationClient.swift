@@ -24,7 +24,7 @@ class BTPayPalNativeTokenizationClient {
 
         let tokenizationRequest = BTPayPalNativeTokenizationRequest(
           request: request,
-          correlationID: State.correlationIDs.riskCorrelationID ?? ""
+          correlationID: request.riskCorrelationId ?? State.correlationIDs.riskCorrelationID ?? ""
         )
 
         apiClient.post(
