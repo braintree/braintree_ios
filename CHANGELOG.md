@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.15.0 (2022-10-26)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix `merchant_account_id` and `correlation_id` keys to be nested at the top level of the internal create order request
   * Update Package.swift to fetch `PayPalCheckout` binary dependency directly instead of hosting copy in `braintree_ios` repo
