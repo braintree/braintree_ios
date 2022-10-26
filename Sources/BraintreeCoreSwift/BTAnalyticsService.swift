@@ -103,9 +103,6 @@ class BTAnalyticsService {
 
                 self.analyticsSessions.keys.forEach { sessionID in
                     var session = self.analyticsSessions[sessionID]
-//                    if session?.events.count == 0 {
-//                        continue
-//                    }
 
                     willPostAnalyticsEvent = true
 
