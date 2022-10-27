@@ -30,7 +30,7 @@ import Foundation
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
     /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
     var analyticsService: BTAnalyticsService? {
-        self.analyticsService ?? BTAnalyticsService(apiClient: self, flushThreshold: 5)
+        BTAnalyticsService(apiClient: self, flushThreshold: 5)
     }
 
     var session: URLSession {

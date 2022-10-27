@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 
 /// Project version number for BraintreeCore.
 FOUNDATION_EXPORT double BraintreeCoreVersionNumber;
