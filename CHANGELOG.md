@@ -4,6 +4,8 @@
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes with a version of 5.4.0 with `ENABLE_BITCODE` removed
     * _The App Store no longer accepts bitcode submissions from Xcode 14_
+    * This version of PPRiskMagnes drops support for Xcode 12 and require Swift 5.5+
+      * [As of April 25, 2022 Apple requires all apps to be submitted with Xcode 13+](https://developer.apple.com/news/upcoming-requirements/?id=04252022a)
 
 ## 5.15.0 (2022-10-26)
 * BraintreePayPalNativeCheckout (BETA)
