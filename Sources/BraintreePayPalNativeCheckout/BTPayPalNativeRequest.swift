@@ -31,16 +31,17 @@ extension BTPayPalNativeRequest where Self: BTPayPalRequest {
             "no_shipping": !isShippingAddressRequired,
             "brand_name": displayName ?? configuration.json?["paypal"]["displayName"].asString(),
             "locale_code": localeCode,
-            "merchant_account_id": merchantAccountID,
-            "correlation_id": riskCorrelationId,
             "address_override": shippingAddressOverride != nil ? !isShippingAddressEditable : false
         ]
-
-        return [// Base values from BTPayPalRequest
-            "line_items": lineItemsArray,
-            "return_url": String(format: "%@://%@success", callbackURLScheme, callbackHostAndPath),
-            "cancel_url": String(format: "%@://%@cancel", callbackURLScheme, callbackHostAndPath),
-            "experience_profile": experienceProfile.compactMapValues { $0 },
+        let baseParams: [AnyHashable: Any?] = [
+          // Base values from BTPayPalRequest
+          "correlation_id": riskCorrelationId,
+          "merchant_account_id": merchantAccountID,
+          "line_items": lineItemsArray,
+          "return_url": String(format: "%@://%@success", callbackURLScheme, callbackHostAndPath),
+          "cancel_url": String(format: "%@://%@cancel", callbackURLScheme, callbackHostAndPath),
+          "experience_profile": experienceProfile.compactMapValues { $0 },
         ]
+        return baseParams.compactMapValues { $0 }
     }
 }

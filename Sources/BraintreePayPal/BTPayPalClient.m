@@ -408,7 +408,12 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
             return windowScene.windows.firstObject;
         }
     }
-    return UIApplication.sharedApplication.windows.firstObject;
+
+    if (@available(iOS 15, *)) {
+        return ((UIWindowScene *)UIApplication.sharedApplication.connectedScenes.allObjects.firstObject).windows.firstObject;
+    } else {
+        return UIApplication.sharedApplication.windows.firstObject;
+    }
 }
 
 #pragma mark - Preflight check
