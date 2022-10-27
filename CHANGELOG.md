@@ -63,6 +63,13 @@
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
 
+## 5.15.0 (2022-10-26)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix `merchant_account_id` and `correlation_id` keys to be nested at the top level of the internal create order request
+  * Update Package.swift to fetch `PayPalCheckout` binary dependency directly instead of hosting copy in `braintree_ios` repo
+* BraintreePayPal
+  * Resolve depreciation warning with `UIApplication.sharedApplication` for iOS 15+ targets (fixes #884)
+
 ## 5.14.0 (2022-10-05)
 * Remove `ENABLE_BITCODE` from framework target build settings
   * _The App Store no longer accepts bitcode submissions from Xcode 14_

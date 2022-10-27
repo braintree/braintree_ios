@@ -370,6 +370,8 @@
 		BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */; };
 		BEF1089029019CAE003B2FDA /* BTAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */; };
 		BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93AF2853980C0041BAFE /* BTAPIClient.swift */; };
+		BEE2E4B72900436600C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B62900436600C03FDD /* PayPalCheckout */; };
+		BEE2E4B9290043A200C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B8290043A200C03FDD /* PayPalCheckout */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
 		BEFD1AF4284F92130070076E /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */; };
@@ -1284,7 +1286,7 @@
 				BE38CA3B28908A07008B58E3 /* BraintreeCoreSwift.framework in Frameworks */,
 				3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */,
 				9CE51772282D51DD0013C740 /* BraintreeCore.framework in Frameworks */,
-				80B6190D28C9535F00FB5022 /* PayPalCheckout.xcframework in Frameworks */,
+				BEE2E4B72900436600C03FDD /* PayPalCheckout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1293,7 +1295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CE5179F282D54030013C740 /* BraintreePayPalNativeCheckout.framework in Frameworks */,
-				80B6191028C9538B00FB5022 /* PayPalCheckout.xcframework in Frameworks */,
+				BEE2E4B9290043A200C03FDD /* PayPalCheckout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2631,6 +2633,7 @@
 			);
 			name = BraintreePayPalNativeCheckout;
 			packageProductDependencies = (
+				BEE2E4B62900436600C03FDD /* PayPalCheckout */,
 			);
 			productName = BraintreeCard;
 			productReference = 9CE51784282D51DD0013C740 /* BraintreePayPalNativeCheckout.framework */;
@@ -2650,6 +2653,9 @@
 				9CE517A1282D54030013C740 /* PBXTargetDependency */,
 			);
 			name = BraintreePayPalNativeCheckoutTests;
+			packageProductDependencies = (
+				BEE2E4B8290043A200C03FDD /* PayPalCheckout */,
+			);
 			productName = BraintreePayPalNativeCheckoutTests;
 			productReference = 9CE5179B282D54030013C740 /* BraintreePayPalNativeCheckoutTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -3135,6 +3141,7 @@
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			packageReferences = (
+				BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
 			projectDirPath = "";
@@ -7327,6 +7334,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paypal/paypalcheckout-ios/";
+			requirement = {
+				kind = exactVersion;
+				version = 0.108.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BEE2E4B62900436600C03FDD /* PayPalCheckout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */;
+			productName = PayPalCheckout;
+		};
+		BEE2E4B8290043A200C03FDD /* PayPalCheckout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */;
+			productName = PayPalCheckout;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A75DA344192138F000D997A2 /* Project object */;
 }

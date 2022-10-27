@@ -69,13 +69,13 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
         // Assert that the return and cancel URLs are correct
         XCTAssertEqual(baseParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
         XCTAssertEqual(baseParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(baseParameters["merchant_account_id"] as? String, request.merchantAccountID)
+        XCTAssertEqual(baseParameters["correlation_id"] as? String, request.riskCorrelationId)
 
         let profile = try XCTUnwrap(baseParameters["experience_profile"] as? [AnyHashable: Any])
         XCTAssertEqual(profile["no_shipping"] as? Bool, !request.isShippingAddressRequired)
         XCTAssertEqual(profile["brand_name"] as? String, request.displayName)
         XCTAssertEqual(profile["locale_code"] as? String, request.localeCode)
-        XCTAssertEqual(profile["merchant_account_id"] as? String, request.merchantAccountID)
-        XCTAssertEqual(profile["correlation_id"] as? String, request.riskCorrelationId)
         XCTAssertEqual(profile["address_override"] as? Bool, !request.isShippingAddressEditable)
     }
 
