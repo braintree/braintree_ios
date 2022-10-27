@@ -1,0 +1,5423 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreMotion",
+        "printedName": "CoreMotion",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "SystemConfiguration.CaptiveNetwork",
+        "printedName": "SystemConfiguration.CaptiveNetwork",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "NetworkExtension",
+        "printedName": "NetworkExtension",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "WebKit",
+        "printedName": "WebKit",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MagnesSDK",
+        "printedName": "MagnesSDK",
+        "children": [
+          {
+            "kind": "TypeDecl",
+            "name": "MagnesSource",
+            "printedName": "MagnesSource",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "PAYPAL",
+                "printedName": "PAYPAL",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.MagnesSource.Type) -> PPRiskMagnes.MagnesSDK.MagnesSource",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesSource",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "MagnesSource",
+                            "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                            "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO6PAYPALyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO6PAYPALyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 0
+              },
+              {
+                "kind": "Var",
+                "name": "EBAY",
+                "printedName": "EBAY",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.MagnesSource.Type) -> PPRiskMagnes.MagnesSDK.MagnesSource",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesSource",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "MagnesSource",
+                            "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                            "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO4EBAYyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO4EBAYyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 1
+              },
+              {
+                "kind": "Var",
+                "name": "BRAINTREE",
+                "printedName": "BRAINTREE",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.MagnesSource.Type) -> PPRiskMagnes.MagnesSDK.MagnesSource",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesSource",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "MagnesSource",
+                            "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                            "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO9BRAINTREEyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO9BRAINTREEyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 2
+              },
+              {
+                "kind": "Var",
+                "name": "SIMILITY",
+                "printedName": "SIMILITY",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.MagnesSource.Type) -> PPRiskMagnes.MagnesSDK.MagnesSource",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesSource",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "MagnesSource",
+                            "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                            "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO8SIMILITYyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO8SIMILITYyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 3
+              },
+              {
+                "kind": "Var",
+                "name": "VENMO",
+                "printedName": "VENMO",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.MagnesSource.Type) -> PPRiskMagnes.MagnesSDK.MagnesSource",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesSource",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "MagnesSource",
+                            "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                            "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO5VENMOyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO5VENMOyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 4
+              },
+              {
+                "kind": "Var",
+                "name": "DEFAULT",
+                "printedName": "DEFAULT",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.MagnesSource.Type) -> PPRiskMagnes.MagnesSDK.MagnesSource",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesSource",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "MagnesSource",
+                            "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                            "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO7DEFAULTyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO7DEFAULTyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 5
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(rawValue:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesSource",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO8rawValueAESgSi_tcfc",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO8rawValueAESgSi_tcfc",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Var",
+                "name": "rawValue",
+                "printedName": "rawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO8rawValueSivp",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO8rawValueSivp",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO8rawValueSivg",
+                    "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO8rawValueSivg",
+                    "moduleName": "PPRiskMagnes",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC0B6SourceO",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "enumRawTypeName": "Int",
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Hashable",
+                "printedName": "Hashable",
+                "usr": "s:SH",
+                "mangledName": "$sSH"
+              },
+              {
+                "kind": "Conformance",
+                "name": "RawRepresentable",
+                "printedName": "RawRepresentable",
+                "children": [
+                  {
+                    "kind": "TypeWitness",
+                    "name": "RawValue",
+                    "printedName": "RawValue",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:SY",
+                "mangledName": "$sSY"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "Environment",
+            "printedName": "Environment",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "LIVE",
+                "printedName": "LIVE",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.Environment.Type) -> PPRiskMagnes.MagnesSDK.Environment",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                        "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.Environment.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Environment",
+                            "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                            "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO4LIVEyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO4LIVEyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 0
+              },
+              {
+                "kind": "Var",
+                "name": "SANDBOX",
+                "printedName": "SANDBOX",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.Environment.Type) -> PPRiskMagnes.MagnesSDK.Environment",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                        "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.Environment.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Environment",
+                            "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                            "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO7SANDBOXyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO7SANDBOXyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 1
+              },
+              {
+                "kind": "Var",
+                "name": "STAGE",
+                "printedName": "STAGE",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.Environment.Type) -> PPRiskMagnes.MagnesSDK.Environment",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                        "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.Environment.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Environment",
+                            "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                            "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO5STAGEyA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO5STAGEyA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 2
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(rawValue:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "PPRiskMagnes.MagnesSDK.Environment?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                        "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO8rawValueAESgSi_tcfc",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO8rawValueAESgSi_tcfc",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Var",
+                "name": "rawValue",
+                "printedName": "rawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO8rawValueSivp",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO8rawValueSivp",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO8rawValueSivg",
+                    "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO8rawValueSivg",
+                    "moduleName": "PPRiskMagnes",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "enumRawTypeName": "Int",
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Hashable",
+                "printedName": "Hashable",
+                "usr": "s:SH",
+                "mangledName": "$sSH"
+              },
+              {
+                "kind": "Conformance",
+                "name": "RawRepresentable",
+                "printedName": "RawRepresentable",
+                "children": [
+                  {
+                    "kind": "TypeWitness",
+                    "name": "RawValue",
+                    "printedName": "RawValue",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:SY",
+                "mangledName": "$sSY"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "MagnesErrors",
+            "printedName": "MagnesErrors",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "invalidInputError",
+                "printedName": "invalidInputError",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(PPRiskMagnes.MagnesSDK.MagnesErrors.Type) -> PPRiskMagnes.MagnesSDK.MagnesErrors",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesErrors",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesErrors",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesErrors.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "MagnesErrors",
+                            "printedName": "PPRiskMagnes.MagnesSDK.MagnesErrors",
+                            "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO17invalidInputErroryA2EmF",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6ErrorsO17invalidInputErroryA2EmF",
+                "moduleName": "PPRiskMagnes",
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "fixedbinaryorder": 0
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(rawValue:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "PPRiskMagnes.MagnesSDK.MagnesErrors?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MagnesErrors",
+                        "printedName": "PPRiskMagnes.MagnesSDK.MagnesErrors",
+                        "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO8rawValueAESgSi_tcfc",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6ErrorsO8rawValueAESgSi_tcfc",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Var",
+                "name": "rawValue",
+                "printedName": "rawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO8rawValueSivp",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6ErrorsO8rawValueSivp",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO8rawValueSivg",
+                    "mangledName": "$s12PPRiskMagnes0B3SDKC0B6ErrorsO8rawValueSivg",
+                    "moduleName": "PPRiskMagnes",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "_nsErrorDomain",
+                "printedName": "_nsErrorDomain",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO14_nsErrorDomainSSvpZ",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC0B6ErrorsO14_nsErrorDomainSSvpZ",
+                "moduleName": "PPRiskMagnes",
+                "static": true,
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO14_nsErrorDomainSSvgZ",
+                    "mangledName": "$s12PPRiskMagnes0B3SDKC0B6ErrorsO14_nsErrorDomainSSvgZ",
+                    "moduleName": "PPRiskMagnes",
+                    "static": true,
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:12PPRiskMagnes0B3SDKC0B6ErrorsO",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC0B6ErrorsO",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "enumRawTypeName": "Int",
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Hashable",
+                "printedName": "Hashable",
+                "usr": "s:SH",
+                "mangledName": "$sSH"
+              },
+              {
+                "kind": "Conformance",
+                "name": "RawRepresentable",
+                "printedName": "RawRepresentable",
+                "children": [
+                  {
+                    "kind": "TypeWitness",
+                    "name": "RawValue",
+                    "printedName": "RawValue",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:SY",
+                "mangledName": "$sSY"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Error",
+                "printedName": "Error",
+                "usr": "s:s5ErrorP",
+                "mangledName": "$ss5ErrorP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "_BridgedNSError",
+                "printedName": "_BridgedNSError",
+                "usr": "s:10Foundation15_BridgedNSErrorP",
+                "mangledName": "$s10Foundation15_BridgedNSErrorP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Sendable",
+                "printedName": "Sendable",
+                "usr": "s:s8SendableP",
+                "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "_ObjectiveCBridgeableError",
+                "printedName": "_ObjectiveCBridgeableError",
+                "usr": "s:10Foundation26_ObjectiveCBridgeableErrorP",
+                "mangledName": "$s10Foundation26_ObjectiveCBridgeableErrorP"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "appIdErrorMessage",
+            "printedName": "appIdErrorMessage",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(py)appIdErrorMessage",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC17appIdErrorMessageSSvp",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)appIdErrorMessage",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC17appIdErrorMessageSSvg",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "cmidErrorMessage",
+            "printedName": "cmidErrorMessage",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(py)cmidErrorMessage",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC16cmidErrorMessageSSvp",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)cmidErrorMessage",
+                "mangledName": "$s12PPRiskMagnes0B3SDKC16cmidErrorMessageSSvg",
+                "moduleName": "PPRiskMagnes",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "shared",
+            "printedName": "shared()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MagnesSDK",
+                "printedName": "PPRiskMagnes.MagnesSDK",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(cm)shared",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC6sharedACyFZ",
+            "moduleName": "PPRiskMagnes",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "setUp",
+            "printedName": "setUp(setEnviroment:setOptionalAppGuid:setOptionalAPNToken:disableRemoteConfiguration:disableBeacon:magnesSource:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Environment",
+                "printedName": "PPRiskMagnes.MagnesSDK.Environment",
+                "hasDefaultArg": true,
+                "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "hasDefaultArg": true,
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "hasDefaultArg": true,
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MagnesSource",
+                "printedName": "PPRiskMagnes.MagnesSDK.MagnesSource",
+                "hasDefaultArg": true,
+                "usr": "s:12PPRiskMagnes0B3SDKC0B6SourceO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)setUpWithSetEnviroment:setOptionalAppGuid:setOptionalAPNToken:disableRemoteConfiguration:disableBeacon:magnesSource:error:",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC5setUp0D10Enviroment0D15OptionalAppGuid0dG8APNToken26disableRemoteConfiguration0K6Beacon12magnesSourceyAC11EnvironmentO_S2SS2bAC0bP0OtKF",
+            "moduleName": "PPRiskMagnes",
+            "objc_name": "setUpWithSetEnviroment:setOptionalAppGuid:setOptionalAPNToken:disableRemoteConfiguration:disableBeacon:magnesSource:error:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "collect",
+            "printedName": "collect()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MagnesResult",
+                "printedName": "PPRiskMagnes.MagnesResult",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)collect",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC7collectAA0B6ResultCyF",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "collect",
+            "printedName": "collect(withPayPalClientMetadataId:withAdditionalData:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MagnesResult",
+                "printedName": "PPRiskMagnes.MagnesResult",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)collectWithPayPalClientMetadataId:withAdditionalData:error:",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC7collect26withPayPalClientMetadataId0E14AdditionalDataAA0B6ResultCSS_SDyS2SGtKF",
+            "moduleName": "PPRiskMagnes",
+            "objc_name": "collectWithPayPalClientMetadataId:withAdditionalData:error:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "collectAndSubmit",
+            "printedName": "collectAndSubmit()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MagnesResult",
+                "printedName": "PPRiskMagnes.MagnesResult",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)collectAndSubmit",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC16collectAndSubmitAA0B6ResultCyF",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "collectAndSubmit",
+            "printedName": "collectAndSubmit(withPayPalClientMetadataId:withAdditionalData:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MagnesResult",
+                "printedName": "PPRiskMagnes.MagnesResult",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)collectAndSubmitWithPayPalClientMetadataId:withAdditionalData:error:",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC16collectAndSubmit26withPayPalClientMetadataId0G14AdditionalDataAA0B6ResultCSS_SDyS2SGtKF",
+            "moduleName": "PPRiskMagnes",
+            "objc_name": "collectAndSubmitWithPayPalClientMetadataId:withAdditionalData:error:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "registerTelemetry",
+            "printedName": "registerTelemetry(on:withViewId:withPayPalClientMetadataId:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UITextField",
+                "printedName": "UIKit.UITextField",
+                "usr": "c:objc(cs)UITextField"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)registerTelemetryOn:withViewId:withPayPalClientMetadataId:",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC17registerTelemetry2on10withViewId0g20PayPalClientMetadataI0ySo11UITextFieldC_S2StF",
+            "moduleName": "PPRiskMagnes",
+            "objc_name": "registerTelemetryOn:withViewId:withPayPalClientMetadataId:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "unregisterTelemetry",
+            "printedName": "unregisterTelemetry(on:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UITextField",
+                "printedName": "UIKit.UITextField",
+                "usr": "c:objc(cs)UITextField"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)unregisterTelemetryOn:",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC19unregisterTelemetry2onySo11UITextFieldC_tF",
+            "moduleName": "PPRiskMagnes",
+            "objc_name": "unregisterTelemetryOn:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "collectTelemetryData",
+            "printedName": "collectTelemetryData(textField:range:replacementString:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UITextField",
+                "printedName": "UIKit.UITextField",
+                "usr": "c:objc(cs)UITextField"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "_NSRange",
+                "printedName": "Foundation._NSRange",
+                "usr": "c:@S@_NSRange"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)collectTelemetryDataWithTextField:range:replacementString:",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC20collectTelemetryData9textField5range17replacementStringySo06UITextH0C_So8_NSRangeVSStF",
+            "moduleName": "PPRiskMagnes",
+            "objc_name": "collectTelemetryDataWithTextField:range:replacementString:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "collectTouchData",
+            "printedName": "collectTouchData(_:withEvent:forTouchPhase:withPayPalClientMetadataId:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Set",
+                "printedName": "Swift.Set<UIKit.UITouch>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UITouch",
+                    "printedName": "UIKit.UITouch",
+                    "usr": "c:objc(cs)UITouch"
+                  }
+                ],
+                "usr": "s:Sh"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "UIKit.UIEvent?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIEvent",
+                    "printedName": "UIKit.UIEvent",
+                    "usr": "c:objc(cs)UIEvent"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Phase",
+                "printedName": "UIKit.UITouch.Phase",
+                "usr": "c:@E@UITouchPhase"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK(im)collectTouchData:withEvent:forTouchPhase:withPayPalClientMetadataId:",
+            "mangledName": "$s12PPRiskMagnes0B3SDKC16collectTouchData_9withEvent03forE5Phase0G22PayPalClientMetadataIdyShySo7UITouchCG_So7UIEventCSgSo0pJ0VSStF",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesSDK",
+        "mangledName": "$s12PPRiskMagnes0B3SDKC",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC",
+          "RawDocComment"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "hasMissingDesignatedInitializers": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Security",
+        "printedName": "Security",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreMotion",
+        "printedName": "CoreMotion",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreMotion",
+        "printedName": "CoreMotion",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "MessageUI",
+        "printedName": "MessageUI",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "Security",
+        "printedName": "Security",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreMotion",
+        "printedName": "CoreMotion",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MagnesResult",
+        "printedName": "MagnesResult",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "getDeviceInfo",
+            "printedName": "getDeviceInfo()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult(im)getDeviceInfo",
+            "mangledName": "$s12PPRiskMagnes0B6ResultC13getDeviceInfoSDySSypGyF",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getPayPalClientMetaDataId",
+            "printedName": "getPayPalClientMetaDataId()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult(im)getPayPalClientMetaDataId",
+            "mangledName": "$s12PPRiskMagnes0B6ResultC25getPayPalClientMetaDataIdSSyF",
+            "moduleName": "PPRiskMagnes",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MagnesResult",
+                "printedName": "PPRiskMagnes.MagnesResult",
+                "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult(im)init",
+            "mangledName": "$s12PPRiskMagnes0B6ResultCACycfc",
+            "moduleName": "PPRiskMagnes",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@PPRiskMagnes@objc(cs)MagnesResult",
+        "mangledName": "$s12PPRiskMagnes0B6ResultC",
+        "moduleName": "PPRiskMagnes",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC",
+          "RawDocComment"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "hasMissingDesignatedInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "CMMotionManager",
+        "printedName": "CMMotionManager",
+        "declKind": "Class",
+        "usr": "c:objc(cs)CMMotionManager",
+        "moduleName": "CoreMotion",
+        "isOpen": true,
+        "intro_iOS": "4.0",
+        "objc_name": "CMMotionManager",
+        "declAttributes": [
+          "Available",
+          "ObjC",
+          "Dynamic"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "CMAccelerometerData",
+        "printedName": "CMAccelerometerData",
+        "declKind": "Class",
+        "usr": "c:objc(cs)CMAccelerometerData",
+        "moduleName": "CoreMotion",
+        "isOpen": true,
+        "intro_iOS": "4.0",
+        "objc_name": "CMAccelerometerData",
+        "declAttributes": [
+          "Available",
+          "ObjC",
+          "Dynamic"
+        ],
+        "superclassUsr": "c:objc(cs)CMLogItem",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "CoreMotion.CMLogItem",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "CMDeviceMotion",
+        "printedName": "CMDeviceMotion",
+        "declKind": "Class",
+        "usr": "c:objc(cs)CMDeviceMotion",
+        "moduleName": "CoreMotion",
+        "isOpen": true,
+        "intro_iOS": "4.0",
+        "objc_name": "CMDeviceMotion",
+        "declAttributes": [
+          "Available",
+          "ObjC",
+          "Dynamic"
+        ],
+        "superclassUsr": "c:objc(cs)CMLogItem",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "CoreMotion.CMLogItem",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "CMMagnetometerData",
+        "printedName": "CMMagnetometerData",
+        "declKind": "Class",
+        "usr": "c:objc(cs)CMMagnetometerData",
+        "moduleName": "CoreMotion",
+        "isOpen": true,
+        "intro_iOS": "5.0",
+        "objc_name": "CMMagnetometerData",
+        "declAttributes": [
+          "Available",
+          "ObjC",
+          "Dynamic"
+        ],
+        "superclassUsr": "c:objc(cs)CMLogItem",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "CoreMotion.CMLogItem",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "CMGyroData",
+        "printedName": "CMGyroData",
+        "declKind": "Class",
+        "usr": "c:objc(cs)CMGyroData",
+        "moduleName": "CoreMotion",
+        "isOpen": true,
+        "intro_iOS": "4.0",
+        "objc_name": "CMGyroData",
+        "declAttributes": [
+          "Available",
+          "ObjC",
+          "Dynamic"
+        ],
+        "superclassUsr": "c:objc(cs)CMLogItem",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "CoreMotion.CMLogItem",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "CMAttitude",
+        "printedName": "CMAttitude",
+        "declKind": "Class",
+        "usr": "c:objc(cs)CMAttitude",
+        "moduleName": "CoreMotion",
+        "isOpen": true,
+        "intro_iOS": "4.0",
+        "objc_name": "CMAttitude",
+        "declAttributes": [
+          "Available",
+          "ObjC",
+          "Dynamic"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 209,
+      "length": 25,
+      "value": "\"PPRiskMagnes.MagnesSensorDataCollector\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "BooleanLiteral",
+      "offset": 416,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "Dictionary",
+      "offset": 464,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "Array",
+      "offset": 516,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "Array",
+      "offset": 569,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "IntegerLiteral",
+      "offset": 606,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "BooleanLiteral",
+      "offset": 897,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "Dictionary",
+      "offset": 949,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 1513,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
+      "kind": "Array",
+      "offset": 407,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
+      "kind": "Array",
+      "offset": 480,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 594,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 314,
+      "length": 56,
+      "value": "\"https:\/\/api-m.paypal.com\/AccessControl\/LogRiskMetadata\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 425,
+      "length": 37,
+      "value": "\"https:\/\/c.paypal.com\/r\/v1\/device\/mg\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 518,
+      "length": 43,
+      "value": "\"https:\/\/c.paypal.com\/r\/v1\/device\/mg-audit\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 622,
+      "length": 62,
+      "value": "\"https:\/\/www.stage2du13.stage.paypal.com\/r\/v1\/device\/mg-audit\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 734,
+      "length": 69,
+      "value": "\"https:\/\/www.stage2du13.stage.paypal.com\/r\/v1\/device\/client-metadata\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 857,
+      "length": 58,
+      "value": "\"https:\/\/c.sandbox.paypal.com\/r\/v1\/device\/client-metadata\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 965,
+      "length": 68,
+      "value": "\"https:\/\/www.paypalobjects.com\/rdaAssets\/magnes\/magnes_ios_rac.json\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1085,
+      "length": 68,
+      "value": "\"https:\/\/www.paypalobjects.com\/rdaAssets\/magnes\/magnes_ios_rec.json\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1203,
+      "length": 40,
+      "value": "\"https:\/\/b.stats.paypal.com\/counter.cgi\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1338,
+      "length": 6,
+      "value": "\"POST\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1379,
+      "length": 5,
+      "value": "\"GET\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1424,
+      "length": 10,
+      "value": "\"cellular\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1470,
+      "length": 6,
+      "value": "\"wifi\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1515,
+      "length": 9,
+      "value": "\"unknown\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1568,
+      "length": 16,
+      "value": "\"CORRELATION-ID\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1665,
+      "length": 24,
+      "value": "\"PayPalClientMetaDataId\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1730,
+      "length": 12,
+      "value": "\"pairing_id\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1787,
+      "length": 27,
+      "value": "\"Failed to convert to JSON\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1859,
+      "length": 9,
+      "value": "\"169.254\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 1913,
+      "length": 6,
+      "value": "\"fe80\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2048,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2074,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2103,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2137,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2167,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2193,
+      "length": 1,
+      "value": "6"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2223,
+      "length": 1,
+      "value": "7"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2253,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2282,
+      "length": 1,
+      "value": "9"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2316,
+      "length": 2,
+      "value": "10"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2344,
+      "length": 2,
+      "value": "11"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2379,
+      "length": 2,
+      "value": "12"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2409,
+      "length": 2,
+      "value": "13"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2437,
+      "length": 2,
+      "value": "14"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2469,
+      "length": 2,
+      "value": "15"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2508,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2545,
+      "length": 2,
+      "value": "17"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2571,
+      "length": 2,
+      "value": "18"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2600,
+      "length": 2,
+      "value": "19"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2630,
+      "length": 2,
+      "value": "20"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2666,
+      "length": 2,
+      "value": "21"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2703,
+      "length": 2,
+      "value": "22"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2737,
+      "length": 2,
+      "value": "23"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2760,
+      "length": 2,
+      "value": "24"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2784,
+      "length": 2,
+      "value": "25"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2810,
+      "length": 2,
+      "value": "26"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2836,
+      "length": 2,
+      "value": "27"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2862,
+      "length": 2,
+      "value": "28"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2893,
+      "length": 2,
+      "value": "29"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2929,
+      "length": 2,
+      "value": "30"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2966,
+      "length": 2,
+      "value": "31"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2996,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3027,
+      "length": 2,
+      "value": "62"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2048,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2074,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2103,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2137,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2167,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2193,
+      "length": 1,
+      "value": "6"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2223,
+      "length": 1,
+      "value": "7"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2253,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2282,
+      "length": 1,
+      "value": "9"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2316,
+      "length": 2,
+      "value": "10"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2344,
+      "length": 2,
+      "value": "11"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2379,
+      "length": 2,
+      "value": "12"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2409,
+      "length": 2,
+      "value": "13"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2437,
+      "length": 2,
+      "value": "14"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2469,
+      "length": 2,
+      "value": "15"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2508,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2545,
+      "length": 2,
+      "value": "17"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2571,
+      "length": 2,
+      "value": "18"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2600,
+      "length": 2,
+      "value": "19"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2630,
+      "length": 2,
+      "value": "20"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2666,
+      "length": 2,
+      "value": "21"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2703,
+      "length": 2,
+      "value": "22"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2737,
+      "length": 2,
+      "value": "23"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2760,
+      "length": 2,
+      "value": "24"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2784,
+      "length": 2,
+      "value": "25"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2810,
+      "length": 2,
+      "value": "26"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2836,
+      "length": 2,
+      "value": "27"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2862,
+      "length": 2,
+      "value": "28"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2893,
+      "length": 2,
+      "value": "29"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2929,
+      "length": 2,
+      "value": "30"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2966,
+      "length": 2,
+      "value": "31"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2996,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3027,
+      "length": 2,
+      "value": "62"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2048,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2074,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2103,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2137,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2167,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2193,
+      "length": 1,
+      "value": "6"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2223,
+      "length": 1,
+      "value": "7"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2253,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2282,
+      "length": 1,
+      "value": "9"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2316,
+      "length": 2,
+      "value": "10"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2344,
+      "length": 2,
+      "value": "11"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2379,
+      "length": 2,
+      "value": "12"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2409,
+      "length": 2,
+      "value": "13"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2437,
+      "length": 2,
+      "value": "14"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2469,
+      "length": 2,
+      "value": "15"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2508,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2545,
+      "length": 2,
+      "value": "17"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2571,
+      "length": 2,
+      "value": "18"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2600,
+      "length": 2,
+      "value": "19"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2630,
+      "length": 2,
+      "value": "20"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2666,
+      "length": 2,
+      "value": "21"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2703,
+      "length": 2,
+      "value": "22"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2737,
+      "length": 2,
+      "value": "23"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2760,
+      "length": 2,
+      "value": "24"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2784,
+      "length": 2,
+      "value": "25"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2810,
+      "length": 2,
+      "value": "26"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2836,
+      "length": 2,
+      "value": "27"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2862,
+      "length": 2,
+      "value": "28"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2893,
+      "length": 2,
+      "value": "29"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2929,
+      "length": 2,
+      "value": "30"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2966,
+      "length": 2,
+      "value": "31"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2996,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3027,
+      "length": 2,
+      "value": "62"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 5380,
+      "length": 5,
+      "value": "\"iOS\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 5433,
+      "length": 6,
+      "value": "\"full\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5534,
+      "length": 2,
+      "value": "33"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5561,
+      "length": 2,
+      "value": "34"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5589,
+      "length": 2,
+      "value": "35"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5613,
+      "length": 2,
+      "value": "36"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5635,
+      "length": 2,
+      "value": "37"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5662,
+      "length": 2,
+      "value": "38"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5693,
+      "length": 2,
+      "value": "39"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5721,
+      "length": 2,
+      "value": "40"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5759,
+      "length": 2,
+      "value": "41"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5792,
+      "length": 2,
+      "value": "42"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5822,
+      "length": 2,
+      "value": "43"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5846,
+      "length": 2,
+      "value": "44"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5875,
+      "length": 2,
+      "value": "45"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5915,
+      "length": 2,
+      "value": "46"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5947,
+      "length": 2,
+      "value": "47"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5984,
+      "length": 2,
+      "value": "48"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6008,
+      "length": 2,
+      "value": "49"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6037,
+      "length": 2,
+      "value": "50"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6059,
+      "length": 2,
+      "value": "51"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6085,
+      "length": 2,
+      "value": "52"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6115,
+      "length": 2,
+      "value": "53"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6142,
+      "length": 2,
+      "value": "54"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6165,
+      "length": 2,
+      "value": "55"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6189,
+      "length": 2,
+      "value": "56"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6215,
+      "length": 2,
+      "value": "57"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6244,
+      "length": 2,
+      "value": "58"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6274,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6310,
+      "length": 2,
+      "value": "61"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6342,
+      "length": 2,
+      "value": "63"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5534,
+      "length": 2,
+      "value": "33"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5561,
+      "length": 2,
+      "value": "34"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5589,
+      "length": 2,
+      "value": "35"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5613,
+      "length": 2,
+      "value": "36"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5635,
+      "length": 2,
+      "value": "37"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5662,
+      "length": 2,
+      "value": "38"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5693,
+      "length": 2,
+      "value": "39"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5721,
+      "length": 2,
+      "value": "40"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5759,
+      "length": 2,
+      "value": "41"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5792,
+      "length": 2,
+      "value": "42"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5822,
+      "length": 2,
+      "value": "43"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5846,
+      "length": 2,
+      "value": "44"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5875,
+      "length": 2,
+      "value": "45"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5915,
+      "length": 2,
+      "value": "46"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5947,
+      "length": 2,
+      "value": "47"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5984,
+      "length": 2,
+      "value": "48"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6008,
+      "length": 2,
+      "value": "49"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6037,
+      "length": 2,
+      "value": "50"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6059,
+      "length": 2,
+      "value": "51"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6085,
+      "length": 2,
+      "value": "52"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6115,
+      "length": 2,
+      "value": "53"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6142,
+      "length": 2,
+      "value": "54"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6165,
+      "length": 2,
+      "value": "55"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6189,
+      "length": 2,
+      "value": "56"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6215,
+      "length": 2,
+      "value": "57"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6244,
+      "length": 2,
+      "value": "58"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6274,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6310,
+      "length": 2,
+      "value": "61"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6342,
+      "length": 2,
+      "value": "63"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5534,
+      "length": 2,
+      "value": "33"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5561,
+      "length": 2,
+      "value": "34"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5589,
+      "length": 2,
+      "value": "35"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5613,
+      "length": 2,
+      "value": "36"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5635,
+      "length": 2,
+      "value": "37"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5662,
+      "length": 2,
+      "value": "38"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5693,
+      "length": 2,
+      "value": "39"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5721,
+      "length": 2,
+      "value": "40"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5759,
+      "length": 2,
+      "value": "41"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5792,
+      "length": 2,
+      "value": "42"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5822,
+      "length": 2,
+      "value": "43"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5846,
+      "length": 2,
+      "value": "44"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5875,
+      "length": 2,
+      "value": "45"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5915,
+      "length": 2,
+      "value": "46"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5947,
+      "length": 2,
+      "value": "47"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5984,
+      "length": 2,
+      "value": "48"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6008,
+      "length": 2,
+      "value": "49"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6037,
+      "length": 2,
+      "value": "50"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6059,
+      "length": 2,
+      "value": "51"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6085,
+      "length": 2,
+      "value": "52"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6115,
+      "length": 2,
+      "value": "53"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6142,
+      "length": 2,
+      "value": "54"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6165,
+      "length": 2,
+      "value": "55"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6189,
+      "length": 2,
+      "value": "56"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6215,
+      "length": 2,
+      "value": "57"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6244,
+      "length": 2,
+      "value": "58"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6274,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6310,
+      "length": 2,
+      "value": "61"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6342,
+      "length": 2,
+      "value": "63"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8360,
+      "length": 2,
+      "value": "65"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8360,
+      "length": 2,
+      "value": "65"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8360,
+      "length": 2,
+      "value": "65"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8601,
+      "length": 2,
+      "value": "59"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8631,
+      "length": 2,
+      "value": "60"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8663,
+      "length": 2,
+      "value": "64"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8601,
+      "length": 2,
+      "value": "59"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8631,
+      "length": 2,
+      "value": "60"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8663,
+      "length": 2,
+      "value": "64"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8601,
+      "length": 2,
+      "value": "59"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8631,
+      "length": 2,
+      "value": "60"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8663,
+      "length": 2,
+      "value": "64"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9010,
+      "length": 7,
+      "value": "\"BSSID\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9053,
+      "length": 6,
+      "value": "\"SSID\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9010,
+      "length": 7,
+      "value": "\"BSSID\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9053,
+      "length": 6,
+      "value": "\"SSID\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9192,
+      "length": 5,
+      "value": "\"lng\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9237,
+      "length": 5,
+      "value": "\"lat\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9283,
+      "length": 11,
+      "value": "\"timestamp\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9334,
+      "length": 5,
+      "value": "\"acc\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9381,
+      "length": 12,
+      "value": "\"authorized\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9431,
+      "length": 8,
+      "value": "\"denied\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9481,
+      "length": 12,
+      "value": "\"restricted\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9544,
+      "length": 21,
+      "value": "\"authorizedWhenInUse\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9604,
+      "length": 9,
+      "value": "\"unknown\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9689,
+      "length": 7,
+      "value": "\"level\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9742,
+      "length": 13,
+      "value": "\"activecores\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9795,
+      "length": 7,
+      "value": "\"cores\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9841,
+      "length": 6,
+      "value": "\"name\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9886,
+      "length": 13,
+      "value": "\"system_type\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9939,
+      "length": 6,
+      "value": "\"free\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 9986,
+      "length": 5,
+      "value": "\"dua\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10030,
+      "length": 10,
+      "value": "\"hardware\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10083,
+      "length": 9,
+      "value": "\"version\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10136,
+      "length": 11,
+      "value": "\"low_power\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10191,
+      "length": 8,
+      "value": "\"height\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10242,
+      "length": 7,
+      "value": "\"width\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10297,
+      "length": 12,
+      "value": "\"brightness\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10354,
+      "length": 9,
+      "value": "\"capture\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10410,
+      "length": 12,
+      "value": "\"max_frames\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10466,
+      "length": 8,
+      "value": "\"mirror\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10517,
+      "length": 7,
+      "value": "\"scale\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10561,
+      "length": 7,
+      "value": "\"state\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10609,
+      "length": 15,
+      "value": "\"device_uptime\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10661,
+      "length": 7,
+      "value": "\"total\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10764,
+      "length": 37,
+      "value": "\"MagnesRemoteConfigurationDictionary\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10859,
+      "length": 51,
+      "value": "\"MagnesRemoteConfigurationDictionaryLastUpdateTime\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 10952,
+      "length": 35,
+      "value": "\"MagnesRampConfigurationDictionary\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11043,
+      "length": 49,
+      "value": "\"MagnesRampConfigurationDictionaryLastUpdateTime\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11142,
+      "length": 19,
+      "value": "\"PPRiskComponentAG\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11214,
+      "length": 27,
+      "value": "\"PPRiskComponentMagnesGuid\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11303,
+      "length": 36,
+      "value": "\"PPRiskComponentMagnesGuidTimestamp\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11397,
+      "length": 17,
+      "value": "\"PPRiskComponent\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11468,
+      "length": 28,
+      "value": "\"com.paypal.dyson.linker_id\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11654,
+      "length": 24,
+      "value": "\"public.utf8-plain-text\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11756,
+      "length": 2,
+      "value": "60"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11759,
+      "length": 2,
+      "value": "60"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11762,
+      "length": 2,
+      "value": "24"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11765,
+      "length": 3,
+      "value": "365"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11769,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11825,
+      "length": 28,
+      "value": "\"com.paypal.dyson.linker_id\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 11908,
+      "length": 41,
+      "value": "\"PPRiskComponentDoNotBackupAndSync.plist\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12003,
+      "length": 17,
+      "value": "\"localIdentifier\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12078,
+      "length": 15,
+      "value": "\"RiskManagerCT\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12160,
+      "length": 33,
+      "value": "\"RiskManagerLastPINLockTimestamp\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12232,
+      "length": 19,
+      "value": "\"magnes.debug.mode\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12296,
+      "length": 18,
+      "value": "\"userAgentWebView\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12360,
+      "length": 18,
+      "value": "\"currentOsVersion\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12451,
+      "length": 4,
+      "value": "\"id\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12506,
+      "length": 12,
+      "value": "\"created_at\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12699,
+      "length": 7,
+      "value": "\"5.4.0\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12757,
+      "length": 5,
+      "value": "\"1.0\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12848,
+      "length": 14,
+      "value": "\"aU9TTWFnbmVz\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 12906,
+      "length": 22,
+      "value": "\"aW52YWxpZF9pbnB1dA==\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13002,
+      "length": 2,
+      "value": "36"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13049,
+      "length": 2,
+      "value": "30"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13094,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13141,
+      "length": 2,
+      "value": "99"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13186,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13226,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13305,
+      "length": 4,
+      "value": "403"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13357,
+      "length": 4,
+      "value": "401"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13402,
+      "length": 4,
+      "value": "400"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13453,
+      "length": 4,
+      "value": "405"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "FloatLiteral",
+      "offset": 13507,
+      "length": 4,
+      "value": "1.0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14118,
+      "length": 3,
+      "value": "\"p\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14157,
+      "length": 3,
+      "value": "\"t\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 14206,
+      "length": 3,
+      "value": "150"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14276,
+      "length": 8,
+      "value": "\"viewId\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14327,
+      "length": 4,
+      "value": "\"ts\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14372,
+      "length": 12,
+      "value": "\"flightTime\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14431,
+      "length": 8,
+      "value": "\"Events\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14474,
+      "length": 6,
+      "value": "\"wsrt\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14529,
+      "length": 6,
+      "value": "\"wsac\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14575,
+      "length": 6,
+      "value": "\"wsct\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14627,
+      "length": 6,
+      "value": "\"wspf\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14679,
+      "length": 6,
+      "value": "\"wsbs\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 14760,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 14807,
+      "length": 3,
+      "value": "400"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 14857,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14896,
+      "length": 3,
+      "value": "\"f\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14937,
+      "length": 3,
+      "value": "\"r\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 14986,
+      "length": 3,
+      "value": "\"x\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15035,
+      "length": 3,
+      "value": "\"y\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15078,
+      "length": 3,
+      "value": "\"d\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15122,
+      "length": 4,
+      "value": "\"st\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15165,
+      "length": 4,
+      "value": "\"et\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15211,
+      "length": 4,
+      "value": "\"tc\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15257,
+      "length": 4,
+      "value": "\"tt\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15302,
+      "length": 4,
+      "value": "\"td\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15349,
+      "length": 4,
+      "value": "\"te\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 15405,
+      "length": 8,
+      "value": "10000000"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 15936,
+      "length": 36,
+      "value": "\"protectedDataWillBecomeUnavailable\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16024,
+      "length": 12,
+      "value": "\"snsrBgTask\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16120,
+      "length": 25,
+      "value": "\"auditDataCollectorQueue\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16225,
+      "length": 12,
+      "value": "\"pairing_id\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16311,
+      "length": 7,
+      "value": "\"audit\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16357,
+      "length": 6,
+      "value": "\"type\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16402,
+      "length": 9,
+      "value": "\"payload\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16481,
+      "length": 3,
+      "value": "\"o\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16524,
+      "length": 3,
+      "value": "\"e\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16569,
+      "length": 3,
+      "value": "\"m\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16617,
+      "length": 3,
+      "value": "\"r\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16658,
+      "length": 4,
+      "value": "\"ai\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16704,
+      "length": 4,
+      "value": "\"as\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "StringLiteral",
+      "offset": 16760,
+      "length": 7,
+      "value": "\"cr_ti\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16851,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16884,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16918,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16951,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16987,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16851,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16884,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16918,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16951,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16987,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16851,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16884,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16918,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16951,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "kind": "IntegerLiteral",
+      "offset": 16987,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/DynamicDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 450,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/DynamicDataCollector.swift",
+      "kind": "BooleanLiteral",
+      "offset": 489,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "kind": "IntegerLiteral",
+      "offset": 119,
+      "length": 4,
+      "value": "7200"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "kind": "Dictionary",
+      "offset": 177,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "kind": "IntegerLiteral",
+      "offset": 223,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "kind": "IntegerLiteral",
+      "offset": 265,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "kind": "IntegerLiteral",
+      "offset": 310,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "kind": "IntegerLiteral",
+      "offset": 355,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "kind": "Array",
+      "offset": 629,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "kind": "Dictionary",
+      "offset": 702,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "kind": "BooleanLiteral",
+      "offset": 747,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "kind": "BooleanLiteral",
+      "offset": 791,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorManager.swift",
+      "kind": "IntegerLiteral",
+      "offset": 307,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorManager.swift",
+      "kind": "StringLiteral",
+      "offset": 185,
+      "length": 19,
+      "value": "\"PPRiskMagnes.MagnesSensorManager\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesBackgroundTaskManager.swift",
+      "kind": "BooleanLiteral",
+      "offset": 378,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 338,
+      "length": 2,
+      "value": "10"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 361,
+      "length": 2,
+      "value": "11"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 389,
+      "length": 2,
+      "value": "12"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 416,
+      "length": 2,
+      "value": "17"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 440,
+      "length": 2,
+      "value": "18"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 466,
+      "length": 2,
+      "value": "19"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 338,
+      "length": 2,
+      "value": "10"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 361,
+      "length": 2,
+      "value": "11"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 389,
+      "length": 2,
+      "value": "12"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 416,
+      "length": 2,
+      "value": "17"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 440,
+      "length": 2,
+      "value": "18"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 466,
+      "length": 2,
+      "value": "19"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 573,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 598,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 621,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 573,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 598,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 621,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 743,
+      "length": 3,
+      "value": "100"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "IntegerLiteral",
+      "offset": 743,
+      "length": 3,
+      "value": "100"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 999,
+      "length": 55,
+      "value": "\" Application’s Globally Unique Identifier(AppGUID) \""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1065,
+      "length": 109,
+      "value": "\"does not match the criteria, This is a string that identifies the merchant application that sets up Magnes \""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1185,
+      "length": 105,
+      "value": "\"on the mobile device. If the merchant app does not pass an AppGuid, Magnes creates one to identify the \""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1301,
+      "length": 105,
+      "value": "\"app. An AppGuid is a per-installation application identifier; that is, if a new instance of the app is \""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1417,
+      "length": 91,
+      "value": "\"installed on the mobile device, or the app is reinstalled, it will have a new AppGuid.\n \""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1519,
+      "length": 27,
+      "value": "\"***AppGuid Criteria*** \n\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1557,
+      "length": 33,
+      "value": "\"   Max length: 36 characters \n\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1601,
+      "length": 33,
+      "value": "\"   Min Length: 30 characters \n\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1645,
+      "length": 47,
+      "value": "\"   Regex: Letters, numbers and dashes only \n\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1796,
+      "length": 62,
+      "value": "\"PayPal-Client-Metadata-Id exceeds maximum length. This your \""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1869,
+      "length": 80,
+      "value": "\"own unique identifier for the payload. If you do notpass in this value, a new \""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 1960,
+      "length": 93,
+      "value": "\"PayPal-Client-Metadata-Id is generated per method call. ***Maximum length: 32 characters***\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "Dictionary",
+      "offset": 2103,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "Dictionary",
+      "offset": 2159,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "Dictionary",
+      "offset": 2222,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "Dictionary",
+      "offset": 2275,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 2434,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2478,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2525,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 2572,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 2617,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 3958,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 4029,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4119,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4193,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 7538,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "Dictionary",
+      "offset": 7626,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 8718,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "Dictionary",
+      "offset": 8801,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "BooleanLiteral",
+      "offset": 8874,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "StringLiteral",
+      "offset": 12275,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "kind": "Dictionary",
+      "offset": 12372,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConfiguration.swift",
+      "kind": "BooleanLiteral",
+      "offset": 388,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesConfiguration.swift",
+      "kind": "BooleanLiteral",
+      "offset": 695,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesUtils.swift",
+      "kind": "BooleanLiteral",
+      "offset": 313,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesUtils.swift",
+      "kind": "BooleanLiteral",
+      "offset": 363,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 400,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 453,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "kind": "BooleanLiteral",
+      "offset": 25982,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 26042,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/BaseDataCollector.swift",
+      "kind": "StringLiteral",
+      "offset": 245,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/BaseDataCollector.swift",
+      "kind": "BooleanLiteral",
+      "offset": 284,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0_2\/PPRiskMagnes\/PPRiskMagnes\/MagnesResult.swift",
+      "kind": "StringLiteral",
+      "offset": 267,
+      "length": 12,
+      "value": "\"PPRiskMagnes.MagnesResult\""
+    }
+  ]
+}
