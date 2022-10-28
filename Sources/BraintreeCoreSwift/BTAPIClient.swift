@@ -321,11 +321,11 @@ import Foundation
     func metaParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPType) -> [String: Any]? {
         switch httpType {
         case .gateway:
-            return ["_meta": metadataParameters()]
+            return parameters?.merging(["_meta": metadataParameters()]) { $1 }
         case .braintreeAPI:
             return parameters
         case .graphQLAPI:
-            return ["clientSdkMetadata": graphQLMetadata()]
+            return parameters?.merging(["clientSdkMetadata": graphQLMetadata()]) { $1 }
         }
     }
 
