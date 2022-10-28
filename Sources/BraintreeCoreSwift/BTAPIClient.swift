@@ -15,9 +15,7 @@ import Foundation
     public var clientToken: BTClientToken?
 
     /// Client metadata that is used for tracking the client session
-    public var metadata: BTClientMetadata {
-        BTClientMetadata()
-    }
+    public private(set) var metadata: BTClientMetadata
 
     // MARK: - Internal Properties
 
@@ -58,6 +56,8 @@ import Foundation
     }
 
     init?(authorization: String, sendAnalyticsEvent: Bool) {
+        self.metadata = BTClientMetadata()
+
         super.init()
         self.analyticsService = analyticsService != nil ? analyticsService : BTAnalyticsService(apiClient: self, flushThreshold: 5)
 
