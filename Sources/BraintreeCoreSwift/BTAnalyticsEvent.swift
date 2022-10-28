@@ -16,8 +16,4 @@ struct BTAnalyticsEvent {
             "timestamp": timestamp
         ]
     }
-
-    func event(_ eventKind: String, withTimestamp timestamp: Double) -> BTAnalyticsEvent {
-        BTAnalyticsEvent(kind: eventKind, timestamp: timestamp)
-    }
 }

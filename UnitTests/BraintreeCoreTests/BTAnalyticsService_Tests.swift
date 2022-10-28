@@ -58,7 +58,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
 
         let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-        let timestamp = parameters?[0]["timestamp"] as! Int
+        let timestamp = Int(parameters?[0]["timestamp"] as! Double)
         XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
         XCTAssertGreaterThanOrEqual(timestamp, currentTime)
         XCTAssertLessThanOrEqual(timestamp, oneSecondLater)
@@ -96,8 +96,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! Int
-            let timestampTwo = parameters?[1]["timestamp"] as! Int
+            let timestampOne = Int(parameters?[0]["timestamp"] as! Double)
+            let timestampTwo = Int(parameters?[1]["timestamp"] as! Double)
 
             XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
@@ -134,8 +134,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! Int
-            let timestampTwo = parameters?[1]["timestamp"] as! Int
+            let timestampOne = Int(parameters?[0]["timestamp"] as! Double)
+            let timestampTwo = Int(parameters?[1]["timestamp"] as! Double)
 
             XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
@@ -218,8 +218,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! Int
-            let timestampTwo = parameters?[1]["timestamp"] as! Int
+            let timestampOne = Int(parameters?[0]["timestamp"] as! Double)
+            let timestampTwo = Int(parameters?[1]["timestamp"] as! Double)
 
             XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event.1")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)

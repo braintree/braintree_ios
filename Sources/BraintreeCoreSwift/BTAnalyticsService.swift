@@ -54,7 +54,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    func flush(_ completion: ((Error?) -> Void)? = { _ in }) {
+    func flush(_ completion: ((Error?) -> Void)? = nil) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
                 if let completion, let error {
@@ -70,15 +70,17 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            if self.http != nil {
+            if self.http == nil {
                 if let clientToken = self.apiClient.clientToken {
                     self.http = BTHTTP(url: analyticsURL, authorizationFingerprint: clientToken.authorizationFingerprint)
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
                     self.http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
                 }
-            } else {
-                if let completion {
-                    completion(BTAnalyticsServiceError.invalidAPIClient)
+
+                if self.http == nil {
+                    if let completion {
+                        completion(BTAnalyticsServiceError.invalidAPIClient)
+                    }
                     return
                 }
             }
@@ -87,16 +89,16 @@ class BTAnalyticsService: Equatable {
             if self.http?.baseURL.absoluteString == "test://do-not-send.url" {
                 if let completion {
                     completion(nil)
-                    return
                 }
+                return
             }
 
             self.sessionsQueue.async {
                 if self.analyticsSessions.count == 0 {
                     if let completion {
                         completion(nil)
-                        return
                     }
+                    return
                 }
 
                 var willPostAnalyticsEvent: Bool = false
@@ -111,6 +113,7 @@ class BTAnalyticsService: Equatable {
                         "integrationType": session?.integration ?? "",
                         "source": session?.source ?? ""
                     ]
+                        .merging(session?.metadataParameters ?? [:]) { $1 }
 
                     var postParameters: [String: Any] = [:]
 
@@ -134,6 +137,7 @@ class BTAnalyticsService: Equatable {
                             if let completion {
                                 completion(error)
                             }
+                            return
                         }
                     }
                 }
@@ -142,6 +146,7 @@ class BTAnalyticsService: Equatable {
                     if let completion {
                         completion(nil)
                     }
+                    return
                 }
             }
         }
@@ -157,12 +162,6 @@ class BTAnalyticsService: Equatable {
             source: apiClient.metadata.sourceString,
             integration: apiClient.metadata.integrationString
         )
-
-        if session.sessionID == "" || session.source == "" || session.integration == "" {
-            let description = BTLogLevelDescription.string(for: .warning) ?? ""
-            print("\(description) Missing analytics session metadata - will not send event \(event.kind)")
-            return
-        }
 
         sessionsQueue.async {
             if self.analyticsSessions[session.sessionID] == nil {
@@ -183,7 +182,7 @@ class BTAnalyticsService: Equatable {
         }
 
         if eventCount >= flushThreshold {
-            flush()
+            flush(nil)
         }
     }
 
