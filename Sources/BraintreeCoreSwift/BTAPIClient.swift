@@ -29,7 +29,10 @@ import Foundation
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
     /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    var analyticsService: BTAnalyticsService?
+    var analyticsService: BTAnalyticsService? {
+        get { BTAPIClient._analyticsService }
+        set { BTAPIClient._analyticsService = newValue }
+    }
 
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
@@ -46,6 +49,8 @@ import Foundation
         return URLSession(configuration: configuration)
     }
 
+    private static var _analyticsService: BTAnalyticsService?
+
     // MARK: - Initializers
 
     /// Initialize a new API client.
@@ -59,8 +64,7 @@ import Foundation
         self.metadata = BTClientMetadata()
 
         super.init()
-        self.analyticsService = analyticsService != nil ? analyticsService : BTAnalyticsService(apiClient: self, flushThreshold: 5)
-
+        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self, flushThreshold: 5)
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
         let errorString = BTLogLevelDescription.string(for: .error) ?? "[BraintreeSDK] ERROR"
