@@ -1,9 +1,9 @@
 import XCTest
 import UIKit
-import BraintreeTestShared
 import BraintreeVenmo
-import BraintreeCore.Private
+import BraintreeCore
 @testable import BraintreeCoreSwift
+@testable import BraintreeTestShared
 
 class BTVenmoClient_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!

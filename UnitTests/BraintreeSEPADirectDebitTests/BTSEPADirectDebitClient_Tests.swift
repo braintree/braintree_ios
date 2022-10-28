@@ -1,7 +1,7 @@
 import XCTest
 @testable import BraintreeCore
 @testable import BraintreeSEPADirectDebit
-import BraintreeTestShared
+@testable import BraintreeTestShared
 import AuthenticationServices
 
 class BTSEPADirectDebitClient_Tests: XCTestCase {

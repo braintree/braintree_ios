@@ -1,6 +1,6 @@
 import XCTest
-import BraintreeTestShared
-import BraintreeCore.Private
+import BraintreeCoreSwift
+@testable import BraintreeTestShared
 
 class BTCardClient_Tests: XCTestCase {
     let customerInputValidationErrorKey: String = "BTCustomerInputBraintreeValidationErrorsKey"

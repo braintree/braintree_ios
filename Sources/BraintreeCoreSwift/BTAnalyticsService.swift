@@ -1,6 +1,6 @@
 import Foundation
 
-class BTAnalyticsService {
+class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
 
@@ -153,9 +153,9 @@ class BTAnalyticsService {
         let timestampInMilliseconds = Date().timeIntervalSince1970 * 1000
         let event = BTAnalyticsEvent(kind: eventKind, timestamp: timestampInMilliseconds)
         let session = BTAnalyticsSession(
-            sessionID: apiClient.metadata?.sessionID ?? "",
-            source: apiClient.metadata?.sourceString ?? "",
-            integration: apiClient.metadata?.integrationString ?? ""
+            sessionID: apiClient.metadata.sessionID,
+            source: apiClient.metadata.sourceString,
+            integration: apiClient.metadata.integrationString
         )
 
         if session.sessionID == "" || session.source == "" || session.integration == "" {
@@ -185,5 +185,11 @@ class BTAnalyticsService {
         if eventCount >= flushThreshold {
             flush()
         }
+    }
+
+    // MARK: Equitable Protocol Conformance
+
+    static func == (lhs: BTAnalyticsService, rhs: BTAnalyticsService) -> Bool {
+        lhs.http == rhs.http && lhs.flushThreshold == rhs.flushThreshold && lhs.apiClient == rhs.apiClient
     }
 }

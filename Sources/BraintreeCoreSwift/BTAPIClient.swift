@@ -15,7 +15,9 @@ import Foundation
     public var clientToken: BTClientToken?
 
     /// Client metadata that is used for tracking the client session
-    public var metadata: BTClientMetadata?
+    public var metadata: BTClientMetadata {
+        BTClientMetadata()
+    }
 
     // MARK: - Internal Properties
 
@@ -29,9 +31,7 @@ import Foundation
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
     /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    var analyticsService: BTAnalyticsService? {
-        BTAnalyticsService(apiClient: self, flushThreshold: 5)
-    }
+    var analyticsService: BTAnalyticsService?
 
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
@@ -59,6 +59,8 @@ import Foundation
 
     init?(authorization: String, sendAnalyticsEvent: Bool) {
         super.init()
+        self.analyticsService = analyticsService != nil ? analyticsService : BTAnalyticsService(apiClient: self, flushThreshold: 5)
+
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
         let errorString = BTLogLevelDescription.string(for: .error) ?? "[BraintreeSDK] ERROR"
@@ -89,8 +91,6 @@ import Foundation
 
             queueAnalyticsEvent("ios.started.client-token")
         }
-
-        metadata = BTClientMetadata()
 
         configurationHTTP?.session = session
 
@@ -194,7 +194,7 @@ import Foundation
     /// Fetches a customer's vaulted payment method nonces.
     /// Must be using client token with a customer ID specified.
     ///  - Parameter completion: Callback that returns either an array of payment method nonces or an error
-    public func fetchPaymentMethodNonces(completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
+    public func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         fetchPaymentMethodNonces(false, completion: completion)
     }
 
@@ -210,9 +210,9 @@ import Foundation
         }
 
         let defaultFirstValue: String = defaultFirst ? "true" : "false"
-        let parameters: [String: Any] = [
+        let parameters: [String: String] = [
             "default_first": defaultFirstValue,
-            "session_id": metadata?.sessionID ?? ""
+            "session_id": metadata.sessionID
         ]
 
         get("v1/payment_methods", parameters: parameters) { body, response, error in
@@ -246,7 +246,7 @@ import Foundation
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: String]? = nil, completion: @escaping RequestCompletion) {
         get(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
@@ -266,7 +266,7 @@ import Foundation
 
     /// :nodoc:
     @objc(GET:parameters:httpType:completion:)
-    public func get(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPType, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPType, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -306,14 +306,12 @@ import Foundation
     }
 
     func metadataParameters() -> [String: Any] {
-        metadata?.parameters.merging(BTAnalyticsMetadata.metadata) { _, new in new } ?? [:]
+        metadata.parameters.merging(BTAnalyticsMetadata.metadata) { _, new in new }
     }
 
     func graphQLMetadata() -> [String: Any] {
-        metadata?.parameters ?? [:]
+        metadata.parameters
     }
-
-    // MARK: - Internal Static Methods
 
     static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"

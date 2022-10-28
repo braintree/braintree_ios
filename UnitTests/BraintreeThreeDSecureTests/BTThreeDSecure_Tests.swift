@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeTestShared
 @testable import BraintreeCoreSwift
 
 class BTThreeDSecure_UnitTests: XCTestCase {

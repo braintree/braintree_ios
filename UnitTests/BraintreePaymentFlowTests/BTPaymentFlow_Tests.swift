@@ -1,7 +1,7 @@
 import XCTest
 import BraintreePaymentFlow
-import BraintreeTestShared
 import SafariServices
+@testable import BraintreeTestShared
 
 class BTPaymentFlow_Tests: XCTestCase {
 

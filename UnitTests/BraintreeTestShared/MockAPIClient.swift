@@ -1,8 +1,6 @@
-import BraintreeCore
-import BraintreeCore.Private
-import BraintreeCoreSwift
+@testable import BraintreeCoreSwift
 
-public class MockAPIClient : BTAPIClient {
+public class MockAPIClient: BTAPIClient {
     public var lastPOSTPath = ""
     public var lastPOSTParameters = [:] as [AnyHashable: Any]?
     public var lastPOSTAPIClientHTTPType: BTAPIClientHTTPType?
@@ -23,16 +21,20 @@ public class MockAPIClient : BTAPIClient {
 
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
+
+    override init?(authorization: String, sendAnalyticsEvent: Bool = false) {
+        super.init(authorization: authorization, sendAnalyticsEvent: sendAnalyticsEvent)
+    }
     
-    public override func get(_ path: String, parameters: [String : String]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: [String: String]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         self.get(path, parameters: parameters, httpType:.gateway, completion: completionBlock)
     }
 
-    public override func post(_ path: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         self.post(path, parameters: parameters, httpType:.gateway, completion: completionBlock)
     }
 
-    public override func get(_ path: String, parameters: [String : String]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: [String: String]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
         lastGETParameters = parameters
         lastGETAPIClientHTTPType = httpType
@@ -43,7 +45,7 @@ public class MockAPIClient : BTAPIClient {
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
     
-    public override func post(_ path: String, parameters: [AnyHashable : Any]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
         lastPOSTParameters = parameters
         lastPOSTAPIClientHTTPType = httpType
