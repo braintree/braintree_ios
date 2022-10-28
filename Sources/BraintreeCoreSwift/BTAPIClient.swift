@@ -290,7 +290,8 @@ import Foundation
                 return
             }
 
-            self.http(for: httpType)?.post(path, parameters: parameters, completion: completion)
+            let postParameters = self.metaParametersWith(parameters, for: httpType)
+            self.http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
 
@@ -311,6 +312,17 @@ import Foundation
 
     func graphQLMetadata() -> [String: Any] {
         metadata.parameters
+    }
+
+    func metaParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPType) -> [String: Any]? {
+        switch httpType {
+        case .gateway:
+            return ["_meta": metadataParameters()]
+        case .braintreeAPI:
+            return parameters
+        case .graphQLAPI:
+            return ["clientSdkMetadata": graphQLMetadata()]
+        }
     }
 
     static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
