@@ -75,9 +75,7 @@ class BTAnalyticsService: Equatable {
                     self.http = BTHTTP(url: analyticsURL, authorizationFingerprint: clientToken.authorizationFingerprint)
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
                     self.http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
-                }
-
-                if self.http == nil {
+                }else {
                     if let completion {
                         completion(BTAnalyticsServiceError.invalidAPIClient)
                     }
@@ -133,20 +131,18 @@ class BTAnalyticsService: Equatable {
                     session?.events.removeAll()
 
                     self.http?.post("/", parameters: postParameters) { body, response, error in
-                        if let error {
-                            if let completion {
-                                completion(error)
-                            }
-                            return
+                        if let error, let completion {
+                            completion(error)
                         }
                     }
                 }
 
-                if !willPostAnalyticsEvent {
-                    if let completion {
-                        completion(nil)
-                    }
-                    return
+                if !willPostAnalyticsEvent, let completion {
+                    completion(nil)
+                }
+
+                if let completion {
+                    completion(nil)
                 }
             }
         }
