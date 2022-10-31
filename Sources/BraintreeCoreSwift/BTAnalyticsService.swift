@@ -47,26 +47,24 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    func sendAnalyticsEvent(_ eventKind: String, completion: ((Error?) -> Void)? = nil) {
+    func sendAnalyticsEvent(_ eventKind: String, completion: @escaping (Error?) -> Void = { _ in }) {
         DispatchQueue.main.async {
             self.enqueueEvent(eventKind)
             self.flush(completion)
         }
     }
 
-    func flush(_ completion: ((Error?) -> Void)? = nil) {
+    func flush(_ completion: @escaping (Error?) -> Void = { _ in }) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
-                if let completion, let error {
+                if let error {
                     completion(error)
                 }
                 return
             }
 
             guard let analyticsURL = configuration.json?["analytics"]["url"].asURL() else {
-                if let completion {
                     completion(BTAnalyticsServiceError.missingAnalyticsURL)
-                }
                 return
             }
 
@@ -76,26 +74,20 @@ class BTAnalyticsService: Equatable {
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
                     self.http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
                 }else {
-                    if let completion {
                         completion(BTAnalyticsServiceError.invalidAPIClient)
-                    }
                     return
                 }
             }
 
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
             if self.http?.baseURL.absoluteString == "test://do-not-send.url" {
-                if let completion {
                     completion(nil)
-                }
                 return
             }
 
             self.sessionsQueue.async {
                 if self.analyticsSessions.count == 0 {
-                    if let completion {
                         completion(nil)
-                    }
                     return
                 }
 
@@ -131,19 +123,17 @@ class BTAnalyticsService: Equatable {
                     session?.events.removeAll()
 
                     self.http?.post("/", parameters: postParameters) { body, response, error in
-                        if let error, let completion {
+                        if let error {
                             completion(error)
                         }
                     }
                 }
 
-                if !willPostAnalyticsEvent, let completion {
+                if !willPostAnalyticsEvent {
                     completion(nil)
                 }
 
-                if let completion {
                     completion(nil)
-                }
             }
         }
     }
@@ -178,7 +168,7 @@ class BTAnalyticsService: Equatable {
         }
 
         if eventCount >= flushThreshold {
-            flush(nil)
+            flush()
         }
     }
 
