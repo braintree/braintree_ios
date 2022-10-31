@@ -11,8 +11,4 @@ struct BTAnalyticsSession {
 
     /// Dictionary of analytics metadata from `BTAnalyticsMetadata`
     let metadataParameters: [String: Any] = BTAnalyticsMetadata.metadata
-
-    func sessionWithID(_ sessionID: String, source: String, integration: String) -> BTAnalyticsSession {
-        BTAnalyticsSession(sessionID: sessionID, source: source, integration: integration)
-    }
 }

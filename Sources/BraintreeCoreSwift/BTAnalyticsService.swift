@@ -27,12 +27,6 @@ class BTAnalyticsService: Equatable {
         self.flushThreshold = flushThreshold
     }
 
-    // MARK: - Deinit
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Internal Methods
 
     ///  Tracks an event.

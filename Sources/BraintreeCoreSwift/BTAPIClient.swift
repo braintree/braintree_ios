@@ -329,6 +329,8 @@ import Foundation
         }
     }
 
+    // MARK: - Internal Static Methods
+
     static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
