@@ -58,7 +58,7 @@ class BTAnalyticsService: Equatable {
             }
 
             guard let analyticsURL = configuration.json?["analytics"]["url"].asURL() else {
-                    completion(BTAnalyticsServiceError.missingAnalyticsURL)
+                completion(BTAnalyticsServiceError.missingAnalyticsURL)
                 return
             }
 
@@ -67,21 +67,21 @@ class BTAnalyticsService: Equatable {
                     self.http = BTHTTP(url: analyticsURL, authorizationFingerprint: clientToken.authorizationFingerprint)
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
                     self.http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
-                }else {
-                        completion(BTAnalyticsServiceError.invalidAPIClient)
+                } else {
+                    completion(BTAnalyticsServiceError.invalidAPIClient)
                     return
                 }
             }
 
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
             if self.http?.baseURL.absoluteString == "test://do-not-send.url" {
-                    completion(nil)
+                completion(nil)
                 return
             }
 
             self.sessionsQueue.async {
                 if self.analyticsSessions.count == 0 {
-                        completion(nil)
+                    completion(nil)
                     return
                 }
 
@@ -127,7 +127,7 @@ class BTAnalyticsService: Equatable {
                     completion(nil)
                 }
 
-                    completion(nil)
+                completion(nil)
             }
         }
     }
