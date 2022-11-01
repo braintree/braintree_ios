@@ -3,7 +3,6 @@
 @class BTCard;
 @class BTCardNonce;
 @class BTCardRequest;
-@class BTConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 

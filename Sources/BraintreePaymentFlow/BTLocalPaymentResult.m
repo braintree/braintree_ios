@@ -6,8 +6,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-#import "BraintreeCoreSwiftImports.h"
-
 @implementation BTLocalPaymentResult
 
 - (instancetype)initWithNonce:(NSString *)nonce

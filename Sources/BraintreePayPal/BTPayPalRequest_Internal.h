@@ -6,8 +6,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-@class BTConfiguration;
-
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString *const BTPayPalCallbackURLHostAndPath;

@@ -5,7 +5,6 @@
 #endif
 
 #import "BTPayPalRequest_Internal.h"
-#import "BraintreeCoreSwiftImports.h"
 
 @implementation BTPayPalVaultRequest
 

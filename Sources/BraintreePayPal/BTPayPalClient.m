@@ -5,8 +5,6 @@
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 
-#import "BraintreeCoreSwiftImports.h"
-
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTConfiguration+PayPal.h>
@@ -41,6 +39,8 @@
 #else                                            // Carthage
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
 #endif
+
+#import "BraintreeCoreSwiftImports.h"
 
 NSString *const BTPayPalErrorDomain = @"com.braintreepayments.BTPayPalErrorDomain";
 
