@@ -37,7 +37,7 @@ class BTAnalyticsService: Equatable {
     func sendAnalyticsEvent(_ eventName: String) {
         DispatchQueue.main.async {
             self.enqueueEvent(eventName)
-            self.checkFlushThreshold()
+            self.flushIfAtThreshold()
         }
     }
 
@@ -125,7 +125,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    func checkFlushThreshold() {
+    func flushIfAtThreshold() {
         var eventCount = 0
 
         sessionsQueue.sync {
