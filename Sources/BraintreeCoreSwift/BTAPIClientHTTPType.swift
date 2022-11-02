@@ -1,7 +1,7 @@
 import Foundation
 
 /// :nodoc:
-@objc public enum BTAPIClientHTTPType: Int {
+@objc public enum BTAPIClientHTTPService: Int {
     /// Use the Gateway
     case gateway
 

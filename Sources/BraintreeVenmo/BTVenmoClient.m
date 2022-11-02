@@ -148,7 +148,7 @@ static BTVenmoClient *appSwitchedClient;
             }
         };
         
-        [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
+        [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPServiceGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *err) {
             if (err) {
                 if (err.code == BTCoreConstants.networkConnectionLostCode) {
                     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
@@ -265,7 +265,7 @@ static BTVenmoClient *appSwitchedClient;
                 @"variables": @{ @"id": returnURL.paymentContextID }
             };
 
-            [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+            [self.apiClient POST:@"" parameters:params httpType:BTAPIClientHTTPServiceGraphQLAPI completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                 if (error) {
                     if (error.code == NetworkConnectionLostCode) {
                         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];

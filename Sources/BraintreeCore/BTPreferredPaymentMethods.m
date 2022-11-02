@@ -43,7 +43,7 @@
         if (!configError && configuration.isGraphQLEnabled) {
             NSDictionary *parameters = @{ @"query": @"query PreferredPaymentMethods { preferredPaymentMethods { paypalPreferred } }" };
             
-            [self.apiClient POST:@"" parameters:parameters httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(BTJSON *body,
+            [self.apiClient POST:@"" parameters:parameters httpType:BTAPIClientHTTPServiceGraphQLAPI completion:^(BTJSON *body,
                                                                                                                __unused NSHTTPURLResponse *response,
                                                                                                                NSError *preferredPaymentMethodsError) {
                 BTPreferredPaymentMethodsResult *result = [[BTPreferredPaymentMethodsResult alloc] initWithJSON:body venmoInstalled:isVenmoInstalled];

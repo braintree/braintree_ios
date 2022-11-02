@@ -77,7 +77,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
             NSDictionary *parameters = [request.card graphQLParameters];
             [self.apiClient POST:@""
                       parameters:parameters
-                        httpType:BTAPIClientHTTPTypeGraphQLAPI
+                        httpType:BTAPIClientHTTPServiceGraphQLAPI
                       completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
              {
                  if (error) {

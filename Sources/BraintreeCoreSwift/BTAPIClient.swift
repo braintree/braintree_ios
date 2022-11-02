@@ -270,7 +270,7 @@ import Foundation
 
     /// :nodoc:
     @objc(GET:parameters:httpType:completion:)
-    public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPType, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -285,7 +285,7 @@ import Foundation
 
     /// :nodoc:
     @objc(POST:parameters:httpType:completion:)
-    public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPType, completion: @escaping RequestCompletion) {
+    public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -318,7 +318,7 @@ import Foundation
         metadata.parameters
     }
 
-    func metaParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPType) -> [String: Any]? {
+    func metaParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
         switch httpType {
         case .gateway:
             return parameters?.merging(["_meta": metadataParameters()]) { $1 }
@@ -381,7 +381,7 @@ import Foundation
         environment.lowercased() == "development" ? "http" : "https"
     }
 
-    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPType) -> String? {
+    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPService) -> String? {
         var host: String? = nil
         let environmentLowercased: String = environment.lowercased()
 
@@ -439,7 +439,7 @@ import Foundation
         return components.url
     }
 
-    func http(for httpType: BTAPIClientHTTPType) -> BTHTTP? {
+    func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
         switch httpType {
         case .gateway:
             return http
