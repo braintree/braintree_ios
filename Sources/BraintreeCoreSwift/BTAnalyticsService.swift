@@ -88,31 +88,7 @@ class BTAnalyticsService: Equatable {
                 let willPostAnalyticsEvent = !self.analyticsSessions.keys.isEmpty
 
                 self.analyticsSessions.keys.forEach { sessionID in
-                    var session = self.analyticsSessions[sessionID]
-                    let metadataParameters: [String: Any] = [
-                        "sessionId": session?.sessionID ?? "",
-                        "integrationType": session?.integration ?? "",
-                        "source": session?.source ?? ""
-                    ]
-                        .merging(session?.metadataParameters ?? [:]) { $1 }
-
-                    var postParameters: [String: Any] = [:]
-
-                    if let sessionEvents = session?.events {
-                        // Map array of BTAnalyticsEvent to JSON
-                        postParameters["analytics"] = sessionEvents.map { $0.json }
-                    }
-
-                    postParameters["_meta"] = metadataParameters
-
-                    if let authorizationFingerprint = self.apiClient.clientToken?.authorizationFingerprint {
-                        postParameters["authorization_fingerprint"] = authorizationFingerprint
-                    } else if let tokenizationKey = self.apiClient.tokenizationKey {
-                        postParameters["tokenization_key"] = tokenizationKey
-                    }
-
-                    session?.events.removeAll()
-
+                    let postParameters = self.createAnalyticsEvent(with: sessionID)
                     self.http?.post("/", parameters: postParameters) { body, response, error in
                         if let error {
                             completion(error)
@@ -161,6 +137,34 @@ class BTAnalyticsService: Equatable {
         if eventCount >= flushThreshold {
             flush()
         }
+    }
+
+    func createAnalyticsEvent(with sessionID: String) -> [String: Any] {
+        var session = self.analyticsSessions[sessionID]
+        let metadataParameters: [String: Any] = [
+            "sessionId": session?.sessionID ?? "",
+            "integrationType": session?.integration ?? "",
+            "source": session?.source ?? ""
+        ]
+            .merging(session?.metadataParameters ?? [:]) { $1 }
+
+        var postParameters: [String: Any] = [:]
+
+        if let sessionEvents = session?.events {
+            // Map array of BTAnalyticsEvent to JSON
+            postParameters["analytics"] = sessionEvents.map { $0.json }
+        }
+
+        postParameters["_meta"] = metadataParameters
+
+        if let authorizationFingerprint = self.apiClient.clientToken?.authorizationFingerprint {
+            postParameters["authorization_fingerprint"] = authorizationFingerprint
+        } else if let tokenizationKey = self.apiClient.tokenizationKey {
+            postParameters["tokenization_key"] = tokenizationKey
+        }
+
+        session?.events.removeAll()
+        return postParameters
     }
 
     // MARK: Equitable Protocol Conformance
