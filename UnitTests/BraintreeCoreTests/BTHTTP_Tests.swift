@@ -3,8 +3,6 @@ import Specta
 import OHHTTPStubs
 @testable import BraintreeCoreSwift
 
-// TODO: fix failing tests
-
 final class BTHTTP_Tests: XCTestCase {
 
     // MARK: - Properties
@@ -45,7 +43,7 @@ final class BTHTTP_Tests: XCTestCase {
     // MARK: - Configuration
 
     override func setUp() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL())
+        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), authorizationFingerprint: "test-authorization-fingerprint")
         http?.session = testURLSession
         URLCache.shared.removeAllCachedResponses()
     }
@@ -78,7 +76,7 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNotNil(response)
             XCTAssertNil(error)
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.absoluteString, "bt-http-test://base.example.com:1234/base/path/200.json?")
+            XCTAssertEqual(httpRequest.url?.absoluteString, "bt-http-test://base.example.com:1234/base/path/200.json?authorization_fingerprint=test-authorization-fingerprint")
             expectation.fulfill()
         }
 
@@ -255,7 +253,7 @@ final class BTHTTP_Tests: XCTestCase {
 
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.url?.query, "param=value")
+            XCTAssertEqual(httpRequest.url?.query, "param=value&authorization_fingerprint=test-authorization-fingerprint")
             XCTAssertEqual(httpRequest.httpMethod, "GET")
             XCTAssertNil(httpRequest.httpBody)
             expectation.fulfill()
@@ -293,7 +291,7 @@ final class BTHTTP_Tests: XCTestCase {
 
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/200.json$")
+            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
             XCTAssertEqual(httpRequest.httpMethod, "POST")
             XCTAssertNil(httpRequest.url?.query)
 
@@ -314,7 +312,7 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(error)
 
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/200.json$")
+            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
             XCTAssertEqual(httpRequest.httpMethod, "PUT")
             XCTAssertNil(httpRequest.httpBody)
             XCTAssertNil(httpRequest.url?.query)
@@ -333,7 +331,7 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(error)
 
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/200.json$")
+            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
             XCTAssertEqual(httpRequest.httpMethod, "PUT")
             XCTAssertNil(httpRequest.url?.query)
 
@@ -355,7 +353,7 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(error)
 
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/200.json$")
+            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
             XCTAssertEqual(httpRequest.httpMethod, "DELETE")
             XCTAssertNil(httpRequest.httpBody)
             expectation.fulfill()
@@ -373,8 +371,8 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(error)
 
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/200.json$")
-            XCTAssertEqual(httpRequest.url?.query, "param=value")
+            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
+            XCTAssertEqual(httpRequest.url?.query, "authorization_fingerprint=test-authorization-fingerprint")
             XCTAssertEqual(httpRequest.httpMethod, "DELETE")
             XCTAssertNil(httpRequest.httpBody)
             expectation.fulfill()
@@ -386,6 +384,7 @@ final class BTHTTP_Tests: XCTestCase {
     // MARK: - Configuration tests
 
     func testGETRequests_whenShouldCache_cachesConfiguration() {
+        URLCache.shared.removeAllCachedResponses()
         let expectation = expectation(description: "Fetches configuration")
 
         http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: true) { body, response, error in
@@ -403,6 +402,7 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     func testGETRequests_whenShouldNotCache_doesNotStoreInCache() {
+        URLCache.shared.removeAllCachedResponses()
         let expectation = expectation(description: "Fetches configuration")
 
         http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: false) { body, response, error in
@@ -637,36 +637,35 @@ final class BTHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    // TODO: fix this test
-//    func testTransmitsTheParametersAsJSON() {
-//        let expectation = expectation(description: "POST request")
-//        let expectedParameters: [String: Any] = [
-//            "numericParameter": 42,
-//            "falseBooleanParameter": false,
-//            "dictionaryParameter": ["dictionaryKey": "dictionaryValue"],
-//            "trueBooleanParameter": true,
-//            "stringParameter": "value",
-//            "crazyStringParameter[]": "crazy%20and&value",
-//            "arrayParameter": [ "arrayItem1", "arrayItem2" ],
-//            "authorization_fingerprint": "test-authorization-fingerprint"
-//        ]
-//
-//        http?.post("200.json", parameters: parameterDictionary) { body, response, error in
-//            XCTAssertNotNil(body)
-//            XCTAssertNotNil(response)
-//            XCTAssertNil(error)
-//
-//            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-//            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-//            XCTAssertEqual(httpRequest.value(forHTTPHeaderField: "Content-Type"), "application/json; charset=utf-8")
-//
-//            let actualParameters = try? JSONSerialization.jsonObject(with: httpRequestBody.data(using: .utf8)!) as? [String: Any] ?? [:]
-//            XCTAssertTrue(actualParameters! == expectedParameters)
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2)
-//    }
+    func testTransmitsTheParametersAsJSON() {
+        let expectation = expectation(description: "POST request")
+        let expectedParameters: [String: Any] = [
+            "numericParameter": 42,
+            "falseBooleanParameter": false,
+            "dictionaryParameter": ["dictionaryKey": "dictionaryValue"],
+            "trueBooleanParameter": true,
+            "stringParameter": "value",
+            "crazyStringParameter[]": "crazy%20and&value",
+            "arrayParameter": [ "arrayItem1", "arrayItem2" ],
+            "authorization_fingerprint": "test-authorization-fingerprint"
+        ]
+
+        http?.post("200.json", parameters: parameterDictionary) { body, response, error in
+            XCTAssertNotNil(body)
+            XCTAssertNotNil(response)
+            XCTAssertNil(error)
+
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.value(forHTTPHeaderField: "Content-Type"), "application/json; charset=utf-8")
+
+            let actualParameters = try? JSONSerialization.jsonObject(with: httpRequestBody.data(using: .utf8)!) as? [String: Any] ?? [:]
+            XCTAssertTrue(actualParameters! == expectedParameters)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
 
     // MARK: - DispatchQueue tests
 

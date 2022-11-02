@@ -28,15 +28,16 @@ class BTHTTPTestProtocol: URLProtocol {
         if request.httpBodyStream != nil {
             guard let inputStream = request.httpBodyStream else { return }
             inputStream.open()
-            var mutableBodyData: Data?
+            var mutableBodyData = Data()
 
             while inputStream.hasBytesAvailable {
-                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 128)
-                let bytesRead = (inputStream.read(buffer, maxLength: 128))
-                mutableBodyData?.append(buffer, count: bytesRead)
+                let bufferSize: Int = 128
+                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+                let bytesRead = inputStream.read(buffer, maxLength: bufferSize)
+                mutableBodyData.append(buffer, count: bytesRead)
             }
             inputStream.close()
-            requestBodyData = mutableBodyData ?? Data()
+            requestBodyData = mutableBodyData
         } else {
             requestBodyData = request.httpBody ?? Data()
         }
