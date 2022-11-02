@@ -85,13 +85,10 @@ class BTAnalyticsService: Equatable {
                     return
                 }
 
-                var willPostAnalyticsEvent: Bool = false
+                let willPostAnalyticsEvent = !self.analyticsSessions.keys.isEmpty
 
                 self.analyticsSessions.keys.forEach { sessionID in
                     var session = self.analyticsSessions[sessionID]
-
-                    willPostAnalyticsEvent = true
-
                     let metadataParameters: [String: Any] = [
                         "sessionId": session?.sessionID ?? "",
                         "integrationType": session?.integration ?? "",
