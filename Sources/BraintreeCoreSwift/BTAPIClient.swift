@@ -300,14 +300,14 @@ import Foundation
     }
 
     ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    public func sendAnalyticsEvent(_ eventKind: String) {
-        analyticsService?.sendAnalyticsEvent(eventKind, completion: { _ in})
+    public func sendAnalyticsEvent(_ eventName: String) {
+        analyticsService?.sendAnalyticsEvent(eventName, completion: { _ in})
     }
 
     // MARK: Analytics Internal Methods
 
-    func queueAnalyticsEvent(_ eventKind: String) {
-        analyticsService?.sendAnalyticsEvent(eventKind)
+    func queueAnalyticsEvent(_ eventName: String) {
+        analyticsService?.sendAnalyticsEvent(eventName)
     }
 
     func metadataParameters() -> [String: Any] {

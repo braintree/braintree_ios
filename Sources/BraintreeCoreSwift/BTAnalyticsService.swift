@@ -33,17 +33,17 @@ class BTAnalyticsService: Equatable {
     ///
     ///  Events are queued and sent in batches to the analytics service, based on the status of the app and
     ///  the number of queued events. After exiting this method, there is no guarantee that the event has been sent.
-    /// - Parameter eventKind: String representing the event kind
-    func sendAnalyticsEvent(_ eventKind: String) {
+    /// - Parameter eventName: String representing the event name
+    func sendAnalyticsEvent(_ eventName: String) {
         DispatchQueue.main.async {
-            self.enqueueEvent(eventKind)
+            self.enqueueEvent(eventName)
             self.checkFlushThreshold()
         }
     }
 
-    func sendAnalyticsEvent(_ eventKind: String, completion: @escaping (Error?) -> Void = { _ in }) {
+    func sendAnalyticsEvent(_ eventName: String, completion: @escaping (Error?) -> Void = { _ in }) {
         DispatchQueue.main.async {
-            self.enqueueEvent(eventKind)
+            self.enqueueEvent(eventName)
             self.flush(completion)
         }
     }
@@ -134,9 +134,9 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Helpers
 
-    func enqueueEvent(_ eventKind: String) {
+    func enqueueEvent(_ eventName: String) {
         let timestampInMilliseconds = Date().timeIntervalSince1970 * 1000
-        let event = BTAnalyticsEvent(kind: eventKind, timestamp: timestampInMilliseconds)
+        let event = BTAnalyticsEvent(eventName: eventName, timestamp: timestampInMilliseconds)
         let session = BTAnalyticsSession(
             sessionID: apiClient.metadata.sessionID,
             source: apiClient.metadata.sourceString,

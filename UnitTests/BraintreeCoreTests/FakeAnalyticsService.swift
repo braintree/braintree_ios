@@ -5,13 +5,13 @@ class FakeAnalyticsService: BTAnalyticsService {
     var lastEvent: String = ""
     var didLastFlush: Bool = false
 
-    override func sendAnalyticsEvent(_ eventKind: String) {
-        self.lastEvent = eventKind
+    override func sendAnalyticsEvent(_ eventName: String) {
+        self.lastEvent = eventName
         self.didLastFlush = false
     }
 
-    override func sendAnalyticsEvent(_ eventKind: String, completion completionBlock: ((Error?) -> Void)? = nil) {
-        self.lastEvent = eventKind
+    override func sendAnalyticsEvent(_ eventName: String, completion completionBlock: ((Error?) -> Void)? = nil) {
+        self.lastEvent = eventName
         self.didLastFlush = true
     }
 }

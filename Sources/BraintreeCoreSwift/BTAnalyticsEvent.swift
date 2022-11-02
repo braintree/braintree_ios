@@ -2,17 +2,18 @@ import Foundation
 
 /// Encapsulates a single analytics event
 struct BTAnalyticsEvent {
-    var kind: String
+
+    var eventName: String
     var timestamp: Double
 
     var description: String {
-        "\(kind) at \(timestamp)"
+        "\(eventName) at \(timestamp)"
     }
 
     /// Event serialized to JSON
     var json: [String: Any] {
         [
-            "kind": kind,
+            "eventName": eventName,
             "timestamp": timestamp
         ]
     }
