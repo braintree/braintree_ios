@@ -1,7 +1,7 @@
 import Foundation
 import BraintreeCoreSwift
 
-class BTHTTPTestProtocol: URLProtocol {
+@objcMembers class BTHTTPTestProtocol: URLProtocol {
 
     override class func canInit(with request: URLRequest) -> Bool {
         true
