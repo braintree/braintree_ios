@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCoreSwift
 @testable import BraintreeTestShared
 
 class BTPreferredPaymentMethods_Tests: XCTestCase {
