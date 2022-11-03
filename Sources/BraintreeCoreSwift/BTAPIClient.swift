@@ -29,7 +29,7 @@ import Foundation
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
     /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    var analyticsService: BTAnalyticsService? {
+    weak var analyticsService: BTAnalyticsService? {
         get { BTAPIClient._analyticsService }
         set { BTAPIClient._analyticsService = newValue }
     }
