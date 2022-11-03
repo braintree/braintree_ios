@@ -4,7 +4,7 @@ import Foundation
 struct BTAnalyticsEvent {
 
     var eventName: String
-    var timestamp: Double
+    var timestamp: UInt64
 
     var description: String {
         "\(eventName) at \(timestamp)"

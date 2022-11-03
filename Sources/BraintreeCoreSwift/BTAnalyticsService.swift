@@ -109,7 +109,7 @@ class BTAnalyticsService: Equatable {
 
     func enqueueEvent(_ eventName: String) {
         let timestampInMilliseconds = Date().timeIntervalSince1970 * 1000
-        let event = BTAnalyticsEvent(eventName: eventName, timestamp: timestampInMilliseconds)
+        let event = BTAnalyticsEvent(eventName: eventName, timestamp: UInt64(timestampInMilliseconds))
         let session = BTAnalyticsSession(
             sessionID: apiClient.metadata.sessionID,
             source: apiClient.metadata.sourceString,
