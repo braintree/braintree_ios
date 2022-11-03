@@ -1,5 +1,37 @@
 import Foundation
 
+/// Encapsulates a single analytics event
+struct BTAnalyticsEvent {
+
+    var eventName: String
+    var timestamp: UInt64
+
+    var description: String {
+        "\(eventName) at \(timestamp)"
+    }
+
+    /// Event serialized to JSON
+    var json: [String: Any] {
+        [
+            "eventName": eventName,
+            "timestamp": timestamp
+        ]
+    }
+}
+
+/// Encapsulates analytics events for a given session
+struct BTAnalyticsSession {
+
+    let sessionID: String
+    let source: String
+    let integration: String
+
+    var events: [BTAnalyticsEvent] = []
+
+    /// Dictionary of analytics metadata from `BTAnalyticsMetadata`
+    let metadataParameters: [String: Any] = BTAnalyticsMetadata.metadata
+}
+
 class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
