@@ -106,7 +106,7 @@ class BTAnalyticsService: Equatable {
             }
 
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if self.http?.baseURL.absoluteString == "test://do-not-send.url" {
+            if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
                 completion(nil)
                 return
             }
@@ -117,8 +117,6 @@ class BTAnalyticsService: Equatable {
                     return
                 }
 
-                let willPostAnalyticsEvent = !self.analyticsSessions.keys.isEmpty
-
                 self.analyticsSessions.keys.forEach { sessionID in
                     let postParameters = self.createAnalyticsEvent(with: sessionID)
                     self.http?.post("/", parameters: postParameters) { body, response, error in
@@ -127,11 +125,6 @@ class BTAnalyticsService: Equatable {
                         }
                     }
                 }
-
-                if !willPostAnalyticsEvent {
-                    completion(nil)
-                }
-
                 completion(nil)
             }
         }
