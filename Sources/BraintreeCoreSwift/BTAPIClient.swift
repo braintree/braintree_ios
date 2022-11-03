@@ -26,13 +26,6 @@ import Foundation
     var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
-    /// Exposed for testing analytics
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    weak var analyticsService: BTAnalyticsService? {
-        get { BTAPIClient._analyticsService }
-        set { BTAPIClient._analyticsService = newValue }
-    }
 
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
@@ -47,6 +40,14 @@ import Foundation
         // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
         configuration.requestCachePolicy = .useProtocolCachePolicy
         return URLSession(configuration: configuration)
+    }
+
+    /// Exposed for testing analytics
+    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
+    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
+    weak var analyticsService: BTAnalyticsService? {
+        get { BTAPIClient._analyticsService }
+        set { BTAPIClient._analyticsService = newValue }
     }
 
     private static var _analyticsService: BTAnalyticsService?
