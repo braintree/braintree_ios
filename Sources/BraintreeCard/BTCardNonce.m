@@ -74,7 +74,7 @@
             return @"Solo";
         case BTCardNetworkSwitch:
             return @"Switch";
-        case BTCardNetworkUKMaestro:
+        case BTCardNetworkUkMaestro:
             return @"UKMaestro";
         case BTCardNetworkUnknown:
         default:
@@ -98,7 +98,7 @@
         @"laser": @(BTCardNetworkLaser),
         @"solo": @(BTCardNetworkSolo),
         @"switch": @(BTCardNetworkSwitch),
-        @"uk maestro": @(BTCardNetworkUKMaestro),
+        @"uk maestro": @(BTCardNetworkUkMaestro),
         @"visa": @(BTCardNetworkVisa),}
                   orDefault:BTCardNetworkUnknown];
 }

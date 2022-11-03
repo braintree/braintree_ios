@@ -45,5 +45,5 @@ import Foundation
     case `switch`
 
     /// UK Maestro
-    case uKMaestro
+    case ukMaestro
 }
