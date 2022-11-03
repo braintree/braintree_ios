@@ -8,7 +8,7 @@ import UIKit
 
     // MARK: - Internal Properties
 
-    var application: UIApplication = UIApplication.shared
+    var application: AnyObject
 
     private let apiClient: BTAPIClient
 
@@ -19,17 +19,19 @@ import UIKit
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+        self.application = UIApplication.shared
     }
 
     // MARK: - Public Methods
 
     ///  Fetches information about which payment methods are preferred on the device.
     /// - Parameter completion: A completion block that is invoked when preferred payment methods are available.
+    @objc(fetchPreferredPaymentMethods:)
     public func fetch(_ completion: @escaping (BTPreferredPaymentMethodsResult) -> Void) {
         let venmoURL: URL = URL(string: "com.venmo.touch.v2://")!
         let isVenmoInstalled: Bool = application.canOpenURL(venmoURL)
 
-        apiClient.sendAnalyticsEvent("ios.preferred-payment-methods.venmo.app-installed \(isVenmoInstalled)")
+        apiClient.sendAnalyticsEvent("ios.preferred-payment-methods.venmo.app-installed.\(isVenmoInstalled)")
 
         if application.canOpenURL(URL(string: "paypal://")!) {
             let result: BTPreferredPaymentMethodsResult = BTPreferredPaymentMethodsResult()
@@ -42,10 +44,10 @@ import UIKit
         }
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if error == nil && configuration?.isGraphQLEnabled != nil {
+            if error == nil && configuration?.isGraphQLEnabled == true {
                 let parameters: [String: Any] = ["query": "query PreferredPaymentMethods { preferredPaymentMethods { paypalPreferred } }"]
 
-                self.apiClient.post("", parameters: parameters) { body, response, error in
+                self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, response, error in
                     let result = BTPreferredPaymentMethodsResult(json: body, venmoInstalled: isVenmoInstalled)
 
                     if error != nil || body == nil {
