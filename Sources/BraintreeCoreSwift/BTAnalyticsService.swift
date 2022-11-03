@@ -13,7 +13,7 @@ struct BTAnalyticsEvent {
     /// Event serialized to JSON
     var json: [String: Any] {
         [
-            "eventName": eventName,
+            "kind": eventName,
             "timestamp": timestamp
         ]
     }
