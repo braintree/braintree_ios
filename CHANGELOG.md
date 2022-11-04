@@ -31,6 +31,7 @@
         * `.urlStringInvalid`
         * `.clientApiUrlInvalid`
         * `.invalidAuthorizationFingerprint`
+    * Renamed `BTCardNetworkUKMaestro` to `BTCardNetworkUkMaestro` in `BTCardNetwork` enum
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
     * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`
