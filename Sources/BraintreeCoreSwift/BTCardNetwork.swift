@@ -1,5 +1,6 @@
 import Foundation
 
+/// Card type
 @objc public enum BTCardNetwork: Int {
 
     /// Unknown card
