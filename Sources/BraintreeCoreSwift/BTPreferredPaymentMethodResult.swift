@@ -13,8 +13,7 @@ import Foundation
     public var isVenmoPreferred: Bool = false
 
     init(json: BTJSON? = nil, venmoInstalled: Bool = false) {
-        // TODO: does this need to be public?
-        let paypalPreferred: Bool = json?["data"]["preferredPaymentMethods"]["paypalPreferred"].isTrue ?? false ? true : false
+        let paypalPreferred: Bool = json?["data"]["preferredPaymentMethods"]["paypalPreferred"].isTrue ?? false
         self.isPayPalPreferred = paypalPreferred
         self.isVenmoPreferred = venmoInstalled
     }
