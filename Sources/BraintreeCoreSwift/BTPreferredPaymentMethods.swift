@@ -60,8 +60,8 @@ import UIKit
             self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, response, error in
                 let result = BTPreferredPaymentMethodsResult(json: body, venmoInstalled: isVenmoInstalled)
 
-                if error != nil || body == nil, let error = error as? NSError {
-                    if error.code == BTCoreConstants.networkConnectionLostCode {
+                if error != nil || body == nil {
+                    if  let error = error as? NSError, error.code == BTCoreConstants.networkConnectionLostCode {
                         self.apiClient.sendAnalyticsEvent("ios.preferred-payment-methods.network-connection.failure")
                     }
 
