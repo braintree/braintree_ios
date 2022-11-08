@@ -295,7 +295,7 @@ import Foundation
                 return
             }
 
-            let postParameters = self.metaParametersWith(parameters, for: httpType)
+            let postParameters = self.metadataParametersWith(parameters, for: httpType)
             self.http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
@@ -312,14 +312,14 @@ import Foundation
     }
 
     func metadataParameters() -> [String: Any] {
-        metadata.parameters.merging(BTAnalyticsMetadata.metadata) { _, new in new }
+        metadata.parameters.merging(BTAnalyticsMetadata.metadata) { $1 }
     }
 
     func graphQLMetadata() -> [String: Any] {
         metadata.parameters
     }
 
-    func metaParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
+    func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
         switch httpType {
         case .gateway:
             return parameters?.merging(["_meta": metadataParameters()]) { $1 }
