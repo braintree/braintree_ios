@@ -4,13 +4,13 @@ import XCTest
 
 final class BTAnalyticsService_Tests: XCTestCase {
 
-    var currentTime: Int!
-    var oneSecondLater: Int!
+    var currentTime: UInt64!
+    var oneSecondLater: UInt64!
 
     override func setUp() {
         super.setUp()
-        currentTime = Int(Date().timeIntervalSince1970 * 1000)
-        oneSecondLater = Int((Date().timeIntervalSince1970 * 1000) + 999)
+        currentTime = UInt64(Date().timeIntervalSince1970 * 1000)
+        oneSecondLater = UInt64((Date().timeIntervalSince1970 * 1000) + 999)
     }
 
     func testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_returnsError() {
@@ -58,8 +58,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
 
         let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-        let timestamp = Int(parameters?[0]["timestamp"] as! Double)
-        XCTAssertEqual(parameters?[0]["eventName"] as? String, "an.analytics.event")
+        let timestamp = parameters?[0]["timestamp"] as! UInt64
+        XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
         XCTAssertGreaterThanOrEqual(timestamp, currentTime)
         XCTAssertLessThanOrEqual(timestamp, oneSecondLater)
         validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)
@@ -96,14 +96,14 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = Int(parameters?[0]["timestamp"] as! Double)
-            let timestampTwo = Int(parameters?[1]["timestamp"] as! Double)
+            let timestampOne = parameters?[0]["timestamp"] as! UInt64
+            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
 
-            XCTAssertEqual(parameters?[0]["eventName"] as? String, "an.analytics.event")
+            XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
             XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
 
-            XCTAssertEqual(parameters?[1]["eventName"] as? String, "another.analytics.event")
+            XCTAssertEqual(parameters?[1]["kind"] as? String, "another.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
             XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
             self.validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)
@@ -134,14 +134,14 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = Int(parameters?[0]["timestamp"] as! Double)
-            let timestampTwo = Int(parameters?[1]["timestamp"] as! Double)
+            let timestampOne = parameters?[0]["timestamp"] as! UInt64
+            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
 
-            XCTAssertEqual(parameters?[0]["eventName"] as? String, "an.analytics.event")
+            XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
             XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
 
-            XCTAssertEqual(parameters?[1]["eventName"] as? String, "another.analytics.event")
+            XCTAssertEqual(parameters?[1]["kind"] as? String, "another.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
             XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
             self.validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)
@@ -218,14 +218,14 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = Int(parameters?[0]["timestamp"] as! Double)
-            let timestampTwo = Int(parameters?[1]["timestamp"] as! Double)
+            let timestampOne = parameters?[0]["timestamp"] as! UInt64
+            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
 
-            XCTAssertEqual(parameters?[0]["eventName"] as? String, "an.analytics.event.1")
+            XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event.1")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
             XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
 
-            XCTAssertEqual(parameters?[1]["eventName"] as? String, "an.analytics.event.2")
+            XCTAssertEqual(parameters?[1]["kind"] as? String, "an.analytics.event.2")
             XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
             XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
             self.validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)

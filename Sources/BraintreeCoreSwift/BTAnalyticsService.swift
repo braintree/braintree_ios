@@ -1,5 +1,37 @@
 import Foundation
 
+/// Encapsulates a single analytics event
+struct BTAnalyticsEvent {
+
+    var eventName: String
+    var timestamp: UInt64
+
+    var description: String {
+        "\(eventName) at \(timestamp)"
+    }
+
+    /// Event serialized to JSON
+    var json: [String: Any] {
+        [
+            "kind": eventName,
+            "timestamp": timestamp
+        ]
+    }
+}
+
+/// Encapsulates analytics events for a given session
+struct BTAnalyticsSession {
+
+    let sessionID: String
+    let source: String
+    let integration: String
+
+    var events: [BTAnalyticsEvent] = []
+
+    /// Dictionary of analytics metadata from `BTAnalyticsMetadata`
+    let metadataParameters: [String: Any] = BTAnalyticsMetadata.metadata
+}
+
 class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
@@ -74,7 +106,7 @@ class BTAnalyticsService: Equatable {
             }
 
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if self.http?.baseURL.absoluteString == "test://do-not-send.url" {
+            if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
                 completion(nil)
                 return
             }
@@ -85,8 +117,6 @@ class BTAnalyticsService: Equatable {
                     return
                 }
 
-                let willPostAnalyticsEvent = !self.analyticsSessions.keys.isEmpty
-
                 self.analyticsSessions.keys.forEach { sessionID in
                     let postParameters = self.createAnalyticsEvent(with: sessionID)
                     self.http?.post("/", parameters: postParameters) { body, response, error in
@@ -95,11 +125,6 @@ class BTAnalyticsService: Equatable {
                         }
                     }
                 }
-
-                if !willPostAnalyticsEvent {
-                    completion(nil)
-                }
-
                 completion(nil)
             }
         }
@@ -109,7 +134,7 @@ class BTAnalyticsService: Equatable {
 
     func enqueueEvent(_ eventName: String) {
         let timestampInMilliseconds = Date().timeIntervalSince1970 * 1000
-        let event = BTAnalyticsEvent(eventName: eventName, timestamp: timestampInMilliseconds)
+        let event = BTAnalyticsEvent(eventName: eventName, timestamp: UInt64(timestampInMilliseconds))
         let session = BTAnalyticsSession(
             sessionID: apiClient.metadata.sessionID,
             source: apiClient.metadata.sourceString,

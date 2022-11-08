@@ -26,14 +26,6 @@ import Foundation
     var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
-    /// Exposed for testing analytics
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    var analyticsService: BTAnalyticsService? {
-        get { BTAPIClient._analyticsService }
-        set { BTAPIClient._analyticsService = newValue }
-    }
-
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
         configurationQueue.name = "com.braintreepayments.BTAPIClient"
@@ -47,6 +39,14 @@ import Foundation
         // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
         configuration.requestCachePolicy = .useProtocolCachePolicy
         return URLSession(configuration: configuration)
+    }
+
+    /// Exposed for testing analytics
+    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
+    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
+    weak var analyticsService: BTAnalyticsService? {
+        get { BTAPIClient._analyticsService }
+        set { BTAPIClient._analyticsService = newValue }
     }
 
     private static var _analyticsService: BTAnalyticsService?
@@ -294,7 +294,7 @@ import Foundation
                 return
             }
 
-            let postParameters = self.metaParametersWith(parameters, for: httpType)
+            let postParameters = self.metadataParametersWith(parameters, for: httpType)
             self.http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
@@ -311,14 +311,14 @@ import Foundation
     }
 
     func metadataParameters() -> [String: Any] {
-        metadata.parameters.merging(BTAnalyticsMetadata.metadata) { _, new in new }
+        metadata.parameters.merging(BTAnalyticsMetadata.metadata) { $1 }
     }
 
     func graphQLMetadata() -> [String: Any] {
         metadata.parameters
     }
 
-    func metaParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
+    func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
         switch httpType {
         case .gateway:
             return parameters?.merging(["_meta": metadataParameters()]) { $1 }
