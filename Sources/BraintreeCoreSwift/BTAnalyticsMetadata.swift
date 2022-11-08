@@ -1,8 +1,6 @@
-import Foundation
 import UIKit
 
-// TODO: convert to internal (and maybe struct) when BTAnalyticsSession is converted to Swift
-@objcMembers public class BTAnalyticsMetadata: NSObject {
+struct BTAnalyticsMetadata {
 
     // MARK: Metadata Properties
 
@@ -17,7 +15,6 @@ import UIKit
     static let iOSBaseSDK: String = "\(__IPHONE_OS_VERSION_MAX_ALLOWED)"
     static let iOSDeviceName: String = UIDevice.current.name
     static let iOSSystemName: String = UIDevice.current.systemName
-    static let isVenmoInstalled: Bool = UIApplication.shared.canOpenURL(URL(string: "com.venmo.touch.v2://x-callback-url/vzero/auth")!)
     static let isAppExtension: Bool = Bundle.main.bundleURL.pathExtension == "appex"
 
     // MARK: Metadata Computed Properties
@@ -104,6 +101,11 @@ import UIKit
         }
     }
 
+    static var isVenmoInstalled: Bool {
+        guard let venmoURL = URL(string: "com.venmo.touch.v2://x-callback-url/vzero/auth") else { return false }
+        return UIApplication.shared.canOpenURL(venmoURL)
+    }
+
     static var dropInVersion: String {
         var dropInVersion: String = ""
         let localizationBundlePath = Bundle.main.path(forResource: "Braintree-UIKit-Localization", ofType: "bundle")
@@ -120,8 +122,7 @@ import UIKit
 
     // MARK: - Construct Metadata
 
-    // TODO: make internal when BTAnalyticsSession is converted to Swift
-    public static var metadata: [String: Any] {
+    static var metadata: [String: Any] {
         [
             "platform": platform,
             "platformVersion": platformVersion,

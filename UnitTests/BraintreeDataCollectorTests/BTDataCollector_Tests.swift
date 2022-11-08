@@ -1,7 +1,7 @@
 import XCTest
 import BraintreeCore
-import BraintreeTestShared
 import PPRiskMagnes
+@testable import BraintreeTestShared
 @testable import BraintreeDataCollector
 
 class BTDataCollector_Tests: XCTestCase {

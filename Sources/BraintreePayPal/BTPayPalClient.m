@@ -7,19 +7,16 @@
 
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
 
 #elif SWIFT_PACKAGE                              // SPM
 #import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #endif
@@ -140,7 +137,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
                   parameters:[request parametersWithConfiguration:configuration]
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
-                if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                if (error.code == BTCoreConstants.networkConnectionLostCode) {
                     [self.apiClient sendAnalyticsEvent:@"ios.paypal.tokenize.network-connection.failure"];
                 }
                 NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPError.jsonResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;
@@ -560,7 +557,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
               parameters:parameters
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
-            if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+            if (error.code == BTCoreConstants.networkConnectionLostCode) {
                 [self.apiClient sendAnalyticsEvent:@"ios.paypal.handle-browser-switch.network-connection.failure"];
             }
             [self sendAnalyticsEventForTokenizationFailureForPaymentType:paymentType];

@@ -1,4 +1,3 @@
-#import "BTAPIClient_Internal.h"
 #import "BTPayPalClient_Internal.h"
 #import "BTNonceValidationHelper.h"
 @import BraintreePayPal;

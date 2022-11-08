@@ -10,7 +10,6 @@
 #import <Braintree/BTThreeDSecureResult.h>
 #import <Braintree/BTThreeDSecureLookup.h>
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
@@ -18,7 +17,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
@@ -26,7 +24,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 
 #endif
 

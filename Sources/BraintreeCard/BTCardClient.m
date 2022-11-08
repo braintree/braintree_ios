@@ -7,17 +7,14 @@
 
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
-#import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BTCardRequest.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
 
 #else // Carthage
 #import <BraintreeCard/BTCardRequest.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
 
 #endif
@@ -80,11 +77,11 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
             NSDictionary *parameters = [request.card graphQLParameters];
             [self.apiClient POST:@""
                       parameters:parameters
-                        httpType:BTAPIClientHTTPTypeGraphQLAPI
+                        httpType:BTAPIClientHTTPServiceGraphQLAPI
                       completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
              {
                  if (error) {
-                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
                      }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
@@ -115,7 +112,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
              {
                  if (error != nil) {
-                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
                      }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];

@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeTestShared
 
 class BTThreeDSecureRequest_Tests: XCTestCase {
 

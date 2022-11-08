@@ -1,6 +1,6 @@
 import XCTest
 import PassKit
-import BraintreeTestShared
+@testable import BraintreeTestShared
 
 class BTApplePay_Tests: XCTestCase {
     var mockClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!

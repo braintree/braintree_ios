@@ -1,7 +1,7 @@
 import Foundation
 
 /// :nodoc:
-public class BTCoreConstants {
+@objcMembers public class BTCoreConstants: NSObject {
 
     // TODO: update release script to update this constant during the release process
     /// :nodoc:
@@ -14,5 +14,5 @@ public class BTCoreConstants {
     public static var graphQLVersion: String = "2018-03-06"
 
     /// :nodoc:
-    static var networkConnectionLostCode: Int = -1005
+    public static var networkConnectionLostCode: Int = -1005
 }

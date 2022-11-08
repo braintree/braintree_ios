@@ -5,19 +5,16 @@
 #import <Braintree/BTConfiguration+ApplePay.h>
 #import <Braintree/BTApplePayCardNonce.h>
 #import <Braintree/BraintreeCore.h>
-#import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #endif
 
 #import "BraintreeCoreSwiftImports.h"
@@ -125,7 +122,7 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
-                if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                if (error.code == BTCoreConstants.networkConnectionLostCode) {
                     [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.network-connection.failure"];
                 }
                 completionBlock(nil, error);

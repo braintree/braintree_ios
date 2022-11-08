@@ -6,8 +6,4 @@ framework module BraintreeCore {
 
     export *
     module * { export * }
-
-    explicit module Private {
-        header "BTAPIClient_Internal.h"
-    }
 }

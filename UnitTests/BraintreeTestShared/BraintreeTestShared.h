@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
 
 //! Project version number for BraintreeTestShared.
 FOUNDATION_EXPORT double BraintreeTestSharedVersionNumber;

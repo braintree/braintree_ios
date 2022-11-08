@@ -1,6 +1,6 @@
 import XCTest
-import BraintreeTestShared
-import BraintreeCore.Private
+import BraintreeCoreSwift
+@testable import BraintreeTestShared
 
 class BTCardClient_Tests: XCTestCase {
     let customerInputValidationErrorKey: String = "BTCustomerInputBraintreeValidationErrorsKey"
@@ -524,7 +524,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.graphQLAPI)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.graphQLAPI)
             guard var lastPostParameters = mockApiClient.lastPOSTParameters else {
                 XCTFail()
                 return
@@ -553,7 +553,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
         
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
             expectation.fulfill()
         }
         
@@ -580,7 +580,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
         
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
 
             expectation.fulfill()
         }
@@ -615,7 +615,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
 
         cardClient.tokenizeCard(cardRequest) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
             expectation.fulfill()
         }
 

@@ -1,6 +1,6 @@
 import XCTest
 import BraintreePayPal
-import BraintreeTestShared
+@testable import BraintreeTestShared
 @testable import BraintreeCoreSwift
 
 class BTPayPalClient_Tests: XCTestCase {

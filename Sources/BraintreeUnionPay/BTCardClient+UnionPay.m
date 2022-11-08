@@ -4,7 +4,6 @@
 #import <Braintree/BTCardClient+UnionPay.h>
 #import <Braintree/BTConfiguration+UnionPay.h>
 #import <Braintree/BTCardCapabilities.h>
-#import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTCardClient_Internal.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BraintreeCard.h>
@@ -13,7 +12,6 @@
 #import <BraintreeUnionPay/BTCardClient+UnionPay.h>
 #import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCard/BTCardClient_Internal.h"
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
@@ -22,7 +20,6 @@
 #import <BraintreeUnionPay/BTCardClient+UnionPay.h>
 #import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCard/BTCardClient_Internal.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
@@ -105,7 +102,7 @@
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
-                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                 if (error.code == BTCoreConstants.networkConnectionLostCode) {
                      [self.apiClient sendAnalyticsEvent:@"ios.union-pay.network-connection.failure"];
                  }
                  [self sendUnionPayEvent:@"enrollment-failed"];

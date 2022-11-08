@@ -2,6 +2,10 @@
 import BraintreeCore
 #endif
 
+#if canImport(BraintreeCoreSwift)
+import BraintreeCoreSwift
+#endif
+
 #if canImport(BraintreePayPal)
 import BraintreePayPal
 #endif
@@ -61,7 +65,7 @@ class BTPayPalNativeOrderCreationClient {
 
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.parameters(with: config)
+                parameters: request.parameters(with: config) as? [String: Any]
             ) { json, response, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
                     let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse

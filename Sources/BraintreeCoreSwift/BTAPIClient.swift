@@ -2,18 +2,22 @@ import Foundation
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
-// TODO: rename once Objective-C files are deleted
-@objcMembers public class BTAPIClientSwift: NSObject {
+@objcMembers public class BTAPIClient: NSObject {
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    // MARK: - Internal Properties
+    // MARK: - Public Properties
 
-    var tokenizationKey: String?
-    var clientToken: BTClientToken?
+    /// The tokenization key used to authorize the APIClient
+    public var tokenizationKey: String?
+
+    /// The client token used to authorize the APIClient
+    public var clientToken: BTClientToken?
 
     /// Client metadata that is used for tracking the client session
-    var metadata: BTClientMetadata?
+    public private(set) var metadata: BTClientMetadata
+
+    // MARK: - Internal Properties
 
     /// Used to fetch and store configurations in the URL Cache of the session
     var configurationHTTP: BTHTTP?
@@ -21,6 +25,7 @@ import Foundation
     var http: BTHTTP?
     var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
+
 
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
@@ -37,11 +42,30 @@ import Foundation
         return URLSession(configuration: configuration)
     }
 
-    // MARK: - Initializer
+    /// Exposed for testing analytics
+    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
+    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
+    weak var analyticsService: BTAnalyticsService? {
+        get { BTAPIClient._analyticsService }
+        set { BTAPIClient._analyticsService = newValue }
+    }
 
-    @objc(initWithAuthorization:sendAnalyticsEvent:)
-    public init?(authorization: String, sendAnalyticsEvent: Bool = true) {
+    private static var _analyticsService: BTAnalyticsService?
+
+    // MARK: - Initializers
+
+    /// Initialize a new API client.
+    /// - Parameter authorization: Your tokenization key, client token, or PayPal ID Token. Passing an invalid value may return `nil`.
+    @objc(initWithAuthorization:)
+    public convenience init?(authorization: String) {
+        self.init(authorization: authorization, sendAnalyticsEvent: true)
+    }
+
+    init?(authorization: String, sendAnalyticsEvent: Bool) {
+        self.metadata = BTClientMetadata()
+
         super.init()
+        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self, flushThreshold: 5)
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
         let errorString = BTLogLevelDescription.string(for: .error) ?? "[BraintreeSDK] ERROR"
@@ -58,7 +82,7 @@ import Foundation
 
             tokenizationKey = authorization
             configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
-            // queueAnalyticsEvent("ios.started.client-key") // TODO: uncomment when analytics is converted
+            queueAnalyticsEvent("ios.started.client-key")
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
@@ -70,10 +94,8 @@ import Foundation
                 return nil
             }
 
-            // queueAnalyticsEvent("ios.started.client-token") // TODO: uncomment when analytics is converted
+            queueAnalyticsEvent("ios.started.client-token")
         }
-
-        metadata = BTClientMetadata()
 
         configurationHTTP?.session = session
 
@@ -177,7 +199,7 @@ import Foundation
     /// Fetches a customer's vaulted payment method nonces.
     /// Must be using client token with a customer ID specified.
     ///  - Parameter completion: Callback that returns either an array of payment method nonces or an error
-    public func fetchPaymentMethodNonces(completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
+    public func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         fetchPaymentMethodNonces(false, completion: completion)
     }
 
@@ -193,9 +215,9 @@ import Foundation
         }
 
         let defaultFirstValue: String = defaultFirst ? "true" : "false"
-        let parameters: [String: Any] = [
+        let parameters: [String: String] = [
             "default_first": defaultFirstValue,
-            "session_id": metadata?.sessionID ?? ""
+            "session_id": metadata.sessionID
         ]
 
         get("v1/payment_methods", parameters: parameters) { body, response, error in
@@ -229,7 +251,7 @@ import Foundation
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
     @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: String]? = nil, completion: @escaping RequestCompletion) {
         get(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
@@ -249,7 +271,7 @@ import Foundation
 
     /// :nodoc:
     @objc(GET:parameters:httpType:completion:)
-    public func get(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
+    public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -264,7 +286,7 @@ import Foundation
 
     /// :nodoc:
     @objc(POST:parameters:httpType:completion:)
-    public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPTypeSwift, completion: @escaping RequestCompletion) {
+    public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
 
@@ -273,42 +295,39 @@ import Foundation
                 return
             }
 
-            self.http(for: httpType)?.post(path, parameters: parameters, completion: completion)
+            let postParameters = self.metadataParametersWith(parameters, for: httpType)
+            self.http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
 
     ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public func sendAnalyticsEvent(_ eventName: String) {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
+        analyticsService?.sendAnalyticsEvent(eventName, completion: { _ in})
     }
 
     // MARK: Analytics Internal Methods
-    // TODO: Implement when BTAnalyticsService is converted to Swift
 
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    /// - Returns: A `BTAnalyticsService` instance
-//    func analyticsService() -> BTAnalyticsService {
-//        // TODO: Implement when BTAnalyticsService is converted to Swift
-//    }
-
-    func queueAnalyticsEvent() {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
+    func queueAnalyticsEvent(_ eventName: String) {
+        analyticsService?.sendAnalyticsEvent(eventName)
     }
 
     func metadataParameters() -> [String: Any] {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
-        return [:]
+        metadata.parameters.merging(BTAnalyticsMetadata.metadata) { $1 }
     }
 
     func graphQLMetadata() -> [String: Any] {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
-        return [:]
+        metadata.parameters
     }
 
-    func metaParametersWith(parameters: [String: Any], forHTTPType: BTAPIClientHTTPTypeSwift) -> [String: Any] {
-        // TODO: Implement when BTAnalyticsService is converted to Swift
-        return [:]
+    func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
+        switch httpType {
+        case .gateway:
+            return parameters?.merging(["_meta": metadataParameters()]) { $1 }
+        case .braintreeAPI:
+            return parameters
+        case .graphQLAPI:
+            return parameters?.merging(["clientSdkMetadata": graphQLMetadata()]) { $1 }
+        }
     }
 
     // MARK: - Internal Static Methods
@@ -363,7 +382,7 @@ import Foundation
         environment.lowercased() == "development" ? "http" : "https"
     }
 
-    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPTypeSwift) -> String? {
+    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPService) -> String? {
         var host: String? = nil
         let environmentLowercased: String = environment.lowercased()
 
@@ -421,7 +440,7 @@ import Foundation
         return components.url
     }
 
-    func http(for httpType: BTAPIClientHTTPTypeSwift) -> BTHTTP? {
+    func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
         switch httpType {
         case .gateway:
             return http

@@ -1,6 +1,6 @@
 import XCTest
 
-import BraintreeTestShared
+@testable import BraintreeTestShared
 @testable import BraintreePayPalNativeCheckout
 @testable import BraintreeCore
 @testable import BraintreePayPal

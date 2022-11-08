@@ -1,16 +1,16 @@
 import XCTest
-import BraintreeTestShared
-import BraintreeCore
+@testable import BraintreeTestShared
+@testable import BraintreeCoreSwift
 
 final class BTAnalyticsService_Tests: XCTestCase {
 
-    var currentTime: Int!
-    var oneSecondLater: Int!
+    var currentTime: UInt64!
+    var oneSecondLater: UInt64!
 
     override func setUp() {
         super.setUp()
-        currentTime = Int(Date().timeIntervalSince1970 * 1000)
-        oneSecondLater = Int((Date().timeIntervalSince1970 * 1000) + 999)
+        currentTime = UInt64(Date().timeIntervalSince1970 * 1000)
+        oneSecondLater = UInt64((Date().timeIntervalSince1970 * 1000) + 999)
     }
 
     func testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_returnsError() {
@@ -20,8 +20,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let expectation = expectation(description: "Sends analytics event")
         analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTAnalyticsServiceErrorDomain)
-            XCTAssertEqual(error.code, Int(BTAnalyticsServiceErrorType.missingAnalyticsURL.rawValue))
+            XCTAssertEqual(error.domain, BTAnalyticsServiceError.errorDomain)
+            XCTAssertEqual(error.code, Int(BTAnalyticsServiceError.missingAnalyticsURL.rawValue))
             expectation.fulfill()
         }
 
@@ -35,7 +35,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let expectation = expectation(description: "Sends analytics event")
         analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
             XCTAssertNil(error)
-            XCTAssertEqual(analyticsService.http.baseURL.absoluteString, "test://do-not-send.url")
+            XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "test://do-not-send.url")
             expectation.fulfill()
         }
 
@@ -58,7 +58,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
 
         let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-        let timestamp = parameters?[0]["timestamp"] as! Int
+        let timestamp = parameters?[0]["timestamp"] as! UInt64
         XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
         XCTAssertGreaterThanOrEqual(timestamp, currentTime)
         XCTAssertLessThanOrEqual(timestamp, oneSecondLater)
@@ -96,8 +96,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! Int
-            let timestampTwo = parameters?[1]["timestamp"] as! Int
+            let timestampOne = parameters?[0]["timestamp"] as! UInt64
+            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
 
             XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
@@ -134,8 +134,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! Int
-            let timestampTwo = parameters?[1]["timestamp"] as! Int
+            let timestampOne = parameters?[0]["timestamp"] as! UInt64
+            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
 
             XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
@@ -218,8 +218,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
             let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! Int
-            let timestampTwo = parameters?[1]["timestamp"] as! Int
+            let timestampOne = parameters?[0]["timestamp"] as! UInt64
+            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
 
             XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event.1")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)

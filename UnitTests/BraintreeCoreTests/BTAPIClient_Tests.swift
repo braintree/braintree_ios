@@ -1,6 +1,6 @@
 import XCTest
 import BraintreeTestShared
-@testable import BraintreeCore
+@testable import BraintreeCoreSwift
 
 class BTAPIClient_Tests: XCTestCase {
     private let mockConfigurationHTTP = FakeHTTP.fakeHTTP()
@@ -59,36 +59,6 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertEqual(apiClientAuthType, .clientToken)
     }
 
-    // MARK: - Copy
-
-    func testCopyWithSource_whenUsingClientToken_usesSameClientToken() {
-        let clientToken = TestClientTokenFactory.token(withVersion: 2)
-        let apiClient = BTAPIClient(authorization: clientToken)
-
-        let copiedApiClient = apiClient?.copy(with: .unknown, integration: .unknown)
-
-        XCTAssertEqual(copiedApiClient?.clientToken?.originalValue, clientToken)
-    }
-
-    func testCopyWithSource_whenUsingTokenizationKey_usesSameTokenizationKey() {
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        let copiedApiClient = apiClient?.copy(with: .unknown, integration: .unknown)
-        XCTAssertEqual(copiedApiClient?.tokenizationKey, "development_testing_integration_merchant_id")
-    }
-
-    func testCopyWithSource_setsMetadataSourceAndIntegration() {
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        let copiedApiClient = apiClient?.copy(with: .payPalBrowser, integration: .dropIn)
-        XCTAssertEqual(copiedApiClient?.metadata.source, .payPalBrowser)
-        XCTAssertEqual(copiedApiClient?.metadata.integration, .dropIn)
-    }
-
-    func testCopyWithSource_copiesHTTP() {
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        let copiedApiClient = apiClient?.copy(with: .payPalBrowser, integration: .dropIn)
-        XCTAssertNotEqual(copiedApiClient, apiClient)
-    }
-
     // MARK: - fetchOrReturnRemoteConfiguration
 
     func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
@@ -143,8 +113,8 @@ class BTAPIClient_Tests: XCTestCase {
         apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
             guard let error = error as NSError? else { return }
             XCTAssertNil(configuration)
-            XCTAssertEqual(error.domain, BTAPIClientErrorDomain)
-            XCTAssertEqual(error.code, BTAPIClientErrorType.configurationUnavailable.rawValue)
+            XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
+            XCTAssertEqual(error.code, BTAPIClientError.configurationUnavailable.rawValue)
             XCTAssertEqual(error.localizedDescription, "The operation couldn’t be completed. Unable to fetch remote configuration from Braintree API at this time.")
             expectation.fulfill()
         }
@@ -175,7 +145,7 @@ class BTAPIClient_Tests: XCTestCase {
     func testConfigurationHTTP_byDefault_usesAnInMemoryCache() {
         // We don't want configuration to cache configuration responses past the lifetime of the app
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        guard let cache: URLCache = apiClient?.configurationHTTP.session.configuration.urlCache else { return }
+        guard let cache: URLCache = apiClient?.configurationHTTP?.session.configuration.urlCache else { return }
 
         XCTAssertTrue(cache.diskCapacity == 0)
         XCTAssertTrue(cache.memoryCapacity > 0)
@@ -298,8 +268,8 @@ class BTAPIClient_Tests: XCTestCase {
         apiClient?.fetchPaymentMethodNonces() { paymentMethodNonces, error in
             XCTAssertNil(paymentMethodNonces)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error._domain, BTAPIClientErrorDomain)
-            XCTAssertEqual(error._code, BTAPIClientErrorType.notAuthorized.rawValue)
+            XCTAssertEqual(error._domain, BTAPIClientError.errorDomain)
+            XCTAssertEqual(error._code, BTAPIClientError.notAuthorized.rawValue)
             expectation.fulfill()
         }
 
@@ -418,22 +388,22 @@ class BTAPIClient_Tests: XCTestCase {
     }
 
     func testSendAnalyticsEvent_whenCalled_callsAnalyticsService_doesFlush() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockAnalyticsService = FakeAnalyticsService()
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
 
-        apiClient?.analyticsService = mockAnalyticsService
-        apiClient?.sendAnalyticsEvent("blahblah")
+        apiClient.analyticsService = mockAnalyticsService
+        apiClient.sendAnalyticsEvent("blahblah")
 
         XCTAssertEqual(mockAnalyticsService.lastEvent, "blahblah")
         XCTAssertTrue(mockAnalyticsService.didLastFlush)
     }
 
     func testQueueAnalyticsEvent_whenCalled_callsAnalyticsService_doesNotFlush() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockAnalyticsService = FakeAnalyticsService()
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
 
-        apiClient?.analyticsService = mockAnalyticsService
-        apiClient?.queueAnalyticsEvent("blahblahqueue")
+        apiClient.analyticsService = mockAnalyticsService
+        apiClient.queueAnalyticsEvent("blahblahqueue")
 
         XCTAssertEqual(mockAnalyticsService.lastEvent, "blahblahqueue")
         XCTAssertFalse(mockAnalyticsService.didLastFlush)
@@ -466,7 +436,7 @@ class BTAPIClient_Tests: XCTestCase {
         let mockAPIHTTP = FakeAPIHTTP.fakeHTTP()
         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        apiClient?.braintreeAPI = mockAPIHTTP
+        apiClient?.apiHTTP = mockAPIHTTP
         apiClient?.configurationHTTP = mockHTTP
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
 
@@ -491,7 +461,7 @@ class BTAPIClient_Tests: XCTestCase {
             ]
         ]
 
-        apiClient?.graphQL = mockGraphQLHTTP
+        apiClient?.graphQLHTTP = mockGraphQLHTTP
         apiClient?.configurationHTTP = mockHTTP
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: mockResponse, statusCode: 200)
 
@@ -552,32 +522,36 @@ class BTAPIClient_Tests: XCTestCase {
 
     func testBaseURL_isDeterminedByTokenizationKey() {
         var apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        XCTAssertEqual(apiClient?.configurationHTTP.baseURL.absoluteString, "http://localhost:3000/merchants/key/client_api")
+        XCTAssertEqual(apiClient?.configurationHTTP?.baseURL.absoluteString, "http://localhost:3000/merchants/key/client_api")
 
         apiClient = BTAPIClient(authorization: "sandbox_tokenization_key")
-        XCTAssertEqual(apiClient?.configurationHTTP.baseURL.absoluteString, "https://api.sandbox.braintreegateway.com/merchants/key/client_api")
+        XCTAssertEqual(apiClient?.configurationHTTP?.baseURL.absoluteString, "https://api.sandbox.braintreegateway.com/merchants/key/client_api")
 
         apiClient = BTAPIClient(authorization: "production_tokenization_key")
-        XCTAssertEqual(apiClient?.configurationHTTP.baseURL.absoluteString, "https://api.braintreegateway.com:443/merchants/key/client_api")
+        XCTAssertEqual(apiClient?.configurationHTTP?.baseURL.absoluteString, "https://api.braintreegateway.com:443/merchants/key/client_api")
     }
 
     func testGraphQLURLForEnvironment_returnsSandboxURL() {
-        let sandboxURL: URL? = BTAPIClient.graphQLURL(forEnvironment: "sandbox")
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "sandbox")
         XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.sandbox.braintree-api.com/graphql")
     }
 
     func testGraphQLURLForEnvironment_returnsDevelopmentURL() {
-        let sandboxURL: URL? = BTAPIClient.graphQLURL(forEnvironment: "development")
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "development")
         XCTAssertEqual(sandboxURL?.absoluteString, "http://localhost:8080/graphql")
     }
 
     func testGraphQLURLForEnvironment_returnsProductionURL() {
-        let sandboxURL: URL? = BTAPIClient.graphQLURL(forEnvironment: "production")
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "production")
         XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.braintree-api.com/graphql")
     }
 
     func testGraphQLURLForEnvironment_returnsProductionURL_asDefault() {
-        let sandboxURL: URL? = BTAPIClient.graphQLURL(forEnvironment: "unknown")
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "unknown")
         XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.braintree-api.com/graphql")
     }
 }

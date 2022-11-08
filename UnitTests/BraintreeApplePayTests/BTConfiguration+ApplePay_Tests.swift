@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeTestShared
 
 class BTConfiguration_ApplePay_Tests : XCTestCase {
     var mockAPIClient = MockAPIClient.init(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!

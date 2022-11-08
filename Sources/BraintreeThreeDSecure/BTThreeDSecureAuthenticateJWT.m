@@ -4,15 +4,12 @@
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BraintreeCard.h>
-#import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BraintreeCard.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 
 #endif
 
@@ -42,7 +39,7 @@
          parameters:requestParameters
          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
-            if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+            if (error.code == BTCoreConstants.networkConnectionLostCode) {
                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.network-connection.failure"];
             }
             [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];

@@ -16,7 +16,6 @@
 #import <Braintree/BTThreeDSecureLookup.h>
 #import <Braintree/BTConfiguration+ThreeDSecure.h>
 #import <Braintree/BraintreeCard.h>
-#import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/Braintree-Version.h>
 #import <Braintree/BTPaymentFlowClient_Internal.h>
 
@@ -26,7 +25,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeCard/BraintreeCard.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/Braintree-Version.h"
 #import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
 
@@ -36,7 +34,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
