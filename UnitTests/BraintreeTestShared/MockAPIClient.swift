@@ -1,3 +1,4 @@
+import Foundation
 @testable import BraintreeCoreSwift
 
 public class MockAPIClient: BTAPIClient {

@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCoreSwift
 
 class BTBinData_Tests: XCTestCase {
     func testBinData_withCompleteJSON() {
