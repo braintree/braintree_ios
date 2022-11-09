@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
 /**
  Initialize a new API client.
 
- @param authorization Your tokenization key, client token, or PayPal ID Token. Passing an invalid value may return `nil`.
+ @param authorization Your tokenization key or client token. Passing an invalid value may return `nil`.
  @return A Braintree API client, or `nil` if initialization failed.
 */
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization;
