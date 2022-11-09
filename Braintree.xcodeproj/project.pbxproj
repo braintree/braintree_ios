@@ -385,6 +385,12 @@
 		BE9F444627C6C78A00A117D5 /* BTCacheDateValidator_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */; };
 		BEE2E4B72900436600C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B62900436600C03FDD /* PayPalCheckout */; };
 		BEE2E4B9290043A200C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B8290043A200C03FDD /* PayPalCheckout */; };
+		BEED3B78291C0B6900BA114B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED3B77291C0B6900BA114B /* AppDelegate.swift */; };
+		BEED3B7A291C0B6900BA114B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED3B79291C0B6900BA114B /* SceneDelegate.swift */; };
+		BEED3B7C291C0B6900BA114B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEED3B7B291C0B6900BA114B /* ViewController.swift */; };
+		BEED3B7F291C0B6900BA114B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEED3B7D291C0B6900BA114B /* Main.storyboard */; };
+		BEED3B81291C0B6A00BA114B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEED3B80291C0B6A00BA114B /* Assets.xcassets */; };
+		BEED3B84291C0B6A00BA114B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEED3B82291C0B6A00BA114B /* LaunchScreen.storyboard */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
 		BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */; };
 		BEFE6DA827E289DF002BE9C8 /* MockWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA727E289DF002BE9C8 /* MockWebAuthenticationSession.swift */; };
@@ -735,6 +741,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BEF3F17227CE9EC600072467;
 			remoteInfo = BraintreeSEPADebit;
+		};
+		BEED3B8A291C0BAB00BA114B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BEED3B74291C0B6900BA114B;
+			remoteInfo = ThreeDSecureDemo;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1156,6 +1169,15 @@
 		BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitNonce_Tests.swift; sourceTree = "<group>"; };
 		BE9F444327C6C75E00A117D5 /* BTCacheDateValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCacheDateValidator.m; sourceTree = "<group>"; };
 		BE9F444527C6C78A00A117D5 /* BTCacheDateValidator_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCacheDateValidator_Internal.h; sourceTree = "<group>"; };
+		BEED3B75291C0B6900BA114B /* ThreeDSecureDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThreeDSecureDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEED3B77291C0B6900BA114B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BEED3B79291C0B6900BA114B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		BEED3B7B291C0B6900BA114B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BEED3B7E291C0B6900BA114B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BEED3B80291C0B6A00BA114B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BEED3B83291C0B6A00BA114B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BEED3B85291C0B6A00BA114B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BEED3B89291C0B7900BA114B /* 3DSecureDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = 3DSecureDemo.entitlements; sourceTree = "<group>"; };
 		BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient.swift; sourceTree = "<group>"; };
 		BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI_Tests.swift; sourceTree = "<group>"; };
@@ -1404,6 +1426,13 @@
 			files = (
 				BE642DA227D0137000694A5B /* BraintreeSEPADirectDebit.framework in Frameworks */,
 				BE642D9A27D0132A00694A5B /* BraintreeTestShared.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BEED3B72291C0B6900BA114B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1905,6 +1934,7 @@
 				80824659252C19F5000AD8FF /* Sources */,
 				808249F8252C1F97000AD8FF /* UnitTests */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
+				BEED3B76291C0B6900BA114B /* ThreeDSecureDemo */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				6A50887E9E10BEB122A9F45D /* Pods */,
 				A75DA3521921394200D997A2 /* Products */,
@@ -1942,6 +1972,7 @@
 				9CE5179B282D54030013C740 /* BraintreePayPalNativeCheckoutTests.xctest */,
 				BE642DA027D0132A00694A5B /* BraintreeSEPADirectDebitTests.xctest */,
 				BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */,
+				BEED3B75291C0B6900BA114B /* ThreeDSecureDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2308,6 +2339,21 @@
 				BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */,
 			);
 			path = BraintreeSEPADirectDebitTests;
+			sourceTree = "<group>";
+		};
+		BEED3B76291C0B6900BA114B /* ThreeDSecureDemo */ = {
+			isa = PBXGroup;
+			children = (
+				BEED3B89291C0B7900BA114B /* 3DSecureDemo.entitlements */,
+				BEED3B77291C0B6900BA114B /* AppDelegate.swift */,
+				BEED3B79291C0B6900BA114B /* SceneDelegate.swift */,
+				BEED3B7B291C0B6900BA114B /* ViewController.swift */,
+				BEED3B7D291C0B6900BA114B /* Main.storyboard */,
+				BEED3B80291C0B6A00BA114B /* Assets.xcassets */,
+				BEED3B82291C0B6A00BA114B /* LaunchScreen.storyboard */,
+				BEED3B85291C0B6A00BA114B /* Info.plist */,
+			);
+			path = ThreeDSecureDemo;
 			sourceTree = "<group>";
 		};
 		BEF3F17027CE9E2600072467 /* BraintreeSEPADirectDebit */ = {
@@ -2892,6 +2938,7 @@
 			dependencies = (
 				A9E80A9E24FEF40700196BD3 /* PBXTargetDependency */,
 				A91E1EF924FEF2E4007540E5 /* PBXTargetDependency */,
+				BEED3B8B291C0BAB00BA114B /* PBXTargetDependency */,
 			);
 			name = BraintreeThreeDSecureTests;
 			productName = BraintreeThreeDSecureTests;
@@ -3089,6 +3136,23 @@
 			productReference = BE642DA027D0132A00694A5B /* BraintreeSEPADirectDebitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BEED3B74291C0B6900BA114B /* ThreeDSecureDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BEED3B86291C0B6A00BA114B /* Build configuration list for PBXNativeTarget "ThreeDSecureDemo" */;
+			buildPhases = (
+				BEED3B71291C0B6900BA114B /* Sources */,
+				BEED3B72291C0B6900BA114B /* Frameworks */,
+				BEED3B73291C0B6900BA114B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ThreeDSecureDemo;
+			productName = 3DSecureDemo;
+			productReference = BEED3B75291C0B6900BA114B /* ThreeDSecureDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BEF3F17927CE9EC600072467 /* Build configuration list for PBXNativeTarget "BraintreeSEPADirectDebit" */;
@@ -3116,7 +3180,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = BT;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					03502C831E9C0A1700F15EE6 = {
@@ -3169,6 +3233,7 @@
 					};
 					A91E1EF124FEF2E3007540E5 = {
 						CreatedOnToolsVersion = 12.0;
+						TestTargetID = BEED3B74291C0B6900BA114B;
 					};
 					A948D6C524FAB79B00F4F178 = {
 						CreatedOnToolsVersion = 12.0;
@@ -3196,6 +3261,9 @@
 					};
 					A9E5C22324FD6D0800EE691F = {
 						CreatedOnToolsVersion = 12.0;
+					};
+					BEED3B74291C0B6900BA114B = {
+						CreatedOnToolsVersion = 14.1;
 					};
 				};
 			};
@@ -3245,6 +3313,7 @@
 				A7B462E01C3D9C2200048423 /* PayPalDataCollector */,
 				A9B241FB2507D156000FAA3F /* PayPalDataCollectorTests */,
 				A7ABD6521B702FD800A1223C /* IntegrationTests */,
+				BEED3B74291C0B6900BA114B /* ThreeDSecureDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -3436,6 +3505,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BEED3B73291C0B6900BA114B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEED3B84291C0B6A00BA114B /* LaunchScreen.storyboard in Resources */,
+				BEED3B81291C0B6A00BA114B /* Assets.xcassets in Resources */,
+				BEED3B7F291C0B6900BA114B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3928,6 +4007,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BEED3B71291C0B6900BA114B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEED3B7C291C0B6900BA114B /* ViewController.swift in Sources */,
+				BEED3B78291C0B6900BA114B /* AppDelegate.swift in Sources */,
+				BEED3B7A291C0B6900BA114B /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BEF3F17327CE9EC600072467 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4211,7 +4300,31 @@
 			target = BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */;
 			targetProxy = BE642DA727D0139000694A5B /* PBXContainerItemProxy */;
 		};
+		BEED3B8B291C0BAB00BA114B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BEED3B74291C0B6900BA114B /* ThreeDSecureDemo */;
+			targetProxy = BEED3B8A291C0BAB00BA114B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BEED3B7D291C0B6900BA114B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BEED3B7E291C0B6900BA114B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BEED3B82291C0B6A00BA114B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BEED3B83291C0B6A00BA114B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		03502C8D1E9C0A1800F15EE6 /* Debug */ = {
@@ -6208,6 +6321,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ThreeDSecureDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ThreeDSecureDemo";
 			};
 			name = Debug;
 		};
@@ -6253,6 +6367,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/BraintreeThreeDSecureTests/BraintreeThreeDSecureTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ThreeDSecureDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ThreeDSecureDemo";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -7078,6 +7193,110 @@
 			};
 			name = Release;
 		};
+		BEED3B87291C0B6A00BA114B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ThreeDSecureDemo/ThreeDSecureDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 43253H4X22;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ThreeDSecureDemo/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.ThreeDSecureDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BEED3B88291C0B6A00BA114B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ThreeDSecureDemo/ThreeDSecureDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 43253H4X22;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ThreeDSecureDemo/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.ThreeDSecureDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		BEF3F17A27CE9EC600072467 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7463,6 +7682,15 @@
 			buildConfigurations = (
 				BE0B163A27DFF95900868C77 /* Debug */,
 				BE0B163B27DFF95900868C77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BEED3B86291C0B6A00BA114B /* Build configuration list for PBXNativeTarget "ThreeDSecureDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BEED3B87291C0B6A00BA114B /* Debug */,
+				BEED3B88291C0B6A00BA114B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
