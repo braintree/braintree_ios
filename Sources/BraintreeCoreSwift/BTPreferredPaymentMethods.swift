@@ -14,6 +14,7 @@ import UIKit
 
     // MARK: - Initializer
 
+    ///  :nodoc:
     /// Creates an instance of BTPreferredPaymentMethods.
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
@@ -24,6 +25,7 @@ import UIKit
 
     // MARK: - Public Methods
 
+    ///  :nodoc:
     ///  Fetches information about which payment methods are preferred on the device.
     /// - Parameter completion: A completion block that is invoked when preferred payment methods are available.
     @objc(fetchPreferredPaymentMethods:)
