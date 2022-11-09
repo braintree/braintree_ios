@@ -1177,7 +1177,7 @@
 		BEED3B80291C0B6A00BA114B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEED3B83291C0B6A00BA114B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BEED3B85291C0B6A00BA114B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BEED3B89291C0B7900BA114B /* 3DSecureDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = 3DSecureDemo.entitlements; sourceTree = "<group>"; };
+		BEED3B89291C0B7900BA114B /* ThreeDSecureDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ThreeDSecureDemo.entitlements; sourceTree = "<group>"; };
 		BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient.swift; sourceTree = "<group>"; };
 		BEF3F17C27CE9EC600072467 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI_Tests.swift; sourceTree = "<group>"; };
@@ -2344,7 +2344,7 @@
 		BEED3B76291C0B6900BA114B /* ThreeDSecureDemo */ = {
 			isa = PBXGroup;
 			children = (
-				BEED3B89291C0B7900BA114B /* 3DSecureDemo.entitlements */,
+				BEED3B89291C0B7900BA114B /* ThreeDSecureDemo.entitlements */,
 				BEED3B77291C0B6900BA114B /* AppDelegate.swift */,
 				BEED3B79291C0B6900BA114B /* SceneDelegate.swift */,
 				BEED3B7B291C0B6900BA114B /* ViewController.swift */,
