@@ -1,4 +1,4 @@
-#import "BTHTTPTestProtocol.h"
+#import "BraintreeCoreTests-Swift.h"
 @import BraintreeCore;
 @import Specta;
 @import Expecta;

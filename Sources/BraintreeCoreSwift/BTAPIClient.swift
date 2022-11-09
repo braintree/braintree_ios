@@ -26,7 +26,6 @@ import Foundation
     var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
-
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
         configurationQueue.name = "com.braintreepayments.BTAPIClient"

@@ -14,7 +14,7 @@ abstract_target 'Tests' do
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
-  pod 'OHHTTPStubs'
+  pod 'OHHTTPStubs/Swift'
   pod 'xcbeautify'
 
   target 'IntegrationTests'
