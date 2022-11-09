@@ -7,19 +7,19 @@
 #import <Braintree/BTLocalPaymentRequest.h>
 #import <Braintree/BTConfiguration+LocalPayment.h>
 #import <Braintree/BTLocalPaymentResult.h>
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 
 #elif SWIFT_PACKAGE                                   // SPM
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 
 #else                                                 // Carthage and Local Builds
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 
@@ -42,7 +42,7 @@
 
 #else                                                 // Carthage and Local Builds
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
-#import <BraintreeCoreSwift/BraintreeCoreSwift-Swift.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 

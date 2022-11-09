@@ -1,10 +1,6 @@
 #import "BTCard_Internal.h"
 
-#if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+@import BraintreeCore;
 
 @interface BTCard ()
 

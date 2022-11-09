@@ -1,9 +1,9 @@
 #if __has_include(<Braintree/BraintreePaymentFlow.h>)
 #import <Braintree/BTLocalPaymentResult.h>
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #else
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 @implementation BTLocalPaymentResult

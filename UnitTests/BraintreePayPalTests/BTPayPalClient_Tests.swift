@@ -1,7 +1,7 @@
 import XCTest
 import BraintreePayPal
 @testable import BraintreeTestShared
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTPayPalClient_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient!

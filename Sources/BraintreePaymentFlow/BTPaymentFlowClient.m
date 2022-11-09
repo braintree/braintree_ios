@@ -1,7 +1,6 @@
 #import "BTPaymentFlowClient_Internal.h"
 #import <SafariServices/SafariServices.h>
-
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 // Objective-C Module Imports
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods

@@ -1,12 +1,12 @@
 #import "BTVenmoAppSwitchReturnURL.h"
 
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 // Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #else
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain";

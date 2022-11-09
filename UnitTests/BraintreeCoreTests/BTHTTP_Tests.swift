@@ -1,7 +1,7 @@
 import XCTest
 import Specta
 import OHHTTPStubs
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 final class BTHTTP_Tests: XCTestCase {
 

@@ -1,9 +1,9 @@
 #if __has_include(<Braintree/BraintreePayPal.h>)
 #import <Braintree/BTPayPalRequest.h>
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #else
 #import <BraintreePayPal/BTPayPalRequest.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN

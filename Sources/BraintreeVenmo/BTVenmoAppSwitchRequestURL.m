@@ -1,19 +1,16 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 //Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
-#import <Braintree/BraintreeCore.h>
-#import <Braintree/Braintree-Version.h>
+#import <Braintree/BraintreeCore-Swift.h>
 
 #elif SWIFT_PACKAGE // SPM
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/Braintree-Version.h"
+#import <BraintreeCore/BraintreeCore-Swift.h>
 
 #else // Carthage or Local Builds
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/Braintree-Version.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 
 #endif
 
@@ -42,7 +39,7 @@
     }
     
     NSMutableDictionary *braintreeData = [@{@"_meta": @{
-                                                    @"version": BRAINTREE_VERSION,
+                                                    @"version": BTCoreConstants.braintreeSDKVersion,
                                                     @"sessionId": [metadata sessionID],
                                                     @"integration": [metadata integrationString],
                                                     @"platform": @"ios"

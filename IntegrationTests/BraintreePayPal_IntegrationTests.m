@@ -3,7 +3,7 @@
 @import BraintreePayPal;
 @import OCMock;
 @import XCTest;
-@import BraintreeCoreSwift;
+@import BraintreeCore;
 
 @interface BraintreePayPal_IntegrationTests : XCTestCase
 

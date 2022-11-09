@@ -1,18 +1,18 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureLookup_Internal.h"
 
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #import <Braintree/BTCardNonce_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import "../BraintreeCard/BTCardNonce_Internal.h"
 
 #else // Carthage
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeCard/BTCardNonce_Internal.h>
 
 #endif

@@ -1,8 +1,7 @@
 import XCTest
 import UIKit
 import BraintreeVenmo
-import BraintreeCore
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 @testable import BraintreeTestShared
 
 class BTVenmoClient_Tests: XCTestCase {

@@ -3,21 +3,22 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTVenmoRequest_Internal.h"
+#import "UIKit/UIKit.h"
 
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 // Objective-C Module Imports
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BTConfiguration+Venmo.h>
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 
 #else // Carthage
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 
 #endif
 

@@ -1,7 +1,9 @@
+#import <Foundation/Foundation.h>
+
 #if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #else
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 /**

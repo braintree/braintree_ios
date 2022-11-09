@@ -1,21 +1,17 @@
+#import "BraintreeCore/BraintreeCore-Swift.h"
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
 #import "BTConfiguration+Card.h"
 
-#import "BraintreeCoreSwiftImports.h"
-
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
-#import <Braintree/BraintreeCore.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BTCardRequest.h>
-#import <BraintreeCore/BraintreeCore.h>
 
 #else // Carthage
 #import <BraintreeCard/BTCardRequest.h>
-#import <BraintreeCore/BraintreeCore.h>
 
 #endif
 

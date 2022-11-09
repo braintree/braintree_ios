@@ -1,4 +1,4 @@
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTConfiguration+ThreeDSecure.h>

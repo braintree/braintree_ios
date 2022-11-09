@@ -1,12 +1,5 @@
+#import "BraintreeCore/BraintreeCore-Swift.h"
 #import "BTAuthenticationInsight_Internal.h"
-
-#import "BraintreeCoreSwiftImports.h"
-
-#if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
 
 @implementation BTAuthenticationInsight
 

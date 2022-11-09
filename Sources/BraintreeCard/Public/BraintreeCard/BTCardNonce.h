@@ -1,7 +1,7 @@
 #if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #else
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 @class BTThreeDSecureInfo;

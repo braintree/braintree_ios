@@ -1,6 +1,6 @@
 import XCTest
 import BraintreeTestShared
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTAPIClient_Tests: XCTestCase {
     private let mockConfigurationHTTP = FakeHTTP.fakeHTTP()

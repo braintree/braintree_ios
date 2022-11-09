@@ -5,10 +5,6 @@ import AuthenticationServices
 import BraintreeCore
 #endif
 
-#if canImport(BraintreeCoreSwift)
-import BraintreeCoreSwift
-#endif
-
 /// Used to integrate with SEPA Direct Debit.
 @objcMembers public class BTSEPADirectDebitClient: NSObject {
 

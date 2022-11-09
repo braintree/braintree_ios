@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeCoreSwift
+import BraintreeCore
 
 class BTPostalAddress_Tests: XCTestCase {
 

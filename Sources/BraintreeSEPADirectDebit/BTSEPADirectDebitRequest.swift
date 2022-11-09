@@ -4,10 +4,6 @@ import Foundation
 import BraintreeCore
 #endif
 
-#if canImport(BraintreeCoreSwift)
-import BraintreeCoreSwift
-#endif
-
 /// Parameters for creating a SEPA Direct Debit tokenization request.
 @objcMembers public class BTSEPADirectDebitRequest: NSObject {
 

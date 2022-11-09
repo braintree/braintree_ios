@@ -1,11 +1,11 @@
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 #if __has_include(<Braintree/BraintreeUnionPay.h>) // CocoaPods
 #import <Braintree/BTCardClient+UnionPay.h>
 #import <Braintree/BTConfiguration+UnionPay.h>
 #import <Braintree/BTCardCapabilities.h>
 #import <Braintree/BTCardClient_Internal.h>
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #import <Braintree/BraintreeCard.h>
 
 #elif SWIFT_PACKAGE // SPM
@@ -13,7 +13,7 @@
 #import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
 #import "../BraintreeCard/BTCardClient_Internal.h"
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeCard/BraintreeCard.h>
 
 #else // Carthage
@@ -21,7 +21,7 @@
 #import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
 #import <BraintreeCard/BTCardClient_Internal.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeCard/BraintreeCard.h>
 
 #endif

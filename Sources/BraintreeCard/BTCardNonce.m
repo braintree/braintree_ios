@@ -1,7 +1,7 @@
+#import "Foundation/Foundation.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 #import "BTCardNonce_Internal.h"
 #import "BTAuthenticationInsight_Internal.h"
-
-#import "BraintreeCoreSwiftImports.h"
 
 #if __has_include(<Braintree/BraintreeCard.h>)
 #import <Braintree/BTThreeDSecureInfo.h>

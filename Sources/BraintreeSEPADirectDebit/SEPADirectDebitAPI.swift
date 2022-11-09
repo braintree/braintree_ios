@@ -4,10 +4,6 @@ import Foundation
 import BraintreeCore
 #endif
 
-#if canImport(BraintreeCoreSwift)
-import BraintreeCoreSwift
-#endif
-
 class SEPADirectDebitAPI {
     
     private let apiClient: BTAPIClient

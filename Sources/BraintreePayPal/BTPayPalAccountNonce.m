@@ -2,7 +2,7 @@
 #import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalCreditFinancingAmount_Internal.h"
 
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 @interface BTPayPalAccountNonce ()
 

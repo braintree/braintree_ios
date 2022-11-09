@@ -1,5 +1,6 @@
 import XCTest
-import BraintreeCoreSwift
+import BraintreeCore
+@testable import BraintreeCard
 @testable import BraintreeTestShared
 
 class BTCardClient_Tests: XCTestCase {

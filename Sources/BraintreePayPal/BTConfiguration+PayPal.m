@@ -1,5 +1,3 @@
-#import "BraintreeCoreSwiftImports.h"
-
 #if __has_include(<Braintree/BraintreePayPal.h>)
 #import <Braintree/BTConfiguration+PayPal.h>
 #else

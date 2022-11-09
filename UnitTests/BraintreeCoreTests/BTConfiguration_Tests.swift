@@ -1,7 +1,7 @@
 import XCTest
 import PassKit
 
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTConfiguration_Tests: XCTestCase {
     func testInitWithJSON_setsJSON() {

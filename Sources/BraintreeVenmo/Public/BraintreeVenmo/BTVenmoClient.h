@@ -1,8 +1,8 @@
 #if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #import <Braintree/BTVenmoRequest.h>
 #else
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeVenmo/BTVenmoRequest.h>
 #endif
 

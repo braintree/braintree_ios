@@ -1,9 +1,10 @@
 #import "BTNonceValidationHelper.h"
 #import "IntegrationTests-Swift.h"
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
+
+@import BraintreeCore;
 
 @interface BTCardClient_IntegrationTests : XCTestCase
 @end

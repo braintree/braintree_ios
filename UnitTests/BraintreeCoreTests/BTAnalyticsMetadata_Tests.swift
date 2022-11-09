@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 final class BTAnalyticsMetadata_Tests: XCTestCase {
 

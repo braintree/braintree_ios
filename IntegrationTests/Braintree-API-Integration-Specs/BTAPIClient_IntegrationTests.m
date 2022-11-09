@@ -1,6 +1,5 @@
-#import <BraintreeCore/BraintreeCore.h>
 #import <XCTest/XCTest.h>
-@import BraintreeCoreSwift;
+@import BraintreeCore;
 
 @interface BTAPIClient_IntegrationTests : XCTestCase
 @end

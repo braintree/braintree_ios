@@ -3,7 +3,7 @@
 @import Specta;
 @import Expecta;
 @import OHHTTPStubs;
-@import BraintreeCoreSwift;
+@import BraintreeCore;
 
 @interface BTGraphQLHTTPTests : XCTestCase
 @end

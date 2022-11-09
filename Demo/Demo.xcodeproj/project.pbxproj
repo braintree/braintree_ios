@@ -19,8 +19,6 @@
 		42C574D525FA6CAC008B3681 /* AppSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574D425FA6CAC008B3681 /* AppSwitcher.swift */; };
 		42C5BDD625A4CE4800E8FF40 /* AmericanExpress_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */; };
 		42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D47A142554679D0012BAF1 /* BraintreeDemoSceneDelegate.m */; };
-		570B93D42853A6D30041BAFE /* BraintreeCoreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */; };
-		570B93D52853A6D30041BAFE /* BraintreeCoreSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57108A152832E789004EB870 /* BraintreeDemoPayPalNativeCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57108A142832E789004EB870 /* BraintreeDemoPayPalNativeCheckoutViewController.swift */; };
 		57108A172832EA04004EB870 /* BraintreePayPalNativeCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57108A162832EA04004EB870 /* BraintreePayPalNativeCheckout.framework */; };
 		57108A182832EA04004EB870 /* BraintreePayPalNativeCheckout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57108A162832EA04004EB870 /* BraintreePayPalNativeCheckout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -111,7 +109,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */,
-				570B93D52853A6D30041BAFE /* BraintreeCoreSwift.framework in Embed Frameworks */,
 				9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */,
 				803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
@@ -239,7 +236,6 @@
 				803D64FB256DAF9A00ACE692 /* BraintreeCore.framework in Frameworks */,
 				9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */,
 				803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */,
-				570B93D42853A6D30041BAFE /* BraintreeCoreSwift.framework in Frameworks */,
 				BEE2E4BC290043D100C03FDD /* PayPalCheckout in Frameworks */,
 				BE9BD75928872E4D00022983 /* BraintreeSEPADirectDebit.framework in Frameworks */,
 				9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */,

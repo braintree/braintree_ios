@@ -1,5 +1,5 @@
 import XCTest
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTPaymentMethodNonceParser_Tests: XCTestCase {
     var parser : BTPaymentMethodNonceParser = BTPaymentMethodNonceParser()

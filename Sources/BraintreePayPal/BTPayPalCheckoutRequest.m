@@ -1,7 +1,7 @@
 #import "BTPayPalCheckoutRequest_Internal.h"
 #import "BTPayPalRequest_Internal.h"
 
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 @implementation BTPayPalCheckoutRequest
 

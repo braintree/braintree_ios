@@ -1,11 +1,9 @@
-#import "BraintreeCoreSwiftImports.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 #if __has_include(<Braintree/BraintreeCard.h>)
 #import <Braintree/BTThreeDSecureInfo.h>
-#import <Braintree/BraintreeCore.h>
 #else
 #import <BraintreeCard/BTThreeDSecureInfo.h>
-#import <BraintreeCore/BraintreeCore.h>
 #endif
 
 @interface BTThreeDSecureInfo ()
