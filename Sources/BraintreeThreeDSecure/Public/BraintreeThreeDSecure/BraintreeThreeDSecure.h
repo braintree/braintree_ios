@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import <BraintreeCore/BraintreeCore-Swift.h>
 
 //! Project version number for BraintreeThreeDSecure.
 FOUNDATION_EXPORT double BraintreeThreeDSecureVersionNumber;

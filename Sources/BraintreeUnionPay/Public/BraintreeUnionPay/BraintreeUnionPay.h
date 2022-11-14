@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import <BraintreeCore/BraintreeCore-Swift.h>
 
 /// Version number
 FOUNDATION_EXPORT double BraintreeUnionPayVersionNumber;

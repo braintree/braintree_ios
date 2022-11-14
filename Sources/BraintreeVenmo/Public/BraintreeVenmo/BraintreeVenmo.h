@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import <BraintreeCore/BraintreeCore-Swift.h>
 
 /// Version number
 FOUNDATION_EXPORT double BraintreeVenmoVersionNumber;
@@ -8,13 +7,11 @@ FOUNDATION_EXPORT double BraintreeVenmoVersionNumber;
 FOUNDATION_EXPORT const unsigned char BraintreeVenmoVersionString[];
 
 #if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BraintreeCore-Swift.h>
 #import <Braintree/BTConfiguration+Venmo.h>
 #import <Braintree/BTVenmoClient.h>
 #import <Braintree/BTVenmoAccountNonce.h>
 #import <Braintree/BTVenmoRequest.h>
 #else
-#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeVenmo/BTVenmoClient.h>
 #import <BraintreeVenmo/BTVenmoAccountNonce.h>

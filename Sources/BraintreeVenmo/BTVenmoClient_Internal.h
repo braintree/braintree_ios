@@ -6,6 +6,8 @@
 #import <BraintreeVenmo/BTVenmoClient.h>
 #endif
 
+@class BTAPIClient;
+
 @interface BTVenmoClient ()
 
 /**

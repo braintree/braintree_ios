@@ -1,9 +1,5 @@
-#if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BraintreeCore-Swift.h>
-#else
-#import <BraintreeCore/BraintreeCore-Swift.h>
-#endif
-
+@class BTPostalAddress;
+@class BTJSON;
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;
 

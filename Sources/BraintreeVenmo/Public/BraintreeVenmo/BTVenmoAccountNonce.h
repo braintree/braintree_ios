@@ -1,11 +1,5 @@
 #import <Foundation/Foundation.h>
 
-#if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BraintreeCore-Swift.h>
-#else
-#import <BraintreeCore/BraintreeCore-Swift.h>
-#endif
-
 /**
  Contains information about a Venmo Account payment method
  */
