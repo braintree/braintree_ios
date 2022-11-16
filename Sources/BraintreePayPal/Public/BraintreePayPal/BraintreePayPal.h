@@ -7,7 +7,7 @@ FOUNDATION_EXPORT double BraintreePayPalVersionNumber;
 FOUNDATION_EXPORT const unsigned char BraintreePayPalVersionString[];
 
 #if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BTConfiguration+PayPal.h>
+#import <Braintree/Braintree-Swift.h>
 #import <Braintree/BTPayPalRequest.h>
 #import <Braintree/BTPayPalClient.h>
 #import <Braintree/BTPayPalAccountNonce.h>
@@ -16,8 +16,9 @@ FOUNDATION_EXPORT const unsigned char BraintreePayPalVersionString[];
 #import <Braintree/BTPayPalLineItem.h>
 #import <Braintree/BTPayPalCheckoutRequest.h>
 #import <Braintree/BTPayPalVaultRequest.h>
+#import <Braintree/Braintree-Swift.h>
 #else
-#import <BraintreePayPal/BTConfiguration+PayPal.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreePayPal/BTPayPalRequest.h>
 #import <BraintreePayPal/BTPayPalClient.h>
 #import <BraintreePayPal/BTPayPalAccountNonce.h>

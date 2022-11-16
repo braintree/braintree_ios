@@ -1,5 +1,6 @@
 #import "BraintreeDemoIdealViewController.h"
 @import BraintreePaymentFlow;
+@import BraintreeCore;
 
 @interface BraintreeDemoIdealViewController () <BTViewControllerPresentingDelegate, BTLocalPaymentRequestDelegate>
 

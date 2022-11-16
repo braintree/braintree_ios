@@ -1,8 +1,7 @@
-@import BraintreeCore;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class BTJSON;
+@class BTBinData;
 
 /**
  Contains information about a tokenized Apple Pay card.

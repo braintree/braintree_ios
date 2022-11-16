@@ -13,7 +13,6 @@ FOUNDATION_EXPORT const unsigned char BraintreePaymentFlowVersionString[];
 #import <Braintree/BTPaymentFlowResult.h>
 
 // LocalPayment
-#import <Braintree/BTConfiguration+LocalPayment.h>
 #import <Braintree/BTLocalPaymentRequest.h>
 #import <Braintree/BTLocalPaymentResult.h>
 #import <Braintree/BTPaymentFlowClient+LocalPayment.h>
@@ -25,7 +24,6 @@ FOUNDATION_EXPORT const unsigned char BraintreePaymentFlowVersionString[];
 #import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 
 // LocalPayment
-#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient+LocalPayment.h>
