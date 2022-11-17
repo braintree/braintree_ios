@@ -16,7 +16,6 @@ FOUNDATION_EXPORT const unsigned char BraintreePayPalVersionString[];
 #import <Braintree/BTPayPalLineItem.h>
 #import <Braintree/BTPayPalCheckoutRequest.h>
 #import <Braintree/BTPayPalVaultRequest.h>
-#import <Braintree/Braintree-Swift.h>
 #else
 #import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreePayPal/BTPayPalRequest.h>
