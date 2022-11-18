@@ -1,5 +1,4 @@
-@import BraintreeCore;
-
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <PassKit/PassKit.h>
 
 /**
