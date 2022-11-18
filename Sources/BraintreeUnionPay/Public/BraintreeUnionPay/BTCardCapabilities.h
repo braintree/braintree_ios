@@ -11,7 +11,6 @@ DEPRECATED_MSG_ATTRIBUTE("The UnionPay SMS integration is deprecated, as UnionPa
  */
 @property (nonatomic, assign) BOOL isUnionPay;
 
-
 /**
  Indicates whether the card is debit.
  */
