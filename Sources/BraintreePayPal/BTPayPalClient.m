@@ -22,8 +22,8 @@
 /* Use @import for SPM support
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
-@import BraintreeDataCollector;
 @import BraintreeCore;
+@import BraintreeDataCollector;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -32,8 +32,8 @@
 #import "Braintree-Swift.h"
 
 #else                                            // Carthage
-#import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
 #endif
 
 NSString *const BTPayPalErrorDomain = @"com.braintreepayments.BTPayPalErrorDomain";
