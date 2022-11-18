@@ -123,7 +123,10 @@
                 
                 self.progressBlock(@"Tokenizing card");
                 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 [self.cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+#pragma clang diagnostic pop
                     if (error) {
                         self.progressBlock([NSString stringWithFormat:@"Error tokenizing card: %@", error.localizedDescription]);
                         return;
@@ -135,8 +138,11 @@
             
             [self presentViewController:alertController animated:YES completion:nil];
         } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [self.cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
                 if (error) {
+#pragma clang diagnostic pop
                     NSMutableString *errorMessage = [NSMutableString stringWithFormat:@"Error tokenizing card: %@", error.localizedDescription];
                     if (error.localizedFailureReason) {
                         [errorMessage appendString:[NSString stringWithFormat:@". %@", error.localizedFailureReason]];
@@ -181,8 +187,11 @@
 #pragma mark - Private methods
 
 - (void)fetchCapabilities:(NSString *)cardNumber {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self.cardClient fetchCapabilities:cardNumber completion:^(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error) {
         if (error) {
+#pragma clang diagnostic pop
             self.progressBlock([NSString stringWithFormat:@"Error fetching capabilities: %@", error.localizedDescription]);
             return;
         }
