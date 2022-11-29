@@ -10,7 +10,7 @@ import BraintreePayPal
     // next_major_version: obtain the public properties below by subclassing BTPayPalCheckoutRequest once it is converted to Swift.
     
     /// Optional: Payment intent. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
-    public var intent: BTPayPalRequestIntent = .authorize
+    public var intent: BTPayPalRequestIntent
     
     /// Used for a one-time payment.
     ///
@@ -18,15 +18,15 @@ import BraintreePayPal
     public let amount: String
     
     /// Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to false. Only available with PayPal Checkout.
-    public var offerPayLater: Bool = false
+    public var offerPayLater: Bool
     
     /// Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
     ///
     /// - Note: See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
-    public let currencyCode: String?
+    public var currencyCode: String?
     
     /// Optional: If set to true, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
-    public var requestBillingAgreement: Bool = false
+    public var requestBillingAgreement: Bool
 
     // MARK: - Internal Properties
     
