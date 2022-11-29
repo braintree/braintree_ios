@@ -18,13 +18,12 @@ import BraintreePayPal
     case order
 }
 
-/// Options for the PayPal Checkout and PayPal Checkout with Vault flows.
+/// Options for the PayPal Checkout flow.
 @objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalNativeRequest {
     
     // MARK: - Public Properties
-    
-    // next_major_version: obtain the public properties below by subclassing BTPayPalCheckoutRequest once it is converted to Swift.
-    
+    // next_major_version: subclass BTPayPalCheckoutRequest once BraintreePayPal is in Swift.
+
     /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
     public var intent: BTPayPalNativeRequestIntent
     

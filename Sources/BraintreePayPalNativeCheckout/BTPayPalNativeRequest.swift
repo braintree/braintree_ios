@@ -9,6 +9,7 @@ import BraintreePayPal
 @objcMembers public class BTPayPalNativeRequest: NSObject {
 
     // MARK: - Public Properties
+    // next_major_version: subclass BTPayPalRequest once BraintreePayPal is in Swift.
 
     /// Optional: The line items for this transaction. It can include up to 249 line items.
     public var lineItems: [BTPayPalLineItem]?
@@ -114,7 +115,7 @@ import BraintreePayPal
             }
 
             let checkoutParameters = [
-                // Values from BTPayPalCheckoutRequest
+                // Values from BTPayPalNativeCheckoutRequest
                 "intent": request.intentAsString,
                 "amount": request.amount,
                 "offer_pay_later": request.offerPayLater,
@@ -145,18 +146,17 @@ import BraintreePayPal
                     "postal_code": request.shippingAddressOverride?.postalCode,
                     "country_code": request.shippingAddressOverride?.countryCodeAlpha2,
                     "recipient_name": request.shippingAddressOverride?.recipientName,
-                  ]
+                ]
             } else {
                 shippingParams = nil
             }
 
-            let params: [AnyHashable : Any?] = [
-              "description": request.billingAgreementDescription,
-              "offer_paypal_credit": request.offerCredit,
-              "shipping_address": shippingParams,
-            ]
-
-            let vaultParameters = params.compactMapValues { $0 }
+            // Values from BTPayPalNativeVaultRequest
+            let vaultParameters = [
+                "description": request.billingAgreementDescription ?? "",
+                "offer_paypal_credit": request.offerCredit,
+                "shipping_address": shippingParams ?? [:],
+            ].compactMapValues { $0 }
 
             return baseParameters.merging(vaultParameters) { $1 }
         @unknown default:

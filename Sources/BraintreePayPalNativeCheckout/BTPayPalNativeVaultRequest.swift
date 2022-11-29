@@ -6,9 +6,9 @@ import BraintreePayPal
 @objcMembers public class BTPayPalNativeVaultRequest: BTPayPalNativeRequest {
 
     // MARK: - Public Properties
+    // next_major_version: subclass BTPayPalVaultRequest once BraintreePayPal is in Swift.
 
     /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to false.
-    // next_major_version: subclass BTPayPalVaultRequest once BTPayPal is in Swift.
     public var offerCredit: Bool
 
     /// Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set requestBillingAgreement to true on your BTPayPalCheckoutRequest.
