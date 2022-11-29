@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix CocoaPods bug emiting "Cannot find interface declaration" error
+  * Rename `riskCorrelationId` to `riskCorrelationID`
+
 ## 5.16.0 (2022-10-27)
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes with a version of 5.4.0 with `ENABLE_BITCODE` removed
