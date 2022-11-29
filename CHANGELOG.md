@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
-  * Fix CocoaPods bug emiting "Cannot find interface declaration" error
+  * Fix CocoaPods bug emitting "Cannot find interface declaration" error
   * Rename `riskCorrelationId` to `riskCorrelationID`
 
 ## 5.16.0 (2022-10-27)
