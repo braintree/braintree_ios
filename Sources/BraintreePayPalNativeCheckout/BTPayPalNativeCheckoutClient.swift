@@ -24,7 +24,7 @@ import PayPalCheckout
     /// `BTPayPalNativeCheckoutAccountNonce`. On failure or user cancelation you will receive an error. If the user cancels
     /// out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
     /// - Parameters:
-    ///   - nativeRequest: Either a BTPayPalNativeCheckoutRequest or a BTPayPalNativeVaultRequest
+    ///   - request: Either a BTPayPalNativeCheckoutRequest or a BTPayPalNativeVaultRequest
     ///   - completion: The completion will be invoked exactly once: when tokenization is complete or an error occurs.
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
