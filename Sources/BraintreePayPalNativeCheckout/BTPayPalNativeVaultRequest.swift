@@ -3,8 +3,12 @@ import BraintreePayPal
 #endif
 
 /// Options for the PayPal Vault flow.
-@objc public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest, BTPayPalNativeRequest {
+@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalRequest, BTPayPalNativeRequest {
 
+    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to false.
+    // next_major_version: subclass BTPayPalVaultRequest once BTPayPal is in Swift.
+    public var offerCredit: Bool = false
+    
     let hermesPath: String = "v1/paypal_hermes/setup_billing_agreement"
     let paymentType: BTPayPalPaymentType = .vault
 
