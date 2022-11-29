@@ -10,10 +10,10 @@ import PayPalCheckout
 
 class BTPayPalNativeTokenizationRequest {
 
-    private let request: BTPayPalRequest
+    private let request: BTPayPalNativeRequest
     private let correlationID: String
 
-    init(request: BTPayPalRequest, correlationID: String) {
+    init(request: BTPayPalNativeRequest, correlationID: String) {
         self.request = request
         self.correlationID = correlationID
     }

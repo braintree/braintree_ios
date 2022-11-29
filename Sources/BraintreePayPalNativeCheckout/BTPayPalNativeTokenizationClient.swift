@@ -17,14 +17,14 @@ class BTPayPalNativeTokenizationClient {
     }
 
     func tokenize(
-        request: BTPayPalRequest,
+        request: BTPayPalNativeRequest,
         returnURL: String,
         completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeError>) -> Void)
     {
 
         let tokenizationRequest = BTPayPalNativeTokenizationRequest(
           request: request,
-          correlationID: request.riskCorrelationId ?? State.correlationIDs.riskCorrelationID ?? ""
+          correlationID: request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID ?? ""
         )
 
         apiClient.post(

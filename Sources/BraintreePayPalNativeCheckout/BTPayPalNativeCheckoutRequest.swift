@@ -19,13 +19,13 @@ import BraintreePayPal
 }
 
 /// Options for the PayPal Checkout and PayPal Checkout with Vault flows.
-@objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalRequest, BTPayPalNativeRequest {
+@objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalNativeRequest {
     
     // MARK: - Public Properties
     
     // next_major_version: obtain the public properties below by subclassing BTPayPalCheckoutRequest once it is converted to Swift.
     
-    /// Optional: Payment intent. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
+    /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
     public var intent: BTPayPalNativeRequestIntent
     
     /// Used for a one-time payment.
@@ -44,11 +44,10 @@ import BraintreePayPal
     /// Optional: If set to true, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
     public var requestBillingAgreement: Bool
 
-    // MARK: - Internal Properties
-    
-    let paymentType: BTPayPalPaymentType = .checkout
+    /// Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set requestBillingAgreement to true on your BTPayPalCheckoutRequest.
+    public var billingAgreementDescription: String?
 
-    let hermesPath: String = "v1/paypal_hermes/create_payment_resource"
+    // MARK: - Internal Properties
 
     var intentAsString: String {
         switch intent {
@@ -68,48 +67,16 @@ import BraintreePayPal
         amount: String,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
-        requestBillingAgreement: Bool = false
+        requestBillingAgreement: Bool = false,
+        billingAgreementDescription: String? = nil
     ) {
         self.intent = intent
         self.amount = amount
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
-    }
-    
-    // MARK: - Internal Methods
+        self.billingAgreementDescription = billingAgreementDescription
 
-    func parameters(with configuration: BTConfiguration) -> [AnyHashable: Any] {
-        let baseParams = getBaseParameters(with: configuration)
-
-        let billingAgreementDictionary: [AnyHashable: Any]? = {
-            if let description = billingAgreementDescription {
-                return ["description": description]
-            }
-            else {
-                return nil
-            }
-        }()
-
-        let paypalParams = [
-            // Values from BTPayPalCheckoutRequest
-            "intent": intentAsString,
-            "amount": amount,
-            "offer_pay_later": offerPayLater,
-            "currency_iso_code": currencyCode ?? configuration.json["paypal"]["currencyIsoCode"].asString(),
-            "request_billing_agreement": requestBillingAgreement ? true : nil,
-            "billing_agreement_details": requestBillingAgreement ? billingAgreementDictionary : nil,
-            "line1": shippingAddressOverride?.streetAddress,
-            "line2": shippingAddressOverride?.extendedAddress,
-            "city": shippingAddressOverride?.locality,
-            "state": shippingAddressOverride?.region,
-            "postal_code": shippingAddressOverride?.postalCode,
-            "country_code": shippingAddressOverride?.countryCodeAlpha2,
-            "recipient_name": shippingAddressOverride?.recipientName,
-        ].compactMapValues { $0 }
-
-        // Combining the base parameters with the parameters defined here - if there is a conflict,
-        // choose the values defined here
-        return baseParams.merging(paypalParams) { _, new in new }
+        super.init(hermesPath: "v1/paypal_hermes/create_payment_resource", paymentType: .checkout)
     }
 }

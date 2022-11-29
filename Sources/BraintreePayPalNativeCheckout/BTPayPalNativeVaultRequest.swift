@@ -3,46 +3,26 @@ import BraintreePayPal
 #endif
 
 /// Options for the PayPal Vault flow.
-@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalRequest, BTPayPalNativeRequest {
+@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalNativeRequest {
+
+    // MARK: - Public Properties
 
     /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to false.
     // next_major_version: subclass BTPayPalVaultRequest once BTPayPal is in Swift.
-    public var offerCredit: Bool = false
-    
-    let hermesPath: String = "v1/paypal_hermes/setup_billing_agreement"
-    let paymentType: BTPayPalPaymentType = .vault
+    public var offerCredit: Bool
 
-    func parameters(with configuration: BTConfiguration) -> [AnyHashable : Any] {
+    /// Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set requestBillingAgreement to true on your BTPayPalCheckoutRequest.
+    public var billingAgreementDescription: String?
 
-        let baseParams = getBaseParameters(with: configuration)
+    // MARK: - Initializer
 
-        // Should only include shipping params if they exist
-        let shippingParams: [AnyHashable: Any?]? = {
-            if let shippingOverride = shippingAddressOverride {
-                return [
-                  "line1": shippingOverride.streetAddress,
-                  "line2": shippingOverride.extendedAddress,
-                  "city": shippingOverride.locality,
-                  "state": shippingOverride.region,
-                  "postal_code": shippingOverride.postalCode,
-                  "country_code": shippingOverride.countryCodeAlpha2,
-                  "recipient_name": shippingOverride.recipientName,
-                ]
-            } else {
-                return nil
-            }
-        }()
+    public init(
+        offerCredit: Bool = false,
+        billingAgreementDescription: String? = nil
+    ) {
+        self.offerCredit = offerCredit
+        self.billingAgreementDescription = billingAgreementDescription
 
-        let params: [AnyHashable : Any?] = [
-          "description": self.billingAgreementDescription,
-          "offer_paypal_credit": offerCredit,
-          "shipping_address": shippingParams,
-        ]
-
-        let prunedParams = params.compactMapValues { $0 }
-
-        // Combining the base parameters with the parameters defined here - if there is a conflict,
-        // choose the values defined here
-        return baseParams.merging(prunedParams) {_, new in new }
+        super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
     }
 }
