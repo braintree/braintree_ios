@@ -2,6 +2,22 @@
 import BraintreePayPal
 #endif
 
+///  Payment intent.
+///
+///  - Note: Must be set to `.sale` for immediate payment, `.authorize` to authorize a payment for capture later, or `.order` to create an order. Defaults to `authorize`.
+///  - SeeAlso: see https://developer.paypal.com/docs/integration/direct/payments/capture-payment/ Capture payments later
+///  - SeeAlso: https://developer.paypal.com/docs/integration/direct/payments/create-process-order/ Create and process orders
+@objc public enum BTPayPalNativeRequestIntent: Int {
+    /// Authorize
+    case authorize
+
+    /// Sale
+    case sale
+
+    /// Order
+    case order
+}
+
 /// Options for the PayPal Checkout and PayPal Checkout with Vault flows.
 @objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalRequest, BTPayPalNativeRequest {
     
@@ -10,7 +26,7 @@ import BraintreePayPal
     // next_major_version: obtain the public properties below by subclassing BTPayPalCheckoutRequest once it is converted to Swift.
     
     /// Optional: Payment intent. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
-    public var intent: BTPayPalRequestIntent
+    public var intent: BTPayPalNativeRequestIntent
     
     /// Used for a one-time payment.
     ///
@@ -48,7 +64,7 @@ import BraintreePayPal
     // MARK: - Initializer
     
     public init(
-        intent: BTPayPalRequestIntent = .authorize,
+        intent: BTPayPalNativeRequestIntent = .authorize,
         amount: String,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
