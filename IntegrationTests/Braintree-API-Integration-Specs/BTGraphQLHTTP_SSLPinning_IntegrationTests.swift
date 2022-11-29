@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-import BraintreeCoreSwift
+import BraintreeCore
 
 class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
 

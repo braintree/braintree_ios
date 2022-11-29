@@ -1,7 +1,7 @@
 #import "BraintreeDataCollector/BraintreeDataCollector-Swift.h"
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
-@import BraintreeCoreSwift;
+@import BraintreeCore;
 
 @interface BraintreeDataCollector_IntegrationTests : XCTestCase
 @property (nonatomic, strong) BTDataCollector *dataCollector;

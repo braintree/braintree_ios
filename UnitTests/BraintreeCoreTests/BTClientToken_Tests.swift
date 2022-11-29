@@ -1,7 +1,7 @@
 import XCTest
 import BraintreeTestShared
 
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTClientToken_Tests: XCTestCase {
 

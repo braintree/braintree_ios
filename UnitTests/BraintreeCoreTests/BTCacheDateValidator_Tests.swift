@@ -1,5 +1,5 @@
 import XCTest
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTCacheDateValidator_Tests: XCTestCase {
     func testTimeToLiveMinutes_defaultsTo5() {

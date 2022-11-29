@@ -1,9 +1,6 @@
-#if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+typedef NS_ENUM(NSInteger, BTCardNetwork);
 
+@class BTBinData;
 @class BTThreeDSecureInfo;
 @class BTAuthenticationInsight;
 

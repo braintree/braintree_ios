@@ -3,7 +3,6 @@ import BraintreeAmericanExpress
 import BraintreeApplePay
 import BraintreeCard
 import BraintreeCore
-import BraintreeCoreSwift
 import BraintreeDataCollector
 import BraintreePaymentFlow
 import BraintreePayPal

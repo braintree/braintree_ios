@@ -1,8 +1,7 @@
 import UIKit
 import XCTest
-import BraintreeCore
 import BraintreePaymentFlow
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 @testable import BraintreeTestShared
 
 class BTLocalPayment_UnitTests: XCTestCase {

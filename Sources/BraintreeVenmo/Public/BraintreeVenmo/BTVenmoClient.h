@@ -1,12 +1,11 @@
 #if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BraintreeCore.h>
 #import <Braintree/BTVenmoRequest.h>
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeVenmo/BTVenmoRequest.h>
 #endif
 
 @class BTVenmoAccountNonce;
+@class BTAPIClient;
 
 NS_ASSUME_NONNULL_BEGIN
 

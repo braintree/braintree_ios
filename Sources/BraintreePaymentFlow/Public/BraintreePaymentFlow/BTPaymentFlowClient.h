@@ -1,11 +1,8 @@
 #import <Foundation/Foundation.h>
 
-#if __has_include(<Braintree/BraintreePaymentFlow.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+@protocol BTViewControllerPresentingDelegate;
 
+@class BTAPIClient;
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
 

@@ -1,12 +1,7 @@
-#if __has_include(<Braintree/BraintreeApplePay.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class BTJSON;
+@class BTBinData;
 
 /**
  Contains information about a tokenized Apple Pay card.

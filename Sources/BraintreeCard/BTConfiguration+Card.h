@@ -1,8 +1,5 @@
-#if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+@import Foundation;
+@import BraintreeCore;
 
 /**
  BTConfiguration category for Card.

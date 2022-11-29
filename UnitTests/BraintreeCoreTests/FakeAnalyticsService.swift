@@ -1,5 +1,5 @@
 import Foundation
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class FakeAnalyticsService: BTAnalyticsService {
     var lastEvent: String = ""

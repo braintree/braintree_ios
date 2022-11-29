@@ -2,10 +2,6 @@
 import BraintreeCore
 #endif
 
-#if canImport(BraintreeCoreSwift)
-import BraintreeCoreSwift
-#endif
-
 #if canImport(BraintreePayPal)
 import BraintreePayPal
 #endif

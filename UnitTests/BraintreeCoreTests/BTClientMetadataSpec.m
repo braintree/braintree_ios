@@ -1,4 +1,4 @@
-@import BraintreeCoreSwift;
+@import BraintreeCore;
 @import Specta;
 @import Expecta;
 

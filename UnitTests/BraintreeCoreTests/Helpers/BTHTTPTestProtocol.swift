@@ -1,5 +1,5 @@
 import Foundation
-import BraintreeCoreSwift
+import BraintreeCore
 
 @objcMembers class BTHTTPTestProtocol: URLProtocol {
 

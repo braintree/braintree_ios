@@ -1,5 +1,5 @@
 import XCTest
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTURLUtils_Tests: XCTestCase {
     // MARK: - queryParametersForURL:

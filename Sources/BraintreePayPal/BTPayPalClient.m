@@ -6,17 +6,17 @@
 #import "BTPayPalCheckoutRequest_Internal.h"
 
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalLineItem.h>
 
 #elif SWIFT_PACKAGE                              // SPM
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 
 #else                                            // Carthage
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #endif
@@ -28,6 +28,7 @@
 /* Use @import for SPM support
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
+@import BraintreeCore;
 @import BraintreeDataCollector;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
@@ -37,10 +38,9 @@
 #import "Braintree-Swift.h"
 
 #else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
 #endif
-
-#import "BraintreeCoreSwiftImports.h"
 
 NSString *const BTPayPalErrorDomain = @"com.braintreepayments.BTPayPalErrorDomain";
 

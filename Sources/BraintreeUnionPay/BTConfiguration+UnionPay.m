@@ -1,4 +1,5 @@
-#import "BraintreeCoreSwiftImports.h"
+#import "Foundation/Foundation.h"
+#import "BraintreeCore/BraintreeCore-Swift.h"
 
 #if __has_include(<Braintree/BraintreeUnionPay.h>)
 #import <Braintree/BTConfiguration+UnionPay.h>

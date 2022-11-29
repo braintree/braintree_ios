@@ -4,20 +4,15 @@
 #if __has_include(<Braintree/BraintreeApplePay.h>) // CocoaPods
 #import <Braintree/BTConfiguration+ApplePay.h>
 #import <Braintree/BTApplePayCardNonce.h>
-#import <Braintree/BraintreeCore.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
-#import <BraintreeCore/BraintreeCore.h>
 
 #else // Carthage
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
-#import <BraintreeCore/BraintreeCore.h>
 #endif
-
-#import "BraintreeCoreSwiftImports.h"
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
 

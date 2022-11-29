@@ -1,8 +1,12 @@
+#import "UIKit/UIKit.h"
+
 #if __has_include(<Braintree/BraintreeVenmo.h>)
 #import <Braintree/BTVenmoClient.h>
 #else
 #import <BraintreeVenmo/BTVenmoClient.h>
 #endif
+
+@class BTAPIClient;
 
 @interface BTVenmoClient ()
 

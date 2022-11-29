@@ -1,5 +1,5 @@
-import BraintreeCore
-@testable import BraintreeCoreSwift
+import Foundation
+@testable import BraintreeCore
 
 @objc public class FakeHTTP: BTHTTP {
     @objc public var GETRequestCount: Int = 0

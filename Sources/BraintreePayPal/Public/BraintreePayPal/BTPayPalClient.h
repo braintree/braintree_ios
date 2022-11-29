@@ -1,9 +1,7 @@
 #if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BraintreeCore.h>
 #import <Braintree/BTPayPalCheckoutRequest.h>
 #import <Braintree/BTPayPalVaultRequest.h>
 #else
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreePayPal/BTPayPalCheckoutRequest.h>
 #import <BraintreePayPal/BTPayPalVaultRequest.h>
 #endif
@@ -11,6 +9,7 @@
 @class BTPayPalAccountNonce;
 @class BTPayPalRequest;
 @class BTPostalAddress;
+@class BTAPIClient;
 
 NS_ASSUME_NONNULL_BEGIN
 

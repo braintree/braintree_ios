@@ -1,5 +1,5 @@
 #import <XCTest/XCTest.h>
-@import BraintreeCoreSwift;
+@import BraintreeCore;
 
 @interface BTHTTP_SSLPinning_IntegrationTests : XCTestCase
 @end

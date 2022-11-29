@@ -1,6 +1,6 @@
 import XCTest
 @testable import BraintreeTestShared
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 final class BTAnalyticsService_Tests: XCTestCase {
 

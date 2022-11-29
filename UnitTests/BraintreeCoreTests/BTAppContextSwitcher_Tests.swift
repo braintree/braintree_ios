@@ -1,5 +1,5 @@
 import XCTest
-@testable import BraintreeCoreSwift
+@testable import BraintreeCore
 
 class BTAppContextSwitcher_Tests: XCTestCase {
     var appSwitch = BTAppContextSwitcher.sharedInstance

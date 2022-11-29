@@ -1,5 +1,6 @@
 #import "BraintreeDemoCardTokenizationViewController.h"
 @import BraintreeCard;
+@import BraintreeCore;
 
 @interface BraintreeDemoCardTokenizationViewController ()
 

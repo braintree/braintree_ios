@@ -4,29 +4,44 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 
-#import "BraintreeCoreSwiftImports.h"
-
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowClient+ThreeDSecure.h>
 #import <Braintree/BTThreeDSecureRequest.h>
-#import <Braintree/BraintreeCore.h>
+#import <Braintree/BraintreeCore-Swift.h>
 #import <Braintree/BTPaymentFlowClient_Internal.h>
-#import <Braintree/Braintree-Version.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
-#import "../BraintreeCore/Braintree-Version.h"
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
-#import <BraintreeCore/Braintree-Version.h>
 
+#endif
+
+// Swift Module Imports
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 @implementation BTPaymentFlowClient (ThreeDSecure)
@@ -170,10 +185,10 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             }
             requestParameters[@"nonce"] = threeDSecureRequest.nonce;
             requestParameters[@"authorizationFingerprint"] = self.apiClient.clientToken.authorizationFingerprint;
-            requestParameters[@"braintreeLibraryVersion"] = [NSString stringWithFormat:@"iOS-%@", BRAINTREE_VERSION];
+            requestParameters[@"braintreeLibraryVersion"] = [NSString stringWithFormat:@"iOS-%@", BTCoreConstants.braintreeSDKVersion];
 
             NSMutableDictionary *clientMetadata = [@{} mutableCopy];
-            clientMetadata[@"sdkVersion"] = [NSString stringWithFormat:@"iOS/%@", BRAINTREE_VERSION];
+            clientMetadata[@"sdkVersion"] = [NSString stringWithFormat:@"iOS/%@", BTCoreConstants.braintreeSDKVersion];
             clientMetadata[@"requestedThreeDSecureVersion"] = @"2";
             requestParameters[@"clientMetadata"] = clientMetadata;
 

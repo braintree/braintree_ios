@@ -1,9 +1,4 @@
-#if __has_include(<Braintree/BraintreeApplePay.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <PassKit/PassKit.h>
 
 /**
