@@ -53,7 +53,41 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
 
     // MARK: - Unsupported requests
 
-    // TODO: look into implementation
+    func testGETRequests_areUnsupported() {
+        do {
+            try BTExceptionCatcher.catchException {
+                self.http?.get("") { _, _, _ in
+                    // no-op
+                }
+            }
+        } catch let error as NSError {
+            XCTAssertEqual(error.userInfo["ExceptionReason"] as! String, "GET is unsupported")
+        }
+    }
+
+    func testPUTRequests_areUnsupported() {
+        do {
+            try BTExceptionCatcher.catchException {
+                self.http?.put("") { _, _, _ in
+                    // no-op
+                }
+            }
+        } catch let error as NSError {
+            XCTAssertEqual(error.userInfo["ExceptionReason"] as! String, "PUT is unsupported")
+        }
+    }
+
+    func testDELETERequests_areUnsupported() {
+        do {
+            try BTExceptionCatcher.catchException {
+                self.http?.delete("") { _, _, _ in
+                    // no-op
+                }
+            }
+        } catch let error as NSError {
+            XCTAssertEqual(error.userInfo["ExceptionReason"] as! String, "DELETE is unsupported")
+        }
+    }
 
     // MARK: - POST requests
 
