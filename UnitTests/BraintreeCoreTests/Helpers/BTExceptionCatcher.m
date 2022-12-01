@@ -1,6 +1,7 @@
 #import "BTExceptionCatcher.h"
 
-// TODO: add docs for why this is needed
+// `NSException` is not easily testable in Swift. This is a wrapper around Obj-C try/catch to allow us to test that the error
+// is returned as expected. This solution was pulled from here: https://stackoverflow.com/questions/32758811/catching-nsexception-in-swift/36454808#36454808
 @implementation BTExceptionCatcher
 
 + (BOOL)catchException:(void(^)(void))tryBlock error:(__autoreleasing NSError **)error {

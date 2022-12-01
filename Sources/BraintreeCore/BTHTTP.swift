@@ -2,10 +2,9 @@ import Foundation
 import Security
 
 /// Performs HTTP methods on the Braintree Client API
-// TODO: once BTAPIHTTP + BTGraphQLHTTP are converted this can be internal + more Swift-y
-@objcMembers public class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
-// TODO: - Mark interval vs private properties accordingly
-    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
+
+    typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     enum ClientAuthorization: Equatable {
         case authorizationFingerprint(String), tokenizationKey(String)
@@ -14,11 +13,10 @@ import Security
     // MARK: - Public Properties
     
     /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
-    public let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
+    let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
 
-    // TODO: Make internal with Swift test?
     /// Session exposed for testing
-    public lazy var session: URLSession = {
+    lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders
         
@@ -29,12 +27,10 @@ import Security
         return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
     }()
 
-    // TODO: Make internal with Swift test?
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
-    public var dispatchQueue: DispatchQueue = DispatchQueue.main
+    var dispatchQueue: DispatchQueue = DispatchQueue.main
 
-    // TODO: Make internal after BTAnalyticsService is converted to Swift
-    public let baseURL: URL
+    let baseURL: URL
 
     // MARK: - Internal Properties
     

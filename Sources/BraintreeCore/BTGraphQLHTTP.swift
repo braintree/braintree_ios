@@ -1,7 +1,6 @@
 import Foundation
 
-// TODO: Make internal once rest of core is in Swift
-@objcMembers public class BTGraphQLHTTP: BTHTTP {
+class BTGraphQLHTTP: BTHTTP {
 
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 

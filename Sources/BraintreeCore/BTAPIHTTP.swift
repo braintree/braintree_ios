@@ -1,7 +1,6 @@
 import Foundation
 
-// TODO: Make internal once rest of core is in Swift
-@objcMembers public class BTAPIHTTP: BTHTTP {
+class BTAPIHTTP: BTHTTP {
 
     let accessToken: String
 
