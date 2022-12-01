@@ -9,11 +9,17 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     enum ClientAuthorization: Equatable {
         case authorizationFingerprint(String), tokenizationKey(String)
     }
-    
-    // MARK: - Public Properties
-    
+
+    // MARK: - Internal Properties
+
     /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
+
+    /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
+    var dispatchQueue: DispatchQueue = DispatchQueue.main
+    let baseURL: URL
+    let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
+    var clientAuthorization: ClientAuthorization?
 
     /// Session exposed for testing
     lazy var session: URLSession = {
@@ -26,16 +32,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         
         return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
     }()
-
-    /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
-    var dispatchQueue: DispatchQueue = DispatchQueue.main
-
-    let baseURL: URL
-
-    // MARK: - Internal Properties
-    
-    let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
-    var clientAuthorization: ClientAuthorization?
 
     var defaultHeaders: [String: String] {
         [
@@ -57,20 +53,17 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         "\(Locale.current.languageCode ?? "en")-\(Locale.current.regionCode ?? "US")"
     }
     
-    // MARK: - Internal Initializer
+    // MARK: - Internal Initializers
     
     init(url: URL) {
         self.baseURL = url
     }
 
-    // MARK: - Public Initializers
-
     /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
     /// - Parameters:
     ///   - url: The base URL for the Braintree Client API
     ///   - authorizationFingerprint: The authorization fingerprint HMAC from a client token
-    @objc(initWithBaseURL:authorizationFingerprint:)
-    public init(url: URL, authorizationFingerprint: String) {
+    init(url: URL, authorizationFingerprint: String) {
         self.baseURL = url
         self.clientAuthorization = .authorizationFingerprint(authorizationFingerprint)
     }
@@ -79,16 +72,14 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     /// - Parameters:
     ///   - url: The base URL for the Braintree Client API
     ///   - tokenizationKey: The authorization fingerprint HMAC from a client token
-    @objc(initWithBaseURL:tokenizationKey:)
-    public init(url: URL, tokenizationKey: String) {
+    init(url: URL, tokenizationKey: String) {
         self.baseURL = url
         self.clientAuthorization = .tokenizationKey(tokenizationKey)
     }
 
     /// Initialize `BTHTTP` with the authorization fingerprint from a client token
     /// - Parameter clientToken: The client token
-    @objc(initWithClientToken:error:)
-    public convenience init(clientToken: BTClientToken) throws {
+    convenience init(clientToken: BTClientToken) throws {
         let url: URL
 
         if let clientApiURL = clientToken.json["clientApiUrl"].asURL() {
@@ -114,13 +105,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - HTTP Methods
 
-    @objc(GET:completion:)
-    public func get(_ path: String, completion: @escaping RequestCompletion) {
+    func get(_ path: String, completion: @escaping RequestCompletion) {
         get(path, parameters: nil, completion: completion)
     }
 
-    @objc(GET:parameters:shouldCache:completion:)
-    public func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool, completion: RequestCompletion?) {
+    func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool, completion: RequestCompletion?) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
@@ -128,38 +117,31 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
     }
 
-    @objc(GET:parameters:completion:)
-    public func get(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
+    func get(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
     }
 
-    @objc(POST:completion:)
-    public func post(_ path: String, completion: @escaping RequestCompletion) {
+    func post(_ path: String, completion: @escaping RequestCompletion) {
         post(path, parameters: nil, completion: completion)
     }
 
-    @objc(POST:parameters:completion:)
-    public func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
 
-    @objc(PUT:completion:)
-    public func put(_ path: String, completion: @escaping RequestCompletion) {
+    func put(_ path: String, completion: @escaping RequestCompletion) {
         put(path, parameters: nil, completion: completion)
     }
 
-    @objc(PUT:parameters:completion:)
-    public func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
     }
 
-    @objc(DELETE:completion:)
-    public func delete(_ path: String, completion: @escaping RequestCompletion) {
+    func delete(_ path: String, completion: @escaping RequestCompletion) {
         delete(path, parameters: nil, completion: completion)
     }
 
-    @objc(DELETE:parameters:completion:)
-    public func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
     }
 
@@ -347,7 +329,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         completion(request, nil)
     }
 
-    public func handleRequestCompletion(
+    func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
         shouldCache: Bool,
@@ -502,7 +484,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - isEqual override
     
-    public override func isEqual(_ object: Any?) -> Bool {
+    override func isEqual(_ object: Any?) -> Bool {
         guard object is BTHTTP,
               let otherObject = object as? BTHTTP else {
             return false
@@ -513,7 +495,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - NSCopying conformance
 
-    public func copy(with zone: NSZone? = nil) -> Any {
+    func copy(with zone: NSZone? = nil) -> Any {
         switch clientAuthorization {
         case .authorizationFingerprint(let fingerprint):
             return BTHTTP(url: baseURL, authorizationFingerprint: fingerprint)
@@ -526,7 +508,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - URLSessionDelegate conformance
 
-    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             let domain: String = challenge.protectionSpace.host
             let serverTrust: SecTrust = challenge.protectionSpace.serverTrust!

@@ -2,7 +2,7 @@ import Foundation
 
 class BTGraphQLHTTP: BTHTTP {
 
-    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+    typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Properties
 
@@ -10,35 +10,35 @@ class BTGraphQLHTTP: BTHTTP {
 
     // MARK: - Overrides
 
-    public override func get(_ path: String, completion: @escaping RequestCompletion) {
+    override func get(_ path: String, completion: @escaping RequestCompletion) {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    public override func get(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
+    override func get(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    public override func post(_ path: String, completion: @escaping RequestCompletion) {
+    override func post(_ path: String, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", parameters: nil, completion: completion)
     }
 
-    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    override func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", parameters: parameters, completion: completion)
     }
 
-    public override func put(_ path: String, completion: @escaping RequestCompletion) {
+    override func put(_ path: String, completion: @escaping RequestCompletion) {
         NSException(name: exceptionName, reason: "PUT is unsupported").raise()
     }
 
-    public override func put(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
+    override func put(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         NSException(name: exceptionName, reason: "PUT is unsupported").raise()
     }
 
-    public override func delete(_ path: String, completion: @escaping RequestCompletion) {
+    override func delete(_ path: String, completion: @escaping RequestCompletion) {
         NSException(name: exceptionName, reason: "DELETE is unsupported").raise()
     }
 
-    public override func delete(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
+    override func delete(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
         NSException(name: exceptionName, reason: "DELETE is unsupported").raise()
     }
 
@@ -113,8 +113,7 @@ class BTGraphQLHTTP: BTHTTP {
         }
     }
 
-    @objc(handleRequestCompletion:response:error:completionBlock:)
-    public func handleRequestCompletion(
+    func handleRequestCompletion(
         data: Data?,
         response: URLResponse?,
         error: Error?,
