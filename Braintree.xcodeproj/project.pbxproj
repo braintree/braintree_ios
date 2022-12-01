@@ -157,7 +157,6 @@
 		A77AA2B61B61936A00217B73 /* BTVenmoClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A77AA2B51B61936A00217B73 /* BTVenmoClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A78BF95D1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A78BF95C1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m */; };
 		A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */; };
-		A7ABD67C1B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD6611B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m */; };
 		A7ABD68E1B702FF000A1223C /* BraintreeCard_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */; };
 		A7B1C1471B66D94600ED063C /* BTConfiguration+Venmo.h in Headers */ = {isa = PBXBuildFile; fileRef = A7B1C1451B66D94600ED063C /* BTConfiguration+Venmo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7B1C1481B66D94600ED063C /* BTConfiguration+Venmo.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B1C1461B66D94600ED063C /* BTConfiguration+Venmo.m */; };
@@ -289,6 +288,7 @@
 		BE10B8D6287DC1FF00F7B3B2 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BE139DB928EF12CF0044CD8C /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */; };
 		BE178DA328B52740005B9C09 /* BTClientToken_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */; };
+		BE1ACEF72938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */; };
 		BE24C66728D906090067B11A /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE24C66528D906090067B11A /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE24C66E28E49A730067B11A /* BTAPIClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C66D28E49A730067B11A /* BTAPIClientError.swift */; };
 		BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */; };
@@ -973,7 +973,6 @@
 		A7ABD6531B702FD800A1223C /* IntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7ABD6571B702FD800A1223C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTAPIClient_IntegrationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		A7ABD6611B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTP_SSLPinning_IntegrationTests.m; sourceTree = "<group>"; };
 		A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BraintreeCard_IntegrationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A7B1C1451B66D94600ED063C /* BTConfiguration+Venmo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+Venmo.h"; sourceTree = "<group>"; };
 		A7B1C1461B66D94600ED063C /* BTConfiguration+Venmo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTConfiguration+Venmo.m"; sourceTree = "<group>"; };
@@ -1065,6 +1064,7 @@
 		BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMandateResult.swift; sourceTree = "<group>"; };
 		BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI.swift; sourceTree = "<group>"; };
 		BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
+		BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTP_SSLPinning_IntegrationTests.swift; sourceTree = "<group>"; };
 		BE24C66528D906090067B11A /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE24C66928E335C30067B11A /* IntegrationTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IntegrationTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		BE24C66D28E49A730067B11A /* BTAPIClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientError.swift; sourceTree = "<group>"; };
@@ -1841,7 +1841,7 @@
 			children = (
 				A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */,
 				80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */,
-				A7ABD6611B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m */,
+				BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */,
 			);
 			path = "Braintree-API-Integration-Specs";
 			sourceTree = "<group>";
@@ -3427,8 +3427,8 @@
 				A71559421B729297007DE6F0 /* BTNonceValidationHelper.m in Sources */,
 				A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */,
 				A78BF95D1CC6F32100DED8AA /* BraintreeUnionPay_IntegrationTests.m in Sources */,
+				BE1ACEF72938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift in Sources */,
 				A71559481B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m in Sources */,
-				A7ABD67C1B702FF000A1223C /* BTHTTP_SSLPinning_IntegrationTests.m in Sources */,
 				A76D7C341BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
