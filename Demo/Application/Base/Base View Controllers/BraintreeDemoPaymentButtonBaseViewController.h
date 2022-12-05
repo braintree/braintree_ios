@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #import "BraintreeDemoBaseViewController.h"
 @class BTAPIClient;
 
