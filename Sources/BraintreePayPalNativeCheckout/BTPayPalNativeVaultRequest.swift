@@ -3,42 +3,32 @@ import BraintreePayPal
 #endif
 
 /// Options for the PayPal Vault flow.
-@objc public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest, BTPayPalNativeRequest {
+@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalNativeRequest {
 
-    let hermesPath: String = "v1/paypal_hermes/setup_billing_agreement"
-    let paymentType: BTPayPalPaymentType = .vault
+    // MARK: - Public Properties
+    // NEXT_MAJOR_VERSION: subclass BTPayPalVaultRequest once BraintreePayPal is in Swift as this contains duplicate logic of BTPayPalRequest.
+    // We should remove this duplication and subclass directly once BraintreePayPal is converted to Swift.
 
-    func parameters(with configuration: BTConfiguration) -> [AnyHashable : Any] {
+    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    public var offerCredit: Bool
 
-        let baseParams = getBaseParameters(with: configuration)
+    /// Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
+    public var billingAgreementDescription: String?
 
-        // Should only include shipping params if they exist
-        let shippingParams: [AnyHashable: Any?]? = {
-            if let shippingOverride = shippingAddressOverride {
-                return [
-                  "line1": shippingOverride.streetAddress,
-                  "line2": shippingOverride.extendedAddress,
-                  "city": shippingOverride.locality,
-                  "state": shippingOverride.region,
-                  "postal_code": shippingOverride.postalCode,
-                  "country_code": shippingOverride.countryCodeAlpha2,
-                  "recipient_name": shippingOverride.recipientName,
-                ]
-            } else {
-                return nil
-            }
-        }()
+    // MARK: - Initializer
 
-        let params: [AnyHashable : Any?] = [
-          "description": self.billingAgreementDescription,
-          "offer_paypal_credit": offerCredit,
-          "shipping_address": shippingParams,
-        ]
+    /// Initializes a PayPal Native Vault request
+    /// - Parameters:
+    ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
+    ///   `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
+    public init(
+        offerCredit: Bool = false,
+        billingAgreementDescription: String? = nil
+    ) {
+        self.offerCredit = offerCredit
+        self.billingAgreementDescription = billingAgreementDescription
 
-        let prunedParams = params.compactMapValues { $0 }
-
-        // Combining the base parameters with the parameters defined here - if there is a conflict,
-        // choose the values defined here
-        return baseParams.merging(prunedParams) {_, new in new }
+        super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
     }
 }
