@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
-  * Fix CocoaPods bug emitting "Cannot find interface declaration" error
+  * Fix CocoaPods bug emitting "Cannot find interface declaration" error ([CocoaPods issue #11672](https://github.com/CocoaPods/CocoaPods/issues/11672))
   * Rename `riskCorrelationId` to `riskCorrelationID`
   * Rename `nativeRequest` to `request` internally in `tokenizePayPalAccount`
 
