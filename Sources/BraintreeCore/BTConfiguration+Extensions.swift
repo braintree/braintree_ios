@@ -1,12 +1,21 @@
 import Foundation
 import PassKit
 
+// NEXT_MAJOR_VERSION: - v7 these extensions should be moved into their respective modules
+// as the modules are converted to Swift.
+// Also, determine whether they should remain public or become internal
+
+/// Extends `BTConfiguration` to access module-specfic merchant account properties.
 @objc public extension BTConfiguration {
+
+    // MARK: - BTConfiguration+GraphQL
 
     /// Indicates whether GraphQL is enabled for the merchant account.
     var isGraphQLEnabled: Bool {
         (json?["graphQL"]["url"].asString()?.count ?? 0) > 0
     }
+
+    // MARK: - BTConfiguration+Venmo
 
     /// Indicates whether Venmo is enabled for the merchant account.
     var isVenmoEnabled: Bool {
@@ -28,15 +37,21 @@ import PassKit
         json?["payWithVenmo"]["environment"].asString()
     }
 
+    // MARK: - BTConfiguration+UnionPay
+
     /// Indicates whether UnionPay is enabled for the merchant account.
     var isUnionPayEnabled: Bool {
         json?["unionPay"]["enabled"].isTrue ?? false
     }
 
+    // MARK: - BTConfiguration+ThreeDSecure
+
     /// JWT for use with initializaing Cardinal 3DS framework
     var cardinalAuthenticationJWT: String? {
         json?["threeDSecure"]["cardinalAuthenticationJWT"].asString()
     }
+
+    // MARK: - BTConfiguration+PayPal
 
     /// Indicates whether PayPal is enabled for the merchant account.
     var isPayPalEnabled: Bool {
@@ -48,11 +63,15 @@ import PassKit
         json?["paypal"]["billingAgreementsEnabled"].isTrue ?? false
     }
 
+    // MARK: - BTConfiguration+PaymentFlow
+
     /// Indicates whether Local Payments are enabled for the merchant account.
     var isLocalPaymentEnabled: Bool {
         // Local Payments are enabled when PayPal is enabled
         json?["paypalEnabled"].isTrue ?? false
     }
+
+    // MARK: - BTConfiguration+ApplePay
 
     var isApplePayEnabled: Bool {
         guard let applePayConfiguration: BTJSON = json?["applePay"] else { return false }
