@@ -22,17 +22,17 @@ import BraintreePayPal
 @objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalNativeRequest {
     
     // MARK: - Public Properties
-    // next_major_version: subclass BTPayPalCheckoutRequest once BraintreePayPal is in Swift.
+    // NEXT_MAJOR_VERSION: subclass BTPayPalCheckoutRequest once BraintreePayPal is in Swift.
 
-    /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
-    public var intent: BTPayPalNativeRequestIntent
-    
     /// Used for a one-time payment.
     ///
     /// Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
     public let amount: String
-    
-    /// Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to false. Only available with PayPal Checkout.
+
+    /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
+    public var intent: BTPayPalNativeRequestIntent
+
+    /// Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     public var offerPayLater: Bool
     
     /// Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
@@ -40,10 +40,10 @@ import BraintreePayPal
     /// - Note: See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     public var currencyCode: String?
     
-    /// Optional: If set to true, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
+    /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
     public var requestBillingAgreement: Bool
 
-    /// Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set requestBillingAgreement to true on your BTPayPalCheckoutRequest.
+    /// Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set `requestBillingAgreement` to `true` on your `BTPayPalNativeVaultRequest`.
     public var billingAgreementDescription: String?
 
     // MARK: - Internal Properties
@@ -60,17 +60,28 @@ import BraintreePayPal
     }
     
     // MARK: - Initializer
-    
+
+    /// Initializes a PayPal Native Checkout request
+    /// - Parameters:
+    ///   - amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.'
+    ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
+    ///   and is limited to 7 digits before the decimal point.
+    ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
+    ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
+    ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
+    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
+    ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also
+    ///   set `requestBillingAgreement` to `true` on your `BTPayPalNativeVaultRequest`.
     public init(
-        intent: BTPayPalNativeRequestIntent = .authorize,
         amount: String,
+        intent: BTPayPalNativeRequestIntent = .authorize,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         billingAgreementDescription: String? = nil
     ) {
-        self.intent = intent
         self.amount = amount
+        self.intent = intent
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
