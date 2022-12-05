@@ -39,6 +39,7 @@
     * All errors are now prefixed with `BTVenmoError` instead of `BTVenmoDriverError`
     * Remove `.unspecified` case from `BTVenmoPaymentMethodUsage` enum
     * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
+    * Move category extension of `BTConfiguration` into `BraintreeCore`
   * BraintreePayPal
     * Renamed `BTPayPalDriver` to `BTPayPalClient`
     * Renamed `BTPayPalDriverErrorDomain` to `BTPayPalErrorDomain`
@@ -46,6 +47,7 @@
     * All errors are now prefixed with `BTPayPalError` instead of `BTPayPalDriverError`
     * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalClient.tokenizePayPalAccount`
     * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`
+    * Move category extension of `BTConfiguration` into `BraintreeCore`
   * BraintreeAmericanExpress
     * Remove `BTAmericanExpressErrorDomain` global constant
     * Remove `BTAmericanExpressErrorType`
@@ -57,12 +59,19 @@
     * All errors are now prefixed with `BTPaymentFlowError` instead of `BTPaymentFlowDriverError`
     * Renamed `BTPaymentFlowDriverDelegate` protocol to `BTPaymentFlowClientDelegate`
     * `handleRequest` in delegate protocol now takes in `paymentClientDelegate` parameter instead of `paymentDriverDelegate`
+    * Move category extension of `BTConfiguration` into `BraintreeCore`
   * PayPalDataCollector
     * Removed `PayPalDataCollector` module in favor of single `BraintreeDataCollector`
   * BraintreeDataCollector
     * Kount is no longer supported through the SDK
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
+  * BraintreeApplePay
+      * Move category extension of `BTConfiguration` into `BraintreeCore`
+  * BraintreeUnionPay
+      * Move category extension of `BTConfiguration` into `BraintreeCore`
+  * BraintreeThreeDSecure
+      * Move category extension of `BTConfiguration` into `BraintreeCore`
 
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
