@@ -136,9 +136,9 @@ import BraintreePayPal
             guard let request = request as? BTPayPalNativeVaultRequest else { return [:] }
 
             // Should only include shipping params if they exist
-            var shippingParams: [AnyHashable: Any?]? = [:]
+            var shippingAddressParameters: [String: Any?]? = [:]
             if shippingAddressOverride != nil {
-                shippingParams = [
+                shippingAddressParameters = [
                     "line1": request.shippingAddressOverride?.streetAddress,
                     "line2": request.shippingAddressOverride?.extendedAddress,
                     "city": request.shippingAddressOverride?.locality,
@@ -148,15 +148,20 @@ import BraintreePayPal
                     "recipient_name": request.shippingAddressOverride?.recipientName,
                 ]
             } else {
-                shippingParams = nil
+                shippingAddressParameters = nil
             }
 
             // Values from BTPayPalNativeVaultRequest
-            let vaultParameters = [
+            var vaultParameters: [String: Any] = [
                 "description": request.billingAgreementDescription ?? "",
-                "offer_paypal_credit": request.offerCredit,
-                "shipping_address": shippingParams ?? [:],
-            ].compactMapValues { $0 }
+                "offer_paypal_credit": request.offerCredit
+            ]
+
+            if shippingAddressParameters != nil {
+                vaultParameters["shipping_address"] = shippingAddressParameters
+            }
+
+            vaultParameters = vaultParameters.compactMapValues { $0 }
 
             return baseParameters.merging(vaultParameters) { $1 }
         @unknown default:
