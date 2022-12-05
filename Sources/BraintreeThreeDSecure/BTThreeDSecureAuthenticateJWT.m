@@ -4,12 +4,15 @@
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BraintreeCard.h>
+#import <Braintree/BraintreeCore-Swift.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BraintreeCard.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 
 #else // Carthage
 #import <BraintreeCard/BraintreeCard.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 
 #endif
 

@@ -288,6 +288,7 @@
 		BE32ACBA29076DA000A61FED /* BTPreferredPaymentMethodResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACB929076DA000A61FED /* BTPreferredPaymentMethodResult.swift */; };
 		BE32ACBC2907744400A61FED /* BTCardNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACBB2907744400A61FED /* BTCardNetwork.swift */; };
 		BE32ACBE2907753D00A61FED /* BTViewControllerPresentingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACBD2907753D00A61FED /* BTViewControllerPresentingDelegate.swift */; };
+		BE38CA3B28908A07008B58E3 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BE4F788527ECE2BD00FF4C0E /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		BE54C0332912B68E009C6CEE /* BTHTTP_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54C0322912B68E009C6CEE /* BTHTTP_Tests.swift */; };
 		BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54C0342912B6BC009C6CEE /* BTHTTPTestProtocol.swift */; };
@@ -4685,6 +4686,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4741,6 +4743,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;

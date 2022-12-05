@@ -15,6 +15,7 @@
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #endif
 
+// Swift Module Imports
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 
