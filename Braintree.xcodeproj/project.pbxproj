@@ -288,7 +288,6 @@
 		BE32ACBA29076DA000A61FED /* BTPreferredPaymentMethodResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACB929076DA000A61FED /* BTPreferredPaymentMethodResult.swift */; };
 		BE32ACBC2907744400A61FED /* BTCardNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACBB2907744400A61FED /* BTCardNetwork.swift */; };
 		BE32ACBE2907753D00A61FED /* BTViewControllerPresentingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACBD2907753D00A61FED /* BTViewControllerPresentingDelegate.swift */; };
-		BE38CA3B28908A07008B58E3 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BE4F788527ECE2BD00FF4C0E /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		BE54C0332912B68E009C6CEE /* BTHTTP_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54C0322912B68E009C6CEE /* BTHTTP_Tests.swift */; };
 		BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54C0342912B6BC009C6CEE /* BTHTTPTestProtocol.swift */; };
@@ -863,6 +862,7 @@
 		574891E8286F7D300020DA36 /* BTClientMetadataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientMetadataSource.swift; sourceTree = "<group>"; };
 		574891EA286F7E4F0020DA36 /* BTClientMetadataIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientMetadataIntegration.swift; sourceTree = "<group>"; };
 		574891EC286F7ECA0020DA36 /* BTClientMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientMetadata.swift; sourceTree = "<group>"; };
+		577BC353293EA1D700BA2304 /* BraintreeUnionPayTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeUnionPayTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		579DAEC4286E04A700FCE87F /* BTAppContextSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAppContextSwitcher.swift; sourceTree = "<group>"; };
 		579DAEC6286E064500FCE87F /* BTAppContextSwitchClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAppContextSwitchClient.swift; sourceTree = "<group>"; };
 		57A6059C286F9251007E83DA /* BTMutableClientMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMutableClientMetadata.swift; sourceTree = "<group>"; };
@@ -2012,6 +2012,7 @@
 		A9E5C1B324FD5DD500EE691F /* BraintreeUnionPayTests */ = {
 			isa = PBXGroup;
 			children = (
+				577BC353293EA1D700BA2304 /* BraintreeUnionPayTests-Bridging-Header.h */,
 				41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */,
 				A95229CC24FD9F9D006F7D25 /* BTConfiguration+UnionPay_Tests.swift */,
 				A9E5C1B624FD5DD500EE691F /* Info.plist */,

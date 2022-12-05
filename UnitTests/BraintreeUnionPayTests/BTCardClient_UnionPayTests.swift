@@ -1,6 +1,7 @@
 import XCTest
-import BraintreeUnionPay
+@testable import BraintreeUnionPay
 @testable import BraintreeTestShared
+@testable import BraintreeCore
 
 class BTCardClient_UnionPayTests: XCTestCase {
     
