@@ -6,7 +6,8 @@ import BraintreePayPal
 @objcMembers public class BTPayPalNativeVaultRequest: BTPayPalNativeRequest {
 
     // MARK: - Public Properties
-    // NEXT_MAJOR_VERSION: subclass BTPayPalVaultRequest once BraintreePayPal is in Swift.
+    // NEXT_MAJOR_VERSION: subclass BTPayPalVaultRequest once BraintreePayPal is in Swift as this contains duplicate logic of BTPayPalRequest.
+    // We should remove this duplication and subclass directly once BraintreePayPal is converted to Swift.
 
     /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     public var offerCredit: Bool

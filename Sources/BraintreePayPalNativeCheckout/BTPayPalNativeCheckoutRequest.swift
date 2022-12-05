@@ -22,7 +22,8 @@ import BraintreePayPal
 @objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalNativeRequest {
     
     // MARK: - Public Properties
-    // NEXT_MAJOR_VERSION: subclass BTPayPalCheckoutRequest once BraintreePayPal is in Swift.
+    // NEXT_MAJOR_VERSION: subclass BTPayPalCheckoutRequest once BraintreePayPal is in Swift as this contains duplicate logic of BTPayPalRequest.
+    // We should remove this duplication and subclass directly once BraintreePayPal is converted to Swift.
 
     /// Used for a one-time payment.
     ///
