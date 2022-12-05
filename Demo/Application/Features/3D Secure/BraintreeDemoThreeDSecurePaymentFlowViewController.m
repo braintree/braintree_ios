@@ -1,6 +1,7 @@
 #import "BraintreeDemoThreeDSecurePaymentFlowViewController.h"
 #import "Demo-Swift.h"
 @import BraintreeThreeDSecure;
+@import BraintreeCore;
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 

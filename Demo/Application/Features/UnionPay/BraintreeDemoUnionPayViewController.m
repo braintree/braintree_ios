@@ -1,6 +1,7 @@
 #import "BraintreeDemoUnionPayViewController.h"
 #import "Demo-Swift.h"
 @import BraintreeUnionPay;
+@import BraintreeCore;
 
 @interface BraintreeDemoUnionPayViewController () <UITextFieldDelegate>
 
