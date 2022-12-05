@@ -64,6 +64,20 @@
     * Combine `PayPalDataCollector` and `BraintreeDataCollector` into one module to create single entrypoint for data collection
     * Merchants should use the new `collectDeviceData` function for data collection which will now return a completion with either device data or an error
 
+## unreleased
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix CocoaPods bug emitting "Cannot find interface declaration" error ([CocoaPods issue #11672](https://github.com/CocoaPods/CocoaPods/issues/11672))
+  * Rename `riskCorrelationId` to `riskCorrelationID`
+  * Rename `nativeRequest` to `request` internally in `tokenizePayPalAccount`
+  * `tokenizePayPalAccount` now takes in a `request` of type `BTPayPalNativeRequest` instead of a `nativeRequest` of type `BTPayPalRequest`
+
+## 5.16.0 (2022-10-27)
+* BraintreePayPalDataCollector
+  * Update PPRiskMagnes with a version of 5.4.0 with `ENABLE_BITCODE` removed
+    * _The App Store no longer accepts bitcode submissions from Xcode 14_
+    * This version of PPRiskMagnes drops support for Xcode 12 and requires Swift 5.5+
+      * [As of April 25, 2022 Apple requires all apps to be submitted with Xcode 13+](https://developer.apple.com/news/upcoming-requirements/?id=04252022a)
+
 ## 5.15.0 (2022-10-26)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix `merchant_account_id` and `correlation_id` keys to be nested at the top level of the internal create order request

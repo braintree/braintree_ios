@@ -52,7 +52,6 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         sender.isEnabled = false
 
         let request = BTPayPalNativeVaultRequest()
-        request.activeWindow = self.view.window
 
         payPalNativeCheckoutClient.tokenizePayPalAccount(with: request) { nonce, error in
             sender.isEnabled = true
