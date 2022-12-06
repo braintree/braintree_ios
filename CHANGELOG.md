@@ -73,7 +73,7 @@
   * BraintreeThreeDSecure
       * Move category extension of `BTConfiguration` into `BraintreeCore`
 
-## unreleased
+## 5.17.0 (2022-12-05)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix CocoaPods bug emitting "Cannot find interface declaration" error ([CocoaPods issue #11672](https://github.com/CocoaPods/CocoaPods/issues/11672))
   * Rename `riskCorrelationId` to `riskCorrelationID`

@@ -46,6 +46,50 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         """
     }
     
+    func testCreateMandate_properlyFormatsPOSTURL() {
+        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/sepa_debit")
+    }
+
+    func testCreateMandate_properlyFormatsPOSTBody() {
+        let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
+        billingAddress.streetAddress = "fake-street-addres"
+        billingAddress.extendedAddress = "fake-extended-address"
+        billingAddress.locality = "fake-locality"
+        billingAddress.region = "fake-region"
+        billingAddress.postalCode = "fake-postal-code"
+        billingAddress.countryCodeAlpha2 = "fake-country-code"
+        sepaDirectDebitRequest.accountHolderName = "fake-name"
+        sepaDirectDebitRequest.iban = "fake-iban"
+        sepaDirectDebitRequest.customerID = "fake-customer-id"
+        sepaDirectDebitRequest.billingAddress = billingAddress
+        sepaDirectDebitRequest.merchantAccountID = "fake-account-id"
+        
+        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
+        
+        let lastPOSTParameters = mockAPIClient.lastPOSTParameters!
+        XCTAssertEqual(lastPOSTParameters["merchant_account_id"] as! String, "fake-account-id")
+        XCTAssertEqual(lastPOSTParameters["cancel_url"] as! String, "sdk.ios.braintree://sepa/cancel")
+        XCTAssertEqual(lastPOSTParameters["return_url"] as! String, "sdk.ios.braintree://sepa/success")
+        
+        let sepaDebit = lastPOSTParameters["sepa_debit"] as! [String: Any]
+        XCTAssertEqual(sepaDebit["merchant_or_partner_customer_id"] as! String, "fake-customer-id")
+        XCTAssertEqual(sepaDebit["mandate_type"] as! String, "ONE_OFF")
+        XCTAssertEqual(sepaDebit["account_holder_name"] as! String, "fake-name")
+        XCTAssertEqual(sepaDebit["iban"] as! String, "fake-iban")
+        
+        let billingAddress = sepaDebit["billing_address"] as! [String: String]
+        XCTAssertEqual(billingAddress["address_line_1"], "fake-street-addres")
+        XCTAssertEqual(billingAddress["address_line_2"], "fake-extended-address")
+        XCTAssertEqual(billingAddress["admin_area_1"], "fake-locality")
+        XCTAssertEqual(billingAddress["admin_area_2"], "fake-region")
+        XCTAssertEqual(billingAddress["postal_code"], "fake-postal-code")
+        XCTAssertEqual(billingAddress["country_code"], "fake-country-code")
+    }
+    
     func testCreateMandate_onSuccessfulHttpResponse_returnsCreateMandateResult() {
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         mockAPIClient.cannedResponseBody = BTJSON(
