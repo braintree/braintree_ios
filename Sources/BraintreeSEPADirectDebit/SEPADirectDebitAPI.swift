@@ -34,8 +34,8 @@ class SEPADirectDebitAPI {
                 ]
             ],
             "merchant_account_id": sepaDirectDebitRequest.merchantAccountID ?? "",
-            "cancel_url": sepaDirectDebitRequest.cancelURL,
-            "return_url": sepaDirectDebitRequest.returnURL
+            "cancel_url": BTSEPADirectDebitConstants.callbackURLScheme + "://sepa/cancel",
+            "return_url": BTSEPADirectDebitConstants.callbackURLScheme + "://sepa/success"
         ]
 
         apiClient.post("v1/sepa_debit", parameters: json) { body, response, error in

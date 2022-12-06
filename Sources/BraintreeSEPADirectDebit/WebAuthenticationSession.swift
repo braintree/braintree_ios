@@ -12,7 +12,7 @@ class WebAuthenticationSession: NSObject {
     ) {
         self.authenticationSession = ASWebAuthenticationSession(
             url: url,
-            callbackURLScheme: Bundle.main.bundleIdentifier,
+            callbackURLScheme: BTSEPADirectDebitConstants.callbackURLScheme,
             completionHandler: completion
         )
 
