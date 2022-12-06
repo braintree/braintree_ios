@@ -75,11 +75,12 @@ import PassKit
 
     var isApplePayEnabled: Bool {
         guard let applePayConfiguration: BTJSON = json?["applePay"] else { return false }
-        return applePayConfiguration["status"].isString && applePayConfiguration["status"].asString() == "off"
+        return applePayConfiguration["status"].isString && applePayConfiguration["status"].asString() != "off"
     }
 
     var canMakeApplePayPayments: Bool {
-        PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: applePaySupportedNetworks)
+        guard let applePaySupportedNetworks else { return false }
+        return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: applePaySupportedNetworks)
     }
 
     var applePayCountryCode: String? {
@@ -94,7 +95,7 @@ import PassKit
         json?["applePay"]["merchantIdentifier"].asString()
     }
 
-    var applePaySupportedNetworks: [PKPaymentNetwork] {
+    var applePaySupportedNetworks: [PKPaymentNetwork]? {
         let gatewaySupportedNetworks: [String]? = json?["applePay"]["supportedNetworks"].asStringArray()
         var supportedNetworks: [PKPaymentNetwork] = []
 
