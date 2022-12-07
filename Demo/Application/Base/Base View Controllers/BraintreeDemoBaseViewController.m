@@ -18,4 +18,13 @@
     return [super initWithNibName:nil bundle:nil];
 }
 
+- (void) viewDidLoad {
+    UITapGestureRecognizer *tapToDismissKeyboard = [[UITapGestureRecognizer new] initWithTarget: self action: @selector(dismissKeyboard)];
+    [self.view addGestureRecognizer: tapToDismissKeyboard];
+}
+
+-(void) dismissKeyboard {
+    [self.view endEditing: YES];
+}
+
 @end
