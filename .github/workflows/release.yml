@@ -19,7 +19,7 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_14.0.app
 
       - name: Check for unreleased section in changelog
-        run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
+        run: grep "## unreleased (next-major-version)" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
 
       - name: Set git username and email
         run: |
