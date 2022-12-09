@@ -24,10 +24,6 @@ import BraintreeCore
 
     /// Optional. A non-default merchant account to use for tokenization.
     public var merchantAccountID: String?
-    
-    var cancelURL: String
-    
-    var returnURL: String
 
     /// Initialize a new SEPA Direct Debit request.
     /// - Parameters:
@@ -52,10 +48,5 @@ import BraintreeCore
         self.mandateType = mandateType
         self.billingAddress = billingAddress
         self.merchantAccountID = merchantAccountID
-        
-        let bundleID = Bundle.main.bundleIdentifier ?? ""
-
-        self.cancelURL = bundleID.appending("://sepa/cancel")
-        self.returnURL = bundleID.appending("://sepa/success")
     }
 }

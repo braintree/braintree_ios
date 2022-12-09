@@ -5,6 +5,14 @@
 * Deprecate the `BraintreeUnionPay` module and containing classes
   * UnionPay cards can now be processed as regular cards (through the `BraintreeCard` module) due to their partnership with Discover
 
+## 5.17.0 (2022-12-05)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix CocoaPods bug emitting "Cannot find interface declaration" error ([CocoaPods issue #11672](https://github.com/CocoaPods/CocoaPods/issues/11672))
+  * Rename `riskCorrelationId` to `riskCorrelationID`
+  * Rename `nativeRequest` to `request` internally in `tokenizePayPalAccount`
+  * `tokenizePayPalAccount` now takes in a `request` of type `BTPayPalNativeRequest` instead of a `nativeRequest` of type `BTPayPalRequest`
+
+
 ## 5.16.0 (2022-10-27)
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes with a version of 5.4.0 with `ENABLE_BITCODE` removed

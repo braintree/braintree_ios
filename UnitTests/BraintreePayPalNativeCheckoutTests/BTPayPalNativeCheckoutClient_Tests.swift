@@ -12,16 +12,6 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         apiClient = MockAPIClient(authorization: "development_client_key")
     }
 
-    func testInvalidRequest_ReturnsCorrectError() {
-        let checkoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
-
-        checkoutClient.tokenizePayPalAccount(with: BTPayPalRequest()) { nonce, error in
-            XCTAssertNil(nonce)
-            XCTAssertEqual(error as? BTPayPalNativeError, .invalidRequest)
-            XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.tokenize.invalid-request.failed")
-        }
-    }
-
     func testInvalidConfiguration_ReturnsCorrectError() {
         let environment = "sandbox"
         apiClient.cannedConfigurationResponseBody = BTJSON(value: [
