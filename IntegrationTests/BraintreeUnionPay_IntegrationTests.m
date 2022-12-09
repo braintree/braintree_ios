@@ -3,6 +3,8 @@
 #import <BraintreeUnionPay/BraintreeUnionPay.h>
 #import <XCTest/XCTest.h>
 
+@import BraintreeCore;
+
 @interface BraintreeUnionPay_IntegrationTests : XCTestCase
 @property (nonatomic, strong) BTCardClient *cardClient;
 @end

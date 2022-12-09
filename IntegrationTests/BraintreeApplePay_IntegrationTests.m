@@ -3,6 +3,8 @@
 #import <PassKit/PassKit.h>
 #import <XCTest/XCTest.h>
 
+@import BraintreeCore;
+
 @interface BraintreeApplePay_IntegrationTests : XCTestCase
 
 @end

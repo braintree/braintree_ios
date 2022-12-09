@@ -5,19 +5,7 @@
 #import "BTVenmoRequest_Internal.h"
 #import "UIKit/UIKit.h"
 
-// Objective-C Module Imports
-#if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
-#import <Braintree/BTConfiguration+Venmo.h>
-
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeVenmo/BTConfiguration+Venmo.h>
-
-#else // Carthage
-#import <BraintreeVenmo/BTConfiguration+Venmo.h>
-
-#endif
-
-// Swift Module Imports
+// MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 

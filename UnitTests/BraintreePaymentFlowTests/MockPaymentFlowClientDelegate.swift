@@ -1,4 +1,6 @@
 import XCTest
+import BraintreePaymentFlow
+import BraintreeCore
 @testable import BraintreeTestShared
 
 class MockPaymentFlowClientDelegate: BTPaymentFlowClientDelegate {

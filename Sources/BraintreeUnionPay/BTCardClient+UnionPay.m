@@ -1,30 +1,25 @@
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeUnionPay.h>) // CocoaPods
 #import <Braintree/BTCardClient+UnionPay.h>
-#import <Braintree/BTConfiguration+UnionPay.h>
 #import <Braintree/BTCardCapabilities.h>
 #import <Braintree/BTCardClient_Internal.h>
-#import <Braintree/BraintreeCore-Swift.h>
 #import <Braintree/BraintreeCard.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeUnionPay/BTCardClient+UnionPay.h>
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
 #import "../BraintreeCard/BTCardClient_Internal.h"
-#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeCard/BraintreeCard.h>
 
 #else // Carthage
 #import <BraintreeUnionPay/BTCardClient+UnionPay.h>
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
 #import <BraintreeCard/BTCardClient_Internal.h>
-#import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeCard/BraintreeCard.h>
 
 #endif
 
-// Swift Module Imports
+// MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 

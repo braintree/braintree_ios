@@ -2,6 +2,7 @@
 #import "Demo-Swift.h"
 @import BraintreeDataCollector;
 @import CoreLocation;
+@import BraintreeCore;
 
 @interface BraintreeDemoBTDataCollectorViewController ()
 

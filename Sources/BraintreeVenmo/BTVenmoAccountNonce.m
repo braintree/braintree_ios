@@ -1,12 +1,10 @@
 #if __has_include(<Braintree/BraintreeVenmo.h>)
 #import <Braintree/BTVenmoAccountNonce.h>
-#import <Braintree/BraintreeCore-Swift.h>
 #else
 #import <BraintreeVenmo/BTVenmoAccountNonce.h>
-#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
-// Swift Module Imports
+// MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
 #import <Braintree/Braintree-Swift.h>
 

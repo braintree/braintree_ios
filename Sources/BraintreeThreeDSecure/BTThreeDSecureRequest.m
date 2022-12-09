@@ -7,12 +7,11 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
-// Objective-C Module Imports
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>
 #import <Braintree/BTThreeDSecureLookup.h>
-#import <Braintree/BTConfiguration+ThreeDSecure.h>
 #import <Braintree/BraintreeCard.h>
 #import <Braintree/BTPaymentFlowClient_Internal.h>
 
@@ -20,7 +19,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeCard/BraintreeCard.h>
 #import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
 
@@ -28,13 +26,12 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
 #endif
 
-// Swift Module Imports
+// MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 

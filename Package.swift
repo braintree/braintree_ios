@@ -75,7 +75,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCore",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist", "Braintree.h"]
         ),
         .target(
             name: "BraintreeDataCollector",
