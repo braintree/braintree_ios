@@ -1,5 +1,8 @@
 # Braintree iOS SDK
 
+## iOS v6 Beta
+Currently, version 6 of the iOS SDK is in Beta. For stable releases, please point to version 5 of the SDK. While preparing for general availability, we expect to make breaking changes in the beta releases.
+
 [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Braintree.svg?style=flat)](https://cocoapods.org/pods/Braintree)
 [![Swift Package Manager compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
