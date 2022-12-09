@@ -1,6 +1,7 @@
 #import "BTApplePayClient_Internal.h"
 #import <PassKit/PassKit.h>
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeApplePay.h>) // CocoaPods
 #import <Braintree/BTApplePayCardNonce.h>
 
@@ -11,7 +12,7 @@
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
 #endif
 
-// Swift Module Imports
+// MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 

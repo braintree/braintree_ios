@@ -5,6 +5,7 @@
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
 #import <Braintree/BTPayPalLineItem.h>
 
@@ -15,7 +16,7 @@
 #import <BraintreePayPal/BTPayPalLineItem.h>
 #endif
 
-// Swift Module Imports
+// MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 
