@@ -12,7 +12,6 @@
   * Rename `nativeRequest` to `request` internally in `tokenizePayPalAccount`
   * `tokenizePayPalAccount` now takes in a `request` of type `BTPayPalNativeRequest` instead of a `nativeRequest` of type `BTPayPalRequest`
 
-
 ## 5.16.0 (2022-10-27)
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes with a version of 5.4.0 with `ENABLE_BITCODE` removed
