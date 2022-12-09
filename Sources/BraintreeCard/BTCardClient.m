@@ -55,7 +55,10 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completion {
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self tokenizeCard:request options:nil completion:completion];
+#pragma clang diagnostic pop
 }
 
 

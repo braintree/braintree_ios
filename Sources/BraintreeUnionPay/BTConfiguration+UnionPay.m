@@ -4,7 +4,10 @@
 #import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #endif
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 @implementation BTConfiguration (UnionPay)
+#pragma clang diagnostic pop
 
 - (BOOL)isUnionPayEnabled {
     return [self.json[@"unionPay"][@"enabled"] isTrue];

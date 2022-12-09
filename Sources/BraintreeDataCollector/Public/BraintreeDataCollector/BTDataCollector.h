@@ -36,7 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param fraudMerchantID The fraudMerchantID you have established with your Braintree account manager.
 */
-- (void)setFraudMerchantID:(NSString *)fraudMerchantID;
+- (void)setFraudMerchantID:(NSString *)fraudMerchantID
+DEPRECATED_MSG_ATTRIBUTE("Kount Custom support will be removed in the next major version. Use `PPDataCollector.collectPayPalDeviceData()`.");
 
 @end
 

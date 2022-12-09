@@ -87,6 +87,8 @@ static Class PayPalDataCollectorClass;
 
         dispatch_group_t collectorDispatchGroup = dispatch_group_create();
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         if (configuration.isKountEnabled) {
             BTDataCollectorEnvironment btEnvironment = [self environmentFromString:configuration.environment];
             [self setCollectorEnvironment:[self collectorEnvironment:btEnvironment]];
@@ -102,7 +104,8 @@ static Class PayPalDataCollectorClass;
                 dispatch_group_leave(collectorDispatchGroup);
             }];
         }
-        
+#pragma clang diagnostic pop
+
         BOOL isSandbox = [configuration.environment isEqualToString:@"sandbox"];
         
         NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID:isSandbox];
