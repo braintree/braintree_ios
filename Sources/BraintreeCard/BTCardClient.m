@@ -2,6 +2,7 @@
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
 
@@ -13,7 +14,7 @@
 
 #endif
 
-// Swift Module Imports
+// MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 
