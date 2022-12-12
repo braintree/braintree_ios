@@ -104,7 +104,6 @@
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
 		8016A87D2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016A87C2509185C00DB5EF3 /* BTPaymentFlow_Tests.swift */; };
 		804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */; };
-		80252BD627299FE0002E0D84 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		804E6288293866AD004B9FEF /* BTSEPADirectDebitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804E6287293866AD004B9FEF /* BTSEPADirectDebitConstants.swift */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
@@ -277,12 +276,10 @@
 		BE139DB928EF12CF0044CD8C /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */; };
 		BE178DA328B52740005B9C09 /* BTClientToken_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */; };
 		BE1ACEF72938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */; };
-		BE24C66728D906090067B11A /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE24C66528D906090067B11A /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE24C66E28E49A730067B11A /* BTAPIClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C66D28E49A730067B11A /* BTAPIClientError.swift */; };
 		BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */; };
 		BE24C67528E7491E0067B11A /* BTAPIClientAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67428E7491E0067B11A /* BTAPIClientAuthorization.swift */; };
 		BE2F9846289D5435008EF189 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
-		BE2F9847289D5435008EF189 /* BraintreeCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */; };
 		BE32ACB829076C8300A61FED /* BTPreferredPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACB729076C8300A61FED /* BTPreferredPaymentMethods.swift */; };
 		BE32ACBA29076DA000A61FED /* BTPreferredPaymentMethodResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACB929076DA000A61FED /* BTPreferredPaymentMethodResult.swift */; };
@@ -309,7 +306,6 @@
 		BE70A965284FA9DE00F6D3F7 /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */; };
 		BE70A983284FC07C00F6D3F7 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
 		BE7FA4C7291ACAD8003C6B63 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
-		BE7FA4C8291ACAD8003C6B63 /* BraintreeCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE9BD7C52888467700022983 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
 		BE9BD7EB28884EA100022983 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BE9BD7EF2888517300022983 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
@@ -342,7 +338,6 @@
 		BEE2E4B9290043A200C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B8290043A200C03FDD /* PayPalCheckout */; };
 		BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */; };
 		BEED3B8C291C56B900BA114B /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
-		BEED3B8D291C56B900BA114B /* BraintreeCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BEF1089029019CAE003B2FDA /* BTAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */; };
 		BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93AF2853980C0041BAFE /* BTAPIClient.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
@@ -685,50 +680,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BE24C66828D906090067B11A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BE24C66728D906090067B11A /* CardinalMobile.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BE2F984A289D5435008EF189 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BE2F9847289D5435008EF189 /* BraintreeCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BECF12A3284171B6002C3A04 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BE7FA4C8291ACAD8003C6B63 /* BraintreeCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BEED3B90291C56B900BA114B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BEED3B8D291C56B900BA114B /* BraintreeCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -2334,7 +2285,6 @@
 				2D941D341B59C76A0016EFB4 /* Frameworks */,
 				2D941D351B59C76A0016EFB4 /* Headers */,
 				2D941D361B59C76A0016EFB4 /* Resources */,
-				BE2F984A289D5435008EF189 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2437,7 +2387,6 @@
 				A76D7BFC1BB1CAB00000FA6A /* Frameworks */,
 				A76D7BFD1BB1CAB00000FA6A /* Headers */,
 				A76D7BFE1BB1CAB00000FA6A /* Resources */,
-				BECF12A3284171B6002C3A04 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2541,7 +2490,6 @@
 				A903E1A224F9D34000C314E1 /* Sources */,
 				A903E1A324F9D34000C314E1 /* Frameworks */,
 				A903E1A424F9D34000C314E1 /* Resources */,
-				BEED3B90291C56B900BA114B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2580,7 +2528,6 @@
 				A91E1EA724FEEF21007540E5 /* Sources */,
 				A91E1EA824FEEF21007540E5 /* Frameworks */,
 				A91E1EA924FEEF21007540E5 /* Resources */,
-				BE24C66828D906090067B11A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

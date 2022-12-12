@@ -1095,7 +1095,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5.0.0;
+				CURRENT_PROJECT_VERSION = 6.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1107,7 +1107,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Application/Supporting Files/Demo-Bridging-Header.h";
@@ -1125,7 +1125,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5.0.0;
+				CURRENT_PROJECT_VERSION = 6.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1137,7 +1137,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0.0;
+				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Application/Supporting Files/Demo-Bridging-Header.h";
