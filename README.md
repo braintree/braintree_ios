@@ -8,7 +8,7 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
-v5 is the latest major version of Braintree iOS. To update from v4, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/master/V5_MIGRATION.md).
+v6 is the latest major version of Braintree iOS and is currently in Beta. For stable releases, please point to v5 of the SDK. While preparing for general availability, we expect to make breaking changes in the beta releases. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/master/V6_MIGRATION.md).
 
 **The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14+ and Swift 5.7+.
 
@@ -26,7 +26,7 @@ v5 is the latest major version of Braintree iOS. To update from v4, see the [v5 
 We recommend using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](https://github.com/CocoaPods/CocoaPods), or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 ### Swift Package Manager
-_This feature is only available in v5._
+_This feature is only available in v5+._
 
 To add the `Braintree` package to your Xcode project, select _File > Swift Packages > Add Package Dependency_ and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
 
@@ -77,6 +77,7 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |
+| 6.x.x | Beta | TBA | TBA | TBA |
 | 5.x.x | Active | February 2021 | TBA | TBA |
 | 4.x.x | Inactive | November 2015 | February 2022 | February 2023 |
 

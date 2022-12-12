@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased (next-major-version)
+## unreleased
+* Convert `BraintreeCore` module to Swift
 * Convert `BraintreeAmericanExpress` module to Swift
 * Convert `BraintreeDataCollector` module to Swift
 * Removed `PayPalDataCollector` module in favor of single `BraintreeDataCollector`
