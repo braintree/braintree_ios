@@ -42,7 +42,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
                 self.progressBlock(error?.localizedDescription)
                 return
             }
-            self.nonceStringCompletionBlock(nonce.nonce)
+            self.completionBlock(nonce)
         }
     }
 
@@ -60,7 +60,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
                 self.progressBlock(error?.localizedDescription)
                 return
             }
-            self.nonceStringCompletionBlock(nonce.nonce)
+            self.completionBlock(nonce)
         }
     }
 }

@@ -1,15 +1,27 @@
-#if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
-
+@class BTPostalAddress;
+@class BTJSON;
 @class BTPayPalCreditFinancing;
+@class BTPayPalCreditFinancingAmount;
 
 /**
  Contains information about a PayPal payment method
  */
-@interface BTPayPalAccountNonce : BTPaymentMethodNonce
+@interface BTPayPalAccountNonce : NSObject
+
+/**
+ The payment method nonce.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nonnull nonce;
+
+/**
+ The string identifying the type of the payment method.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nullable type;
+
+/**
+ The boolean indicating whether this is a default payment method.
+ */
+@property (nonatomic, readwrite, assign) BOOL isDefault;
 
 /**
  Payer's email address.
@@ -59,5 +71,10 @@
  Will be provided for Vault and Checkout.
  */
 @property (nonatomic, nullable, readonly, strong) BTPayPalCreditFinancing *creditFinancing;
+
+/**
+ Used to initialize a `BTPayPalAccountNonce` with parameters.
+ */
+- (nullable instancetype)initWithJSON:(BTJSON *_Nonnull)json;
 
 @end

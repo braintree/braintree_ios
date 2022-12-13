@@ -2,8 +2,8 @@ import UIKit
 
 class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewController {
     private let preferredPaymentMethods: BTPreferredPaymentMethods
-    private let paypalDriver: BTPayPalDriver
-    private let venmoDriver: BTVenmoDriver
+    private let paypalClient: BTPayPalClient
+    private let venmoClient: BTVenmoClient
     private let payPalCheckoutButton = UIButton(type: .system)
     private let payPalVaultButton = UIButton(type: .system)
     private let venmoButton = UIButton(type: .system)
@@ -12,8 +12,8 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         guard let apiClient = BTAPIClient(authorization: authorization) else { return nil }
         
         preferredPaymentMethods = BTPreferredPaymentMethods(apiClient: apiClient)
-        paypalDriver = BTPayPalDriver(apiClient: apiClient)
-        venmoDriver = BTVenmoDriver(apiClient: apiClient)
+        paypalClient = BTPayPalClient(apiClient: apiClient)
+        venmoClient = BTVenmoClient(apiClient: apiClient)
 
         super.init(authorization: authorization)
         
@@ -75,13 +75,13 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.isEnabled = false
         
         let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
-        paypalDriver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
+        paypalClient.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
             button.isEnabled = true
 
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.completionBlock(n)
+                self.nonceStringCompletionBlock(n.nonce)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -96,13 +96,13 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         
         let paypalRequest = BTPayPalVaultRequest()
         paypalRequest.activeWindow = self.view.window
-        paypalDriver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
+        paypalClient.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.completionBlock(n)
+                self.nonceStringCompletionBlock(n.nonce)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -115,13 +115,14 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
 
-        venmoDriver.tokenizeVenmoAccount(with: BTVenmoRequest()) { (nonce, error) in
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.completionBlock(n)
+                self.nonceStringCompletionBlock(n.nonce)
             } else {
                 self.progressBlock("Canceled")
             }

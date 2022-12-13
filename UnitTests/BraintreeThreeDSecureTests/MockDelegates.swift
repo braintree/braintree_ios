@@ -1,7 +1,10 @@
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeCore
+@testable import BraintreeThreeDSecure
+@testable import BraintreePaymentFlow
+@testable import BraintreeTestShared
 
-class MockPaymentFlowDriverDelegate: BTPaymentFlowDriverDelegate {
+class MockPaymentFlowClientDelegate: BTPaymentFlowClientDelegate {
     var _returnURLScheme = ""
 
     var onPaymentWithURLHandler: ((URL?, Error?) -> Void)?

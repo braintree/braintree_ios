@@ -1,6 +1,7 @@
 #import "BraintreeDemoAmexViewController.h"
 @import BraintreeAmericanExpress;
 @import BraintreeCard;
+@import BraintreeCore;
 
 @interface BraintreeDemoAmexViewController ()
 

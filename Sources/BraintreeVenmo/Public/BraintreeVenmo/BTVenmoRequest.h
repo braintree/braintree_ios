@@ -6,18 +6,35 @@ NS_ASSUME_NONNULL_BEGIN
  Usage type for the tokenized Venmo account
  */
 typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
-    /// Unspecified
-    BTVenmoPaymentMethodUsageUnspecified = 0,
-    /// Multi-use
-    BTVenmoPaymentMethodUsageMultiUse = 1,
-    /// Single use
-    BTVenmoPaymentMethodUsageSingleUse = 2
+    /// The Venmo payment will be authorized for future payments and can be vaulted.
+    BTVenmoPaymentMethodUsageMultiUse = 0,
+    /// The Venmo payment will be authorized for a one-time payment and cannot be vaulted.
+    BTVenmoPaymentMethodUsageSingleUse
 };
 
 /**
  A BTVenmoRequest specifies options that contribute to the Venmo flow
 */
 @interface BTVenmoRequest : NSObject
+
+/**
+ Cannot be instantiated with [BTVenmoRequest new]
+ */
++ (instancetype)new __attribute__((unavailable("Please use initWithPaymentMethodUsage:")));
+
+/**
+ Base initializer - do not use.
+ */
+- (instancetype)init __attribute__((unavailable("Please use initWithPaymentMethodUsage:")));
+
+
+/**
+ Initialize a Venmo request with a payment method usage.
+
+ @param paymentMethodUsage `BTVenmoPaymentMethodUsage`
+ @return A Venmo request.
+*/
+- (instancetype)initWithPaymentMethodUsage:(BTVenmoPaymentMethodUsage)paymentMethodUsage;
 
 /**
  The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile, and it may show up in the Venmo app as a "Connected Merchant". Venmo profile IDs can be found in the Braintree Control Panel. Leaving this `nil` will use the default Venmo profile.
@@ -36,11 +53,8 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
 /**
  * If set to `.multiUse`, the Venmo payment will be authorized for future payments and can be vaulted.
  * If set to `.singleUse`, the Venmo payment will be authorized for a one-time payment and cannot be vaulted.
- * If set to `.unspecified`, the legacy Venmo UI flow will launch. It is recommended to use `.multiUse` or `.singleUse` for the best customer experience.
- *
- * Defaults to `.unspecified`.
  */
-@property (nonatomic) BTVenmoPaymentMethodUsage paymentMethodUsage;
+@property (nonatomic, readonly) BTVenmoPaymentMethodUsage paymentMethodUsage;
 
 /**
  * Optional. The business name that will be displayed in the Venmo app payment approval screen. Only used by merchants onboarded as PayFast channel partners.

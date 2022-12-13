@@ -32,13 +32,13 @@ class BTPayPalNativeOrderCreationClient {
                 return
             }
 
-            guard config.json["paypalEnabled"].isTrue else {
+            guard let paypalEnabled = config.json?["paypalEnabled"].isTrue, paypalEnabled else {
                 self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.paypal-not-enabled.failed")
                 completion(.failure(.payPalNotEnabled))
                 return
             }
 
-            guard let payPalClientID = config.json["paypal"]["clientId"].asString() else {
+            guard let payPalClientID = config.json?["paypal"]["clientId"].asString() else {
                 self.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.client-id-not-found.failed")
                 completion(.failure(.payPalClientIDNotFound))
                 return

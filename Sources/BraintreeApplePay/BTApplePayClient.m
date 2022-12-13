@@ -1,26 +1,35 @@
 #import "BTApplePayClient_Internal.h"
 #import <PassKit/PassKit.h>
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeApplePay.h>) // CocoaPods
-#import <Braintree/BTConfiguration+ApplePay.h>
 #import <Braintree/BTApplePayCardNonce.h>
-#import <Braintree/BraintreeCore.h>
-#import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BTPaymentMethodNonceParser.h>
 
 #elif SWIFT_PACKAGE // SPM
-#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
 
 #else // Carthage
-#import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreeApplePay/BTApplePayCardNonce.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
+#endif
+
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
@@ -28,14 +37,6 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 @implementation BTApplePayClient
 
 #pragma mark - Initialization
-
-+ (void)load {
-    if (self == [BTApplePayClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
-            return [[BTApplePayCardNonce alloc] initWithJSON:applePayCard];
-        }];
-    }
-}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
@@ -134,7 +135,7 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
             if (error) {
-                if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                if (error.code == BTCoreConstants.networkConnectionLostCode) {
                     [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.network-connection.failure"];
                 }
                 completionBlock(nil, error);

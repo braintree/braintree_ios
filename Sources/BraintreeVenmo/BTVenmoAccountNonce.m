@@ -1,9 +1,27 @@
 #if __has_include(<Braintree/BraintreeVenmo.h>)
 #import <Braintree/BTVenmoAccountNonce.h>
-#import <Braintree/BraintreeCore.h>
 #else
 #import <BraintreeVenmo/BTVenmoAccountNonce.h>
-#import <BraintreeCore/BraintreeCore.h>
+#endif
+
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else // Carthage or Local Builds
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 @interface BTVenmoAccountNonce ()
@@ -21,9 +39,10 @@
                                   username:(NSString *)username
                                  isDefault:(BOOL)isDefault
 {
-    if (self = [super initWithNonce:nonce type:@"Venmo" isDefault:isDefault]) {
-        _username = username;
-    }
+    _nonce = nonce;
+    _type = @"Venmo";
+    _isDefault = isDefault;
+    _username = username;
     return self;
 }
 

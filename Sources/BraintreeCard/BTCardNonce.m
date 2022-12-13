@@ -1,3 +1,4 @@
+#import "Foundation/Foundation.h"
 #import "BTCardNonce_Internal.h"
 #import "BTAuthenticationInsight_Internal.h"
 
@@ -5,6 +6,26 @@
 #import <Braintree/BTThreeDSecureInfo.h>
 #else
 #import <BraintreeCard/BTThreeDSecureInfo.h>
+#endif
+
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 @implementation BTCardNonce
@@ -19,10 +40,11 @@
                     isDefault:(BOOL)isDefault
                      cardJSON:(BTJSON *)cardJSON
               authInsightJSON:(BTJSON *)authInsightJSON {
-    self = [super initWithNonce:nonce
-                           type:[BTCardNonce typeStringFromCardNetwork:cardNetwork]
-                      isDefault:isDefault];
+    self = [super init];
     if (self) {
+        _nonce = nonce;
+        _type = [BTCardNonce typeStringFromCardNetwork:cardNetwork];
+        _isDefault = isDefault;
         _cardNetwork = cardNetwork;
         _expirationMonth = expirationMonth;
         _expirationYear = expirationYear;
@@ -71,7 +93,7 @@
             return @"Solo";
         case BTCardNetworkSwitch:
             return @"Switch";
-        case BTCardNetworkUKMaestro:
+        case BTCardNetworkUkMaestro:
             return @"UKMaestro";
         case BTCardNetworkUnknown:
         default:
@@ -95,7 +117,7 @@
         @"laser": @(BTCardNetworkLaser),
         @"solo": @(BTCardNetworkSolo),
         @"switch": @(BTCardNetworkSwitch),
-        @"uk maestro": @(BTCardNetworkUKMaestro),
+        @"uk maestro": @(BTCardNetworkUkMaestro),
         @"visa": @(BTCardNetworkVisa),}
                   orDefault:BTCardNetworkUnknown];
 }

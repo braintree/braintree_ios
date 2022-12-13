@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeTestShared
 
 class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
     var mockAPIClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))!

@@ -1,6 +1,7 @@
 #import "BraintreeDemoUnionPayViewController.h"
 #import "Demo-Swift.h"
 @import BraintreeUnionPay;
+@import BraintreeCore;
 
 @interface BraintreeDemoUnionPayViewController () <UITextFieldDelegate>
 
@@ -132,7 +133,7 @@
                         return;
                     }
                     
-                    self.completionBlock(tokenizedCard);
+                    self.nonceStringCompletionBlock(tokenizedCard.nonce);
                 }];
             }]];
             
@@ -151,7 +152,7 @@
                     return;
                 }
                 
-                self.completionBlock(tokenizedCard);
+                self.nonceStringCompletionBlock(tokenizedCard.nonce);
             }];
         }
     }];
@@ -180,7 +181,7 @@
             return;
         }
 
-        self.completionBlock(tokenizedCard);
+        self.nonceStringCompletionBlock(tokenizedCard.nonce);
     }];
 }
 

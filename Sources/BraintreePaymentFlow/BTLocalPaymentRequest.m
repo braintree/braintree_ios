@@ -1,40 +1,31 @@
-#import "BTPaymentFlowDriver_Internal.h"
-#import "BTPaymentFlowDriver+LocalPayment_Internal.h"
+#import "BTPaymentFlowClient_Internal.h"
+#import "BTPaymentFlowClient+LocalPayment_Internal.h"
 #import <SafariServices/SafariServices.h>
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTLocalPaymentRequest.h>
-#import <Braintree/BTConfiguration+LocalPayment.h>
 #import <Braintree/BTLocalPaymentResult.h>
-#import <Braintree/BTLogger_Internal.h>
-#import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BraintreeCore.h>
 
 #elif SWIFT_PACKAGE                                   // SPM
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
-#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import "../BraintreeCore/BTLogger_Internal.h"
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import <BraintreeCore/BraintreeCore.h>
 
-#else                                                 // Carthage
+#else                                                 // Carthage and Local Builds
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
-#import <BraintreePaymentFlow/BTConfiguration+LocalPayment.h>
 #import <BraintreePaymentFlow/BTLocalPaymentResult.h>
-#import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BraintreeCore.h>
 #endif
 
-#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods-generated Swift Header
 #import <Braintree/Braintree-Swift.h>
 
 #elif SWIFT_PACKAGE                                   // SPM
 /* Use @import for SPM support
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
-@import PayPalDataCollector;
+@import BraintreeDataCollector;
+@import BraintreeCore;
 
 #elif __has_include("Braintree-Swift.h")              // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -42,52 +33,55 @@
  */
 #import "Braintree-Swift.h"
 
-#else                                                 // Carthage
-#import <PayPalDataCollector/PayPalDataCollector-Swift.h>
+#else                                                 // Carthage and Local Builds
+#import <BraintreeDataCollector/BraintreeDataCollector-Swift.h>
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
+
 
 @interface BTLocalPaymentRequest ()
 
 @property (nonatomic, copy, nullable) NSString *paymentID;
-@property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
+@property (nonatomic, weak) id<BTPaymentFlowClientDelegate> paymentFlowClientDelegate;
 @property (nonatomic, strong) NSString *correlationID;
 
 @end
 
 @implementation BTLocalPaymentRequest
 
-- (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
-    self.paymentFlowDriverDelegate = delegate;
+- (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
+    self.paymentFlowClientDelegate = delegate;
     BTLocalPaymentRequest *localPaymentRequest = (BTLocalPaymentRequest *)request;
     [apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *configurationError) {
         if (configurationError) {
             [delegate onPaymentComplete:nil error:configurationError];
             return;
         }
-
-        self.correlationID = [PPDataCollector clientMetadataID:nil isSandbox:[configuration.environment isEqualToString:@"sandbox"]];
+        
+        BTDataCollector *dataCollector = [[BTDataCollector alloc] initWithAPIClient:apiClient];
+        self.correlationID = [dataCollector clientMetadataID:nil];
 
         NSError *integrationError;
 
-        if ([self.paymentFlowDriverDelegate returnURLScheme] == nil || [[self.paymentFlowDriverDelegate returnURLScheme] isEqualToString:@""]) {
-            [[BTLogger sharedLogger] critical:@"Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]"];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                                 code:BTPaymentFlowDriverErrorTypeInvalidReturnURL
+        if ([self.paymentFlowClientDelegate returnURLScheme] == nil || [[self.paymentFlowClientDelegate returnURLScheme] isEqualToString:@""]) {
+            NSLog(@"%@ Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeInvalidReturnURL
                                              userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app or browser switch."}];
         } else if (![configuration isLocalPaymentEnabled]) {
-            [[BTLogger sharedLogger] critical:@"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                                 code:BTPaymentFlowDriverErrorTypeDisabled
+            NSLog(@"%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeDisabled
                                              userInfo:@{NSLocalizedDescriptionKey: @"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."}];
         } else if (localPaymentRequest.localPaymentFlowDelegate == nil) {
-            [[BTLogger sharedLogger] critical:@"BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                                 code:BTPaymentFlowDriverErrorTypeIntegration
+            NSLog(@"%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeIntegration
                                              userInfo:@{NSLocalizedDescriptionKey: @"Failed to begin payment flow: BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."}];
         } else if (localPaymentRequest.amount == nil || localPaymentRequest.paymentType == nil) {
-            [[BTLogger sharedLogger] critical:@"BTLocalPaymentRequest amount and paymentType can not be nil."];
-            integrationError = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                                 code:BTPaymentFlowDriverErrorTypeIntegration
+            NSLog(@"%@ BTLocalPaymentRequest amount and paymentType can not be nil.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
+            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                 code:BTPaymentFlowErrorTypeIntegration
                                              userInfo:@{NSLocalizedDescriptionKey: @"Failed to begin payment flow: BTLocalPaymentRequest amount and paymentType can not be nil."}];
         }
         
@@ -169,15 +163,15 @@
                          [delegate onPaymentWithURL:url error:error];
                      }];
                  } else {
-                     [[BTLogger sharedLogger] critical:@"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."];
-                     NSError *error = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                                          code:BTPaymentFlowDriverErrorTypeAppSwitchFailed
+                     NSLog(@"%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
+                     NSError *error = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                          code:BTPaymentFlowErrorTypeAppSwitchFailed
                                                       userInfo:@{NSLocalizedDescriptionKey: @"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."}];
                      [delegate onPaymentComplete:nil error:error];
                      return;
                  }
              } else {
-                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                 if (error.code == BTCoreConstants.networkConnectionLostCode) {
                      [apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
                  }
 
@@ -190,10 +184,10 @@
 - (void)handleOpenURL:(__unused NSURL *)url {
     if ([url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment/cancel"]) {
         // canceled
-        NSError *error = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                             code:BTPaymentFlowDriverErrorTypeCanceled
+        NSError *error = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                             code:BTPaymentFlowErrorTypeCanceled
                                          userInfo:@{}];
-        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+        [self.paymentFlowClientDelegate onPaymentComplete:nil error:error];
     } else {
         // success
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -211,22 +205,22 @@
             parameters[@"merchant_account_id"] = self.merchantAccountID;
         }
 
-        BTClientMetadata *metadata =  self.paymentFlowDriverDelegate.apiClient.metadata;
+        BTClientMetadata *metadata =  self.paymentFlowClientDelegate.apiClient.metadata;
         parameters[@"_meta"] = @{
                                  @"source" : metadata.sourceString,
                                  @"integration" : metadata.integrationString,
                                  @"sessionId" : metadata.sessionID,
                                  };
 
-        [self.paymentFlowDriverDelegate.apiClient POST:@"/v1/payment_methods/paypal_accounts"
+        [self.paymentFlowClientDelegate.apiClient POST:@"/v1/payment_methods/paypal_accounts"
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
          {
              if (error) {
-                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
-                     [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
+                 if (error.code == BTCoreConstants.networkConnectionLostCode) {
+                     [self.paymentFlowClientDelegate.apiClient sendAnalyticsEvent:@"ios.local-payment-methods.network-connection.failure"];
                  }
-                 [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+                 [self.paymentFlowClientDelegate onPaymentComplete:nil error:error];
                  return;
              } else {
                  BTJSON *payPalAccount = body[@"paypalAccounts"][0];
@@ -263,7 +257,7 @@
                                                                                             shippingAddress:shippingAddress
                                                                                            clientMetadataID:clientMetadataID
                                                                                                     payerID:payerID];
-                 [self.paymentFlowDriverDelegate onPaymentComplete:tokenizedLocalPayment error:nil];
+                 [self.paymentFlowClientDelegate onPaymentComplete:tokenizedLocalPayment error:nil];
              }
          }];
     }

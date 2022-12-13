@@ -1,9 +1,10 @@
 #import "BTNonceValidationHelper.h"
 #import "IntegrationTests-Swift.h"
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
+
+@import BraintreeCore;
 
 @interface BTCardClient_IntegrationTests : XCTestCase
 @end
@@ -89,9 +90,9 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         XCTAssertNil(tokenizedCard);
-        expect(error.domain).to.equal(BTHTTPErrorDomain);
+        expect(error.domain).to.equal(BTHTTPError.domain);
         expect(error.code).to.equal(BTHTTPErrorCodeClientError);
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey];
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPError.urlResponseKey];
         expect(httpResponse.statusCode).to.equal(403);
         [expectation fulfill];
     }];
@@ -104,7 +105,7 @@
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTCard *card = [self validCard];
     card.shouldValidate = YES;
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();

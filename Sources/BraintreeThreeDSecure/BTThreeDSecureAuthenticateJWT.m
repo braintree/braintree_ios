@@ -1,19 +1,37 @@
 #import "BTThreeDSecureAuthenticateJWT.h"
-#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BraintreeCard.h>
-#import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BraintreeCard.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 
+#endif
+
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 @implementation BTThreeDSecureAuthenticateJWT
@@ -42,7 +60,7 @@
          parameters:requestParameters
          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         if (error) {
-            if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+            if (error.code == BTCoreConstants.networkConnectionLostCode) {
                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.network-connection.failure"];
             }
             [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];

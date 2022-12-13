@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeTestShared
 @testable import BraintreeCore
 @testable import BraintreeSEPADirectDebit
 

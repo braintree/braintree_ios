@@ -1,30 +1,42 @@
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeUnionPay.h>) // CocoaPods
 #import <Braintree/BTCardClient+UnionPay.h>
-#import <Braintree/BTConfiguration+UnionPay.h>
 #import <Braintree/BTCardCapabilities.h>
-#import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTCardClient_Internal.h>
-#import <Braintree/BraintreeCore.h>
 #import <Braintree/BraintreeCard.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeUnionPay/BTCardClient+UnionPay.h>
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCard/BTCardClient_Internal.h"
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
 
 #else // Carthage
 #import <BraintreeUnionPay/BTCardClient+UnionPay.h>
-#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import <BraintreeUnionPay/BTCardCapabilities.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCard/BTCardClient_Internal.h>
-#import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCard/BraintreeCard.h>
 
+#endif
+
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 #pragma clang diagnostic push
@@ -109,13 +121,13 @@
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
-                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                 if (error.code == BTCoreConstants.networkConnectionLostCode) {
                      [self.apiClient sendAnalyticsEvent:@"ios.union-pay.network-connection.failure"];
                  }
                  [self sendUnionPayEvent:@"enrollment-failed"];
                 
                  NSError *callbackError = error;
-                 NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                 NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
                  if (response.statusCode == 422) {
                      callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
                                                          code:BTCardClientErrorTypeCustomerInputInvalid

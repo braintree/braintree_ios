@@ -1,9 +1,10 @@
 #import "BraintreeDemoIdealViewController.h"
 @import BraintreePaymentFlow;
+@import BraintreeCore;
 
 @interface BraintreeDemoIdealViewController () <BTViewControllerPresentingDelegate, BTLocalPaymentRequestDelegate>
 
-@property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
+@property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
 @property (nonatomic, weak) UILabel *paymentIDLabel;
 
 @end
@@ -47,8 +48,8 @@
 
 - (void)startPaymentWithBank {
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_f252zhq7_hh4cpc39zq4rgjcg"];
-    self.paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:client];
-    self.paymentFlowDriver.viewControllerPresentingDelegate = self;
+    self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:client];
+    self.paymentFlowClient.viewControllerPresentingDelegate = self;
 
     BTLocalPaymentRequest *request = [[BTLocalPaymentRequest alloc] init];
     request.paymentType = @"ideal";
@@ -69,7 +70,7 @@
 
     void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
-            if (error.code == BTPaymentFlowDriverErrorTypeCanceled) {
+            if (error.code == BTPaymentFlowErrorTypeCanceled) {
                 self.progressBlock(@"Canceled 🎲");
             } else {
                 self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
@@ -77,20 +78,20 @@
         } else if (result) {
             BTLocalPaymentResult *localPaymentResult = (BTLocalPaymentResult *)result;
             BTPaymentMethodNonce *nonce = [[BTPaymentMethodNonce alloc] initWithNonce:localPaymentResult.nonce];
-            self.completionBlock(nonce);
+            self.nonceStringCompletionBlock(nonce.nonce);
         }
     };
 
-    [self.paymentFlowDriver startPaymentFlow:request completion:paymentFlowCompletionBlock];
+    [self.paymentFlowClient startPaymentFlow:request completion:paymentFlowCompletionBlock];
 }
 
 #pragma mark BTViewControllerPresentingDelegate
 
-- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+- (void)paymentClient:(__unused id)client requestsPresentationOfViewController:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+- (void)paymentClient:(__unused id)client requestsDismissalOfViewController:(UIViewController *)viewController {
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

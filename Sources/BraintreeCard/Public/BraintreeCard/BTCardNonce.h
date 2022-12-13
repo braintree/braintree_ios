@@ -1,9 +1,6 @@
-#if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+typedef NS_ENUM(NSInteger, BTCardNetwork);
 
+@class BTBinData;
 @class BTThreeDSecureInfo;
 @class BTAuthenticationInsight;
 
@@ -12,7 +9,22 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Contains information about a tokenized card.
  */
-@interface BTCardNonce : BTPaymentMethodNonce
+@interface BTCardNonce : NSObject
+
+/**
+ The payment method nonce.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nonnull nonce;
+
+/**
+ The string identifying the type of the payment method.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nullable type;
+
+/**
+ The boolean indicating whether this is a default payment method.
+ */
+@property (nonatomic, readwrite, assign) BOOL isDefault;
 
 /**
  The card network.

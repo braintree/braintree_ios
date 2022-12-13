@@ -1,33 +1,45 @@
 #import "BTThreeDSecureV2Provider.h"
-#import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
 #import "BTThreeDSecureV2UICustomization_Internal.h"
 #import <CardinalMobile/CardinalMobile.h>
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
-#import <Braintree/BTConfiguration+ThreeDSecure.h>
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>
 #import <Braintree/BTThreeDSecureLookup.h>
-#import <Braintree/BraintreeCore.h>
-#import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
 
 #else // Carthage
-#import <BraintreeThreeDSecure/BTConfiguration+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
 
+#endif
+
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 @interface BTThreeDSecureV2Provider() <CardinalValidationDelegate>
@@ -130,8 +142,8 @@
             break;
         }
         case CardinalResponseActionCodeCancel: {
-            [self callFailureHandlerWithErrorDomain:BTPaymentFlowDriverErrorDomain
-                                          errorCode:BTPaymentFlowDriverErrorTypeCanceled
+            [self callFailureHandlerWithErrorDomain:BTPaymentFlowErrorDomain
+                                          errorCode:BTPaymentFlowErrorTypeCanceled
                                       errorUserInfo:nil
                                      failureHandler:self.failureHandler];
             break;

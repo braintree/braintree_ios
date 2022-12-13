@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCore
 
 class BTPreferredPaymentMethodsResult_Tests: XCTestCase {
     func testInitWithJSON_whenAPIDetectedPayPalPreferredTrue_setsPayPalPreferredToTrue() {

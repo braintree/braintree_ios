@@ -8,10 +8,14 @@ public class FakeApplication {
     public var canOpenURLWhitelist: [URL] = []
 
     public init() {
-
+        // no-op
     }
 
-    @objc func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
+    @objc func openURL(
+        _ url: URL,
+        options: [UIApplication.OpenExternalURLOptionsKey : Any],
+        completionHandler completion: ((Bool) -> Void)?
+    ) {
         lastOpenURL = url
         openURLWasCalled = true
         completion?(cannedOpenURLSuccess)

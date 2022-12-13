@@ -15,15 +15,14 @@ Pod::Spec.new do |s|
   s.author           = { "Braintree" => "team-bt-sdk@paypal.com" }
   s.source           = { :git => "https://github.com/braintree/braintree_ios.git", :tag => s.version.to_s }
 
-  s.platform         = :ios, "12.0"
+  s.platform         = :ios, "14.0"
   s.compiler_flags   = "-Wall -Werror -Wextra"
-  s.swift_version    = "5.1"
+  s.swift_version    = "5.7"
 
   s.default_subspecs = %w[Core Card PayPal]
 
   s.subspec "AmericanExpress" do |s|
-    s.source_files  = "Sources/BraintreeAmericanExpress/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeAmericanExpress/Public/BraintreeAmericanExpress/*.h"
+    s.source_files  = "Sources/BraintreeAmericanExpress/*.swift"
     s.dependency "Braintree/Core"
   end
 
@@ -41,39 +40,33 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Core" do |s|
-    s.source_files  = "Sources/BraintreeCore/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeCore/Public/BraintreeCore/*.h"
+    s.source_files  = "Sources/BraintreeCore/*.{swift,h}"
+    s.public_header_files = "Sources/BraintreeCore/*.h"
   end
 
   s.subspec "DataCollector" do |s|
-    s.source_files = "Sources/BraintreeDataCollector/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeDataCollector/Public/BraintreeDataCollector/*.h"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
+    s.source_files = "Sources/BraintreeDataCollector/*.swift"
     s.dependency "Braintree/Core"
+    s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
   end
 
   s.subspec "PaymentFlow" do |s|
     s.source_files = "Sources/BraintreePaymentFlow/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPalDataCollector"
+    s.dependency "Braintree/DataCollector"
   end
 
   s.subspec "PayPal" do |s|
     s.source_files = "Sources/BraintreePayPal/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreePayPal/Public/BraintreePayPal/*.h"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPalDataCollector"
+    s.dependency "Braintree/DataCollector"
   end
 
   s.subspec "SEPADirectDebit" do |s|
     s.source_files = "Sources/BraintreeSEPADirectDebit/*.swift"
     s.dependency "Braintree/Core"
-  end
-
-  s.subspec "PayPalDataCollector" do |s|
-    s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
   end
 
   s.subspec "PayPalNativeCheckout" do |s|

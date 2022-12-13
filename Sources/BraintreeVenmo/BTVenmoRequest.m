@@ -6,7 +6,12 @@
 
 @implementation BTVenmoRequest
 
-// NEXT_MAJOR_VERSION - make paymentMethodUsage a required param in the initializer & remove UNSPECIFIED case from enum
+- (instancetype)initWithPaymentMethodUsage:(BTVenmoPaymentMethodUsage)paymentMethodUsage {
+    if (self = [super init]) {
+        _paymentMethodUsage = paymentMethodUsage;
+    }
+    return self;
+}
 
 - (NSString *)paymentMethodUsageAsString {
     switch(self.paymentMethodUsage) {

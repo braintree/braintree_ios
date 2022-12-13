@@ -2,19 +2,19 @@ PODS:
   - Expecta (1.0.6)
   - InAppSettingsKit (3.1.4)
   - OCMock (3.7.1)
-  - OHHTTPStubs (9.0.0):
-    - OHHTTPStubs/Default (= 9.0.0)
-  - OHHTTPStubs/Core (9.0.0)
-  - OHHTTPStubs/Default (9.0.0):
+  - OHHTTPStubs/Core (9.1.0)
+  - OHHTTPStubs/Default (9.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (9.0.0):
+  - OHHTTPStubs/JSON (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (9.0.0):
+  - OHHTTPStubs/NSURLSession (9.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (9.0.0)
+  - OHHTTPStubs/OHPathHelpers (9.1.0)
+  - OHHTTPStubs/Swift (9.1.0):
+    - OHHTTPStubs/Default
   - Specta (1.0.7)
   - xcbeautify (0.8.1)
 
@@ -22,7 +22,7 @@ DEPENDENCIES:
   - Expecta
   - InAppSettingsKit
   - OCMock
-  - OHHTTPStubs
+  - OHHTTPStubs/Swift
   - Specta
   - xcbeautify
 
@@ -39,10 +39,10 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: 01fb9774c74a11fefc521f29cb2338909e1c2b61
   OCMock: 75fbeaa46a9b11f8c182bbb1d1f7e9a35ccc9955
-  OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
+  OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: a3b03e4a38eb1a5766a83a7a3c53915a233572e3
 
-PODFILE CHECKSUM: 75163f16229528991a9364c7c1a44cd57a30cac6
+PODFILE CHECKSUM: d13bb859974d75763866520e0313eec1e5f76228
 
 COCOAPODS: 1.11.2

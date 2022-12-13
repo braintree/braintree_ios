@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeCore
 
 class BTPostalAddress_Tests: XCTestCase {
 

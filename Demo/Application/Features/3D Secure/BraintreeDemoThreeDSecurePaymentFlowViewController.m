@@ -1,10 +1,11 @@
 #import "BraintreeDemoThreeDSecurePaymentFlowViewController.h"
 #import "Demo-Swift.h"
 @import BraintreeThreeDSecure;
+@import BraintreeCore;
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 
-@property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
+@property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
 @property (nonatomic, strong) BTCardFormView *cardFormView;
 @property (nonatomic, strong) UIButton *autofillButton3DS;
@@ -135,8 +136,8 @@
 
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
 
-        self.paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:self.apiClient];
-        self.paymentFlowDriver.viewControllerPresentingDelegate = self;
+        self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:self.apiClient];
+        self.paymentFlowClient.viewControllerPresentingDelegate = self;
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;
@@ -191,18 +192,18 @@
 
         request.v2UICustomization = ui;
 
-        [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
+        [self.paymentFlowClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {
-                if (error.code == BTPaymentFlowDriverErrorTypeCanceled) {
+                if (error.code == BTPaymentFlowErrorTypeCanceled) {
                     self.progressBlock(@"Canceled 🎲");
                 } else {
                     self.progressBlock(error.localizedDescription);
                 }
             } else if (result) {
                 BTThreeDSecureResult *threeDSecureResult = (BTThreeDSecureResult *)result;
-                self.completionBlock(threeDSecureResult.tokenizedCard);
+                self.nonceStringCompletionBlock(threeDSecureResult.tokenizedCard.nonce);
 
                 if (threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible && threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted) {
                     self.progressBlock(@"Liability shift possible and liability shifted");
@@ -215,11 +216,11 @@
     }];
 }
 
-- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+- (void)paymentClient:(__unused id)client requestsPresentationOfViewController:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(__unused UIViewController *)viewController {
+- (void)paymentClient:(__unused id)client requestsDismissalOfViewController:(__unused UIViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

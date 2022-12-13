@@ -1,8 +1,10 @@
 import XCTest
-import BraintreeTestShared
-import BraintreeCore.Private
+import BraintreeCore
+@testable import BraintreeCard
+@testable import BraintreeTestShared
 
 class BTCardClient_Tests: XCTestCase {
+    let customerInputValidationErrorKey: String = "BTCustomerInputBraintreeValidationErrorsKey"
     // MARK: - ClientAPI
     
     func testTokenization_postsCardDataToClientAPI() {
@@ -165,9 +167,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPJSONResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
         ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: stubAPIClient)
@@ -187,7 +189,7 @@ class BTCardClient_Tests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTCardClientErrorType.customerInputInvalid.rawValue)
-            if let json = (error.userInfo as NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
+            if let json = (error.userInfo as NSDictionary)[self.customerInputValidationErrorKey] as? NSDictionary {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
                 XCTFail("Expected JSON response in userInfo[BTCustomInputBraintreeValidationErrorsKey]")
@@ -221,9 +223,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPJSONResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
         ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: stubAPIClient)
@@ -244,7 +246,7 @@ class BTCardClient_Tests: XCTestCase {
             
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTCardClientErrorType.cardAlreadyExists.rawValue)
-            if let json = (error.userInfo as NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
+            if let json = (error.userInfo as NSDictionary)[self.customerInputValidationErrorKey] as? NSDictionary {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
                 XCTFail("Expected JSON response in userInfo[BTCustomInputBraintreeValidationErrorsKey]")
@@ -299,9 +301,9 @@ class BTCardClient_Tests: XCTestCase {
                 "requestId": "3521c97e-a420-47f4-a8ef-a8cefb0fa635"
             ]
         ])
-        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPJSONResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
@@ -322,7 +324,7 @@ class BTCardClient_Tests: XCTestCase {
             
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTCardClientErrorType.cardAlreadyExists.rawValue)
-            if let json = (error.userInfo as NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
+            if let json = (error.userInfo as NSDictionary)[self.customerInputValidationErrorKey] as? NSDictionary {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
                 XCTFail("Expected JSON response in userInfo[BTCustomInputBraintreeValidationErrorsKey]")
@@ -336,7 +338,7 @@ class BTCardClient_Tests: XCTestCase {
     
     func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
-        stubAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: nil)
+        stubAPIClient.cannedResponseError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: nil)
         let cardClient = BTCardClient(apiClient: stubAPIClient)
 
         let card = BTCard()
@@ -354,7 +356,7 @@ class BTCardClient_Tests: XCTestCase {
         cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTHTTPErrorDomain)
+            XCTAssertEqual(error.domain, BTHTTPError.domain)
             XCTAssertEqual(error.code, BTHTTPErrorCode.clientError.rawValue)
             expectation.fulfill()
         }
@@ -425,9 +427,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPJSONResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
@@ -523,7 +525,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.graphQLAPI)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.graphQLAPI)
             guard var lastPostParameters = mockApiClient.lastPOSTParameters else {
                 XCTFail()
                 return
@@ -552,7 +554,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
         
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
             expectation.fulfill()
         }
         
@@ -579,7 +581,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
         
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
 
             expectation.fulfill()
         }
@@ -614,7 +616,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
 
         cardClient.tokenizeCard(cardRequest) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
             expectation.fulfill()
         }
 
@@ -766,9 +768,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPJSONResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)

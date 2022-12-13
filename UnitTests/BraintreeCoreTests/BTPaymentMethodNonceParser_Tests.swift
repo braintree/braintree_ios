@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCore
 
 class BTPaymentMethodNonceParser_Tests: XCTestCase {
     var parser : BTPaymentMethodNonceParser = BTPaymentMethodNonceParser()
@@ -28,7 +29,8 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             expectation.fulfill()
             return nil
         }
-        parser.parseJSON(BTJSON(), withParsingBlockForType: "MyType")
+
+        let _ = parser.parseJSON(BTJSON(), withParsingBlockForType: "MyType")
 
         waitForExpectations(timeout: 3, handler: nil)
     }
@@ -48,7 +50,7 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
     }
 
     func testSharedParser_whenTypeIsUnknown_returnsBasePaymentMethodNonce() {
-        let sharedParser = BTPaymentMethodNonceParser.shared()
+        let sharedParser = BTPaymentMethodNonceParser.shared
         let JSON = BTJSON(value: [
             "consumed": false,
             "description": "Some thing",

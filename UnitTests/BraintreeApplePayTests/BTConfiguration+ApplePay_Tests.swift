@@ -1,5 +1,6 @@
 import XCTest
-import BraintreeTestShared
+@testable import BraintreeCore
+@testable import BraintreeTestShared
 
 class BTConfiguration_ApplePay_Tests : XCTestCase {
     var mockAPIClient = MockAPIClient.init(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
@@ -69,7 +70,6 @@ class BTConfiguration_ApplePay_Tests : XCTestCase {
         XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.visa, PKPaymentNetwork.masterCard, PKPaymentNetwork.amex, PKPaymentNetwork.discover])
     }
 
-    @available(iOS 12.0, *)
     func testApplePaySupportedNetworks_whenSupportedNetworksIncludesMaestro_returnsSupportedNetworks() {
         let configurationJSON = BTJSON(value: [
             "applePay": [ "supportedNetworks": ["maestro"] ]
@@ -79,7 +79,6 @@ class BTConfiguration_ApplePay_Tests : XCTestCase {
         XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.maestro])
     }
 
-    @available(iOS 12.1.1, *)
     func testApplePaySupportedNetworks_whenSupportedNetworksIncludesElo_returnsSupportedNetworks() {
         let configurationJSON = BTJSON(value: [
             "applePay": [ "supportedNetworks": ["elo"] ]

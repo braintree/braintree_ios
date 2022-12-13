@@ -8,9 +8,9 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
-v5 is the latest major version of Braintree iOS. To update from v4, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/master/V5_MIGRATION.md).
+v6 is the latest major version of Braintree iOS and is currently in Beta. For stable releases, please point to v5 of the SDK. While preparing for general availability, we expect to make breaking changes in the beta releases. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/master/V6_MIGRATION.md).
 
-**The Braintree iOS SDK permits a deployment target of iOS 12.0 or higher**. It requires Xcode 12+ and Swift 5.1+.
+**The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14+ and Swift 5.7+.
 
 ## Supported Payment Methods
 
@@ -26,7 +26,7 @@ v5 is the latest major version of Braintree iOS. To update from v4, see the [v5 
 We recommend using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](https://github.com/CocoaPods/CocoaPods), or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 ### Swift Package Manager
-_This feature is only available in v5._
+_This feature is only available in v5+._
 
 To add the `Braintree` package to your Xcode project, select _File > Swift Packages > Add Package Dependency_ and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
 
@@ -58,6 +58,8 @@ pod 'Braintree/Venmo'
 *Note:* If you are using version 4.x.x of the Braintree iOS SDK in Xcode 12, you may see the warning `The iOS Simulator deployment target is set to 8.0, but the range of supported deployment target versions is 9.0 to 14.0.99`. This will not prevent your app from compiling. This is a [CocoaPods issue](https://github.com/CocoaPods/CocoaPods/issues/7314) with a known workaround.
 
 ### Carthage
+Braintree 6.0.0+ requires Carthage 0.38.0+ and the `--use-xcframeworks` option when running `carthage update`.
+
 Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
 *Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. If there are concerns, please comment on [this Discussion thread](https://github.com/braintree/braintree_ios/discussions/705).
@@ -75,6 +77,7 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |
+| 6.x.x | Beta | TBA | TBA | TBA |
 | 5.x.x | Active | February 2021 | TBA | TBA |
 | 4.x.x | Inactive | November 2015 | February 2022 | February 2023 |
 
@@ -87,7 +90,7 @@ A demo app is included in the project. To run it you will need to do the followi
     2. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
     3. Open `Braintree.xcworkspace` in Xcode. 
 
-Xcode 13+ is required to run the demo app.
+Xcode 14+ is required to run the demo app.
 
 ## Contributing
 

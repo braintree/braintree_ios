@@ -1,11 +1,11 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "Braintree",
-    platforms: [.iOS(.v12)],
+    platforms: [.iOS(.v14)],
     products: [
         .library(
             name: "BraintreeAmericanExpress",
@@ -25,7 +25,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreeDataCollector",
-            targets: ["BraintreeDataCollector", "KountDataCollector"]
+            targets: ["BraintreeDataCollector", "PPRiskMagnes"]
         ),
         .library(
             name: "BraintreePaymentFlow",
@@ -55,18 +55,13 @@ let package = Package(
             name: "BraintreeVenmo",
             targets: ["BraintreeVenmo"]
         ),
-        .library(
-            name: "PayPalDataCollector",
-            targets: ["PayPalDataCollector", "PPRiskMagnes"]
-        )
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "BraintreeAmericanExpress",
-            dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            dependencies: ["BraintreeCore"]
         ),
         .target(
             name: "BraintreeApplePay",
@@ -80,23 +75,20 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCore",
-            exclude: ["Info.plist"],
-            publicHeadersPath: "Public"
+            exclude: ["Info.plist", "Braintree.h"]
         ),
         .target(
             name: "BraintreeDataCollector",
-            dependencies: ["BraintreeCore", "KountDataCollector"],
-            exclude: ["Kount"],
-            publicHeadersPath: "Public"
+            dependencies: ["BraintreeCore", "PPRiskMagnes"]
         ),
         .target(
             name: "BraintreePaymentFlow",
-            dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            dependencies: ["BraintreeCore", "BraintreeDataCollector"],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreePayPal",
-            dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            dependencies: ["BraintreeCore", "BraintreeDataCollector"],
             publicHeadersPath: "Public"
         ),
         .target(
@@ -133,15 +125,6 @@ let package = Package(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
             publicHeadersPath: "Public"
-        ),
-        .binaryTarget(
-            name: "KountDataCollector",
-            path: "Frameworks/XCFrameworks/KountDataCollector.xcframework"
-        ),
-        .target(
-            name: "PayPalDataCollector",
-            dependencies: ["BraintreeCore", "PPRiskMagnes"],
-            path: "Sources/PayPalDataCollector"
         ),
         .binaryTarget(
             name: "PPRiskMagnes",

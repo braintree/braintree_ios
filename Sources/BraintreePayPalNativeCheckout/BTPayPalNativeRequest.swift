@@ -99,14 +99,14 @@ import BraintreePayPal
 
     // MARK: - Internal Methods
 
-    func constructParameters(from configuration: BTConfiguration, withRequest request: Any) -> [AnyHashable: Any] {
+    func constructParameters(from configuration: BTConfiguration, withRequest request: Any) -> [String: Any] {
         let baseParameters = getBaseParameters(with: configuration)
 
         switch paymentType {
         case .checkout:
             guard let request = request as? BTPayPalNativeCheckoutRequest else { return [:] }
 
-            var billingAgreementDictionary: [AnyHashable: Any]? = [:]
+            var billingAgreementDictionary: [String: Any]? = [:]
 
             if request.billingAgreementDescription != nil {
                 billingAgreementDictionary?["description"] = request.billingAgreementDescription
@@ -119,7 +119,7 @@ import BraintreePayPal
                 "intent": request.intentAsString,
                 "amount": request.amount,
                 "offer_pay_later": request.offerPayLater,
-                "currency_iso_code": request.currencyCode ?? configuration.json["paypal"]["currencyIsoCode"].asString(),
+                "currency_iso_code": request.currencyCode ?? configuration.json?["paypal"]["currencyIsoCode"].asString(),
                 "request_billing_agreement": request.requestBillingAgreement ? true : nil,
                 "billing_agreement_details": request.requestBillingAgreement ? billingAgreementDictionary : nil,
                 "line1": shippingAddressOverride?.streetAddress,
@@ -136,9 +136,9 @@ import BraintreePayPal
             guard let request = request as? BTPayPalNativeVaultRequest else { return [:] }
 
             // Should only include shipping params if they exist
-            var shippingParams: [AnyHashable: Any?]? = [:]
+            var shippingAddressParameters: [String: Any?]? = [:]
             if shippingAddressOverride != nil {
-                shippingParams = [
+                shippingAddressParameters = [
                     "line1": request.shippingAddressOverride?.streetAddress,
                     "line2": request.shippingAddressOverride?.extendedAddress,
                     "city": request.shippingAddressOverride?.locality,
@@ -148,15 +148,20 @@ import BraintreePayPal
                     "recipient_name": request.shippingAddressOverride?.recipientName,
                 ]
             } else {
-                shippingParams = nil
+                shippingAddressParameters = nil
             }
 
             // Values from BTPayPalNativeVaultRequest
-            let vaultParameters = [
+            var vaultParameters: [String: Any] = [
                 "description": request.billingAgreementDescription ?? "",
-                "offer_paypal_credit": request.offerCredit,
-                "shipping_address": shippingParams ?? [:],
-            ].compactMapValues { $0 }
+                "offer_paypal_credit": request.offerCredit
+            ]
+
+            if shippingAddressParameters != nil {
+                vaultParameters["shipping_address"] = shippingAddressParameters
+            }
+
+            vaultParameters = vaultParameters.compactMapValues { $0 }
 
             return baseParameters.merging(vaultParameters) { $1 }
         @unknown default:
@@ -164,7 +169,7 @@ import BraintreePayPal
         }
     }
 
-    func getBaseParameters(with configuration: BTConfiguration) -> [AnyHashable: Any] {
+    func getBaseParameters(with configuration: BTConfiguration) -> [String: Any] {
         let callbackHostAndPath = "onetouch/v1/"
         let callbackURLScheme = "sdk.ios.braintree"
 
@@ -172,12 +177,12 @@ import BraintreePayPal
 
         let experienceProfile: [String: Any?] = [
             "no_shipping": !isShippingAddressRequired,
-            "brand_name": displayName ?? configuration.json["paypal"]["displayName"].asString(),
+            "brand_name": displayName ?? configuration.json?["paypal"]["displayName"].asString(),
             "locale_code": localeCode,
             "address_override": shippingAddressOverride != nil ? !isShippingAddressEditable : false
         ]
 
-        let baseParams: [AnyHashable: Any?] = [
+        let baseParams: [String: Any?] = [
           // Base values from BTPayPalNativeRequest
           "correlation_id": riskCorrelationID,
           "merchant_account_id": merchantAccountID,

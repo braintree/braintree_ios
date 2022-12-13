@@ -1,13 +1,24 @@
-#if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BraintreeCore.h>
-#else
-#import <BraintreeCore/BraintreeCore.h>
-#endif
+#import <Foundation/Foundation.h>
 
 /**
  Contains information about a Venmo Account payment method
  */
-@interface BTVenmoAccountNonce : BTPaymentMethodNonce
+@interface BTVenmoAccountNonce : NSObject
+
+/**
+ The payment method nonce.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nonnull nonce;
+
+/**
+ The string identifying the type of the payment method.
+ */
+@property (nonatomic, readonly, strong) NSString * _Nullable type;
+
+/**
+ The boolean indicating whether this is a default payment method.
+ */
+@property (nonatomic, readwrite, assign) BOOL isDefault;
 
 /**
  :nodoc:

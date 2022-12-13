@@ -3,6 +3,26 @@
 
 #import "Demo-Swift.h"
 
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // Cocoapods-generated Swift Header
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else // Carthage or Local Builds
+#import <BraintreeCore/BraintreeCore-Swift.h>
+#endif
+
 NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Demo.payments";
 
 @implementation BraintreeDemoAppDelegate
@@ -11,32 +31,11 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     [self setupAppearance];
     [self registerDefaultsFromSettings];
 
-    [BTAppContextSwitcher setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
+    [[BTAppContextSwitcher sharedInstance] setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:@"magnes.debug.mode"];
 
-    if (@available(iOS 13, *)) {
-        // handled by scene delegate
-    } else {
-        BraintreeDemoContainmentViewController *rootViewController = [[BraintreeDemoContainmentViewController alloc] init];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-        self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        self.window.rootViewController = navigationController;
-        [self.window makeKeyAndVisible];
-    }
-
-    return YES;
-}
-
-- (BOOL)application:(__unused UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
-    if (@available(iOS 13, *)) {
-        // handled by scene delegate
-    } else {
-        if ([[url.scheme lowercaseString] isEqualToString:[BraintreeDemoAppDelegatePaymentsURLScheme lowercaseString]]) {
-            return [BTAppContextSwitcher handleOpenURL:url];
-        }
-    }
     return YES;
 }
 
@@ -106,7 +105,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 #pragma mark - UISceneSession lifecycle
 
 
-- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options  API_AVAILABLE(ios(13.0)) {
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
     // Called when a new scene session is being created.
     // Use this method to select a configuration to create the new scene with.
     return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];

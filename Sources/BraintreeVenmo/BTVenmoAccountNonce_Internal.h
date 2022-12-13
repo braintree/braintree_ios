@@ -4,6 +4,8 @@
 #import <BraintreeVenmo/BTVenmoAccountNonce.h>
 #endif
 
+@class BTJSON;
+
 @interface BTVenmoAccountNonce ()
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)nonce

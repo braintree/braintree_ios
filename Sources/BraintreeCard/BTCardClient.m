@@ -1,26 +1,37 @@
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
-#import "BTConfiguration+Card.h"
 
+// MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
-#import <Braintree/BTAPIClient_Internal.h>
-#import <Braintree/BTPaymentMethodNonceParser.h>
-#import <Braintree/BraintreeCore.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeCard/BTCardRequest.h>
-#import "../BraintreeCore/BTAPIClient_Internal.h"
-#import "../BraintreeCore/BTPaymentMethodNonceParser.h"
-#import <BraintreeCore/BraintreeCore.h>
 
 #else // Carthage
 #import <BraintreeCard/BTCardRequest.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPaymentMethodNonceParser.h>
-#import <BraintreeCore/BraintreeCore.h>
 
+#endif
+
+// MARK: - Swift File Imports for Package Managers
+#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+/* Use @import for SPM support
+ * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
+ */
+@import BraintreeCore;
+
+#elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
+/* Use quoted style when importing Swift headers for ReactNative support
+ * See https://github.com/braintree/braintree_ios/issues/671
+ */
+#import "Braintree-Swift.h"
+
+#else                                            // Carthage
+#import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
@@ -30,14 +41,6 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 @end
 
 @implementation BTCardClient
-
-+ (void)load {
-    if (self == [BTCardClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
-            return [BTCardNonce cardNonceWithJSON:creditCard];
-        }];
-    }
-}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (!apiClient) {
@@ -92,14 +95,14 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
             NSDictionary *parameters = [request.card graphQLParameters];
             [self.apiClient POST:@""
                       parameters:parameters
-                        httpType:BTAPIClientHTTPTypeGraphQLAPI
+                        httpType:BTAPIClientHTTPServiceGraphQLAPI
                       completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
              {
                  if (error) {
-                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
                      }
-                     NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                     NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
@@ -127,10 +130,10 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
              {
                  if (error != nil) {
-                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
                      }
-                     NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                     NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
@@ -186,10 +189,10 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 + (NSDictionary *)validationErrorUserInfo:(NSDictionary *)userInfo {
     NSMutableDictionary *mutableUserInfo = [userInfo mutableCopy];
-    BTJSON *jsonResponse = userInfo[BTHTTPJSONResponseBodyKey];
+    BTJSON *jsonResponse = userInfo[BTHTTPError.jsonResponseBodyKey];
     if ([jsonResponse asDictionary]) {
-        mutableUserInfo[BTCustomerInputBraintreeValidationErrorsKey] = [jsonResponse asDictionary];
-        
+        mutableUserInfo[@"BTCustomerInputBraintreeValidationErrorsKey"] = [jsonResponse asDictionary];
+
         NSString *errorMessage = [jsonResponse[@"error"][@"message"] asString];
         if (errorMessage) {
             mutableUserInfo[NSLocalizedDescriptionKey] = errorMessage;
@@ -250,12 +253,12 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     NSError *callbackError = error;
     BTJSON *errorCode = nil;
     
-    BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPJSONResponseBodyKey];
+    BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPError.jsonResponseBodyKey];
     BTJSON *fieldErrors = [errorResponse[@"fieldErrors"] asArray].firstObject;
     errorCode = [fieldErrors[@"fieldErrors"] asArray].firstObject[@"code"];
 
     if (errorCode == nil) {
-        BTJSON *errorResponse = [errorUserInfo objectForKey:BTHTTPJSONResponseBodyKey];
+        BTJSON *errorResponse = [errorUserInfo objectForKey:BTHTTPError.jsonResponseBodyKey];
         errorCode = [errorResponse[@"errors"] asArray].firstObject[@"extensions"][@"legacyCode"];
     }
 

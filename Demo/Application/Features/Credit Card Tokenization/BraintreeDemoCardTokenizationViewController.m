@@ -1,5 +1,6 @@
 #import "BraintreeDemoCardTokenizationViewController.h"
 @import BraintreeCard;
+@import BraintreeCore;
 
 @interface BraintreeDemoCardTokenizationViewController ()
 
@@ -45,7 +46,7 @@
             return;
         }
 
-        self.completionBlock(tokenized);
+        self.nonceStringCompletionBlock(tokenized.nonce);
     }];
 }
 
