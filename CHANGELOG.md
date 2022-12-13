@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.18.0 (2022-12-13)
 * Deprecate Kount Custom integrations
 * Deprecate the `BraintreeUnionPay` module and containing classes
   * UnionPay cards can now be processed as regular cards (through the `BraintreeCard` module) due to their partnership with Discover
