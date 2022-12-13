@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.0.0-beta1 (2022-12-13)
 * Convert `BraintreeCore` module to Swift
 * Convert `BraintreeAmericanExpress` module to Swift
 * Convert `BraintreeDataCollector` module to Swift
