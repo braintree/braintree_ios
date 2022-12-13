@@ -24,7 +24,7 @@ FRAMEWORKS_PLIST = "Sources/BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "origin"
 GHE_REMOTE_NAME = "internal"
 
-bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector", "BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo", "PayPalDataCollector"]
+bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector", "BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo"]
 
 class << self
   def run cmd
@@ -337,11 +337,11 @@ def sourcekitten_objc_command
 end
 
 def sourcekitten_swift_command
-  %W[sourcekitten doc --
-      -workspace Braintree.xcworkspace
-      -scheme PayPalDataCollector
-      -destination 'name=iPhone 11,platform=iOS Simulator'
-      > swiftDoc.json
+  %W[sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeCore -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-core.json
+      sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPalNativeCheckout -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-pay-pal-native-checkout.json
+      sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 11,platform=iOS Simulator' > braintree-sepa-direct-debit.json
+
+      jq -s '.[0] + .[1] + .[2]' braintree-core.json braintree-pay-pal-native-checkout.json braintree-sepa-direct-debit.json > swiftDoc.json
   ].join(' ')
 end
 
