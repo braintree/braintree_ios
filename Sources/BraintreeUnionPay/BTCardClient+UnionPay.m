@@ -39,10 +39,15 @@
 #import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 @implementation BTCardClient (UnionPay)
+#pragma clang diagnostic pop
 
 #pragma mark - Public methods
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)fetchCapabilities:(NSString *)cardNumber
                completion:(void (^)(BTCardCapabilities * _Nullable, NSError * _Nullable))completion {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
@@ -77,6 +82,7 @@
          }];
     }];
 }
+#pragma clang diagnostic pop
 
 - (void)enrollCard:(BTCardRequest *)request
         completion:(nonnull void (^)(NSString * _Nullable, BOOL, NSError * _Nullable))completion {

@@ -74,6 +74,11 @@
   * BraintreeThreeDSecure
       * Move category extension of `BTConfiguration` into `BraintreeCore`
 
+## 5.18.0 (2022-12-13)
+* Deprecate Kount Custom integrations
+* Deprecate the `BraintreeUnionPay` module and containing classes
+  * UnionPay cards can now be processed as regular cards (through the `BraintreeCard` module) due to their partnership with Discover
+
 ## 5.17.0 (2022-12-05)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix CocoaPods bug emitting "Cannot find interface declaration" error ([CocoaPods issue #11672](https://github.com/CocoaPods/CocoaPods/issues/11672))

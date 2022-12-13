@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  BTCardClient category for UnionPay
  */
+DEPRECATED_MSG_ATTRIBUTE("The UnionPay SMS integration is deprecated, as UnionPay can now be processed as a credit card through their partnership with Discover. Use `BTCardClient.tokenizeCard(card: completion:)`.")
 @interface BTCardClient (UnionPay)
 
 /**
