@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 @class BTPostalAddress;
 @class BTJSON;
 @class BTPayPalCreditFinancing;

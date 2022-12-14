@@ -10,7 +10,7 @@ import Foundation
     /// An amount defined by <a href="http://www.iso.org/iso/home/standards/currency_codes.htm">ISO 4217</a> for the given currency.
     public let value: String
     
-    // TODO: Make internal when all of PayPal module converted
+    // TODO: Make internal when all of PayPal module is converted to Swift
     public init(currency: String, value: String) {
         self.currency = currency
         self.value = value

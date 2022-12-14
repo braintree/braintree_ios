@@ -1,6 +1,5 @@
 #import "BTPayPalClient_Internal.h"
 #import "BTPayPalAccountNonce_Internal.h"
-#import "BTPayPalCreditFinancing_Internal.h"
 #import "BTPayPalRequest_Internal.h"
 #import "BTPayPalCheckoutRequest_Internal.h"
 

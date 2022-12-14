@@ -1,8 +1,6 @@
 #if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BTPayPalCreditFinancing.h>
 #import <Braintree/BTPayPalAccountNonce.h>
 #else
-#import <BraintreePayPal/BTPayPalCreditFinancing.h>
 #import <BraintreePayPal/BTPayPalAccountNonce.h>
 #endif
 
