@@ -7,13 +7,13 @@
 
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
-#import <Braintree/BTPayPalLineItem.h>
+#import <Braintree/BraintreePayPal-Swift.h>
 
 #elif SWIFT_PACKAGE                              // SPM
-#import <BraintreePayPal/BTPayPalLineItem.h>
+#import <BraintreePayPal/BraintreePayPal-Swift.h>
 
 #else                                            // Carthage
-#import <BraintreePayPal/BTPayPalLineItem.h>
+#import <BraintreePayPal/BraintreePayPal-Swift.h>
 #endif
 
 // MARK: - Swift File Imports for Package Managers

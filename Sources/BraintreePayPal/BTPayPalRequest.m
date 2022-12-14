@@ -1,9 +1,9 @@
 #import "BTPayPalRequest_Internal.h"
 
 #if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BTPayPalLineItem.h>
+#import <Braintree/BraintreePayPal-Swift.h>
 #else
-#import <BraintreePayPal/BTPayPalLineItem.h>
+#import <BraintreePayPal/BraintreePayPal-Swift.h>
 #endif
 
 // MARK: - Swift File Imports for Package Managers
