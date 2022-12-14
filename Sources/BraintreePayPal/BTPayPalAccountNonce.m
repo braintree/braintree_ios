@@ -2,7 +2,7 @@
 
 // MARK: - Temporary Swift File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
-#import <Braintree/BraintreePayPal-Swift.h>
+#import <Braintree/Braintree-Swift.h>
 
 #elif SWIFT_PACKAGE                              // SPM
 #import <BraintreePayPal/BraintreePayPal-Swift.h>
