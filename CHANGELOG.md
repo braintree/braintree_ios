@@ -1,10 +1,5 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
-* BraintreePayPalNativeCheckout (BETA)
-  * Update NativeCheckout version from 0.108.0 to 0.110.0
-  * Fix issues with using multiple clientIDs falling back to web
-  
 ## 5.18.0 (2022-12-13)
 * Deprecate Kount Custom integrations
 * Deprecate the `BraintreeUnionPay` module and containing classes
