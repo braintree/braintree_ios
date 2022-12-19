@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
   * Update NativeCheckout version from 0.108.0 to 0.110.0
   * Fix issue with multiple clientIDs causing incorrect web fallback
