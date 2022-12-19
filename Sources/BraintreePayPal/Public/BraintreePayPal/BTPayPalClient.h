@@ -1,11 +1,6 @@
-#if __has_include(<Braintree/BraintreePayPal.h>)
-#import <Braintree/BTPayPalCheckoutRequest.h>
-#import <Braintree/BTPayPalVaultRequest.h>
-#else
-#import <BraintreePayPal/BTPayPalCheckoutRequest.h>
-#import <BraintreePayPal/BTPayPalVaultRequest.h>
-#endif
+#import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, BTPayPalPaymentType);
 @class BTPayPalAccountNonce;
 @class BTPayPalRequest;
 @class BTPostalAddress;
