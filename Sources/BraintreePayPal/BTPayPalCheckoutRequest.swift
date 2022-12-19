@@ -64,7 +64,7 @@ import BraintreeCore
 
     // MARK: - Internal Properties
 
-    // TODO: Make internal once rest of PayPal module is in Swift
+    // TODO: Make internal and move into enum once rest of PayPal module is in Swift
     public var intentAsString: String {
         switch intent {
         case .sale:
@@ -76,7 +76,7 @@ import BraintreeCore
         }
     }
 
-    // TODO: Make internal once rest of PayPal module is in Swift
+    // TODO: Make internal and move into enum once rest of PayPal module is in Swift
     public var userActionAsString: String {
         switch userAction {
         case .commit:
