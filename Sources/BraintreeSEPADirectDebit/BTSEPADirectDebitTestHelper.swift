@@ -5,7 +5,7 @@ import Foundation
 
     /// Generates a valid 27-digit IBAN (International Bank Account Number) for testing SEPA Direct Debit flows.
     /// - Returns: a valid IBAN
-    public static func generateValidIBAN() -> String {
+    public static func generateValidSandboxIBAN() -> String {
         let countryCode: String = "FR"
         let bankCode: String = "30006"
         let branchCode: String = "00001"
