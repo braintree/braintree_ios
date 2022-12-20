@@ -74,7 +74,6 @@ import BraintreeCore
         }
     }
     
-    
     // MARK: - Private Methods
     
     private func responseDictionary(from url: URL) -> [String : Any]? {
@@ -95,6 +94,56 @@ import BraintreeCore
         ]
         
         return result
+    }
+    
+    func handlePayPalRequest(
+        with url: URL,
+        error: Error?,
+        paymentType: BTPayPalPaymentType,
+        completion: (BTPayPalAccountNonce?, NSError?)->Void
+    ) {
+        if let error {
+            completion(nil, error)
+            return
+        }
+        
+        if let scheme = url.scheme,
+           !scheme.lowercased().hasPrefix("http") {
+            let urlError = NSError(domain: "com.braintreepayments.BTPayPalErrorDomain",
+                                   code: BTPayPalErrorSwift.unknown.rawValue,
+                                   userInfo: [
+                                    NSLocalizedDescriptionKey: "Attempted to open an invalid URL in ASWebAuthenticationSession: \(url.scheme)://",
+                                    NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
+                                   ])
+            let eventName = "ios.\(BTPayPalClientSwift.eventString(for: paymentType)).webswitch.error.safariviewcontrollerbadscheme.\(url.scheme)"
+            self.apiClient.sendAnalyticsEvent(eventName)
+            completion(nil, urlError)
+            return
+        }
+        performSwitchRequest(
+            appSwitchURL: url,
+            paymentType: paymentType,
+            completion: completion
+        )
+    }
+    
+    func performSwitchRequest(
+        appSwitchURL: URL,
+        paymentType: BTPayPalPaymentType,
+        completion: (BTPayPalAccountNonce?, NSError?) -> Void
+    ) {
+        
+    }
+    
+    static func eventString(for paymentType: BTPayPalPaymentType) -> String? {
+        switch paymentType {
+        case .vault:
+            return "paypal-ba"
+        case .checkout:
+            return "paypal-single-payment"
+        default:
+            return nil
+        }
     }
     
     static func action(from url: URL) -> String? {

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Error codes associated with PayPal.
-public enum BTPayPalError: Int {
+public enum BTPayPalErrorSwift: Int {
     /// Unknown error
     case unknown
     
