@@ -1,6 +1,6 @@
 import Foundation
 
-///Provides helper functions to test the SEPA Direct Debit flow in sandbox.
+/// Provides helper functions to test the SEPA Direct Debit flow in sandbox.
 @objcMembers public class BTSEPADirectDebitTestHelper: NSObject {
     
     /// Generates a valid 27-digit IBAN (International Bank Account Number) for testing SEPA Direct Debit flows.
