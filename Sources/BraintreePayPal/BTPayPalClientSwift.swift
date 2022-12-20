@@ -74,35 +74,34 @@ import BraintreeCore
         }
     }
     
-    // TODO: Refactor into BTJSON + PayPal
-    static func creditFinancingAmount(from json: BTJSON) -> BTPayPalCreditFinancingAmount? {
-        guard json.isObject,
-              let currency = json["currency"].asString(),
-              let value = json["value"].asString() else {
+    
+    // MARK: - Private Methods
+    
+    private func responseDictionary(from url: URL) -> [String : Any]? {
+        if let action = BTPayPalClientSwift.action(from: url), action == "cancel" {
             return nil
         }
         
-        return BTPayPalCreditFinancingAmount(currency: currency, value: value)
+        let result: [String: Any] = [
+            "client": [
+                "platform": "iOS",
+                "product_name": "PayPal",
+                "paypal_sdk_version": "version"
+            ],
+            "response": [
+                "webURL": url.absoluteString
+            ],
+            "response_type": "w"
+        ]
+        
+        return result
     }
     
-    // TODO: Refactor into BTJSON + PayPal
-    static func creditFinancing(from json: BTJSON) -> BTPayPalCreditFinancing? {
-        guard json.isObject else { return nil }
-        
-        let isCardAmountImmutable = json["cardAmountImmutable"].isTrue
-        let monthlyPayment = creditFinancingAmount(from: json["monthlyPayment"])
-        let payerAcceptance = json["payerAcceptance"].isTrue
-        let term = json["term"].asIntegerOrZero()
-        let totalCost = creditFinancingAmount(from: json["totalCost"])
-        let totalInterest = creditFinancingAmount(from: json["totalInterest"])
-        
-        return BTPayPalCreditFinancing(
-            cardAmountImmutable: isCardAmountImmutable,
-            monthlyPayment: monthlyPayment,
-            payerAcceptance: payerAcceptance,
-            term: term,
-            totalCost: totalCost,
-            totalInterest: totalInterest
-        )
+    static func action(from url: URL) -> String? {
+        guard let action = url.lastPathComponent.components(separatedBy: "?").first,
+           action.isEmpty else {
+            return url.host
+        }
+        return action
     }
 }

@@ -32,6 +32,7 @@ extension BTJSON {
         )
     }
     
+    // TODO: Does this belong in BTJSON itself?
     func asAddress() -> BTPostalAddress? {
         guard self.isObject else { return nil }
         
