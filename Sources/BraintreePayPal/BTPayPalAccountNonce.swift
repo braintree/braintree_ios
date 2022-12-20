@@ -95,6 +95,7 @@ import BraintreeCore
         return address
     }
     
+    // TODO: Refactor into BTJSON + PayPal
     private static func creditFinancing(from json: BTJSON) -> BTPayPalCreditFinancing? {
         guard json.isObject else { return nil }
         
@@ -111,9 +112,11 @@ import BraintreeCore
             payerAcceptance: payerAcceptance,
             term: term,
             totalCost: totalCost,
-            totalInterest: totalInterest)
+            totalInterest: totalInterest
+        )
     }
     
+    // TODO: Refactor into BTJSON + PayPal
     private static func creditFinancingAmount(from json: BTJSON) -> BTPayPalCreditFinancingAmount? {
         guard json.isObject,
               let currency = json["currency"].asString(),
