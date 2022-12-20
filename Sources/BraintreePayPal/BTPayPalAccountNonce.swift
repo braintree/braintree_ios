@@ -1,5 +1,8 @@
 import Foundation
+
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
 
 /// Contains information about a PayPal payment method
 @objcMembers public class BTPayPalAccountNonce: BTPaymentMethodNonce {

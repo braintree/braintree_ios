@@ -1,6 +1,9 @@
 import Foundation
 import AuthenticationServices
+
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
 
 @objcMembers public class BTPayPalClientSwift: NSObject {
     
