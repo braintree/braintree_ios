@@ -59,7 +59,7 @@ import BraintreeCore
     /// - Note: See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     public var currencyCode: String?
 
-    /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
+    /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
 
     // MARK: - Internal Properties
@@ -100,7 +100,8 @@ import BraintreeCore
     ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
-    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
+    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
+    ///   during checkout. Defaults to `false`.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent? = .authorize,
