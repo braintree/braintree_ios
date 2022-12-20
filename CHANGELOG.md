@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeSEPADirectDebit
-  * Add `BTSEPADirectDebitTestHelper.generateValidIBAN()` method to generate valid IBANs for testing in Sandbox
+  * Add `BTSEPADirectDebitTestHelper.generateValidSandboxIBAN()` method to generate valid IBANs for testing in Sandbox
 
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
