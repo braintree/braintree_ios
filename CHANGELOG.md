@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Breaking Changes
+  * BraintreePayPal
+    * Update `BTPayPalRequestLandingPageType` enum default case to `.none`
+    * Update `BTPayPalRequestUserAction` enum cases to `.none` and `.payNow`
+
 ## 6.0.0-beta1 (2022-12-13)
 * Convert `BraintreeCore` module to Swift
 * Convert `BraintreeAmericanExpress` module to Swift

@@ -66,13 +66,13 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
     func testUserActionAsString_whenUserActionIsDefault_returnsEmptyString() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = .default
+        request.userAction = .none
         XCTAssertEqual(request.userActionAsString, "")
     }
 
     func testUserActionAsString_whenUserActionIsCommit_returnsCommit() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = .commit
+        request.userAction = .payNow
         XCTAssertEqual(request.userActionAsString, "commit")
     }
 

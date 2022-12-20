@@ -1,7 +1,5 @@
 #import "BTPayPalClient_Internal.h"
 #import "BTPayPalAccountNonce_Internal.h"
-#import "BTPayPalRequest_Internal.h"
-#import "BTPayPalCheckoutRequest_Internal.h"
 
 // MARK: - Temporary Swift File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
@@ -224,7 +222,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
 - (void)performSwitchRequest:(NSURL *)appSwitchURL paymentType:(BTPayPalPaymentType)paymentType completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     self.approvalUrl = appSwitchURL; // exposed for testing
     self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:appSwitchURL
-                                                               callbackURLScheme:BTPayPalCallbackURLScheme
+                                                               callbackURLScheme:BTPayPalRequest.callbackURLScheme
                                                                completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         // Required to avoid memory leak for BTPayPalClient
         self.authenticationSession = nil;
@@ -611,7 +609,7 @@ NSString * _Nonnull const PayPalEnvironmentMock = @"mock";
     if ([hostAndPath length]) {
         hostAndPath = [hostAndPath stringByAppendingString:@"/"];
     }
-    if (![hostAndPath isEqualToString:BTPayPalCallbackURLHostAndPath]) {
+    if (![hostAndPath isEqualToString:BTPayPalRequest.callbackURLHostAndPath]) {
         return NO;
     }
 

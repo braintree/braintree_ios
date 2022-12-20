@@ -1,5 +1,5 @@
 import XCTest
-import BraintreePayPal
+@testable import BraintreePayPal
 
 class BTPayPalRequest_Tests: XCTestCase {
 
@@ -21,19 +21,19 @@ class BTPayPalRequest_Tests: XCTestCase {
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsNotSpecified_returnNil() {
         let request = BTPayPalRequest()
-        XCTAssertNil(request.landingPageTypeAsString)
+        XCTAssertNil(request.landingPageType.stringValue)
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsBilling_returnsBilling() {
         let request = BTPayPalRequest()
         request.landingPageType = .billing
-        XCTAssertEqual(request.landingPageTypeAsString, "billing")
+        XCTAssertEqual(request.landingPageType.stringValue, "billing")
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsLogin_returnsLogin() {
         let request = BTPayPalRequest()
         request.landingPageType = .login
-        XCTAssertEqual(request.landingPageTypeAsString, "login")
+        XCTAssertEqual(request.landingPageType.stringValue, "login")
     }
 
     // MARK: - parametersWithConfiguration
@@ -50,7 +50,7 @@ class BTPayPalRequest_Tests: XCTestCase {
 
         request.lineItems = [BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)]
 
-        let parameters = request.parameters(with: configuration)
+        let parameters = request.baseParameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
 
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
@@ -73,7 +73,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         let request = BTPayPalRequest()
         // no_shipping = true should be the default.
 
-        let parameters = request.parameters(with: configuration)
+        let parameters = request.baseParameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
 
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, true)
@@ -83,7 +83,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         let request = BTPayPalRequest()
         request.isShippingAddressRequired = true
 
-        let parameters = request.parameters(with: configuration)
+        let parameters = request.baseParameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String:Any] else { XCTFail(); return }
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
     }

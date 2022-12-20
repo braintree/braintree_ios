@@ -5,7 +5,6 @@
 #endif
 
 #import <AuthenticationServices/AuthenticationServices.h>
-#import "BTPayPalRequest_Internal.h"
 
 @class BTPayPalCreditFinancing;
 @class BTPayPalCreditFinancingAmount;

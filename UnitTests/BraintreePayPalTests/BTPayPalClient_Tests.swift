@@ -1,5 +1,5 @@
 import XCTest
-import BraintreePayPal
+@testable import BraintreePayPal
 @testable import BraintreeTestShared
 @testable import BraintreeCore
 
@@ -175,7 +175,7 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = BTPayPalRequestUserAction.default
+        request.userAction = BTPayPalRequestUserAction.none
 
         payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
 
@@ -190,7 +190,7 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = BTPayPalRequestUserAction.commit
+        request.userAction = BTPayPalRequestUserAction.payNow
 
         payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
 
@@ -205,7 +205,7 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = BTPayPalRequestUserAction.commit
+        request.userAction = BTPayPalRequestUserAction.payNow
 
         payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
 
