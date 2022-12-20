@@ -25,7 +25,7 @@ import BraintreeCore
 @objc public enum BTPayPalRequestLandingPageType: Int {
 
     /// Default
-    case `default` // Obj-C enums cannot be nil; this default option is used to make `landingPageType` optional for merchants
+    case none // Obj-C enums cannot be nil; this default option is used to make `landingPageType` optional for merchants
 
     /// Login
     case login
@@ -95,7 +95,7 @@ import BraintreeCore
     /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     public var shippingAddressOverride: BTPostalAddress?
 
-    /// Optional: Landing page type. Defaults to `.default`.
+    /// Optional: Landing page type. Defaults to `.none`.
     /// - Note: Setting the BTPayPalRequest's landingPageType changes the PayPal page to display when a user lands on the PayPal site to complete the payment.
     ///  `.login` specifies a PayPal account login page is used.
     ///  `.billing` specifies a non-PayPal account landing page is used.
@@ -134,7 +134,7 @@ import BraintreeCore
         isShippingAddressEditable: Bool = false,
         localeCode: String? = nil,
         shippingAddressOverride: BTPostalAddress? = nil,
-        landingPageType: BTPayPalRequestLandingPageType = .default,
+        landingPageType: BTPayPalRequestLandingPageType = .none,
         displayName: String? = nil,
         merchantAccountID: String? = nil,
         lineItems: [BTPayPalLineItem]? = nil,
