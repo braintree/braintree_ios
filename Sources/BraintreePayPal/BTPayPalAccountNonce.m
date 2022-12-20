@@ -1,6 +1,15 @@
 #import "BTPayPalAccountNonce_Internal.h"
-#import "BTPayPalCreditFinancing_Internal.h"
-#import "BTPayPalCreditFinancingAmount_Internal.h"
+
+// MARK: - Temporary Swift File Imports for Package Managers
+#if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+
+#elif SWIFT_PACKAGE                              // SPM
+#import <BraintreePayPal/BraintreePayPal-Swift.h>
+
+#else                                            // Carthage
+#import <BraintreePayPal/BraintreePayPal-Swift.h>
+#endif
 
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
