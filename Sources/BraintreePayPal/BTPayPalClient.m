@@ -1,5 +1,4 @@
 #import "BTPayPalClient_Internal.h"
-#import "BTPayPalAccountNonce_Internal.h"
 
 // MARK: - Temporary Swift File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePayPal.h>) // CocoaPods
