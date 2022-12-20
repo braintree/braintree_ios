@@ -25,16 +25,16 @@ import Foundation
     public let kind: BTPayPalLineItemKind
 
     /// Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
-    public let unitTaxAmount: String? = ""
+    public let unitTaxAmount: String? = nil
 
     /// Optional: Item description. Maximum 127 characters.
-    public let itemDescription: String? = ""
+    public let itemDescription: String? = nil
 
     /// Optional: Product or UPC code for the item. Maximum 127 characters.
-    public let productCode: String? = ""
+    public let productCode: String? = nil
 
     /// Optional: The URL to product information.
-    public let url: URL? = URL(string: "")
+    public let url: URL? = nil
 
     /// Initialize a PayPayLineItem
     /// - Parameters:
@@ -61,20 +61,20 @@ import Foundation
             "kind": kind == .debit ? "debit" : "credit"
         ]
 
-        if unitTaxAmount != "" {
+        if let unitTaxAmount, unitTaxAmount != "" {
             requestParameters["unit_tax_amount"] = unitAmount
         }
 
-        if itemDescription != "" {
+        if let itemDescription, itemDescription != "" {
             requestParameters["description"] = itemDescription
         }
 
-        if productCode != "" {
+        if let productCode, productCode != "" {
             requestParameters["product_code"] = productCode
         }
 
-        if url != URL(string: "") {
-            requestParameters["url"] = url?.absoluteString
+        if let url, url != URL(string: "") {
+            requestParameters["url"] = url.absoluteString
         }
 
         return requestParameters
