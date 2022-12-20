@@ -64,66 +64,16 @@ import BraintreeCore
         
         let details = json["details"]
         let payerInfo = details["payerInfo"]
-        
-        let billingAddress = payerInfo["billingAddress"]
-        let shippingAddress = payerInfo["shippingAddress"]
-        let creditFinancing = details["creditFinancingOffered"]
-        
+
         self.email = details["email"].asString()
         self.firstName = payerInfo["firstName"].asString()
         self.lastName = payerInfo["lastName"].asString()
         self.phone = payerInfo["phone"].asString()
-        self.billingAddress = BTPayPalAccountNonce.address(from: billingAddress)
-        self.shippingAddress = BTPayPalAccountNonce.address(from: shippingAddress)
+        self.billingAddress = payerInfo["billingAddress"].asAddress()
+        self.shippingAddress = payerInfo["shippingAddress"].asAddress()
         self.clientMetadataID = payerInfo["correlationId"].asString()
         self.payerID = payerInfo["payerId"].asString()
-        self.creditFinancing = BTPayPalAccountNonce.creditFinancing(from: creditFinancing)
+        self.creditFinancing = details["creditFinancingOffered"].asCreditFinancing()
         super.init(nonce: nonce, type: "PayPal", isDefault: json["default"].isTrue)
-    }
-    
-    private static func address(from json: BTJSON) -> BTPostalAddress? {
-        guard json.isObject else { return nil }
-        
-        let address = BTPostalAddress()
-        address.recipientName = json["recipientName"].asString() // Likely to be nil
-        address.streetAddress = json["street1"].asString()
-        address.locality = json["city"].asString()
-        address.region = json["state"].asString()
-        address.postalCode = json["postalCode"].asString()
-        address.countryCodeAlpha2 = json["country"].asString()
-        
-        return address
-    }
-    
-    // TODO: Refactor into BTJSON + PayPal
-    private static func creditFinancing(from json: BTJSON) -> BTPayPalCreditFinancing? {
-        guard json.isObject else { return nil }
-        
-        let isCardAmountImmutable = json["cardAmountImmutable"].isTrue
-        let monthlyPayment = creditFinancingAmount(from: json["monthlyPayment"])
-        let payerAcceptance = json["payerAcceptance"].isTrue
-        let term = json["term"].asIntegerOrZero()
-        let totalCost = creditFinancingAmount(from: json["totalCost"])
-        let totalInterest = creditFinancingAmount(from: json["totalInterest"])
-        
-        return BTPayPalCreditFinancing(
-            cardAmountImmutable: isCardAmountImmutable,
-            monthlyPayment: monthlyPayment,
-            payerAcceptance: payerAcceptance,
-            term: term,
-            totalCost: totalCost,
-            totalInterest: totalInterest
-        )
-    }
-    
-    // TODO: Refactor into BTJSON + PayPal
-    private static func creditFinancingAmount(from json: BTJSON) -> BTPayPalCreditFinancingAmount? {
-        guard json.isObject,
-              let currency = json["currency"].asString(),
-              let value = json["value"].asString() else {
-            return nil
-        }
-        
-        return BTPayPalCreditFinancingAmount(currency: currency, value: value)
     }
 }
