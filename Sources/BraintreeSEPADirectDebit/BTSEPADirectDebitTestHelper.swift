@@ -1,9 +1,11 @@
 import Foundation
 
 /// Provides helper functions to test the SEPA Direct Debit flow in sandbox.
+/// - Note: This class is not covered by Semantic Versioning and may change or be removed at any time.
 @objcMembers public class BTSEPADirectDebitTestHelper: NSObject {
 
     /// Generates a valid 27-digit IBAN (International Bank Account Number) for testing SEPA Direct Debit flows.
+    /// - Note: This method is not covered by Semantic Versioning and may change or be removed at any time.
     /// - Returns: a valid IBAN
     public static func generateValidSandboxIBAN() -> String {
         let countryCode: String = "FR"
