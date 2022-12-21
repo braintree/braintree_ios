@@ -128,6 +128,63 @@ import BraintreeCore
     
     // MARK: - Private Static Helper Methods
     
+    // TODO: Confirm optionality of return type in actual use.
+    private static func token(from approvalURL: URL) -> String? {
+        // TODO: query is deprecated, iOS16 introduces query(percentEncoding:), which would affect parse() below
+        guard let query = approvalURL.query else {
+            return nil
+        }
+        let queryDictionary = parse(queryString: query)
+        return queryDictionary["token"] ?? queryDictionary["ba_token"]
+    }
+    
+    private static func parse(queryString query: String) -> [String: String] {
+        var dict = [String: String]()
+        let pairs = query.components(separatedBy: "&")
+        
+        for pair in pairs {
+            let elements = pair.components(separatedBy: "=")
+            if elements.count > 1,
+               let key = elements[0].removingPercentEncoding, // TODO: removingPercentEncoding will be unneccessary in iOS16
+               let value = elements[1].removingPercentEncoding, // TODO: ditto above
+               !key.isEmpty,
+               !value.isEmpty {
+                dict[key] = value
+            }
+        }
+        return dict
+    }
+    
+    private static func isValidURLAction(url: URL) -> Bool {
+        guard let host = url.host, let scheme = url.scheme, !scheme.isEmpty else {
+            return false
+        }
+        
+        var hostAndPath = host
+            .appending(url.path)
+            .components(separatedBy: "/")
+            .dropLast(1) // remove the action (`success`, `cancel`, etc)
+            .joined(separator: "/")
+        if hostAndPath.count > 0 {
+            hostAndPath.append("/") // TODO: is this only necessary if count > 0?
+        }
+        
+        if hostAndPath == BTPayPalRequest.callbackURLHostAndPath {
+            return false
+        }
+        
+        // TODO: Is the action method redundant? We could grab the action when initializing hostAndPath.
+        guard let action = action(from: url),
+              let query = url.query,   // TODO: query to be deprecated
+              query.count > 0,
+              action.count <= 0,
+              ["success", "cancel", "authenticate"].contains(action) else {
+            return false
+        }
+        
+        return true
+    }
+    
     private static func responseDictionary(from url: URL) -> [String : Any]? {
         if let action = action(from: url), action == "cancel" {
             return nil
