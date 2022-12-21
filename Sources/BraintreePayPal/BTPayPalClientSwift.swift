@@ -98,7 +98,7 @@ import BraintreeCore
     
     func handlePayPalRequest(
         with url: URL,
-        error: Error?,
+        error: NSError?,
         paymentType: BTPayPalPaymentType,
         completion: (BTPayPalAccountNonce?, NSError?)->Void
     ) {
@@ -112,11 +112,14 @@ import BraintreeCore
             let urlError = NSError(domain: "com.braintreepayments.BTPayPalErrorDomain",
                                    code: BTPayPalErrorSwift.unknown.rawValue,
                                    userInfo: [
-                                    NSLocalizedDescriptionKey: "Attempted to open an invalid URL in ASWebAuthenticationSession: \(url.scheme)://",
+                                    NSLocalizedDescriptionKey: "Attempted to open an invalid URL in ASWebAuthenticationSession: \(scheme)://",
                                     NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
                                    ])
-            let eventName = "ios.\(BTPayPalClientSwift.eventString(for: paymentType)).webswitch.error.safariviewcontrollerbadscheme.\(url.scheme)"
-            self.apiClient.sendAnalyticsEvent(eventName)
+            if let eventString = BTPayPalClientSwift.eventString(for: paymentType) {
+                let eventName = "ios.\(eventString).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
+                self.apiClient.sendAnalyticsEvent(eventName)
+            }
+           
             completion(nil, urlError)
             return
         }
