@@ -74,28 +74,6 @@ import BraintreeCore
         }
     }
     
-    // MARK: - Private Methods
-    
-    private func responseDictionary(from url: URL) -> [String : Any]? {
-        if let action = BTPayPalClientSwift.action(from: url), action == "cancel" {
-            return nil
-        }
-        
-        let result: [String: Any] = [
-            "client": [
-                "platform": "iOS",
-                "product_name": "PayPal",
-                "paypal_sdk_version": "version"
-            ],
-            "response": [
-                "webURL": url.absoluteString
-            ],
-            "response_type": "w"
-        ]
-        
-        return result
-    }
-    
     func handlePayPalRequest(
         with url: URL,
         error: NSError?,
@@ -115,7 +93,7 @@ import BraintreeCore
                                     NSLocalizedDescriptionKey: "Attempted to open an invalid URL in ASWebAuthenticationSession: \(scheme)://",
                                     NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
                                    ])
-            if let eventString = BTPayPalClientSwift.eventString(for: paymentType) {
+            if let eventString = Self.eventString(for: paymentType) {
                 let eventName = "ios.\(eventString).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
                 self.apiClient.sendAnalyticsEvent(eventName)
             }
@@ -130,7 +108,9 @@ import BraintreeCore
         )
     }
     
-    func performSwitchRequest(
+    // MARK: - Private Methods
+    
+    private func performSwitchRequest(
         appSwitchURL: URL,
         paymentType: BTPayPalPaymentType,
         completion: (BTPayPalAccountNonce?, NSError?) -> Void
@@ -138,7 +118,37 @@ import BraintreeCore
         
     }
     
-    static func eventString(for paymentType: BTPayPalPaymentType) -> String? {
+    private func handleBrowserSwitchReturn(
+        url: URL,
+        paymentType: BTPayPalPaymentType,
+        completion: (BTPayPalAccountNonce?, NSError?) -> Void
+    ) {
+        
+    }
+    
+    // MARK: - Private Static Helper Methods
+    
+    private static func responseDictionary(from url: URL) -> [String : Any]? {
+        if let action = action(from: url), action == "cancel" {
+            return nil
+        }
+        
+        let result: [String: Any] = [
+            "client": [
+                "platform": "iOS",
+                "product_name": "PayPal",
+                "paypal_sdk_version": "version"
+            ],
+            "response": [
+                "webURL": url.absoluteString
+            ],
+            "response_type": "w"
+        ]
+        
+        return result
+    }
+    
+    private static func eventString(for paymentType: BTPayPalPaymentType) -> String? {
         switch paymentType {
         case .vault:
             return "paypal-ba"
@@ -149,7 +159,7 @@ import BraintreeCore
         }
     }
     
-    static func action(from url: URL) -> String? {
+    private static func action(from url: URL) -> String? {
         guard let action = url.lastPathComponent.components(separatedBy: "?").first,
            action.isEmpty else {
             return url.host
