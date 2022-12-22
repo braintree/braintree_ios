@@ -121,9 +121,108 @@ import BraintreeCore
     private func handleBrowserSwitchReturn(
         url: URL,
         paymentType: BTPayPalPaymentType,
-        completion: (BTPayPalAccountNonce?, NSError?) -> Void
+        completion: @escaping (BTPayPalAccountNonce?, NSError?) -> Void
     ) {
+        guard Self.isValidURLAction(url: url) else {
+            let error = NSError(domain: BTPayPalErrorDomain,
+                                code: BTPayPalErrorSwift.unknown.rawValue,
+                                userInfo: [
+                                    NSLocalizedDescriptionKey: "Unexpected response"
+                                ])
+            completion(nil, error)
+            return
+        }
         
+        guard let response = Self.responseDictionary(from: url) else {
+            let error = NSError(
+                domain: BTPayPalErrorDomain,
+                code: BTPayPalErrorSwift.canceled.rawValue,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "PayPal flow was canceled by the user."
+                ]
+            )
+            completion(nil, error)
+            return
+        }
+        var parameters: [String: Any] = [
+            "paypal_account": response
+        ]
+        
+        var account: [String: Any] = [:]
+        
+        if paymentType == .checkout {
+            account["options"] = ["validate": false]
+            if let request  = payPalRequest as? BTPayPalCheckoutRequest {
+                account["intent"] = request.intentAsString
+            }
+        }
+        
+        if let clientMetadataID {
+            account["correlation_id"] = clientMetadataID
+        }
+        
+        if let payPalRequest,
+           let merchantAccountID = payPalRequest.merchantAccountID {
+            parameters["merchant_account_id"] = merchantAccountID
+        }
+        
+        if !account.isEmpty {
+            parameters["paypal_account"] = account
+        }
+        
+        var metadata = self.apiClient.metadata
+        metadata.source = .payPalBrowser
+        
+        parameters["_meta"] = [
+            "source": metadata.sourceString,
+            "integration": metadata.integrationString,
+            "sessionId": metadata.sessionID
+        ]
+        
+        self.apiClient.post("/v1/payment_methods/paypal_accounts") { body, response, error in
+            if let error = error as? NSError {
+                if error.code == BTCoreConstants.networkConnectionLostCode {
+                    self.apiClient.sendAnalyticsEvent("ios.paypal.handle-browser-switch.network-connection.failure")
+                }
+                self.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
+                completion(nil, error)
+                return
+            }
+            self.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
+            
+            guard let paypalAccount = body?["paypayAccounts"].asArray()?.first,
+                  let tokenizedAccount = self.payPalAccount(from: paypalAccount) else {
+                // TODO: Some kind of error here
+                // completion(nil, error)
+                return
+            }
+            self.sendAnalyticsEventIfCreditFinancing(
+                in: tokenizedAccount,
+                paymentType: paymentType
+            )
+            completion(tokenizedAccount, nil)
+        }
+    }
+    
+    // MARK: - Analytics Helpers
+    
+    private func sendAnalyticsEventIfCreditFinancing(
+        in nonce: BTPayPalAccountNonce,
+        paymentType: BTPayPalPaymentType
+    ) {
+        if nonce.creditFinancing != nil {
+            self.apiClient.sendAnalyticsEvent("ios.\(Self.eventString(for: paymentType)).credit.accepted")
+        }
+    }
+    
+    private func sendAnalyticsEventForTokenizationFailure(paymentType: BTPayPalPaymentType) {
+        
+        self.apiClient.sendAnalyticsEvent("ios.\(Self.eventString(for: paymentType)).tokenize.failed")
+    }
+    
+    // TODO: remove
+    private func payPalAccount(from json: BTJSON) -> BTPayPalAccountNonce? {
+        return BTPayPalAccountNonce(json: json)
     }
     
     // MARK: - ASWebAuthenticationPresentationContextProviding protocol
@@ -252,6 +351,7 @@ import BraintreeCore
         return result
     }
     
+    // TODO: Can we avoid returning nil here?
     private static func eventString(for paymentType: BTPayPalPaymentType) -> String? {
         switch paymentType {
         case .vault:

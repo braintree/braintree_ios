@@ -39,13 +39,13 @@ import BraintreeCore
     ///  Used to initialize a `BTPayPalAccountNonce` with parameters.
     public init(
         nonce: String,
-        email: String,
-        firstName: String,
-        lastName: String,
-        phone: String,
-        billingAddress: BTPostalAddress,
-        shippingAddress: BTPostalAddress,
-        clientMetadataID: String,
+        email: String?,
+        firstName: String?,
+        lastName: String?,
+        phone: String?,
+        billingAddress: BTPostalAddress?,
+        shippingAddress: BTPostalAddress?,
+        clientMetadataID: String?,
         payerID: String?,
         isDefault: Bool,
         creditFinancing: BTPayPalCreditFinancing?
@@ -68,7 +68,9 @@ import BraintreeCore
         let details = json["details"]
         let payerInfo = details["payerInfo"]
 
-        self.email = details["email"].asString()
+        self.email = payerInfo["email"].asString() ??
+                     details["email"].asString()
+        
         self.firstName = payerInfo["firstName"].asString()
         self.lastName = payerInfo["lastName"].asString()
         self.phone = payerInfo["phone"].asString()

@@ -38,11 +38,15 @@ extension BTJSON {
         
         let address = BTPostalAddress()
         address.recipientName = self["recipientName"].asString() // Likely to be nil
-        address.streetAddress = self["street1"].asString()
+        address.streetAddress = self["street1"].asString() ??
+                                self["line2"].asString()
+        address.extendedAddress = self["street2"].asString() ??
+                                  self["line2"].asString()
         address.locality = self["city"].asString()
         address.region = self["state"].asString()
         address.postalCode = self["postalCode"].asString()
-        address.countryCodeAlpha2 = self["country"].asString()
+        address.countryCodeAlpha2 = self["country"].asString() ??
+                                    self["countryCode"].asString()
         
         return address
     }
