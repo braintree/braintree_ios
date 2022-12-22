@@ -108,6 +108,30 @@ import BraintreeCore
         )
     }
     
+    func decorate(
+        approvalURL: URL,
+        for request: BTPayPalCheckoutRequest
+    ) -> URL {
+        guard let request = payPalRequest as? BTPayPalCheckoutRequest,
+              var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
+            return approvalURL
+        }
+        let userActionValue = request.userActionAsString
+        guard userActionValue.count > 0 else {
+            return approvalURL
+        }
+        
+        let userActionQueryItem = URLQueryItem(
+            name: "useraction",
+            value: userActionValue
+        )
+        var queryItems = approvalURLComponents.queryItems ?? []
+        queryItems.append(userActionQueryItem)
+        approvalURLComponents.queryItems = queryItems
+        
+        return approvalURLComponents.url ?? approvalURL
+    }
+    
     // MARK: - Private Methods
     
     private func performSwitchRequest(
