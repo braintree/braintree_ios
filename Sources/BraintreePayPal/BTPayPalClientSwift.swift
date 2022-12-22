@@ -5,7 +5,7 @@ import AuthenticationServices
 import BraintreeCore
 #endif
 
-@objcMembers public class BTPayPalClientSwift: NSObject {
+@objcMembers public class BTPayPalClientSwift: NSObject, ASWebAuthenticationPresentationContextProviding {
     
     // MARK: - Internal Properties
     
@@ -126,15 +126,62 @@ import BraintreeCore
         
     }
     
+    // MARK: - ASWebAuthenticationPresentationContextProviding protocol
+    
+    // TODO: - Unavailable for extension
+    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        if let activeWindow = self.payPalRequest?.activeWindow {
+            return activeWindow
+        }
+        
+        for scene in UIApplication.shared.connectedScenes {
+            if scene.activationState == .foregroundActive,
+               let windowScene = scene as? UIWindowScene,
+               let window = windowScene.windows.first {
+                return window
+            }
+        }
+        
+        if #available(iOS 15, *),
+           let firstConnectedScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let result = firstConnectedScene.windows.first {
+            return result
+        } else {
+            return UIApplication.shared.windows.first! // TODO: - How to fail here if nil?
+        }
+    }
+    
+    // MARK: - Preflight Check
+    
+    private func verifyAppSwitch(remoteConfiguration configuration: BTJSON) throws -> Bool {
+        guard configuration["payPalEnabled"].isTrue else {
+            self.apiClient.sendAnalyticsEvent("ios.paypal-otc.preflight.disabled")
+            throw NSError(domain: BTPayPalErrorDomain,
+                          code: BTPayPalErrorSwift.disabled.rawValue,
+            userInfo: [
+                NSLocalizedDescriptionKey : "PayPal is not enabled for this merchant",
+                NSLocalizedRecoverySuggestionErrorKey: "Enable PayPal for this merchant in the Braintree Control Panel"
+            ])
+        }
+        return true
+    }
+    
     // MARK: - Private Static Helper Methods
     
     // TODO: Confirm optionality of return type in actual use.
     private static func token(from approvalURL: URL) -> String? {
-        // TODO: query is deprecated, iOS16 introduces query(percentEncoding:), which would affect parse() below
-        guard let query = approvalURL.query else {
-            return nil
+        let queryDictionary: [String: String]
+        if #available(iOS 16, *) {
+            guard let query = approvalURL.query(percentEncoded: false) else {
+                return nil
+            }
+            queryDictionary = parse(queryString: query)
+        } else {
+            guard let query = approvalURL.query else {
+                return nil
+            }
+            queryDictionary = parse(queryString: query)
         }
-        let queryDictionary = parse(queryString: query)
         return queryDictionary["token"] ?? queryDictionary["ba_token"]
     }
     
