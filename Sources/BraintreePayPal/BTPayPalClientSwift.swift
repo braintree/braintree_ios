@@ -5,6 +5,10 @@ import AuthenticationServices
 import BraintreeCore
 #endif
 
+#if canImport(BraintreeDataCollector)
+import BraintreeDataCollector
+#endif
+
 @objcMembers public class BTPayPalClientSwift: NSObject, ASWebAuthenticationPresentationContextProviding {
     
     // MARK: - Internal Properties
@@ -19,7 +23,7 @@ import BraintreeCore
     let clientMetadataID: String? = nil
     
     /// Exposed for testing the intent associated with this request
-    let payPalRequest: BTPayPalRequest? = nil
+    var payPalRequest: BTPayPalRequest? = nil
     
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var authenticationSession: ASWebAuthenticationSession? = nil
@@ -60,10 +64,120 @@ import BraintreeCore
     ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
-        with request: BTPayPalRequest,
-        completion: (BTPayPalAccountNonce, Error) -> Void
+        with request: BTPayPalRequest?,
+        completion: @escaping (BTPayPalAccountNonce?, NSError?) -> Void
     ) {
+        guard let request else {
+            completion(nil, NSError(domain: BTPayPalErrorDomain, code: BTPayPalErrorType.invalidRequest.rawValue))
+            return
+        }
         
+        guard let requestTokenizable = request as? BTPayPalRequestTokenizable else {
+            let error = NSError(
+                domain: BTPayPalErrorDomain,
+                code: BTPayPalErrorType.integration.rawValue,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "BTPayPalClient failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."
+                ]
+            )
+            completion(nil, error)
+            return
+        }
+        
+        self.apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            return
+        }
+        
+        self.apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            if let error = error as? NSError { // TODO: Notice this whole class uses NSError but BTAPIClient uses Error
+                completion(nil, error)
+                return
+            }
+            
+            guard let configuration = configuration,
+                  let json = configuration.json else {
+                completion(nil, nil) // TODO: What is this error?
+                return
+            }
+            
+            do {
+                guard try self.verifyAppSwitch(remoteConfiguration: json) else {
+                    // TODO: In Objc an error response is also a false response
+                    completion(nil, NSError(domain: BTPayPalErrorDomain, code: BTPayPalErrorType.unknown.rawValue))
+                    return
+                }
+            } catch {
+                completion(nil, error as NSError)
+                return
+            }
+            
+            self.payPalRequest = request
+            
+            // TODO: could we pass in a function to the closure instead of doing it inline?
+            // Doing so could increase readability by reducing the line count in this function and removing some nested
+            // logic
+            self.apiClient.post(
+                requestTokenizable.hermesPath,
+                parameters: requestTokenizable.parameters(with: configuration)
+            ) { body, response, error in
+                if let error = error as? NSError {
+                    if error.code == BTCoreConstants.networkConnectionLostCode {
+                        self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
+                    }
+                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey],
+                          let errorDetailsIssue = jsonResponseBody["paymentResource"]?["errorDetails"]?[0]?["issue"] else {
+                        // TODO: unhandled case in ObjC
+                        completion(nil, error)
+                        return
+                    }
+                    var dictionary = error.userInfo
+                    dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+                    let completionError = NSError(
+                        domain: error.domain,
+                        code: error.code,
+                        userInfo: dictionary
+                    )
+                    completion(nil, completionError)
+                    return
+                }
+                
+                var approvalURL = body["paymentResource"]?["redirectUrl"].asURL() ??
+                                  body["agreementSetup"]?["approvalUrl"].asURL()
+                approvalURL = self.decorate(approvalURL: approvalURL, for: request)
+                
+                let pairingID = Self.token(from: approvalURL)
+                
+                let dataCollector = BTDataCollector(apiClient: self.apiClient)
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationId ??
+                                        dataCollector.clientMetadataID(pairingID)
+                
+                self.sendAnalyticsEventForInitiatingOneTouch(paymentType: request.paymentType, success: error == nil)
+                
+                self.handlePayPalRequest(
+                    with: approvalURL,
+                    error: error,
+                    paymentType: request.paymentType,
+                    completion: completion
+                )
+            }
+        }
+    }
+    
+    func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
+        let eventString = Self.eventString(for: paymentType)
+        let successString = success ? "started" : "failed"
+        
+        self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.initiate.\(successString)")
+        
+        if let checkoutRequest = self.payPalRequest as? BTPayPalCheckoutRequest,
+           checkoutRequest.offerPayLater {
+            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.paylater.offered.\(successString)")
+        }
+        
+        if let vaultRequest = self.payPalRequest as? BTPayPalVaultRequest,
+           vaultRequest.offerCredit {
+            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.credit.offered.\(successString)")
+        }
     }
     
     // MARK: - Internal Methods
@@ -110,6 +224,7 @@ import BraintreeCore
         )
     }
     
+    // TODO: Make an extension on URL? See usage in tokenizePayPalAccount
     func decorate(
         approvalURL: URL,
         for request: BTPayPalCheckoutRequest
@@ -421,7 +536,7 @@ import BraintreeCore
         return result
     }
     
-    // TODO: Can we avoid returning nil here?
+    // TODO: Can we default to "paypal-single-payment"?
     // TODO: Can we make this an extension on BTPayPalPaymentType rather than a class function here?
     private static func eventString(for paymentType: BTPayPalPaymentType) -> String? {
         switch paymentType {
