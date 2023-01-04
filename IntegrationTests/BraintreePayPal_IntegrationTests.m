@@ -1,9 +1,9 @@
-#import "BTPayPalClient_Internal.h"
 #import "BTNonceValidationHelper.h"
 @import BraintreePayPal;
 @import OCMock;
 @import XCTest;
 @import BraintreeCore;
+@import BraintreePayPal;
 
 @interface BraintreePayPal_IntegrationTests : XCTestCase
 

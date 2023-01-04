@@ -1,7 +1,7 @@
 import Foundation
 
 /// Error codes associated with PayPal.
-public enum BTPayPalErrorSwift: Int {
+public enum BTPayPalError: Int {
     /// Unknown error
     case unknown
     
@@ -16,4 +16,8 @@ public enum BTPayPalErrorSwift: Int {
     
     /// Payment flow was canceled, typically initiated by the user when exiting early from the flow.
     case canceled
+    
+    static var domain: String {
+        "com.braintreepayments.BTPayPalErrorDomain"
+    }
 }

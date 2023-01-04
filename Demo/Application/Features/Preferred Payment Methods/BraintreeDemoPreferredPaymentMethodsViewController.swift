@@ -1,4 +1,5 @@
 import UIKit
+import BraintreePayPal
 
 class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewController {
     private let preferredPaymentMethods: BTPreferredPaymentMethods
