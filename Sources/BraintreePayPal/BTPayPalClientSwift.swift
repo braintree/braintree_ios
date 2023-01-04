@@ -121,8 +121,15 @@ import BraintreeDataCollector
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
                     guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
-                        // TODO: unhandled case in ObjC
-                        completion(nil, error)
+                        let completionError = NSError(
+                            domain: BTPayPalErrorDomain,
+                            code: BTPayPalErrorSwift.unknown.rawValue,
+                            userInfo: [
+                                NSLocalizedDescriptionKey: "Unexpected state, failed to parse JSON from POST error in Tokenize request",
+                                NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
+                            ]
+                        )
+                        completion(nil, completionError)
                         return
                     }
                     
@@ -141,7 +148,15 @@ import BraintreeDataCollector
                 guard let body,
                       var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                         body["agreementSetup"]["approvalUrl"].asURL() else {
-                    completion(nil, nil) // TODO: unhandled case in objc
+                    let completionError = NSError(
+                        domain: BTPayPalErrorDomain,
+                        code: BTPayPalErrorSwift.unknown.rawValue,
+                        userInfo: [
+                            NSLocalizedDescriptionKey: "Unexpected state, failed to parse approvalUrl or redirectUrl from response body.",
+                            NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
+                        ]
+                    )
+                    completion(nil, completionError)
                     return
                 }
                 
@@ -364,8 +379,15 @@ import BraintreeDataCollector
             
             guard let paypalAccount = body?["paypayAccounts"].asArray()?.first,
                   let tokenizedAccount = self.payPalAccount(from: paypalAccount) else {
-                // TODO: Some kind of error here
-                // completion(nil, error)
+                let completionError = NSError(
+                    domain: BTPayPalErrorDomain,
+                    code: BTPayPalErrorSwift.unknown.rawValue,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "Unexpected state, failed to parse JSON from POST error in Tokenize request",
+                        NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
+                    ]
+                )
+                 completion(nil, completionError)
                 return
             }
             self.sendAnalyticsEventIfCreditFinancing(
