@@ -525,7 +525,7 @@ import BraintreeDataCollector
             hostAndPath.append("/") // TODO: is this only necessary if count > 0?
         }
         
-        if hostAndPath == BTPayPalRequest.callbackURLHostAndPath {
+        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
             return false
         }
         
@@ -533,7 +533,7 @@ import BraintreeDataCollector
         guard let action = action(from: url),
               let query = url.query,   // TODO: query to be deprecated
               query.count > 0,
-              action.count <= 0,
+              action.count >= 0,
               ["success", "cancel", "authenticate"].contains(action) else {
             return false
         }
@@ -563,7 +563,7 @@ import BraintreeDataCollector
     
     private static func action(from url: URL) -> String? {
         guard let action = url.lastPathComponent.components(separatedBy: "?").first,
-           action.isEmpty else {
+           !action.isEmpty else {
             return url.host
         }
         return action
