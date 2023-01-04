@@ -168,23 +168,6 @@ import BraintreeDataCollector
         }
     }
     
-    func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
-        let eventString = Self.eventString(for: paymentType)
-        let successString = success ? "started" : "failed"
-        
-        self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.initiate.\(successString)")
-        
-        if let checkoutRequest = self.payPalRequest as? BTPayPalCheckoutRequest,
-           checkoutRequest.offerPayLater {
-            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.paylater.offered.\(successString)")
-        }
-        
-        if let vaultRequest = self.payPalRequest as? BTPayPalVaultRequest,
-           vaultRequest.offerCredit {
-            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.credit.offered.\(successString)")
-        }
-    }
-    
     // MARK: - Internal Methods
     
     func applicationDidBecomeActive(notification: Notification) {
@@ -406,8 +389,24 @@ import BraintreeDataCollector
     }
     
     private func sendAnalyticsEventForTokenizationFailure(paymentType: BTPayPalPaymentType) {
-        
         self.apiClient.sendAnalyticsEvent("ios.\(Self.eventString(for: paymentType)).tokenize.failed")
+    }
+    
+    private func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
+        let eventString = Self.eventString(for: paymentType)
+        let successString = success ? "started" : "failed"
+        
+        self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.initiate.\(successString)")
+        
+        if let checkoutRequest = self.payPalRequest as? BTPayPalCheckoutRequest,
+           checkoutRequest.offerPayLater {
+            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.paylater.offered.\(successString)")
+        }
+        
+        if let vaultRequest = self.payPalRequest as? BTPayPalVaultRequest,
+           vaultRequest.offerCredit {
+            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.credit.offered.\(successString)")
+        }
     }
     
     // TODO: remove
