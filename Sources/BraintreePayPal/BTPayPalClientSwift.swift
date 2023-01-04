@@ -20,7 +20,7 @@ import BraintreeDataCollector
     let apiClient: BTAPIClient
     
     /// Exposed for testing the clientMetadataID associated with this request
-    let clientMetadataID: String? = nil
+    var clientMetadataID: String? = nil
     
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest? = nil
@@ -85,10 +85,6 @@ import BraintreeDataCollector
         }
         
         self.apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            return
-        }
-        
-        self.apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error = error as? NSError { // TODO: Notice this whole class uses NSError but BTAPIClient uses Error
                 completion(nil, error)
                 return
@@ -124,12 +120,13 @@ import BraintreeDataCollector
                     if error.code == BTCoreConstants.networkConnectionLostCode {
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
-                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey],
-                          let errorDetailsIssue = jsonResponseBody["paymentResource"]?["errorDetails"]?[0]?["issue"] else {
+                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
                         // TODO: unhandled case in ObjC
                         completion(nil, error)
                         return
                     }
+                    
+                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
                     var dictionary = error.userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
                     let completionError = NSError(
@@ -140,23 +137,31 @@ import BraintreeDataCollector
                     completion(nil, completionError)
                     return
                 }
+
+                guard let body,
+                      var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                        body["agreementSetup"]["approvalUrl"].asURL() else {
+                    completion(nil, nil) // TODO: unhandled case in objc
+                    return
+                }
                 
-                var approvalURL = body["paymentResource"]?["redirectUrl"].asURL() ??
-                                  body["agreementSetup"]?["approvalUrl"].asURL()
                 approvalURL = self.decorate(approvalURL: approvalURL, for: request)
-                
+
                 let pairingID = Self.token(from: approvalURL)
                 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationId ??
                                         dataCollector.clientMetadataID(pairingID)
                 
-                self.sendAnalyticsEventForInitiatingOneTouch(paymentType: request.paymentType, success: error == nil)
+                self.sendAnalyticsEventForInitiatingOneTouch(
+                    paymentType: requestTokenizable.paymentType,
+                    success: error == nil
+                )
                 
                 self.handlePayPalRequest(
                     with: approvalURL,
-                    error: error,
-                    paymentType: request.paymentType,
+                    error: nil,
+                    paymentType: requestTokenizable.paymentType,
                     completion: completion
                 )
             }
@@ -227,7 +232,7 @@ import BraintreeDataCollector
     // TODO: Make an extension on URL? See usage in tokenizePayPalAccount
     func decorate(
         approvalURL: URL,
-        for request: BTPayPalCheckoutRequest
+        for request: BTPayPalRequest
     ) -> URL {
         guard let request = payPalRequest as? BTPayPalCheckoutRequest,
               var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
