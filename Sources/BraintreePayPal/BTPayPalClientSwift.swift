@@ -197,11 +197,10 @@ import BraintreeDataCollector
                     NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
                 ]
             )
-            if let eventString = Self.eventString(for: paymentType) {
-                let eventName = "ios.\(eventString).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
-                self.apiClient.sendAnalyticsEvent(eventName)
-            }
-           
+            
+            let eventName = "ios.\(paymentType.string).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
+            self.apiClient.sendAnalyticsEvent(eventName)
+                        
             completion(nil, urlError)
             return
         }
@@ -254,11 +253,11 @@ import BraintreeDataCollector
                        error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
                         if self.returnedToAppAfterPermissionAlert {
                             // User tapped system cancel button in browser
-                            let eventName = "ios.\(Self.eventString(for: paymentType)).authsession.browser.cancel"
+                            let eventName = "ios.\(paymentType.string).authsession.browser.cancel"
                             self.apiClient.sendAnalyticsEvent(eventName)
                         } else {
                             // User tapped system cancel button on permission alert
-                            let eventName = "ios.\(Self.eventString(for: paymentType)).authsession.alert.cancel"
+                            let eventName = "ios.\(paymentType.string).authsession.alert.cancel"
                             self.apiClient.sendAnalyticsEvent(eventName)
                         }
                     }
@@ -285,9 +284,9 @@ import BraintreeDataCollector
         self.isAuthenticationSessionStarted = self.authenticationSession?.start() ?? false
         
         if self.isAuthenticationSessionStarted {
-            self.apiClient.sendAnalyticsEvent("ios.\(Self.eventString(for: paymentType)).authsession.start.succeeded")
+            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).authsession.start.succeeded")
         } else {
-            self.apiClient.sendAnalyticsEvent("ios.\(Self.eventString(for: paymentType)).authsession.start.failed")
+            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).authsession.start.failed")
         }
     }
     
@@ -384,28 +383,27 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType
     ) {
         if nonce.creditFinancing != nil {
-            self.apiClient.sendAnalyticsEvent("ios.\(Self.eventString(for: paymentType)).credit.accepted")
+            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).credit.accepted")
         }
     }
     
     private func sendAnalyticsEventForTokenizationFailure(paymentType: BTPayPalPaymentType) {
-        self.apiClient.sendAnalyticsEvent("ios.\(Self.eventString(for: paymentType)).tokenize.failed")
+        self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).tokenize.failed")
     }
     
     private func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
-        let eventString = Self.eventString(for: paymentType)
         let successString = success ? "started" : "failed"
         
-        self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.initiate.\(successString)")
+        self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.initiate.\(successString)")
         
         if let checkoutRequest = self.payPalRequest as? BTPayPalCheckoutRequest,
            checkoutRequest.offerPayLater {
-            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.paylater.offered.\(successString)")
+            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.paylater.offered.\(successString)")
         }
         
         if let vaultRequest = self.payPalRequest as? BTPayPalVaultRequest,
            vaultRequest.offerCredit {
-            self.apiClient.sendAnalyticsEvent("ios.\(eventString).webswitch.credit.offered.\(successString)")
+            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.credit.offered.\(successString)")
         }
     }
     
@@ -538,19 +536,6 @@ import BraintreeDataCollector
         ]
         
         return result
-    }
-    
-    // TODO: Can we default to "paypal-single-payment"?
-    // TODO: Can we make this an extension on BTPayPalPaymentType rather than a class function here?
-    private static func eventString(for paymentType: BTPayPalPaymentType) -> String? {
-        switch paymentType {
-        case .vault:
-            return "paypal-ba"
-        case .checkout:
-            return "paypal-single-payment"
-        default:
-            return nil
-        }
     }
     
     private static func action(from url: URL) -> String? {

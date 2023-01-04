@@ -19,6 +19,15 @@ import BraintreeCore
 
     /// Vault
     case vault
+    
+    var string: String {
+        switch self {
+        case .vault:
+            return "paypal-ba"
+        case .checkout:
+            return "paypal-single-payment"
+        }
+    }
 }
 
 /// Use this option to specify the PayPal page to display when a user lands on the PayPal site to complete the payment.
