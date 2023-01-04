@@ -190,7 +190,7 @@ import BraintreeDataCollector
         if let scheme = url.scheme,
            !scheme.lowercased().hasPrefix("http") {
             let urlError = NSError(
-                domain: "com.braintreepayments.BTPayPalErrorDomain",
+                domain: BTPayPalErrorDomain,
                 code: BTPayPalErrorSwift.unknown.rawValue,
                 userInfo: [
                     NSLocalizedDescriptionKey: "Attempted to open an invalid URL in ASWebAuthenticationSession: \(scheme)://",
