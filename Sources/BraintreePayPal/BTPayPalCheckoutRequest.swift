@@ -36,7 +36,7 @@ import BraintreeCore
 }
 
 /// Options for the PayPal Checkout flow.
-@objcMembers public class BTPayPalCheckoutRequest: BTPayPalRequest, BTPayPalRequestTokenizable {
+@objcMembers public class BTPayPalCheckoutRequest: BTPayPalRequest {
 
     // MARK: - Public Properties
 

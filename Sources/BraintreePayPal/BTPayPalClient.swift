@@ -12,19 +12,19 @@ import BraintreeDataCollector
 @objcMembers public class BTPayPalClient: NSObject, ASWebAuthenticationPresentationContextProviding {
     
     // MARK: - Internal Properties
-    
-    /// Exposed for testing the approvalURL construction
-    var approvalURL: URL? = nil
-    
+
     ///Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
     
+    /// Exposed for testing the approvalURL construction
+    var approvalURL: URL? = nil
+
     /// Exposed for testing the clientMetadataID associated with this request
     var clientMetadataID: String? = nil
     
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest? = nil
-    
+
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var authenticationSession: ASWebAuthenticationSession? = nil
     
@@ -32,7 +32,8 @@ import BraintreeDataCollector
     var isAuthenticationSessionStarted: Bool = false
     
     // MARK: - Private Properties
-    
+
+    // TODO: should this be private?
     var returnedToAppAfterPermissionAlert: Bool = false
 
     /// Initialize a new PayPal client instance.
@@ -53,57 +54,45 @@ import BraintreeDataCollector
     
     /// Tokenize a PayPal account for vault or checkout.
     ///
-    /// @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+    /// - Note: You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
     /// server when this method completes without any additional user interaction.
     ///
     /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
-    /// If the user cancels outof the flow, the error code will be `BTPayPalClientErrorTypeCanceled`.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
     ///
     /// - Parameters:
-    ///   - request: Either a BTPayPalCheckoutRequest or a BTPayPalVaultRequest
+    ///   - request: Either a `BTPayPalCheckoutRequest` or a `BTPayPalVaultRequest`
     ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
-        with request: BTPayPalRequest?,
-        completion: @escaping (BTPayPalAccountNonce?, NSError?) -> Void
+        with request: BTPayPalRequest,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        guard let request else {
-            completion(nil, NSError(domain: BTPayPalError.domain, code: BTPayPalError.invalidRequest.rawValue))
+        // TODO: refactor this
+        guard let downcastRequest = request as? BTPayPalRequestable else {
+            // TODO: add error for this if we keep it
             return
         }
-        
-        guard let requestTokenizable = request as? BTPayPalRequestTokenizable else {
-            let error = NSError(
-                domain: BTPayPalError.domain,
-                code: BTPayPalError.integration.rawValue,
-                userInfo: [
-                    NSLocalizedDescriptionKey: "BTPayPalClient failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."
-                ]
-            )
-            completion(nil, error)
-            return
-        }
-        
+
         self.apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error = error as? NSError { // TODO: Notice this whole class uses NSError but BTAPIClient uses Error
+            if let error {
                 completion(nil, error)
                 return
             }
             
-            guard let configuration = configuration,
-                  let json = configuration.json else {
-                completion(nil, nil) // TODO: What is this error?
+            guard let configuration, let json = configuration.json else {
+                completion(nil, BTPayPalError.fetchConfigurationFailed)
                 return
             }
             
             do {
                 guard try self.verifyAppSwitch(remoteConfiguration: json) else {
                     // TODO: In Objc an error response is also a false response
-                    completion(nil, NSError(domain: BTPayPalError.domain, code: BTPayPalError.unknown.rawValue))
+                    completion(nil, BTPayPalError.disabled)
                     return
                 }
             } catch {
-                completion(nil, error as NSError)
+                completion(nil, error)
                 return
             }
             
@@ -113,50 +102,31 @@ import BraintreeDataCollector
             // Doing so could increase readability by reducing the line count in this function and removing some nested
             // logic
             self.apiClient.post(
-                requestTokenizable.hermesPath,
-                parameters: requestTokenizable.parameters(with: configuration)
+                // TODO: remove this force unwrap
+                downcastRequest.hermesPath!,
+                parameters: downcastRequest.parameters!(with: configuration)
             ) { body, response, error in
                 if let error = error as? NSError {
                     if error.code == BTCoreConstants.networkConnectionLostCode {
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
+
                     guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
-                        let completionError = NSError(
-                            domain: BTPayPalError.domain,
-                            code: BTPayPalError.unknown.rawValue,
-                            userInfo: [
-                                NSLocalizedDescriptionKey: "Unexpected state, failed to parse JSON from POST error in Tokenize request",
-                                NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
-                            ]
-                        )
-                        completion(nil, completionError)
+                        completion(nil, BTPayPalError.httpResponseMissingUserInfoJSON)
                         return
                     }
                     
                     let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
                     var dictionary = error.userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
-                    let completionError = NSError(
-                        domain: error.domain,
-                        code: error.code,
-                        userInfo: dictionary
-                    )
-                    completion(nil, completionError)
+                    completion(nil, BTPayPalError.httpPostRequestError(dictionary))
                     return
                 }
 
                 guard let body,
                       var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                         body["agreementSetup"]["approvalUrl"].asURL() else {
-                    let completionError = NSError(
-                        domain: BTPayPalError.domain,
-                        code: BTPayPalError.unknown.rawValue,
-                        userInfo: [
-                            NSLocalizedDescriptionKey: "Unexpected state, failed to parse approvalUrl or redirectUrl from response body.",
-                            NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
-                        ]
-                    )
-                    completion(nil, completionError)
+                    completion(nil, BTPayPalError.invalidURL)
                     return
                 }
                 
@@ -169,14 +139,14 @@ import BraintreeDataCollector
                                         dataCollector.clientMetadataID(pairingID)
                 
                 self.sendAnalyticsEventForInitiatingOneTouch(
-                    paymentType: requestTokenizable.paymentType,
+                    paymentType: downcastRequest.paymentType!, // TODO: remove this force unwrap
                     success: error == nil
                 )
                 
                 self.handlePayPalRequest(
                     with: approvalURL,
                     error: nil,
-                    paymentType: requestTokenizable.paymentType,
+                    paymentType: downcastRequest.paymentType!, // TODO: remove this force unwrap
                     completion: completion
                 )
             }
@@ -193,9 +163,9 @@ import BraintreeDataCollector
     
     func handlePayPalRequest(
         with url: URL,
-        error: NSError?,
+        error: Error?,
         paymentType: BTPayPalPaymentType,
-        completion: @escaping (BTPayPalAccountNonce?, NSError?)->Void
+        completion: @escaping (BTPayPalAccountNonce?, Error?)->Void
     ) {
         if let error {
             completion(nil, error)
@@ -204,19 +174,10 @@ import BraintreeDataCollector
         
         if let scheme = url.scheme,
            !scheme.lowercased().hasPrefix("http") {
-            let urlError = NSError(
-                domain: BTPayPalError.domain,
-                code: BTPayPalError.unknown.rawValue,
-                userInfo: [
-                    NSLocalizedDescriptionKey: "Attempted to open an invalid URL in ASWebAuthenticationSession: \(scheme)://",
-                    NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
-                ]
-            )
-            
             let eventName = "ios.\(paymentType.string).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
             self.apiClient.sendAnalyticsEvent(eventName)
                         
-            completion(nil, urlError)
+            completion(nil, BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme))
             return
         }
         performSwitchRequest(
@@ -255,27 +216,15 @@ import BraintreeDataCollector
     public func handleBrowserSwitchReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType,
-        completion: @escaping (BTPayPalAccountNonce?, NSError?) -> Void
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         guard let url, Self.isValidURLAction(url: url) else {
-            let error = NSError(domain: BTPayPalError.domain,
-                                code: BTPayPalError.unknown.rawValue,
-                                userInfo: [
-                                    NSLocalizedDescriptionKey: "Unexpected response"
-                                ])
-            completion(nil, error)
+            completion(nil, BTPayPalError.invalidURLAction)
             return
         }
         
         guard let response = Self.responseDictionary(from: url) else {
-            let error = NSError(
-                domain: BTPayPalError.domain,
-                code: BTPayPalError.canceled.rawValue,
-                userInfo: [
-                    NSLocalizedDescriptionKey: "PayPal flow was canceled by the user."
-                ]
-            )
-            completion(nil, error)
+            completion(nil, BTPayPalError.canceled)
             return
         }
         var parameters: [String: Any] = [
@@ -313,7 +262,10 @@ import BraintreeDataCollector
             "sessionId": metadata.sessionID
         ]
         
-        self.apiClient.post("/v1/payment_methods/paypal_accounts") { body, response, error in
+        self.apiClient.post(
+            "/v1/payment_methods/paypal_accounts",
+            parameters: parameters
+        ) { body, response, error in
             if let error = error as? NSError {
                 if error.code == BTCoreConstants.networkConnectionLostCode {
                     self.apiClient.sendAnalyticsEvent("ios.paypal.handle-browser-switch.network-connection.failure")
@@ -324,19 +276,12 @@ import BraintreeDataCollector
             }
             self.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
             
-            guard let paypalAccount = body?["paypayAccounts"].asArray()?.first,
-                  let tokenizedAccount = self.payPalAccount(from: paypalAccount) else {
-                let completionError = NSError(
-                    domain: BTPayPalError.domain,
-                    code: BTPayPalError.unknown.rawValue,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unexpected state, failed to parse JSON from POST error in Tokenize request",
-                        NSLocalizedRecoverySuggestionErrorKey: "Try again or contact Braintree Support."
-                    ]
-                )
-                 completion(nil, completionError)
+            guard let paypalAccount = body?["paypalAccounts"].asArray()?.first,
+                  let tokenizedAccount = BTPayPalAccountNonce(json: paypalAccount) else {
+                completion(nil, BTPayPalError.failedToCreateNonce)
                 return
             }
+
             self.sendAnalyticsEventIfCreditFinancing(
                 in: tokenizedAccount,
                 paymentType: paymentType
@@ -350,7 +295,7 @@ import BraintreeDataCollector
     private func performSwitchRequest(
         appSwitchURL: URL,
         paymentType: BTPayPalPaymentType,
-        completion: @escaping (BTPayPalAccountNonce?, NSError?) -> Void
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         self.approvalURL = appSwitchURL
         self.authenticationSession = ASWebAuthenticationSession(
@@ -373,19 +318,10 @@ import BraintreeDataCollector
                     
                     // User canceled by breaking out of the PayPal browser switch flow
                     // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                    let err = NSError(
-                        domain: BTPayPalError.domain,
-                        code: BTPayPalError.canceled.rawValue,
-                        userInfo: [NSLocalizedDescriptionKey: "PayPal flow was canceled by the user."]
-                    )
-                    completion(nil, err)
+                    completion(nil, BTPayPalError.canceled)
                     return
                 }
-                self.handleBrowserSwitchReturn(
-                    callbackURL,
-                    paymentType: paymentType,
-                    completion: completion
-                )
+                self.handleBrowserSwitchReturn(callbackURL, paymentType: paymentType, completion: completion)
             }
         
         self.authenticationSession?.presentationContextProvider = self
@@ -430,11 +366,6 @@ import BraintreeDataCollector
         }
     }
     
-    // TODO: remove
-    private func payPalAccount(from json: BTJSON) -> BTPayPalAccountNonce? {
-        return BTPayPalAccountNonce(json: json)
-    }
-    
     // MARK: - ASWebAuthenticationPresentationContextProviding protocol
     
     // TODO: - Unavailable for extension
@@ -461,17 +392,14 @@ import BraintreeDataCollector
     }
     
     // MARK: - Preflight Check
-    
+
+    // TODO: refactor this to not throw and just return the result of isTrue - move analytics above
     private func verifyAppSwitch(remoteConfiguration configuration: BTJSON) throws -> Bool {
         guard configuration["payPalEnabled"].isTrue else {
             self.apiClient.sendAnalyticsEvent("ios.paypal-otc.preflight.disabled")
-            throw NSError(domain: BTPayPalError.domain,
-                          code: BTPayPalError.disabled.rawValue,
-            userInfo: [
-                NSLocalizedDescriptionKey : "PayPal is not enabled for this merchant",
-                NSLocalizedRecoverySuggestionErrorKey: "Enable PayPal for this merchant in the Braintree Control Panel"
-            ])
+            throw BTPayPalError.disabled
         }
+
         return true
     }
     
@@ -501,7 +429,7 @@ import BraintreeDataCollector
         for pair in pairs {
             let elements = pair.components(separatedBy: "=")
             if elements.count > 1,
-               let key = elements[0].removingPercentEncoding, // TODO: removingPercentEncoding will be unneccessary in iOS16
+               let key = elements[0].removingPercentEncoding, // TODO: removingPercentEncoding will be unnecessary in iOS16
                let value = elements[1].removingPercentEncoding, // TODO: ditto above
                !key.isEmpty,
                !value.isEmpty {
@@ -566,6 +494,7 @@ import BraintreeDataCollector
            !action.isEmpty else {
             return url.host
         }
+
         return action
     }
 }

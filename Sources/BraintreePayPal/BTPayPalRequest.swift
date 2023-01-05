@@ -58,7 +58,7 @@ import BraintreeCore
 
 /// Base options for PayPal Checkout and PayPal Vault flows.
 /// - Note: Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
-@objcMembers public class BTPayPalRequest: NSObject, BTPayPalRequestable {
+@objcMembers public class BTPayPalRequest: NSObject {
 
     // MARK: - Public Properties
 
