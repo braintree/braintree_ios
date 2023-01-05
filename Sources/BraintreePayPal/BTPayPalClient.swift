@@ -69,8 +69,8 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         // TODO: refactor this
-        guard let downcastRequest = request as? BTPayPalRequestable else {
-            // TODO: add error for this if we keep it
+        guard let request = request as? BTPayPalRequestable else {
+            completion(nil, BTPayPalError.integration)
             return
         }
 
@@ -85,14 +85,9 @@ import BraintreeDataCollector
                 return
             }
             
-            do {
-                guard try self.verifyAppSwitch(remoteConfiguration: json) else {
-                    // TODO: In Objc an error response is also a false response
-                    completion(nil, BTPayPalError.disabled)
-                    return
-                }
-            } catch {
-                completion(nil, error)
+            guard json["paypalEnabled"].isTrue else {
+                self.apiClient.sendAnalyticsEvent("ios.paypal-otc.preflight.disabled")
+                completion(nil, BTPayPalError.disabled)
                 return
             }
             
@@ -103,8 +98,8 @@ import BraintreeDataCollector
             // logic
             self.apiClient.post(
                 // TODO: remove this force unwrap
-                downcastRequest.hermesPath!,
-                parameters: downcastRequest.parameters!(with: configuration)
+                request.hermesPath,
+                parameters: request.parameters(with: configuration)
             ) { body, response, error in
                 if let error = error as? NSError {
                     if error.code == BTCoreConstants.networkConnectionLostCode {
@@ -139,14 +134,14 @@ import BraintreeDataCollector
                                         dataCollector.clientMetadataID(pairingID)
                 
                 self.sendAnalyticsEventForInitiatingOneTouch(
-                    paymentType: downcastRequest.paymentType!, // TODO: remove this force unwrap
+                    paymentType: request.paymentType,
                     success: error == nil
                 )
                 
                 self.handlePayPalRequest(
                     with: approvalURL,
                     error: nil,
-                    paymentType: downcastRequest.paymentType!, // TODO: remove this force unwrap
+                    paymentType: request.paymentType,
                     completion: completion
                 )
             }
@@ -379,25 +374,14 @@ import BraintreeDataCollector
             }
         }
         
-        if #available(iOS 15, *),
-           let firstConnectedScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let result = firstConnectedScene.windows.first {
-            return result
+        if #available(iOS 15, *) {
+            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let window = firstScene?.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
         } else {
-            return UIApplication.shared.windows.first! // TODO: - How to fail here if nil?
+            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
         }
-    }
-    
-    // MARK: - Preflight Check
-
-    // TODO: refactor this to not throw and just return the result of isTrue - move analytics above
-    private func verifyAppSwitch(remoteConfiguration configuration: BTJSON) throws -> Bool {
-        guard configuration["payPalEnabled"].isTrue else {
-            self.apiClient.sendAnalyticsEvent("ios.paypal-otc.preflight.disabled")
-            throw BTPayPalError.disabled
-        }
-
-        return true
     }
     
     // MARK: - Private Static Helper Methods
@@ -405,17 +389,17 @@ import BraintreeDataCollector
     // TODO: Confirm optionality of return type in actual use.
     private static func token(from approvalURL: URL) -> String? {
         let queryDictionary: [String: String]
-        if #available(iOS 16, *) {
-            guard let query = approvalURL.query(percentEncoded: false) else {
-                return nil
-            }
-            queryDictionary = parse(queryString: query)
-        } else {
+//        if #available(iOS 16, *) {
+//            guard let query = approvalURL.query(percentEncoded: false) else {
+//                return nil
+//            }
+//            queryDictionary = parse(queryString: query)
+//        } else {
             guard let query = approvalURL.query else {
                 return nil
             }
             queryDictionary = parse(queryString: query)
-        }
+//        }
         return queryDictionary["token"] ?? queryDictionary["ba_token"]
     }
     

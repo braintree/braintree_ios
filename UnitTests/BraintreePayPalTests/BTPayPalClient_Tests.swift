@@ -72,7 +72,7 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTAssertNil(nonce)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
             XCTAssertEqual(error.code, BTPayPalError.disabled.errorCode)
-            XCTAssertEqual(error.localizedDescription, "PayPal is not enabled for this merchant")
+            XCTAssertEqual(error.localizedDescription, "PayPal is not enabled for this merchant. Enable PayPal for this merchant in the Braintree Control Panel.")
             expectation.fulfill()
         }
 

@@ -5,12 +5,11 @@ import BraintreeCore
 #endif
 
 // TODO: Make internal once rest of PayPal module is in Swift
-@objc public protocol BTPayPalRequestable: AnyObject {
-    @objc optional var hermesPath: String { get }
-    @objc optional var paymentType: BTPayPalPaymentType { get }
+public protocol BTPayPalRequestable where Self: BTPayPalRequest {
+    var hermesPath: String { get }
+    var paymentType: BTPayPalPaymentType { get }
 
-    @objc(parametersWithConfiguration:)
-    optional func parameters(with configuration: BTConfiguration) -> [String: Any]
+    func parameters(with configuration: BTConfiguration) -> [String: Any]
 }
 
 @objc public enum BTPayPalPaymentType: Int {

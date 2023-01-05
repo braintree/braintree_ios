@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 ///  Options for the PayPal Vault flow.
-@objcMembers public class BTPayPalVaultRequest: BTPayPalRequest {
+@objcMembers public class BTPayPalVaultRequest: BTPayPalRequest, BTPayPalRequestable {
 
     // MARK: - Public Properties
 
