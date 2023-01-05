@@ -111,7 +111,7 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     func testTokenizePayPalAccount_whenPaymentResourceCreationFails_callsBackWithError() {
-        mockAPIClient.cannedResponseError = NSError(domain: "", code: 0, userInfo: nil)
+        mockAPIClient.cannedResponseError = BTPayPalError.httpResponseMissingUserInfoJSON as NSError
 
         let dummyRequest = BTPayPalCheckoutRequest(amount: "1")
         let expectation = self.expectation(description: "Checkout fails with error")
@@ -208,8 +208,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
             XCTAssertNil(nonce)
             XCTAssertEqual((error! as NSError).domain, BTPayPalError.errorDomain)
-            XCTAssertEqual((error! as NSError).code, BTPayPalError.unknown.errorCode)
-            XCTAssertEqual((error! as NSError).localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://")
+            XCTAssertEqual((error! as NSError).code, BTPayPalError.asWebAuthenticationSessionURLInvalid("").errorCode)
+            XCTAssertEqual((error! as NSError).localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://. Try again or contact Braintree Support.")
             expectation.fulfill()
         }
 
@@ -302,7 +302,7 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTAssertNil(nonce)
             XCTAssertNotNil(error)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalError.unknown.errorCode)
+            XCTAssertEqual(error.code, BTPayPalError.invalidURLAction.errorCode)
             continuationExpectation.fulfill()
         }
 
