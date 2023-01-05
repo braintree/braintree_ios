@@ -33,8 +33,7 @@ import BraintreeDataCollector
     
     // MARK: - Private Properties
 
-    // TODO: should this be private?
-    var returnedToAppAfterPermissionAlert: Bool = false
+    private var returnedToAppAfterPermissionAlert: Bool = false
 
     /// Initialize a new PayPal client instance.
     /// - Parameter apiClient: The API Client
@@ -360,7 +359,8 @@ import BraintreeDataCollector
     
     // MARK: - ASWebAuthenticationPresentationContextProviding protocol
     
-    // TODO: - Unavailable for extension
+    // TODO: - NS_EXTENSION_UNAVAILABLE
+    // "Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions."
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if let activeWindow = self.payPalRequest?.activeWindow {
             return activeWindow
@@ -386,21 +386,13 @@ import BraintreeDataCollector
     
     // MARK: - Private Static Helper Methods
     
-    // TODO: Confirm optionality of return type in actual use.
-    private static func token(from approvalURL: URL) -> String? {
-        let queryDictionary: [String: String]
-//        if #available(iOS 16, *) {
-//            guard let query = approvalURL.query(percentEncoded: false) else {
-//                return nil
-//            }
-//            queryDictionary = parse(queryString: query)
-//        } else {
-            guard let query = approvalURL.query else {
-                return nil
-            }
-            queryDictionary = parse(queryString: query)
-//        }
-        return queryDictionary["token"] ?? queryDictionary["ba_token"]
+    private static func token(from approvalURL: URL) -> String {
+        guard let query = approvalURL.query else {
+            return ""
+        }
+        let queryDictionary = parse(queryString: query)
+        
+        return queryDictionary["token"] ?? queryDictionary["ba_token"] ?? ""
     }
     
     private static func parse(queryString query: String) -> [String: String] {
@@ -410,8 +402,8 @@ import BraintreeDataCollector
         for pair in pairs {
             let elements = pair.components(separatedBy: "=")
             if elements.count > 1,
-               let key = elements[0].removingPercentEncoding, // TODO: removingPercentEncoding will be unnecessary in iOS16
-               let value = elements[1].removingPercentEncoding, // TODO: ditto above
+               let key = elements[0].removingPercentEncoding,
+               let value = elements[1].removingPercentEncoding,
                !key.isEmpty,
                !value.isEmpty {
                 dict[key] = value
@@ -437,10 +429,9 @@ import BraintreeDataCollector
         if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
             return false
         }
-        
-        // TODO: Is the action method redundant? We could grab the action when initializing hostAndPath.
+
         guard let action = action(from: url),
-              let query = url.query,   // TODO: query to be deprecated
+              let query = url.query,
               query.count > 0,
               action.count >= 0,
               ["success", "cancel", "authenticate"].contains(action) else {
