@@ -282,14 +282,11 @@ import BraintreeDataCollector
                 return
             }
 
-            self.sendAnalyticsEventIfCreditFinancing(
-                in: tokenizedAccount,
-                paymentType: paymentType
-            )
+            self.sendAnalyticsEventIfCreditFinancing(in: tokenizedAccount,paymentType: paymentType)
             completion(tokenizedAccount, nil)
         }
     }
-    
+
     // MARK: - Private Methods
     
     private func performSwitchRequest(
@@ -483,7 +480,7 @@ import BraintreeDataCollector
             "response": [
                 "webURL": url.absoluteString
             ],
-            "response_type": "w"
+            "response_type": "web"
         ]
         
         return result

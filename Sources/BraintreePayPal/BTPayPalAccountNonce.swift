@@ -76,7 +76,8 @@ import BraintreeCore
         self.lastName = payerInfo["lastName"].asString()
         self.phone = payerInfo["phone"].asString()
         self.billingAddress = payerInfo["billingAddress"].asAddress()
-        self.shippingAddress = payerInfo["shippingAddress"].asAddress()
+        self.shippingAddress = payerInfo["shippingAddress"].asAddress() ??
+                               payerInfo["accountAddress"].asAddress()
         self.clientMetadataID = payerInfo["correlationId"].asString()
         self.payerID = payerInfo["payerId"].asString()
         self.creditFinancing = details["creditFinancingOffered"].asCreditFinancing()
