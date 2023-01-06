@@ -36,18 +36,18 @@ import BraintreeCore
 ///  The call-to-action in the PayPal Checkout flow.
 ///
 ///  - Note: By default the final button will show the localized word for "Continue" and implies that the final amount billed is not yet known.
-///  Setting the BTPayPalRequest's userAction to `BTPayPalRequestUserActionCommit` changes the button text to "Pay Now", conveying to
+///  Setting the BTPayPalRequest's userAction to `.payNow` changes the button text to "Pay Now", conveying to
 ///  the user that billing will take place immediately.
 @objc public enum BTPayPalRequestUserAction: Int {
     /// Default
-    case `default`
+    case none
 
-    /// Commit
-    case commit
+    /// Pay now
+    case payNow
 
     var stringValue: String {
         switch self {
-        case .commit:
+        case .payNow:
             return "commit"
         default:
             return ""
@@ -69,7 +69,7 @@ import BraintreeCore
     public var intent: BTPayPalRequestIntent?
 
     /// Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.default`.
-    public var userAction: BTPayPalRequestUserAction?
+    public var userAction: BTPayPalRequestUserAction
 
     /// Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     public var offerPayLater: Bool
@@ -97,7 +97,7 @@ import BraintreeCore
     public init(
         amount: String,
         intent: BTPayPalRequestIntent? = .authorize,
-        userAction: BTPayPalRequestUserAction = .default,
+        userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false

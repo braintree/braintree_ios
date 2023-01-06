@@ -273,7 +273,7 @@ import BraintreeDataCollector
             return approvalURL
         }
 
-        let userActionValue = request.userAction?.stringValue ?? ""
+        let userActionValue = request.userAction.stringValue
         guard userActionValue.count > 0 else {
             return approvalURL
         }
