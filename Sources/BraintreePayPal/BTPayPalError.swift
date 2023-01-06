@@ -2,15 +2,10 @@ import Foundation
 
 /// Error codes associated with PayPal.
 enum BTPayPalError: Error, CustomNSError, LocalizedError {
-    /// Unknown error
-    case unknown
-    
+
     /// PayPal is disabled in configuration
     case disabled
 
-    /// Braintree SDK is integrated incorrectly
-    case integration
-    
     /// Payment flow was canceled, typically initiated by the user when exiting early from the flow.
     case canceled
 
@@ -41,39 +36,31 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
 
     var errorCode: Int {
         switch self {
-        case .unknown:
-            return 0
         case .disabled:
-            return 1
-        case .integration:
-            return 2
+            return 0
         case .canceled:
-            return 3
+            return 1
         case .fetchConfigurationFailed:
-            return 4
+            return 2
         case .httpResponseMissingUserInfoJSON:
-            return 5
+            return 3
         case .httpPostRequestError:
-            return 6
+            return 4
         case .invalidURL:
-            return 7
+            return 5
         case .asWebAuthenticationSessionURLInvalid:
-            return 8
+            return 6
         case .invalidURLAction:
-            return 9
+            return 7
         case .failedToCreateNonce:
-            return 10
+            return 8
         }
     }
 
     var errorDescription: String? {
         switch self {
-        case .unknown:
-            return ""
         case .disabled:
             return "PayPal is not enabled for this merchant. Enable PayPal for this merchant in the Braintree Control Panel."
-        case .integration:
-            return "BTPayPalClient failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest."
         case .canceled:
             return "PayPal flow was canceled by the user."
         case .fetchConfigurationFailed:

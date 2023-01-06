@@ -26,22 +26,6 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
     }
 
-    func testTokenizePayPalAccount_whenRequestIsNotExpectedSubclass_callsBackWithError() {
-        let request = BTPayPalRequest() // not one of our subclasses
-        let expectation = expectation(description: "Checkout fails with error")
-
-        payPalClient.tokenizePayPalAccount(with: request) { nonce, error in
-            guard let error = error as NSError? else { XCTFail(); return }
-            XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalError.integration.errorCode)
-            XCTAssertEqual(error.localizedDescription, "BTPayPalClient failed because request is not of type BTPayPalCheckoutRequest or BTPayPalVaultRequest.")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
-    }
-
     func testTokenizePayPalAccount_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseBody = nil
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)

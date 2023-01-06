@@ -4,8 +4,7 @@ import UIKit
 import BraintreeCore
 #endif
 
-// TODO: Make internal once rest of PayPal module is in Swift
-public protocol BTPayPalRequestable where Self: BTPayPalRequest {
+@objc public protocol BTPayPalRequestable where Self: BTPayPalRequest {
     var hermesPath: String { get }
     var paymentType: BTPayPalPaymentType { get }
 
