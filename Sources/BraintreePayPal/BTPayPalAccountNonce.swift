@@ -68,16 +68,12 @@ import BraintreeCore
         let details = json["details"]
         let payerInfo = details["payerInfo"]
 
-        // TODO: add a comment on why we did this
-        self.email = payerInfo["email"].asString() ??
-                     details["email"].asString()
-        
+        self.email = payerInfo["email"].asString() ?? details["email"].asString()        
         self.firstName = payerInfo["firstName"].asString()
         self.lastName = payerInfo["lastName"].asString()
         self.phone = payerInfo["phone"].asString()
         self.billingAddress = payerInfo["billingAddress"].asAddress()
-        self.shippingAddress = payerInfo["shippingAddress"].asAddress() ??
-                               payerInfo["accountAddress"].asAddress()
+        self.shippingAddress = payerInfo["shippingAddress"].asAddress() ?? payerInfo["accountAddress"].asAddress()
         self.clientMetadataID = payerInfo["correlationId"].asString()
         self.payerID = payerInfo["payerId"].asString()
         self.creditFinancing = details["creditFinancingOffered"].asCreditFinancing()

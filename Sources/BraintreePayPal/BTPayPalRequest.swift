@@ -128,10 +128,10 @@ import BraintreeCore
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationId: String?
 
-    // MARK: - Internal Properties
-
-    // TODO: Make internal once rest of PayPal module is in Swift
+    /// :nodoc:
     public static let callbackURLHostAndPath: String = "onetouch/v1/"
+    
+    /// :nodoc:
     public static let callbackURLScheme: String = "sdk.ios.braintree"
 
     // MARK: - Initializer

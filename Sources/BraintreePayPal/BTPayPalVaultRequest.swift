@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 ///  Options for the PayPal Vault flow.
-@objcMembers public class BTPayPalVaultRequest: BTPayPalRequest, BTPayPalRequestable {
+@objcMembers public class BTPayPalVaultRequest: BTPayPalRequest {
 
     // MARK: - Public Properties
 
@@ -19,14 +19,17 @@ import BraintreeCore
     public init(offerCredit: Bool = false) {
         self.offerCredit = offerCredit
     }
+}
 
-    // MARK: - Internal Properties
-
-    // TODO: Make internal once rest of PayPal module is in Swift
-    public let hermesPath: String = "v1/paypal_hermes/setup_billing_agreement"
-    public let paymentType: BTPayPalPaymentType = .vault
-
-    // TODO: Make internal once rest of PayPal module is in Swift
+extension BTPayPalVaultRequest: BTPayPalRequestable {
+    
+    /// :nodoc:
+    public var hermesPath: String  { "v1/paypal_hermes/setup_billing_agreement" }
+    
+    /// :nodoc:
+    public var paymentType: BTPayPalPaymentType { .vault }
+    
+    /// :nodoc:
     public func parameters(with configuration: BTConfiguration) -> [String: Any] {
         let baseParameters: [String: Any] = baseParameters(with: configuration)
         var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]

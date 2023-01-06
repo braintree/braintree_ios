@@ -56,7 +56,7 @@ import BraintreeCore
 }
 
 /// Options for the PayPal Checkout flow.
-@objcMembers public class BTPayPalCheckoutRequest: BTPayPalRequest, BTPayPalRequestable {
+@objcMembers public class BTPayPalCheckoutRequest: BTPayPalRequest {
 
     // MARK: - Public Properties
 
@@ -81,9 +81,6 @@ import BraintreeCore
 
     /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
-
-    public let hermesPath: String = "v1/paypal_hermes/create_payment_resource"
-    public let paymentType: BTPayPalPaymentType = .checkout
 
     // MARK: - Initializer
 
@@ -112,10 +109,17 @@ import BraintreeCore
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
     }
+}
 
-    // MARK: - Internal methods
-
-    // TODO: Make internal once rest of PayPal module is in Swift
+extension BTPayPalCheckoutRequest: BTPayPalRequestable {
+    
+    /// :nodoc:
+    public var hermesPath: String { "v1/paypal_hermes/create_payment_resource" }
+    
+    /// :nodoc:
+    public var paymentType: BTPayPalPaymentType { .checkout }
+    
+    /// :nodoc:
     public func parameters(with configuration: BTConfiguration) -> [String: Any] {
         let baseParameters: [String: Any] = baseParameters(with: configuration)
         var checkoutParameters: [String: Any] = [
