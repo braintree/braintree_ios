@@ -66,7 +66,7 @@ import BraintreeCore
     public let amount: String
 
     /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
-    public var intent: BTPayPalRequestIntent?
+    public var intent: BTPayPalRequestIntent
 
     /// Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.default`.
     public var userAction: BTPayPalRequestUserAction
@@ -96,7 +96,7 @@ import BraintreeCore
     ///   during checkout. Defaults to `false`.
     public init(
         amount: String,
-        intent: BTPayPalRequestIntent? = .authorize,
+        intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
@@ -123,7 +123,7 @@ extension BTPayPalCheckoutRequest: BTPayPalRequestable {
     public func parameters(with configuration: BTConfiguration) -> [String: Any] {
         let baseParameters: [String: Any] = baseParameters(with: configuration)
         var checkoutParameters: [String: Any] = [
-            "intent": intent?.stringValue ?? "authorize",
+            "intent": intent.stringValue,
             "amount": amount,
             "offer_pay_later": offerPayLater
         ]
