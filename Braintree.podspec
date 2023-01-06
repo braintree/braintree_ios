@@ -58,8 +58,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PayPal" do |s|
-    s.source_files = "Sources/BraintreePayPal/**/*.{swift,h,m}"
-    s.public_header_files = "Sources/BraintreePayPal/Public/BraintreePayPal/*.h"
+    s.source_files = "Sources/BraintreePayPal/**/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/DataCollector"
   end
