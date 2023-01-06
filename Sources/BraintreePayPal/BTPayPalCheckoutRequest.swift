@@ -20,6 +20,17 @@ import BraintreeCore
 
     /// Order
     case order
+
+    var stringValue: String {
+        switch self {
+        case .sale:
+            return "sale"
+        case .order:
+            return "order"
+        default:
+            return "authorize"
+        }
+    }
 }
 
 ///  The call-to-action in the PayPal Checkout flow.
@@ -33,6 +44,15 @@ import BraintreeCore
 
     /// Commit
     case commit
+
+    var stringValue: String {
+        switch self {
+        case .commit:
+            return "commit"
+        default:
+            return ""
+        }
+    }
 }
 
 /// Options for the PayPal Checkout flow.
@@ -62,31 +82,6 @@ import BraintreeCore
     /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
 
-    // MARK: - Internal Properties
-
-    // TODO: Make internal and move into enum once rest of PayPal module is in Swift
-    public var intentAsString: String {
-        switch intent {
-        case .sale:
-            return "sale"
-        case .order:
-            return "order"
-        default:
-            return "authorize"
-        }
-    }
-
-    // TODO: Make internal and move into enum once rest of PayPal module is in Swift
-    public var userActionAsString: String {
-        switch userAction {
-        case .commit:
-            return "commit"
-        default:
-            return ""
-        }
-    }
-
-    // TODO: Make internal once rest of PayPal module is in Swift
     public let hermesPath: String = "v1/paypal_hermes/create_payment_resource"
     public let paymentType: BTPayPalPaymentType = .checkout
 
@@ -124,7 +119,7 @@ import BraintreeCore
     public func parameters(with configuration: BTConfiguration) -> [String: Any] {
         let baseParameters: [String: Any] = baseParameters(with: configuration)
         var checkoutParameters: [String: Any] = [
-            "intent": intentAsString,
+            "intent": intent?.stringValue ?? "authorize",
             "amount": amount,
             "offer_pay_later": offerPayLater
         ]

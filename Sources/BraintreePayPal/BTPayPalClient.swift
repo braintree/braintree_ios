@@ -161,7 +161,7 @@ import BraintreeDataCollector
             return approvalURL
         }
 
-        let userActionValue = request.userActionAsString
+        let userActionValue = request.userAction?.stringValue ?? ""
         guard userActionValue.count > 0 else {
             return approvalURL
         }
@@ -197,7 +197,7 @@ import BraintreeDataCollector
         if paymentType == .checkout {
             account["options"] = ["validate": false]
             if let request  = payPalRequest as? BTPayPalCheckoutRequest {
-                account["intent"] = request.intentAsString
+                account["intent"] = request.intent?.stringValue
             }
         }
         
