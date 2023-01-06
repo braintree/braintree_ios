@@ -6,11 +6,11 @@ import BraintreeCore
 
 /// Payment intent.
 ///
-/// - Note: Must be set to BTPayPalRequestIntentSale for immediate payment, BTPayPalRequestIntentAuthorize to authorize a payment for capture later, or BTPayPalRequestIntentOrder to create an order. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
+/// - Note: Must be set to BTPayPalRequestIntentSale for immediate payment, `.authorize` to authorize a payment for capture later, or `.order` to create an order. Defaults to `.authorize`. Only applies to PayPal Checkout.
 ///
 /// [Capture payments later reference](https://developer.paypal.com/docs/integration/direct/payments/capture-payment/)
 ///
-///[Create and process orders reference](https://developer.paypal.com/docs/integration/direct/payments/create-process-order/)
+/// [Create and process orders reference](https://developer.paypal.com/docs/integration/direct/payments/create-process-order/)
 @objc public enum BTPayPalRequestIntent: Int {
     /// Authorize
     case authorize
