@@ -28,9 +28,9 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testTokenizePayPalAccount_whenRequestIsNotExpectedSubclass_callsBackWithError() {
         let request = BTPayPalRequest() // not one of our subclasses
-        let expectation = self.expectation(description: "Checkout fails with error")
+        let expectation = expectation(description: "Checkout fails with error")
 
-        payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
+        payPalClient.tokenizePayPalAccount(with: request) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
@@ -47,9 +47,9 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        let expectation = self.expectation(description: "Checkout fails with error")
+        let expectation = expectation(description: "Checkout fails with error")
 
-        payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
+        payPalClient.tokenizePayPalAccount(with: request) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertEqual(error, self.mockAPIClient.cannedConfigurationResponseError)
@@ -65,9 +65,9 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        let expectation = self.expectation(description: "Checkout fails with error")
+        let expectation = expectation(description: "Checkout fails with error")
 
-        payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
+        payPalClient.tokenizePayPalAccount(with: request) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
@@ -85,7 +85,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
         checkoutRequest.intent = .sale
 
-        payPalClient.tokenizePayPalAccount(with: checkoutRequest) { (_, _) -> Void in }
+        payPalClient.tokenizePayPalAccount(with: checkoutRequest) { _, _ in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -100,7 +100,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let vaultRequest = BTPayPalVaultRequest()
         vaultRequest.billingAgreementDescription = "description"
         
-        payPalClient.tokenizePayPalAccount(with: vaultRequest) { (_, _) -> Void in }
+        payPalClient.tokenizePayPalAccount(with: vaultRequest) { _, _ in }
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -114,8 +114,8 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = BTPayPalError.httpResponseMissingUserInfoJSON as NSError
 
         let dummyRequest = BTPayPalCheckoutRequest(amount: "1")
-        let expectation = self.expectation(description: "Checkout fails with error")
-        payPalClient.tokenizePayPalAccount(with: dummyRequest) { (_, error) -> Void in
+        let expectation = expectation(description: "Checkout fails with error")
+        payPalClient.tokenizePayPalAccount(with: dummyRequest) { _, error in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
             expectation.fulfill()
         }
@@ -132,7 +132,7 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalClient.approvalURL?.absoluteString)
     }
@@ -145,7 +145,7 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalVaultRequest()
-        payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertEqual("https://checkout.paypal.com/one-touch-login-sandbox", payPalClient.approvalURL?.absoluteString)
     }
@@ -160,7 +160,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.default
 
-        payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalClient.approvalURL?.absoluteString)
     }
@@ -175,7 +175,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.commit
 
-        payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value&useraction=commit", payPalClient.approvalURL?.absoluteString)
     }
@@ -190,7 +190,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.commit
 
-        payPalClient.tokenizePayPalAccount(with: request) { (_, _) in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertEqual("https://www.paypal.com/checkout?useraction=commit", payPalClient.approvalURL?.absoluteString)
     }
@@ -203,9 +203,9 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        let expectation = self.expectation(description: "Returns error")
+        let expectation = expectation(description: "Returns error")
 
-        payPalClient.tokenizePayPalAccount(with: request) { (nonce, error) in
+        payPalClient.tokenizePayPalAccount(with: request) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual((error! as NSError).domain, BTPayPalError.errorDomain)
             XCTAssertEqual((error! as NSError).code, BTPayPalError.asWebAuthenticationSessionURLInvalid("").errorCode)
@@ -223,7 +223,7 @@ class BTPayPalClient_Tests: XCTestCase {
         request.currencyCode = "GBP"
         request.offerPayLater = true
 
-        payPalClient.tokenizePayPalAccount(with: request) { _,_  in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.authenticationSession)
         XCTAssertTrue(payPalClient.isAuthenticationSessionStarted)
@@ -246,7 +246,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalVaultRequest()
         request.offerCredit = true
 
-        payPalClient.tokenizePayPalAccount(with: request) { _,_  in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.authenticationSession)
         XCTAssertTrue(payPalClient.isAuthenticationSessionStarted)
@@ -267,7 +267,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testTokenizePayPalAccount_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        payPalClient.tokenizePayPalAccount(with: request) { _,_  -> Void in }
+        payPalClient.tokenizePayPalAccount(with: request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.authenticationSession)
         XCTAssertTrue(payPalClient.isAuthenticationSessionStarted)
@@ -280,9 +280,9 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleBrowserSwitchReturn_whenBrowserSwitchCancels_callsBackWithNoResultAndError() {
         let returnURL = URL(string: "bar://onetouch/v1/cancel?token=hermes_token")!
 
-        let expectation = self.expectation(description: "completion block called")
+        let expectation = expectation(description: "completion block called")
 
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (nonce, error) in
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual((error! as NSError).domain, BTPayPalError.errorDomain)
             XCTAssertEqual((error! as NSError).code, BTPayPalError.canceled.errorCode)
@@ -295,9 +295,9 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleBrowserSwitchReturn_whenBrowserSwitchHasInvalidReturnURL_callsBackWithError() {
         let returnURL = URL(string: "bar://onetouch/v1/invalid")!
 
-        let continuationExpectation = self.expectation(description: "Continuation called")
+        let continuationExpectation = expectation(description: "Continuation called")
 
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (nonce, error) in
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertNotNil(error)
@@ -311,7 +311,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_tokenizesPayPalCheckout() {
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
 
@@ -327,7 +327,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.payPalRequest = payPalRequest
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
 
@@ -345,7 +345,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.payPalRequest?.merchantAccountID = merchantAccountID
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         let lastPostParameters = mockAPIClient.lastPOSTParameters!
@@ -368,7 +368,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
     }
@@ -406,7 +406,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
     }
@@ -415,7 +415,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_sendsCorrectParametersForTokenization() {
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -584,7 +584,7 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: checkoutResponse as [String : AnyObject])
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (tokenizedPayPalAccount, error) -> Void in
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
         }
     }
@@ -593,7 +593,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testMetadata_whenCheckoutBrowserSwitchIsSuccessful_isPOSTedToServer() {
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
         let lastPostParameters = mockAPIClient.lastPOSTParameters!
@@ -628,7 +628,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: "bar://hello/world")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { _, _ in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
@@ -667,7 +667,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { (_, _) in }
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { _, _ in }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
@@ -677,7 +677,7 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         
         let request = BTPayPalCheckoutRequest(amount: "1")
-        let expectation = self.expectation(description: "Callback envoked")
+        let expectation = expectation(description: "Callback envoked")
         
         payPalClient.tokenizePayPalAccount(with: request) { nonce, error in
             XCTAssertNotNil(error)
@@ -694,7 +694,7 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         
-        let expectation = self.expectation(description: "Callback envoked")
+        let expectation = expectation(description: "Callback envoked")
         
         payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { nonce, error in
             XCTAssertNotNil(error)
