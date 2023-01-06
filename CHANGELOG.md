@@ -1,10 +1,43 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Convert `BraintreePayPal` module to Swift
 * Breaking Changes
   * BraintreePayPal
     * Update `BTPayPalRequestLandingPageType` enum default case to `.none`
-    * Update `BTPayPalRequestUserAction` enum cases to `.none` and `.payNow`
+        * Update enum values
+            * `.none` = 0
+            * `.login` = 1
+            * `.billing` = 2
+    * `BTPayPalRequestUserAction`
+        * Update enum cases to `.none` and `.payNow`
+        * Update enum values
+            * `.none` = 0
+            * `.payNow` = 1
+    * Update `BTPayPalRequestIntent` enum values
+        * `.authorize` = 0
+        * `.sale` = 1
+        * `.order` = 2
+    * Update `BTPayPalLineItemKind` enum values
+        * `.debit` = 0
+        * `.credit` = 1
+    * Create `BTPayPalLocaleCode` enum
+    * `BTPayPalRequest.localeCode` now uses the `BTPayPalLocaleCode` enum instead of a `String`
+    * `BTPayPalClient.tokenizePayPalAccount` now takes a request of type `BTPayPalRequest & BTPayPalRequestable`
+        * This ensures that merchants only pass in the expected subclasses `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
+    * Removed `BTPayPalErrorType`
+    * Replaced `BTPayPalErrorDomain` global constant with `BTPayPalError.errorDomain`
+    * Added `BTPayPalError`
+        * `.disabled`
+        * `.canceled`
+        * `.fetchConfigurationFailed`
+        * `.httpResponseMissingUserInfoJSON`
+        * `.httpPostRequestError`
+        * `.invalidURL`
+        * `.asWebAuthenticationSessionURLInvalid`
+        * `.invalidURLAction`
+        * `.failedToCreateNonce`
+    * Make `BTPayPalNonce` initializer internal
 
 ## 6.0.0-beta1 (2022-12-13)
 * Convert `BraintreeCore` module to Swift

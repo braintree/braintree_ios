@@ -1,7 +1,7 @@
 import Foundation
 
 ///  A locale code to use for a transaction.
-@objc public enum LocaleCode: Int {
+@objc public enum BTPayPalLocaleCode: Int {
     case none
     case da_DK
     case de_DE

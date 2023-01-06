@@ -68,7 +68,7 @@ import BraintreeCore
     public var isShippingAddressEditable: Bool
 
     ///  Optional: A locale code to use for the transaction.
-    public var localeCode: LocaleCode
+    public var localeCode: BTPayPalLocaleCode
 
     /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     public var shippingAddressOverride: BTPostalAddress?
@@ -99,18 +99,17 @@ import BraintreeCore
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationId: String?
 
-    /// :nodoc:
-    public static let callbackURLHostAndPath: String = "onetouch/v1/"
+    // MARK: - Internal Properties
     
-    /// :nodoc:
-    public static let callbackURLScheme: String = "sdk.ios.braintree"
+    static let callbackURLHostAndPath: String = "onetouch/v1/"
+    static let callbackURLScheme: String = "sdk.ios.braintree"
 
     // MARK: - Initializer
 
     init(
         isShippingAddressRequired: Bool = false,
         isShippingAddressEditable: Bool = false,
-        localeCode: LocaleCode = .none,
+        localeCode: BTPayPalLocaleCode = .none,
         shippingAddressOverride: BTPostalAddress? = nil,
         landingPageType: BTPayPalRequestLandingPageType = .none,
         displayName: String? = nil,

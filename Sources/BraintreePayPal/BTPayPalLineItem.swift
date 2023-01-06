@@ -12,6 +12,8 @@ import Foundation
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
 
+    // MARK: - Public Properties
+    
     /// Number of units of the item purchased. This value must be a whole number and can't be negative or zero.
     public let quantity: String
 
@@ -36,6 +38,8 @@ import Foundation
     /// Optional: The URL to product information.
     public let url: URL? = nil
 
+    // MARK: - Public Initializer
+    
     /// Initialize a PayPayLineItem
     /// - Parameters:
     ///   - quantity: Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
@@ -49,6 +53,8 @@ import Foundation
         self.name = name
         self.kind = kind
     }
+    
+    // MARK: - Public Methods
 
     /// Returns the line item in a dictionary.
     /// - Returns: A dictionary with the line item information formatted for a request.
