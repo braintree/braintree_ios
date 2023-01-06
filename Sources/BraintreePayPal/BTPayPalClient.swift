@@ -87,10 +87,6 @@ import BraintreeDataCollector
             }
             
             self.payPalRequest = request
-            
-            // TODO: could we pass in a function to the closure instead of doing it inline?
-            // Doing so could increase readability by reducing the line count in this function and removing some nested
-            // logic
             self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
                 if let error = error as? NSError {
                     if error.code == BTCoreConstants.networkConnectionLostCode {
@@ -127,54 +123,8 @@ import BraintreeDataCollector
         }
     }
     
-    // MARK: - Internal Methods
-    
-    func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted ? true : false
-    }
-    
-    func handlePayPalRequest(
-        with url: URL,
-        error: Error?,
-        paymentType: BTPayPalPaymentType,
-        completion: @escaping (BTPayPalAccountNonce?, Error?)->Void
-    ) {
-        if let error {
-            completion(nil, error)
-            return
-        }
-        
-        if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
-            let eventName = "ios.\(paymentType.string).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
-            apiClient.sendAnalyticsEvent(eventName)
-                        
-            completion(nil, BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme))
-            return
-        }
-        performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
-    }
-    
-    // TODO: Make an extension on URL? See usage in tokenizePayPalAccount
-    func decorate(approvalURL: URL, for request: BTPayPalRequest) -> URL {
-        guard let request = payPalRequest as? BTPayPalCheckoutRequest,
-              var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
-            return approvalURL
-        }
-
-        let userActionValue = request.userAction?.stringValue ?? ""
-        guard userActionValue.count > 0 else {
-            return approvalURL
-        }
-        
-        let userActionQueryItem = URLQueryItem(name: "useraction", value: userActionValue)
-        var queryItems = approvalURLComponents.queryItems ?? []
-        queryItems.append(userActionQueryItem)
-        approvalURLComponents.queryItems = queryItems
-        
-        return approvalURLComponents.url ?? approvalURL
-    }
-
-    // TODO: Should this be moved to public section?
+    /// :nodoc:
+    // TODO: Make private after converting BraintreePayPal_IntegrationTests.m to Swift
     @objc(handleBrowserSwitchReturnURL:paymentType:completion:)
     public func handleBrowserSwitchReturn(
         _ url: URL?,
@@ -245,6 +195,33 @@ import BraintreeDataCollector
             completion(tokenizedAccount, nil)
         }
     }
+    
+    // MARK: - Internal Methods
+    
+    func applicationDidBecomeActive(notification: Notification) {
+        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted ? true : false
+    }
+    
+    func handlePayPalRequest(
+        with url: URL,
+        error: Error?,
+        paymentType: BTPayPalPaymentType,
+        completion: @escaping (BTPayPalAccountNonce?, Error?)->Void
+    ) {
+        if let error {
+            completion(nil, error)
+            return
+        }
+        
+        if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
+            let eventName = "ios.\(paymentType.string).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
+            apiClient.sendAnalyticsEvent(eventName)
+                        
+            completion(nil, BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme))
+            return
+        }
+        performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
+    }
 
     // MARK: - Private Methods
     
@@ -290,6 +267,25 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent("ios.\(paymentType.string).authsession.start.\(authenticationSessionStatus)")
     }
     
+    private func decorate(approvalURL: URL, for request: BTPayPalRequest) -> URL {
+        guard let request = payPalRequest as? BTPayPalCheckoutRequest,
+              var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
+            return approvalURL
+        }
+
+        let userActionValue = request.userAction?.stringValue ?? ""
+        guard userActionValue.count > 0 else {
+            return approvalURL
+        }
+        
+        let userActionQueryItem = URLQueryItem(name: "useraction", value: userActionValue)
+        var queryItems = approvalURLComponents.queryItems ?? []
+        queryItems.append(userActionQueryItem)
+        approvalURLComponents.queryItems = queryItems
+        
+        return approvalURLComponents.url ?? approvalURL
+    }
+    
     // MARK: - Analytics Helpers
     
     private func sendAnalyticsEventIfCreditFinancing(in nonce: BTPayPalAccountNonce, paymentType: BTPayPalPaymentType) {
@@ -318,9 +314,8 @@ import BraintreeDataCollector
     }
     
     // MARK: - ASWebAuthenticationPresentationContextProviding protocol
-    
-    // TODO: - NS_EXTENSION_UNAVAILABLE
-    // "Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions."
+
+    @available(iOSApplicationExtension, unavailable, message: "Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.")
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if let activeWindow = payPalRequest?.activeWindow {
             return activeWindow
@@ -382,7 +377,7 @@ import BraintreeDataCollector
             .joined(separator: "/")
 
         if hostAndPath.count > 0 {
-            hostAndPath.append("/") // TODO: is this only necessary if count > 0?
+            hostAndPath.append("/")
         }
         
         if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
