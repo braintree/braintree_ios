@@ -50,7 +50,6 @@ import Foundation
         self.kind = kind
     }
 
-
     /// Returns the line item in a dictionary.
     /// - Returns: A dictionary with the line item information formatted for a request.
     public func requestParameters() -> [String: String] {

@@ -36,32 +36,6 @@ import BraintreeCore
     /// Will be provided for Vault and Checkout.
     public let creditFinancing: BTPayPalCreditFinancing?
     
-    /// Used to initialize a `BTPayPalAccountNonce` with parameters.
-    public init(
-        nonce: String,
-        email: String?,
-        firstName: String?,
-        lastName: String?,
-        phone: String?,
-        billingAddress: BTPostalAddress?,
-        shippingAddress: BTPostalAddress?,
-        clientMetadataID: String?,
-        payerID: String?,
-        isDefault: Bool,
-        creditFinancing: BTPayPalCreditFinancing?
-    ) {
-        self.email = email
-        self.firstName = firstName
-        self.lastName = lastName
-        self.phone = phone
-        self.billingAddress = billingAddress
-        self.shippingAddress = shippingAddress
-        self.clientMetadataID = clientMetadataID
-        self.payerID = payerID
-        self.creditFinancing = creditFinancing
-        super.init(nonce: nonce, type: "PayPal", isDefault: isDefault)
-    }
-    
     init?(json: BTJSON) {
         guard let nonce = json["nonce"].asString() else { return nil }
         
@@ -69,7 +43,7 @@ import BraintreeCore
         let payerInfo = details["payerInfo"]
 
         self.email = payerInfo["email"].asString() ?? details["email"].asString()        
-        self.firstName = payerInfo["firstName"].asString()
+        self.firstName = payerInfo["firstName"].asString()  
         self.lastName = payerInfo["lastName"].asString()
         self.phone = payerInfo["phone"].asString()
         self.billingAddress = payerInfo["billingAddress"].asAddress()

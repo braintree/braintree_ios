@@ -114,7 +114,7 @@ import BraintreeDataCollector
                 
                 approvalURL = self.decorate(approvalURL: approvalURL, for: request)
 
-                let pairingID = Self.token(from: approvalURL)
+                let pairingID = self.token(from: approvalURL)
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
                 self.sendAnalyticsEventForInitiatingOneTouch(paymentType: request.paymentType, success: error == nil)
@@ -131,12 +131,12 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        guard let url, Self.isValidURLAction(url: url) else {
+        guard let url, isValidURLAction(url: url) else {
             completion(nil, BTPayPalError.invalidURLAction)
             return
         }
         
-        guard let response = Self.responseDictionary(from: url) else {
+        guard let response = responseDictionary(from: url) else {
             completion(nil, BTPayPalError.canceled)
             return
         }
@@ -178,12 +178,12 @@ import BraintreeDataCollector
                     self.apiClient.sendAnalyticsEvent("ios.paypal.handle-browser-switch.network-connection.failure")
                 }
 
-                self.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
+                self.apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).tokenize.failed")
                 completion(nil, error)
                 return
             }
 
-            self.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
+            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).tokenize.failed")
             
             guard let payPalAccount = body?["paypalAccounts"].asArray()?.first,
                   let tokenizedAccount = BTPayPalAccountNonce(json: payPalAccount) else {
@@ -191,7 +191,10 @@ import BraintreeDataCollector
                 return
             }
 
-            self.sendAnalyticsEventIfCreditFinancing(in: tokenizedAccount,paymentType: paymentType)
+            if tokenizedAccount.creditFinancing != nil {
+                self.apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).credit.accepted")
+            }
+            
             completion(tokenizedAccount, nil)
         }
     }
@@ -199,7 +202,7 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
     
     func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted ? true : false
+        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted
     }
     
     func handlePayPalRequest(
@@ -222,7 +225,50 @@ import BraintreeDataCollector
         }
         performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
     }
+    
+    // MARK: - Analytics Helpers
+    
+    private func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
+        let successString = success ? "started" : "failed"
+        
+        apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.initiate.\(successString)")
+        
+        if let checkoutRequest = payPalRequest as? BTPayPalCheckoutRequest,
+           checkoutRequest.offerPayLater {
+            apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.paylater.offered.\(successString)")
+        }
+        
+        if let vaultRequest = payPalRequest as? BTPayPalVaultRequest, vaultRequest.offerCredit {
+            apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.credit.offered.\(successString)")
+        }
+    }
+    
+    // MARK: - ASWebAuthenticationPresentationContextProviding protocol
 
+    @available(iOSApplicationExtension, unavailable, message: "Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.")
+    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        if let activeWindow = payPalRequest?.activeWindow {
+            return activeWindow
+        }
+        
+        for scene in UIApplication.shared.connectedScenes {
+            if scene.activationState == .foregroundActive,
+               let windowScene = scene as? UIWindowScene,
+               let window = windowScene.windows.first {
+                return window
+            }
+        }
+        
+        if #available(iOS 15, *) {
+            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let window = firstScene?.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        } else {
+            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        }
+    }
+    
     // MARK: - Private Methods
     
     private func performSwitchRequest(
@@ -286,69 +332,14 @@ import BraintreeDataCollector
         return approvalURLComponents.url ?? approvalURL
     }
     
-    // MARK: - Analytics Helpers
-    
-    private func sendAnalyticsEventIfCreditFinancing(in nonce: BTPayPalAccountNonce, paymentType: BTPayPalPaymentType) {
-        if nonce.creditFinancing != nil {
-            apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).credit.accepted")
-        }
-    }
-    
-    private func sendAnalyticsEventForTokenizationFailure(paymentType: BTPayPalPaymentType) {
-        apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).tokenize.failed")
-    }
-    
-    private func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
-        let successString = success ? "started" : "failed"
-        
-        apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.initiate.\(successString)")
-        
-        if let checkoutRequest = payPalRequest as? BTPayPalCheckoutRequest,
-           checkoutRequest.offerPayLater {
-            apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.paylater.offered.\(successString)")
-        }
-        
-        if let vaultRequest = payPalRequest as? BTPayPalVaultRequest, vaultRequest.offerCredit {
-            apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.credit.offered.\(successString)")
-        }
-    }
-    
-    // MARK: - ASWebAuthenticationPresentationContextProviding protocol
-
-    @available(iOSApplicationExtension, unavailable, message: "Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.")
-    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if let activeWindow = payPalRequest?.activeWindow {
-            return activeWindow
-        }
-        
-        for scene in UIApplication.shared.connectedScenes {
-            if scene.activationState == .foregroundActive,
-               let windowScene = scene as? UIWindowScene,
-               let window = windowScene.windows.first {
-                return window
-            }
-        }
-        
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
-    }
-    
-    // MARK: - Private Static Helper Methods
-    
-    private static func token(from approvalURL: URL) -> String {
+    private func token(from approvalURL: URL) -> String {
         guard let query = approvalURL.query else { return "" }
         let queryDictionary = parse(queryString: query)
         
         return queryDictionary["token"] ?? queryDictionary["ba_token"] ?? ""
     }
     
-    private static func parse(queryString query: String) -> [String: String] {
+    private func parse(queryString query: String) -> [String: String] {
         var dict = [String: String]()
         let pairs = query.components(separatedBy: "&")
         
@@ -365,7 +356,7 @@ import BraintreeDataCollector
         return dict
     }
     
-    private static func isValidURLAction(url: URL) -> Bool {
+    private func isValidURLAction(url: URL) -> Bool {
         guard let host = url.host, let scheme = url.scheme, !scheme.isEmpty else {
             return false
         }
@@ -395,7 +386,7 @@ import BraintreeDataCollector
         return true
     }
     
-    private static func responseDictionary(from url: URL) -> [String : Any]? {
+    private func responseDictionary(from url: URL) -> [String : Any]? {
         if let action = action(from: url), action == "cancel" {
             return nil
         }
@@ -413,7 +404,7 @@ import BraintreeDataCollector
         ]
     }
     
-    private static func action(from url: URL) -> String? {
+    private func action(from url: URL) -> String? {
         guard let action = url.lastPathComponent.components(separatedBy: "?").first,
            !action.isEmpty else {
             return url.host
