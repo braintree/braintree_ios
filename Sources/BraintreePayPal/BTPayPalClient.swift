@@ -35,6 +35,8 @@ import BraintreeDataCollector
 
     private var returnedToAppAfterPermissionAlert: Bool = false
 
+    // MARK: - Initializer
+
     /// Initialize a new PayPal client instance.
     /// - Parameter apiClient: The API Client
     @objc(initWithAPIClient:)
@@ -96,10 +98,9 @@ import BraintreeDataCollector
             // Doing so could increase readability by reducing the line count in this function and removing some nested
             // logic
             self.apiClient.post(
-                // TODO: remove this force unwrap
                 request.hermesPath,
                 parameters: request.parameters(with: configuration)
-            ) { body, response, error in
+            ) { [weak self] body, response, error in
                 if let error = error as? NSError {
                     if error.code == BTCoreConstants.networkConnectionLostCode {
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
@@ -127,10 +128,8 @@ import BraintreeDataCollector
                 approvalURL = self.decorate(approvalURL: approvalURL, for: request)
 
                 let pairingID = Self.token(from: approvalURL)
-                
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationId ??
-                                        dataCollector.clientMetadataID(pairingID)
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
                 
                 self.sendAnalyticsEventForInitiatingOneTouch(
                     paymentType: request.paymentType,
@@ -150,9 +149,7 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
     
     func applicationDidBecomeActive(notification: Notification) {
-        if self.isAuthenticationSessionStarted {
-            self.returnedToAppAfterPermissionAlert = true
-        }
+        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted ? true : false
     }
     
     func handlePayPalRequest(
@@ -166,46 +163,37 @@ import BraintreeDataCollector
             return
         }
         
-        if let scheme = url.scheme,
-           !scheme.lowercased().hasPrefix("http") {
+        if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
             let eventName = "ios.\(paymentType.string).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
-            self.apiClient.sendAnalyticsEvent(eventName)
+            apiClient.sendAnalyticsEvent(eventName)
                         
             completion(nil, BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme))
             return
         }
-        performSwitchRequest(
-            appSwitchURL: url,
-            paymentType: paymentType,
-            completion: completion
-        )
+        performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
     }
     
     // TODO: Make an extension on URL? See usage in tokenizePayPalAccount
-    func decorate(
-        approvalURL: URL,
-        for request: BTPayPalRequest
-    ) -> URL {
+    func decorate(approvalURL: URL, for request: BTPayPalRequest) -> URL {
         guard let request = payPalRequest as? BTPayPalCheckoutRequest,
               var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
             return approvalURL
         }
+
         let userActionValue = request.userActionAsString
         guard userActionValue.count > 0 else {
             return approvalURL
         }
         
-        let userActionQueryItem = URLQueryItem(
-            name: "useraction",
-            value: userActionValue
-        )
+        let userActionQueryItem = URLQueryItem(name: "useraction", value: userActionValue)
         var queryItems = approvalURLComponents.queryItems ?? []
         queryItems.append(userActionQueryItem)
         approvalURLComponents.queryItems = queryItems
         
         return approvalURLComponents.url ?? approvalURL
     }
-    
+
+    // TODO: Should this be moved to public section?
     @objc(handleBrowserSwitchReturnURL:paymentType:completion:)
     public func handleBrowserSwitchReturn(
         _ url: URL?,
@@ -221,10 +209,8 @@ import BraintreeDataCollector
             completion(nil, BTPayPalError.canceled)
             return
         }
-        var parameters: [String: Any] = [
-            "paypal_account": response
-        ]
-        
+
+        var parameters: [String: Any] = ["paypal_account": response]
         var account: [String: Any] = [:]
         
         if paymentType == .checkout {
@@ -238,8 +224,7 @@ import BraintreeDataCollector
             account["correlation_id"] = clientMetadataID
         }
         
-        if let payPalRequest,
-           let merchantAccountID = payPalRequest.merchantAccountID {
+        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
             parameters["merchant_account_id"] = merchantAccountID
         }
         
@@ -247,7 +232,7 @@ import BraintreeDataCollector
             parameters["paypal_account"] = account
         }
         
-        let metadata = self.apiClient.metadata
+        let metadata = apiClient.metadata
         metadata.source = .payPalBrowser
         
         parameters["_meta"] = [
@@ -259,24 +244,26 @@ import BraintreeDataCollector
         self.apiClient.post(
             "/v1/payment_methods/paypal_accounts",
             parameters: parameters
-        ) { body, response, error in
+        ) { [weak self] body, response, error in
             if let error = error as? NSError {
                 if error.code == BTCoreConstants.networkConnectionLostCode {
-                    self.apiClient.sendAnalyticsEvent("ios.paypal.handle-browser-switch.network-connection.failure")
+                    self?.apiClient.sendAnalyticsEvent("ios.paypal.handle-browser-switch.network-connection.failure")
                 }
-                self.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
+
+                self?.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
                 completion(nil, error)
                 return
             }
-            self.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
+
+            self?.sendAnalyticsEventForTokenizationFailure(paymentType: paymentType)
             
-            guard let paypalAccount = body?["paypalAccounts"].asArray()?.first,
-                  let tokenizedAccount = BTPayPalAccountNonce(json: paypalAccount) else {
+            guard let payPalAccount = body?["paypalAccounts"].asArray()?.first,
+                  let tokenizedAccount = BTPayPalAccountNonce(json: payPalAccount) else {
                 completion(nil, BTPayPalError.failedToCreateNonce)
                 return
             }
 
-            self.sendAnalyticsEventIfCreditFinancing(in: tokenizedAccount,paymentType: paymentType)
+            self?.sendAnalyticsEventIfCreditFinancing(in: tokenizedAccount,paymentType: paymentType)
             completion(tokenizedAccount, nil)
         }
     }
@@ -288,22 +275,23 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        self.approvalURL = appSwitchURL
-        self.authenticationSession = ASWebAuthenticationSession(
+        approvalURL = appSwitchURL
+        authenticationSession = ASWebAuthenticationSession(
             url: appSwitchURL,
-            callbackURLScheme: BTPayPalRequest.callbackURLScheme) { callbackURL, error in
-                self.authenticationSession = nil
+            callbackURLScheme: BTPayPalRequest.callbackURLScheme
+        ) { [weak self] callbackURL, error in
+                self?.authenticationSession = nil
                 if let error = error as? NSError {
                     if error.domain == ASWebAuthenticationSessionError.errorDomain,
                        error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                        if self.returnedToAppAfterPermissionAlert {
+                        if self?.returnedToAppAfterPermissionAlert == true {
                             // User tapped system cancel button in browser
                             let eventName = "ios.\(paymentType.string).authsession.browser.cancel"
-                            self.apiClient.sendAnalyticsEvent(eventName)
+                            self?.apiClient.sendAnalyticsEvent(eventName)
                         } else {
                             // User tapped system cancel button on permission alert
                             let eventName = "ios.\(paymentType.string).authsession.alert.cancel"
-                            self.apiClient.sendAnalyticsEvent(eventName)
+                            self?.apiClient.sendAnalyticsEvent(eventName)
                         }
                     }
                     
@@ -312,48 +300,42 @@ import BraintreeDataCollector
                     completion(nil, BTPayPalError.canceled)
                     return
                 }
-                self.handleBrowserSwitchReturn(callbackURL, paymentType: paymentType, completion: completion)
+
+                self?.handleBrowserSwitchReturn(callbackURL, paymentType: paymentType, completion: completion)
             }
         
-        self.authenticationSession?.presentationContextProvider = self
-        self.returnedToAppAfterPermissionAlert = false
-        self.isAuthenticationSessionStarted = self.authenticationSession?.start() ?? false
-        
-        if self.isAuthenticationSessionStarted {
-            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).authsession.start.succeeded")
-        } else {
-            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).authsession.start.failed")
-        }
+        authenticationSession?.presentationContextProvider = self
+        returnedToAppAfterPermissionAlert = false
+        isAuthenticationSessionStarted = authenticationSession?.start() ?? false
+
+        let authenticationSessionStatus = isAuthenticationSessionStarted ? "succeeded" : "failed"
+        apiClient.sendAnalyticsEvent("ios.\(paymentType.string).authsession.start.\(authenticationSessionStatus)")
     }
     
     // MARK: - Analytics Helpers
     
-    private func sendAnalyticsEventIfCreditFinancing(
-        in nonce: BTPayPalAccountNonce,
-        paymentType: BTPayPalPaymentType
-    ) {
+    private func sendAnalyticsEventIfCreditFinancing(in nonce: BTPayPalAccountNonce, paymentType: BTPayPalPaymentType) {
         if nonce.creditFinancing != nil {
-            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).credit.accepted")
+            apiClient.sendAnalyticsEvent("ios.\(paymentType.string).credit.accepted")
         }
     }
     
     private func sendAnalyticsEventForTokenizationFailure(paymentType: BTPayPalPaymentType) {
-        self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).tokenize.failed")
+        apiClient.sendAnalyticsEvent("ios.\(paymentType.string).tokenize.failed")
     }
     
     private func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
         let successString = success ? "started" : "failed"
         
-        self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.initiate.\(successString)")
+        apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.initiate.\(successString)")
         
-        if let checkoutRequest = self.payPalRequest as? BTPayPalCheckoutRequest,
+        if let checkoutRequest = payPalRequest as? BTPayPalCheckoutRequest,
            checkoutRequest.offerPayLater {
-            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.paylater.offered.\(successString)")
+            apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.paylater.offered.\(successString)")
         }
         
-        if let vaultRequest = self.payPalRequest as? BTPayPalVaultRequest,
-           vaultRequest.offerCredit {
-            self.apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.credit.offered.\(successString)")
+        if let vaultRequest = payPalRequest as? BTPayPalVaultRequest, vaultRequest.offerCredit {
+            apiClient.sendAnalyticsEvent("ios.\(paymentType.string).webswitch.credit.offered.\(successString)")
         }
     }
     
@@ -362,7 +344,7 @@ import BraintreeDataCollector
     // TODO: - NS_EXTENSION_UNAVAILABLE
     // "Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions."
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if let activeWindow = self.payPalRequest?.activeWindow {
+        if let activeWindow = payPalRequest?.activeWindow {
             return activeWindow
         }
         
@@ -387,9 +369,7 @@ import BraintreeDataCollector
     // MARK: - Private Static Helper Methods
     
     private static func token(from approvalURL: URL) -> String {
-        guard let query = approvalURL.query else {
-            return ""
-        }
+        guard let query = approvalURL.query else { return "" }
         let queryDictionary = parse(queryString: query)
         
         return queryDictionary["token"] ?? queryDictionary["ba_token"] ?? ""
@@ -422,6 +402,7 @@ import BraintreeDataCollector
             .components(separatedBy: "/")
             .dropLast(1) // remove the action (`success`, `cancel`, etc)
             .joined(separator: "/")
+
         if hostAndPath.count > 0 {
             hostAndPath.append("/") // TODO: is this only necessary if count > 0?
         }
@@ -446,7 +427,7 @@ import BraintreeDataCollector
             return nil
         }
         
-        let result: [String: Any] = [
+        return [
             "client": [
                 "platform": "iOS",
                 "product_name": "PayPal",
@@ -457,8 +438,6 @@ import BraintreeDataCollector
             ],
             "response_type": "web"
         ]
-        
-        return result
     }
     
     private static func action(from url: URL) -> String? {
