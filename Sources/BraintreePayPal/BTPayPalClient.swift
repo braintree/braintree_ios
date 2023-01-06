@@ -103,7 +103,7 @@ import BraintreeDataCollector
             ) { [weak self] body, response, error in
                 if let error = error as? NSError {
                     if error.code == BTCoreConstants.networkConnectionLostCode {
-                        self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
+                        self?.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
 
                     guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
@@ -125,23 +125,13 @@ import BraintreeDataCollector
                     return
                 }
                 
-                approvalURL = self.decorate(approvalURL: approvalURL, for: request)
+                approvalURL = self?.decorate(approvalURL: approvalURL, for: request)
 
                 let pairingID = Self.token(from: approvalURL)
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
-                
-                self.sendAnalyticsEventForInitiatingOneTouch(
-                    paymentType: request.paymentType,
-                    success: error == nil
-                )
-                
-                self.handlePayPalRequest(
-                    with: approvalURL,
-                    error: nil,
-                    paymentType: request.paymentType,
-                    completion: completion
-                )
+                let dataCollector = BTDataCollector(apiClient: self?.apiClient)
+                self?.clientMetadataID = self?.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
+                self?.sendAnalyticsEventForInitiatingOneTouch(paymentType: request.paymentType, success: error == nil)
+                self?.handlePayPalRequest(with: approvalURL, error: nil, paymentType: request.paymentType, completion: completion)
             }
         }
     }
