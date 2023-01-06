@@ -18,7 +18,7 @@ import BraintreeCore
     /// Vault
     case vault
     
-    var string: String {
+    var stringValue: String {
         switch self {
         case .vault:
             return "paypal-ba"
@@ -68,36 +68,7 @@ import BraintreeCore
     public var isShippingAddressEditable: Bool
 
     ///  Optional: A locale code to use for the transaction.
-    ///  - Note: Supported locales are:
-    ///
-    /// `da_DK`,
-    /// `de_DE`,
-    /// `en_AU`,
-    /// `en_GB`,
-    /// `en_US`,
-    /// `es_ES`,
-    /// `es_XC`,
-    /// `fr_CA`,
-    /// `fr_FR`,
-    /// `fr_XC`,
-    /// `id_ID`,
-    /// `it_IT`,
-    /// `ja_JP`,
-    /// `ko_KR`,
-    /// `nl_NL`,
-    /// `no_NO`,
-    /// `pl_PL`,
-    /// `pt_BR`,
-    /// `pt_PT`,
-    /// `ru_RU`,
-    /// `sv_SE`,
-    /// `th_TH`,
-    /// `tr_TR`,
-    /// `zh_CN`,
-    /// `zh_HK`,
-    /// `zh_TW`,
-    /// `zh_XC`.
-    public var localeCode: String?
+    public var localeCode: LocaleCode
 
     /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     public var shippingAddressOverride: BTPostalAddress?
@@ -139,7 +110,7 @@ import BraintreeCore
     init(
         isShippingAddressRequired: Bool = false,
         isShippingAddressEditable: Bool = false,
-        localeCode: String? = nil,
+        localeCode: LocaleCode = .none,
         shippingAddressOverride: BTPostalAddress? = nil,
         landingPageType: BTPayPalRequestLandingPageType = .none,
         displayName: String? = nil,
@@ -174,8 +145,8 @@ import BraintreeCore
             experienceProfile["landing_page_type"] = landingPageType.stringValue
         }
 
-        if localeCode != nil {
-            experienceProfile["locale_code"] = localeCode
+        if localeCode.stringValue != nil {
+            experienceProfile["locale_code"] = localeCode.stringValue
         }
 
         experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false

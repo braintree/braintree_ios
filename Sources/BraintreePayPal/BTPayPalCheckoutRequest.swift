@@ -42,7 +42,7 @@ import BraintreeCore
     /// Default
     case none
 
-    /// Pay now
+    /// Pay Now
     case payNow
 
     var stringValue: String {
