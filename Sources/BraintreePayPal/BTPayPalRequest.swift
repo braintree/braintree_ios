@@ -4,7 +4,7 @@ import UIKit
 import BraintreeCore
 #endif
 
-@objc public protocol BTPayPalRequestable where Self: BTPayPalRequest {
+protocol BTPayPalRequestable where Self: BTPayPalRequest {
     var hermesPath: String { get }
     var paymentType: BTPayPalPaymentType { get }
 

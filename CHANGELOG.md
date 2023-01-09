@@ -23,8 +23,7 @@
         * `.credit` = 1
     * Create `BTPayPalLocaleCode` enum
     * `BTPayPalRequest.localeCode` now uses the `BTPayPalLocaleCode` enum instead of a `String`
-    * `BTPayPalClient.tokenizePayPalAccount` now takes a request of type `BTPayPalRequest & BTPayPalRequestable`
-        * This ensures that merchants only pass in the expected subclasses `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
+    * Renamed and replaced `BTPayPalClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
     * Removed `BTPayPalErrorType`
     * Replaced `BTPayPalErrorDomain` global constant with `BTPayPalError.errorDomain`
     * Added `BTPayPalError`

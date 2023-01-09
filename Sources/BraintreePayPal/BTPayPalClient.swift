@@ -51,6 +51,21 @@ import BraintreeDataCollector
         )
     }
     
+    @objc(tokenizeWithVaultRequest:completion:)
+    public func tokenize(
+        _ request: BTPayPalVaultRequest,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        tokenize(request: request, completion: completion)
+    }
+    
+    @objc(tokenizeWithCheckoutRequest:completion:)
+    public func tokenize(
+        _ request: BTPayPalCheckoutRequest,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        tokenize(request: request, completion: completion)
+    }
     // MARK: - Public Methods
     
     /// Tokenize a PayPal account for vault or checkout.
@@ -64,9 +79,8 @@ import BraintreeDataCollector
     /// - Parameters:
     ///   - request: Either a `BTPayPalCheckoutRequest` or a `BTPayPalVaultRequest`
     ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
-    @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
-    public func tokenizePayPalAccount(
-        with request: BTPayPalRequest & BTPayPalRequestable,
+    private func tokenize(
+        request: BTPayPalRequest & BTPayPalRequestable,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
