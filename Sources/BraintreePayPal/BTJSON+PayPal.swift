@@ -4,7 +4,7 @@ import BraintreeCore
 
 extension BTJSON {
 
-    func asCreditFinancingAmount() -> BTPayPalCreditFinancingAmount? {
+    func asPayPalCreditFinancingAmount() -> BTPayPalCreditFinancingAmount? {
         guard self.isObject,
               let currency = self["currency"].asString(),
               let value = self["value"].asString() else {
@@ -14,15 +14,15 @@ extension BTJSON {
         return BTPayPalCreditFinancingAmount(currency: currency, value: value)
     }
     
-    func asCreditFinancing() -> BTPayPalCreditFinancing? {
+    func asPayPalCreditFinancing() -> BTPayPalCreditFinancing? {
         guard self.isObject else { return nil }
         
         let isCardAmountImmutable = self["cardAmountImmutable"].isTrue
-        let monthlyPayment = self["monthlyPayment"].asCreditFinancingAmount()
+        let monthlyPayment = self["monthlyPayment"].asPayPalCreditFinancingAmount()
         let payerAcceptance = self["payerAcceptance"].isTrue
         let term = self["term"].asIntegerOrZero()
-        let totalCost = self["totalCost"].asCreditFinancingAmount()
-        let totalInterest = self["totalInterest"].asCreditFinancingAmount()
+        let totalCost = self["totalCost"].asPayPalCreditFinancingAmount()
+        let totalInterest = self["totalInterest"].asPayPalCreditFinancingAmount()
         
         return BTPayPalCreditFinancing(
             cardAmountImmutable: isCardAmountImmutable,

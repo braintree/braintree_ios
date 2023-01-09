@@ -33,7 +33,7 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
             "value": "123.45",
         ])
 
-        guard let amount = payPalCreditFinancingAmount.asCreditFinancingAmount() else {
+        guard let amount = payPalCreditFinancingAmount.asPayPalCreditFinancingAmount() else {
             XCTFail("Expected amount")
             return
         }
@@ -60,7 +60,7 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
             ],
         ])
 
-        guard let creditFinancing = payPalCreditFinancing.asCreditFinancing() else {
+        guard let creditFinancing = payPalCreditFinancing.asPayPalCreditFinancing() else {
             XCTFail("Expected credit financing")
             return
         }
