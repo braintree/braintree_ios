@@ -9,6 +9,12 @@ import BraintreeCore
 @objcMembers public class BTPayPalVaultRequest: NSObject, BTPayPalRequest {
 
     // MARK: - Public Properties
+    
+    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    public var offerCredit: Bool
+    
+    // MARK: - BTPayPalRequest Protocol Properties
+    
     /// Defaults to false. When set to true, the shipping address selector will be displayed.
     public var isShippingAddressRequired: Bool
     
@@ -48,15 +54,12 @@ import BraintreeCore
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationId: String?
     
-    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public var offerCredit: Bool
-    
     /// :nodoc:
     public let hermesPath: String = "v1/paypal_hermes/setup_billing_agreement"
     
     /// :nodoc:
     public let paymentType: BTPayPalPaymentType = .vault
-
+    
     // MARK: - Initializer
 
     /// Initializes a PayPal Native Vault request
