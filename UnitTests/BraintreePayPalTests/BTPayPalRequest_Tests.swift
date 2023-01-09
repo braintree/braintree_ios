@@ -20,18 +20,18 @@ class BTPayPalRequest_Tests: XCTestCase {
     // MARK: - landingPageTypeAsString
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsNotSpecified_returnNil() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         XCTAssertNil(request.landingPageType.stringValue)
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsBilling_returnsBilling() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         request.landingPageType = .billing
         XCTAssertEqual(request.landingPageType.stringValue, "billing")
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsLogin_returnsLogin() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         request.landingPageType = .login
         XCTAssertEqual(request.landingPageType.stringValue, "login")
     }
@@ -39,7 +39,7 @@ class BTPayPalRequest_Tests: XCTestCase {
     // MARK: - parametersWithConfiguration
 
     func testParametersWithConfiguration_returnsAllParams() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         request.isShippingAddressRequired = true
         request.displayName = "Display Name"
         request.landingPageType = .login
@@ -70,7 +70,7 @@ class BTPayPalRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         // no_shipping = true should be the default.
 
         let parameters = request.baseParameters(with: configuration)
@@ -80,7 +80,7 @@ class BTPayPalRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenShippingAddressIsRequiredIsTrue_returnsNoShippingFalse() {
-        let request = BTPayPalRequest()
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         request.isShippingAddressRequired = true
 
         let parameters = request.baseParameters(with: configuration)
