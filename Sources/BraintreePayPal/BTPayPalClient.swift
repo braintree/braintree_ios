@@ -13,7 +13,7 @@ import BraintreeDataCollector
     
     // MARK: - Internal Properties
 
-    ///Exposed for testing to get the instance of BTAPIClient
+    /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
     
     /// Exposed for testing the approvalURL construction
