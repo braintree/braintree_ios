@@ -31,13 +31,13 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
     func testIntentStringReturnsCorrectValue() {
         let checkoutRequest = BTPayPalNativeCheckoutRequest(amount: "10.00")
         checkoutRequest.intent = .authorize
-        XCTAssertEqual(checkoutRequest.intentAsString, "authorize")
+        XCTAssertEqual(checkoutRequest.intent.stringValue, "authorize")
 
         checkoutRequest.intent = .order
-        XCTAssertEqual(checkoutRequest.intentAsString, "order")
+        XCTAssertEqual(checkoutRequest.intent.stringValue, "order")
 
         checkoutRequest.intent = .sale
-        XCTAssertEqual(checkoutRequest.intentAsString, "sale")
+        XCTAssertEqual(checkoutRequest.intent.stringValue, "sale")
     }
 
     func testBaseConfigurationCorrect() throws {
@@ -48,15 +48,15 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
             name: "item one",
             kind: .credit
         )
-        request.localeCode = "12345"
+        request.localeCode = .en_US
         request.lineItems = [lineItem]
         request.isShippingAddressRequired = true
         request.displayName = "Test Request"
         request.merchantAccountID = "Merchant Acct ID"
-        request.riskCorrelationID = "Risk Correlation ID"
+        request.riskCorrelationId = "Risk Correlation ID"
         request.shippingAddressOverride = BTPostalAddress()
         request.isShippingAddressEditable = true
-        let baseParameters = request.getBaseParameters(with: configuration)
+        let baseParameters = request.parameters(with: configuration)
 
         let parameterLineItem = try XCTUnwrap((baseParameters["line_items"] as? [[AnyHashable: Any]])?.first)
 
@@ -70,12 +70,12 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(baseParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
         XCTAssertEqual(baseParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(baseParameters["merchant_account_id"] as? String, request.merchantAccountID)
-        XCTAssertEqual(baseParameters["correlation_id"] as? String, request.riskCorrelationID)
+        XCTAssertEqual(baseParameters["correlation_id"] as? String, request.riskCorrelationId)
 
         let profile = try XCTUnwrap(baseParameters["experience_profile"] as? [AnyHashable: Any])
         XCTAssertEqual(profile["no_shipping"] as? Bool, !request.isShippingAddressRequired)
         XCTAssertEqual(profile["brand_name"] as? String, request.displayName)
-        XCTAssertEqual(profile["locale_code"] as? String, request.localeCode)
+        XCTAssertEqual(profile["locale_code"] as? String, request.localeCode.stringValue)
         XCTAssertEqual(profile["address_override"] as? Bool, !request.isShippingAddressEditable)
     }
 
@@ -98,7 +98,7 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
 
-        let parameters = request.constructParameters(from: configuration, withRequest: request)
+        let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["intent"] as? String, "sale")
         XCTAssertEqual(parameters["amount"] as? String, "1")

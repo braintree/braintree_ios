@@ -21,7 +21,7 @@ import BraintreeCore
     /// Order
     case order
 
-    var stringValue: String {
+    public var stringValue: String {
         switch self {
         case .sale:
             return "sale"
@@ -56,14 +56,14 @@ import BraintreeCore
 }
 
 /// Options for the PayPal Checkout flow.
-@objcMembers public class BTPayPalCheckoutRequest: BTPayPalRequest {
+@objcMembers open class BTPayPalCheckoutRequest: BTPayPalRequest {
 
     // MARK: - Public Properties
 
     ///  Used for a one-time payment.
     ///
     ///  Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
-    public let amount: String
+    public var amount: String
 
     /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
     public var intent: BTPayPalRequestIntent

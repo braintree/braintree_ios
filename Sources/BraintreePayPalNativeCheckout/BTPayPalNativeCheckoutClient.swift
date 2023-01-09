@@ -26,11 +26,11 @@ import PayPalCheckout
     /// `BTPayPalNativeCheckoutAccountNonce`. On failure or user cancelation you will receive an error. If the user cancels
     /// out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
     /// - Parameters:
-    ///   - request: Either a BTPayPalNativeCheckoutRequest or a BTPayPalNativeVaultRequest
+    ///   - request: Either a `BTPayPalNativeCheckoutRequest` or a `BTPayPalNativeVaultRequest`
     ///   - completion: The completion will be invoked exactly once: when tokenization is complete or an error occurs.
     @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
     public func tokenizePayPalAccount(
-        with request: BTPayPalNativeRequest,
+        with request: BTPayPalRequest & BTPayPalRequestable,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.started")
@@ -80,7 +80,11 @@ import PayPalCheckout
         }
     }
 
-    private func tokenize(approval: PayPalCheckout.Approval, request: BTPayPalNativeRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
+    private func tokenize(
+        approval: PayPalCheckout.Approval,
+        request: BTPayPalRequest & BTPayPalRequestable,
+        completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
+    ) {
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: apiClient)
         tokenizationClient.tokenize(request: request, returnURL: approval.data.returnURL!.absoluteString) { result in
             switch result {

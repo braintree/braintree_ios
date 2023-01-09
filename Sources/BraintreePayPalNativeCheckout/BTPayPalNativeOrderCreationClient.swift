@@ -23,7 +23,7 @@ class BTPayPalNativeOrderCreationClient {
     }
 
     func createOrder(
-        with request: BTPayPalNativeRequest,
+        with request: BTPayPalRequest & BTPayPalRequestable,
         completion: @escaping (Result<BTPayPalNativeOrder, BTPayPalNativeError>) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -61,7 +61,7 @@ class BTPayPalNativeOrderCreationClient {
 
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.constructParameters(from: config, withRequest: request)
+                parameters: request.parameters(with: config)
             ) { json, response, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
                     let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse

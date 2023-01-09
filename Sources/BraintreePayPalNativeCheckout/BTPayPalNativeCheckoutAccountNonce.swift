@@ -63,6 +63,7 @@ import BraintreePayPal
         super.init(nonce: nonce, type: "PayPal", isDefault: isDefault)
     }
 
+    // TODO: update address
     private static func addressFromJSON(_ addressJSON: BTJSON) -> BTPostalAddress? {
         guard addressJSON.isObject else {
             return nil
