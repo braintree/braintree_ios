@@ -4,13 +4,6 @@ import UIKit
 import BraintreeCore
 #endif
 
-protocol BTPayPalRequestable where Self: BTPayPalRequest {
-    var hermesPath: String { get }
-    var paymentType: BTPayPalPaymentType { get }
-
-    func parameters(with configuration: BTConfiguration) -> [String: Any]
-}
-
 @objc public enum BTPayPalPaymentType: Int {
     /// Checkout
     case checkout
@@ -55,83 +48,64 @@ protocol BTPayPalRequestable where Self: BTPayPalRequest {
 }
 
 /// Base options for PayPal Checkout and PayPal Vault flows.
-/// - Note: Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
-@objcMembers public class BTPayPalRequest: NSObject {
-
+@objc public protocol BTPayPalRequest where Self: NSObject {
+    
     // MARK: - Public Properties
-
+    
     /// Defaults to false. When set to true, the shipping address selector will be displayed.
-    public var isShippingAddressRequired: Bool
-
+    var isShippingAddressRequired: Bool { get set }
+    
     /// Defaults to false. Set to true to enable user editing of the shipping address.
     /// - Note: Only applies when `shippingAddressOverride` is set.
-    public var isShippingAddressEditable: Bool
-
+    var isShippingAddressEditable: Bool { get set }
+    
     ///  Optional: A locale code to use for the transaction.
-    public var localeCode: BTPayPalLocaleCode
-
+    var localeCode: BTPayPalLocaleCode { get set }
+    
     /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
-    public var shippingAddressOverride: BTPostalAddress?
-
+    var shippingAddressOverride: BTPostalAddress? { get set }
+    
     /// Optional: Landing page type. Defaults to `.none`.
     /// - Note: Setting the BTPayPalRequest's landingPageType changes the PayPal page to display when a user lands on the PayPal site to complete the payment.
     ///  `.login` specifies a PayPal account login page is used.
     ///  `.billing` specifies a non-PayPal account landing page is used.
-    public var landingPageType: BTPayPalRequestLandingPageType
-
+    var landingPageType: BTPayPalRequestLandingPageType { get set }
+    
     /// Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
-    public var displayName: String?
-
+    var displayName: String? { get set }
+    
     /// Optional: A non-default merchant account to use for tokenization.
-    public var merchantAccountID: String?
-
+    var merchantAccountID: String? { get set }
+    
     /// Optional: The line items for this transaction. It can include up to 249 line items.
-    public var lineItems: [BTPayPalLineItem]?
-
+    var lineItems: [BTPayPalLineItem]? { get set }
+    
     /// Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
     ///  `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
-    public var billingAgreementDescription: String?
-
+    var billingAgreementDescription: String? { get set }
+    
     /// Optional: The window used to present the ASWebAuthenticationSession.
     /// - Note: If your app supports multitasking, you must set this property to ensure that the ASWebAuthenticationSession is presented on the correct window.
-    public var activeWindow: UIWindow?
-
-    /// Optional: A risk correlation ID created with Set Transaction Context on your server.
-    public var riskCorrelationId: String?
-
-    // MARK: - Internal Properties
+    var activeWindow: UIWindow? { get set }
     
-    static let callbackURLHostAndPath: String = "onetouch/v1/"
-    static let callbackURLScheme: String = "sdk.ios.braintree"
+    /// Optional: A risk correlation ID created with Set Transaction Context on your server.
+    var riskCorrelationId: String? { get set }
+    
+    var hermesPath: String { get }
+    
+    var paymentType: BTPayPalPaymentType { get }
+    
+    // MARK: - Internal Methods
+    
+    func parameters(with configuration: BTConfiguration) -> [String: Any]
+}
 
-    // MARK: - Initializer
-
-    init(
-        isShippingAddressRequired: Bool = false,
-        isShippingAddressEditable: Bool = false,
-        localeCode: BTPayPalLocaleCode = .none,
-        shippingAddressOverride: BTPostalAddress? = nil,
-        landingPageType: BTPayPalRequestLandingPageType = .none,
-        displayName: String? = nil,
-        merchantAccountID: String? = nil,
-        lineItems: [BTPayPalLineItem]? = nil,
-        billingAgreementDescription: String? = nil,
-        activeWindow: UIWindow? = nil,
-        riskCorrelationId: String? = nil
-    ) {
-        self.isShippingAddressRequired = isShippingAddressRequired
-        self.isShippingAddressEditable = isShippingAddressEditable
-        self.localeCode = localeCode
-        self.shippingAddressOverride = shippingAddressOverride
-        self.landingPageType = landingPageType
-        self.displayName = displayName
-        self.merchantAccountID = merchantAccountID
-        self.lineItems = lineItems
-        self.billingAgreementDescription = billingAgreementDescription
-        self.activeWindow = activeWindow
-        self.riskCorrelationId = riskCorrelationId
-    }
-
+extension BTPayPalRequest {
+    
+    // TODO: these can't be used by invoking BTPayPalRequest.callbackURLScheme
+    static var callbackURLHostAndPath: String { "onetouch/v1/" }
+    static var callbackURLScheme: String { "sdk.ios.braintree" }
+    
     // MARK: Internal Methods
 
     func baseParameters(with configuration: BTConfiguration) -> [String: Any] {
@@ -165,8 +139,8 @@ protocol BTPayPalRequestable where Self: BTPayPalRequest {
             parameters["line_items"] = lineItemsArray
         }
 
-        parameters["return_url"] = BTPayPalRequest.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
-        parameters["cancel_url"] = BTPayPalRequest.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+        parameters["return_url"] = Self.callbackURLScheme + "://\(Self.callbackURLHostAndPath)success"
+        parameters["cancel_url"] = Self.callbackURLScheme + "://\(Self.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
 
         return parameters

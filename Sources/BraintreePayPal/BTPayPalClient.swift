@@ -51,21 +51,6 @@ import BraintreeDataCollector
         )
     }
     
-    @objc(tokenizeWithVaultRequest:completion:)
-    public func tokenize(
-        _ request: BTPayPalVaultRequest,
-        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
-    ) {
-        tokenize(request: request, completion: completion)
-    }
-    
-    @objc(tokenizeWithCheckoutRequest:completion:)
-    public func tokenize(
-        _ request: BTPayPalCheckoutRequest,
-        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
-    ) {
-        tokenize(request: request, completion: completion)
-    }
     // MARK: - Public Methods
     
     /// Tokenize a PayPal account for vault or checkout.
@@ -79,8 +64,8 @@ import BraintreeDataCollector
     /// - Parameters:
     ///   - request: Either a `BTPayPalCheckoutRequest` or a `BTPayPalVaultRequest`
     ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
-    private func tokenize(
-        request: BTPayPalRequest & BTPayPalRequestable,
+    public func tokenize(
+        _ request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -293,7 +278,7 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         authenticationSession = ASWebAuthenticationSession(
             url: appSwitchURL,
-            callbackURLScheme: BTPayPalRequest.callbackURLScheme
+            callbackURLScheme: BTPayPalCheckoutRequest.callbackURLScheme
         ) { callbackURL, error in
                 self.authenticationSession = nil
                 if let error = error as? NSError {
@@ -385,7 +370,7 @@ import BraintreeDataCollector
             hostAndPath.append("/")
         }
         
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
+        if hostAndPath != BTPayPalCheckoutRequest.callbackURLHostAndPath {
             return false
         }
 
