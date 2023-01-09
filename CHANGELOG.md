@@ -6,6 +6,11 @@
     * Update `BTPayPalRequestLandingPageType` enum default case to `.none`
     * Update `BTPayPalRequestUserAction` enum cases to `.none` and `.payNow`
 
+## 5.19.0 (2022-12-19)
+* BraintreePayPalNativeCheckout (BETA)
+  * Update NativeCheckout version from 0.108.0 to 0.110.0
+  * Fix issue with multiple clientIDs causing incorrect web fallback
+
 ## 6.0.0-beta1 (2022-12-13)
 * Convert `BraintreeCore` module to Swift
 * Convert `BraintreeAmericanExpress` module to Swift
