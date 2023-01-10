@@ -46,7 +46,7 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
     }
     
     func testOneTimePayment_withClientToken_tokenizesPayPalAccount() {
-        guard let apiClient = BTAPIClient(authorization: self.sandboxClientToken) else {
+        guard let apiClient = BTAPIClient(authorization: sandboxClientToken) else {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
         }
@@ -74,7 +74,7 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
     
     // TODO: How is this different from testOneTimePayment_withTokenizationKey_tokenizesPayPalAccount()?
     func testBillingAgreement_withTokenizationKey_tokenizesPayPalAccount() {
-        guard let apiClient = BTAPIClient(authorization: self.sandboxTokenizationKey) else {
+        guard let apiClient = BTAPIClient(authorization: sandboxTokenizationKey) else {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
         }
