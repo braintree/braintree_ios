@@ -4,7 +4,7 @@ import OCMock
 @testable import BraintreeCore
 @testable import BraintreePayPal
 
-class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
+class BraintreePayPal_IntegrationTests: XCTestCase {
     let oneTouchCoreAppSwitchSuccessURLFixture = "com.braintreepayments.Demo.payments://onetouch/v1/success?payload=eyJ2ZXJzaW9uIjoyLCJhY2NvdW50X2NvdW50cnkiOiJVUyIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXhwaXJlc19pbiI6LTEsImRpc3BsYXlfbmFtZSI6Im1vY2tEaXNwbGF5TmFtZSIsInNjb3BlIjoiaHR0cHM6XC9cL3VyaS5wYXlwYWwuY29tXC9zZXJ2aWNlc1wvcGF5bWVudHNcL2Z1dHVyZXBheW1lbnRzIiwiZW1haWwiOiJtb2NrZW1haWxhZGRyZXNzQG1vY2suY29tIiwiYXV0aG9yaXphdGlvbl9jb2RlIjoibW9ja1RoaXJkUGFydHlBdXRob3JpemF0aW9uQ29kZSJ9&x-source=com.paypal.ppclient.touch.v1-or-v2"
     let sandboxTokenizationKey = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
     let sandboxTokenizationKeyApplePayDisabled = "sandbox_g42y39zw_348pk9cgf3bgyw2b"
@@ -15,11 +15,10 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
     override func setUp() {
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.braintreepayments.Demo.payments"
     }
-
     
-    // MARK: - One-Time Payments (Checkout)
+    // MARK: - Checkout Flow Tests
     
-    func testOneTimePayment_withTokenizationKey_tokenizesPayPalAccount() {
+    func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() {
         guard let apiClient = BTAPIClient(authorization: self.sandboxTokenizationKey) else {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
@@ -45,7 +44,7 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
         self.waitForExpectations(timeout: 5)
     }
     
-    func testOneTimePayment_withClientToken_tokenizesPayPalAccount() {
+    func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() {
         guard let apiClient = BTAPIClient(authorization: sandboxClientToken) else {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
@@ -70,10 +69,9 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
         self.waitForExpectations(timeout: 5)
     }
     
-    // MARK: - Billing Agreement (Vault)
+    // MARK: - Vault Flow Tests
     
-    // TODO: How is this different from testOneTimePayment_withTokenizationKey_tokenizesPayPalAccount()?
-    func testBillingAgreement_withTokenizationKey_tokenizesPayPalAccount() {
+    func testVaultFlow_withTokenizationKey_tokenizesPayPalAccount() {
         guard let apiClient = BTAPIClient(authorization: sandboxTokenizationKey) else {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
@@ -86,7 +84,7 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         payPalClient.handleBrowserSwitchReturn(
             returnURL,
-            paymentType: .checkout
+            paymentType: .vault
         ) { tokenizedPayPalAccount, error in
             guard let nonce = tokenizedPayPalAccount?.nonce else {
                 XCTFail("Failed to tokenize account.")
@@ -99,8 +97,7 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
         self.waitForExpectations(timeout: 5)
     }
     
-    // TODO: how is this different from testOneTimePayment_withClientToken_tokenizesPayPalAccount()?
-    func testBillingAgreement_withClientToken_tokenizedPayPalAccount() {
+    func testVaultFlow_withClientToken_tokenizedPayPalAccount() {
         guard let apiClient = BTAPIClient(authorization: sandboxClientToken) else {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
@@ -113,7 +110,7 @@ class BraintreePayPal_IntegrationTests_Swift: XCTestCase {
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         payPalClient.handleBrowserSwitchReturn(
             returnURL,
-            paymentType: .checkout
+            paymentType: .vault
         ) { tokenizedPayPalAccount, error in
             guard let nonce = tokenizedPayPalAccount?.nonce else {
                 XCTFail("Failed to tokenize account.")
