@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/paypal/paypalcheckout-ios",
       "state" : {
-        "revision" : "b7cfbed949069dfd36cb9cab404b6c213cc1d322",
-        "version" : "0.108.0"
+        "revision" : "229f0b8b88970b04d13becd4a8c64e95f5969cab",
+        "version" : "0.110.0"
       }
     }
   ],
