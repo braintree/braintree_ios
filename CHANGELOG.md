@@ -23,8 +23,7 @@
         * `.credit` = 1
     * Create `BTPayPalLocaleCode` enum
     * `BTPayPalRequest.localeCode` now uses the `BTPayPalLocaleCode` enum instead of a `String`
-    * `BTPayPalClient.tokenizePayPalAccount` now takes a request of type `BTPayPalRequest & BTPayPalRequestable`
-        * This ensures that merchants only pass in the expected subclasses `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
+    * Renamed and replaced `BTPayPalClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
     * Removed `BTPayPalErrorType`
     * Replaced `BTPayPalErrorDomain` global constant with `BTPayPalError.errorDomain`
     * Added `BTPayPalError`
@@ -38,6 +37,11 @@
         * `.invalidURLAction`
         * `.failedToCreateNonce`
     * Make `BTPayPalNonce` initializer internal
+
+## 5.19.0 (2022-12-19)
+* BraintreePayPalNativeCheckout (BETA)
+  * Update NativeCheckout version from 0.108.0 to 0.110.0
+  * Fix issue with multiple clientIDs causing incorrect web fallback
 
 ## 6.0.0-beta1 (2022-12-13)
 * Convert `BraintreeCore` module to Swift

@@ -13,7 +13,7 @@ import BraintreeDataCollector
     
     // MARK: - Internal Properties
 
-    ///Exposed for testing to get the instance of BTAPIClient
+    /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
     
     /// Exposed for testing the approvalURL construction
@@ -50,10 +50,10 @@ import BraintreeDataCollector
             object: nil
         )
     }
-    
+
     // MARK: - Public Methods
-    
-    /// Tokenize a PayPal account for vault or checkout.
+
+    /// Tokenize a PayPal request to be used with the PayPal Vault flow.
     ///
     /// - Note: You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
     /// server when this method completes without any additional user interaction.
@@ -62,65 +62,33 @@ import BraintreeDataCollector
     /// If the user cancels out of the flow, the error code will be `.canceled`.
     ///
     /// - Parameters:
-    ///   - request: Either a `BTPayPalCheckoutRequest` or a `BTPayPalVaultRequest`
+    ///   - request: A `BTPayPalVaultRequest`
     ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
-    @objc(tokenizePayPalAccountWithPayPalRequest:completion:)
-    public func tokenizePayPalAccount(
-        with request: BTPayPalRequest & BTPayPalRequestable,
+    @objc(tokenizeWithVaultRequest:completion:)
+    public func tokenize(
+        _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                completion(nil, error)
-                return
-            }
-            
-            guard let configuration, let json = configuration.json else {
-                completion(nil, BTPayPalError.fetchConfigurationFailed)
-                return
-            }
-            
-            guard json["paypalEnabled"].isTrue else {
-                self.apiClient.sendAnalyticsEvent("ios.paypal-otc.preflight.disabled")
-                completion(nil, BTPayPalError.disabled)
-                return
-            }
-            
-            self.payPalRequest = request
-            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
-                if let error = error as? NSError {
-                    if error.code == BTCoreConstants.networkConnectionLostCode {
-                        self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
-                    }
+        tokenize(request: request, completion: completion)
+    }
 
-                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
-                        completion(nil, BTPayPalError.httpResponseMissingUserInfoJSON)
-                        return
-                    }
-                    
-                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
-                    var dictionary = error.userInfo
-                    dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
-                    completion(nil, BTPayPalError.httpPostRequestError(dictionary))
-                    return
-                }
-
-                guard let body,
-                      var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-                        body["agreementSetup"]["approvalUrl"].asURL() else {
-                    completion(nil, BTPayPalError.invalidURL)
-                    return
-                }
-                
-                approvalURL = self.decorate(approvalURL: approvalURL, for: request)
-
-                let pairingID = self.token(from: approvalURL)
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
-                self.sendAnalyticsEventForInitiatingOneTouch(paymentType: request.paymentType, success: error == nil)
-                self.handlePayPalRequest(with: approvalURL, error: nil, paymentType: request.paymentType, completion: completion)
-            }
-        }
+    /// Tokenize a PayPal request to be used with the PayPal Checkout or Pay Later flow.
+    ///
+    /// - Note: You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+    /// server when this method completes without any additional user interaction.
+    ///
+    /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
+    ///
+    /// - Parameters:
+    ///   - request: A `BTPayPalCheckoutRequest`
+    ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
+    @objc(tokenizeWithCheckoutRequest:completion:)
+    public func tokenize(
+        _ request: BTPayPalCheckoutRequest,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        tokenize(request: request, completion: completion)
     }
     
     /// :nodoc:
@@ -270,6 +238,64 @@ import BraintreeDataCollector
     }
     
     // MARK: - Private Methods
+
+    private func tokenize(
+        request: BTPayPalRequest,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            if let error {
+                completion(nil, error)
+                return
+            }
+
+            guard let configuration, let json = configuration.json else {
+                completion(nil, BTPayPalError.fetchConfigurationFailed)
+                return
+            }
+
+            guard json["paypalEnabled"].isTrue else {
+                self.apiClient.sendAnalyticsEvent("ios.paypal-otc.preflight.disabled")
+                completion(nil, BTPayPalError.disabled)
+                return
+            }
+
+            self.payPalRequest = request
+            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
+                if let error = error as? NSError {
+                    if error.code == BTCoreConstants.networkConnectionLostCode {
+                        self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
+                    }
+
+                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
+                        completion(nil, BTPayPalError.httpResponseMissingUserInfoJSON)
+                        return
+                    }
+
+                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+                    var dictionary = error.userInfo
+                    dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+                    completion(nil, BTPayPalError.httpPostRequestError(dictionary))
+                    return
+                }
+
+                guard let body,
+                      var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                        body["agreementSetup"]["approvalUrl"].asURL() else {
+                    completion(nil, BTPayPalError.invalidURL)
+                    return
+                }
+
+                approvalURL = self.decorate(approvalURL: approvalURL, for: request)
+
+                let pairingID = self.token(from: approvalURL)
+                let dataCollector = BTDataCollector(apiClient: self.apiClient)
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
+                self.sendAnalyticsEventForInitiatingOneTouch(paymentType: request.paymentType, success: error == nil)
+                self.handlePayPalRequest(with: approvalURL, error: nil, paymentType: request.paymentType, completion: completion)
+            }
+        }
+    }
     
     private func performSwitchRequest(
         appSwitchURL: URL,

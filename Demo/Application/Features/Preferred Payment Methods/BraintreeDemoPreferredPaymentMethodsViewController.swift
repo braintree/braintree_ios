@@ -76,7 +76,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.isEnabled = false
         
         let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
-        paypalClient.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
+        paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
 
             if let e = error {
@@ -97,7 +97,7 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         
         let paypalRequest = BTPayPalVaultRequest()
         paypalRequest.activeWindow = self.view.window
-        paypalClient.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
+        paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {

@@ -109,50 +109,7 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
-    }
-}
 
-extension BTPayPalCheckoutRequest: BTPayPalRequestable {
-    
-    /// :nodoc:
-    public var hermesPath: String { "v1/paypal_hermes/create_payment_resource" }
-    
-    /// :nodoc:
-    public var paymentType: BTPayPalPaymentType { .checkout }
-    
-    /// :nodoc:
-    public func parameters(with configuration: BTConfiguration) -> [String: Any] {
-        let baseParameters: [String: Any] = baseParameters(with: configuration)
-        var checkoutParameters: [String: Any] = [
-            "intent": intent.stringValue,
-            "amount": amount,
-            "offer_pay_later": offerPayLater
-        ]
-
-        let currencyCode = currencyCode != nil ? currencyCode : configuration.json?["paypal"]["currencyIsoCode"].asString()
-
-        if currencyCode != nil {
-            checkoutParameters["currency_iso_code"] = currencyCode
-        }
-
-        if requestBillingAgreement != false {
-            checkoutParameters["request_billing_agreement"] = requestBillingAgreement
-
-            if billingAgreementDescription != nil {
-                checkoutParameters["billing_agreement_details"] = ["description": billingAgreementDescription]
-            }
-        }
-
-        if shippingAddressOverride != nil {
-            checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
-            checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress
-            checkoutParameters["city"] = shippingAddressOverride?.locality
-            checkoutParameters["state"] = shippingAddressOverride?.region
-            checkoutParameters["postal_code"] = shippingAddressOverride?.postalCode
-            checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
-            checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
-        }
-
-        return baseParameters.merging(checkoutParameters) { $1 }
+        super.init(hermesPath: "v1/paypal_hermes/create_payment_resource", paymentType: .checkout)
     }
 }

@@ -69,11 +69,27 @@ Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillin
 let payPalClient = BTPayPalClient(apiClient: <MY_BTAPICLIENT>)
 let request = BTPayPalCheckoutRequest(amount: "1")
 
-payPalClient.tokenizePayPalAccount(with: request) { payPalAccountNonce, error in
+payPalClient.tokenize(request) { payPalAccountNonce, error in
     guard let payPalAccountNonce = payPalAccountNonce else {
         // handle error
     }
     // send nonce to server
+}
+```
+
+`BTPayPalClient.tokenizePayPalAccount(with: BTPayPalRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)` has been replaced with two methods: `tokenize(_ request: BTPayPalVaultRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)` and `tokenize(_ request: BTPayPalCheckoutRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)`:
+
+```
+// BTPayPalCheckoutRequest
+let request = BTPayPalCheckoutRequest(amount: "1")
+payPalClient.tokenize(request) { payPalAccountNonce, error in 
+    // handle response
+}
+
+// BTPayPalVaultRequest
+let request = BTPayPalVaultRequest()
+payPalClient.tokenize(request) { payPalAccountNonce, error in 
+    // handle response
 }
 ```
 

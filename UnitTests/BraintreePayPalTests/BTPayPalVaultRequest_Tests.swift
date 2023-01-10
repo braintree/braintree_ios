@@ -1,5 +1,5 @@
 import XCTest
-import BraintreePayPal
+@testable import BraintreePayPal
 
 class BTPayPalVaultRequest_Tests: XCTestCase {
 

@@ -4,13 +4,6 @@ import UIKit
 import BraintreeCore
 #endif
 
-@objc public protocol BTPayPalRequestable where Self: BTPayPalRequest {
-    var hermesPath: String { get }
-    var paymentType: BTPayPalPaymentType { get }
-
-    func parameters(with configuration: BTConfiguration) -> [String: Any]
-}
-
 @objc public enum BTPayPalPaymentType: Int {
     /// Checkout
     case checkout
@@ -100,6 +93,11 @@ import BraintreeCore
     public var riskCorrelationId: String?
 
     // MARK: - Internal Properties
+
+    var hermesPath: String
+    var paymentType: BTPayPalPaymentType
+
+    // MARK: - Static Properties
     
     static let callbackURLHostAndPath: String = "onetouch/v1/"
     static let callbackURLScheme: String = "sdk.ios.braintree"
@@ -107,6 +105,8 @@ import BraintreeCore
     // MARK: - Initializer
 
     init(
+        hermesPath: String,
+        paymentType: BTPayPalPaymentType,
         isShippingAddressRequired: Bool = false,
         isShippingAddressEditable: Bool = false,
         localeCode: BTPayPalLocaleCode = .none,
@@ -119,6 +119,8 @@ import BraintreeCore
         activeWindow: UIWindow? = nil,
         riskCorrelationId: String? = nil
     ) {
+        self.hermesPath = hermesPath
+        self.paymentType = paymentType
         self.isShippingAddressRequired = isShippingAddressRequired
         self.isShippingAddressEditable = isShippingAddressEditable
         self.localeCode = localeCode
@@ -133,6 +135,75 @@ import BraintreeCore
     }
 
     // MARK: Internal Methods
+
+    func parameters(with configuration: BTConfiguration) -> [String: Any] {
+        let baseParameters: [String: Any] = baseParameters(with: configuration)
+
+        switch paymentType {
+        case .checkout:
+            // We downcast self to avoid an empty implementation in the parent class
+            // which would require us to override this function
+            guard let request = self as? BTPayPalCheckoutRequest else { return [:] }
+            var checkoutParameters: [String: Any] = [
+                "intent": request.intent.stringValue,
+                "amount": request.amount,
+                "offer_pay_later": request.offerPayLater
+            ]
+
+            let currencyCode = request.currencyCode != nil ? request.currencyCode : configuration.json?["paypal"]["currencyIsoCode"].asString()
+
+            if currencyCode != nil {
+                checkoutParameters["currency_iso_code"] = currencyCode
+            }
+
+            if request.requestBillingAgreement != false {
+                checkoutParameters["request_billing_agreement"] = request.requestBillingAgreement
+
+                if billingAgreementDescription != nil {
+                    checkoutParameters["billing_agreement_details"] = ["description": billingAgreementDescription]
+                }
+            }
+
+            if shippingAddressOverride != nil {
+                checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
+                checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress
+                checkoutParameters["city"] = shippingAddressOverride?.locality
+                checkoutParameters["state"] = shippingAddressOverride?.region
+                checkoutParameters["postal_code"] = shippingAddressOverride?.postalCode
+                checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
+                checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
+            }
+
+            return baseParameters.merging(checkoutParameters) { $1 }
+
+        case .vault:
+            // We downcast self to avoid an empty implementation in the parent class
+            // which would require us to override this function
+            guard let request = self as? BTPayPalVaultRequest else { return [:] }
+            var vaultParameters: [String: Any] = ["offer_paypal_credit": request.offerCredit]
+
+            if billingAgreementDescription != nil {
+                vaultParameters["description"] = billingAgreementDescription
+            }
+
+            if let shippingAddressOverride {
+                let shippingAddressParameters: [String: String?] = [
+                    "line1": shippingAddressOverride.streetAddress,
+                    "line2": shippingAddressOverride.extendedAddress,
+                    "city": shippingAddressOverride.locality,
+                    "state": shippingAddressOverride.region,
+                    "postal_code": shippingAddressOverride.postalCode,
+                    "country_code": shippingAddressOverride.countryCodeAlpha2,
+                    "recipient_name": shippingAddressOverride.recipientName
+                ]
+
+                vaultParameters["shipping_address"] = shippingAddressParameters
+            }
+
+            return baseParameters.merging(vaultParameters) { $1 }
+
+        }
+    }
 
     func baseParameters(with configuration: BTConfiguration) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
