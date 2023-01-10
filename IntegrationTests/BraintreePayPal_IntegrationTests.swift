@@ -19,7 +19,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     // MARK: - Checkout Flow Tests
     
     func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() {
-        guard let apiClient = BTAPIClient(authorization: self.sandboxTokenizationKey) else {
+        guard let apiClient = BTAPIClient(authorization: sandboxTokenizationKey) else {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
         }
