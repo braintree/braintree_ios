@@ -37,6 +37,10 @@
         * `.invalidURLAction`
         * `.failedToCreateNonce`
     * Make `BTPayPalNonce` initializer internal
+  * BraintreePayPalNativeCheckout (BETA)
+    * Renamed and replaced `BTPayPalNativeCheckoutClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`
+    * `BTPayPalNativeCheckoutRequest` now takes in an `intent` of type `BTPayPalRequestIntent` instead of `BTPayPalNativeRequestIntent`
+    * `BTPayPalNativeCheckoutRequest.localeCode` now uses the `BTPayPalLocaleCode` enum instead of a `String` value
 
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
