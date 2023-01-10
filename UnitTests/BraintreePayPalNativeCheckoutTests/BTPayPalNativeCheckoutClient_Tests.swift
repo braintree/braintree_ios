@@ -22,7 +22,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
 
         let nativeCheckoutRequest = BTPayPalNativeCheckoutRequest(amount: "4.30")
         let checkoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
-        checkoutClient.tokenizePayPalAccount(with: nativeCheckoutRequest) { nonce, error in
+        checkoutClient.tokenize(nativeCheckoutRequest) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual(error as? BTPayPalNativeError, .payPalClientIDNotFound)
             XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "ios.paypal-native.create-order.failed")

@@ -23,7 +23,7 @@ class BTPayPalNativeOrderCreationClient {
     }
 
     func createOrder(
-        with request: BTPayPalRequest & BTPayPalRequestable,
+        with request: BTPayPalRequest,
         completion: @escaping (Result<BTPayPalNativeOrder, BTPayPalNativeError>) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in

@@ -35,7 +35,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         sender.isEnabled = false
                 
         let request = BTPayPalNativeCheckoutRequest(amount: "4.30")
-        payPalNativeCheckoutClient.tokenizePayPalAccount(with: request) { nonce, error in
+        payPalNativeCheckoutClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
             
             guard let nonce = nonce else {
@@ -53,7 +53,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 
         let request = BTPayPalNativeVaultRequest()
 
-        payPalNativeCheckoutClient.tokenizePayPalAccount(with: request) { nonce, error in
+        payPalNativeCheckoutClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
 
             guard let nonce = nonce else {

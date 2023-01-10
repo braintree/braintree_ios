@@ -17,7 +17,7 @@ class BTPayPalNativeTokenizationClient {
     }
 
     func tokenize(
-        request: BTPayPalRequest & BTPayPalRequestable,
+        request: BTPayPalRequest,
         returnURL: String,
         completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeError>) -> Void)
     {

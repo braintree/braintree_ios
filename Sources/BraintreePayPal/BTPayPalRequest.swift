@@ -92,10 +92,11 @@ import BraintreeCore
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationId: String?
 
-    // MARK: - Internal Properties
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    public var hermesPath: String
 
-    var hermesPath: String
-    var paymentType: BTPayPalPaymentType
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    public var paymentType: BTPayPalPaymentType
 
     // MARK: - Static Properties
     
@@ -134,9 +135,10 @@ import BraintreeCore
         self.riskCorrelationId = riskCorrelationId
     }
 
-    // MARK: Internal Methods
+    // MARK: Public Methods
 
-    func parameters(with configuration: BTConfiguration) -> [String: Any] {
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
+    public func parameters(with configuration: BTConfiguration) -> [String: Any] {
         let baseParameters: [String: Any] = baseParameters(with: configuration)
 
         switch paymentType {
@@ -204,6 +206,8 @@ import BraintreeCore
 
         }
     }
+
+    // MARK: Internal Methods
 
     func baseParameters(with configuration: BTConfiguration) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
