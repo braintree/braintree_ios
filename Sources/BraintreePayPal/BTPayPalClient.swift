@@ -177,7 +177,7 @@ import BraintreeDataCollector
         with url: URL,
         error: Error?,
         paymentType: BTPayPalPaymentType,
-        completion: @escaping (BTPayPalAccountNonce?, Error?)->Void
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         if let error {
             completion(nil, error)
