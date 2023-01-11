@@ -174,13 +174,14 @@ import BraintreeDataCollector
         with url: URL,
         error: Error?,
         paymentType: BTPayPalPaymentType,
-        completion: @escaping (BTPayPalAccountNonce?, Error?)->Void
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         if let error {
             completion(nil, error)
             return
         }
-        
+
+        // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
         if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
             let eventName = "ios.\(paymentType.stringValue).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
             apiClient.sendAnalyticsEvent(eventName)
@@ -193,7 +194,7 @@ import BraintreeDataCollector
     
     // MARK: - Analytics Helpers
     
-    private func sendAnalyticsEventForInitiatingOneTouch(paymentType: BTPayPalPaymentType, success: Bool) {
+    private func sendAnalyticsEvent(for paymentType: BTPayPalPaymentType, success: Bool) {
         let successString = success ? "started" : "failed"
         
         apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.initiate.\(successString)")
@@ -288,7 +289,7 @@ import BraintreeDataCollector
                 let pairingID = self.token(from: approvalURL)
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
-                self.sendAnalyticsEventForInitiatingOneTouch(paymentType: request.paymentType, success: error == nil)
+                self.sendAnalyticsEvent(for: request.paymentType, success: error == nil)
                 self.handlePayPalRequest(with: approvalURL, error: nil, paymentType: request.paymentType, completion: completion)
             }
         }
@@ -304,6 +305,7 @@ import BraintreeDataCollector
             url: appSwitchURL,
             callbackURLScheme: BTPayPalRequest.callbackURLScheme
         ) { callbackURL, error in
+                // Required to avoid memory leak for BTPayPalClient
                 self.authenticationSession = nil
                 if let error = error as? NSError {
                     if error.domain == ASWebAuthenticationSessionError.errorDomain,
