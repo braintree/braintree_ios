@@ -183,7 +183,8 @@ import BraintreeDataCollector
             completion(nil, error)
             return
         }
-        
+
+        // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
         if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
             let eventName = "ios.\(paymentType.stringValue).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
             apiClient.sendAnalyticsEvent(eventName)
@@ -307,6 +308,7 @@ import BraintreeDataCollector
             url: appSwitchURL,
             callbackURLScheme: BTPayPalRequest.callbackURLScheme
         ) { callbackURL, error in
+                // Required to avoid memory leak for BTPayPalClient
                 self.authenticationSession = nil
                 if let error = error as? NSError {
                     if error.domain == ASWebAuthenticationSessionError.errorDomain,
