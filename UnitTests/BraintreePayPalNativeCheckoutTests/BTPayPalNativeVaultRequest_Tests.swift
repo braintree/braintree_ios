@@ -42,10 +42,10 @@ class BTPayPalNativeVaultRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
         request.offerCredit = true
-        request.riskCorrelationID = "risk ID"
+        request.riskCorrelationId = "risk ID"
         request.merchantAccountID = "merchant ID"
         
-        let parameters = request.constructParameters(from: configuration, withRequest: request)
+        let parameters = request.parameters(with: configuration)
         
         XCTAssertEqual(parameters["description"] as? String, "desc")
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)

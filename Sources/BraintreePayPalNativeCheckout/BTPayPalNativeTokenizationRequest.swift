@@ -10,10 +10,10 @@ import PayPalCheckout
 
 class BTPayPalNativeTokenizationRequest {
 
-    private let request: BTPayPalNativeRequest
+    private let request: BTPayPalRequest
     private let correlationID: String
 
-    init(request: BTPayPalNativeRequest, correlationID: String) {
+    init(request: BTPayPalRequest, correlationID: String) {
         self.request = request
         self.correlationID = correlationID
     }
@@ -36,7 +36,7 @@ class BTPayPalNativeTokenizationRequest {
 
         if let checkoutRequest = request as? BTPayPalNativeCheckoutRequest {
             account["options"] = ["validate" : false]
-            account["intent"] = checkoutRequest.intentAsString
+            account["intent"] = checkoutRequest.intent.stringValue
         }
 
         return ["paypal_account": account]

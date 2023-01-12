@@ -49,7 +49,7 @@ import BraintreeCore
 
 /// Base options for PayPal Checkout and PayPal Vault flows.
 /// - Note: Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
-@objcMembers public class BTPayPalRequest: NSObject {
+@objcMembers open class BTPayPalRequest: NSObject {
 
     // MARK: - Public Properties
 
@@ -92,10 +92,11 @@ import BraintreeCore
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationId: String?
 
-    // MARK: - Internal Properties
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    public var hermesPath: String
 
-    var hermesPath: String
-    var paymentType: BTPayPalPaymentType
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    public var paymentType: BTPayPalPaymentType
 
     // MARK: - Static Properties
     
@@ -134,9 +135,10 @@ import BraintreeCore
         self.riskCorrelationId = riskCorrelationId
     }
 
-    // MARK: Internal Methods
+    // MARK: Public Methods
 
-    func parameters(with configuration: BTConfiguration) -> [String: Any] {
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
+    public func parameters(with configuration: BTConfiguration) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
 
         experienceProfile["no_shipping"] = !isShippingAddressRequired
