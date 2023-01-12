@@ -24,7 +24,7 @@ class BTPayPalNativeTokenizationRequest_Tests: XCTestCase {
         XCTAssertEqual(account["response_type"] as? String, "web")
         XCTAssertEqual(account["correlation_id"] as? String, correlationId)
         XCTAssertEqual(account["options"] as? [String: Bool], ["validate": false])
-        XCTAssertEqual(account["intent"] as? String, checkoutRequest.intentAsString)
+        XCTAssertEqual(account["intent"] as? String, checkoutRequest.intent.stringValue)
         XCTAssertEqual(response?["webURL"], "a-fake-return-url")
     }
 }

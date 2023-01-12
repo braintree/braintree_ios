@@ -11,7 +11,8 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 3. [Braintree Core](#braintree-core)
 4. [Venmo](#venmo)
 5. [PayPal](#paypal)
-6. [Data Collector](#data-collector)
+6. [PayPal Native Checkout](#paypal-native-checkout)
+7. [Data Collector](#data-collector)
 
 ## Supported Versions
 
@@ -89,6 +90,25 @@ payPalClient.tokenize(request) { payPalAccountNonce, error in
 // BTPayPalVaultRequest
 let request = BTPayPalVaultRequest()
 payPalClient.tokenize(request) { payPalAccountNonce, error in 
+    // handle response
+}
+```
+
+## PayPal Native Checkout
+`BTPayPalNativeCheckoutClient.tokenizePayPalAccount(with: BTPayPalNativeRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)` has been replaced with two methods: `tokenize(_ request: BTPayPalNativeCheckoutRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)` and `tokenize(_ request: BTPayPalNativeVaultRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)`:
+
+```
+// BTPayPalNativeCheckoutRequest
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPICLIENT>)
+let request = BTPayPalNativeCheckoutRequest(amount: "1")
+payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
+    // handle response
+}
+
+// BTPayPalNativeVaultRequest
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPICLIENT>)
+let request = BTPayPalNativeVaultRequest()
+payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
     // handle response
 }
 ```

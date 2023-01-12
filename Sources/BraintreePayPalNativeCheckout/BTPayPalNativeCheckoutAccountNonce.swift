@@ -53,43 +53,13 @@ import BraintreePayPal
         phone = payerInfo["phone"].asString()
         payerID = payerInfo["payerId"].asString()
 
-        let shippingAddressJSON = details["payerInfo"]["shippingAddress"]
-        let accountAddressJSON =  details["payerInfo"]["accountAddress"]
-        shippingAddress = Self.addressFromJSON(shippingAddressJSON) ?? Self.accountAddressFromJSON(accountAddressJSON)
+        let shippingAddressJSON = details["payerInfo"]["shippingAddress"].asAddress()
+        let accountAddressJSON =  details["payerInfo"]["accountAddress"].asAddress()
+        shippingAddress = shippingAddressJSON ?? accountAddressJSON
 
-        let billingAddressJSON = details["payerInfo"]["billingAddress"]
-        billingAddress = Self.addressFromJSON(billingAddressJSON)
+        let billingAddressJSON = details["payerInfo"]["billingAddress"].asAddress()
+        billingAddress = billingAddressJSON
 
         super.init(nonce: nonce, type: "PayPal", isDefault: isDefault)
-    }
-
-    private static func addressFromJSON(_ addressJSON: BTJSON) -> BTPostalAddress? {
-        guard addressJSON.isObject else {
-            return nil
-        }
-        let address = BTPostalAddress()
-        address.recipientName = addressJSON["recipientName"].asString() // Likely to be nil
-        address.streetAddress = addressJSON["line1"].asString()
-        address.extendedAddress = addressJSON["line2"].asString()
-        address.locality = addressJSON["city"].asString()
-        address.region = addressJSON["state"].asString()
-        address.postalCode = addressJSON["postalCode"].asString()
-        address.countryCodeAlpha2 = addressJSON["countryCode"].asString()
-        return address
-    }
-
-    private static func accountAddressFromJSON(_ addressJSON: BTJSON) -> BTPostalAddress? {
-        if (!addressJSON.isObject) {
-            return nil
-        }
-        let address = BTPostalAddress()
-        address.recipientName = addressJSON["recipientName"].asString() // Likely to be nil
-        address.streetAddress = addressJSON["street1"].asString()
-        address.extendedAddress = addressJSON["street2"].asString()
-        address.locality = addressJSON["city"].asString()
-        address.region = addressJSON["state"].asString()
-        address.postalCode = addressJSON["postalCode"].asString()
-        address.countryCodeAlpha2 = addressJSON["country"].asString()
-        return address
     }
 }
