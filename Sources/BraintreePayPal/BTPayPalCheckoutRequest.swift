@@ -6,11 +6,11 @@ import BraintreeCore
 
 /// Payment intent.
 ///
-/// - Note: Must be set to BTPayPalRequestIntentSale for immediate payment, BTPayPalRequestIntentAuthorize to authorize a payment for capture later, or BTPayPalRequestIntentOrder to create an order. Defaults to BTPayPalRequestIntentAuthorize. Only applies to PayPal Checkout.
+/// - Note: Must be set to BTPayPalRequestIntentSale for immediate payment, `.authorize` to authorize a payment for capture later, or `.order` to create an order. Defaults to `.authorize`. Only applies to PayPal Checkout.
 ///
 /// [Capture payments later reference](https://developer.paypal.com/docs/integration/direct/payments/capture-payment/)
 ///
-///[Create and process orders reference](https://developer.paypal.com/docs/integration/direct/payments/create-process-order/)
+/// [Create and process orders reference](https://developer.paypal.com/docs/integration/direct/payments/create-process-order/)
 @objc public enum BTPayPalRequestIntent: Int {
     /// Authorize
     case authorize
@@ -20,6 +20,17 @@ import BraintreeCore
 
     /// Order
     case order
+
+    var stringValue: String {
+        switch self {
+        case .sale:
+            return "sale"
+        case .order:
+            return "order"
+        default:
+            return "authorize"
+        }
+    }
 }
 
 ///  The call-to-action in the PayPal Checkout flow.
@@ -33,6 +44,15 @@ import BraintreeCore
 
     /// Pay Now
     case payNow
+
+    var stringValue: String {
+        switch self {
+        case .payNow:
+            return "commit"
+        default:
+            return ""
+        }
+    }
 }
 
 /// Options for the PayPal Checkout flow.
@@ -46,9 +66,9 @@ import BraintreeCore
     public let amount: String
 
     /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
-    public var intent: BTPayPalRequestIntent?
+    public var intent: BTPayPalRequestIntent
 
-    /// Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.default`.
+    /// Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
     public var userAction: BTPayPalRequestUserAction
 
     /// Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
@@ -62,34 +82,6 @@ import BraintreeCore
     /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
 
-    // MARK: - Internal Properties
-
-    // TODO: Make internal and move into enum once rest of PayPal module is in Swift
-    public var intentAsString: String {
-        switch intent {
-        case .sale:
-            return "sale"
-        case .order:
-            return "order"
-        default:
-            return "authorize"
-        }
-    }
-
-    // TODO: Make internal and move into enum once rest of PayPal module is in Swift
-    public var userActionAsString: String {
-        switch userAction {
-        case .payNow:
-            return "commit"
-        default:
-            return ""
-        }
-    }
-
-    // TODO: Make internal once rest of PayPal module is in Swift
-    public let hermesPath: String = "v1/paypal_hermes/create_payment_resource"
-    public let paymentType: BTPayPalPaymentType = .checkout
-
     // MARK: - Initializer
 
     /// Initializes a PayPal Native Checkout request
@@ -97,6 +89,7 @@ import BraintreeCore
     ///   - amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.'
     ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
     ///   and is limited to 7 digits before the decimal point.
+    ///   - userAction: Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
     ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
@@ -104,7 +97,7 @@ import BraintreeCore
     ///   during checkout. Defaults to `false`.
     public init(
         amount: String,
-        intent: BTPayPalRequestIntent? = .authorize,
+        intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
@@ -116,15 +109,16 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
+
+        super.init(hermesPath: "v1/paypal_hermes/create_payment_resource", paymentType: .checkout)
     }
 
-    // MARK: - Internal methods
+    // MARK: Internal Methods
 
-    // TODO: Make internal once rest of PayPal module is in Swift
-    public func parameters(with configuration: BTConfiguration) -> [String: Any] {
-        let baseParameters: [String: Any] = baseParameters(with: configuration)
+    override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+        let baseParameters = super.parameters(with: configuration)
         var checkoutParameters: [String: Any] = [
-            "intent": intentAsString,
+            "intent": intent.stringValue,
             "amount": amount,
             "offer_pay_later": offerPayLater
         ]

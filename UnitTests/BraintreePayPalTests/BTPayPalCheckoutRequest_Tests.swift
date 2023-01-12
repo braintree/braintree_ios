@@ -36,44 +36,44 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
     func testIntentAsString_whenIntentIsNotSpecified_returnsAuthorize() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        XCTAssertEqual(request.intentAsString, "authorize")
+        XCTAssertEqual(request.intent.stringValue, "authorize")
     }
 
     func testIntentAsString_whenIntentIsAuthorize_returnsAuthorize() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .authorize
-        XCTAssertEqual(request.intentAsString, "authorize")
+        XCTAssertEqual(request.intent.stringValue, "authorize")
     }
 
     func testIntentAsString_whenIntentIsSale_returnsSale() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .sale
-        XCTAssertEqual(request.intentAsString, "sale")
+        XCTAssertEqual(request.intent.stringValue, "sale")
     }
 
     func testIntentAsString_whenIntentIsOrder_returnsOrder() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .order
-        XCTAssertEqual(request.intentAsString, "order")
+        XCTAssertEqual(request.intent.stringValue, "order")
     }
 
     // MARK: - userActionAsString
 
     func testUserActionAsString_whenUserActionNotSpecified_returnsEmptyString() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        XCTAssertEqual(request.userActionAsString, "")
+        XCTAssertEqual(request.userAction.stringValue, "")
     }
 
     func testUserActionAsString_whenUserActionIsDefault_returnsEmptyString() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = .none
-        XCTAssertEqual(request.userActionAsString, "")
+        XCTAssertEqual(request.userAction.stringValue, "")
     }
 
     func testUserActionAsString_whenUserActionIsCommit_returnsCommit() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = .payNow
-        XCTAssertEqual(request.userActionAsString, "commit")
+        XCTAssertEqual(request.userAction.stringValue, "commit")
     }
 
     // MARK: - parametersWithConfiguration

@@ -18,17 +18,14 @@ import BraintreeCore
     /// - Parameter offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     public init(offerCredit: Bool = false) {
         self.offerCredit = offerCredit
+
+        super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
     }
 
-    // MARK: - Internal Properties
+    // MARK: Internal Methods
 
-    // TODO: Make internal once rest of PayPal module is in Swift
-    public let hermesPath: String = "v1/paypal_hermes/setup_billing_agreement"
-    public let paymentType: BTPayPalPaymentType = .vault
-
-    // TODO: Make internal once rest of PayPal module is in Swift
-    public func parameters(with configuration: BTConfiguration) -> [String: Any] {
-        let baseParameters: [String: Any] = baseParameters(with: configuration)
+    override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+        let baseParameters = super.parameters(with: configuration)
         var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
 
         if billingAgreementDescription != nil {

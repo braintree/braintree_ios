@@ -20,8 +20,7 @@ import Foundation
     /// Estimated interest or fees amount the payer will have to pay during the lifetime of the loan.
     public let totalInterest: BTPayPalCreditFinancingAmount?
     
-    // TODO: Make internal when all of PayPal module is converted to Swift
-    public init(
+    init(
         cardAmountImmutable: Bool,
         monthlyPayment: BTPayPalCreditFinancingAmount?,
         payerAcceptance: Bool,

@@ -4,21 +4,21 @@ import UIKit
 import BraintreeCore
 #endif
 
-// TODO: Make internal once rest of PayPal module is in Swift
-@objc public protocol BTPayPalRequestable: AnyObject {
-    @objc optional var hermesPath: String { get }
-    @objc optional var paymentType: BTPayPalPaymentType { get }
-
-    @objc(parametersWithConfiguration:)
-    optional func parameters(with configuration: BTConfiguration) -> [String: Any]
-}
-
 @objc public enum BTPayPalPaymentType: Int {
     /// Checkout
     case checkout
 
     /// Vault
     case vault
+    
+    var stringValue: String {
+        switch self {
+        case .vault:
+            return "paypal-ba"
+        case .checkout:
+            return "paypal-single-payment"
+        }
+    }
 }
 
 /// Use this option to specify the PayPal page to display when a user lands on the PayPal site to complete the payment.
@@ -49,7 +49,7 @@ import BraintreeCore
 
 /// Base options for PayPal Checkout and PayPal Vault flows.
 /// - Note: Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
-@objcMembers public class BTPayPalRequest: NSObject, BTPayPalRequestable {
+@objcMembers public class BTPayPalRequest: NSObject {
 
     // MARK: - Public Properties
 
@@ -61,36 +61,7 @@ import BraintreeCore
     public var isShippingAddressEditable: Bool
 
     ///  Optional: A locale code to use for the transaction.
-    ///  - Note: Supported locales are:
-    ///
-    /// `da_DK`,
-    /// `de_DE`,
-    /// `en_AU`,
-    /// `en_GB`,
-    /// `en_US`,
-    /// `es_ES`,
-    /// `es_XC`,
-    /// `fr_CA`,
-    /// `fr_FR`,
-    /// `fr_XC`,
-    /// `id_ID`,
-    /// `it_IT`,
-    /// `ja_JP`,
-    /// `ko_KR`,
-    /// `nl_NL`,
-    /// `no_NO`,
-    /// `pl_PL`,
-    /// `pt_BR`,
-    /// `pt_PT`,
-    /// `ru_RU`,
-    /// `sv_SE`,
-    /// `th_TH`,
-    /// `tr_TR`,
-    /// `zh_CN`,
-    /// `zh_HK`,
-    /// `zh_TW`,
-    /// `zh_XC`.
-    public var localeCode: String?
+    public var localeCode: BTPayPalLocaleCode
 
     /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     public var shippingAddressOverride: BTPostalAddress?
@@ -123,16 +94,22 @@ import BraintreeCore
 
     // MARK: - Internal Properties
 
-    // TODO: Make internal once rest of PayPal module is in Swift
-    public static let callbackURLHostAndPath: String = "onetouch/v1/"
-    public static let callbackURLScheme: String = "sdk.ios.braintree"
+    var hermesPath: String
+    var paymentType: BTPayPalPaymentType
+
+    // MARK: - Static Properties
+    
+    static let callbackURLHostAndPath: String = "onetouch/v1/"
+    static let callbackURLScheme: String = "sdk.ios.braintree"
 
     // MARK: - Initializer
 
     init(
+        hermesPath: String,
+        paymentType: BTPayPalPaymentType,
         isShippingAddressRequired: Bool = false,
         isShippingAddressEditable: Bool = false,
-        localeCode: String? = nil,
+        localeCode: BTPayPalLocaleCode = .none,
         shippingAddressOverride: BTPostalAddress? = nil,
         landingPageType: BTPayPalRequestLandingPageType = .none,
         displayName: String? = nil,
@@ -142,6 +119,8 @@ import BraintreeCore
         activeWindow: UIWindow? = nil,
         riskCorrelationId: String? = nil
     ) {
+        self.hermesPath = hermesPath
+        self.paymentType = paymentType
         self.isShippingAddressRequired = isShippingAddressRequired
         self.isShippingAddressEditable = isShippingAddressEditable
         self.localeCode = localeCode
@@ -157,7 +136,7 @@ import BraintreeCore
 
     // MARK: Internal Methods
 
-    func baseParameters(with configuration: BTConfiguration) -> [String: Any] {
+    func parameters(with configuration: BTConfiguration) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
 
         experienceProfile["no_shipping"] = !isShippingAddressRequired
@@ -167,8 +146,8 @@ import BraintreeCore
             experienceProfile["landing_page_type"] = landingPageType.stringValue
         }
 
-        if localeCode != nil {
-            experienceProfile["locale_code"] = localeCode
+        if localeCode.stringValue != nil {
+            experienceProfile["locale_code"] = localeCode.stringValue
         }
 
         experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
