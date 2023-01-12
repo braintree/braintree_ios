@@ -22,9 +22,10 @@ import BraintreeCore
         super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
     }
 
-    // MARK: Internal Methods
+    // MARK: Public Methods
 
-    override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
+    public override func parameters(with configuration: BTConfiguration) -> [String: Any] {
         let baseParameters = super.parameters(with: configuration)
         var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
 
