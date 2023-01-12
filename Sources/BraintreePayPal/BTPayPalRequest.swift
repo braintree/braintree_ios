@@ -209,7 +209,7 @@ import BraintreeCore
 
     // MARK: Internal Methods
 
-    func baseParameters(with configuration: BTConfiguration) -> [String: Any] {
+    func parameters(with configuration: BTConfiguration) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
 
         experienceProfile["no_shipping"] = !isShippingAddressRequired

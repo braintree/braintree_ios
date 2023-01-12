@@ -21,4 +21,31 @@ import BraintreeCore
 
         super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
     }
+
+    // MARK: Internal Methods
+
+    override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+        let baseParameters = super.parameters(with: configuration)
+        var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
+
+        if billingAgreementDescription != nil {
+            vaultParameters["description"] = billingAgreementDescription
+        }
+
+        if let shippingAddressOverride {
+            let shippingAddressParameters: [String: String?] = [
+                "line1": shippingAddressOverride.streetAddress,
+                "line2": shippingAddressOverride.extendedAddress,
+                "city": shippingAddressOverride.locality,
+                "state": shippingAddressOverride.region,
+                "postal_code": shippingAddressOverride.postalCode,
+                "country_code": shippingAddressOverride.countryCodeAlpha2,
+                "recipient_name": shippingAddressOverride.recipientName
+            ]
+
+            vaultParameters["shipping_address"] = shippingAddressParameters
+        }
+
+        return baseParameters.merging(vaultParameters) { $1 }
+    }
 }
