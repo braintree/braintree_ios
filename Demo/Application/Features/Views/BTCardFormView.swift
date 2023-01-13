@@ -43,7 +43,7 @@ class BTCardFormView: UIView {
 
     // MARK: - Internal UI Properties
 
-    @objc var cardNumberTextField: UITextField = UITextField() // exposed for UnionPay demo
+    @objc var cardNumberTextField: UITextField = UITextField() // exposed for 3DS demo
     @objc var expirationTextField: UITextField = UITextField() // exposed for 3DS demo
     @objc var cvvTextField: UITextField = UITextField() // exposed for 3DS demo
     @objc var postalCodeTextField: UITextField = UITextField() // exposed for 3DS demo

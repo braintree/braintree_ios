@@ -68,7 +68,6 @@
 		A0988FF224DB44B20095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */; };
 		A0988FF424DB44B20095EEEE /* BraintreeDemoAmexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */; };
 		A0988FF524DB44B20095EEEE /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F8324DB44B10095EEEE /* BraintreeDemoCustomVenmoButtonViewController.m */; };
-		A0988FF724DB44B20095EEEE /* BraintreeDemoUnionPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F8824DB44B10095EEEE /* BraintreeDemoUnionPayViewController.m */; };
 		A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0988F8D24DB44B10095EEEE /* Images.xcassets */; };
 		A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */; };
 		A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */; };
@@ -201,8 +200,6 @@
 		A0988F8024DB44B10095EEEE /* BraintreeDemoAmexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoAmexViewController.h; sourceTree = "<group>"; };
 		A0988F8224DB44B10095EEEE /* BraintreeDemoCustomVenmoButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomVenmoButtonViewController.h; sourceTree = "<group>"; };
 		A0988F8324DB44B10095EEEE /* BraintreeDemoCustomVenmoButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomVenmoButtonViewController.m; sourceTree = "<group>"; };
-		A0988F8824DB44B10095EEEE /* BraintreeDemoUnionPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoUnionPayViewController.m; sourceTree = "<group>"; };
-		A0988F8924DB44B10095EEEE /* BraintreeDemoUnionPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoUnionPayViewController.h; sourceTree = "<group>"; };
 		A0988F8D24DB44B10095EEEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A0988F8E24DB44B10095EEEE /* Braintree-Demo.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "Braintree-Demo.entitlements"; sourceTree = "<group>"; };
 		A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoMerchantAPIClient.swift; sourceTree = "<group>"; };
@@ -409,7 +406,6 @@
 				A0988F6824DB44B10095EEEE /* PayPal - Pay Later */,
 				A0988F5A24DB44B10095EEEE /* Preferred Payment Methods */,
 				BE777AC227D936E700487D23 /* SEPA Direct Debit */,
-				A0988F8724DB44B10095EEEE /* UnionPay */,
 				A0988F8124DB44B10095EEEE /* Venmo - Custom Button */,
 			);
 			path = Features;
@@ -509,15 +505,6 @@
 				A0988F8324DB44B10095EEEE /* BraintreeDemoCustomVenmoButtonViewController.m */,
 			);
 			path = "Venmo - Custom Button";
-			sourceTree = "<group>";
-		};
-		A0988F8724DB44B10095EEEE /* UnionPay */ = {
-			isa = PBXGroup;
-			children = (
-				A0988F8924DB44B10095EEEE /* BraintreeDemoUnionPayViewController.h */,
-				A0988F8824DB44B10095EEEE /* BraintreeDemoUnionPayViewController.m */,
-			);
-			path = UnionPay;
 			sourceTree = "<group>";
 		};
 		A0988F8F24DB44B20095EEEE /* Merchant API Client */ = {
@@ -840,7 +827,6 @@
 				803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */,
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
 				BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */,
-				A0988FF724DB44B20095EEEE /* BraintreeDemoUnionPayViewController.m in Sources */,
 				A0988FF424DB44B20095EEEE /* BraintreeDemoAmexViewController.m in Sources */,
 				A0988FE624DB44B20095EEEE /* main.m in Sources */,
 				A0988F9724DB44B20095EEEE /* BraintreeDemoContainmentViewController.m in Sources */,
