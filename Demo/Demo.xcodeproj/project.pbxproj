@@ -39,8 +39,6 @@
 		803D6502256DAF9A00ACE692 /* BraintreePayPal.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F0256DAF9A00ACE692 /* BraintreePayPal.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		803D6503256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */; };
 		803D6504256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		803D6505256DAF9A00ACE692 /* BraintreeUnionPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F2256DAF9A00ACE692 /* BraintreeUnionPay.framework */; };
-		803D6506256DAF9A00ACE692 /* BraintreeUnionPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F2256DAF9A00ACE692 /* BraintreeUnionPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		803D6507256DAF9A00ACE692 /* BraintreeVenmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */; };
 		803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803FB9DD26D93146002BF92D /* BTCardFormView.swift */; };
@@ -119,7 +117,6 @@
 				57108A182832EA04004EB870 /* BraintreePayPalNativeCheckout.framework in Embed Frameworks */,
 				803D6504256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Embed Frameworks */,
 				803D6500256DAF9A00ACE692 /* BraintreePaymentFlow.framework in Embed Frameworks */,
-				803D6506256DAF9A00ACE692 /* BraintreeUnionPay.framework in Embed Frameworks */,
 				803D6502256DAF9A00ACE692 /* BraintreePayPal.framework in Embed Frameworks */,
 				803D64F8256DAF9A00ACE692 /* BraintreeApplePay.framework in Embed Frameworks */,
 			);
@@ -158,7 +155,6 @@
 		803D64EF256DAF9A00ACE692 /* BraintreePaymentFlow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreePaymentFlow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64F0256DAF9A00ACE692 /* BraintreePayPal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreePayPal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeThreeDSecure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		803D64F2256DAF9A00ACE692 /* BraintreeUnionPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeUnionPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeVenmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803FB9DD26D93146002BF92D /* BTCardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardFormView.swift; sourceTree = "<group>"; };
 		80581A5D2553152A00006F53 /* Venmo_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venmo_UITests.swift; sourceTree = "<group>"; };
@@ -245,7 +241,6 @@
 				803D64FF256DAF9A00ACE692 /* BraintreePaymentFlow.framework in Frameworks */,
 				803D6503256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Frameworks */,
 				803D64F9256DAF9A00ACE692 /* BraintreeCard.framework in Frameworks */,
-				803D6505256DAF9A00ACE692 /* BraintreeUnionPay.framework in Frameworks */,
 				08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -532,7 +527,6 @@
 				803D64EF256DAF9A00ACE692 /* BraintreePaymentFlow.framework */,
 				803D64F0256DAF9A00ACE692 /* BraintreePayPal.framework */,
 				803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */,
-				803D64F2256DAF9A00ACE692 /* BraintreeUnionPay.framework */,
 				803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */,
 				428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */,
 				6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */,
