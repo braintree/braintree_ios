@@ -91,10 +91,9 @@ import BraintreeDataCollector
         tokenize(request: request, completion: completion)
     }
     
-    /// :nodoc:
-    // TODO: Make private after converting BraintreePayPal_IntegrationTests.m to Swift
-    @objc(handleBrowserSwitchReturnURL:paymentType:completion:)
-    public func handleBrowserSwitchReturn(
+    // MARK: - Internal Methods
+    
+    func handleBrowserSwitchReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
@@ -166,8 +165,6 @@ import BraintreeDataCollector
             completion(tokenizedAccount, nil)
         }
     }
-    
-    // MARK: - Internal Methods
     
     func applicationDidBecomeActive(notification: Notification) {
         returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted
