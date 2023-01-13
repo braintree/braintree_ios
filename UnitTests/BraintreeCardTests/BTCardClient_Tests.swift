@@ -180,11 +180,8 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
         card.cvv = "123"
 
-        let request = BTCardRequest()
-        request.card = card
-
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
+        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
@@ -236,11 +233,8 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
         card.cvv = "123"
 
-        let request = BTCardRequest()
-        request.card = card
-
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
+        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
             
@@ -314,11 +308,8 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
         card.cvv = "123"
 
-        let request = BTCardRequest()
-        request.card = card
-
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
+        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
             
@@ -347,13 +338,8 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
         card.cvv = "123"
 
-        let request = BTCardRequest()
-        request.card = card
-        request.smsCode = "12345"
-        request.enrollmentID = "fake-enrollment-id"
-
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
+        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTHTTPError.domain)
@@ -587,40 +573,6 @@ class BTCardClient_Tests: XCTestCase {
         }
         
         waitForExpectations(timeout: 10, handler: nil)
-    }
-
-    func testTokenization_whenCardIsUnionPayAndGraphQLEnabledForCards_usesGatewayAPI() {
-        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "graphQL": [
-                "url": "graphql://graphql",
-                "features": ["tokenize_credit_cards"]
-            ]
-        ])
-
-        let cardClient = BTCardClient(apiClient: mockApiClient)
-
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = "2038"
-        card.cvv = "1234"
-        card.cardholderName = "Brian Tree"
-
-        let cardRequest = BTCardRequest(card: card)
-        cardRequest.enrollmentID = "enrollment-id"
-        cardRequest.mobileCountryCode = "1"
-        cardRequest.mobilePhoneNumber = "867-5309"
-        cardRequest.smsCode = "1234"
-
-        let expectation = self.expectation(description: "Tokenize Card")
-
-        cardClient.tokenizeCard(cardRequest) { (tokenizedCard, error) -> Void in
-            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testTokenization_whenGraphQLIsEnabledAndTokenizationIsSuccessful_returnsACardNonce() {
