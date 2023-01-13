@@ -48,10 +48,6 @@ let package = Package(
             targets: ["BraintreeThreeDSecure", "CardinalMobile", "PPRiskMagnes"]
         ),
         .library(
-            name: "BraintreeUnionPay",
-            targets: ["BraintreeUnionPay"]
-        ),
-        .library(
             name: "BraintreeVenmo",
             targets: ["BraintreeVenmo"]
         ),
@@ -115,11 +111,6 @@ let package = Package(
         .binaryTarget(
             name: "CardinalMobile",
             path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
-        ),
-        .target(
-            name: "BraintreeUnionPay",
-            dependencies: ["BraintreeCard"],
-            publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeVenmo",

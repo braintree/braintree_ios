@@ -84,12 +84,6 @@ Pod::Spec.new do |s|
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"
   end
 
-  s.subspec "UnionPay" do |s|
-    s.source_files  = "Sources/BraintreeUnionPay/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeUnionPay/Public/BraintreeUnionPay/*.h"
-    s.dependency "Braintree/Card"
-  end
-
   s.subspec "Venmo" do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
