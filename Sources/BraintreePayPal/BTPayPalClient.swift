@@ -253,8 +253,8 @@ import BraintreeDataCollector
 
             self.payPalRequest = request
             self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
-                if let error {
-                    if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
+                if let error = error as? NSError {
+                    if error.code == BTCoreConstants.networkConnectionLostCode {
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
 
