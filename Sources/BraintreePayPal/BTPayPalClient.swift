@@ -33,7 +33,7 @@ import BraintreeDataCollector
 
     // MARK: - Private Properties
 
-    var returnedToAppAfterPermissionAlert: Bool = false
+    private var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializer
 
