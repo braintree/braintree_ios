@@ -31,7 +31,8 @@ import BraintreeDataCollector
     /// Exposed for testing, for determining if ASWebAuthenticationSession was started
     var isAuthenticationSessionStarted: Bool = false
 
-    /// Exposed for testing, for determining if we returned to the app after permission alert
+    // MARK: - Private Properties
+
     var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializer
@@ -258,13 +259,13 @@ import BraintreeDataCollector
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
 
-                    guard let jsonResponseBody = (error as NSError).userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
+                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
                         completion(nil, error)
                         return
                     }
 
                     let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
-                    var dictionary = (error as NSError).userInfo
+                    var dictionary = error.userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
                     completion(nil, BTPayPalError.httpPostRequestError(dictionary))
                     return
