@@ -90,7 +90,7 @@ import BraintreeCore
     public var activeWindow: UIWindow?
 
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
-    public var riskCorrelationId: String?
+    public var riskCorrelationID: String?
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
     public var hermesPath: String
@@ -132,7 +132,7 @@ import BraintreeCore
         self.lineItems = lineItems
         self.billingAgreementDescription = billingAgreementDescription
         self.activeWindow = activeWindow
-        self.riskCorrelationId = riskCorrelationId
+        self.riskCorrelationID = riskCorrelationId
     }
 
     // MARK: Public Methods
@@ -160,8 +160,8 @@ import BraintreeCore
             parameters["merchant_account_id"] = merchantAccountID
         }
 
-        if riskCorrelationId != nil {
-            parameters["correlation_id"] = riskCorrelationId
+        if riskCorrelationID != nil {
+            parameters["correlation_id"] = riskCorrelationID
         }
 
         if let lineItems, lineItems.count > 0 {
