@@ -41,6 +41,31 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     override func setUp() {
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.braintreepayments.Demo.payments"
     }
+
+    func testPayPalClientInitializer_doesObserveApplicationDidBecomeActive_setsReturnedToAppAfterPermissionAlert() {
+        guard let apiClient = BTAPIClient(authorization: sandboxTokenizationKey) else {
+            XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
+            return
+        }
+
+        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        XCTAssertFalse(payPalClient.isAuthenticationSessionStarted)
+        XCTAssertFalse(payPalClient.returnedToAppAfterPermissionAlert)
+
+        let returnURL = URL(string: "https://www.paypal.com/checkout?EC-Token=EC-Random-Value")!
+        let expectation = expectation(description: "Tokenize payment")
+        payPalClient.handlePayPalRequest(with: returnURL, paymentType: .checkout) { nonce, error in
+//            NotificationCenter.default.post(Notification(name: UIApplication.didBecomeActiveNotification))
+            XCTAssertNil(error)
+            XCTAssertNotNil(nonce)
+            XCTAssertTrue(payPalClient.isAuthenticationSessionStarted)
+            XCTAssertTrue(payPalClient.returnedToAppAfterPermissionAlert)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5)
+    }
     
     // MARK: - Checkout Flow Tests
     

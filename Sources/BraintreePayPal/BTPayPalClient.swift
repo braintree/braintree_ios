@@ -30,10 +30,9 @@ import BraintreeDataCollector
     
     /// Exposed for testing, for determining if ASWebAuthenticationSession was started
     var isAuthenticationSessionStarted: Bool = false
-    
-    // MARK: - Private Properties
 
-    private var returnedToAppAfterPermissionAlert: Bool = false
+    /// Exposed for testing, for determining if we returned to the app after permission alert
+    var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializer
 
@@ -172,15 +171,9 @@ import BraintreeDataCollector
     
     func handlePayPalRequest(
         with url: URL,
-        error: Error?,
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        if let error {
-            completion(nil, error)
-            return
-        }
-
         // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
         if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
             let eventName = "ios.\(paymentType.stringValue).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
@@ -260,18 +253,18 @@ import BraintreeDataCollector
 
             self.payPalRequest = request
             self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
-                if let error = error as? NSError {
-                    if error.code == BTCoreConstants.networkConnectionLostCode {
+                if let error {
+                    if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
 
-                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
-                        completion(nil, BTPayPalError.httpResponseMissingUserInfoJSON)
+                    guard let jsonResponseBody = (error as NSError).userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
+                        completion(nil, error)
                         return
                     }
 
                     let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
-                    var dictionary = error.userInfo
+                    var dictionary = (error as NSError).userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
                     completion(nil, BTPayPalError.httpPostRequestError(dictionary))
                     return
@@ -290,7 +283,7 @@ import BraintreeDataCollector
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
                 self.sendAnalyticsEvent(for: request.paymentType, success: error == nil)
-                self.handlePayPalRequest(with: approvalURL, error: nil, paymentType: request.paymentType, completion: completion)
+                self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
             }
         }
     }

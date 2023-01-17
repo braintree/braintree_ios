@@ -12,9 +12,6 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
     /// Failed to fetch Braintree configuration
     case fetchConfigurationFailed
 
-    /// HTTP response is missing user info JSON data
-    case httpResponseMissingUserInfoJSON
-
     /// HTTP POST request returned an error
     case httpPostRequestError([String: Any])
 
@@ -42,18 +39,16 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
             return 1
         case .fetchConfigurationFailed:
             return 2
-        case .httpResponseMissingUserInfoJSON:
-            return 3
         case .httpPostRequestError:
-            return 4
+            return 3
         case .invalidURL:
-            return 5
+            return 4
         case .asWebAuthenticationSessionURLInvalid:
-            return 6
+            return 5
         case .invalidURLAction:
-            return 7
+            return 6
         case .failedToCreateNonce:
-            return 8
+            return 7
         }
     }
 
@@ -65,8 +60,6 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
             return "PayPal flow was canceled by the user."
         case .fetchConfigurationFailed:
             return "Failed to fetch Braintree configuration."
-        case .httpResponseMissingUserInfoJSON:
-            return "HTTP POST request is missing user info JSON in the error response."
         case .httpPostRequestError(let error):
             return "HTTP POST request failed with \(error)."
         case .invalidURL:
