@@ -14,6 +14,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 6. [PayPal Native Checkout](#paypal-native-checkout)
 7. [Data Collector](#data-collector)
 8. [Union Pay](#union-pay)
+9. [SEPA Direct Debit](#sepa-direct-debit)
 
 ## Supported Versions
 
@@ -65,6 +66,8 @@ venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccountNonce, error 
 
 ## PayPal
 `BTPayPalDriver` has been renamed to `BTPayPalClient`
+
+The property `BTPayPalRequest.activeWindow` has been removed
 
 Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`:
 ```
@@ -149,5 +152,15 @@ card.expirationYear = "2025"
 
 cardClient.tokenizeCard(card) { (tokenizedCard, error) in
     // Communicate the tokenizedCard.nonce to your server, or handle error
+}
+```
+
+## SEPA Direct Debit
+`BTSEPADirectDebitClient.tokenize(request: BTSEPADirectDebitRequest, context: ASWebAuthenticationPresentationContextProviding)` has been renamed to `BTSEPADirectDebitClient.tokenize(request: BTSEPADirectDebitRequest)`. Additionally, conformance to the `ASWebAuthenticationPresentationContextProviding` protocol is no longer needed.
+
+The updated `tokenize` method is as follows:
+```
+sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
+    // handle response
 }
 ```
