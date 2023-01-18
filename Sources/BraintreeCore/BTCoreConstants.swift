@@ -3,7 +3,6 @@ import Foundation
 /// :nodoc:
 @objcMembers public class BTCoreConstants: NSObject {
 
-    // TODO: update release script to update this constant during the release process
     /// :nodoc:
     public static var braintreeSDKVersion: String = "6.0.0-beta1"
 

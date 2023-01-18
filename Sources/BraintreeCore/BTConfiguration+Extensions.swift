@@ -1,7 +1,7 @@
 import Foundation
 import PassKit
 
-// NEXT_MAJOR_VERSION: - v7 these extensions should be moved into their respective modules
+// NEXT_MAJOR_VERSION (v7): these extensions should be moved into their respective modules
 // as the modules are converted to Swift.
 // Also, determine whether they should remain public or become internal
 
