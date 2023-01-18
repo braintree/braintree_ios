@@ -297,7 +297,7 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         authenticationSession = ASWebAuthenticationSession(
             url: appSwitchURL,
-            callbackURLScheme: BTPayPalRequest.callbackURLScheme
+            callbackURLScheme: BTCoreConstants.callbackURLScheme
         ) { callbackURL, error in
                 // Required to avoid memory leak for BTPayPalClient
                 self.authenticationSession = nil

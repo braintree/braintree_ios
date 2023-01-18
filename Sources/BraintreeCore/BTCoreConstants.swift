@@ -15,4 +15,7 @@ import Foundation
 
     /// :nodoc:
     public static var networkConnectionLostCode: Int = -1005
+    
+    /// :nodoc:
+    public static let callbackURLScheme: String = "sdk.ios.braintree"
 }

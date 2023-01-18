@@ -1,6 +1,10 @@
 import Foundation
 import AuthenticationServices
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 class WebAuthenticationSession: NSObject {
 
     var authenticationSession: ASWebAuthenticationSession?
@@ -12,7 +16,7 @@ class WebAuthenticationSession: NSObject {
     ) {
         self.authenticationSession = ASWebAuthenticationSession(
             url: url,
-            callbackURLScheme: BTSEPADirectDebitConstants.callbackURLScheme,
+            callbackURLScheme: BTCoreConstants.callbackURLScheme,
             completionHandler: completion
         )
 
