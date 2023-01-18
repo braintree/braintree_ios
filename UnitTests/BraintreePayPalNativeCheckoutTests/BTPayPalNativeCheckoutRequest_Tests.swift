@@ -53,7 +53,7 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
         request.isShippingAddressRequired = true
         request.displayName = "Test Request"
         request.merchantAccountID = "Merchant Acct ID"
-        request.riskCorrelationId = "Risk Correlation ID"
+        request.riskCorrelationID = "Risk Correlation ID"
         request.shippingAddressOverride = BTPostalAddress()
         request.isShippingAddressEditable = true
         let baseParameters = request.parameters(with: configuration)
@@ -70,7 +70,7 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(baseParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
         XCTAssertEqual(baseParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(baseParameters["merchant_account_id"] as? String, request.merchantAccountID)
-        XCTAssertEqual(baseParameters["correlation_id"] as? String, request.riskCorrelationId)
+        XCTAssertEqual(baseParameters["correlation_id"] as? String, request.riskCorrelationID)
 
         let profile = try XCTUnwrap(baseParameters["experience_profile"] as? [AnyHashable: Any])
         XCTAssertEqual(profile["no_shipping"] as? Bool, !request.isShippingAddressRequired)

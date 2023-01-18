@@ -42,7 +42,7 @@ class BTPayPalNativeVaultRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
         request.offerCredit = true
-        request.riskCorrelationId = "risk ID"
+        request.riskCorrelationID = "risk ID"
         request.merchantAccountID = "merchant ID"
         
         let parameters = request.parameters(with: configuration)

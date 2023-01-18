@@ -282,7 +282,7 @@ import BraintreeDataCollector
 
                 let pairingID = self.token(from: approvalURL)
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
                 self.sendAnalyticsEvent(for: request.paymentType, success: error == nil)
                 self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
             }
