@@ -30,7 +30,7 @@ import BraintreeDataCollector
     
     /// Exposed for testing, for determining if ASWebAuthenticationSession was started
     var isAuthenticationSessionStarted: Bool = false
-    
+
     // MARK: - Private Properties
 
     private var returnedToAppAfterPermissionAlert: Bool = false
@@ -172,15 +172,9 @@ import BraintreeDataCollector
     
     func handlePayPalRequest(
         with url: URL,
-        error: Error?,
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        if let error {
-            completion(nil, error)
-            return
-        }
-
         // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
         if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
             let eventName = "ios.\(paymentType.stringValue).webswitch.error.safariviewcontrollerbadscheme.\(scheme)"
@@ -266,7 +260,7 @@ import BraintreeDataCollector
                     }
 
                     guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
-                        completion(nil, BTPayPalError.httpResponseMissingUserInfoJSON)
+                        completion(nil, error)
                         return
                     }
 
@@ -290,7 +284,7 @@ import BraintreeDataCollector
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationId ?? dataCollector.clientMetadataID(pairingID)
                 self.sendAnalyticsEvent(for: request.paymentType, success: error == nil)
-                self.handlePayPalRequest(with: approvalURL, error: nil, paymentType: request.paymentType, completion: completion)
+                self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
             }
         }
     }
