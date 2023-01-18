@@ -95,7 +95,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
-    func testTokenizePayPalAccount_whenPoseRequstContainsError_callsBackWithError() {
+    func testTokenizePayPalAccount_whenPostRequestContainsError_callsBackWithError() {
         let stubJSONResponse = BTJSON(
             value: [
                 "paymentResource" : [
