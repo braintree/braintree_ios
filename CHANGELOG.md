@@ -4,7 +4,7 @@
 * Convert `BraintreePayPal` module to Swift
 * Breaking Changes
   * BraintreePayPal
-    * Rename `riskCorrelationId` to `riskCorrelationID`
+    * Rename `BTPayPalRequest.riskCorrelationId` to `BTPayPalRequest.riskCorrelationID`
     * Update `BTPayPalRequestLandingPageType` enum default case to `.none`
         * Update enum values
             * `.none` = 0
