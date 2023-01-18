@@ -102,13 +102,6 @@
          </BuildableReference>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4164B9951C9B658E006AE861"
-            BuildableName = "BraintreeUnionPay.framework"
-            BlueprintName = "BraintreeUnionPay"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
             BlueprintIdentifier = "A77AA29B1B618C7700217B73"
             BuildableName = "BraintreeVenmo.framework"
             BlueprintName = "BraintreeVenmo"
@@ -236,17 +229,6 @@
                BlueprintIdentifier = "A91E1E8924FEDD7F007540E5"
                BuildableName = "BraintreePaymentFlowTests.xctest"
                BlueprintName = "BraintreePaymentFlowTests"
-               ReferencedContainer = "container:../Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A9E5C1B124FD5DD500EE691F"
-               BuildableName = "BraintreeUnionPayTests.xctest"
-               BlueprintName = "BraintreeUnionPayTests"
                ReferencedContainer = "container:../Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>

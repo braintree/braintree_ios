@@ -12,6 +12,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 4. [Venmo](#venmo)
 5. [PayPal](#paypal)
 6. [Data Collector](#data-collector)
+7. [Union Pay](#union-pay)
 
 ## Supported Versions
 
@@ -93,5 +94,24 @@ dataCollector.collectDeviceData { deviceData, _ in
         // handle error
     }
     // Send deviceData to your server
+}
+```
+
+## Union Pay
+The `BraintreeUnionPay` module, and all containing classes, was removed in v6. UnionPay cards can now be processed as regular cards, through the `BraintreeCard` module. You no longer need to manage card enrollment via SMS authorization. 
+
+Now, you can tokenize just with the card details:
+
+```
+let braintreeClient = BTAPIClient(authorization: "<CLIENT_AUTHORIZATION>")!
+let cardClient = BTCardClient(apiClient: braintreeClient)
+
+let card = BTCard()
+card.number = "4111111111111111"
+card.expirationMonth = "12"
+card.expirationYear = "2025"
+
+cardClient.tokenizeCard(card) { (tokenizedCard, error) in
+    // Communicate the tokenizedCard.nonce to your server, or handle error
 }
 ```

@@ -37,13 +37,6 @@ import PassKit
         json?["payWithVenmo"]["environment"].asString()
     }
 
-    // MARK: - BTConfiguration+UnionPay
-
-    /// Indicates whether UnionPay is enabled for the merchant account.
-    var isUnionPayEnabled: Bool {
-        json?["unionPay"]["enabled"].isTrue ?? false
-    }
-
     // MARK: - BTConfiguration+ThreeDSecure
 
     /// JWT for use with initializaing Cardinal 3DS framework

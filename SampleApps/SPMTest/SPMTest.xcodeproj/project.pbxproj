@@ -23,7 +23,6 @@
 		BE8B3959293E82890095AB68 /* BraintreePaymentFlow in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B3958293E82890095AB68 /* BraintreePaymentFlow */; };
 		BE8B395B293E82890095AB68 /* BraintreeSEPADirectDebit in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B395A293E82890095AB68 /* BraintreeSEPADirectDebit */; };
 		BE8B395D293E82890095AB68 /* BraintreeThreeDSecure in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B395C293E82890095AB68 /* BraintreeThreeDSecure */; };
-		BE8B395F293E82890095AB68 /* BraintreeUnionPay in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B395E293E82890095AB68 /* BraintreeUnionPay */; };
 		BE8B3961293E82890095AB68 /* BraintreeVenmo in Frameworks */ = {isa = PBXBuildFile; productRef = BE8B3960293E82890095AB68 /* BraintreeVenmo */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +53,6 @@
 				BE8B3957293E82890095AB68 /* BraintreePayPalNativeCheckout in Frameworks */,
 				BE8B395D293E82890095AB68 /* BraintreeThreeDSecure in Frameworks */,
 				BE8B3951293E82890095AB68 /* BraintreeCore in Frameworks */,
-				BE8B395F293E82890095AB68 /* BraintreeUnionPay in Frameworks */,
 				BE8B3959293E82890095AB68 /* BraintreePaymentFlow in Frameworks */,
 				BE8B394D293E82890095AB68 /* BraintreeApplePay in Frameworks */,
 			);
@@ -138,7 +136,6 @@
 				BE8B3958293E82890095AB68 /* BraintreePaymentFlow */,
 				BE8B395A293E82890095AB68 /* BraintreeSEPADirectDebit */,
 				BE8B395C293E82890095AB68 /* BraintreeThreeDSecure */,
-				BE8B395E293E82890095AB68 /* BraintreeUnionPay */,
 				BE8B3960293E82890095AB68 /* BraintreeVenmo */,
 			);
 			productName = SPMTest;
@@ -479,11 +476,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE8B3949293E82890095AB68 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreeThreeDSecure;
-		};
-		BE8B395E293E82890095AB68 /* BraintreeUnionPay */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BE8B3949293E82890095AB68 /* XCRemoteSwiftPackageReference "braintree_ios" */;
-			productName = BraintreeUnionPay;
 		};
 		BE8B3960293E82890095AB68 /* BraintreeVenmo */ = {
 			isa = XCSwiftPackageProductDependency;
