@@ -20,7 +20,7 @@ class BTGraphQLErrorTree {
             if !parentNode.hasChild(forField: field) {
                 parentNode.insertChild(BTGraphQLMultiErrorNode(field: field))
             }
-            parentNode = parentNode.getChild(forField: field) as! BTGraphQLMultiErrorNode
+            parentNode = parentNode.getChild(forField: field) as? BTGraphQLMultiErrorNode ?? BTGraphQLMultiErrorNode(field: "Failed to find BTGraphQLMultiErrorNode for field: \(field)")
         }
         
         // add child node at end of key path
