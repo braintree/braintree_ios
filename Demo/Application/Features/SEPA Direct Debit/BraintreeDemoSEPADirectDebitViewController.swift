@@ -2,7 +2,7 @@ import UIKit
 import AuthenticationServices
 import BraintreeSEPADirectDebit
 
-class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController, ASWebAuthenticationPresentationContextProviding {
+class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController {
     private let sepaDirectDebitClient: BTSEPADirectDebitClient
     private let sepaDirectDebitButton = UIButton(type: .system)
     
@@ -32,19 +32,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - ASWebAuthenticationPresentationContextProviding conformance
-
-    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
-    }
 
     // MARK: - SEPA Direct Debit implementation
     
@@ -67,7 +54,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest, context: self) { sepaDirectDebitNonce, error in
+        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
             if let sepaDirectDebitNonce = sepaDirectDebitNonce {
                 self.completionBlock(sepaDirectDebitNonce)
             } else if let error = error {
