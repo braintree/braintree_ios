@@ -9,7 +9,7 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-@objcMembers public class BTPayPalClient: NSObject, ASWebAuthenticationPresentationContextProviding {
+@objcMembers public class BTPayPalClient: NSObject {
     
     // MARK: - Internal Properties
 
@@ -202,33 +202,7 @@ import BraintreeDataCollector
             apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.credit.offered.\(successString)")
         }
     }
-    
-    // MARK: - ASWebAuthenticationPresentationContextProviding protocol
 
-    @available(iOSApplicationExtension, unavailable, message: "Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.")
-    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if let activeWindow = payPalRequest?.activeWindow {
-            return activeWindow
-        }
-        
-        for scene in UIApplication.shared.connectedScenes {
-            if scene.activationState == .foregroundActive,
-               let windowScene = scene as? UIWindowScene,
-               let window = windowScene.windows.first {
-                return window
-            }
-        }
-        
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
-    }
-    
     // MARK: - Private Methods
 
     private func tokenize(
@@ -430,5 +404,21 @@ import BraintreeDataCollector
         }
 
         return action
+    }
+}
+
+// MARK: - ASWebAuthenticationPresentationContextProviding conformance
+
+extension BTPayPalClient: ASWebAuthenticationPresentationContextProviding {
+
+    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        if #available(iOS 15, *) {
+            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let window = firstScene?.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        } else {
+            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        }
     }
 }
