@@ -58,37 +58,28 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completion {
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [self tokenizeCard:request options:nil completion:completion];
-#pragma clang diagnostic pop
-}
 
-
-- (void)tokenizeCard:(BTCardRequest *)request options:(NSDictionary *)options completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
-{
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                              code:BTCardClientErrorTypeIntegration
                                          userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because BTAPIClient is nil."}];
-        completionBlock(nil, error);
+        completion(nil, error);
         return;
     }
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         if (error) {
-            completionBlock(nil, error);
+            completion(nil, error);
             return;
         }
 
-        // Union Pay tokenization requests should not go through the GraphQL API
-        if ([self isGraphQLEnabledForCardTokenization:configuration] && !request.enrollmentID) {
+        if ([self isGraphQLEnabledForCardTokenization:configuration]) {
             
             if (request.card.authenticationInsightRequested && !request.card.merchantAccountID) {
                 NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                                      code:BTCardClientErrorTypeIntegration
                                                  userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true."}];
-                completionBlock(nil, error);
+                completion(nil, error);
                 return;
             }
             
@@ -113,7 +104,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
                      [self sendGraphQLAnalyticsEventWithSuccess:NO];
 
-                     completionBlock(nil, callbackError);
+                     completion(nil, callbackError);
                      return;
                  }
 
@@ -121,10 +112,10 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                  [self sendGraphQLAnalyticsEventWithSuccess:YES];
 
                  BTCardNonce *cardNonce = [BTCardNonce cardNonceWithGraphQLJSON:cardJSON];
-                 completionBlock(cardNonce, cardJSON.asError);
+                 completion(cardNonce, cardJSON.asError);
              }];
         } else {
-            NSDictionary *parameters = [self clientAPIParametersForCard:request options:options];
+            NSDictionary *parameters = [self clientAPIParametersForCard:request];
             [self.apiClient POST:@"v1/payment_methods/credit_cards"
                       parameters:parameters
                       completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
@@ -141,28 +132,20 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                              callbackError = [self constructCallbackErrorForErrorUserInfo:error.userInfo error:error];
                          }
                      }
+                     
+                     [self sendAnalyticsEventWithSuccess:NO];
 
-                     if (request.enrollmentID) {
-                         [self sendUnionPayAnalyticsEvent:NO];
-                     } else {
-                         [self sendAnalyticsEventWithSuccess:NO];
-                     }
-
-                     completionBlock(nil, callbackError);
+                     completion(nil, callbackError);
                      return;
                  }
 
                  BTJSON *cardJSON = body[@"creditCards"][0];
-
-                 if (request.enrollmentID) {
-                     [self sendUnionPayAnalyticsEvent:!cardJSON.isError];
-                 } else {
-                     [self sendAnalyticsEventWithSuccess:!cardJSON.isError];
-                 }
+                
+                 [self sendAnalyticsEventWithSuccess:!cardJSON.isError];
 
                  // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
                  BTCardNonce *cardNonce = [BTCardNonce cardNonceWithJSON:cardJSON];
-                 completionBlock(cardNonce, cardJSON.asError);
+                 completion(cardNonce, cardJSON.asError);
              }];
         }
     }];
@@ -177,11 +160,6 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 - (void)sendGraphQLAnalyticsEventWithSuccess:(BOOL)success {
     NSString *event = [NSString stringWithFormat:@"ios.card.graphql.tokenization.%@", success ? @"success" : @"failure"];
-    [self.apiClient sendAnalyticsEvent:event];
-}
-
-- (void)sendUnionPayAnalyticsEvent:(BOOL)success {
-    NSString *event = [NSString stringWithFormat:@"ios.%@.unionpay.nonce-%@", self.apiClient.metadata.integrationString, success ? @"received" : @"failed"];
     [self.apiClient sendAnalyticsEvent:event];
 }
 
@@ -208,32 +186,16 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     return [mutableUserInfo copy];
 }
 
-- (NSDictionary *)clientAPIParametersForCard:(BTCardRequest *)request options:(NSDictionary *)options {
+- (NSDictionary *)clientAPIParametersForCard:(BTCardRequest *)request {
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     if (request.card.parameters) {
-        NSMutableDictionary *mutableCardParameters = [request.card.parameters mutableCopy];
-
-        if (request.enrollmentID) {
-            // Convert the immutable options dictionary so to write to it without overwriting any existing options
-            NSMutableDictionary *unionPayEnrollment = [NSMutableDictionary new];
-            unionPayEnrollment[@"id"] = request.enrollmentID;
-            if (request.smsCode) {
-                unionPayEnrollment[@"sms_code"] = request.smsCode;
-            }
-            mutableCardParameters[@"options"] = [mutableCardParameters[@"options"] mutableCopy];
-            mutableCardParameters[@"options"][@"union_pay_enrollment"] = unionPayEnrollment;
-        }
-
-        parameters[@"credit_card"] = [mutableCardParameters copy];
+        parameters[@"credit_card"] = [request.card.parameters copy];
     }
     parameters[@"_meta"] = @{
                              @"source" : self.apiClient.metadata.sourceString,
                              @"integration" : self.apiClient.metadata.integrationString,
                              @"sessionId" : self.apiClient.metadata.sessionID,
                              };
-    if (options) {
-        parameters[@"options"] = options;
-    }
     
     if (request.card.authenticationInsightRequested) {
         parameters[@"authenticationInsight"] = @YES;

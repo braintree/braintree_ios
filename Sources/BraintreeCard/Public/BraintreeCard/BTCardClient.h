@@ -58,19 +58,6 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 */
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completion;
 
-/**
- Tokenizes a card.
-
- @param request A card tokenization request that contains an enrolled card, the enrollment ID from `enrollUnionPayCard:completion:`,
- and the enrollment auth code sent to the mobile phone number.
- @param options A dictionary containing additional options to send when performing tokenization. Optional.
- @param completion A completion block that is invoked when card tokenization has completed. If tokenization succeeds, `tokenizedCard` will contain a nonce and `error` will be `nil`; if it fails, `tokenizedCard` will be `nil` and `error` will describe the failure.
-*/
-- (void)tokenizeCard:(BTCardRequest *)request
-             options:(nullable NSDictionary *)options
-          completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completion
-DEPRECATED_MSG_ATTRIBUTE("The UnionPay SMS integration is deprecated, as UnionPay can now be processed as a credit card through their partnership with Discover. Use `BTCardClient.tokenizeCard(card: completion:)`.");
-
 @end
 
 NS_ASSUME_NONNULL_END

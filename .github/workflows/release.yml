@@ -115,7 +115,6 @@ jobs:
             -I $(pwd)/Sources/BraintreePaymentFlow/Public \
             -I $(pwd)/Sources/BraintreePayPal/Public \
             -I $(pwd)/Sources/BraintreeThreeDSecure/Public \
-            -I $(pwd)/Sources/BraintreeUnionPay/Public \
             -I $(pwd)/Sources/BraintreeVenmo/Public \
             > objcDoc.json
           jazzy \

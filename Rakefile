@@ -24,7 +24,7 @@ FRAMEWORKS_PLIST = "Sources/BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "origin"
 GHE_REMOTE_NAME = "internal"
 
-bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector", "BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeUnionPay", "BraintreeVenmo"]
+bt_modules = ["BraintreeAmericanExpress", "BraintreeApplePay", "BraintreeCard", "BraintreeCore", "BraintreeDataCollector", "BraintreePaymentFlow", "BraintreePayPal", "BraintreeThreeDSecure", "BraintreeVenmo"]
 
 class << self
   def run cmd
@@ -330,7 +330,6 @@ def sourcekitten_objc_command
       -I $(pwd)/Sources/BraintreePaymentFlow/Public
       -I $(pwd)/Sources/BraintreePayPal/Public
       -I $(pwd)/Sources/BraintreeThreeDSecure/Public
-      -I $(pwd)/Sources/BraintreeUnionPay/Public
       -I $(pwd)/Sources/BraintreeVenmo/Public
       > objcDoc.json
   ].join(' ')
