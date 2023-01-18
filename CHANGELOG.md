@@ -23,6 +23,8 @@
     * _The App Store no longer accepts bitcode submissions from Xcode 14_
     * This version of PPRiskMagnes drops support for Xcode 12 and requires Swift 5.5+
       * [As of April 25, 2022 Apple requires all apps to be submitted with Xcode 13+](https://developer.apple.com/news/upcoming-requirements/?id=04252022a)
+    * This version of the PPRiskMagnes framework is dynamic. This reverts a breaking change that was introduced in minor version 5.8.0 (See GitHub issue #920).
+
 
 ## 5.15.0 (2022-10-26)
 * BraintreePayPalNativeCheckout (BETA)
