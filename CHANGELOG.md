@@ -31,7 +31,6 @@
         * `.disabled`
         * `.canceled`
         * `.fetchConfigurationFailed`
-        * `.httpResponseMissingUserInfoJSON`
         * `.httpPostRequestError`
         * `.invalidURL`
         * `.asWebAuthenticationSessionURLInvalid`
