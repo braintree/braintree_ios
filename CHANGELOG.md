@@ -5,6 +5,7 @@
   * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
 * BraintreeCore
   * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
+  * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
 
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
