@@ -57,7 +57,6 @@
 		A0988FE324DB44B20095EEEE /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5224DB44B10095EEEE /* Main.strings */; };
 		A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5424DB44B10095EEEE /* InfoPlist.strings */; };
 		A0988FE624DB44B20095EEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5824DB44B10095EEEE /* main.m */; };
-		A0988FE724DB44B20095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */; };
 		A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */; };
 		A0988FEA24DB44B20095EEEE /* BraintreeDemoIdealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */; };
 		A0988FED24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */; };
@@ -180,7 +179,6 @@
 		A0988F5624DB44B10095EEEE /* Braintree-Demo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Demo-Prefix.pch"; sourceTree = "<group>"; };
 		A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Demo-Info.plist"; sourceTree = "<group>"; };
 		A0988F5824DB44B10095EEEE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPreferredPaymentMethodsViewController.swift; sourceTree = "<group>"; };
 		A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTDataCollectorViewController.m; sourceTree = "<group>"; };
 		A0988F5E24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTDataCollectorViewController.h; sourceTree = "<group>"; };
 		A0988F6324DB44B10095EEEE /* BraintreeDemoIdealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIdealViewController.h; sourceTree = "<group>"; };
@@ -399,19 +397,10 @@
 				A0988F7B24DB44B10095EEEE /* PayPal - Vault */,
 				A0988F5F24DB44B10095EEEE /* PayPal - Checkout */,
 				A0988F6824DB44B10095EEEE /* PayPal - Pay Later */,
-				A0988F5A24DB44B10095EEEE /* Preferred Payment Methods */,
 				BE777AC227D936E700487D23 /* SEPA Direct Debit */,
 				A0988F8124DB44B10095EEEE /* Venmo - Custom Button */,
 			);
 			path = Features;
-			sourceTree = "<group>";
-		};
-		A0988F5A24DB44B10095EEEE /* Preferred Payment Methods */ = {
-			isa = PBXGroup;
-			children = (
-				A0988F5B24DB44B10095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift */,
-			);
-			path = "Preferred Payment Methods";
 			sourceTree = "<group>";
 		};
 		A0988F5C24DB44B10095EEEE /* Fraud Protection - BTDataCollector */ = {
@@ -829,7 +818,6 @@
 				A0988FEE24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
 				A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
-				A0988FE724DB44B20095EEEE /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */,
 				A0988FF224DB44B20095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */,
 				A0988F9424DB44B20095EEEE /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				A0988F9624DB44B20095EEEE /* BraintreeDemoAppDelegate.m in Sources */,
