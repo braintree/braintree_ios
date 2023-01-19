@@ -67,7 +67,7 @@
          </BuildableReference>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2DE12F081B59BE0100EA1BCF"
+            BlueprintIdentifier = "570B936A285397520041BAFE"
             BuildableName = "BraintreeCore.framework"
             BlueprintName = "BraintreeCore"
             ReferencedContainer = "container:../Braintree.xcodeproj">
@@ -144,17 +144,6 @@
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A9B5ABDD24EB2A2200A4E1C8"
-               BuildableName = "UITests.xctest"
-               BlueprintName = "UITests"
-               ReferencedContainer = "container:Demo.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO"
             parallelizable = "YES">
