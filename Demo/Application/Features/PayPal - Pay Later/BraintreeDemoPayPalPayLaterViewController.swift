@@ -25,7 +25,6 @@ class BraintreeDemoPayPalPayLaterViewController: BraintreeDemoPaymentButtonBaseV
         let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalCheckoutRequest(amount: "4.30")
         request.offerPayLater = true
-        request.activeWindow = self.view.window
         
         client.tokenize(request) { nonce, error in
             sender.isEnabled = true

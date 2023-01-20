@@ -85,10 +85,6 @@ import BraintreeCore
     ///  `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
     public var billingAgreementDescription: String?
 
-    /// Optional: The window used to present the ASWebAuthenticationSession.
-    /// - Note: If your app supports multitasking, you must set this property to ensure that the ASWebAuthenticationSession is presented on the correct window.
-    public var activeWindow: UIWindow?
-
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationID: String?
 
@@ -116,7 +112,6 @@ import BraintreeCore
         merchantAccountID: String? = nil,
         lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
-        activeWindow: UIWindow? = nil,
         riskCorrelationId: String? = nil
     ) {
         self.hermesPath = hermesPath
@@ -130,7 +125,6 @@ import BraintreeCore
         self.merchantAccountID = merchantAccountID
         self.lineItems = lineItems
         self.billingAgreementDescription = billingAgreementDescription
-        self.activeWindow = activeWindow
         self.riskCorrelationID = riskCorrelationId
     }
 
