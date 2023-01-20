@@ -36,7 +36,6 @@ import BraintreeCore
     ///   - context: the ASWebAuthenticationPresentationContextProviding protocol conforming ViewController
     public func tokenize(
         request: BTSEPADirectDebitRequest,
-        context: ASWebAuthenticationPresentationContextProviding,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.selected.started")
@@ -59,7 +58,7 @@ import BraintreeCore
                 return
             } else if let url = URL(string: createMandateResult.approvalURL) {
                 self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
-                self.startAuthenticationSession(url: url, context: context) { success, error in
+                self.startAuthenticationSession(url: url, context: self) { success, error in
                     switch success {
                     case true:
                         self.tokenize(createMandateResult: createMandateResult, completion: completion)
@@ -152,5 +151,21 @@ import BraintreeCore
     private func getQueryStringParameter(url: String, param: String) -> String? {
         guard let url = URLComponents(string: url) else { return nil }
         return url.queryItems?.first { $0.name == param }?.value
+    }
+}
+
+// MARK: - ASWebAuthenticationPresentationContextProviding conformance
+
+extension BTSEPADirectDebitClient: ASWebAuthenticationPresentationContextProviding {
+
+    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        if #available(iOS 15, *) {
+            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let window = firstScene?.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        } else {
+            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+            return window ?? ASPresentationAnchor()
+        }
     }
 }

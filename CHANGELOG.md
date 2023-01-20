@@ -5,6 +5,8 @@
 * Breaking Changes
   * BraintreePayPal
     * Rename `BTPayPalRequest.riskCorrelationId` to `BTPayPalRequest.riskCorrelationID`
+    * Removed `BTPayPalRequest.activeWindow` property
+      * The window will be set to the first window or a new `ASPresentationAnchor` if the first window is `nil`
     * Update `BTPayPalRequestLandingPageType` enum default case to `.none`
         * Update enum values
             * `.none` = 0
@@ -46,6 +48,9 @@
       * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
   * BraintreeCore
     * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
+  * BraintreeSEPADirectDebit
+    * The `tokenize` method no longer takes in a `context` parameter
+    * Merchants no longer need to conform to the `ASWebAuthenticationPresentationContextProviding` protocol
 
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
