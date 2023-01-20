@@ -51,7 +51,6 @@
   * BraintreeSEPADirectDebit
     * The `tokenize` method no longer takes in a `context` parameter
     * Merchants no longer need to conform to the `ASWebAuthenticationPresentationContextProviding` protocol
-      * This is now handled by the SDK in the `BTSEPADirectDebitClient`
 
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
