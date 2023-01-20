@@ -156,7 +156,7 @@ cardClient.tokenizeCard(card) { (tokenizedCard, error) in
 ```
 
 ## SEPA Direct Debit
-`BTSEPADirectDebitClient.tokenize(request: BTSEPADirectDebitRequest, context: ASWebAuthenticationPresentationContextProviding)` has been renamed to `BTSEPADirectDebitClient.tokenize(request: BTSEPADirectDebitRequest)`. Additionally, conformance to the `ASWebAuthenticationPresentationContextProviding` protocol is no longer needed.
+We have removed the `context` parameter from the `BTSEPADirectDebit.tokenize()` method. Additionally, conformance to the `ASWebAuthenticationPresentationContextProviding` protocol is no longer needed.
 
 The updated `tokenize` method is as follows:
 ```
