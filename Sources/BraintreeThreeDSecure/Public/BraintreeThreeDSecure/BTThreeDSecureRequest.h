@@ -170,7 +170,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
 @property (nonatomic) BOOL exemptionRequested;
 
 /**
- Optional. The exemption type to be requested.
+ Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
  */
 @property (nonatomic, assign) BTThreeDSecureRequestedExemptionType requestedExemptionType;
 
