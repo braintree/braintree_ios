@@ -48,9 +48,13 @@
       * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
   * BraintreeCore
     * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
+    * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
   * BraintreeSEPADirectDebit
     * The `tokenize` method no longer takes in a `context` parameter
     * Merchants no longer need to conform to the `ASWebAuthenticationPresentationContextProviding` protocol
+  * BraintreeUnionPay
+    * Remove `BraintreeUnionPay` module
+      * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
 
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
