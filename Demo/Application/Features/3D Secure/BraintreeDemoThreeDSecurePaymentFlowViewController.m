@@ -144,6 +144,7 @@
         request.nonce = tokenizedCard.nonce;
         request.versionRequested = BTThreeDSecureVersion2;
         request.accountType = BTThreeDSecureAccountTypeCredit;
+        request.requestedExemptionType = BTThreeDSecureRequestedExemptionTypeLowValue;
 
         BTThreeDSecurePostalAddress *billingAddress = [BTThreeDSecurePostalAddress new];
         billingAddress.givenName = @"Jill";

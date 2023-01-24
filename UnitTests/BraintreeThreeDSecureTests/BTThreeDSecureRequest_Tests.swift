@@ -77,6 +77,43 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         XCTAssertEqual(request.shippingMethodAsString, nil)
     }
 
+    // MARK: - requestedExemptionTypeAsString
+
+    func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsLowValue_returnsLowValue() {
+        let request = BTThreeDSecureRequest()
+        request.requestedExemptionType = .lowValue
+        XCTAssertEqual(request.requestedExemptionTypeAsString, "low_value")
+    }
+
+    func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsSecureCorporate_returnsSecureCorporate() {
+        let request = BTThreeDSecureRequest()
+        request.requestedExemptionType = .secureCorporate
+        XCTAssertEqual(request.requestedExemptionTypeAsString, "secure_corporate")
+    }
+
+    func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsTrustedBeneficiary_returnsTrustedBeneficiary() {
+        let request = BTThreeDSecureRequest()
+        request.requestedExemptionType = .trustedBeneficiary
+        XCTAssertEqual(request.requestedExemptionTypeAsString, "trusted_beneficiary")
+    }
+
+    func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsTransactionRiskAnalysis_returnsTransactionRiskAnalysis() {
+        let request = BTThreeDSecureRequest()
+        request.requestedExemptionType = .transactionRiskAnalysis
+        XCTAssertEqual(request.requestedExemptionTypeAsString, "transaction_risk_analysis")
+    }
+
+    func testRequestedExemptionTypeAsString_whenAccountTypeIsUnspecified_returnsNil() {
+        let request = BTThreeDSecureRequest()
+        request.requestedExemptionType = .unspecified
+        XCTAssertEqual(request.requestedExemptionTypeAsString, nil)
+    }
+
+    func testRequestedExemptionTypeAsString_whenAccountTypeIsNotSet_returnsNil() {
+        let request = BTThreeDSecureRequest()
+        XCTAssertEqual(request.requestedExemptionTypeAsString, nil)
+    }
+
     // MARK: - versionRequested and versionRequestedAsString
 
     func testVersionRequested_defaultsToVersion2() {

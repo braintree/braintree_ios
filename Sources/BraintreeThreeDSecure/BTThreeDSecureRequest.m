@@ -97,6 +97,25 @@
     }
 }
 
+- (NSString *)requestedExemptionTypeAsString {
+    switch (self.requestedExemptionType) {
+        case BTThreeDSecureRequestedExemptionTypeLowValue:
+            return @"low_value";
+
+        case BTThreeDSecureRequestedExemptionTypeSecureCorporate:
+            return @"secure_corporate";
+
+        case BTThreeDSecureRequestedExemptionTypeTrustedBeneficiary:
+            return @"trusted_beneficiary";
+
+        case BTThreeDSecureRequestedExemptionTypeTransactionRiskAnalysis:
+            return @"transaction_risk_analysis";
+
+        default:
+            return nil;
+    }
+}
+
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {

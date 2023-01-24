@@ -85,6 +85,26 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureCardAddChallenge) {
 };
 
 /**
+ 3D Secure requested exemption type
+ */
+typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
+    /// Unspecified
+    BTThreeDSecureRequestedExemptionTypeUnspecified,
+
+    /// Low value
+    BTThreeDSecureRequestedExemptionTypeLowValue,
+
+    /// Secure corporate
+    BTThreeDSecureRequestedExemptionTypeSecureCorporate,
+
+    /// Trusted beneficiary
+    BTThreeDSecureRequestedExemptionTypeTrustedBeneficiary,
+
+    /// Transaction risk analysis
+    BTThreeDSecureRequestedExemptionTypeTransactionRiskAnalysis
+};
+
+/**
  Used to initialize a 3D Secure payment flow
  */
 @interface BTThreeDSecureRequest : BTPaymentFlowRequest <BTPaymentFlowRequestDelegate>
@@ -148,6 +168,11 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureCardAddChallenge) {
  Optional. If set to true, an exemption to the authentication challenge will be requested.
  */
 @property (nonatomic) BOOL exemptionRequested;
+
+/**
+ Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
+ */
+@property (nonatomic, assign) BTThreeDSecureRequestedExemptionType requestedExemptionType;
 
 /**
  :nodoc:

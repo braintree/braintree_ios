@@ -43,6 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSString *versionRequestedAsString;
 
 /**
+ The requested exemption type as a raw string.
+ */
+@property (nonatomic, readonly, nullable) NSString *requestedExemptionTypeAsString;
+
+/**
  Prepare for a 3DS 2.0 flow.
 
  @param apiClient The API client.
