@@ -115,7 +115,9 @@ jobs:
       - name: Publish reference docs
         run: |
           gem install jazzy
-          brew install sourcekitten
+          brew tap-new $USER/local-sourcekitten
+          brew extract --version=0.33.1 sourcekitten $USER/local-sourcekitten
+          brew install sourcekitten@0.33.1
 
           # run sourcekitten on each Swift module individually
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme PayPalDataCollector -destination 'name=iPhone 11,platform=iOS Simulator' > pay-pal-data-collector.json
