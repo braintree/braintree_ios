@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.20.0 (2023-01-24)
 * BraintreeThreeDSecure
   * Add `requestedExemptionType` to `BTThreeDSecureRequest`
 
