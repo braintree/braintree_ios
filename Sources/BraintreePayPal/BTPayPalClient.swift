@@ -383,16 +383,18 @@ import BraintreeDataCollector
         if let action = action(from: url), action == "cancel" {
             return nil
         }
+
+        let clientDictionary: [String: String] = [
+            "platform": "iOS",
+            "product_name": "PayPal",
+            "paypal_sdk_version": "version"
+        ]
+
+        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
         
         return [
-            "client": [
-                "platform": "iOS",
-                "product_name": "PayPal",
-                "paypal_sdk_version": "version"
-            ],
-            "response": [
-                "webURL": url.absoluteString
-            ],
+            "client": clientDictionary,
+            "response": responseDictionary,
             "response_type": "web"
         ]
     }
