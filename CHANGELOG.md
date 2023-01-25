@@ -7,6 +7,10 @@
   * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
   * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
 
+## 5.20.0 (2023-01-24)
+* BraintreeThreeDSecure
+  * Add `requestedExemptionType` to `BTThreeDSecureRequest`
+
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
   * Update NativeCheckout version from 0.108.0 to 0.110.0
