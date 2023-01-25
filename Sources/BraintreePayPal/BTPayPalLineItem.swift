@@ -80,7 +80,6 @@ import Foundation
 
         if let url, url != URL(string: "") {
             requestParameters["url"] = url.absoluteString
-
         }
         
         return requestParameters

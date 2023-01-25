@@ -5,6 +5,7 @@ import BraintreeCore
 #endif
 
 @objc public enum BTPayPalPaymentType: Int {
+    
     /// Checkout
     case checkout
 
