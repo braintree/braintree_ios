@@ -16,7 +16,6 @@ import BraintreeCore
     /// The `BTSEPADebitMandateType`.
     public let mandateType: BTSEPADirectDebitMandateType?
        
-    // NEXT_MAJOR_VERSION consider making init non-optional (especially internal ones) once we convert to Swift.
     init?(json: BTJSON) {
         guard let nonce = json["nonce"].asString() else { return nil }
 

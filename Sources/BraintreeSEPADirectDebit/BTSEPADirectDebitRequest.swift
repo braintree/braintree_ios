@@ -33,7 +33,6 @@ import BraintreeCore
     ///   - mandateType: Optional. The `BTSEPADebitMandateType`. If not set, defaults to `.oneOff`
     ///   - billingAddress: Required. The user's billing address.
     ///   - merchantAccountID: Optional. A non-default merchant account to use for tokenization.
-    // NEXT_MAJOR_VERSION consider refactoring public request initializers to include required parameters instead of defaulting everything to optional
     public init(
         accountHolderName: String? = nil,
         iban: String? = nil,

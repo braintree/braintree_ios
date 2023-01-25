@@ -24,6 +24,16 @@ class BTGraphQLMultiErrorNode: BTGraphQLErrorNode {
         children[field]
     }
     
+    func multiErrorNode(forField field: String) -> BTGraphQLMultiErrorNode {
+        if let node = getChild(forField: field) as? BTGraphQLMultiErrorNode {
+            return node
+        }
+        
+        let node = BTGraphQLMultiErrorNode(field: field)
+        insertChild(node)
+        return node
+    }
+    
     func mapChildrenInOrder(block: (BTGraphQLErrorNode) -> [String: Any]) -> [[String: Any]] {
         var result: [[String: Any]] = []
         for field in childOrder {

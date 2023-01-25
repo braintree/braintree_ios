@@ -97,7 +97,6 @@ import BraintreeCore
     // MARK: - Static Properties
     
     static let callbackURLHostAndPath: String = "onetouch/v1/"
-    static let callbackURLScheme: String = "sdk.ios.braintree"
 
     // MARK: - Initializer
 
@@ -163,8 +162,8 @@ import BraintreeCore
             parameters["line_items"] = lineItemsArray
         }
 
-        parameters["return_url"] = BTPayPalRequest.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
-        parameters["cancel_url"] = BTPayPalRequest.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+        parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
+        parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
 
         return parameters
