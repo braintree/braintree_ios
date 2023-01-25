@@ -78,6 +78,10 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             requestParameters[@"exemptionRequested"] = @(request.exemptionRequested);
         }
 
+        if (request.requestedExemptionTypeAsString) {
+            requestParameters[@"requestedExemptionType"] = request.requestedExemptionTypeAsString;
+        }
+
         if (request.dataOnlyRequested) {
             requestParameters[@"dataOnlyRequested"] = @(request.dataOnlyRequested);
         }
