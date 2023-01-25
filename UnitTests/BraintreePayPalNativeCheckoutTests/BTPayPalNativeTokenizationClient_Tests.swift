@@ -28,13 +28,12 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
         mockClient.cannedResponseBody = BTJSON(data: responseData)
 
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: mockClient)
-        let nativeRequest = BTPayPalNativeRequest(hermesPath: "", paymentType: .checkout)
 
         // Our mock does not care about the specific request, but we want to make sure
         // a successful response is vended through the completion handler
         // We don't need to use `waitForExpectations` here because the mock will vend a response
         // synchronously
-        tokenizationClient.tokenize(request: nativeRequest, returnURL: "a-fake-return-url") { result in
+        tokenizationClient.tokenize(request: BTPayPalNativeCheckoutRequest(amount: "1"), returnURL: "a-fake-return-url") { result in
             switch result {
             case .success(let account):
                 XCTAssertEqual(account.nonce, mockNonce)
@@ -43,7 +42,7 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
                 XCTAssertEqual(mockClient.postedAnalyticsEvents.last, "ios.paypal-native.tokenize.succeeded")
 
             case .failure:
-                XCTFail("Successful mock did not vend a PayPAl account nonce")
+                XCTFail("Successful mock did not vend a PayPal account nonce")
             }
         }
     }
@@ -67,9 +66,8 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
         """.data(using: .utf8))
         mockClient.cannedResponseBody = BTJSON(data: responseData)
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: mockClient)
-        let nativeRequest = BTPayPalNativeRequest(hermesPath: "", paymentType: .vault)
 
-        tokenizationClient.tokenize(request: nativeRequest, returnURL: "a-fake-return-url") { result in
+        tokenizationClient.tokenize(request: BTPayPalNativeVaultRequest(), returnURL: "a-fake-return-url") { result in
             switch result {
             case .success:
                 XCTFail("A response without a nonce string should be a failure")

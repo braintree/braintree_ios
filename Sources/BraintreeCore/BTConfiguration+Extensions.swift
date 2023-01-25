@@ -1,7 +1,7 @@
 import Foundation
 import PassKit
 
-// NEXT_MAJOR_VERSION: - v7 these extensions should be moved into their respective modules
+// NEXT_MAJOR_VERSION (v7): these extensions should be moved into their respective modules
 // as the modules are converted to Swift.
 // Also, determine whether they should remain public or become internal
 
@@ -42,18 +42,6 @@ import PassKit
     /// JWT for use with initializaing Cardinal 3DS framework
     var cardinalAuthenticationJWT: String? {
         json?["threeDSecure"]["cardinalAuthenticationJWT"].asString()
-    }
-
-    // MARK: - BTConfiguration+PayPal
-
-    /// Indicates whether PayPal is enabled for the merchant account.
-    var isPayPalEnabled: Bool {
-        json?["paypalEnabled"].isTrue ?? false
-    }
-
-    /// Indicates whether PayPal billing agreements are enabled for the merchant account.
-    var isBillingAgreementsEnabled: Bool {
-        json?["paypal"]["billingAgreementsEnabled"].isTrue ?? false
     }
 
     // MARK: - BTConfiguration+PaymentFlow

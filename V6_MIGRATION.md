@@ -11,8 +11,10 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 3. [Braintree Core](#braintree-core)
 4. [Venmo](#venmo)
 5. [PayPal](#paypal)
-6. [Data Collector](#data-collector)
-7. [Union Pay](#union-pay)
+6. [PayPal Native Checkout](#paypal-native-checkout)
+7. [Data Collector](#data-collector)
+8. [Union Pay](#union-pay)
+9. [SEPA Direct Debit](#sepa-direct-debit)
 
 ## Supported Versions
 
@@ -65,16 +67,53 @@ venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccountNonce, error 
 ## PayPal
 `BTPayPalDriver` has been renamed to `BTPayPalClient`
 
+The property `BTPayPalRequest.activeWindow` has been removed
+
 Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`:
 ```
 let payPalClient = BTPayPalClient(apiClient: <MY_BTAPICLIENT>)
 let request = BTPayPalCheckoutRequest(amount: "1")
 
-payPalClient.tokenizePayPalAccount(with: request) { payPalAccountNonce, error in
+payPalClient.tokenize(request) { payPalAccountNonce, error in
     guard let payPalAccountNonce = payPalAccountNonce else {
         // handle error
     }
     // send nonce to server
+}
+```
+
+`BTPayPalClient.tokenizePayPalAccount(with: BTPayPalRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)` has been replaced with two methods: `tokenize(_ request: BTPayPalVaultRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)` and `tokenize(_ request: BTPayPalCheckoutRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)`:
+
+```
+// BTPayPalCheckoutRequest
+let request = BTPayPalCheckoutRequest(amount: "1")
+payPalClient.tokenize(request) { payPalAccountNonce, error in 
+    // handle response
+}
+
+// BTPayPalVaultRequest
+let request = BTPayPalVaultRequest()
+payPalClient.tokenize(request) { payPalAccountNonce, error in 
+    // handle response
+}
+```
+
+## PayPal Native Checkout
+`BTPayPalNativeCheckoutClient.tokenizePayPalAccount(with: BTPayPalNativeRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)` has been replaced with two methods: `tokenize(_ request: BTPayPalNativeCheckoutRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)` and `tokenize(_ request: BTPayPalNativeVaultRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)`:
+
+```
+// BTPayPalNativeCheckoutRequest
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPICLIENT>)
+let request = BTPayPalNativeCheckoutRequest(amount: "1")
+payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
+    // handle response
+}
+
+// BTPayPalNativeVaultRequest
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPICLIENT>)
+let request = BTPayPalNativeVaultRequest()
+payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
+    // handle response
 }
 ```
 
@@ -113,5 +152,15 @@ card.expirationYear = "2025"
 
 cardClient.tokenizeCard(card) { (tokenizedCard, error) in
     // Communicate the tokenizedCard.nonce to your server, or handle error
+}
+```
+
+## SEPA Direct Debit
+We have removed the `context` parameter from the `BTSEPADirectDebit.tokenize()` method. Additionally, conformance to the `ASWebAuthenticationPresentationContextProviding` protocol is no longer needed.
+
+The updated `tokenize` method is as follows:
+```
+sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
+    // handle response
 }
 ```

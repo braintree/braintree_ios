@@ -24,9 +24,8 @@ class BraintreeDemoPayPalVaultViewController: BraintreeDemoPaymentButtonBaseView
         
         let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalVaultRequest()
-        request.activeWindow = self.view.window
         
-        client.tokenizePayPalAccount(with: request) { nonce, error in
+        client.tokenize(request) { nonce, error in
             sender.isEnabled = true
             
             guard let nonce = nonce else {

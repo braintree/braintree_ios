@@ -237,4 +237,20 @@ import Foundation
 
         return result
     }
+    
+    /// The `BTJSON` as a `BTPostalAddress`
+    /// - Returns: A `BTPostalAddress` parsed from the key/value pairs inside the `BTJSON`
+    public func asAddress() -> BTPostalAddress? {
+        guard self.isObject else { return nil }
+        
+        let address = BTPostalAddress()
+        address.recipientName = self["recipientName"].asString() // Likely to be nil
+        address.streetAddress = self["street1"].asString() ?? self["line1"].asString()
+        address.extendedAddress = self["street2"].asString() ?? self["line2"].asString()
+        address.locality = self["city"].asString()
+        address.region = self["state"].asString()
+        address.postalCode = self["postalCode"].asString()
+        address.countryCodeAlpha2 = self["country"].asString() ?? self["countryCode"].asString()
+        return address
+    }
 }

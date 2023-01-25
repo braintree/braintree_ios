@@ -1,11 +1,60 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Remove `BraintreeUnionPay` module
-  * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
-* BraintreeCore
-  * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
-  * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
+* Convert `BraintreePayPal` module to Swift
+* Breaking Changes
+  * BraintreePayPal
+    * Rename `BTPayPalRequest.riskCorrelationId` to `BTPayPalRequest.riskCorrelationID`
+    * Removed `BTPayPalRequest.activeWindow` property
+      * The window will be set to the first window or a new `ASPresentationAnchor` if the first window is `nil`
+    * Update `BTPayPalRequestLandingPageType` enum default case to `.none`
+        * Update enum values
+            * `.none` = 0
+            * `.login` = 1
+            * `.billing` = 2
+    * `BTPayPalRequestUserAction`
+        * Update enum cases to `.none` and `.payNow`
+        * Update enum values
+            * `.none` = 0
+            * `.payNow` = 1
+    * Update `BTPayPalRequestIntent` enum values
+        * `.authorize` = 0
+        * `.sale` = 1
+        * `.order` = 2
+    * Update `BTPayPalLineItemKind` enum values
+        * `.debit` = 0
+        * `.credit` = 1
+    * Create `BTPayPalLocaleCode` enum
+    * `BTPayPalRequest.localeCode` now uses the `BTPayPalLocaleCode` enum instead of a `String`
+    * Renamed and replaced `BTPayPalClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
+    * Removed `BTPayPalErrorType`
+    * Replaced `BTPayPalErrorDomain` global constant with `BTPayPalError.errorDomain`
+    * Added `BTPayPalError`
+        * `.disabled`
+        * `.canceled`
+        * `.fetchConfigurationFailed`
+        * `.httpPostRequestError`
+        * `.invalidURL`
+        * `.asWebAuthenticationSessionURLInvalid`
+        * `.invalidURLAction`
+        * `.failedToCreateNonce`
+    * Make `BTPayPalNonce` initializer internal
+  * BraintreePayPalNativeCheckout (BETA)
+    * Renamed and replaced `BTPayPalNativeCheckoutClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`
+    * `BTPayPalNativeCheckoutRequest` now takes in an `intent` of type `BTPayPalRequestIntent` instead of `BTPayPalNativeRequestIntent`
+    * `BTPayPalNativeCheckoutRequest.localeCode` now uses the `BTPayPalLocaleCode` enum instead of a `String` value
+  * BraintreeUnionPay
+    * Remove `BraintreeUnionPay` module
+      * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
+  * BraintreeCore
+    * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
+    * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
+  * BraintreeSEPADirectDebit
+    * The `tokenize` method no longer takes in a `context` parameter
+    * Merchants no longer need to conform to the `ASWebAuthenticationPresentationContextProviding` protocol
+  * BraintreeUnionPay
+    * Remove `BraintreeUnionPay` module
+      * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
 
 ## 5.20.0 (2023-01-24)
 * BraintreeThreeDSecure
