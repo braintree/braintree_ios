@@ -18,21 +18,26 @@ class SEPADirectDebitAPI {
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
         let billingAddress = sepaDirectDebitRequest.billingAddress
+
+        let billingAddressDictionary: [String: String?] = [
+            "address_line_1": billingAddress?.streetAddress,
+            "address_line_2": billingAddress?.extendedAddress,
+            "admin_area_1": billingAddress?.locality,
+            "admin_area_2": billingAddress?.region,
+            "postal_code": billingAddress?.postalCode,
+            "country_code": billingAddress?.countryCodeAlpha2
+        ]
+
+        let sepaDebitDictionary: [String: Any] = [
+            "merchant_or_partner_customer_id": sepaDirectDebitRequest.customerID ?? "",
+            "mandate_type": sepaDirectDebitRequest.mandateType?.description ?? "",
+            "account_holder_name": sepaDirectDebitRequest.accountHolderName ?? "",
+            "iban": sepaDirectDebitRequest.iban ?? "",
+            "billing_address": billingAddressDictionary
+        ]
+
         let json: [String: Any] = [
-            "sepa_debit": [
-                "merchant_or_partner_customer_id": sepaDirectDebitRequest.customerID ?? "",
-                "mandate_type": sepaDirectDebitRequest.mandateType?.description ?? "",
-                "account_holder_name": sepaDirectDebitRequest.accountHolderName ?? "",
-                "iban": sepaDirectDebitRequest.iban ?? "",
-                "billing_address": [
-                    "address_line_1": billingAddress?.streetAddress,
-                    "address_line_2": billingAddress?.extendedAddress,
-                    "admin_area_1": billingAddress?.locality,
-                    "admin_area_2": billingAddress?.region,
-                    "postal_code": billingAddress?.postalCode,
-                    "country_code": billingAddress?.countryCodeAlpha2
-                ]
-            ],
+            "sepa_debit": sepaDebitDictionary,
             "merchant_account_id": sepaDirectDebitRequest.merchantAccountID ?? "",
             "cancel_url": BTCoreConstants.callbackURLScheme + "://sepa/cancel",
             "return_url": BTCoreConstants.callbackURLScheme + "://sepa/success"
@@ -59,14 +64,14 @@ class SEPADirectDebitAPI {
     }
 
     func tokenize(createMandateResult: CreateMandateResult, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
-        let json: [String: Any] = [
-            "sepa_debit_account": [
-                "last_4": createMandateResult.ibanLastFour,
-                "merchant_or_partner_customer_id": createMandateResult.customerID,
-                "bank_reference_token": createMandateResult.bankReferenceToken,
-                "mandate_type": createMandateResult.mandateType
-            ]
+        let sepaDebitAccountDictionary: [String: String?] = [
+            "last_4": createMandateResult.ibanLastFour,
+            "merchant_or_partner_customer_id": createMandateResult.customerID,
+            "bank_reference_token": createMandateResult.bankReferenceToken,
+            "mandate_type": createMandateResult.mandateType
         ]
+
+        let json: [String: Any] = ["sepa_debit_account": sepaDebitAccountDictionary]
 
         apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: json) { body, response, error in
             self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.api-request.tokenize.started")
