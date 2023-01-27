@@ -1,0 +1,84 @@
+name: Bug report
+description: Create a report to help us improve
+body:
+- type: input
+  attributes:
+    label: Braintree SDK Version
+    placeholder: "e.g. 5.19.0"
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Environment
+    options:
+      - Sandbox
+      - Production
+      - Both
+  validations:
+    required: true
+- type: input
+  id: xcode-version
+  attributes:
+    label: Xcode Version
+    placeholder: "e.g. Xcode 14.1"
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: OS Version & Device
+    placeholder: "e.g iPhone 12 - iOS 16.2"
+  validations:
+    required: false
+- type: dropdown
+  attributes:
+    label: Integration type
+    options:
+      - Swfit Package Manager
+      - CocoaPods
+      - Carthage
+      - Prebuilt Binaries / Other
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Development Processor
+    options:
+      - Intel
+      - Apple Silicon (M-series chips)
+      - Both
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Describe the bug
+    description: Description of what the bug is. Please include as many details as possible.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: To reproduce
+    description: Steps to reproduce the behavior.
+    placeholder: |
+      1. Go to '...'
+      2. Click on '....'
+      3. See error
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected behavior
+    description: Description of what you expected to happen.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Screenshots
+    description: If applicable, add screenshots to help explain your problem.
+    placeholder: |
+      Do not reveal sensitive data. For example, credit card numbers & customer credentials.
+  validations:
+    required: false
+- type: markdown
+  attributes:
+    value: |
+      Note - Please do not open an issue for translation requests for new languages. We support the same languages that are supported by PayPal, and have a dedicated localization team to provide translations. If there is an error in a specific translation, you may open an issue here and we will escalate it to our localization team.
