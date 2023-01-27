@@ -145,15 +145,15 @@ import BraintreePayPal
             }
 
             // Should only include shipping params if they exist
-            if let shippingAddressOverride {
+            if shippingAddressOverride != nil {
                 let shippingAddressParameters: [String: String?] = [
-                    "line1": shippingAddressOverride.streetAddress,
-                    "line2": shippingAddressOverride.extendedAddress,
-                    "city": shippingAddressOverride.locality,
-                    "state": shippingAddressOverride.region,
-                    "postal_code": shippingAddressOverride.postalCode,
-                    "country_code": shippingAddressOverride.countryCodeAlpha2,
-                    "recipient_name": shippingAddressOverride.recipientName,
+                    "line1": shippingAddressOverride?.streetAddress,
+                    "line2": shippingAddressOverride?.extendedAddress,
+                    "city": shippingAddressOverride?.locality,
+                    "state": shippingAddressOverride?.region,
+                    "postal_code": shippingAddressOverride?.postalCode,
+                    "country_code": shippingAddressOverride?.countryCodeAlpha2,
+                    "recipient_name": shippingAddressOverride?.recipientName,
                 ]
 
                 vaultParameters["shipping_address"] = shippingAddressParameters
