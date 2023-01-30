@@ -21,15 +21,16 @@ class BTPayPalNativeTokenizationRequest {
     // The return URL is vended from the Native Checkout SDK and is consumed
     // by the Braintree Gateway to consume payment details
     func parameters(returnURL: String?) -> [String : Any] {
+        let clientDictionary: [String: String] = [
+            "platform": "iOS",
+            "product_name": "PayPal",
+            "paypal_sdk_version": "version"
+        ]
+
+        let responseDictionary: [String: String?] = ["webURL": returnURL ?? ""]
         var account: [String : Any] = [
-            "client": [
-                "platform": "iOS",
-                "product_name": "PayPal",
-                "paypal_sdk_version": "version"
-            ],
-            "response": [
-                "webURL": returnURL ?? "",
-            ],
+            "client": clientDictionary,
+            "response": responseDictionary,
             "response_type": "web",
             "correlation_id": correlationID,
         ]
