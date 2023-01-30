@@ -111,7 +111,7 @@ import BraintreePayPal
                 "offer_pay_later": request.offerPayLater
             ]
 
-            let currencyCode = request.currencyCode != nil ? request.currencyCode : configuration.json["paypal"]["currencyIsoCode"].asString()
+            let currencyCode = request.currencyCode ?? configuration.json["paypal"]["currencyIsoCode"].asString()
 
             if currencyCode != nil {
                 checkoutParameters["currency_iso_code"] = currencyCode
