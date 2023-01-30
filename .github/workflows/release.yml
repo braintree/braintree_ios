@@ -115,6 +115,7 @@ jobs:
       - name: Publish reference docs
         run: |
           gem install jazzy
+          sudo xcode-select -switch /Applications/Xcode_14.0.app
           brew install sourcekitten
 
           # run sourcekitten on each Swift module individually
