@@ -84,9 +84,10 @@ Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 ## Demo
 
 A demo app is included in the project. To run it you will need to do the following:
-    1. Run `pod install`
-    2. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
-    3. Open `Braintree.xcworkspace` in Xcode. 
+    1. You will need to install [CocoaPods](http://cocoapods.org/) version 1.11.3 to run the Demo
+    2. Run `pod install`
+    3. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
+    4. Open `Braintree.xcworkspace` in Xcode. 
 
 Xcode 14+ is required to run the demo app.
 
