@@ -1,0 +1,33 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeCard/Public/BraintreeCard/BTCardNonce.h",
+      "line": 1,
+      "symbol": "BTCardNetwork",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeCard/Public/BraintreeCard/BTCardNonce.h",
+      "line": 1,
+      "symbol": "BTCardNetwork",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/BraintreeThreeDSecure.h",
+      "line": 4,
+      "symbol": "BraintreeThreeDSecureVersionNumber",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/braintree_ios/braintree_ios/Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/BraintreeThreeDSecure.h",
+      "line": 7,
+      "symbol": "BraintreeThreeDSecureVersionString",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/braintree_ios/braintree_ios"
+}
