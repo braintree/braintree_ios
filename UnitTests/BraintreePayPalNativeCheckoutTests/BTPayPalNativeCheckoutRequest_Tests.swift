@@ -120,4 +120,13 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
 
         XCTAssertEqual(billingAgreementDetails["description"], "description")
     }
+
+    func testVaultParameters_withShippingAddressOverrideNil_doesNotPassShippingAddress() {
+        let request = BTPayPalNativeVaultRequest()
+        request.shippingAddressOverride = nil
+
+        let parameters = request.constructParameters(from: configuration, withRequest: request)
+
+        XCTAssertNil(parameters["shipping_address"])
+    }
 }

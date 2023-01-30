@@ -105,58 +105,57 @@ import BraintreePayPal
         switch paymentType {
         case .checkout:
             guard let request = request as? BTPayPalNativeCheckoutRequest else { return [:] }
-
-            var billingAgreementDictionary: [AnyHashable: Any]? = [:]
-
-            if request.billingAgreementDescription != nil {
-                billingAgreementDictionary?["description"] = request.billingAgreementDescription
-            } else {
-                billingAgreementDictionary = nil
-            }
-
-            let checkoutParameters = [
-                // Values from BTPayPalNativeCheckoutRequest
+            var checkoutParameters: [String: Any] = [
                 "intent": request.intentAsString,
                 "amount": request.amount,
-                "offer_pay_later": request.offerPayLater,
-                "currency_iso_code": request.currencyCode ?? configuration.json["paypal"]["currencyIsoCode"].asString(),
-                "request_billing_agreement": request.requestBillingAgreement ? true : nil,
-                "billing_agreement_details": request.requestBillingAgreement ? billingAgreementDictionary : nil,
-                "line1": shippingAddressOverride?.streetAddress,
-                "line2": shippingAddressOverride?.extendedAddress,
-                "city": shippingAddressOverride?.locality,
-                "state": shippingAddressOverride?.region,
-                "postal_code": shippingAddressOverride?.postalCode,
-                "country_code": shippingAddressOverride?.countryCodeAlpha2,
-                "recipient_name": shippingAddressOverride?.recipientName,
-            ].compactMapValues { $0 }
+                "offer_pay_later": request.offerPayLater
+            ]
+
+            if let currencyCode = request.currencyCode ?? configuration.json["paypal"]["currencyIsoCode"].asString() {
+                checkoutParameters["currency_iso_code"] = currencyCode
+            }
+
+            if request.requestBillingAgreement != false {
+                checkoutParameters["request_billing_agreement"] = request.requestBillingAgreement
+
+                if request.billingAgreementDescription != nil {
+                    checkoutParameters["billing_agreement_details"] = ["description": request.billingAgreementDescription]
+                }
+            }
+
+            if shippingAddressOverride != nil {
+                checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
+                checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress
+                checkoutParameters["city"] = shippingAddressOverride?.locality
+                checkoutParameters["state"] = shippingAddressOverride?.region
+                checkoutParameters["postal_code"] = shippingAddressOverride?.postalCode
+                checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
+                checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
+            }
 
             return baseParameters.merging(checkoutParameters) { $1 }
         case .vault:
             guard let request = request as? BTPayPalNativeVaultRequest else { return [:] }
+            var vaultParameters: [String: Any] = ["offer_paypal_credit": request.offerCredit]
 
-            // Should only include shipping params if they exist
-            var shippingParams: [AnyHashable: Any?]? = [:]
-            if shippingAddressOverride != nil {
-                shippingParams = [
-                    "line1": request.shippingAddressOverride?.streetAddress,
-                    "line2": request.shippingAddressOverride?.extendedAddress,
-                    "city": request.shippingAddressOverride?.locality,
-                    "state": request.shippingAddressOverride?.region,
-                    "postal_code": request.shippingAddressOverride?.postalCode,
-                    "country_code": request.shippingAddressOverride?.countryCodeAlpha2,
-                    "recipient_name": request.shippingAddressOverride?.recipientName,
-                ]
-            } else {
-                shippingParams = nil
+            if request.billingAgreementDescription != nil {
+                vaultParameters["description"] = request.billingAgreementDescription
             }
 
-            // Values from BTPayPalNativeVaultRequest
-            let vaultParameters = [
-                "description": request.billingAgreementDescription ?? "",
-                "offer_paypal_credit": request.offerCredit,
-                "shipping_address": shippingParams ?? [:],
-            ].compactMapValues { $0 }
+            // Should only include shipping params if they exist
+            if shippingAddressOverride != nil {
+                let shippingAddressParameters: [String: String?] = [
+                    "line1": shippingAddressOverride?.streetAddress,
+                    "line2": shippingAddressOverride?.extendedAddress,
+                    "city": shippingAddressOverride?.locality,
+                    "state": shippingAddressOverride?.region,
+                    "postal_code": shippingAddressOverride?.postalCode,
+                    "country_code": shippingAddressOverride?.countryCodeAlpha2,
+                    "recipient_name": shippingAddressOverride?.recipientName,
+                ]
+
+                vaultParameters["shipping_address"] = shippingAddressParameters
+            }
 
             return baseParameters.merging(vaultParameters) { $1 }
         @unknown default:
