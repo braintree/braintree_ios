@@ -17,7 +17,6 @@ body:
   validations:
     required: true
 - type: input
-  id: xcode-version
   attributes:
     label: Xcode Version
     placeholder: "e.g. Xcode 14.1"

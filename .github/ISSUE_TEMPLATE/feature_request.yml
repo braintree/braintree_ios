@@ -2,7 +2,6 @@ name: Feature request
 description: Suggest an idea for our SDK
 body:
 - type: textarea
-  id: goals
   attributes:
     label: Is your feature request related to a problem? Please describe.
     description: A clear and concise description of what the problem is.
