@@ -67,7 +67,7 @@ struct BTAnalyticsMetadata {
             }
         }
 
-        return UUID().uuidString
+        return savedIdentifier
     }
 
     static var isSimulator: Bool {
