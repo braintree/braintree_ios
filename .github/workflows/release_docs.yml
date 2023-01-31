@@ -1,0 +1,14 @@
+name: Publish reference docs
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Reference docs version to release"
+        required: true
+jobs:
+  release:
+    name: Publish reference docs
+    steps:
+      - name: Publish reference docs
+        run: ./.github/actions/release_docs
+        with: ${{ github.event.inputs.version }}
