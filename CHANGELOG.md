@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.20.1 (2023-01-31)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix bug where some request dictionaries were being constructed incorrectly
   * Fix bug where passing `BTPayPalNativeVaultRequest.shippingAddressOverride` as `nil` was incorrectly throwing an error
