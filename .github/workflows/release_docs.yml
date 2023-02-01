@@ -1,4 +1,4 @@
-name: Publish reference docs
+name: Publish Reference Docs
 on:
   workflow_dispatch:
     inputs:

@@ -1,11 +1,11 @@
-name: Publish reference docs
+name: Publish Reference Docs
 description: 'Publish reference docs to GitHub Pages'
 inputs:
   version:
     description: "Version of the reference docs to release"
     required: true
 runs:
-  using: actions/runner-images@macOS12
+  using: actions/runner-images@macOS-12
   steps:
     - name: Use Xcode 14
       run: sudo xcode-select -switch /Applications/Xcode_14.0.app
