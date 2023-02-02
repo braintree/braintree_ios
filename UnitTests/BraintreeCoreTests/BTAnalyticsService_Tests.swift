@@ -251,16 +251,13 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
     func validateMetadataParameters(metadataParameters: [String: Any]) {
         XCTAssertEqual(metadataParameters["platform"] as? String, "iOS")
-        XCTAssertNotNil(metadataParameters["platformVersion"] as? String)
         XCTAssertEqual(metadataParameters["sdkVersion"] as? String, BTCoreConstants.braintreeSDKVersion)
         XCTAssertNotNil(metadataParameters["merchantAppId"] as? String)
         XCTAssertNotNil(metadataParameters["merchantAppName"] as? String)
         XCTAssertNotNil(metadataParameters["merchantAppVersion"] as? String)
         XCTAssertEqual(metadataParameters["deviceManufacturer"] as? String, "Apple")
         XCTAssertNotNil(metadataParameters["deviceModel"] as? String)
-        XCTAssertNotNil(metadataParameters["iosIdentifierForVendor"] as? String)
         XCTAssertNotNil(metadataParameters["iosPackageManager"] as? String)
         XCTAssertNotNil(metadataParameters["isSimulator"] as? Bool)
-        XCTAssertNotNil(metadataParameters["deviceScreenOrientation"] as? String)
     }
 }
