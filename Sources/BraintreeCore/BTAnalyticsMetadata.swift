@@ -13,7 +13,6 @@ struct BTAnalyticsMetadata {
     static let deviceManufacturer: String = "Apple"
     static let iOSDeviceName: String = UIDevice.current.name
     static let iOSSystemName: String = UIDevice.current.systemName
-    static let sessionUUID: String = UUID().uuidString
 
     // MARK: Metadata Computed Properties
 
@@ -80,7 +79,6 @@ struct BTAnalyticsMetadata {
             "iosDeviceName": iOSDeviceName,
             "iosSystemName": iOSSystemName,
             "iosPackageManager": iOSPackageManager,
-            "deviceAppGeneratedPersistentUUID": sessionUUID,
             "isSimulator": isSimulator,
             "venmoInstalled": isVenmoInstalled,
             "dropinVersion": dropInVersion
