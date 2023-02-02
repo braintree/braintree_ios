@@ -59,7 +59,6 @@
 @implementation BTThreeDSecureRequest
 
 - (instancetype)init {
-    self = [super init];
     if (self) {
         _versionRequested = BTThreeDSecureVersion2;
     }
@@ -125,7 +124,7 @@
     }
 }
 
-- (void)handleRequest:(BTPaymentFlowRequest *)request
+- (void)handleRequest:(BTThreeDSecureRequest *)request
                client:(BTAPIClient *)apiClient
 paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     self.paymentFlowClientDelegate = delegate;
@@ -205,7 +204,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     }];
 }
 
-- (void)startRequest:(BTPaymentFlowRequest *)request configuration:(BTConfiguration *)configuration {
+- (void)startRequest:(BTThreeDSecureRequest *)request configuration:(BTConfiguration *)configuration {
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
     BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
     BTPaymentFlowClient *paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:apiClient];

@@ -4,12 +4,12 @@ import XCTest
 @testable import BraintreePaymentFlow
 @testable import BraintreeTestShared
 
-class MockPaymentFlowClientDelegate: BTPaymentFlowClientDelegate {
+class MockPaymentFlowClientDelegate: NSObject, BTPaymentFlowClientDelegate {
     var _returnURLScheme = ""
 
     var onPaymentWithURLHandler: ((URL?, Error?) -> Void)?
     var onPaymentCancelHandler: (() -> Void)?
-    var onPaymentCompleteHandler: ((BTPaymentFlowResult?, Error?) -> Void)?
+    var onPaymentCompleteHandler: ((NSObject?, Error?) -> Void)?
 
     func onPayment(with url: URL?, error: Error?) {
         onPaymentWithURLHandler?(url, error)
@@ -19,7 +19,7 @@ class MockPaymentFlowClientDelegate: BTPaymentFlowClientDelegate {
         onPaymentCancelHandler?()
     }
 
-    func onPaymentComplete(_ result: BTPaymentFlowResult?, error: Error?) {
+    func onPaymentComplete(_ result: NSObject?, error: Error?) {
         onPaymentCompleteHandler?(result, error)
     }
 

@@ -38,7 +38,7 @@
 
 @interface BTPaymentFlowClient () <SFSafariViewControllerDelegate, BTAppContextSwitchClient>
 
-@property (nonatomic, copy) void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *);
+@property (nonatomic, copy) void (^paymentFlowCompletionBlock)(NSObject *, NSError *);
 @property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 @property (nonatomic, strong, nullable) id<BTPaymentFlowRequestDelegate> paymentFlowRequestDelegate;
 @property (nonatomic, copy, nonnull) NSString *returnURLScheme;
@@ -70,13 +70,13 @@ static BTPaymentFlowClient *paymentFlowClient;
     return nil;
 }
 
-- (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
+- (void)startPaymentFlow:(NSObject<BTPaymentFlowRequestDelegate> * _Nonnull)request completion:(void (^)(NSObject * _Nullable, NSError * _Nullable))completionBlock {
     [self setupPaymentFlow:request completion:completionBlock];
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.start-payment.selected", [self.paymentFlowRequestDelegate paymentFlowName]]];
     [self.paymentFlowRequestDelegate handleRequest:request client:self.apiClient paymentClientDelegate:self];
 }
 
-- (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
+- (void)setupPaymentFlow:(NSObject<BTPaymentFlowRequestDelegate> * _Nonnull)request completion:(void (^)(NSObject * _Nullable, NSError * _Nullable))completionBlock {
     paymentFlowClient = self;
     self.paymentFlowCompletionBlock = completionBlock;
     self.paymentFlowRequestDelegate = request;
@@ -150,7 +150,7 @@ static BTPaymentFlowClient *paymentFlowClient;
     paymentFlowClient = nil;
 }
 
-- (void)onPaymentComplete:(BTPaymentFlowResult *)result error:(NSError *)error {
+- (void)onPaymentComplete:(NSObject *)result error:(NSError *)error {
     self.paymentFlowCompletionBlock(result, error);
     paymentFlowClient = nil;
 }

@@ -68,7 +68,7 @@
     request.shippingAddressRequired = NO;
     request.localPaymentFlowDelegate = self;
 
-    void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {
+    void (^paymentFlowCompletionBlock)(NSObject *, NSError *) = ^(NSObject * _Nullable result, NSError * _Nullable error) {
         if (error) {
             if (error.code == BTPaymentFlowErrorTypeCanceled) {
                 self.progressBlock(@"Canceled 🎲");

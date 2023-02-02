@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The result of a 3D Secure payment flow
  */
-@interface BTThreeDSecureResult : BTPaymentFlowResult
+@interface BTThreeDSecureResult : NSObject
 
 /**
  The `BTCardNonce` resulting from the 3D Secure flow

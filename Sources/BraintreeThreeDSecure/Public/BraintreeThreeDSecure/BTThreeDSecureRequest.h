@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
 /**
  Used to initialize a 3D Secure payment flow
  */
-@interface BTThreeDSecureRequest : BTPaymentFlowRequest <BTPaymentFlowRequestDelegate>
+@interface BTThreeDSecureRequest : NSObject <BTPaymentFlowRequestDelegate>
 
 /**
  A nonce to be verified by ThreeDSecure

@@ -1,7 +1,9 @@
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTPaymentFlowClient.h>
+#import <Braintree/BTThreeDSecureRequest.h>
 #else
 #import <BraintreePaymentFlow/BTPaymentFlowClient.h>
+#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
@@ -39,7 +41,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
  @param request The BTThreeDSecureRequest object where prepareLookup was called.
  @param completionBlock This completion will be invoked exactly once with the client payload string or an error.
  */
-- (void)prepareLookup:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(NSString * _Nullable lookupPayload, NSError * _Nullable error))completionBlock;
+- (void)prepareLookup:(BTThreeDSecureRequest<BTPaymentFlowRequestDelegate> * _Nullable)request completion:(void (^)(NSString * _Nullable lookupPayload, NSError * _Nullable error))completionBlock;
 
 /**
  Initialize a challenge from a server side lookup call.
@@ -48,7 +50,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
  @param request The BTThreeDSecureRequest object where prepareLookup was called.
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
  */
-- (void)initializeChallengeWithLookupResponse:(NSString *)lookupResponse request:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error))completionBlock;
+- (void)initializeChallengeWithLookupResponse:(NSString *)lookupResponse request:(BTThreeDSecureRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(NSObject * _Nullable result, NSError * _Nullable error))completionBlock;
 
 @end
 

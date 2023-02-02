@@ -193,7 +193,7 @@
 
         request.v2UICustomization = ui;
 
-        [self.paymentFlowClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
+        [self.paymentFlowClient startPaymentFlow:request completion:^(NSObject * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {

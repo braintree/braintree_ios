@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  @param result The BTPaymentFlowResult of the payment flow.
  @param error NSError containing details of the error.
  */
-- (void)onPaymentComplete:(BTPaymentFlowResult * _Nullable)result error:(NSError * _Nullable)error;
+- (void)onPaymentComplete:(NSObject * _Nullable)result error:(NSError * _Nullable)error;
 
 /**
  Returns the base return URL scheme used by the client.
@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  @param request A BTPaymentFlowRequest request.
  @param delegate The BTPaymentFlowClientDelegate to handle response.
  */
-- (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate;
+- (void)handleRequest:(NSObject *)request client:(BTAPIClient *)apiClient paymentClientDelegate:(NSObject<BTPaymentFlowClientDelegate>* )delegate NS_SWIFT_NAME(handle(_:client:paymentClientDelegate:));
 
 /**
  Check if this BTPaymentFlowRequestDelegate can handle the return URL
@@ -136,7 +136,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  @param request A BTPaymentFlowRequest request.
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
  */
-- (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)( BTPaymentFlowResult * _Nullable result,  NSError * _Nullable error))completionBlock;
+- (void)startPaymentFlow:(NSObject<BTPaymentFlowRequestDelegate> *)request completion:(void (^)( NSObject * _Nullable result,  NSError * _Nullable error))completionBlock;
 
 /**
  A required delegate to control the presentation and dismissal of view controllers.

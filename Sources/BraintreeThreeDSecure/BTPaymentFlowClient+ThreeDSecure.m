@@ -158,7 +158,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
     }];
 }
 
-- (void)prepareLookup:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completionBlock {
+- (void)prepareLookup:(BTThreeDSecureRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completionBlock {
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
     NSError *integrationError;
 
@@ -208,8 +208,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 }
 
 - (void)initializeChallengeWithLookupResponse:(NSString *)lookupResponse
-                                      request:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request
-                                   completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
+                                      request:(BTThreeDSecureRequest<BTPaymentFlowRequestDelegate> *)request
+                                   completion:(void (^)(NSObject * _Nullable, NSError * _Nullable))completionBlock {
     [self setupPaymentFlow:request completion:completionBlock];
 
     BTJSON *jsonResponse = [[BTJSON alloc] initWithData:[lookupResponse dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO]];
