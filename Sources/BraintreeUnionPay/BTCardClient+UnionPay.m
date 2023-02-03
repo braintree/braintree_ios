@@ -97,12 +97,15 @@
         if (card.expirationYear) {
             enrollmentParameters[@"expiration_year"] = card.expirationYear;
         }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         if (request.mobileCountryCode) {
             enrollmentParameters[@"mobile_country_code"] = request.mobileCountryCode;
         }
         if (request.mobilePhoneNumber) {
             enrollmentParameters[@"mobile_number"] = request.mobilePhoneNumber;
         }
+#pragma clang diagnostic pop
 
         [self.apiClient POST:@"v1/union_pay_enrollments"
                   parameters:@{ @"union_pay_enrollment": enrollmentParameters }

@@ -95,6 +95,8 @@
         card.cvv = self.cardFormView.cvv;
     }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
     request.mobileCountryCode = @"62";
     if (self.cardFormView.phoneNumber) {
@@ -123,8 +125,6 @@
                 
                 self.progressBlock(@"Tokenizing card");
                 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 [self.cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
 #pragma clang diagnostic pop
                     if (error) {
