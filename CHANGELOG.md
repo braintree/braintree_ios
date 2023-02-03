@@ -2,6 +2,7 @@
 
 ## unreleased
 * Convert `BraintreePayPal` module to Swift
+* Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
 * Breaking Changes
   * BraintreePayPal
     * Rename `BTPayPalRequest.riskCorrelationId` to `BTPayPalRequest.riskCorrelationID`
@@ -49,6 +50,7 @@
   * BraintreeCore
     * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
     * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
+    * Remove `BTKeychain` class and methods
   * BraintreeSEPADirectDebit
     * The `tokenize` method no longer takes in a `context` parameter
     * Merchants no longer need to conform to the `ASWebAuthenticationPresentationContextProviding` protocol
