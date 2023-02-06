@@ -244,7 +244,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     if (lookupResult.lookup.isThreeDSecureVersion2) {
         [self performV2Authentication:lookupResult];
     } else {
-        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:self.paymentFlowClientDelegate.returnURLScheme
+        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:BTCoreConstants.callbackURLScheme
                                                                            assetsURL:[configuration.json[@"assetsUrl"] asString]
                                                                  threeDSecureRequest:self
                                                                   threeDSecureLookup:lookupResult.lookup];
@@ -321,10 +321,6 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shifted.%@",
                                    [self stringForBool:result.tokenizedCard.threeDSecureInfo.liabilityShifted]]];
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.completed"];
-}
-
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
-    return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/threedsecure"];
 }
 
 - (NSString *)paymentFlowName {

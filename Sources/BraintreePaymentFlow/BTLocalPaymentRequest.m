@@ -63,12 +63,7 @@
 
         NSError *integrationError;
 
-        if ([self.paymentFlowClientDelegate returnURLScheme] == nil || [[self.paymentFlowClientDelegate returnURLScheme] isEqualToString:@""]) {
-            NSLog(@"%@ Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
-            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
-                                                 code:BTPaymentFlowErrorTypeInvalidReturnURL
-                                             userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app or browser switch."}];
-        } else if (![configuration isLocalPaymentEnabled]) {
+        if (![configuration isLocalPaymentEnabled]) {
             NSLog(@"%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
                                                  code:BTPaymentFlowErrorTypeDisabled
@@ -96,8 +91,8 @@
                                  @"intent": @"sale"
                                  } mutableCopy];
 
-        params[@"return_url"] = [NSString stringWithFormat:@"%@%@", [delegate returnURLScheme], @"://x-callback-url/braintree/local-payment/success"];
-        params[@"cancel_url"] = [NSString stringWithFormat:@"%@%@", [delegate returnURLScheme], @"://x-callback-url/braintree/local-payment/cancel"];
+        params[@"return_url"] = [NSString stringWithFormat:@"%@%@", BTCoreConstants.callbackURLScheme, @"://x-callback-url/braintree/local-payment/success"];
+        params[@"cancel_url"] = [NSString stringWithFormat:@"%@%@", BTCoreConstants.callbackURLScheme, @"://x-callback-url/braintree/local-payment/cancel"];
 
         if (localPaymentRequest.paymentTypeCountryCode) {
             params[@"payment_type_country_code"] = localPaymentRequest.paymentTypeCountryCode;
@@ -296,11 +291,6 @@
 
     return address;
 }
-
-// TODO: unneeded?
-//- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
-//    return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment"];
-//}
 
 - (NSString *)paymentFlowName {
     NSString *paymentType = self.paymentType != nil ? [self.paymentType lowercaseString] : @"unknown";
