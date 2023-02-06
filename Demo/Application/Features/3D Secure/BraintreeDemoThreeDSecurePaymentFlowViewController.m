@@ -3,7 +3,7 @@
 @import BraintreeThreeDSecure;
 @import BraintreeCore;
 
-@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
+@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTThreeDSecureRequestDelegate>
 
 @property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
@@ -137,7 +137,6 @@
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
 
         self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:self.apiClient];
-//        self.paymentFlowClient.viewControllerPresentingDelegate = self;
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;
@@ -215,14 +214,6 @@
         }];
 
     }];
-}
-
-- (void)paymentClient:(__unused id)client requestsPresentationOfViewController:(UIViewController *)viewController {
-    [self presentViewController:viewController animated:YES completion:nil];
-}
-
-- (void)paymentClient:(__unused id)client requestsDismissalOfViewController:(__unused UIViewController *)viewController {
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark BTThreeDSecureRequestDelegate

@@ -50,15 +50,6 @@ NSString * const BTPaymentFlowErrorDomain = @"com.braintreepayments.BTPaymentFlo
 
 @implementation BTPaymentFlowClient
 
-static BTPaymentFlowClient *paymentFlowClient;
-
-// TODO: remove?
-//+ (void)load {
-//    if (self == [BTPaymentFlowClient class]) {
-//        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
-//    }
-//}
-
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         _apiClient = apiClient;
@@ -77,7 +68,6 @@ static BTPaymentFlowClient *paymentFlowClient;
 }
 
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
-    paymentFlowClient = self;
     self.request = request;
     self.paymentFlowCompletionBlock = completionBlock;
     self.paymentFlowRequestDelegate = request;
@@ -119,7 +109,6 @@ static BTPaymentFlowClient *paymentFlowClient;
 
 - (void)onPaymentComplete:(BTPaymentFlowResult *)result error:(NSError *)error {
         self.paymentFlowCompletionBlock(result, error);
-        paymentFlowClient = nil;
     }
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding protocol

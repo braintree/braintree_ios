@@ -1,7 +1,5 @@
 #import <Foundation/Foundation.h>
 
-@protocol BTViewControllerPresentingDelegate;
-
 @class BTAPIClient;
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
@@ -47,11 +45,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 - (void)onPaymentWithURL:(NSURL * _Nullable) url error:(NSError * _Nullable)error;
 
 /**
- Use when the payment flow was canceled.
- */
-//- (void)onPaymentCancel;
-
-/**
  Use when the payment flow has completed or encountered an error.
  @param result The BTPaymentFlowResult of the payment flow.
  @param error NSError containing details of the error.
@@ -80,14 +73,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  @param delegate The BTPaymentFlowClientDelegate to handle response.
  */
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate;
-
-/**
- Check if this BTPaymentFlowRequestDelegate can handle the return URL
- 
- @param url The URL to check.
- @return True if the BTPaymentFlowRequestDelegate can handle the URL. Otherwise return false.
- */
-//- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url;
 
 /**
  Handles the return URL and completes and post processing.

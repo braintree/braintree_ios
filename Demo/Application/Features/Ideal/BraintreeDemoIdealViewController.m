@@ -2,7 +2,7 @@
 @import BraintreePaymentFlow;
 @import BraintreeCore;
 
-@interface BraintreeDemoIdealViewController () <BTViewControllerPresentingDelegate, BTLocalPaymentRequestDelegate>
+@interface BraintreeDemoIdealViewController () <BTLocalPaymentRequestDelegate>
 
 @property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
 @property (nonatomic, weak) UILabel *paymentIDLabel;
@@ -49,7 +49,6 @@
 - (void)startPaymentWithBank {
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_f252zhq7_hh4cpc39zq4rgjcg"];
     self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:client];
-//    self.paymentFlowClient.viewControllerPresentingDelegate = self;
 
     BTLocalPaymentRequest *request = [[BTLocalPaymentRequest alloc] init];
     request.paymentType = @"ideal";
@@ -83,16 +82,6 @@
     };
 
     [self.paymentFlowClient startPaymentFlow:request completion:paymentFlowCompletionBlock];
-}
-
-#pragma mark BTViewControllerPresentingDelegate
-
-- (void)paymentClient:(__unused id)client requestsPresentationOfViewController:(UIViewController *)viewController {
-    [self presentViewController:viewController animated:YES completion:nil];
-}
-
-- (void)paymentClient:(__unused id)client requestsDismissalOfViewController:(UIViewController *)viewController {
-    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark BTIdealRequestDelegate
