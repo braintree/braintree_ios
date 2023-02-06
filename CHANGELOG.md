@@ -50,7 +50,6 @@
   * BraintreeCore
     * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
     * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
-    * Remove `BTKeychain` class and methods
   * BraintreeSEPADirectDebit
     * The `tokenize` method no longer takes in a `context` parameter
     * Merchants no longer need to conform to the `ASWebAuthenticationPresentationContextProviding` protocol
