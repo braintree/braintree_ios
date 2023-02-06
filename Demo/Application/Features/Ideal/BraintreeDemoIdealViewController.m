@@ -49,7 +49,7 @@
 - (void)startPaymentWithBank {
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_f252zhq7_hh4cpc39zq4rgjcg"];
     self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:client];
-    self.paymentFlowClient.viewControllerPresentingDelegate = self;
+//    self.paymentFlowClient.viewControllerPresentingDelegate = self;
 
     BTLocalPaymentRequest *request = [[BTLocalPaymentRequest alloc] init];
     request.paymentType = @"ideal";

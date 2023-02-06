@@ -1,3 +1,5 @@
+#import <AuthenticationServices/AuthenticationServices.h>
+
 #if __has_include(<Braintree/BraintreePaymentFlow.h>)
 #import <Braintree/BTPaymentFlowClient.h>
 #else
@@ -8,6 +10,11 @@
 @class BTPaymentFlowResult;
 
 @interface BTPaymentFlowClient ()
+
+/**
+ Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
+ */
+@property (nonatomic, strong, nullable) ASWebAuthenticationSession *authenticationSession;
 
 /**
  Set up the BTPaymentFlowClient with a request object and a completion block without starting the flow.

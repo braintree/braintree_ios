@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 /**
  Use when the payment flow was canceled.
  */
-- (void)onPaymentCancel;
+//- (void)onPaymentCancel;
 
 /**
  Use when the payment flow has completed or encountered an error.
@@ -75,6 +75,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 /**
  Protocol for payment flow processing.
  */
+// TODO: do we need this still?
 @protocol BTPaymentFlowRequestDelegate
 
 /**
@@ -93,7 +94,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  @param url The URL to check.
  @return True if the BTPaymentFlowRequestDelegate can handle the URL. Otherwise return false.
  */
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url;
+//- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url;
 
 /**
  Handles the return URL and completes and post processing.
@@ -141,7 +142,8 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 /**
  A required delegate to control the presentation and dismissal of view controllers.
  */
-@property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
+// TODO: do we need this still?
+//@property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
 /**
  :nodoc: Exposed for testing

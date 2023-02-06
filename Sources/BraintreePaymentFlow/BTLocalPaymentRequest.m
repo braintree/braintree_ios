@@ -297,9 +297,10 @@
     return address;
 }
 
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
-    return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment"];
-}
+// TODO: unneeded?
+//- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
+//    return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment"];
+//}
 
 - (NSString *)paymentFlowName {
     NSString *paymentType = self.paymentType != nil ? [self.paymentType lowercaseString] : @"unknown";

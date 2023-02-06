@@ -137,7 +137,7 @@
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
 
         self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:self.apiClient];
-        self.paymentFlowClient.viewControllerPresentingDelegate = self;
+//        self.paymentFlowClient.viewControllerPresentingDelegate = self;
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;
