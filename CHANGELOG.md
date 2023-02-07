@@ -2,6 +2,14 @@
 
 ## unreleased
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
+* Breaking Changes
+  * BraintreePaymentFlow
+    * Replaced deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in payment flow
+    * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
+    * Removed `load` method from `BTPaymentFlowClient`
+    * Removed `onPaymentCancel` and `returnURLScheme` methods from `BTPaymentFlowClientDelegate`
+    * Removed `canHandleAppSwitchReturnURL` method from `BTPaymentFlowRequestDelegate`
+    * Removed `viewControllerPresentingDelegate` property from `BTPaymentFlowClient`
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift

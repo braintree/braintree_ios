@@ -15,6 +15,8 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 7. [Data Collector](#data-collector)
 8. [Union Pay](#union-pay)
 9. [SEPA Direct Debit](#sepa-direct-debit)
+10. [Local Payment Methods](#local-payment-methods)
+11. [Three D Secure](#three-d-secure)
 
 ## Supported Versions
 
@@ -164,3 +166,17 @@ sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebi
     // handle response
 }
 ```
+
+## Local Payment Methods
+We have replaced the deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method flow.
+
+Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
+
+Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
+
+## Three D Secure
+We have replaced the deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Three D Secure flow.
+
+Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
+
+Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
