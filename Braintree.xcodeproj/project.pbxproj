@@ -299,7 +299,6 @@
 		BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAF28A579D700D74AEC /* BTClientToken.swift */; };
 		BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */; };
 		BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7493528579BAC0074C818 /* BTURLUtils.swift */; };
-		BED749392858CEC60074C818 /* BTKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED749382858CEC60074C818 /* BTKeychain.swift */; };
 		BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */; };
 		BEE2E4A728FDB64400C03FDD /* BTAnalyticsService_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */; };
 		BEE2E4B72900436600C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B62900436600C03FDD /* PayPalCheckout */; };
@@ -940,7 +939,6 @@
 		BED00CAF28A579D700D74AEC /* BTClientToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken.swift; sourceTree = "<group>"; };
 		BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientTokenError.swift; sourceTree = "<group>"; };
 		BED7493528579BAC0074C818 /* BTURLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLUtils.swift; sourceTree = "<group>"; };
-		BED749382858CEC60074C818 /* BTKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTKeychain.swift; sourceTree = "<group>"; };
 		BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAnalyticsService.swift; sourceTree = "<group>"; };
 		BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAnalyticsService_Tests.swift; sourceTree = "<group>"; };
@@ -1352,7 +1350,6 @@
 				BEC3F11228A4401E0074DF0F /* BTHTTPErrorCode.swift */,
 				5708E0A528809AD9007946B9 /* BTJSON.swift */,
 				5708E0A728809BC6007946B9 /* BTJSONError.swift */,
-				BED749382858CEC60074C818 /* BTKeychain.swift */,
 				570B93D82853C6180041BAFE /* BTLogLevel.swift */,
 				570B93D62853C29A0041BAFE /* BTLogLevelDescription.swift */,
 				57A6059C286F9251007E83DA /* BTMutableClientMetadata.swift */,
@@ -2966,7 +2963,6 @@
 				57CBBCE828B033760037F4EE /* BTGraphQLHTTP.swift in Sources */,
 				BE63A3A7288F3026001936DA /* BTPostalAddress.swift in Sources */,
 				BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */,
-				BED749392858CEC60074C818 /* BTKeychain.swift in Sources */,
 				BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */,
 				BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */,
 				BE9EC0982899CF040022EC63 /* BTAPIPinnedCertificates.swift in Sources */,
