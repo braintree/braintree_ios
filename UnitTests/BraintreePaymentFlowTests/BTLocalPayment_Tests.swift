@@ -249,121 +249,82 @@ class BTLocalPayment_UnitTests: XCTestCase {
             ]
         )
 
-        let expectation = expectation(description: "Payment finished expectation")
-        client.startPaymentFlow(localPaymentRequest) { result, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(result)
-            guard let localPaymentResult = result as! BTLocalPaymentResult? else { return }
+        client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
-            XCTAssertEqual(localPaymentResult.clientMetadataID, "89d377ae78244447a3f78ada7d01b270")
-            XCTAssertEqual(localPaymentResult.type, "PayPalAccount")
-            XCTAssertEqual(localPaymentResult.payerID, "PCKXQCZ6J3YXU")
-            XCTAssertEqual(localPaymentResult.nonce, "f689056d-aee1-421e-9d10-f2c9b34d4d6f")
-            expectation.fulfill()
-        }
+        localPaymentRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
-        waitForExpectations(timeout: 4)
+        let paypalAccount = mockAPIClient.lastPOSTParameters?["paypal_account"] as! [String:Any]
+        XCTAssertNotNil(paypalAccount["correlation_id"] as? String)
     }
 
-// TODO: update test with mock ASWeb
-//    func testStartPayment_cancelResult_callsCompletionBlock() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-//
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//
-//        mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
-//            "redirectUrl": "https://www.somebankurl.com",
-//            "paymentToken": "123aaa-123-543-777",
-//            ] ])
-//
-//        var paymentFinishedExpectation: XCTestExpectation? = nil
-//        client.startPaymentFlow(localPaymentRequest) { (result, error) in
-//            guard let error = error as NSError? else {return}
-//            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-//            XCTAssertEqual(error.code, BTPaymentFlowErrorType.canceled.rawValue)
-//            paymentFinishedExpectation!.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2, handler: nil)
-//
-//        paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
-//
-//        waitForExpectations(timeout: 2, handler: nil)
-//    }
-
-// TODO: update test with mock ASWeb
-//    func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-//
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//
-//        mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
-//            "redirectUrl": "https://www.somebankurl.com",
-//            "paymentToken": "123aaa-123-543-777",
-//            ] ])
-//
-//        var paymentFinishedExpectation: XCTestExpectation? = nil
-//        client.startPaymentFlow(localPaymentRequest) { (result, error) in
-//            XCTAssertNotNil(error)
-//            XCTAssertNil(result)
-//            paymentFinishedExpectation!.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2, handler: nil)
-//
-//        mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
-//
-//        paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
-//
-//        waitForExpectations(timeout: 2, handler: nil)
-//    }
-    
-    func testHandleRequest_whenNetworkConnectionLost_sendsAnalytics() {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+    func testStartPayment_cancelResult_callsCompletionBlock() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+
         let client = BTPaymentFlowClient(apiClient: mockAPIClient)
 
-        let expectation = self.expectation(description: "Callback invoked")
-        client.startPaymentFlow(localPaymentRequest) { result, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "paymentResource": [
+                    "redirectUrl": "https://www.somebankurl.com",
+                    "paymentToken": "123aaa-123-543-777",
+                ]
+            ]
+        )
+
+        client.startPaymentFlow(localPaymentRequest) { _, error in
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowErrorType.canceled.rawValue)
         }
 
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
+        localPaymentRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
     }
 
-// TODO: update test with mock ASWeb
-//    func testOpenURL_whenNetworkConnectionLost_sendsAnalytics() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//
-//        mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": [
-//            "redirectUrl": "https://www.somebankurl.com",
-//            "paymentToken": "123aaa-123-543-777",
-//            ] ])
-//
-//        var paymentFinishedExpectation: XCTestExpectation? = nil
-//        client.startPaymentFlow(localPaymentRequest) { result, error in
-//            XCTAssertNotNil(error)
-//            XCTAssertNil(result)
-//            paymentFinishedExpectation!.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2)
-//
-//        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-//
-//        paymentFinishedExpectation = self.expectation(description: "Payment finished with error")
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "an-error-url")!)
-//
-//        waitForExpectations(timeout: 2)
-//
-//        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
-//    }
+    func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+        mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "paymentResource": [
+                    "redirectUrl": "https://www.somebankurl.com",
+                    "paymentToken": "123aaa-123-543-777",
+                ]
+            ]
+        )
+
+        client.startPaymentFlow(localPaymentRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+        }
+    }
+
+    func testStartPaymentFlow_whenNetworkConnectionLost_sendsAnalytics() {
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+        mockAPIClient.cannedResponseError = NSError(
+            domain: NSURLErrorDomain,
+            code: -1005,
+            userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."]
+        )
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "paymentResource": [
+                    "redirectUrl": "https://www.somebankurl.com",
+                    "paymentToken": "123aaa-123-543-777",
+                ]
+            ]
+        )
+
+        client.startPaymentFlow(localPaymentRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+        }
+
+        localPaymentRequest.handleOpen(URL(string: "an-error-url")!)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
+    }
 }
 

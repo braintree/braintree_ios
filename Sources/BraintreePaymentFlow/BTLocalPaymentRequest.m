@@ -236,10 +236,10 @@
                  NSString *phone = [details[@"payerInfo"][@"phone"] asString];
                  NSString *payerID = [details[@"payerInfo"][@"payerId"] asString];
 
-                 BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
-                 BTPostalAddress *billingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
+                 BTPostalAddress *shippingAddress = [details[@"payerInfo"][@"shippingAddress"] asAddress];
+                 BTPostalAddress *billingAddress = [details[@"payerInfo"][@"billingAddress"] asAddress];
                  if (!shippingAddress) {
-                     shippingAddress = [self.class accountAddressFromJSON:details[@"payerInfo"][@"accountAddress"]];
+                     shippingAddress = [details[@"payerInfo"][@"accountAddress"] asAddress];
                  }
 
                  BTLocalPaymentResult *tokenizedLocalPayment = [[BTLocalPaymentResult alloc] initWithNonce:nonce
@@ -256,40 +256,6 @@
              }
          }];
     }
-}
-
-+ (BTPostalAddress *)accountAddressFromJSON:(BTJSON *)addressJSON {
-    if (!addressJSON.isObject) {
-        return nil;
-    }
-
-    BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.recipientName = [addressJSON[@"recipientName"] asString]; // Likely to be nil
-    address.streetAddress = [addressJSON[@"street1"] asString];
-    address.extendedAddress = [addressJSON[@"street2"] asString];
-    address.locality = [addressJSON[@"city"] asString];
-    address.region = [addressJSON[@"state"] asString];
-    address.postalCode = [addressJSON[@"postalCode"] asString];
-    address.countryCodeAlpha2 = [addressJSON[@"country"] asString];
-
-    return address;
-}
-
-+ (BTPostalAddress *)shippingOrBillingAddressFromJSON:(BTJSON *)addressJSON {
-    if (!addressJSON.isObject) {
-        return nil;
-    }
-
-    BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.recipientName = [addressJSON[@"recipientName"] asString]; // Likely to be nil
-    address.streetAddress = [addressJSON[@"line1"] asString];
-    address.extendedAddress = [addressJSON[@"line2"] asString];
-    address.locality = [addressJSON[@"city"] asString];
-    address.region = [addressJSON[@"state"] asString];
-    address.postalCode = [addressJSON[@"postalCode"] asString];
-    address.countryCodeAlpha2 = [addressJSON[@"countryCode"] asString];
-
-    return address;
 }
 
 - (NSString *)paymentFlowName {

@@ -108,8 +108,8 @@ NSString * const BTPaymentFlowErrorDomain = @"com.braintreepayments.BTPaymentFlo
 }
 
 - (void)onPaymentComplete:(BTPaymentFlowResult *)result error:(NSError *)error {
-        self.paymentFlowCompletionBlock(result, error);
-    }
+    self.paymentFlowCompletionBlock(result, error);
+}
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding protocol
 
