@@ -155,7 +155,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
-        let expectation = self.expectation(description: "willCallCompletion")
+        let expectation = expectation(description: "willCallCompletion")
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
@@ -193,135 +193,112 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 1)
     }
-// TODO: update test with mock ASWeb
-//    func testStartPayment_successfulResult_callsCompletionBlock() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-//            "assetsUrl": "http://assets.example.com",
-//        ])
-//
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-//
-//        var paymentFinishedExpectation: XCTestExpectation? = expectation(description: "Start payment expectation")
-//        client.startPaymentFlow(threeDSecureRequest) { (result, error) in
-//            XCTAssertNil(error)
-//            XCTAssertNotNil(result)
-//            paymentFinishedExpectation!.fulfill()
-//        }
-//
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,%22description%22:%22ending+in+02%22,%22consumed%22:false,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true,%22status%22:%22authenticate_successful%22,%22enrolled%22:%22Y%22%7D,%22details%22:%7B%22lastTwo%22:%2202%22,%22lastFour%22:%220002%22,%22cardType%22:%22Visa%22%7D,%22bin_data%22:%7B%22prepaid%22:%22Unknown%22,%22healthcare%22:%22Unknown%22,%22debit%22:%22Unknown%22,%22durbin_regulated%22:%22Unknown%22,%22commercial%22:%22Unknown%22,%22payroll%22:%22Unknown%22,%22issuing_bank%22:%22Unknown%22,%22country_of_issuance%22:%22Unknown%22,%22product_id%22:%22Unknown%22%7D%7D,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true%7D,%22success%22:true%7D")!)
-//
-//        waitForExpectations(timeout: 2)
-//    }
 
-// TODO: update test with mock ASWeb
-//    func testStartPayment_returnsFailedAuthenticationError_whenErrorReturnedInURL() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-//            "assetsUrl": "http://assets.example.com",
-//            ])
-//
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-//
-//        var paymentFinishedExpectation = expectation(description: "Start payment expectation")
-//        client.startPaymentFlow(threeDSecureRequest) { (result, error) in
-//            XCTAssertNotNil(error)
-//            XCTAssertNil(result)
-//            guard let error = error as NSError? else { return }
-//            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-//            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
-//            paymentFinishedExpectation.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2)
-//
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22threeDSecureInfo%22:%7B%22liabilityShifted%22:false,%22liabilityShiftPossible%22:true%7D,%22error%22:%7B%22message%22:%22Failed+to+authenticate,+please+try+a+different+form+of+payment.%22%7D,%22success%22:false%7D")!)
-//
-//        waitForExpectations(timeout: 2)
-//    }
+    func testStartPayment_successfulResult_callsCompletionBlock() {
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["assetsUrl": "http://assets.example.com"])
+        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
 
-// TODO: update test with mock ASWeb
-//    func testStartPayment_missingAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-//            "assetsUrl": "http://assets.example.com",
-//            ])
-//
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//
-//        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-//
-//        var paymentFinishedExpectation = expectation(description: "Start payment expectation")
-//        client.startPaymentFlow(threeDSecureRequest) { (result, error) in
-//            XCTAssertNotNil(error)
-//            XCTAssertNil(result)
-//            guard let error = error as NSError? else {return}
-//            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-//            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
-//            XCTAssertEqual(error.localizedDescription, "Auth Response missing from URL.")
-//            paymentFinishedExpectation.fulfill()
-//        }
-//
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?no-auth=bad-response")!)
-//
-//        waitForExpectations(timeout: 2)
-//
-//        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.missing-auth-response"))
-//    }
+        let paymentFinishedExpectation = expectation(description: "Start payment expectation")
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(result)
+            paymentFinishedExpectation.fulfill()
+        }
 
-// TODO: update test with mock ASWeb
-//    func testStartPayment_invalidAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-//            "assetsUrl": "http://assets.example.com",
-//            ])
-//
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-//
-//        var paymentFinishedExpectation = expectation(description: "Start payment expectation")
-//        client.startPaymentFlow(threeDSecureRequest) { result, error in
-//            XCTAssertNotNil(error)
-//            XCTAssertNil(result)
-//            guard let error = error as NSError? else { return }
-//            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-//            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
-//            XCTAssertEqual(error.localizedDescription, "Auth Response JSON parsing error.")
-//            paymentFinishedExpectation.fulfill()
-//        }
-//
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,BAD-JSON")!)
-//
-//        waitForExpectations(timeout: 2)
-//
-//        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.invalid-auth-response"))
-//    }
+        threeDSecureRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,%22description%22:%22ending+in+02%22,%22consumed%22:false,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true,%22status%22:%22authenticate_successful%22,%22enrolled%22:%22Y%22%7D,%22details%22:%7B%22lastTwo%22:%2202%22,%22lastFour%22:%220002%22,%22cardType%22:%22Visa%22%7D,%22bin_data%22:%7B%22prepaid%22:%22Unknown%22,%22healthcare%22:%22Unknown%22,%22debit%22:%22Unknown%22,%22durbin_regulated%22:%22Unknown%22,%22commercial%22:%22Unknown%22,%22payroll%22:%22Unknown%22,%22issuing_bank%22:%22Unknown%22,%22country_of_issuance%22:%22Unknown%22,%22product_id%22:%22Unknown%22%7D%7D,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true%7D,%22success%22:true%7D")!)
 
-// TODO: update test with mock ASWeb
-//    func testStartPayment_unexpectedAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {
-//        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-//            "assetsUrl": "http://assets.example.com",
-//            ])
-//
-//        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-//
-//        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-//
-//        var paymentFinishedExpectation = expectation(description: "Start payment expectation")
-//        client.startPaymentFlow(threeDSecureRequest) { (result, error) in
-//            XCTAssertNotNil(error)
-//            XCTAssertNil(result)
-//            guard let error = error as NSError? else {return}
-//            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-//            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
-//            XCTAssertEqual(error.localizedDescription, "Auth Response JSON parsing error.")
-//            paymentFinishedExpectation.fulfill()
-//        }
-//
-//        BTPaymentFlowClient.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%22STRING%22")!)
-//
-//        waitForExpectations(timeout: 2)
-//
-//        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.invalid-auth-response"))
-//    }
+        waitForExpectations(timeout: 2)
+    }
+
+    func testStartPayment_returnsFailedAuthenticationError_whenErrorReturnedInURL() {
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["assetsUrl": "http://assets.example.com"])
+        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
+
+        let paymentFinishedExpectation = expectation(description: "Start payment expectation")
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            paymentFinishedExpectation.fulfill()
+        }
+
+        threeDSecureRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22threeDSecureInfo%22:%7B%22liabilityShifted%22:false,%22liabilityShiftPossible%22:true%7D,%22error%22:%7B%22message%22:%22Failed+to+authenticate,+please+try+a+different+form+of+payment.%22%7D,%22success%22:false%7D")!)
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testStartPayment_missingAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["assetsUrl": "http://assets.example.com"])
+        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
+
+        let paymentFinishedExpectation = expectation(description: "Start payment expectation")
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            XCTAssertEqual(error.localizedDescription, "Auth Response missing from URL.")
+            paymentFinishedExpectation.fulfill()
+        }
+
+        threeDSecureRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?no-auth=bad-response")!)
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.missing-auth-response"))
+    }
+
+    func testStartPayment_invalidAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["assetsUrl": "http://assets.example.com"])
+        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
+
+        let paymentFinishedExpectation = expectation(description: "Start payment expectation")
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            XCTAssertEqual(error.localizedDescription, "Auth Response JSON parsing error.")
+            paymentFinishedExpectation.fulfill()
+        }
+
+        threeDSecureRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,BAD-JSON")!)
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.invalid-auth-response"))
+    }
+
+    func testStartPayment_unexpectedAuthResponse_callsCompletionBlock_withError_sendsAnalyticsEvent() {
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["assetsUrl": "http://assets.example.com"])
+        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
+
+        let paymentFinishedExpectation = expectation(description: "Start payment expectation")
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else {return}
+            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            XCTAssertEqual(error.localizedDescription, "Auth Response JSON parsing error.")
+            paymentFinishedExpectation.fulfill()
+        }
+
+        threeDSecureRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%22STRING%22")!)
+
+        waitForExpectations(timeout: 2)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.invalid-auth-response"))
+    }
 
     func getAuthRequiredLookupResponse() -> [String : Any] {
         return [
@@ -358,10 +335,10 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     // MARK: - Analytic Event Tests
 
     func testStartPayment_success_sendsAnalyticsEvents() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "assetsUrl": "http://assets.example.com",
-            ])
-        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockThreeDSecureRequestDelegate.lookupCompleteExpectation = expectation(description: "Lookup completed successfully")
+        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["assetsUrl": "http://assets.example.com"])
+
         let responseBody = [
             "paymentMethod": [
                 "consumed": false,
@@ -392,11 +369,11 @@ class BTThreeDSecure_UnitTests: XCTestCase {
                 "threeDSecureVersion": "1.0"
             ]
             ] as [String : Any]
+
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
-            // no-op
-        }
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 4)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.selected"))
@@ -408,15 +385,12 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_failure_sendsAnalyticsEvents() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "assetsUrl": "http://assets.example.com",
-            ])
         let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["assetsUrl": "http://assets.example.com"])
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
 
         let expectation = expectation(description: "Start payment expectation")
-        client.startPaymentFlow(threeDSecureRequest) { (result, error) in
-            guard (error as NSError?) != nil else { return }
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
             expectation.fulfill()
         }
 
