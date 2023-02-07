@@ -95,7 +95,11 @@ NSString * const BTPaymentFlowErrorDomain = @"com.braintreepayments.BTPaymentFlo
                 [self.apiClient sendAnalyticsEvent:eventName];
             }
 
-            [self onPaymentComplete:nil error:error];
+            NSError *canceledError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                         code:BTPaymentFlowErrorTypeCanceled
+                                                     userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"%@ flow was canceled by the user.", [self.paymentFlowRequestDelegate paymentFlowName]]}];
+
+            [self onPaymentComplete:nil error:canceledError];
             return;
         }
 
