@@ -175,7 +175,7 @@ Your view no longer needs to conform to the `BTViewControllerPresentingDelegate`
 Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
 
 ## Three D Secure
-We have replaced the deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Three D Secure flow.
+We have replaced the deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Three D Secure flow.
 
 Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
 
