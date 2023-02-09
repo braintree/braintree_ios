@@ -37,7 +37,7 @@ import BraintreeCore
                 return
             }
 
-            var paymentRequest = PKPaymentRequest()
+            let paymentRequest = PKPaymentRequest()
             paymentRequest.countryCode = configuration.applePayCountryCode ?? ""
             paymentRequest.currencyCode = configuration.applePayCurrencyCode ?? ""
             paymentRequest.merchantIdentifier = configuration.applePayMerchantIdentifier ?? ""
@@ -47,7 +47,64 @@ import BraintreeCore
         }
     }
 
-    // TODO: tokenizeApplePayPayment, remove Obj-C files, run tests, run demo app, update Package.swift + podspec
+    // TODO: remove Obj-C files, run tests, run demo app, update Package.swift + podspec + add changelog entry
+
+    @objc(tokenizeApplePayPayment:completion:)
+    public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent("ios.apple-pay.start")
+
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            if let error {
+                self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.configuration")
+                completion(nil, error)
+                return
+            }
+
+            if let configuration,
+               configuration.json?["applePay"]["status"].isString == false ||
+               configuration.json?["applePay"]["status"].asString() == "off" {
+                self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.disabled")
+                completion(nil, BTApplePayError.unsupported)
+                return
+            }
+
+            let metaParameters: [String: String] = [
+                "source": self.apiClient.metadata.sourceString,
+                "integration": self.apiClient.metadata.integrationString,
+                "sessionId": self.apiClient.metadata.sessionID
+            ]
+
+            let parameters: [String: Any] = [
+                "applePaymentToken": self.parametersForPaymentToken(token: payment.token),
+                "_meta": metaParameters
+            ]
+
+            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
+                if let error = error as NSError? {
+                    if error.code == BTCoreConstants.networkConnectionLostCode {
+                        self.apiClient.sendAnalyticsEvent("ios.apple-pay.network-connection.failure")
+                    }
+
+                    self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.tokenization")
+                    completion(nil, error)
+                    return
+                }
+
+                guard let body else {
+                    completion(nil, BTApplePayError.noApplePayCardsReturned)
+                    return
+                }
+
+                guard let applePayNonce: BTApplePayCardNonce = BTApplePayCardNonce(json: body["applePayCards"][0]) else {
+                    completion(nil, BTApplePayError.failedToCreateNonce)
+                    return
+                }
+
+                completion(applePayNonce, nil)
+                self.apiClient.sendAnalyticsEvent("ios.apple-pay.success")
+            }
+        }
+    }
 
     // MARK: - Internal Methods
 
