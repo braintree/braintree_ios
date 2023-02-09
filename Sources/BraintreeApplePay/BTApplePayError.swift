@@ -29,8 +29,10 @@ enum BTApplePayError: Int, Error, CustomNSError, LocalizedError {
             return ""
         case .unsupported:
             return "Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again."
+            // TODO: needs test
         case .noApplePayCardsReturned:
             return "No Apple Pay Card data was returned. Please contact support."
+            //TODO: needs test
         case .failedToCreateNonce:
             return "Unable to create BTApplePayCardNonce. Either body did not contain applePayCards data or contents could not be parsed."
         }

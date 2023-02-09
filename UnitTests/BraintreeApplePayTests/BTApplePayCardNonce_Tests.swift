@@ -1,5 +1,6 @@
 import XCTest
 @testable import BraintreeCore
+@testable import BraintreeApplePay
 
 class BTApplePayCardNonce_Tests: XCTestCase {
 
@@ -17,7 +18,7 @@ class BTApplePayCardNonce_Tests: XCTestCase {
 
         let applePayNonce = BTApplePayCardNonce(json: applePayCard)
         XCTAssertEqual(applePayNonce?.nonce, "a-nonce")
-        XCTAssertEqual(applePayNonce?.binData.commercial, "yes")
+        XCTAssertEqual(applePayNonce?.binData?.commercial, "yes")
         XCTAssertEqual(applePayNonce?.type, "fake-card-type")
     }
 

@@ -1,9 +1,9 @@
-#import <BraintreeApplePay/BraintreeApplePay.h>
 #import "BTNonceValidationHelper.h"
 #import <PassKit/PassKit.h>
 #import <XCTest/XCTest.h>
 
 @import BraintreeCore;
+@import BraintreeApplePay;
 
 @interface BraintreeApplePay_IntegrationTests : XCTestCase
 
@@ -33,8 +33,8 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Apple Pay payment"];
     [client tokenizeApplePayPayment:[[PKPayment alloc] init]
                          completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
-        XCTAssertEqualObjects(error.domain, BTApplePayErrorDomain);
-        XCTAssertEqual(error.code, BTApplePayErrorTypeUnsupported);
+        XCTAssertEqualObjects(error.domain, @"com.braintreepayments.BTApplePayErrorDomain");
+        XCTAssertEqual(error.code, 1);
         XCTAssertNil(tokenizedApplePayPayment);
         [expectation fulfill];
     }];

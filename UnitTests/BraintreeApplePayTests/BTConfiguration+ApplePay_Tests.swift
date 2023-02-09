@@ -1,4 +1,5 @@
 import XCTest
+import PassKit
 @testable import BraintreeCore
 @testable import BraintreeTestShared
 
