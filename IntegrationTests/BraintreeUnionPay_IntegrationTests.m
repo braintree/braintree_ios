@@ -9,6 +9,8 @@
 
 @implementation BraintreeUnionPay_IntegrationTests
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)setUp {
     [super setUp];
 
@@ -24,10 +26,7 @@
 
 - (void)pendFetchCapabilities_returnsCardCapabilities {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self.cardClient fetchCapabilities:@"6212345678901232" completion:^(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error) {
-#pragma clang diagnostic pop
         XCTAssertNil(error);
         XCTAssertFalse(cardCapabilities.isDebit);
         XCTAssertTrue(cardCapabilities.isUnionPay);
@@ -107,10 +106,7 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
     expectation = [self expectationWithDescription:@"Callback invoked"];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self.cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-#pragma clang diagnostic pop
         XCTAssertNil(error);
         XCTAssertTrue([tokenizedCard.nonce isANonce]);
         XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetworkUnionPay);
@@ -128,5 +124,6 @@
     NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
     return jsonResponse[@"client_token"];
 }
+#pragma clang diagnostic pop
 
 @end

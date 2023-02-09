@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Add missed deprecation warnings to `BTCardRequest` Union Pay properties
+
 ## 5.20.1 (2023-01-31)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix bug where some request dictionaries were being constructed incorrectly
