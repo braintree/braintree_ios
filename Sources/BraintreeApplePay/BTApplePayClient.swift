@@ -6,7 +6,7 @@ import BraintreeCore
 #endif
 
 /// Used to process Apple Pay payments
-@objcMembers public class BTApplePayClient_Swift: NSObject {
+@objcMembers public class BTApplePayClient: NSObject {
 
     //MARK: - Internal Properties
 
@@ -17,12 +17,14 @@ import BraintreeCore
 
     /// Creates an Apple Pay client
     /// - Parameter apiClient: An API client
+    @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
 
     // MARK: - Public Methods
 
+    @objc(paymentRequest:)
     public func paymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
