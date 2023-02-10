@@ -87,17 +87,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         } else if let configURL = clientToken.json["configUrl"].asURL() {
             url = configURL
         } else {
-            throw Self.constructError(
-                code: .clientApiUrlInvalid,
-                userInfo: [NSLocalizedDescriptionKey: "Client API URL is not a valid URL."]
-            )
+            throw BTHTTPErrors.clientApiURLInvalid
         }
         
         if clientToken.authorizationFingerprint.isEmpty {
-            throw Self.constructError(
-                code: .invalidAuthorizationFingerprint,
-                userInfo: [NSLocalizedDescriptionKey: "BTClientToken contained a nil or empty authorizationFingerprint."]
-            )
+            throw BTHTTPErrors.invalidAuthorizationFingerprint
         }
 
         self.init(url: url, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -215,9 +209,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
-            let error = Self.constructError(code: .missingBaseURL, userInfo: errorUserInfo)
-
-            completion(nil, error)
+            completion(nil, BTHTTPErrors.missingBaseURL(errorUserInfo))
             return
         }
         
@@ -244,9 +236,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             errorUserInfo["parameters"] = parameters
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
 
-            let error = Self.constructError(code: .missingBaseURL, userInfo: errorUserInfo)
-
-            completion(nil, error)
+            completion(nil, BTHTTPErrors.missingBaseURL(errorUserInfo))
             return
         }
 
@@ -268,12 +258,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
-            let error = Self.constructError(
-                code: .urlStringInvalid,
-                userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
-            )
-
-            completion(nil, error)
+            completion(nil, BTHTTPErrors.urlStringInvalid)
             return
         }
 
@@ -285,22 +270,14 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             }
             guard let urlFromComponents = components.url else {
-                let error = Self.constructError(
-                    code: .urlStringInvalid,
-                    userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
-                )
-                completion(nil, error)
+                completion(nil, BTHTTPErrors.urlStringInvalid)
                 return
             }
 
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
-                let error = Self.constructError(
-                    code: .urlStringInvalid,
-                    userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
-                )
-                completion(nil, error)
+                completion(nil, BTHTTPErrors.urlStringInvalid)
                 return
             }
 
@@ -346,17 +323,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
         guard let response = response,
               let httpResponse = createHTTPResponse(response: response) else {
-            let error = Self.constructError(
-                code: .httpResponseInvalid,
-                userInfo: [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
-            )
-            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPErrors.httpResponseInvalid)
             return
         }
 
         guard let data = data else {
-            let error = Self.constructError(code: .dataNotFound, userInfo: [NSLocalizedDescriptionKey: "Data unexpectedly nil."])
-            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPErrors.dataNotFound)
             return
         }
 
@@ -456,17 +428,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         if let contentType = responseContentType, contentType != "application/json" {
             // Return error for unsupported response type
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
-            let returnedError: NSError = Self.constructError(code: .responseContentTypeNotAcceptable, userInfo: errorUserInfo)
-
-            completion(returnedError)
+            completion(BTHTTPErrors.responseContentTypeNotAcceptable(errorUserInfo))
         } else {
             completion(json.asError())
         }
-    }
-
-    // TODO: Update errors per DTBTSDK-1898
-    static func constructError(code: BTHTTPErrorCode, userInfo: [String: Any]) -> NSError {
-        NSError(domain: BTHTTPError.domain, code: code.rawValue, userInfo: userInfo)
     }
 
     // MARK: - Helper functions

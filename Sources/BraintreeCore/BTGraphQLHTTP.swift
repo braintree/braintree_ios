@@ -54,8 +54,7 @@ class BTGraphQLHTTP: BTHTTP {
         if self.baseURL.absoluteString.isEmpty || self.baseURL.absoluteString == "" {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
-            let error = Self.constructError(code: .missingBaseURL, userInfo: errorUserInfo)
-            completion(nil, nil, error)
+            completion(nil, nil, BTHTTPErrors.missingBaseURL(errorUserInfo))
             return
         }
         
@@ -70,20 +69,12 @@ class BTGraphQLHTTP: BTHTTP {
         }
         
         guard let components = URLComponents(string: baseURL.absoluteString) else {
-            let error = Self.constructError(
-                code: .urlStringInvalid,
-                userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
-            )
-            completion(nil, nil, error)
+            completion(nil, nil, BTHTTPErrors.urlStringInvalid)
             return
         }
 
         guard let urlFromComponents = components.url else {
-            let error = Self.constructError(
-                code: .urlStringInvalid,
-                userInfo: [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
-            )
-            completion(nil, nil, error)
+            completion(nil, nil, BTHTTPErrors.urlStringInvalid)
             return
         }
 
@@ -127,23 +118,12 @@ class BTGraphQLHTTP: BTHTTP {
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            let error = Self.constructError(
-                code: .httpResponseInvalid,
-                userInfo: [NSLocalizedDescriptionKey : "URLResponse was missing on invalid."]
-            )
-
-            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPErrors.httpResponseInvalid)
             return
         }
         
         guard let data = data else {
-            let error = NSError(
-                domain: BTHTTPError.domain,
-                code: BTHTTPErrorCode.unknown.rawValue,
-                userInfo: [NSLocalizedDescriptionKey: "An unexpected error occurred with the HTTP request."]
-            )
-
-            callCompletionAsync(with: completion, body: nil, response: httpResponse, error: error)
+            callCompletionAsync(with: completion, body: nil, response: httpResponse, error: BTHTTPErrors.unknown)
             return
         }
 
@@ -172,7 +152,7 @@ class BTGraphQLHTTP: BTHTTP {
         let errorType = errorJSON["extensions"]["errorType"].asString()
 
         var statusCode = 0
-        var errorCode = BTHTTPErrorCode.unknown
+        var errorCode = .unknown
         var errorBody: [String: Any] = [:]
         
         if let errorType = errorType, errorType == "user_error" {
