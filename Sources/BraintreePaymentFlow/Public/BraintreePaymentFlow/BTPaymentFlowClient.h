@@ -35,16 +35,19 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 };
 
 /**
+ :nodoc:
  Protocol for payment flow processing via BTPaymentFlowRequestDelegate.
  */
 @protocol BTPaymentFlowClientDelegate
 
 /**
+ :nodoc:
  Use when payment URL is ready for processing.
  */
 - (void)onPaymentWithURL:(NSURL * _Nullable) url error:(NSError * _Nullable)error;
 
 /**
+ :nodoc:
  Use when the payment flow has completed or encountered an error.
  @param result The BTPaymentFlowResult of the payment flow.
  @param error NSError containing details of the error.
@@ -52,6 +55,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 - (void)onPaymentComplete:(BTPaymentFlowResult * _Nullable)result error:(NSError * _Nullable)error;
 
 /**
+ :nodoc:
  Returns the BTAPIClient used by the BTPaymentFlowClientDelegate.
  @return The BTAPIClient used by the client.
  */
@@ -60,11 +64,13 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 @end
 
 /**
+ :nodoc:
  Protocol for payment flow processing.
  */
 @protocol BTPaymentFlowRequestDelegate
 
 /**
+ :nodoc:
  Handle payment request for a variety of web/app switch flows.
  
  Use the delegate to handle success/error/cancel flows.
@@ -75,6 +81,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate;
 
 /**
+ :nodoc:
  Handles the return URL and completes and post processing.
  
  @param url The URL to check.
@@ -82,6 +89,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 - (void)handleOpenURL:(NSURL *)url;
 
 /**
+ :nodoc:
  A short and unique alphanumeric name for the payment flow.
  
  Used for analytics/events. No spaces and all lowercase.

@@ -15,8 +15,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 7. [Data Collector](#data-collector)
 8. [Union Pay](#union-pay)
 9. [SEPA Direct Debit](#sepa-direct-debit)
-10. [Local Payment Methods](#local-payment-methods)
-11. [Three D Secure](#three-d-secure)
+10. [Payment Flow](#payment-flow)
 
 ## Supported Versions
 
@@ -167,15 +166,10 @@ sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebi
 }
 ```
 
-## Local Payment Methods
-We have replaced the deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method flow.
+## Payment Flow
+The following changes apply to both 3D Secure and Local Payment Methods as they both use the underlying Payment Flow module:
 
-Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
-
-Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
-
-## Three D Secure
-We have replaced the deprecated `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Three D Secure flow.
+We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method and 3D Secure flows. With this change, you no longer need to register a URL Schemes for these flows or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method or handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)` methods.
 
 Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
 
