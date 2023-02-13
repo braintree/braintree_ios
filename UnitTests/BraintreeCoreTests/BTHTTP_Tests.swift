@@ -784,7 +784,9 @@ final class BTHTTP_Tests: XCTestCase {
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
             XCTAssertEqual(error.code, BTHTTPError.rateLimitError([:]).errorCode)
-            XCTAssertEqual(error.localizedRecoverySuggestion, "Please try again in a few minutes.")
+            XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as! String, "You are being rate-limited.")
+            XCTAssertEqual(error.userInfo[NSLocalizedRecoverySuggestionErrorKey] as! String, "Please try again in a few minutes.")
+            XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey])
             HTTPStubs.removeStub(stub)
             expectation.fulfill()
         }
