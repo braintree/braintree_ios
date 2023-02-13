@@ -54,7 +54,7 @@ class BTGraphQLHTTP: BTHTTP {
         if self.baseURL.absoluteString.isEmpty || self.baseURL.absoluteString == "" {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
-            completion(nil, nil, BTHTTPErrors.missingBaseURL(errorUserInfo))
+            completion(nil, nil, BTHTTPError.missingBaseURL(errorUserInfo))
             return
         }
         
@@ -69,12 +69,12 @@ class BTGraphQLHTTP: BTHTTP {
         }
         
         guard let components = URLComponents(string: baseURL.absoluteString) else {
-            completion(nil, nil, BTHTTPErrors.urlStringInvalid)
+            completion(nil, nil, BTHTTPError.urlStringInvalid)
             return
         }
 
         guard let urlFromComponents = components.url else {
-            completion(nil, nil, BTHTTPErrors.urlStringInvalid)
+            completion(nil, nil, BTHTTPError.urlStringInvalid)
             return
         }
 
@@ -118,12 +118,12 @@ class BTGraphQLHTTP: BTHTTP {
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPErrors.httpResponseInvalid)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
             return
         }
         
         guard let data = data else {
-            callCompletionAsync(with: completion, body: nil, response: httpResponse, error: BTHTTPErrors.unknown)
+            callCompletionAsync(with: completion, body: nil, response: httpResponse, error: BTHTTPError.unknown)
             return
         }
 
@@ -147,44 +147,43 @@ class BTGraphQLHTTP: BTHTTP {
         }
     }
     
-    func parseErrors(body: BTJSON, response: HTTPURLResponse, completion: @escaping ([String: Any]?, NSError?) -> Void) {
+    func parseErrors(body: BTJSON, response: HTTPURLResponse, completion: @escaping ([String: Any]?, Error?) -> Void) {
         let errorJSON = body["errors"][0]
         let errorType = errorJSON["extensions"]["errorType"].asString()
 
         var statusCode = 0
-        var errorCode = .unknown
+        var error: BTHTTPError = .unknown
         var errorBody: [String: Any] = [:]
-        
+
         if let errorType = errorType, errorType == "user_error" {
             statusCode = 422
-            errorCode = .clientError
             errorBody = parseGraphQLError(fromJSON: body)
-            
+            error = .clientError(errorBody)
+
         } else if let errorType = errorType, errorType == "developer_error" {
             statusCode = 403
-            errorCode = .clientError
-            
+
             if let message = errorJSON["message"].asString() {
                 errorBody["error"] = ["message": message]
             }
+            error = .clientError(errorBody)
         } else {
             statusCode = 500
-            errorCode = .serverError
             errorBody["error"] = ["message": "An unexpected error occurred"]
+            error = .serverError(errorBody)
         }
         
         let nestedErrorResponse = createHTTPResponse(response: response, statusCode: statusCode)
-        
-        let error = NSError(
-            domain: BTHTTPError.domain,
-            code: errorCode.rawValue,
+        let nestedGraphQLError = NSError(
+            domain: BTHTTPError.errorDomain,
+            code: error.errorCode,
             userInfo: [
-                BTHTTPError.urlResponseKey: nestedErrorResponse as Any,
-                BTHTTPError.jsonResponseBodyKey: BTJSON(value: errorBody)
+                BTCoreConstants.urlResponseKey: nestedErrorResponse as Any,
+                BTCoreConstants.jsonResponseBodyKey: BTJSON(value: errorBody)
             ]
         )
 
-        completion(errorBody, error)
+        completion(errorBody, nestedGraphQLError)
     }
 
     func createHTTPResponse(response: URLResponse, statusCode: Int) -> HTTPURLResponse? {

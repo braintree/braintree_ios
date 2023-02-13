@@ -17,4 +17,17 @@ import Foundation
     
     /// :nodoc:
     public static let callbackURLScheme: String = "sdk.ios.braintree"
+
+    /// :nodoc:
+    /// The error domain for BTHTTP errors
+    public static let httpErrorDomain: String = "com.braintreepayments.BTHTTPErrorDomain"
+
+    /// :nodoc:
+    /// Key for userInfo dictionary that contains the NSHTTPURLResponse from server when it returns an HTTP error
+    public static let urlResponseKey: String = "com.braintreepayments.BTHTTPURLResponseKey"
+
+    /// :nodoc:
+    ///Key for userInfo dictionary that contains the BTJSON body of the HTTP error response
+    public static let jsonResponseBodyKey: String = "com.braintreepayments.BTHTTPJSONResponseBodyKey"
+
 }

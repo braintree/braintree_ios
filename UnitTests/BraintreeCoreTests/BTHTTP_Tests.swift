@@ -185,8 +185,8 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(body)
             XCTAssertNil(response)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTHTTPError.domain)
-            XCTAssertEqual(error.code, BTHTTPErrorCode.responseContentTypeNotAcceptable.rawValue)
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error.code, BTHTTPError.responseContentTypeNotAcceptable([:]).errorCode)
             expectation.fulfill()
         }
 
@@ -752,8 +752,8 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNotNil(response)
 
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTHTTPError.domain)
-            XCTAssertEqual(error.code, BTHTTPErrorCode.clientError.rawValue)
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error.code, BTHTTPError.clientError([:]).errorCode)
             XCTAssertEqual(error.localizedDescription, "This is an error message from the gateway")
             XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey])
             HTTPStubs.removeStub(stub)
@@ -782,11 +782,9 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNotNil(response)
 
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTHTTPError.domain)
-            XCTAssertEqual(error.code, BTHTTPErrorCode.rateLimitError.rawValue)
-            XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as! String, "You are being rate-limited.")
-            XCTAssertEqual(error.userInfo[NSLocalizedRecoverySuggestionErrorKey] as! String, "Please try again in a few minutes.")
-            XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey])
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error.code, BTHTTPError.rateLimitError([:]).errorCode)
+            XCTAssertEqual(error.localizedDescription, BTHTTPError.rateLimitError([:]).localizedDescription)
             HTTPStubs.removeStub(stub)
             expectation.fulfill()
         }
@@ -814,9 +812,9 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNotNil(response)
 
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTHTTPError.domain)
-            XCTAssertEqual(error.code, BTHTTPErrorCode.serverError.rawValue)
-            XCTAssertTrue(error.userInfo[BTHTTPError.urlResponseKey] is HTTPURLResponse)
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error.code, BTHTTPError.serverError([:]).errorCode)
+            XCTAssertTrue(error.userInfo[BTCoreConstants.urlResponseKey] is HTTPURLResponse)
             XCTAssertEqual(error.localizedDescription, "This is an error message from the gateway")
             XCTAssertEqual(error.localizedRecoverySuggestion, "Please try again later.")
             XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey])
@@ -959,8 +957,8 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(response)
             XCTAssertNotNil(error)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTHTTPError.domain)
-            XCTAssertEqual(error.code, BTHTTPErrorCode.responseContentTypeNotAcceptable.rawValue)
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error.code, BTHTTPError.responseContentTypeNotAcceptable([:]).errorCode)
             HTTPStubs.removeStub(stub)
             expectation.fulfill()
         }

@@ -87,11 +87,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         } else if let configURL = clientToken.json["configUrl"].asURL() {
             url = configURL
         } else {
-            throw BTHTTPErrors.clientApiURLInvalid
+            throw BTHTTPError.clientApiURLInvalid
         }
         
         if clientToken.authorizationFingerprint.isEmpty {
-            throw BTHTTPErrors.invalidAuthorizationFingerprint
+            throw BTHTTPError.invalidAuthorizationFingerprint
         }
 
         self.init(url: url, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -209,7 +209,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
-            completion(nil, BTHTTPErrors.missingBaseURL(errorUserInfo))
+            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
             return
         }
         
@@ -236,7 +236,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             errorUserInfo["parameters"] = parameters
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
 
-            completion(nil, BTHTTPErrors.missingBaseURL(errorUserInfo))
+            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
             return
         }
 
@@ -258,7 +258,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
-            completion(nil, BTHTTPErrors.urlStringInvalid)
+            completion(nil, BTHTTPError.urlStringInvalid)
             return
         }
 
@@ -270,14 +270,14 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             }
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPErrors.urlStringInvalid)
+                completion(nil, BTHTTPError.urlStringInvalid)
                 return
             }
 
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPErrors.urlStringInvalid)
+                completion(nil, BTHTTPError.urlStringInvalid)
                 return
             }
 
@@ -323,12 +323,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
         guard let response = response,
               let httpResponse = createHTTPResponse(response: response) else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPErrors.httpResponseInvalid)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
             return
         }
 
         guard let data = data else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPErrors.dataNotFound)
+            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.dataNotFound)
             return
         }
 
@@ -384,7 +384,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     func handleHTTPResponseError(response: HTTPURLResponse, data: Data, completion: (BTJSON, Error) -> Void) {
         let responseContentType: String? = response.mimeType
-        var errorUserInfo: [String : Any] = [BTHTTPError.urlResponseKey: response]
+        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
 
         errorUserInfo[NSLocalizedFailureReasonErrorKey] = [HTTPURLResponse.localizedString(forStatusCode: response.statusCode)]
 
@@ -393,7 +393,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             json = data.isEmpty ? BTJSON() : BTJSON(data: data)
 
             if !json.isError {
-                errorUserInfo[BTHTTPError.jsonResponseBodyKey] = json
+                errorUserInfo[BTCoreConstants.jsonResponseBodyKey] = json
                 let errorResponseMessage: String? = json["error"]["developer_message"].asString() ?? json["error"]["message"].asString()
 
                 if errorResponseMessage != nil {
@@ -402,17 +402,18 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             }
         }
 
-        var errorCode: BTHTTPErrorCode = response.statusCode >= 500 ? BTHTTPErrorCode.serverError : BTHTTPErrorCode.clientError
+        var error: BTHTTPError = BTHTTPError.clientError(errorUserInfo)
 
         if response.statusCode == 429 {
-            errorCode = BTHTTPErrorCode.rateLimitError
             errorUserInfo[NSLocalizedDescriptionKey] = "You are being rate-limited."
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again in a few minutes."
+            error = BTHTTPError.rateLimitError(errorUserInfo)
+        } else if response.statusCode <= 500 {
+            error = BTHTTPError.clientError(errorUserInfo)
         } else if response.statusCode >= 500 {
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again later."
+            error = BTHTTPError.serverError(errorUserInfo)
         }
-
-        let error = Self.constructError(code: errorCode, userInfo: errorUserInfo)
 
         completion(json, error)
     }
@@ -423,12 +424,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         completion: @escaping (Error?) -> Void
     ) {
         let responseContentType: String? = response.mimeType
-        var errorUserInfo: [String : Any] = [BTHTTPError.urlResponseKey: response]
+        var errorUserInfo: [String : Any] = [BTCoreConstants.urlResponseKey: response]
 
         if let contentType = responseContentType, contentType != "application/json" {
             // Return error for unsupported response type
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
-            completion(BTHTTPErrors.responseContentTypeNotAcceptable(errorUserInfo))
+            completion(BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo))
         } else {
             completion(json.asError())
         }

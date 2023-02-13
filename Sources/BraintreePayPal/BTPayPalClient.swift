@@ -233,7 +233,7 @@ import BraintreeDataCollector
                         self.apiClient.sendAnalyticsEvent("ios.paypal.tokenize.network-connection.failure")
                     }
 
-                    guard let jsonResponseBody = error.userInfo[BTHTTPError.jsonResponseBodyKey] as? BTJSON else {
+                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         completion(nil, error)
                         return
                     }

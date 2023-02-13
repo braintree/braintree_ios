@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCore
 @testable import BraintreeTestShared
 
 class BTPaymentFlowClient_ThreeDSecure_Tests: XCTestCase {
@@ -188,11 +189,11 @@ class BTPaymentFlowClient_ThreeDSecure_Tests: XCTestCase {
             """
 
         let userInfo: [String : AnyObject] = [
-            BTHTTPError.urlResponseKey: response as AnyObject,
-            BTHTTPError.jsonResponseBodyKey: BTJSON(data: errorBody.data(using: String.Encoding.utf8)!)
+            BTCoreConstants.urlResponseKey: response as AnyObject,
+            BTCoreConstants.jsonResponseBodyKey: BTJSON(data: errorBody.data(using: String.Encoding.utf8)!)
         ]
 
-        mockAPIClient.cannedResponseError = NSError(domain:BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: userInfo)
+        mockAPIClient.cannedResponseError = BTHTTPError.clientError(userInfo) as NSError?
         let expectation = self.expectation(description: "Post fails with error code 422.")
 
         client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
