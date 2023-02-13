@@ -7,6 +7,7 @@
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
   * BraintreeApplePay
+    * Rename `BTApplePayClient.tokenizeApplePay` to `BTApplePayClient.tokenize`
     * Remove `BTApplePayErrorDomain` global constant
     * Remove `BTApplePayErrorType`
     * Make `BTApplePayCardNonce` initializer internal
