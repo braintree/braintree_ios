@@ -74,9 +74,9 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
         case .responseContentTypeNotAcceptable(let errorDictionary):
             return ["Response content type not accepted with properties": errorDictionary]
         case .clientError(let errorDictionary):
-            return [NSLocalizedDescriptionKey: errorDictionary]
+            return errorDictionary
         case .serverError(let errorDictionary):
-            return [NSLocalizedDescriptionKey: errorDictionary]
+            return errorDictionary
         case .missingBaseURL(let errorDictionary):
             return ["Base URL constructed with invalid properties": errorDictionary]
         case .rateLimitError(let errorDictionary):
