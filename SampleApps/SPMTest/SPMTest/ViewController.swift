@@ -1,3 +1,4 @@
+import UIKit
 import BraintreeAmericanExpress
 import BraintreeApplePay
 import BraintreeCard
