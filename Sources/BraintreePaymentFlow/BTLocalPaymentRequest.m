@@ -63,12 +63,7 @@
 
         NSError *integrationError;
 
-        if ([self.paymentFlowClientDelegate returnURLScheme] == nil || [[self.paymentFlowClientDelegate returnURLScheme] isEqualToString:@""]) {
-            NSLog(@"%@ Local Payment requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
-            integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
-                                                 code:BTPaymentFlowErrorTypeInvalidReturnURL
-                                             userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app or browser switch."}];
-        } else if (![configuration isLocalPaymentEnabled]) {
+        if (![configuration isLocalPaymentEnabled]) {
             NSLog(@"%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
                                                  code:BTPaymentFlowErrorTypeDisabled
@@ -96,8 +91,8 @@
                                  @"intent": @"sale"
                                  } mutableCopy];
 
-        params[@"return_url"] = [NSString stringWithFormat:@"%@%@", [delegate returnURLScheme], @"://x-callback-url/braintree/local-payment/success"];
-        params[@"cancel_url"] = [NSString stringWithFormat:@"%@%@", [delegate returnURLScheme], @"://x-callback-url/braintree/local-payment/cancel"];
+        params[@"return_url"] = [NSString stringWithFormat:@"%@%@", BTCoreConstants.callbackURLScheme, @"://x-callback-url/braintree/local-payment/success"];
+        params[@"cancel_url"] = [NSString stringWithFormat:@"%@%@", BTCoreConstants.callbackURLScheme, @"://x-callback-url/braintree/local-payment/cancel"];
 
         if (localPaymentRequest.paymentTypeCountryCode) {
             params[@"payment_type_country_code"] = localPaymentRequest.paymentTypeCountryCode;
@@ -241,10 +236,10 @@
                  NSString *phone = [details[@"payerInfo"][@"phone"] asString];
                  NSString *payerID = [details[@"payerInfo"][@"payerId"] asString];
 
-                 BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
-                 BTPostalAddress *billingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
+                 BTPostalAddress *shippingAddress = [details[@"payerInfo"][@"shippingAddress"] asAddress];
+                 BTPostalAddress *billingAddress = [details[@"payerInfo"][@"billingAddress"] asAddress];
                  if (!shippingAddress) {
-                     shippingAddress = [self.class accountAddressFromJSON:details[@"payerInfo"][@"accountAddress"]];
+                     shippingAddress = [details[@"payerInfo"][@"accountAddress"] asAddress];
                  }
 
                  BTLocalPaymentResult *tokenizedLocalPayment = [[BTLocalPaymentResult alloc] initWithNonce:nonce
@@ -261,44 +256,6 @@
              }
          }];
     }
-}
-
-+ (BTPostalAddress *)accountAddressFromJSON:(BTJSON *)addressJSON {
-    if (!addressJSON.isObject) {
-        return nil;
-    }
-
-    BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.recipientName = [addressJSON[@"recipientName"] asString]; // Likely to be nil
-    address.streetAddress = [addressJSON[@"street1"] asString];
-    address.extendedAddress = [addressJSON[@"street2"] asString];
-    address.locality = [addressJSON[@"city"] asString];
-    address.region = [addressJSON[@"state"] asString];
-    address.postalCode = [addressJSON[@"postalCode"] asString];
-    address.countryCodeAlpha2 = [addressJSON[@"country"] asString];
-
-    return address;
-}
-
-+ (BTPostalAddress *)shippingOrBillingAddressFromJSON:(BTJSON *)addressJSON {
-    if (!addressJSON.isObject) {
-        return nil;
-    }
-
-    BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.recipientName = [addressJSON[@"recipientName"] asString]; // Likely to be nil
-    address.streetAddress = [addressJSON[@"line1"] asString];
-    address.extendedAddress = [addressJSON[@"line2"] asString];
-    address.locality = [addressJSON[@"city"] asString];
-    address.region = [addressJSON[@"state"] asString];
-    address.postalCode = [addressJSON[@"postalCode"] asString];
-    address.countryCodeAlpha2 = [addressJSON[@"countryCode"] asString];
-
-    return address;
-}
-
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url {
-    return [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/braintree/local-payment"];
 }
 
 - (NSString *)paymentFlowName {
