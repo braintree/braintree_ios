@@ -26,6 +26,7 @@ class BTApplePay_Tests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
             XCTAssertEqual(error.code, BTApplePayError.unsupported.rawValue)
+            XCTAssertEqual(error.localizedDescription, BTApplePayError.unsupported.errorDescription)
             expectation.fulfill()
         }
 
@@ -41,6 +42,7 @@ class BTApplePay_Tests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
             XCTAssertEqual(error.code, BTApplePayError.unsupported.rawValue)
+            XCTAssertEqual(error.localizedDescription, BTApplePayError.unsupported.errorDescription)
             expectation.fulfill()
         }
 
@@ -119,6 +121,7 @@ class BTApplePay_Tests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
             XCTAssertEqual(error.code, BTApplePayError.unsupported.rawValue)
+            XCTAssertEqual(error.localizedDescription, BTApplePayError.unsupported.errorDescription)
             expectation.fulfill()
         }
 
@@ -135,6 +138,7 @@ class BTApplePay_Tests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
             XCTAssertEqual(error.code, BTApplePayError.unsupported.rawValue)
+            XCTAssertEqual(error.localizedDescription, BTApplePayError.unsupported.errorDescription)
             expectation.fulfill()
         }
 
@@ -248,7 +252,7 @@ class BTApplePay_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
-    func testtokenize_whenNetworkConnectionLost_sendsAnalytics() {
+    func testTokenize_whenNetworkConnectionLost_sendsAnalytics() {
         mockClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
         
         mockClient.cannedConfigurationResponseBody = BTJSON(value: [
@@ -268,6 +272,48 @@ class BTApplePay_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
         
         XCTAssertTrue(mockClient.postedAnalyticsEvents.contains("ios.apple-pay.network-connection.failure"))
+    }
+
+    func testTokenize_whenBodyIsMissingData_returnsError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "production"]])
+        mockClient.cannedResponseBody = nil
+
+        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let payment = MockPKPayment()
+        let expectation = expectation(description: "Callback invoked")
+
+        applePayClient.tokenize(payment) { nonce, error in
+            XCTAssertNil(nonce)
+            XCTAssertNotNil(error)
+            guard let error = error as NSError? else { XCTFail("Should return error"); return }
+            XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
+            XCTAssertEqual(error.code, BTApplePayError.noApplePayCardsReturned.rawValue)
+            XCTAssertEqual(error.localizedDescription, BTApplePayError.noApplePayCardsReturned.errorDescription)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testTokenize_bodyDoesNotContainApplePayCards_returnsError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "production"]])
+        mockClient.cannedResponseBody = BTJSON(value: ["notApplePayCards": "badData"])
+
+        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let payment = MockPKPayment()
+        let expectation = expectation(description: "Callback invoked")
+
+        applePayClient.tokenize(payment) { nonce, error in
+            XCTAssertNil(nonce)
+            XCTAssertNotNil(error)
+            guard let error = error as NSError? else { XCTFail("Should return error"); return }
+            XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
+            XCTAssertEqual(error.code, BTApplePayError.failedToCreateNonce.rawValue)
+            XCTAssertEqual(error.localizedDescription, BTApplePayError.failedToCreateNonce.errorDescription)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
     }
 
     // MARK: - Metadata
