@@ -49,8 +49,6 @@ import BraintreeCore
         }
     }
 
-    // TODO: add changelog entry
-
     @objc(tokenizeApplePayPayment:completion:)
     public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent("ios.apple-pay.start")
