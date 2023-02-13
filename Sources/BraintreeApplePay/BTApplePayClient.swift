@@ -49,7 +49,7 @@ import BraintreeCore
         }
     }
 
-    // TODO: remove Obj-C files, run tests, run demo app, update Package.swift + podspec + add changelog entry
+    // TODO: add changelog entry
 
     @objc(tokenizeApplePayPayment:completion:)
     public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
