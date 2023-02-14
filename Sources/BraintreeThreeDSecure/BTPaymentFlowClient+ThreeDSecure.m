@@ -128,7 +128,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
                 }
                 // Provide more context for card validation error when status code 422
                 if ([error.domain isEqualToString:BTCoreConstants.httpErrorDomain] &&
-                    error.code == 2 &&
+                    error.code == 2 && // BTHTTPError.errorCode.clientError
                     ((NSHTTPURLResponse *)error.userInfo[BTCoreConstants.urlResponseKey]).statusCode == 422) {
 
                     NSMutableDictionary *userInfo = [error.userInfo mutableCopy];

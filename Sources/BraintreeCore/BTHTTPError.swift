@@ -84,7 +84,7 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
         case .dataNotFound:
             return [NSLocalizedDescriptionKey: "Data unexpectedly nil."]
         case .httpResponseInvalid:
-            return [NSLocalizedDescriptionKey : "Unable to create HTTPURLResponse from response data."]
+            return [NSLocalizedDescriptionKey: "Unable to create HTTPURLResponse from response data."]
         case .urlStringInvalid:
             return [NSLocalizedDescriptionKey: "The URL absolute string is malformed or invalid."]
         case .clientApiURLInvalid:
