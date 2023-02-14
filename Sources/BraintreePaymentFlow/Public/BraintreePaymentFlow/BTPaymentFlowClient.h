@@ -1,7 +1,5 @@
 #import <Foundation/Foundation.h>
 
-@protocol BTViewControllerPresentingDelegate;
-
 @class BTAPIClient;
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
@@ -37,21 +35,19 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 };
 
 /**
+ :nodoc:
  Protocol for payment flow processing via BTPaymentFlowRequestDelegate.
  */
 @protocol BTPaymentFlowClientDelegate
 
 /**
+ :nodoc:
  Use when payment URL is ready for processing.
  */
 - (void)onPaymentWithURL:(NSURL * _Nullable) url error:(NSError * _Nullable)error;
 
 /**
- Use when the payment flow was canceled.
- */
-- (void)onPaymentCancel;
-
-/**
+ :nodoc:
  Use when the payment flow has completed or encountered an error.
  @param result The BTPaymentFlowResult of the payment flow.
  @param error NSError containing details of the error.
@@ -59,12 +55,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 - (void)onPaymentComplete:(BTPaymentFlowResult * _Nullable)result error:(NSError * _Nullable)error;
 
 /**
- Returns the base return URL scheme used by the client.
- @return A NSString representing the base return URL scheme used by the client.
- */
-- (NSString *)returnURLScheme;
-
-/**
+ :nodoc:
  Returns the BTAPIClient used by the BTPaymentFlowClientDelegate.
  @return The BTAPIClient used by the client.
  */
@@ -73,11 +64,13 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 @end
 
 /**
+ :nodoc:
  Protocol for payment flow processing.
  */
 @protocol BTPaymentFlowRequestDelegate
 
 /**
+ :nodoc:
  Handle payment request for a variety of web/app switch flows.
  
  Use the delegate to handle success/error/cancel flows.
@@ -88,14 +81,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate;
 
 /**
- Check if this BTPaymentFlowRequestDelegate can handle the return URL
- 
- @param url The URL to check.
- @return True if the BTPaymentFlowRequestDelegate can handle the URL. Otherwise return false.
- */
-- (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url;
-
-/**
+ :nodoc:
  Handles the return URL and completes and post processing.
  
  @param url The URL to check.
@@ -103,6 +89,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
 - (void)handleOpenURL:(NSURL *)url;
 
 /**
+ :nodoc:
  A short and unique alphanumeric name for the payment flow.
  
  Used for analytics/events. No spaces and all lowercase.
@@ -137,21 +124,6 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
  */
 - (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)( BTPaymentFlowResult * _Nullable result,  NSError * _Nullable error))completionBlock;
-
-/**
- A required delegate to control the presentation and dismissal of view controllers.
- */
-@property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
-
-/**
- :nodoc: Exposed for testing
-*/
-+ (void)handleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(handleReturnURL(_:));
-
-/**
- :nodoc: Exposed for testing
-*/
-+ (BOOL)canHandleReturnURL:(NSURL * _Nonnull)url NS_SWIFT_NAME(canHandleReturnURL(_:));
 
 @end
 

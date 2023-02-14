@@ -1,5 +1,5 @@
 #import "BTPaymentFlowClient_Internal.h"
-#import <SafariServices/SafariServices.h>
+#import <AuthenticationServices/AuthenticationServices.h>
 
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
@@ -36,13 +36,13 @@
 #import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
-@interface BTPaymentFlowClient () <SFSafariViewControllerDelegate, BTAppContextSwitchClient>
+@interface BTPaymentFlowClient () <ASWebAuthenticationPresentationContextProviding>
 
 @property (nonatomic, copy) void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *);
-@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 @property (nonatomic, strong, nullable) id<BTPaymentFlowRequestDelegate> paymentFlowRequestDelegate;
 @property (nonatomic, copy, nonnull) NSString *returnURLScheme;
 @property (nonatomic, strong, nonnull) BTAPIClient *apiClient;
+@property (nonatomic, strong, nonnull) BTPaymentFlowRequest *request;
 
 @end
 
@@ -50,18 +50,9 @@ NSString * const BTPaymentFlowErrorDomain = @"com.braintreepayments.BTPaymentFlo
 
 @implementation BTPaymentFlowClient
 
-static BTPaymentFlowClient *paymentFlowClient;
-
-+ (void)load {
-    if (self == [BTPaymentFlowClient class]) {
-        [[BTAppContextSwitcher sharedInstance] registerAppContextSwitchClient:self];
-    }
-}
-
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         _apiClient = apiClient;
-        _returnURLScheme = [BTAppContextSwitcher sharedInstance].returnURLScheme;
     }
     return self;
 }
@@ -77,55 +68,9 @@ static BTPaymentFlowClient *paymentFlowClient;
 }
 
 - (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
-    paymentFlowClient = self;
+    self.request = request;
     self.paymentFlowCompletionBlock = completionBlock;
     self.paymentFlowRequestDelegate = request;
-}
-
-- (void)performSwitchRequest:(NSURL *)appSwitchURL {
-    [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
-}
-
-- (void)informDelegatePresentingViewControllerRequestPresent:(NSURL *)appSwitchURL {
-    if ([self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentClient:requestsPresentationOfViewController:)]) {
-        self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
-        self.safariViewController.delegate = self;
-        self.safariViewController.dismissButtonStyle = SFSafariViewControllerDismissButtonStyleCancel;
-        [self.viewControllerPresentingDelegate paymentClient:self requestsPresentationOfViewController:self.safariViewController];
-    } else {
-        NSLog(@"%@ Unable to display View Controller to continue payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
-    }
-}
-
-- (void)informDelegatePresentingViewControllerNeedsDismissal {
-    if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentClient:requestsDismissalOfViewController:)]) {
-        [self.viewControllerPresentingDelegate paymentClient:self requestsDismissalOfViewController:self.safariViewController];
-        self.safariViewController = nil;
-    } else {
-        NSLog(@"%@ Unable to dismiss View Controller to end payment flow. BTPaymentFlowClient needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
-    }
-}
-
-#pragma mark - App switch
-
-+ (void)handleReturnURL:(NSURL *)url {
-    [paymentFlowClient handleOpenURL:url];
-}
-
-+ (BOOL)canHandleReturnURL:(NSURL *)url {
-    return [paymentFlowClient.paymentFlowRequestDelegate canHandleAppSwitchReturnURL:url];
-}
-
-- (void)handleOpenURL:(NSURL *)url {
-    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
-    if (self.safariViewController) {
-        [self informDelegatePresentingViewControllerNeedsDismissal];
-    }
-    [self.paymentFlowRequestDelegate handleOpenURL:url];
-}
-
-- (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller {
-    [self onPaymentCancel];
 }
 
 #pragma mark - BTPaymentFlowClientDelegate protocol
@@ -138,21 +83,54 @@ static BTPaymentFlowClient *paymentFlowClient;
     }
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.initiate.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
 
-    [self performSwitchRequest:url];
-}
+    self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:url
+                                                               callbackURLScheme:BTCoreConstants.callbackURLScheme
+                                                               completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        // Required to avoid memory leak for BTPaymentFlowClient
+        self.authenticationSession = nil;
 
-- (void)onPaymentCancel {
-    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.canceled", [self.paymentFlowRequestDelegate paymentFlowName]]];
-    NSError *error = [NSError errorWithDomain:BTPaymentFlowErrorDomain
-                                         code:BTPaymentFlowErrorTypeCanceled
-                                     userInfo:@{NSLocalizedDescriptionKey: @"Payment flow was canceled by the user."}];
-    self.paymentFlowCompletionBlock(nil, error);
-    paymentFlowClient = nil;
+        if (error) {
+            if (error.domain == ASWebAuthenticationSessionErrorDomain && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                NSString *eventName = [NSString stringWithFormat:@"ios.%@.authsession.browser.cancel", [self.paymentFlowRequestDelegate paymentFlowName]];
+                [self.apiClient sendAnalyticsEvent:eventName];
+            }
+
+            NSError *canceledError = [NSError errorWithDomain:BTPaymentFlowErrorDomain
+                                                         code:BTPaymentFlowErrorTypeCanceled
+                                                     userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"%@ flow was canceled by the user.", [self.paymentFlowRequestDelegate paymentFlowName]]}];
+
+            [self onPaymentComplete:nil error:canceledError];
+            return;
+        }
+
+        [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
+        [self.paymentFlowRequestDelegate handleOpenURL:callbackURL];
+    }];
+
+    self.authenticationSession.presentationContextProvider = self;
+    [self.authenticationSession start];
 }
 
 - (void)onPaymentComplete:(BTPaymentFlowResult *)result error:(NSError *)error {
     self.paymentFlowCompletionBlock(result, error);
-    paymentFlowClient = nil;
+}
+
+#pragma mark - ASWebAuthenticationPresentationContextProviding protocol
+
+// NEXT_MAJOR_VERSION (v7): move this protocol conformance to an extension on BTPaymentFlowClient
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13)) NS_EXTENSION_UNAVAILABLE("Uses APIs (i.e UIApplication.sharedApplication) not available for use in App Extensions.") {
+    for (UIScene* scene in UIApplication.sharedApplication.connectedScenes) {
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            UIWindowScene *windowScene = (UIWindowScene *)scene;
+            return windowScene.windows.firstObject;
+        }
+    }
+
+    if (@available(iOS 15, *)) {
+        return ((UIWindowScene *)UIApplication.sharedApplication.connectedScenes.allObjects.firstObject).windows.firstObject;
+    } else {
+        return UIApplication.sharedApplication.windows.firstObject;
+    }
 }
 
 @end

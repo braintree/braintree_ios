@@ -38,10 +38,6 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         Y29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24ifQ==
         """
     
-    override func setUp() {
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.braintreepayments.Demo.payments"
-    }
-    
     // MARK: - Checkout Flow Tests
     
     func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() {

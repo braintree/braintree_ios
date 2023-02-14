@@ -2,6 +2,10 @@
 
 ## unreleased
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
+* Breaking Changes
+  * BraintreePaymentFlow
+    * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
+    * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift
