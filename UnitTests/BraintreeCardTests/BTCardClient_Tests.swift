@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeCore
+@testable import BraintreeCore
 @testable import BraintreeCard
 @testable import BraintreeTestShared
 
@@ -167,9 +167,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
+            BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: stubAPIClient)
@@ -220,9 +220,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
+            BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: stubAPIClient)
@@ -295,9 +295,9 @@ class BTCardClient_Tests: XCTestCase {
                 "requestId": "3521c97e-a420-47f4-a8ef-a8cefb0fa635"
             ]
         ])
-        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
+            BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
@@ -329,7 +329,7 @@ class BTCardClient_Tests: XCTestCase {
     
     func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
-        stubAPIClient.cannedResponseError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: nil)
+        stubAPIClient.cannedResponseError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: nil)
         let cardClient = BTCardClient(apiClient: stubAPIClient)
 
         let card = BTCard()
@@ -342,8 +342,8 @@ class BTCardClient_Tests: XCTestCase {
         cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTHTTPError.domain)
-            XCTAssertEqual(error.code, BTHTTPErrorCode.clientError.rawValue)
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error.code, BTHTTPError.clientError([:]).errorCode)
             expectation.fulfill()
         }
 
@@ -413,9 +413,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
+            BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)
@@ -720,9 +720,9 @@ class BTCardClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        let stubError = NSError(domain: BTHTTPError.domain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
-            BTHTTPError.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
-            BTHTTPError.jsonResponseBodyKey: stubJSONResponse
+        let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
+            BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(apiClient: mockAPIClient)

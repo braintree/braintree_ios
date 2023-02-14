@@ -299,7 +299,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
-            let errorDictionary = error?.userInfo[BTHTTPError.jsonResponseBodyKey] as AnyObject
+            let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as AnyObject
             XCTAssertEqual(errorDictionary.asDictionary(), expectedErrorBody as NSDictionary)
             expectation.fulfill()
         }
@@ -345,7 +345,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
-            let errorDictionary = error?.userInfo[BTHTTPError.jsonResponseBodyKey] as AnyObject
+            let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as AnyObject
             XCTAssertEqual(errorDictionary.asDictionary(), expectedErrorBody as NSDictionary)
             expectation.fulfill()
         }
@@ -375,7 +375,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
-            let errorDictionary = error?.userInfo[BTHTTPError.jsonResponseBodyKey] as AnyObject
+            let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as AnyObject
             XCTAssertEqual(errorDictionary.asDictionary(), expectedErrorBody as NSDictionary)
             expectation.fulfill()
         }
@@ -403,7 +403,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
-            let errorDictionary = error?.userInfo[BTHTTPError.jsonResponseBodyKey] as AnyObject
+            let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as AnyObject
             XCTAssertEqual(errorDictionary.asDictionary(), expectedErrorBody as NSDictionary)
             expectation.fulfill()
         }
@@ -414,9 +414,9 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
     func testErrorResponse_correctlyMapsErrorTypeToStatusCode() {
         let errorTypes = ["user_error": 422, "developer_error": 403, "unknown_error": 500]
         let errorCodes: [String: Int] = [
-            "user_error": BTHTTPErrorCode.clientError.rawValue,
-            "developer_error": BTHTTPErrorCode.clientError.rawValue,
-            "unknown_error": BTHTTPErrorCode.serverError.rawValue
+            "user_error": BTHTTPError.clientError([:]).errorCode,
+            "developer_error": BTHTTPError.clientError([:]).errorCode,
+            "unknown_error": BTHTTPError.serverError([:]).errorCode
         ]
 
         for (errorType, _) in errorTypes {
@@ -442,9 +442,9 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             let expectation = expectation(description: "POST callback")
             http?.post("") { body, _, error in
                 let error = error as NSError?
-                let errorDictionary = error!.userInfo[BTHTTPError.urlResponseKey] as! HTTPURLResponse
+                let errorDictionary = error!.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
                 XCTAssertEqual(errorDictionary.statusCode, expectedStatusCode)
-                XCTAssertEqual(error?.domain, BTHTTPError.domain)
+                XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)
                 XCTAssertEqual(error?.code, errorCodes[errorType])
 
                 expectation.fulfill()
@@ -499,7 +499,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
-            let errorDictionary = error?.userInfo[BTHTTPError.jsonResponseBodyKey] as AnyObject
+            let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as AnyObject
             XCTAssertEqual(errorDictionary.asDictionary(), expectedErrorBody as NSDictionary)
             expectation.fulfill()
         }
@@ -532,9 +532,9 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
     func testHttpError_withEmptyDataAndNoError_returnsError() {
         http?.handleRequestCompletion(data: nil, response: nil, error: nil) { _, _, error in
             let error = error as NSError?
-            XCTAssertEqual(error?.localizedDescription, "URLResponse was missing on invalid.")
-            XCTAssertEqual(error?.domain, BTHTTPError.domain)
-            XCTAssertEqual(error?.code, BTHTTPErrorCode.httpResponseInvalid.rawValue)
+            XCTAssertEqual(error?.localizedDescription, "Unable to create HTTPURLResponse from response data.")
+            XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error?.code, BTHTTPError.httpResponseInvalid.errorCode)
         }
     }
 }

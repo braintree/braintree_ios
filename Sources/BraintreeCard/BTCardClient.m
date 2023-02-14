@@ -93,7 +93,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                      if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
                      }
-                     NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
+                     NSHTTPURLResponse *response = error.userInfo[BTCoreConstants.urlResponseKey];
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
@@ -124,7 +124,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                      if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
                      }
-                     NSHTTPURLResponse *response = error.userInfo[BTHTTPError.urlResponseKey];
+                     NSHTTPURLResponse *response = error.userInfo[BTCoreConstants.urlResponseKey];
                      NSError *callbackError = error;
 
                      if (response.statusCode == 422) {
@@ -167,7 +167,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 + (NSDictionary *)validationErrorUserInfo:(NSDictionary *)userInfo {
     NSMutableDictionary *mutableUserInfo = [userInfo mutableCopy];
-    BTJSON *jsonResponse = userInfo[BTHTTPError.jsonResponseBodyKey];
+    BTJSON *jsonResponse = userInfo[BTCoreConstants.jsonResponseBodyKey];
     if ([jsonResponse asDictionary]) {
         mutableUserInfo[@"BTCustomerInputBraintreeValidationErrorsKey"] = [jsonResponse asDictionary];
 
@@ -215,12 +215,12 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     NSError *callbackError = error;
     BTJSON *errorCode = nil;
     
-    BTJSON *errorResponse = [error.userInfo objectForKey:BTHTTPError.jsonResponseBodyKey];
+    BTJSON *errorResponse = [error.userInfo objectForKey:BTCoreConstants.jsonResponseBodyKey];
     BTJSON *fieldErrors = [errorResponse[@"fieldErrors"] asArray].firstObject;
     errorCode = [fieldErrors[@"fieldErrors"] asArray].firstObject[@"code"];
 
     if (errorCode == nil) {
-        BTJSON *errorResponse = [errorUserInfo objectForKey:BTHTTPError.jsonResponseBodyKey];
+        BTJSON *errorResponse = [errorUserInfo objectForKey:BTCoreConstants.jsonResponseBodyKey];
         errorCode = [errorResponse[@"errors"] asArray].firstObject[@"extensions"][@"legacyCode"];
     }
 

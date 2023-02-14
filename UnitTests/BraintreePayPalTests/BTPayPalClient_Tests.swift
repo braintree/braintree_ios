@@ -110,7 +110,7 @@ class BTPayPalClient_Tests: XCTestCase {
             domain: BTPayPalError.errorDomain,
             code: BTPayPalError.httpPostRequestError([:]).errorCode,
             userInfo: [
-                BTHTTPError.jsonResponseBodyKey: stubJSONResponse
+                BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
             ]
         )
 
