@@ -33,7 +33,7 @@ import BraintreeCore
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
     /// - Parameters:
     ///   - request: a BTSEPADebitRequest
-    ///   - context: the ASWebAuthenticationPresentationContextProviding protocol conforming ViewController
+    ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs
     public func tokenize(
         request: BTSEPADirectDebitRequest,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
