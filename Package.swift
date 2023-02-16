@@ -61,8 +61,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeApplePay",
-            dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreeApplePay"
+            dependencies: ["BraintreeCore"]
         ),
         .target(
             name: "BraintreeCard",
