@@ -33,8 +33,8 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 2, handler: nil)
         
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.success")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:succeeded")
     }
     
     func testGetRewardsBalance_returnsSendsAnalyticsEventOnError() {
@@ -54,8 +54,8 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:failed")
     }
     
     func testGetRewardsBalance_returnsSendsAnalyticsEventOnNilAPIResponse() {
@@ -75,7 +75,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:failed")
     }
 }
