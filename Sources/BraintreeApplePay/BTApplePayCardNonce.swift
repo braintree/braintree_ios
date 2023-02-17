@@ -8,7 +8,7 @@ import BraintreeCore
 @objcMembers public class BTApplePayCardNonce: BTPaymentMethodNonce {
 
     /// The BIN data for the card number associated with this nonce.
-    public let binData: BTBinData?
+    public let binData: BTBinData
 
     init?(json: BTJSON) {
         guard let nonce = json["nonce"].asString() else { return nil }
