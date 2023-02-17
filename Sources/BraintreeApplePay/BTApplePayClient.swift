@@ -60,9 +60,7 @@ import BraintreeCore
                 return
             }
 
-            if let configuration,
-               configuration.json?["applePay"]["status"].isString == false ||
-               configuration.json?["applePay"]["status"].asString() == "off" {
+            guard let configuration, configuration.isApplePayEnabled else {
                 self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.disabled")
                 completion(nil, BTApplePayError.unsupported)
                 return

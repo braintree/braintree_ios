@@ -1,5 +1,4 @@
 import Foundation
-import PassKit
 
 // NEXT_MAJOR_VERSION (v7): these extensions should be moved into their respective modules
 // as the modules are converted to Swift.
@@ -50,52 +49,5 @@ import PassKit
     var isLocalPaymentEnabled: Bool {
         // Local Payments are enabled when PayPal is enabled
         json?["paypalEnabled"].isTrue ?? false
-    }
-
-    // MARK: - BTConfiguration+ApplePay
-
-    var isApplePayEnabled: Bool {
-        guard let applePayConfiguration: BTJSON = json?["applePay"] else { return false }
-        return applePayConfiguration["status"].isString && applePayConfiguration["status"].asString() != "off"
-    }
-
-    var canMakeApplePayPayments: Bool {
-        guard let applePaySupportedNetworks else { return false }
-        return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: applePaySupportedNetworks)
-    }
-
-    var applePayCountryCode: String? {
-        json?["applePay"]["countryCode"].asString()
-    }
-
-    var applePayCurrencyCode: String? {
-        json?["applePay"]["currencyCode"].asString()
-    }
-
-    var applePayMerchantIdentifier: String? {
-        json?["applePay"]["merchantIdentifier"].asString()
-    }
-
-    var applePaySupportedNetworks: [PKPaymentNetwork]? {
-        let gatewaySupportedNetworks: [String]? = json?["applePay"]["supportedNetworks"].asStringArray()
-        var supportedNetworks: [PKPaymentNetwork] = []
-
-        gatewaySupportedNetworks?.forEach { gatewaySupportedNetwork in
-            if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("visa") == .orderedSame {
-                supportedNetworks.append(.visa)
-            } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("mastercard") == .orderedSame {
-                supportedNetworks.append(.masterCard)
-            } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("amex") == .orderedSame {
-                supportedNetworks.append(.amex)
-            } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("discover") == .orderedSame {
-                supportedNetworks.append(.discover)
-            } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("maestro") == .orderedSame {
-                supportedNetworks.append(.maestro)
-            } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("elo") == .orderedSame {
-                supportedNetworks.append(.elo)
-            }
-        }
-
-        return supportedNetworks
     }
 }
