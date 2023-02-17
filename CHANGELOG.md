@@ -6,6 +6,11 @@
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
+  * BraintreeApplePay
+    * Rename `BTApplePayClient.tokenizeApplePay` to `BTApplePayClient.tokenize`
+    * Remove `BTApplePayErrorDomain` global constant
+    * Remove `BTApplePayErrorType`
+    * Make `BTApplePayCardNonce` initializer internal
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift

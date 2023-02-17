@@ -1,5 +1,6 @@
 import XCTest
 @testable import BraintreeCore
+@testable import BraintreeApplePay
 
 class BTApplePayCardNonce_Tests: XCTestCase {
 

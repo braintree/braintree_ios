@@ -27,8 +27,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "ApplePay" do |s|
-    s.source_files  = "Sources/BraintreeApplePay/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeApplePay/Public/BraintreeApplePay/*.h"
+    s.source_files  = "Sources/BraintreeApplePay/*.swift"
     s.dependency "Braintree/Core"
     s.frameworks = "PassKit"
   end
