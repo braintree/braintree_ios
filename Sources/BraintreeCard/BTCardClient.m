@@ -57,18 +57,21 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 }
 
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completion {
+    [self.apiClient sendAnalyticsEvent:@"card:tokenize:started"];
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
 
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                              code:BTCardClientErrorTypeIntegration
                                          userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because BTAPIClient is nil."}];
+        [self.apiClient sendAnalyticsEvent:@"card:tokenize:failed"];
         completion(nil, error);
         return;
     }
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         if (error) {
+            [self.apiClient sendAnalyticsEvent:@"card:tokenize:failed"];
             completion(nil, error);
             return;
         }
@@ -79,6 +82,8 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                 NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                                      code:BTCardClientErrorTypeIntegration
                                                  userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true."}];
+                
+                [self.apiClient sendAnalyticsEvent:@"card:tokenize:failed"];
                 completion(nil, error);
                 return;
             }
@@ -91,38 +96,9 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
              {
                  if (error) {
                      if (error.code == BTCoreConstants.networkConnectionLostCode) {
-                         [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
-                     }
-                     NSHTTPURLResponse *response = error.userInfo[BTCoreConstants.urlResponseKey];
-                     NSError *callbackError = error;
-
-                     if (response.statusCode == 422) {
-                         if (error.userInfo) {
-                             callbackError = [self constructCallbackErrorForErrorUserInfo:error.userInfo error:error];
-                         }
-                     }
-
-                     [self sendGraphQLAnalyticsEventWithSuccess:NO];
-
-                     completion(nil, callbackError);
-                     return;
-                 }
-
-                 BTJSON *cardJSON = body[@"data"][@"tokenizeCreditCard"];
-                 [self sendGraphQLAnalyticsEventWithSuccess:YES];
-
-                 BTCardNonce *cardNonce = [BTCardNonce cardNonceWithGraphQLJSON:cardJSON];
-                 completion(cardNonce, cardJSON.asError);
-             }];
-        } else {
-            NSDictionary *parameters = [self clientAPIParametersForCard:request];
-            [self.apiClient POST:@"v1/payment_methods/credit_cards"
-                      parameters:parameters
-                      completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
-             {
-                 if (error != nil) {
-                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
-                         [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
+                         [self.apiClient sendAnalyticsEvent:@"card:tokenize:network-connection:failed"];
+                         completion(nil, error);
+                         return;
                      }
                      NSHTTPURLResponse *response = error.userInfo[BTCoreConstants.urlResponseKey];
                      NSError *callbackError = error;
@@ -133,19 +109,58 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                          }
                      }
                      
-                     [self sendAnalyticsEventWithSuccess:NO];
-
+                     [self.apiClient sendAnalyticsEvent:@"card:tokenize:failed"];
                      completion(nil, callbackError);
                      return;
                  }
 
-                 BTJSON *cardJSON = body[@"creditCards"][0];
-                
-                 [self sendAnalyticsEventWithSuccess:!cardJSON.isError];
+                BTJSON *cardJSON = body[@"data"][@"tokenizeCreditCard"];
+                if (cardJSON.asError) {
+                    [self.apiClient sendAnalyticsEvent:@"card:tokenize:failed"];
+                    completion(nil, cardJSON.asError);
+                    return;
+                }
 
-                 // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
+                 BTCardNonce *cardNonce = [BTCardNonce cardNonceWithGraphQLJSON:cardJSON];
+                 [self.apiClient sendAnalyticsEvent:@"card:tokenize:succeeded"];
+                 completion(cardNonce, nil);
+             }];
+        } else {
+            NSDictionary *parameters = [self clientAPIParametersForCard:request];
+            [self.apiClient POST:@"v1/payment_methods/credit_cards"
+                      parameters:parameters
+                      completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
+             {
+                 if (error != nil) {
+                     if (error.code == BTCoreConstants.networkConnectionLostCode) {
+                         [self.apiClient sendAnalyticsEvent:@"card:tokenize:network-connection:failed"];
+                         completion(nil, error);
+                         return;
+                     }
+                     NSHTTPURLResponse *response = error.userInfo[BTCoreConstants.urlResponseKey];
+                     NSError *callbackError = error;
+
+                     if (response.statusCode == 422) {
+                         if (error.userInfo) {
+                             callbackError = [self constructCallbackErrorForErrorUserInfo:error.userInfo error:error];
+                         }
+                     }
+                     
+                     [self.apiClient sendAnalyticsEvent:@"card:tokenize:failed"];
+                     completion(nil, callbackError);
+                     return;
+                 }
+                
+                 BTJSON *cardJSON = body[@"creditCards"][0];
+                if (cardJSON.asError) {
+                    [self.apiClient sendAnalyticsEvent:@"card:tokenize:failed"];
+                    completion(nil, cardJSON.asError);
+                    return;
+                }
+                
+                 [self.apiClient sendAnalyticsEvent:@"card:tokenize:succeeded"];
                  BTCardNonce *cardNonce = [BTCardNonce cardNonceWithJSON:cardJSON];
-                 completion(cardNonce, cardJSON.asError);
+                 completion(cardNonce, nil);
              }];
         }
     }];
