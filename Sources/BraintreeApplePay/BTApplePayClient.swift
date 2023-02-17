@@ -26,15 +26,16 @@ import BraintreeCore
 
     @objc(paymentRequest:)
     public func paymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
+        self.apiClient.sendAnalyticsEvent("apple-pay:payment-request:started")
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.configuration")
+                self.apiClient.sendAnalyticsEvent("apple-pay:payment-request:failed")
                 self.completionHandler(onMainThreadWithPaymentRequest: nil, error: error, completion: completion)
                 return
             }
 
             guard let configuration, configuration.isApplePayEnabled else {
-                self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.disabled")
+                self.apiClient.sendAnalyticsEvent("apple-pay:payment-request:failed")
                 self.completionHandler(onMainThreadWithPaymentRequest: nil, error: BTApplePayError.unsupported, completion: completion)
                 return
             }
@@ -45,23 +46,24 @@ import BraintreeCore
             paymentRequest.merchantIdentifier = configuration.applePayMerchantIdentifier ?? ""
             paymentRequest.supportedNetworks = configuration.applePaySupportedNetworks ?? []
 
+            self.apiClient.sendAnalyticsEvent("apple-pay:payment-request:succeeded")
             self.completionHandler(onMainThreadWithPaymentRequest: paymentRequest, error: nil, completion: completion)
         }
     }
 
     @objc(tokenizeApplePayPayment:completion:)
     public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent("ios.apple-pay.start")
+        apiClient.sendAnalyticsEvent("apple-pay:tokenize:started")
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.configuration")
+                self.apiClient.sendAnalyticsEvent("apple-pay:tokenize:failed")
                 completion(nil, error)
                 return
             }
 
             guard let configuration, configuration.isApplePayEnabled else {
-                self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.disabled")
+                self.apiClient.sendAnalyticsEvent("apple-pay:tokenize:failed")
                 completion(nil, BTApplePayError.unsupported)
                 return
             }
@@ -80,26 +82,29 @@ import BraintreeCore
             self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
                 if let error = error as NSError? {
                     if error.code == BTCoreConstants.networkConnectionLostCode {
-                        self.apiClient.sendAnalyticsEvent("ios.apple-pay.network-connection.failure")
+                        self.apiClient.sendAnalyticsEvent("apple-pay:tokenize:network-connection:failed")
+                    } else {
+                        self.apiClient.sendAnalyticsEvent("apple-pay:tokenize:failed")
                     }
 
-                    self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.tokenization")
                     completion(nil, error)
                     return
                 }
 
                 guard let body else {
+                    self.apiClient.sendAnalyticsEvent("apple-pay:tokenize:failed")
                     completion(nil, BTApplePayError.noApplePayCardsReturned)
                     return
                 }
 
                 guard let applePayNonce: BTApplePayCardNonce = BTApplePayCardNonce(json: body["applePayCards"][0]) else {
+                    self.apiClient.sendAnalyticsEvent("apple-pay:tokenize:failed")
                     completion(nil, BTApplePayError.failedToCreateNonce)
                     return
                 }
 
                 completion(applePayNonce, nil)
-                self.apiClient.sendAnalyticsEvent("ios.apple-pay.success")
+                self.apiClient.sendAnalyticsEvent("apple-pay:tokenize:succeeded")
             }
         }
     }
