@@ -8,7 +8,7 @@ import BraintreeCore
 /// Used to process Apple Pay payments
 @objcMembers public class BTApplePayClient: NSObject {
 
-    //MARK: - Internal Properties
+    // MARK: - Internal Properties
 
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
