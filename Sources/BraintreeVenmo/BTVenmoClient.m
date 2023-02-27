@@ -138,7 +138,14 @@ static BTVenmoClient *appSwitchedClient;
             @"paymentMethodUsage": venmoRequest.paymentMethodUsageAsString,
             @"merchantProfileId": merchantProfileID,
             @"customerClient": @"MOBILE_APP",
-            @"intent": @"CONTINUE"
+            @"intent": @"CONTINUE",
+//            @"collectShippingAddress": asdf,
+//            @"collectBillingAddress": asdf,
+//            @"totalAmount":
+//            @"discountAmount":
+//            @"shippingAmount":
+//            @"taxAmount": asdf,
+//            @"lineItems":
         } mutableCopy];
         
         if (venmoRequest.displayName) {

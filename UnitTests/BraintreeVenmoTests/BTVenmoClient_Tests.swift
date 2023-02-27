@@ -124,7 +124,65 @@ class BTVenmoClient_Tests: XCTestCase {
                     "intent": "CONTINUE",
                     "merchantProfileId": "venmo_merchant_id",
                     "paymentMethodUsage": "MULTI_USE",
-                    "displayName": "app-display-name"
+                    "displayName": "app-display-name",
+                    "collectBillingAddress": false,
+                    "collectShippingAddress": false
+                ]
+            ]
+        ] as NSObject)
+    }
+    
+    func testTokenizeVenmoAccount_whenPaymentDataIsSpecified_createsPaymentContext() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.displayName = "app-display-name"
+        venmoRequest.collectBillingAddress = true
+        venmoRequest.collectShippingAddress = true
+        venmoRequest.subTotalAmount = "8.00"
+        venmoRequest.totalAmount = "9.00"
+        venmoRequest.discountAmount = "0.99"
+        venmoRequest.shippingAmount = "1.01"
+        venmoRequest.taxAmount = "1.00"
+        var lineItem1 = BTPayPalLineItem(quantity: "1", unitAmount: "12.00", name: "Debit 1", kind: .debit)
+        var lineItem2 = BTPayPalLineItem(quantity: "1", unitAmount: "4.00", name: "Credit 1", kind: .credit)
+        venmoRequest.lineItems = [lineItem1, lineItem2]
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters as NSObject?, [
+            "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
+            "variables": [
+                "input" : [
+                    "customerClient": "MOBILE_APP",
+                    "intent": "CONTINUE",
+                    "merchantProfileId": "venmo_merchant_id",
+                    "paymentMethodUsage": "MULTI_USE",
+                    "displayName": "app-display-name",
+                    "collectBillingAddress": true,
+                    "collectShippingAddress": true,
+                    "subTotalAmount": "8.00",
+                    "totalAmount": "9.00",
+                    "discountAmount": "0.99",
+                    "shippingAmount": "1.01",
+                    "taxAmount": "1.00",
+                    "lineItems": [
+                        [
+                            "name": "Debit 1",
+                            "quantity": "1",
+                            "unitAmount": "12.00",
+                            "type": "DEBIT"
+                        ],
+                        [
+                            "name": "Credit 1",
+                            "quantity": "1",
+                            "unitAmount": "4.00",
+                            "type": "CREDIT"
+                        ]
+                    ]
                 ]
             ]
         ] as NSObject)
