@@ -129,7 +129,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                  if (error != nil) {
                      if (error.code == BTCoreConstants.networkConnectionLostCode) {
                          [self.apiClient sendAnalyticsEvent:@"card:tokenize:network-connection:failed"];
-                         completion(nil, error);
+                         [self notifyFailure:error completion:completion];
                          return;
                      }
                      NSHTTPURLResponse *response = error.userInfo[BTCoreConstants.urlResponseKey];
