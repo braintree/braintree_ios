@@ -32,20 +32,34 @@ import BraintreeCore
             guard let self = self else { return }
 
             if let error = error {
-                self.apiClient.sendAnalyticsEvent("amex:rewards-balance:failed")
-                completion(nil, error)
+                self.completionWithAnalytics(for: .failure, error: error, completion: completion)
                 return
             }
 
             guard let body = body else {
-                self.apiClient.sendAnalyticsEvent("amex:rewards-balance:failed")
-                completion(nil, BTAmericanExpressError.noRewardsData)
+                self.completionWithAnalytics(for: .failure, error: BTAmericanExpressError.noRewardsData, completion: completion)
                 return
             }
 
             let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
-            self.apiClient.sendAnalyticsEvent("amex:rewards-balance:succeeded")
-            completion(rewardsBalance, nil)
+            self.completionWithAnalytics(for: .success, rewardsBalance: rewardsBalance, completion: completion)
         }
+    }
+
+    // MARK: - Analytics Completion Helpers
+
+    enum AnalyticsResult {
+        case success
+        case failure
+    }
+
+    private func completionWithAnalytics(
+        for analyticsResult: AnalyticsResult,
+        rewardsBalance: BTAmericanExpressRewardsBalance? = nil,
+        error: Error? = nil,
+        completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent("amex:rewards-balance:\(analyticsResult == .success ? "succeeded" : "failed")")
+        completion(rewardsBalance, error)
     }
 }
