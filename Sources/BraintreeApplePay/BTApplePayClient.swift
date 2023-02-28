@@ -112,7 +112,7 @@ import BraintreeCore
 
     // MARK: - Analytics Completion Helpers
 
-    func completionWithAnalytics(
+    private func completionWithAnalytics(
         for analyticsResult: BTAnalyticsResult,
         nonce: BTApplePayCardNonce? = nil,
         error: Error? = nil,
@@ -122,7 +122,7 @@ import BraintreeCore
         completion(nonce, error)
     }
 
-    func paymentRequestCompletionWithAnalytics(
+    private func paymentRequestCompletionWithAnalytics(
         for analyticsResult: BTAnalyticsResult,
         paymentRequest: PKPaymentRequest? = nil,
         error: Error? = nil,
