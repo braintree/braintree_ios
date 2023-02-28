@@ -94,7 +94,7 @@ import BraintreeCore
                     return
                 }
 
-                self.completionWithAnalytics(for: .failure, nonce: applePayNonce, completion: completion)
+                self.completionWithAnalytics(for: .success, nonce: applePayNonce, completion: completion)
             }
         }
     }
@@ -112,13 +112,8 @@ import BraintreeCore
 
     // MARK: - Analytics Completion Helpers
 
-    enum AnalyticsResult {
-        case success
-        case failure
-    }
-
     func completionWithAnalytics(
-        for analyticsResult: AnalyticsResult,
+        for analyticsResult: BTAnalyticsResult,
         nonce: BTApplePayCardNonce? = nil,
         error: Error? = nil,
         completion: @escaping (BTApplePayCardNonce?, Error?) -> Void
@@ -128,7 +123,7 @@ import BraintreeCore
     }
 
     func paymentRequestCompletionWithAnalytics(
-        for analyticsResult: AnalyticsResult,
+        for analyticsResult: BTAnalyticsResult,
         paymentRequest: PKPaymentRequest? = nil,
         error: Error? = nil,
         completion: @escaping (PKPaymentRequest?, Error?) -> Void
