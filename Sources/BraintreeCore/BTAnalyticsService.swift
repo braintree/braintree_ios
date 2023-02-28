@@ -1,5 +1,11 @@
 import Foundation
 
+/// :nodoc: Enum used for status to send to analytics event
+@objc public enum BTAnalyticsResult: Int {
+    case success
+    case failure
+}
+
 /// Encapsulates a single analytics event
 struct BTAnalyticsEvent {
 

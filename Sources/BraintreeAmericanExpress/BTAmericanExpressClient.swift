@@ -48,13 +48,8 @@ import BraintreeCore
 
     // MARK: - Analytics Completion Helpers
 
-    enum AnalyticsResult {
-        case success
-        case failure
-    }
-
     private func completionWithAnalytics(
-        for analyticsResult: AnalyticsResult,
+        for analyticsResult: BTAnalyticsResult,
         rewardsBalance: BTAmericanExpressRewardsBalance? = nil,
         error: Error? = nil,
         completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
