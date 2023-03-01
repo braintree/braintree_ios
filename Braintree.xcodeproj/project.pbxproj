@@ -117,10 +117,6 @@
 		A751CAAD1CAC464C008603E5 /* BTCardRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A751CAAA1CAC464C008603E5 /* BTCardRequest.m */; };
 		A751CAAF1CAC4667008603E5 /* BTCardRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A751CAAE1CAC4667008603E5 /* BTCardRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A76D7C341BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C331BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m */; };
-		A77AA2A61B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D0A1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		A77AA2A71B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */; };
-		A77AA2A81B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D0C1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		A77AA2A91B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */; };
 		A77AA2AA1B618CFB00217B73 /* BraintreeVenmo.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889F11B5F0B30007A0E9C /* BraintreeVenmo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77AA2AB1B618CFB00217B73 /* BTVenmoClient.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889FA1B5F0C00007A0E9C /* BTVenmoClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77AA2AC1B618CFB00217B73 /* BTVenmoClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889FB1B5F0C00007A0E9C /* BTVenmoClient.m */; };
@@ -232,6 +228,9 @@
 		BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */; };
 		BC17F9BE28D25054004B18CC /* BTGraphQLErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BD28D25054004B18CC /* BTGraphQLErrorNode.swift */; };
 		BC17F9C028D255B9004B18CC /* BTGraphQLSingleErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BF28D255B9004B18CC /* BTGraphQLSingleErrorNode.swift */; };
+		BE0AF6B929AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6B829AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift */; };
+		BE0AF6BB29AFD53300245C2C /* BTVenmoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */; };
+		BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift */; };
 		BE0B163D27E0CC7400868C77 /* CreateMandateResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */; };
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
 		BE10B8D1287DBEE900F7B3B2 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
@@ -833,10 +832,6 @@
 		A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTURLUtils_Tests.swift; sourceTree = "<group>"; };
 		A7F96D061B6043B7005A4A09 /* BTVenmoAccountNonce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoAccountNonce.h; sourceTree = "<group>"; };
 		A7F96D071B6043B7005A4A09 /* BTVenmoAccountNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAccountNonce.m; sourceTree = "<group>"; };
-		A7F96D0A1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTVenmoAppSwitchRequestURL.h; sourceTree = "<group>"; };
-		A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchRequestURL.m; sourceTree = "<group>"; };
-		A7F96D0C1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchReturnURL.h; sourceTree = "<group>"; };
-		A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchReturnURL.m; sourceTree = "<group>"; };
 		A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeTestShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A903E1A924F9D34000C314E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A903E1B524F9D37B00C314E1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -880,6 +875,9 @@
 		BC17F9BF28D255B9004B18CC /* BTGraphQLSingleErrorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLSingleErrorNode.swift; sourceTree = "<group>"; };
 		BC20A8F4238596850077AF56 /* BTThreeDSecureV1UICustomization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV1UICustomization.h; sourceTree = "<group>"; };
 		BC20A8F5238596850077AF56 /* BTThreeDSecureV1UICustomization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV1UICustomization.m; sourceTree = "<group>"; };
+		BE0AF6B829AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchReturnURL.swift; sourceTree = "<group>"; };
+		BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoError.swift; sourceTree = "<group>"; };
+		BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchRequestURL.swift; sourceTree = "<group>"; };
 		BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMandateResult.swift; sourceTree = "<group>"; };
 		BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI.swift; sourceTree = "<group>"; };
 		BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
@@ -1592,15 +1590,14 @@
 			children = (
 				03D294FE1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h */,
 				A7F96D071B6043B7005A4A09 /* BTVenmoAccountNonce.m */,
-				A7F96D0A1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.h */,
-				A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */,
-				A7F96D0C1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.h */,
-				A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */,
 				A77AA2B51B61936A00217B73 /* BTVenmoClient_Internal.h */,
 				A7C889FB1B5F0C00007A0E9C /* BTVenmoClient.m */,
 				4228D83A2624E439001D2564 /* BTVenmoRequest_Internal.h */,
 				80A79DD525CA04CB00A9E9A2 /* BTVenmoRequest.m */,
 				41777D471B8D028C0026F987 /* Public */,
+				BE0AF6B829AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift */,
+				BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */,
+				BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift */,
 			);
 			path = BraintreeVenmo;
 			sourceTree = "<group>";
@@ -1903,8 +1900,6 @@
 			files = (
 				A77AA2AD1B618CFB00217B73 /* BTVenmoAccountNonce.h in Headers */,
 				A77AA2AB1B618CFB00217B73 /* BTVenmoClient.h in Headers */,
-				A77AA2A81B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.h in Headers */,
-				A77AA2A61B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.h in Headers */,
 				A77AA2AA1B618CFB00217B73 /* BraintreeVenmo.h in Headers */,
 				03D294FF1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h in Headers */,
 				4228D83B2624E439001D2564 /* BTVenmoRequest_Internal.h in Headers */,
@@ -2498,6 +2493,7 @@
 					};
 					A77AA29B1B618C7700217B73 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 1420;
 					};
 					A7ABD6521B702FD800A1223C = {
 						CreatedOnToolsVersion = 7.0;
@@ -2989,9 +2985,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A77AA2A71B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.m in Sources */,
 				A77AA2AC1B618CFB00217B73 /* BTVenmoClient.m in Sources */,
-				A77AA2A91B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.m in Sources */,
+				BE0AF6B929AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift in Sources */,
+				BE0AF6BB29AFD53300245C2C /* BTVenmoError.swift in Sources */,
+				BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift in Sources */,
 				80A79DD725CA04CB00A9E9A2 /* BTVenmoRequest.m in Sources */,
 				A77AA2AE1B618CFB00217B73 /* BTVenmoAccountNonce.m in Sources */,
 			);
@@ -4446,6 +4443,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4500,6 +4499,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5454,6 +5454,7 @@
 		A948D6F924FAC8F900F4F178 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5500,6 +5501,7 @@
 		A948D6FA24FAC8F900F4F178 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;

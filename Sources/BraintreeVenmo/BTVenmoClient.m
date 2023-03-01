@@ -1,7 +1,5 @@
 #import "BTVenmoClient_Internal.h"
 #import "BTVenmoAccountNonce_Internal.h"
-#import "BTVenmoAppSwitchRequestURL.h"
-#import "BTVenmoAppSwitchReturnURL.h"
 #import "BTVenmoRequest_Internal.h"
 #import "UIKit/UIKit.h"
 
@@ -23,6 +21,13 @@
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#endif
+
+// MARK: - Temporary Swift Module Imports
+#if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+#else                                            // SPM and Carthage
+#import <BraintreeVenmo/BraintreeVenmo-Swift.h>
 #endif
 
 @interface BTVenmoClient () <BTAppContextSwitchClient>
@@ -180,7 +185,7 @@ static BTVenmoClient *appSwitchedClient;
                                                                             environment:configuration.venmoEnvironment
                                                                        paymentContextID:paymentContextID
                                                                                metadata:self.apiClient.metadata];
-            
+
             [self performAppSwitch:appSwitchURL shouldVault:venmoRequest.vault completion:completionBlock];
         }];
     }];
@@ -245,7 +250,8 @@ static BTVenmoClient *appSwitchedClient;
 }
 
 - (BOOL)isiOSAppAvailableForAppSwitch {
-    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
+    return [[NSURL alloc] initWithString:@""];
+//    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
 }
 
 #pragma mark - App switch return
