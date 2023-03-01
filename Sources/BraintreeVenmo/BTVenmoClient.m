@@ -1,6 +1,5 @@
 #import "BTVenmoClient_Internal.h"
 #import "BTVenmoAccountNonce_Internal.h"
-#import "BTVenmoRequest_Internal.h"
 #import "UIKit/UIKit.h"
 
 // MARK: - Swift File Imports for Package Managers
@@ -250,8 +249,7 @@ static BTVenmoClient *appSwitchedClient;
 }
 
 - (BOOL)isiOSAppAvailableForAppSwitch {
-    return [[NSURL alloc] initWithString:@""];
-//    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
+    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
 }
 
 #pragma mark - App switch return

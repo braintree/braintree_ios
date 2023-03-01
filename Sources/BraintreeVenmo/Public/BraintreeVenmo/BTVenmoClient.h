@@ -1,9 +1,4 @@
-#if __has_include(<Braintree/BraintreeVenmo.h>)
-#import <Braintree/BTVenmoRequest.h>
-#else
-#import <BraintreeVenmo/BTVenmoRequest.h>
-#endif
-
+@class BTVenmoRequest;
 @class BTVenmoAccountNonce;
 @class BTAPIClient;
 

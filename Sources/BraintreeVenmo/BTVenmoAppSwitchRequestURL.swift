@@ -29,8 +29,8 @@ import BraintreeCore
     ///   - Returns: The resulting URL, or `nil` if any of the required parameters are `nil`.
     // TODO: method can be internal once rest of Venmo is in Swift
     @objc(appSwitchURLForMerchantID:accessToken:returnURLScheme:bundleDisplayName:environment:paymentContextID:metadata:)
-    public static func appSwitchURLForMerchantID(
-        _ merchantID: String?,
+    public static func appSwitch(
+        forMerchantID merchantID: String?,
         accessToken: String?,
         returnURLScheme: String?,
         bundleDisplayName: String?,
