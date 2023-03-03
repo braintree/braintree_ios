@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (class, nonatomic, assign, readonly) NSString *cardTokenizeFailed;
 @property (class, nonatomic, assign, readonly) NSString *cardTokenizeSucceeded;
 @property (class, nonatomic, assign, readonly) NSString *cardTokenizeNetworkConnectionLost;
+
 @end
 
 NS_ASSUME_NONNULL_END

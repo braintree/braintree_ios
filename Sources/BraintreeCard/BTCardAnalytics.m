@@ -2,25 +2,19 @@
 
 @implementation BTCardAnalytics
 
-@dynamic cardTokenizeStarted;
-- (NSString *)cardTokenizeStarted {
++ (NSString *)cardTokenizeStarted {
     return @"card:tokenize:started";
 }
-
-@dynamic cardTokenizeFailed;
-- (NSString *)cardTokenizeFailed {
++ (NSString *)cardTokenizeFailed {
     return @"card:tokenize:failed";
 }
 
-@dynamic cardTokenizeSucceeded;
-- (NSString *)cardTokenizeSucceeded {
++ (NSString *)cardTokenizeSucceeded {
     return @"card:tokenize:succeeded";
 }
 
-@dynamic cardTokenizeNetworkConnectionLost;
-- (NSString *)cardTokenizeNetworkConnectionLost {
++ (NSString *)cardTokenizeNetworkConnectionLost {
     return @"card:tokenize:network-connection:failed";
 }
-
 
 @end
