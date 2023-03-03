@@ -56,7 +56,7 @@ final class BTPayPalNativeCheckoutAccountNonce_Tests: XCTestCase {
         let payPalNativeCheckoutNonce = BTPayPalNativeCheckoutAccountNonce(json: nativeCheckoutJSON)
         XCTAssertNotNil(payPalNativeCheckoutNonce)
         XCTAssertEqual(payPalNativeCheckoutNonce?.nonce, "a-nonce")
-        XCTAssertEqual(payPalNativeCheckoutNonce?.isDefault, "false")
+        XCTAssertEqual(payPalNativeCheckoutNonce?.isDefault, false)
         XCTAssertEqual(payPalNativeCheckoutNonce?.clientMetadataID, "a-fake-clientMetadataID")
         XCTAssertEqual(payPalNativeCheckoutNonce?.email, "hello@world.com")
         XCTAssertEqual(payPalNativeCheckoutNonce?.firstName, "Some")
