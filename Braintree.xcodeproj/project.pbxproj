@@ -26,6 +26,8 @@
 		03E7E3D8212469AD000C5094 /* BTPaymentFlowClient+LocalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D4212469AD000C5094 /* BTPaymentFlowClient+LocalPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D9212469AD000C5094 /* BTLocalPaymentRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D5212469AD000C5094 /* BTLocalPaymentRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
+		3BC72A5329B296E500326652 /* BTCardAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = 3BC72A5129B296E500326652 /* BTCardAnalytics.h */; };
+		3BC72A5429B296E500326652 /* BTCardAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC72A5229B296E500326652 /* BTCardAnalytics.m */; };
 		3DAB5933286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5932286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift */; };
 		3DAB5937286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5936286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift */; };
 		3DAB5939286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5938286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift */; };
@@ -655,6 +657,8 @@
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON_Tests.swift; sourceTree = "<group>"; };
 		2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreePayPal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BC72A5129B296E500326652 /* BTCardAnalytics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCardAnalytics.h; sourceTree = "<group>"; };
+		3BC72A5229B296E500326652 /* BTCardAnalytics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCardAnalytics.m; sourceTree = "<group>"; };
 		3DAB5932286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeCheckoutRequest_Tests.swift; sourceTree = "<group>"; };
 		3DAB5936286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeHermesResponse_Tests.swift; sourceTree = "<group>"; };
 		3DAB5938286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeTokenizationClient_Tests.swift; sourceTree = "<group>"; };
@@ -1588,6 +1592,8 @@
 				A751CAAA1CAC464C008603E5 /* BTCardRequest.m */,
 				03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */,
 				41777D451B8D01510026F987 /* Public */,
+				3BC72A5129B296E500326652 /* BTCardAnalytics.h */,
+				3BC72A5229B296E500326652 /* BTCardAnalytics.m */,
 			);
 			path = BraintreeCard;
 			sourceTree = "<group>";
@@ -1941,6 +1947,7 @@
 				A7C889A51B5F0471007A0E9C /* BTCard_Internal.h in Headers */,
 				A7C889A31B5F0471007A0E9C /* BTCardClient.h in Headers */,
 				A7C889A61B5F0471007A0E9C /* BTCard.h in Headers */,
+				3BC72A5329B296E500326652 /* BTCardAnalytics.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3036,6 +3043,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BC72A5429B296E500326652 /* BTCardAnalytics.m in Sources */,
 				03DE926F20201CCB00A78D29 /* BTThreeDSecureInfo.m in Sources */,
 				420E3B5A2329869B00550CE2 /* BTAuthenticationInsight.m in Sources */,
 				A7C889A71B5F0471007A0E9C /* BTCard.m in Sources */,
