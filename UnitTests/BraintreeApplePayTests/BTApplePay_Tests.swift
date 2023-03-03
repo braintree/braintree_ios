@@ -271,7 +271,7 @@ class BTApplePay_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockClient.postedAnalyticsEvents.contains("ios.apple-pay.network-connection.failure"))
+        XCTAssertTrue(mockClient.postedAnalyticsEvents.contains("apple-pay:tokenize:network-connection:failed"))
     }
 
     func testTokenize_whenBodyIsMissingData_returnsError() {
