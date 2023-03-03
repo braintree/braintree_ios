@@ -26,35 +26,27 @@ import BraintreeCore
     ///  - Note: If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
     public func getRewardsBalance(forNonce nonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
         let parameters = ["currencyIsoCode": currencyIsoCode, "paymentMethodNonce": nonce]
-        apiClient.sendAnalyticsEvent("amex:rewards-balance:started")
+        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceStarted)
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
             guard let self = self else { return }
 
             if let error = error {
-                self.completionWithAnalytics(for: .failure, error: error, completion: completion)
+                self.apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceFailed)
+                completion(nil, error)
                 return
             }
 
             guard let body = body else {
-                self.completionWithAnalytics(for: .failure, error: BTAmericanExpressError.noRewardsData, completion: completion)
+                self.apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceFailed)
+                completion(nil, BTAmericanExpressError.noRewardsData)
                 return
             }
 
             let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
-            self.completionWithAnalytics(for: .success, rewardsBalance: rewardsBalance, completion: completion)
+            self.apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceSucceeded)
+            completion(rewardsBalance, nil)
+            return
         }
-    }
-
-    // MARK: - Analytics Completion Helpers
-
-    private func completionWithAnalytics(
-        for analyticsResult: BTAnalyticsResult,
-        rewardsBalance: BTAmericanExpressRewardsBalance? = nil,
-        error: Error? = nil,
-        completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
-    ) {
-        apiClient.sendAnalyticsEvent("amex:rewards-balance:\(analyticsResult == .success ? "succeeded" : "failed")")
-        completion(rewardsBalance, error)
     }
 }
