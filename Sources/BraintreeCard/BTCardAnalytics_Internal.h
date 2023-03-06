@@ -1,10 +1,3 @@
-//
-//  BTCardAnalytics.h
-//  BraintreeCard
-//
-//  Created by Victoria Park on 3/3/23.
-//
-
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN

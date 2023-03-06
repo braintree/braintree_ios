@@ -1,7 +1,7 @@
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
-#import "BTCardAnalytics.h"
+#import "BTCardAnalytics_Internal.h"
 
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods

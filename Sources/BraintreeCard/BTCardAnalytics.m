@@ -1,4 +1,4 @@
-#import "BTCardAnalytics.h"
+#import "BTCardAnalytics_Internal.h"
 
 @implementation BTCardAnalytics
 
