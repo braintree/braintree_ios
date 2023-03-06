@@ -4,7 +4,7 @@ import BraintreeCore
 
 final class BTPayPalNativeCheckoutAccountNonce_Tests: XCTestCase {
 
-    func testPayPalNativeCheckoutNonce_withAllJSON_createsPayPalNativeCheckoutNonce_withAllValues() {
+    func testInit_withAllJSON_createsPayPalNativeCheckoutNonceWithAllValues() {
         let nativeCheckoutJSON = BTJSON(
             value: [
                 "paypalAccounts": [
