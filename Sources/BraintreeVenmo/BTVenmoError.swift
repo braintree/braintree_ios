@@ -1,8 +1,10 @@
 import Foundation
 
+/// Error codes associated with Venmo
 enum BTVenmoError: Error, CustomNSError, LocalizedError {
 
-case returnURLError(Int, String?)
+    /// The error returned from the Venmo return URL
+    case returnURLError(Int, String?)
 
     static var errorDomain: String {
         "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain"

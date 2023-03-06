@@ -28,6 +28,7 @@ import BraintreeCore
     ///   - metadata: Additional Braintree metadata
     ///   - Returns: The resulting URL, or `nil` if any of the required parameters are `nil`.
     // TODO: method can be internal once rest of Venmo is in Swift
+    // TODO: consider making these required and doing this check at the call site when BTVenmo_Client is in Swift
     @objc(appSwitchURLForMerchantID:accessToken:returnURLScheme:bundleDisplayName:environment:paymentContextID:metadata:)
     public static func appSwitch(
         forMerchantID merchantID: String?,
@@ -42,7 +43,15 @@ import BraintreeCore
         let errorReturnURL = returnURL(with: returnURLScheme, result: "error")
         let cancelReturnURL = returnURL(with: returnURLScheme, result: "cancel")
 
-        guard let successReturnURL, let errorReturnURL, let cancelReturnURL, let accessToken, let metadata, let bundleDisplayName, let environment, let merchantID else {
+        guard let successReturnURL,
+                let errorReturnURL,
+                let cancelReturnURL,
+                let accessToken,
+                let metadata,
+                let bundleDisplayName,
+                let environment,
+                let merchantID
+        else {
             return nil
         }
 
@@ -54,14 +63,8 @@ import BraintreeCore
         ]
 
         let braintreeData: [String: Any] = ["_meta": venmoMetadata]
-
-        var base64EncodedBraintreeData: String? = nil
-        do {
-            let serializedBraintreeData = try JSONSerialization.data(withJSONObject: braintreeData)
-            base64EncodedBraintreeData = serializedBraintreeData.base64EncodedString()
-        } catch {
-            // TODO: handle error
-        }
+        let serializedBraintreeData = try? JSONSerialization.data(withJSONObject: braintreeData)
+        let base64EncodedBraintreeData = serializedBraintreeData?.base64EncodedString()
 
         var appSwitchParameters: [String: Any] = [
             "x-success": successReturnURL,
