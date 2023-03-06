@@ -29,6 +29,8 @@
 		3B14BFDF29B647AF0047426A /* BTCardAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B14BFDE29B647AF0047426A /* BTCardAnalytics_Tests.swift */; };
 		3BC72A5329B296E500326652 /* BTCardAnalytics_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 3BC72A5129B296E500326652 /* BTCardAnalytics_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		3BC72A5429B296E500326652 /* BTCardAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC72A5229B296E500326652 /* BTCardAnalytics.m */; };
+		3B0EF89429B28C0800456973 /* BTAmericanExpressAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89329B28C0800456973 /* BTAmericanExpressAnalytics.swift */; };
+		3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89529B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift */; };
 		3DAB5933286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5932286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift */; };
 		3DAB5937286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5936286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift */; };
 		3DAB5939286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5938286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift */; };
@@ -661,6 +663,8 @@
 		3B14BFDE29B647AF0047426A /* BTCardAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardAnalytics_Tests.swift; sourceTree = "<group>"; };
 		3BC72A5129B296E500326652 /* BTCardAnalytics_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCardAnalytics_Internal.h; sourceTree = "<group>"; };
 		3BC72A5229B296E500326652 /* BTCardAnalytics.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCardAnalytics.m; sourceTree = "<group>"; };
+		3B0EF89329B28C0800456973 /* BTAmericanExpressAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressAnalytics.swift; sourceTree = "<group>"; };
+		3B0EF89529B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressAnalytics_Tests.swift; sourceTree = "<group>"; };
 		3DAB5932286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeCheckoutRequest_Tests.swift; sourceTree = "<group>"; };
 		3DAB5936286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeHermesResponse_Tests.swift; sourceTree = "<group>"; };
 		3DAB5938286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeTokenizationClient_Tests.swift; sourceTree = "<group>"; };
@@ -1175,9 +1179,10 @@
 		0357C47D1F96869600E63851 /* BraintreeAmericanExpress */ = {
 			isa = PBXGroup;
 			children = (
-				804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */,
+				3B0EF89329B28C0800456973 /* BTAmericanExpressAnalytics.swift */,
 				9CE8C7F9275ABDE700FB11F9 /* BTAmericanExpressClient.swift */,
 				9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */,
+				804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */,
 			);
 			path = BraintreeAmericanExpress;
 			sourceTree = "<group>";
@@ -1719,6 +1724,7 @@
 		A948D6C724FAB79B00F4F178 /* BraintreeAmericanExpressTests */ = {
 			isa = PBXGroup;
 			children = (
+				3B0EF89529B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift */,
 				0357C49B1F97ED1F00E63851 /* BTAmericanExpressClient_Tests.swift */,
 				039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */,
 				A948D6CA24FAB79B00F4F178 /* Info.plist */,
@@ -2894,6 +2900,7 @@
 			files = (
 				804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift in Sources */,
 				9C3F55EF275E80DA00C21C8A /* BTAmericanExpressError.swift in Sources */,
+				3B0EF89429B28C0800456973 /* BTAmericanExpressAnalytics.swift in Sources */,
 				9CE8C7FA275ABDE700FB11F9 /* BTAmericanExpressClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3136,6 +3143,7 @@
 				A948D6D124FAB8BA00F4F178 /* BTAmericanExpressClient_Tests.swift in Sources */,
 				A948D6D224FAB8BA00F4F178 /* BTAmericanExpressRewardsBalance_Tests.swift in Sources */,
 				BEDB820429B10ADA00075AF3 /* BTApplePayAnalytics_Tests.swift in Sources */,
+				3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */,
 				BE698EA628B3CDAD001D9B10 /* BTCacheDateValidator_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
