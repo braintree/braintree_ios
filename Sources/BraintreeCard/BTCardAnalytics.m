@@ -5,6 +5,7 @@
 + (NSString *)cardTokenizeStarted {
     return @"card:tokenize:started";
 }
+
 + (NSString *)cardTokenizeFailed {
     return @"card:tokenize:failed";
 }
