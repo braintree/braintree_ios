@@ -41,7 +41,7 @@ import BraintreeCore
     /// Initializes a new BTVenmoAppSwitchReturnURL
     /// - Parameter url: an incoming app switch url
     @objc(initWithURL:)
-    public init(url: URL) {
+    public init?(url: URL) {
         let parameters = BTURLUtils.queryParameters(for: url)
 
         if url.path == "/vzero/auth/venmo/success" {
