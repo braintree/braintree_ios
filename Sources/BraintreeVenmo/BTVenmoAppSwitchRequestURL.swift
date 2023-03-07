@@ -8,8 +8,8 @@ import BraintreeCore
 // TODO: methods can all be non-static likely when we convert the rest of Venmo to Swift
 @objcMembers public class BTVenmoAppSwitchRequestURL: NSObject {
 
-    static let kXCallbackTemplate: String = "scheme://x-callback-url/path"
-    static let kVenmoScheme: String = "com.venmo.touch.v2"
+    static let xCallbackTemplate: String = "scheme://x-callback-url/path"
+    static let venmoScheme: String = "com.venmo.touch.v2"
 
     /// The base app switch URL for Venmo. Does not include specific parameters.
     // TODO: property can be internal once rest of Venmo is in Swift
@@ -55,7 +55,7 @@ import BraintreeCore
             return nil
         }
 
-        let venmoMetadata: [String: String?] = [
+        let venmoMetadata: [String: String] = [
             "version": BTCoreConstants.braintreeSDKVersion,
             "sessionId": metadata.sessionID,
             "integration": metadata.integrationString,
@@ -89,15 +89,15 @@ import BraintreeCore
     // MARK: - Internal Helper Methods
 
     static func returnURL(with scheme: String?, result: String) -> URL? {
-        var components = URLComponents(string: kXCallbackTemplate)
+        var components = URLComponents(string: xCallbackTemplate)
         components?.scheme = scheme
         components?.percentEncodedPath = "/vzero/auth/venmo/\(result)"
         return components?.url
     }
 
     static func appSwitchBaseURLComponents() -> URLComponents? {
-        var components = URLComponents(string: kXCallbackTemplate)
-        components?.scheme = kVenmoScheme
+        var components = URLComponents(string: xCallbackTemplate)
+        components?.scheme = venmoScheme
         components?.percentEncodedPath = "/vzero/auth"
         return components
     }
