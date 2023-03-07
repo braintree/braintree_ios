@@ -14,7 +14,7 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
             ]
         ])
 
-        let venmoAccountNonce = BTVenmoAccountNonce(paymentContextJSON: paymentContextJSON)
+        let venmoAccountNonce = BTVenmoAccountNonce(with: paymentContextJSON)
 
         XCTAssertEqual(venmoAccountNonce?.nonce, "some-nonce")
         XCTAssertEqual(venmoAccountNonce?.username, "some-venmo-username")
@@ -37,12 +37,12 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
             ]
         ])
 
-        let venmoAccountNonce = BTVenmoAccountNonce(paymentContextJSON: paymentContextJSON)
+        let venmoAccountNonce = BTVenmoAccountNonce(with: paymentContextJSON)
 
         XCTAssertEqual(venmoAccountNonce?.nonce, "some-nonce")
         XCTAssertEqual(venmoAccountNonce?.username, "some-venmo-username")
         XCTAssertEqual(venmoAccountNonce?.email, "venmo-email")
-        XCTAssertEqual(venmoAccountNonce?.externalId, "venmo-external-id")
+        XCTAssertEqual(venmoAccountNonce?.externalID, "venmo-external-id")
         XCTAssertEqual(venmoAccountNonce?.firstName, "venmo-first-name")
         XCTAssertEqual(venmoAccountNonce?.lastName, "venmo-last-name")
         XCTAssertEqual(venmoAccountNonce?.phoneNumber, "venmo-phone-number")
