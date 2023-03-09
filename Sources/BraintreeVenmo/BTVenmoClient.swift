@@ -128,7 +128,8 @@ import BraintreeCore
                     return
                 }
 
-                guard let appSwitchURL = BTVenmoAppSwitchRequestURL.appSwitch(
+                // TODO: do we have a preference on this being static or not
+                guard let appSwitchURL = BTVenmoAppSwitchRequestURL().appSwitch(
                     forMerchantID: merchantProfileID,
                     accessToken: configuration.venmoAccessToken,
                     returnURLScheme: self.returnURLScheme,
@@ -151,9 +152,13 @@ import BraintreeCore
     // TODO: does this need to be public?
     public func isiOSAppAvailableForAppSwitch() -> Bool {
         if let _ = application as? UIApplication {
-            return UIApplication.shared.canOpenURL(BTVenmoAppSwitchRequestURL.baseAppSwitchURL ?? URL(string: "")!)
+            guard let appSwitchURL = BTVenmoAppSwitchRequestURL().baseAppSwitchURL else {
+                return false
+            }
+
+            return UIApplication.shared.canOpenURL(appSwitchURL)
         } else {
-            return application.canOpenURL(BTVenmoAppSwitchRequestURL.baseAppSwitchURL ?? URL(string: "")!)
+            return application.canOpenURL(BTVenmoAppSwitchRequestURL().baseAppSwitchURL ?? URL(string: "")!)
         }
     }
 

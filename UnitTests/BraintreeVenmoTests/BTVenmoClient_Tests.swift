@@ -181,7 +181,7 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
 
     func testTokenizeVenmoAccount_whenFetchPaymentContextIDFails_callsBackWithError() {
@@ -203,7 +203,7 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
 
     func testTokenizeVenmoAccount_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURLWithParams() {
@@ -254,7 +254,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
 
-        self.waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_andFetchPaymentContextFails_returnsError() {
@@ -276,7 +276,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
 
-        self.waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenizeVenmoAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() {
@@ -299,7 +299,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
 
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
     
     func testTokenizeVenmoAccount_whenUsingClientTokenAndAppSwitchSucceeds_tokenizesVenmoAccount() {
@@ -325,7 +325,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchFails_callsBackWithError() {
@@ -343,7 +343,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
 
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
 
     func testTokenizeVenmoAccount_vaultTrue_setsShouldVaultProperty() {
@@ -362,7 +362,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
 
     func testTokenizeVenmoAccount_vaultFalse_setsVaultToFalse() {
@@ -379,7 +379,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
         
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
     
     func testTokenizeVenmoAccount_vaultTrue_callsBackWithNonce() {
@@ -421,7 +421,7 @@ class BTVenmoClient_Tests: XCTestCase {
         ])
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
     
     func testTokenizeVenmoAccount_vaultTrue_sendsSucessAnalyticsEvent() {
@@ -462,7 +462,7 @@ class BTVenmoClient_Tests: XCTestCase {
         ])
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.vault.success")
     }
@@ -487,7 +487,7 @@ class BTVenmoClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: "Fake Error", code: 400, userInfo: nil)
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.vault.failure")
     }
@@ -506,7 +506,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
 
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
     }
 
     func testAuthorizeAccountWithProfileID_withNilProfileID_usesDefaultProfileIDAndAccessTokenFromConfiguration() {
@@ -637,7 +637,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
-        self.waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.appswitch.handle.success")
     }

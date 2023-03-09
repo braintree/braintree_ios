@@ -4,15 +4,13 @@ import Foundation
 import BraintreeCore
 #endif
 
-// TODO: Entire class be internal and likely a struct once rest of Venmo is in Swift
-// TODO: methods can all be non-static likely when we convert the rest of Venmo to Swift
-@objcMembers public class BTVenmoAppSwitchRequestURL: NSObject {
+struct BTVenmoAppSwitchRequestURL {
 
-    static let xCallbackTemplate: String = "scheme://x-callback-url/path"
-    static let venmoScheme: String = "com.venmo.touch.v2"
+    let xCallbackTemplate: String = "scheme://x-callback-url/path"
+    let venmoScheme: String = "com.venmo.touch.v2"
 
     /// The base app switch URL for Venmo. Does not include specific parameters.
-    public static var baseAppSwitchURL: URL? {
+    var baseAppSwitchURL: URL? {
         appSwitchBaseURLComponents().url
     }
 
@@ -26,10 +24,7 @@ import BraintreeCore
     ///   - paymentContextID: The Venmo payment context ID (optional)
     ///   - metadata: Additional Braintree metadata
     ///   - Returns: The resulting URL, or `nil` if any of the required parameters are `nil`.
-    // TODO: method can be internal once rest of Venmo is in Swift
-    // TODO: consider making these required and doing this check at the call site when BTVenmo_Client is in Swift
-    @objc(appSwitchURLForMerchantID:accessToken:returnURLScheme:bundleDisplayName:environment:paymentContextID:metadata:)
-    public static func appSwitch(
+    func appSwitch(
         forMerchantID merchantID: String?,
         accessToken: String?,
         returnURLScheme: String?,
@@ -87,14 +82,14 @@ import BraintreeCore
 
     // MARK: - Internal Helper Methods
 
-    static func returnURL(with scheme: String?, result: String) -> URL? {
+    func returnURL(with scheme: String?, result: String) -> URL? {
         var components = URLComponents(string: xCallbackTemplate)
         components?.scheme = scheme
         components?.percentEncodedPath = "/vzero/auth/venmo/\(result)"
         return components?.url
     }
 
-    static func appSwitchBaseURLComponents() -> URLComponents {
+    func appSwitchBaseURLComponents() -> URLComponents {
         var components: URLComponents = URLComponents(string: xCallbackTemplate) ?? URLComponents()
         components.scheme = venmoScheme
         components.percentEncodedPath = "/vzero/auth"
