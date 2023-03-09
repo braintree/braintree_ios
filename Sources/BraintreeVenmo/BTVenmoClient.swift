@@ -194,6 +194,7 @@ import BraintreeCore
 
                     self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.client-failure")
                     self.appSwitchCompletion(nil, error)
+                    return
                 }
 
                 guard let body else {
