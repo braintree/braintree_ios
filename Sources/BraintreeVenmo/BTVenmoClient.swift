@@ -5,15 +5,11 @@ import BraintreeCore
 #endif
 
 /// Used to process Venmo payments
-// TODO: consider renaming a number of these methods to be more swift-y/consistent
 @objcMembers public class BTVenmoClient: NSObject {
 
     // MARK: - Internal Properties
 
     let appStoreURL: URL = URL(string: "https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428")!
-
-    // TODO: doc this
-    static var venmoClient: BTVenmoClient? = nil
 
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
@@ -35,8 +31,16 @@ import BraintreeCore
     /// Stored property used to determine whether a Venmo account nonce should be vaulted after an app switch return
     var shouldVault: Bool = false
 
-    // TODO: document this
+    /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
+    /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
+
+    // MARK: - Static Properties
+
+
+    /// This static instance of `BTVenmoClient` is used during the app switch process.
+    /// We require a static reference of the client to call `handleReturnURL` and return to the app.
+    static var venmoClient: BTVenmoClient? = nil
 
     // MARK: - Initializer
 
@@ -56,6 +60,7 @@ import BraintreeCore
     ///   - completion: This completion will be invoked when app switch is complete or an error occurs. On success, you will receive
     ///   an instance of `BTVenmoAccountNonce`; on failure, an error; on user cancellation, you will receive `nil` for both parameters.
     @objc(tokenizeVenmoAccountWithVenmoRequest:completion:)
+    // TODO: do we want to rename to tokenize(with:completion) to match the other methods in other converted modules?
     public func tokenizeVenmoAccount(with venmoRequest: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         // TODO: why is this needed for Swift?
         returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
@@ -138,8 +143,7 @@ import BraintreeCore
                     paymentContextID: paymentContextID,
                     metadata: metadata
                 ) else {
-                    // TODO: solidify error return here - is this accurate?
-                    completion(nil, BTVenmoError.invalidRequestURL(""))
+                    completion(nil, BTVenmoError.invalidRequestURL("The request URL could not be constructed or was nil."))
                     return
                 }
 
@@ -149,7 +153,7 @@ import BraintreeCore
     }
 
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
-    // TODO: does this need to be public?
+    // TODO: do we want to rename this to isVenmoAppInstalled or something similar?
     public func isiOSAppAvailableForAppSwitch() -> Bool {
         if let _ = application as? UIApplication {
             guard let appSwitchURL = BTVenmoAppSwitchRequestURL().baseAppSwitchURL else {
@@ -163,12 +167,13 @@ import BraintreeCore
     }
 
     /// Switches to the iTunes App Store to download the Venmo app.
+    // TODO: do we want to rename this?
     public func openVenmoAppPageInAppStore() {
         apiClient.sendAnalyticsEvent("ios.pay-with-venmo.app-store.invoked")
         if let _ = application as? UIApplication {
-            UIApplication.shared.open(appStoreURL) { _ in }
+            UIApplication.shared.open(appStoreURL)
         } else {
-            application.open(appStoreURL) { _ in }
+            application.open(appStoreURL)
         }
     }
 
@@ -176,7 +181,7 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    func handleOpenURL(_ url: URL) {
+    func handleOpen(_ url: URL) {
         guard let returnURL = BTVenmoAppSwitchReturnURL(url: url) else {
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.failure")
             appSwitchCompletion(nil, BTVenmoError.invalidReturnURL(""))
@@ -211,7 +216,7 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.success")
 
                 if self.shouldVault && self.apiClient.clientToken != nil {
-                    self.vaultVenmoAccountNonce(venmoAccountNonce.nonce)
+                    self.vault(venmoAccountNonce.nonce)
                 } else {
                     self.appSwitchCompletion(venmoAccountNonce, nil)
                     return
@@ -234,7 +239,7 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.success")
 
             if shouldVault && apiClient.clientToken != nil {
-                vaultVenmoAccountNonce(nonce)
+                vault(nonce)
             } else {
                 let detailsDictionary: [String: String?] = ["username": returnURL.username]
                 let json: BTJSON = BTJSON(
@@ -293,7 +298,7 @@ import BraintreeCore
 
     // MARK: - Vaulting Methods
 
-    func vaultVenmoAccountNonce(_ nonce: String) {
+    func vault(_ nonce: String) {
         let venmoAccount: [String: String] = ["nonce": nonce]
         let parameters: [String: Any] = ["venmoAccount": venmoAccount]
 
@@ -351,7 +356,7 @@ import BraintreeCore
 extension BTVenmoClient: BTAppContextSwitchClient {
 
     public static func handleReturnURL(_ url: URL) {
-        venmoClient?.handleOpenURL(url)
+        venmoClient?.handleOpen(url)
         BTVenmoClient.venmoClient = nil
     }
 
