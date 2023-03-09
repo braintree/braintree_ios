@@ -43,8 +43,7 @@ import BraintreeCore
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
-        // TODO: do we need this
-//        BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
+        BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
         self.apiClient = apiClient
     }
 
