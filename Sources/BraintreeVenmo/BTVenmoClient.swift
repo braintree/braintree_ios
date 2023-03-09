@@ -248,11 +248,13 @@ import BraintreeCore
         case .failed:
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.failed")
             appSwitchCompletion(nil, returnURL.error)
-
+            return
+            
         case .canceled:
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.cancel")
             appSwitchCompletion(nil, nil)
-
+            return
+            
         default:
             // should not happen
             break
@@ -311,6 +313,7 @@ import BraintreeCore
 
             self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.vault.success")
             self.appSwitchCompletion(venmoAccountNonce, venmoAccountJSON.asError())
+            return
         }
     }
 
