@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeVenmo
+@testable import BraintreeVenmo
 @testable import BraintreeCore
 
 class BTVenmoAccountNonce_Tests: XCTestCase {
@@ -64,9 +64,9 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(venmoAccountNonce?.nonce, "a-nonce")
-        XCTAssertEqual(venmoAccountNonce?.type, "Venmo")
-        XCTAssertEqual(venmoAccountNonce?.username, "jane.doe.username@example.com")
-        XCTAssertTrue(venmoAccountNonce!.isDefault)
+        XCTAssertEqual(venmoAccountNonce.nonce, "a-nonce")
+        XCTAssertEqual(venmoAccountNonce.type, "Venmo")
+        XCTAssertEqual(venmoAccountNonce.username, "jane.doe.username@example.com")
+        XCTAssertTrue(venmoAccountNonce.isDefault)
     }
 }

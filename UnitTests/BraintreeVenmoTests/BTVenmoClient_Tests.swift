@@ -35,8 +35,8 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.returnURLScheme = "scheme"
 
-        let expectation = self.expectation(description: "Tokenize fails with error")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest)  { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "Tokenize fails with error")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest)  { venmoAccount, error in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
         }
@@ -49,8 +49,8 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
 
-        let expectation = self.expectation(description: "tokenization callback")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "tokenization callback")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
             XCTAssertEqual(error.code, BTVenmoError.disabled.errorCode)
@@ -64,8 +64,8 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
 
-        let expectation = self.expectation(description: "tokenization callback")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "tokenization callback")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
             XCTAssertEqual(error.code, BTVenmoError.disabled.errorCode)
@@ -78,8 +78,8 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = ""
         
-        let expectation = self.expectation(description: "authorization callback")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "authorization callback")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
             XCTAssertEqual(error.code, BTVenmoError.appNotAvailable.errorCode)
@@ -171,8 +171,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback invoked")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "Callback invoked")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
@@ -193,8 +193,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback invoked")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "Callback invoked")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
@@ -235,7 +235,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback")
+        let expectation = expectation(description: "Callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(error)
             XCTAssertEqual(venmoAccount?.nonce, "fake-venmo-nonce")
@@ -263,7 +263,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback")
+        let expectation = expectation(description: "Callback")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNotNil(error)
             XCTAssertNil(venmoAccount?.nonce)
@@ -285,8 +285,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "Callback")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             guard let venmoAccount = venmoAccount else {
                 XCTFail("Received an error: \(String(describing: error))")
                 return
@@ -311,8 +311,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
-        let expectation = self.expectation(description: "Callback")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "Callback")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             guard let venmoAccount = venmoAccount else {
                 XCTFail("Received an error: \(String(describing: error))")
                 return
@@ -334,8 +334,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback invoked")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "Callback invoked")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
@@ -352,11 +352,11 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
 
         venmoRequest.vault = true
 
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertTrue(venmoClient.shouldVault)
             expectation.fulfill()
         }
@@ -371,9 +371,9 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
         
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertFalse(venmoClient.shouldVault)
             expectation.fulfill()
         }
@@ -392,11 +392,11 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
 
         venmoRequest.vault = true
 
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(error)
             
             XCTAssertEqual(venmoAccount?.username, "venmojoe")
@@ -433,11 +433,11 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
 
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
 
         venmoRequest.vault = true
 
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(error)
 
             XCTAssertEqual(venmoAccount?.username, "venmojoe")
@@ -475,11 +475,11 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
 
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
 
         venmoRequest.vault = true
 
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNotNil(error)
             expectation.fulfill()
         }
@@ -498,8 +498,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
 
-        let expectation = self.expectation(description: "Callback invoked")
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        let expectation = expectation(description: "Callback invoked")
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(venmoAccount)
             XCTAssertNil(error)
             expectation.fulfill()
@@ -559,7 +559,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
         venmoClient.returnURLScheme = "scheme"
 
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { nonce, error in
             XCTAssertNotNil(error)
             expectation.fulfill()
@@ -622,11 +622,11 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
         venmoRequest.vault = true
 
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
+        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
             XCTAssertNil(error)
 
             XCTAssertEqual(venmoAccount?.username, "venmotim")

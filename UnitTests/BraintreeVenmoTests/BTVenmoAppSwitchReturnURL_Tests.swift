@@ -39,7 +39,7 @@ class BTVenmoAppSwitchReturnURL_Tests: XCTestCase {
             XCTFail()
             return
         }
-        XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
+        XCTAssertEqual(error.domain, BTVenmoAppSwitchError.errorDomain)
         XCTAssertEqual(error.code, -7)
         XCTAssertEqual(error.localizedDescription, "Venmo Fail")
     }

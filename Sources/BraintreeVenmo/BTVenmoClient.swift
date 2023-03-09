@@ -5,6 +5,7 @@ import BraintreeCore
 #endif
 
 /// Used to process Venmo payments
+// TODO: consider renaming a number of these methods to be more swift-y/consistent
 @objcMembers public class BTVenmoClient: NSObject {
 
     // MARK: - Internal Properties
@@ -149,13 +150,21 @@ import BraintreeCore
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
     // TODO: does this need to be public?
     public func isiOSAppAvailableForAppSwitch() -> Bool {
-        application.canOpenURL(BTVenmoAppSwitchRequestURL.baseAppSwitchURL ?? URL(string: "")!)
+        if let _ = application as? UIApplication {
+            return UIApplication.shared.canOpenURL(BTVenmoAppSwitchRequestURL.baseAppSwitchURL ?? URL(string: "")!)
+        } else {
+            return application.canOpenURL(BTVenmoAppSwitchRequestURL.baseAppSwitchURL ?? URL(string: "")!)
+        }
     }
 
     /// Switches to the iTunes App Store to download the Venmo app.
     public func openVenmoAppPageInAppStore() {
         apiClient.sendAnalyticsEvent("ios.pay-with-venmo.app-store.invoked")
-        application.open(appStoreURL) { _ in }
+        if let _ = application as? UIApplication {
+            UIApplication.shared.open(appStoreURL) { _ in }
+        } else {
+            application.open(appStoreURL) { _ in }
+        }
     }
 
     // MARK: - Internal Methods
@@ -199,6 +208,7 @@ import BraintreeCore
                     self.vaultVenmoAccountNonce(venmoAccountNonce.nonce)
                 } else {
                     self.appSwitchCompletion(venmoAccountNonce, nil)
+                    return
                 }
             }
 
@@ -229,7 +239,7 @@ import BraintreeCore
                     ]
                 )
 
-                let venmoAccountNonce = BTVenmoAccountNonce(with: json)
+                let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: json)
                 appSwitchCompletion(venmoAccountNonce, nil)
                 return
             }
@@ -296,7 +306,7 @@ import BraintreeCore
             }
 
             let venmoAccountJSON: BTJSON = body["venmoAccounts"][0]
-            let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce(with: venmoAccountJSON)
+            let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
 
             self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.vault.success")
             self.appSwitchCompletion(venmoAccountNonce, venmoAccountJSON.asError())

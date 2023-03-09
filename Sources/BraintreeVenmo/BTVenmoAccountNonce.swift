@@ -51,9 +51,7 @@ import BraintreeCore
 
     // MARK: - Internal Methods
 
-    // TODO: remove public and make non-objc once BTVenmoClient is in Swift
-    @objc(venmoAccountWithJSON:)
-    public static func venmoAccount(with json: BTJSON) -> BTVenmoAccountNonce? {
+    static func venmoAccount(with json: BTJSON) -> BTVenmoAccountNonce {
         BTVenmoAccountNonce(
             with: json["nonce"].asString() ?? "",
             username: json["details"]["username"].asString() ?? "",
