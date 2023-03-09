@@ -175,8 +175,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoError.errorDomain")
-            XCTAssertEqual(error.code, BTVenmoError.invalidRequestURL.errorCode)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
+            XCTAssertEqual(error.code, BTVenmoError.invalidRequestURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support.")
             expectation.fulfill()
         }
@@ -197,8 +197,8 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (venmoAccount, error) -> Void in
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoError.errorDomain")
-            XCTAssertEqual(error.code, BTVenmoError.invalidRequestURL.errorCode)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
+            XCTAssertEqual(error.code, BTVenmoError.invalidRequestURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Failed to fetch a Venmo paymentContextID while constructing the requestURL.")
             expectation.fulfill()
         }

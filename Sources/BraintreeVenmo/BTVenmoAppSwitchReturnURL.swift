@@ -57,7 +57,7 @@ import BraintreeCore
             state = .failed
             let errorMessage: String? = parameters["errorMessage"]
             let errorCode = Int(parameters["errorCode"] ?? "0")
-            error = BTVenmoError.returnURLError(errorCode ?? 0, errorMessage)
+            error = BTVenmoAppSwitchError.returnURLError(errorCode ?? 0, errorMessage)
         } else if url.path == "/vzero/auth/venmo/cancel" {
             state = .canceled
         } else {

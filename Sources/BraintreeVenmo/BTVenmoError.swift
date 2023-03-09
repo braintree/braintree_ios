@@ -1,10 +1,32 @@
 import Foundation
 
-/// Error codes associated with Venmo
-enum BTVenmoError: Error, CustomNSError, LocalizedError {
+/// Error codes associated with Venmo App Switch
+enum BTVenmoAppSwitchError: Error, CustomNSError, LocalizedError {
 
     /// The error returned from the Venmo return URL
     case returnURLError(Int, String?)
+
+    static var errorDomain: String {
+        "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain"
+    }
+
+    var errorCode: Int {
+        switch self {
+        case .returnURLError(let errorCode, _):
+            return errorCode
+        }
+    }
+
+    var errorDescription: String? {
+        switch self {
+        case .returnURLError(_, let errorMessage):
+            return errorMessage
+        }
+    }
+}
+
+/// Error codes associated with Venmo
+enum BTVenmoError: Error, CustomNSError, LocalizedError {
 
     /// Venmo is not enabled
     case disabled
@@ -25,7 +47,7 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
     case appSwitchFailed
 
     /// Invalid request URL
-    case invalidRequestURL
+    case invalidRequestURL(String)
 
     /// Failed to fetch Braintree configuration
     case fetchConfigurationFailed
@@ -36,31 +58,27 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
 
     var errorCode: Int {
         switch self {
-        case .returnURLError(let errorCode, _):
-            return errorCode
         case .disabled:
-            return 1
+            return 0
         case .appNotAvailable:
-            return 2
+            return 1
         case .bundleDisplayNameMissing:
-            return 3
+            return 2
         case .invalidReturnURL:
-            return 4
+            return 3
         case .invalidBodyReturned:
-            return 5
+            return 4
         case .appSwitchFailed:
-            return 6
+            return 5
         case .invalidRequestURL:
-            return 7
+            return 6
         case .fetchConfigurationFailed:
-            return 8
+            return 7
         }
     }
 
     var errorDescription: String? {
         switch self {
-        case .returnURLError(_, let errorMessage):
-            return errorMessage
         case .disabled:
             return "Venmo is not enabled for this merchant account."
         case .appNotAvailable:
@@ -73,8 +91,8 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
             return "The request returned a body that was missing or nil."
         case .appSwitchFailed:
             return "UIApplication failed to perform app switch to Venmo."
-        case .invalidRequestURL:
-            return "Failed to fetch a Venmo paymentContextID while constructing the requestURL."
+        case .invalidRequestURL(let description):
+            return description
         case .fetchConfigurationFailed:
             return "Failed to fetch Braintree configuration."
         }

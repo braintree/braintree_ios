@@ -35,7 +35,7 @@ import BraintreeCore
     var shouldVault: Bool = false
 
     // TODO: document this
-    var completion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
+    var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
 
     // MARK: - Initializer
 
@@ -114,17 +114,17 @@ import BraintreeCore
                         self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.network-connection.failure")
                     }
 
-                    self.completion(nil, BTVenmoError.invalidRequestURL)
+                    completion(nil, BTVenmoError.invalidRequestURL("Failed to fetch a Venmo paymentContextID while constructing the requestURL."))
                     return
                 }
 
                 guard let body else {
-                    self.completion(nil, BTVenmoError.invalidBodyReturned)
+                    completion(nil, BTVenmoError.invalidBodyReturned)
                     return
                 }
 
                 guard let paymentContextID = body["data"]["createVenmoPaymentContext"]["venmoPaymentContext"]["id"].asString() else {
-                    self.completion(nil, BTVenmoError.invalidRequestURL)
+                    completion(nil, BTVenmoError.invalidRequestURL("Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."))
                     return
                 }
 
@@ -137,8 +137,8 @@ import BraintreeCore
                     paymentContextID: paymentContextID,
                     metadata: metadata
                 ) else {
-                    // TODO: solidify error return here
-                    self.completion(nil, BTVenmoError.invalidRequestURL)
+                    // TODO: solidify error return here - is this accurate?
+                    completion(nil, BTVenmoError.invalidRequestURL(""))
                     return
                 }
 
@@ -166,7 +166,7 @@ import BraintreeCore
     func handleOpenURL(_ url: URL) {
         guard let returnURL = BTVenmoAppSwitchReturnURL(url: url) else {
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.failure")
-            completion(nil, BTVenmoError.invalidReturnURL(""))
+            appSwitchCompletion(nil, BTVenmoError.invalidReturnURL(""))
             return
         }
 
@@ -185,12 +185,11 @@ import BraintreeCore
                     }
 
                     self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.client-failure")
-                    self.completion(nil, error)
-                    return
+                    self.appSwitchCompletion(nil, error)
                 }
 
                 guard let body else {
-                    self.completion(nil, BTVenmoError.invalidBodyReturned)
+                    self.appSwitchCompletion(nil, BTVenmoError.invalidBodyReturned)
                     return
                 }
 
@@ -198,29 +197,29 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.success")
 
                 if self.shouldVault && self.apiClient.clientToken != nil {
-                    self.vaultVenmoAccountNonce(venmoAccountNonce.nonce, completion: self.completion)
+                    self.vaultVenmoAccountNonce(venmoAccountNonce.nonce)
                 } else {
-                    self.completion(venmoAccountNonce, nil)
+                    self.appSwitchCompletion(venmoAccountNonce, nil)
                 }
             }
 
         case .succeeded:
             guard let nonce = returnURL.nonce else {
                 apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.client-failure")
-                completion(nil, BTVenmoError.invalidReturnURL("nonce"))
+                appSwitchCompletion(nil, BTVenmoError.invalidReturnURL("nonce"))
                 return
             }
 
             guard let username = returnURL.username else {
                 apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.client-failure")
-                completion(nil, BTVenmoError.invalidReturnURL("username"))
+                appSwitchCompletion(nil, BTVenmoError.invalidReturnURL("username"))
                 return
             }
 
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.success")
 
             if shouldVault && apiClient.clientToken != nil {
-                vaultVenmoAccountNonce(nonce, completion: completion)
+                vaultVenmoAccountNonce(nonce)
             } else {
                 let detailsDictionary: [String: String?] = ["username": returnURL.username]
                 let json: BTJSON = BTJSON(
@@ -232,17 +231,17 @@ import BraintreeCore
                 )
 
                 let venmoAccountNonce = BTVenmoAccountNonce(with: json)
-                completion(venmoAccountNonce, nil)
+                appSwitchCompletion(venmoAccountNonce, nil)
                 return
             }
 
         case .failed:
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.failed")
-            completion(nil, returnURL.error)
+            appSwitchCompletion(nil, returnURL.error)
 
         case .canceled:
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.handle.cancel")
-            completion(nil, nil)
+            appSwitchCompletion(nil, nil)
 
         default:
             // should not happen
@@ -268,7 +267,7 @@ import BraintreeCore
         if success {
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.initiate.success")
             BTVenmoClient.venmoClient = self
-            self.completion = completion
+            self.appSwitchCompletion = completion
         } else {
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.initiate.error.failure")
             completion(nil, BTVenmoError.appSwitchFailed)
@@ -277,7 +276,7 @@ import BraintreeCore
 
     // MARK: - Vaulting Methods
 
-    func vaultVenmoAccountNonce(_ nonce: String, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+    func vaultVenmoAccountNonce(_ nonce: String) {
         let venmoAccount: [String: String] = ["nonce": nonce]
         let parameters: [String: Any] = ["venmoAccount": venmoAccount]
 
@@ -288,12 +287,12 @@ import BraintreeCore
                 }
 
                 self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.vault.failure")
-                completion(nil, error)
+                self.appSwitchCompletion(nil, error)
                 return
             }
 
             guard let body else {
-                completion(nil, BTVenmoError.invalidBodyReturned)
+                self.appSwitchCompletion(nil, BTVenmoError.invalidBodyReturned)
                 return
             }
 
@@ -301,7 +300,7 @@ import BraintreeCore
             let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce(with: venmoAccountJSON)
 
             self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.vault.success")
-            completion(venmoAccountNonce, venmoAccountJSON.asError())
+            self.appSwitchCompletion(venmoAccountNonce, venmoAccountJSON.asError())
         }
     }
 
