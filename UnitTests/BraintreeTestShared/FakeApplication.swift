@@ -1,6 +1,7 @@
 import UIKit
+import BraintreeVenmo
 
-public class FakeApplication: NSObject {
+public class FakeApplication: NSExtensionContext {
     public var lastOpenURL: URL? = nil
     public var openURLWasCalled: Bool = false
     var cannedOpenURLSuccess: Bool = true
@@ -11,17 +12,13 @@ public class FakeApplication: NSObject {
         // no-op
     }
 
-    func open(
-        _ url: URL,
-        options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
-        completionHandler completion: ((Bool) -> Void)?
-    ) {
-        lastOpenURL = url
+    @objc public override func open(_ URL: URL, completionHandler: (@Sendable (Bool) -> Void)? = nil) {
+        lastOpenURL = URL
         openURLWasCalled = true
-        completion?(cannedOpenURLSuccess)
+        completionHandler?(cannedOpenURLSuccess)
     }
 
-    @objc func canOpenURL(_ url: URL) -> Bool {
+    @objc public func canOpenURL(_ url: URL) -> Bool {
         for whitelistURL in canOpenURLWhitelist {
             if whitelistURL.scheme == url.scheme {
                 return true
