@@ -1557,9 +1557,9 @@
 				BEDB820729B675DC00075AF3 /* BTVenmoAccountNonce.swift */,
 				BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift */,
 				BE0AF6B829AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift */,
+				BEDB820929B7A9E600075AF3 /* BTVenmoClient.swift */,
 				BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */,
 				BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */,
-				BEDB820929B7A9E600075AF3 /* BTVenmoClient.swift */,
 			);
 			path = BraintreeVenmo;
 			sourceTree = "<group>";
