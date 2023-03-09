@@ -15,6 +15,7 @@
     * Make `BTApplePayCardNonce` initializer internal
   * BraintreeVenmo
     * Rename `BTVenmoAccountNonce.externalId` to `BTVenmoAccountNonce.externalID`
+    * Remove `BTVenmoErrorDomain` global constant
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift

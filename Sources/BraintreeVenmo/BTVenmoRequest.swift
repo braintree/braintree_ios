@@ -8,6 +8,15 @@ import Foundation
 
     /// The Venmo payment will be authorized for a one-time payment and cannot be vaulted.
     case singleUse
+
+    var stringValue: String {
+        switch self {
+        case .multiUse:
+            return "MULTI_USE"
+        case .singleUse:
+            return "SINGLE_USE"
+        }
+    }
 }
 
 /// A BTVenmoRequest specifies options that contribute to the Venmo flow
@@ -32,16 +41,6 @@ import Foundation
 
     /// Optional. The business name that will be displayed in the Venmo app payment approval screen. Only used by merchants onboarded as PayFast channel partners.
     public var displayName: String?
-
-    // TODO: move into enum once VenmoClient is in Swift
-    public var paymentMethodUsageAsString: String {
-        switch paymentMethodUsage {
-        case .multiUse:
-            return "MULTI_USE"
-        case .singleUse:
-            return "SINGLE_USE"
-        }
-    }
 
     // MARK: - Initializer
 

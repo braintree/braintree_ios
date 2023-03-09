@@ -12,9 +12,8 @@ import BraintreeCore
     static let venmoScheme: String = "com.venmo.touch.v2"
 
     /// The base app switch URL for Venmo. Does not include specific parameters.
-    // TODO: property can be internal once rest of Venmo is in Swift
     public static var baseAppSwitchURL: URL? {
-        appSwitchBaseURLComponents()?.url
+        appSwitchBaseURLComponents().url
     }
 
     /// Create an app switch URL
@@ -82,8 +81,8 @@ import BraintreeCore
         }
 
         var components = appSwitchBaseURLComponents()
-        components?.percentEncodedQuery = BTURLUtils.queryString(from: appSwitchParameters as NSDictionary)
-        return components?.url
+        components.percentEncodedQuery = BTURLUtils.queryString(from: appSwitchParameters as NSDictionary)
+        return components.url
     }
 
     // MARK: - Internal Helper Methods
@@ -95,10 +94,10 @@ import BraintreeCore
         return components?.url
     }
 
-    static func appSwitchBaseURLComponents() -> URLComponents? {
-        var components = URLComponents(string: xCallbackTemplate)
-        components?.scheme = venmoScheme
-        components?.percentEncodedPath = "/vzero/auth"
+    static func appSwitchBaseURLComponents() -> URLComponents {
+        var components: URLComponents = URLComponents(string: xCallbackTemplate) ?? URLComponents()
+        components.scheme = venmoScheme
+        components.percentEncodedPath = "/vzero/auth"
         return components
     }
 }

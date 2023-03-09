@@ -1,19 +1,19 @@
 import UIKit
 
-public class FakeApplication {
+public class FakeApplication: NSObject {
     public var lastOpenURL: URL? = nil
     public var openURLWasCalled: Bool = false
     var cannedOpenURLSuccess: Bool = true
     public var cannedCanOpenURL: Bool = true
     public var canOpenURLWhitelist: [URL] = []
 
-    public init() {
+    public override init() {
         // no-op
     }
 
-    @objc func openURL(
+    func open(
         _ url: URL,
-        options: [UIApplication.OpenExternalURLOptionsKey : Any],
+        options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
         completionHandler completion: ((Bool) -> Void)?
     ) {
         lastOpenURL = url
