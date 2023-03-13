@@ -51,7 +51,7 @@
 		425867A225EED15600D5F160 /* MockPaymentFlowClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425867A125EED15600D5F160 /* MockPaymentFlowClientDelegate.swift */; };
 		427F329025D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427F328F25D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift */; };
 		427F32E025D1D62D00435294 /* BTPayPalClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427F32DF25D1D62D00435294 /* BTPayPalClient_Tests.swift */; };
-		428F48E42624C9B700EC8DB4 /* BTVenmoAppSwitchRequestURL_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRequestURL_Tests.swift */; };
+		428F48E42624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift */; };
 		428F976626727333001042E1 /* BTMockOpenURLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 428F976526727333001042E1 /* BTMockOpenURLContext.m */; };
 		4290C666259B9E2E00D2044C /* BTThreeDSecureV2BaseCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C660259B9E2E00D2044C /* BTThreeDSecureV2BaseCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4290C667259B9E2E00D2044C /* BTThreeDSecureV2UICustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 4290C661259B9E2E00D2044C /* BTThreeDSecureV2UICustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -680,7 +680,7 @@
 		425867A125EED15600D5F160 /* MockPaymentFlowClientDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPaymentFlowClientDelegate.swift; sourceTree = "<group>"; };
 		427F328F25D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalVaultRequest_Tests.swift; sourceTree = "<group>"; };
 		427F32DF25D1D62D00435294 /* BTPayPalClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalClient_Tests.swift; sourceTree = "<group>"; };
-		428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRequestURL_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchRequestURL_Tests.swift; sourceTree = "<group>"; };
+		428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchRedirectURL_Tests.swift; sourceTree = "<group>"; };
 		428F976426727333001042E1 /* BTMockOpenURLContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockOpenURLContext.h; sourceTree = "<group>"; };
 		428F976526727333001042E1 /* BTMockOpenURLContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockOpenURLContext.m; sourceTree = "<group>"; };
 		4290C660259B9E2E00D2044C /* BTThreeDSecureV2BaseCustomization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2BaseCustomization.h; sourceTree = "<group>"; };
@@ -1716,7 +1716,7 @@
 				A948D70124FAC9B000F4F178 /* BraintreeVenmoTests-Bridging-Header.h */,
 				A9589DD924FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift */,
 				4228D80C2624D8C9001D2564 /* BTVenmoAccountNonce_Tests.swift */,
-				428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRequestURL_Tests.swift */,
+				428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift */,
 				4245D668256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift */,
 				A71F7DE61B6180A3005DA1B0 /* BTVenmoClient_Tests.swift */,
 				4228D8682624E5C3001D2564 /* BTVenmoRequest_Tests.swift */,
@@ -3118,7 +3118,7 @@
 			files = (
 				A9589DDA24FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift in Sources */,
 				4228D8692624E5C3001D2564 /* BTVenmoRequest_Tests.swift in Sources */,
-				428F48E42624C9B700EC8DB4 /* BTVenmoAppSwitchRequestURL_Tests.swift in Sources */,
+				428F48E42624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift in Sources */,
 				4245D669256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift in Sources */,
 				A948D6FD24FAC93100F4F178 /* BTVenmoClient_Tests.swift in Sources */,
 				4228D80D2624D8C9001D2564 /* BTVenmoAccountNonce_Tests.swift in Sources */,

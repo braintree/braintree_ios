@@ -1,7 +1,7 @@
 import XCTest
 @testable import BraintreeVenmo
 
-class BTVenmoAppSwitchRequestURL_Tests: XCTestCase {
+class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
 
     func testAppSwitchURL_whenPaymentContextIDIsNotNil_returnsURLWithPaymentContextID() {
         let requestURL = BTVenmoAppSwitchRedirectURL.appSwitch(forMerchantID: "merchant-id",
