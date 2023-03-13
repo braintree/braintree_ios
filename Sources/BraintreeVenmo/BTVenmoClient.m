@@ -176,7 +176,7 @@ static BTVenmoClient *appSwitchedClient;
                 return;
             }
             
-            NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:merchantProfileID
+            NSURL *appSwitchURL = [BTVenmoAppSwitchRedirectURL appSwitchURLForMerchantID:merchantProfileID
                                                                             accessToken:configuration.venmoAccessToken
                                                                         returnURLScheme:self.returnURLScheme
                                                                       bundleDisplayName:bundleDisplayName
@@ -248,7 +248,7 @@ static BTVenmoClient *appSwitchedClient;
 }
 
 - (BOOL)isiOSAppAvailableForAppSwitch {
-    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
+    return [self.application canOpenURL:[BTVenmoAppSwitchRedirectURL baseAppSwitchURL]];
 }
 
 #pragma mark - App switch return

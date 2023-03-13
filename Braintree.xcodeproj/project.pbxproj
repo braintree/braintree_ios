@@ -224,7 +224,7 @@
 		BC17F9C028D255B9004B18CC /* BTGraphQLSingleErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BF28D255B9004B18CC /* BTGraphQLSingleErrorNode.swift */; };
 		BE0AF6B929AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6B829AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift */; };
 		BE0AF6BB29AFD53300245C2C /* BTVenmoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */; };
-		BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift */; };
+		BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift */; };
 		BE0AF6BF29AFF13200245C2C /* BTVenmoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */; };
 		BE0B163D27E0CC7400868C77 /* CreateMandateResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */; };
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
@@ -867,7 +867,7 @@
 		BC20A8F5238596850077AF56 /* BTThreeDSecureV1UICustomization.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV1UICustomization.m; sourceTree = "<group>"; };
 		BE0AF6B829AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchReturnURL.swift; sourceTree = "<group>"; };
 		BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoError.swift; sourceTree = "<group>"; };
-		BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchRequestURL.swift; sourceTree = "<group>"; };
+		BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchRedirectURL.swift; sourceTree = "<group>"; };
 		BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoRequest.swift; sourceTree = "<group>"; };
 		BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMandateResult.swift; sourceTree = "<group>"; };
 		BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI.swift; sourceTree = "<group>"; };
@@ -1579,7 +1579,7 @@
 			isa = PBXGroup;
 			children = (
 				BEDB820729B675DC00075AF3 /* BTVenmoAccountNonce.swift */,
-				BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift */,
+				BE0AF6BC29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift */,
 				BE0AF6B829AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift */,
 				A77AA2B51B61936A00217B73 /* BTVenmoClient_Internal.h */,
 				A7C889FB1B5F0C00007A0E9C /* BTVenmoClient.m */,
@@ -2974,7 +2974,7 @@
 				BE0AF6BF29AFF13200245C2C /* BTVenmoRequest.swift in Sources */,
 				BE0AF6B929AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift in Sources */,
 				BE0AF6BB29AFD53300245C2C /* BTVenmoError.swift in Sources */,
-				BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRequestURL.swift in Sources */,
+				BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

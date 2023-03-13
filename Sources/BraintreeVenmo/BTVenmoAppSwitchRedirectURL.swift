@@ -6,7 +6,7 @@ import BraintreeCore
 
 // TODO: Entire class be internal and likely a struct once rest of Venmo is in Swift
 // TODO: methods can all be non-static likely when we convert the rest of Venmo to Swift
-@objcMembers public class BTVenmoAppSwitchRequestURL: NSObject {
+@objcMembers public class BTVenmoAppSwitchRedirectURL: NSObject {
 
     static let xCallbackTemplate: String = "scheme://x-callback-url/path"
     static let venmoScheme: String = "com.venmo.touch.v2"

@@ -4,7 +4,7 @@ import XCTest
 class BTVenmoAppSwitchRequestURL_Tests: XCTestCase {
 
     func testAppSwitchURL_whenPaymentContextIDIsNotNil_returnsURLWithPaymentContextID() {
-        let requestURL = BTVenmoAppSwitchRequestURL.appSwitch(forMerchantID: "merchant-id",
+        let requestURL = BTVenmoAppSwitchRedirectURL.appSwitch(forMerchantID: "merchant-id",
                                                               accessToken: "access-token",
                                                               returnURLScheme: "url-scheme",
                                                               bundleDisplayName: "display-name",
@@ -18,7 +18,7 @@ class BTVenmoAppSwitchRequestURL_Tests: XCTestCase {
     }
 
     func testAppSwitchURL_whenPaymentContextIDIsNil_returnsURLWithoutPaymentContextID() {
-        let requestURL = BTVenmoAppSwitchRequestURL.appSwitch(forMerchantID: "merchant-id",
+        let requestURL = BTVenmoAppSwitchRedirectURL.appSwitch(forMerchantID: "merchant-id",
                                                               accessToken: "access-token",
                                                               returnURLScheme: "url-scheme",
                                                               bundleDisplayName: "display-name",
