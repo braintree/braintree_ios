@@ -2,6 +2,7 @@
 
 ## unreleased
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
+* Update Cardinal SDK to version 2.2.5-6
 
 ## 5.20.1 (2023-01-31)
 * BraintreePayPalNativeCheckout (BETA)
