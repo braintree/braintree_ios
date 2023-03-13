@@ -3,6 +3,7 @@
 ## unreleased
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
 * Fixes error `@objcMembers attribute used without importing module 'Foundation'` in Xcode 14.3+
+* Convert `BraintreeVenmo` module to Swift
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
@@ -12,6 +13,8 @@
     * Remove `BTApplePayErrorDomain` global constant
     * Remove `BTApplePayErrorType`
     * Make `BTApplePayCardNonce` initializer internal
+  * BraintreeVenmo
+    * Rename `BTVenmoAccountNonce.externalId` to `BTVenmoAccountNonce.externalID`
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift

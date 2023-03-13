@@ -83,7 +83,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Venmo" do |s|
-    s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
+    s.source_files = "Sources/BraintreeVenmo/**/*.{swift,h,m}"
     s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
     s.dependency "Braintree/Core"
   end
