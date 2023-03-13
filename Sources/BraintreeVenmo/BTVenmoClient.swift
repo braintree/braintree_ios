@@ -37,7 +37,6 @@ import BraintreeCore
 
     // MARK: - Static Properties
 
-
     /// This static instance of `BTVenmoClient` is used during the app switch process.
     /// We require a static reference of the client to call `handleReturnURL` and return to the app.
     static var venmoClient: BTVenmoClient? = nil
@@ -54,14 +53,15 @@ import BraintreeCore
 
     // MARK: - Public Methods
 
+    // TODO: update migration guide and changelog
+
     /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
     /// - Parameters:
-    ///   - venmoRequest: A Venmo request.
+    ///   - request: A Venmo request.
     ///   - completion: This completion will be invoked when app switch is complete or an error occurs. On success, you will receive
     ///   an instance of `BTVenmoAccountNonce`; on failure, an error; on user cancellation, you will receive `nil` for both parameters.
-    @objc(tokenizeVenmoAccountWithVenmoRequest:completion:)
-    // TODO: do we want to rename to tokenize(with:completion) to match the other methods in other converted modules?
-    public func tokenizeVenmoAccount(with venmoRequest: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+    @objc(tokenizeWithVenmoRequest:completion:)
+    public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         // TODO: why is this needed for Swift?
         returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
@@ -90,20 +90,20 @@ import BraintreeCore
                 return
             }
 
-            let merchantProfileID = venmoRequest.profileID ?? configuration.venmoMerchantID
+            let merchantProfileID = request.profileID ?? configuration.venmoMerchantID
             let bundleDisplayName = self.bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
 
             let metadata = self.apiClient.metadata
             metadata.source = .venmoApp
 
             var inputParameters: [String: String?] = [
-                "paymentMethodUsage": venmoRequest.paymentMethodUsage.stringValue,
+                "paymentMethodUsage": request.paymentMethodUsage.stringValue,
                 "merchantProfileId": merchantProfileID,
                 "customerClient": "MOBILE_APP",
                 "intent": "CONTINUE"
             ]
 
-            if let displayName = venmoRequest.displayName {
+            if let displayName = request.displayName {
                 inputParameters["displayName"] = displayName
             }
 
@@ -147,7 +147,7 @@ import BraintreeCore
                     return
                 }
 
-                self.performAppSwitch(with: appSwitchURL, shouldVault: venmoRequest.vault, completion: completion)
+                self.performAppSwitch(with: appSwitchURL, shouldVault: request.vault, completion: completion)
             }
         }
     }
