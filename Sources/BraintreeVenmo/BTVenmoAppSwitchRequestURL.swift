@@ -28,12 +28,13 @@ import BraintreeCore
     ///   - metadata: Additional Braintree metadata
     ///   - Returns: The resulting URL, or `nil` if any of the required parameters are `nil`.
     // TODO: method can be internal once rest of Venmo is in Swift
-    // TODO: consider making these required and doing this check at the call site when BTVenmo_Client is in Swift
+    // TODO: consider making these required and doing this check at the call site when BTVenmoClient is in Swift
+    // TODO: update order once BTVenmoClient is in Swift
     @objc(appSwitchURLForMerchantID:accessToken:returnURLScheme:bundleDisplayName:environment:paymentContextID:metadata:)
     public static func appSwitch(
         forMerchantID merchantID: String?,
         accessToken: String?,
-        returnURLScheme: String?,
+        returnURLScheme: String,
         bundleDisplayName: String?,
         environment: String?,
         paymentContextID: String?,
@@ -88,7 +89,7 @@ import BraintreeCore
 
     // MARK: - Internal Helper Methods
 
-    static func returnURL(with scheme: String?, result: String) -> URL? {
+    static func returnURL(with scheme: String, result: String) -> URL? {
         var components = URLComponents(string: xCallbackTemplate)
         components?.scheme = scheme
         components?.percentEncodedPath = "/vzero/auth/venmo/\(result)"
