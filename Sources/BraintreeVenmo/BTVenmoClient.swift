@@ -134,10 +134,10 @@ import BraintreeCore
                 }
 
                 // TODO: do we have a preference on this being static or not
-                guard let appSwitchURL = BTVenmoAppSwitchRequestURL().appSwitch(
+                guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().appSwitch(
+                    returnURLScheme: self.returnURLScheme,
                     forMerchantID: merchantProfileID,
                     accessToken: configuration.venmoAccessToken,
-                    returnURLScheme: self.returnURLScheme,
                     bundleDisplayName: bundleDisplayName,
                     environment: configuration.venmoEnvironment,
                     paymentContextID: paymentContextID,
@@ -156,13 +156,13 @@ import BraintreeCore
     // TODO: do we want to rename this to isVenmoAppInstalled or something similar?
     public func isiOSAppAvailableForAppSwitch() -> Bool {
         if let _ = application as? UIApplication {
-            guard let appSwitchURL = BTVenmoAppSwitchRequestURL().baseAppSwitchURL else {
+            guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
                 return false
             }
 
             return UIApplication.shared.canOpenURL(appSwitchURL)
         } else {
-            return application.canOpenURL(BTVenmoAppSwitchRequestURL().baseAppSwitchURL ?? URL(string: "")!)
+            return application.canOpenURL(BTVenmoAppSwitchRedirectURL().baseAppSwitchURL ?? URL(string: "")!)
         }
     }
 
