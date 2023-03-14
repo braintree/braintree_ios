@@ -2,6 +2,7 @@
 
 ## unreleased
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
+* Update Cardinal SDK to version 2.2.5-6
 * BraintreePayPalNativeCheckout (BETA)
   * Expose `payerID` property on `BTPayPalNativeCheckoutAccountNonce` publicly
   * Expose all properties on `BTPayPalNativeCheckoutAccountNonce` to Objective-C
