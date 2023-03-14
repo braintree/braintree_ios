@@ -34,9 +34,7 @@ import BraintreeCore
         super.init(nonce: nonce, type: "Venmo", isDefault: isDefault)
     }
 
-    // TODO: docstring this
-    @objc(initWithPaymentContextJSON:)
-    public convenience init(with paymentContextJSON: BTJSON) {
+    convenience init(with paymentContextJSON: BTJSON) {
         self.init(
             with: paymentContextJSON["data"]["node"]["paymentMethodId"].asString() ?? "",
             username: paymentContextJSON["data"]["node"]["userName"].asString() ?? "",

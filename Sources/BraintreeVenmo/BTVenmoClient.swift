@@ -25,9 +25,6 @@ import BraintreeCore
     /// Defaults to `UIDevice.current`, but exposed for unit tests to inject different devices
     var device: UIDevice = .current
 
-    /// Defaults to `BTAppContextSwitcher.sharedInstance.returnURLScheme`, but exposed for unit tests to stub returnURLScheme.
-    var returnURLScheme: String = BTAppContextSwitcher.sharedInstance.returnURLScheme
-
     /// Stored property used to determine whether a Venmo account nonce should be vaulted after an app switch return
     var shouldVault: Bool = false
 
@@ -53,8 +50,6 @@ import BraintreeCore
 
     // MARK: - Public Methods
 
-    // TODO: update migration guide and changelog
-
     /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
     /// - Parameters:
     ///   - request: A Venmo request.
@@ -62,8 +57,7 @@ import BraintreeCore
     ///   an instance of `BTVenmoAccountNonce`; on failure, an error; on user cancellation, you will receive `nil` for both parameters.
     @objc(tokenizeWithVenmoRequest:completion:)
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        // TODO: why is this needed for Swift?
-        returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
+        let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
         if returnURLScheme == "" {
             NSLog("%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", BTLogLevelDescription.string(for: .critical) ?? "[BraintreeSDK] CRITICAL")
@@ -133,9 +127,8 @@ import BraintreeCore
                     return
                 }
 
-                // TODO: do we have a preference on this being static or not
                 guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().appSwitch(
-                    returnURLScheme: self.returnURLScheme,
+                    returnURLScheme: returnURLScheme,
                     forMerchantID: merchantProfileID,
                     accessToken: configuration.venmoAccessToken,
                     bundleDisplayName: bundleDisplayName,
@@ -153,8 +146,7 @@ import BraintreeCore
     }
 
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
-    // TODO: do we want to rename this to isVenmoAppInstalled or something similar?
-    public func isiOSAppAvailableForAppSwitch() -> Bool {
+    public func isVenmoAppInstalled() -> Bool {
         if let _ = application as? UIApplication {
             guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
                 return false
@@ -166,8 +158,7 @@ import BraintreeCore
         }
     }
 
-    /// Switches to the iTunes App Store to download the Venmo app.
-    // TODO: do we want to rename this?
+    /// Switches to the App Store to download the Venmo application.
     public func openVenmoAppPageInAppStore() {
         apiClient.sendAnalyticsEvent("ios.pay-with-venmo.app-store.invoked")
         if let _ = application as? UIApplication {
@@ -336,7 +327,7 @@ import BraintreeCore
             return false
         }
 
-        if !isiOSAppAvailableForAppSwitch() {
+        if !isVenmoAppInstalled() {
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.initiate.error.unavailable")
             error = BTVenmoError.appNotAvailable
             return false
