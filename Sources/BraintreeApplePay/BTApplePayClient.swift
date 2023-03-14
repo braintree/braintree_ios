@@ -112,6 +112,38 @@ import BraintreeCore
         }
     }
 
+    /// Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
+    /// It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
+    /// - Returns: A `PKPaymentRequest`
+    /// - Throws: An `Error` describing the failure
+    public func paymentRequest() async throws -> PKPaymentRequest {
+        try await withCheckedThrowingContinuation { continuation in
+            paymentRequest() { paymentRequest, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let paymentRequest {
+                    continuation.resume(returning: paymentRequest)
+                }
+            }
+        }
+    }
+
+    /// Tokenizes an Apple Pay payment.
+    /// - Parameter payment: A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`
+    /// - Returns: A `BTApplePayCardNonce`
+    /// - Throws: An `Error` describing the failure
+    public func tokenize(_ payment: PKPayment) async throws -> BTApplePayCardNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(payment) { applePayNonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let applePayNonce {
+                    continuation.resume(returning: applePayNonce)
+                }
+            }
+        }
+    }
+
     // MARK: - Internal Methods
 
     func parametersForPaymentToken(token: PKPaymentToken) -> [String: Any?] {
