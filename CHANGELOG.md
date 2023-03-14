@@ -14,6 +14,18 @@
     * Make `BTApplePayCardNonce` initializer internal
   * BraintreeDataCollector
     * Update PPRiskMagnes to static XCFramework
+    
+## 5.21.0 (2023-03-14)
+* Add missed deprecation warnings to `BTCardRequest` Union Pay properties
+* Update Cardinal SDK to version 2.2.5-6
+* BraintreePayPalNativeCheckout (BETA)
+  * Expose `payerID` property on `BTPayPalNativeCheckoutAccountNonce` publicly
+  * Expose all properties on `BTPayPalNativeCheckoutAccountNonce` to Objective-C
+
+## 5.20.1 (2023-01-31)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix bug where some request dictionaries were being constructed incorrectly
+  * Fix bug where passing `BTPayPalNativeVaultRequest.shippingAddressOverride` as `nil` was incorrectly throwing an error
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift
