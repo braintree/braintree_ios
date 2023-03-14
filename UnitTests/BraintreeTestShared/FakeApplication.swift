@@ -1,5 +1,4 @@
 import UIKit
-import BraintreeVenmo
 
 public class FakeApplication: NSExtensionContext {
     public var lastOpenURL: URL? = nil
