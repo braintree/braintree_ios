@@ -72,6 +72,30 @@ import BraintreeDataCollector
         tokenize(request: request, completion: completion)
     }
 
+    /// Tokenize a PayPal request to be used with the PayPal Vault flow.
+    ///
+    /// - Note: You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+    /// server when this method completes without any additional user interaction.
+    ///
+    /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
+    ///
+    /// - Parameter request: A `BTPayPalVaultRequest`
+    /// - Returns: A `BTPayPalAccountNonce` if successful
+    /// - Throws: An `Error` describing the failure
+    @objc(tokenizeWithVaultRequest:completionHandler:)
+    public func tokenize(_ request: BTPayPalVaultRequest) async throws -> BTPayPalAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(request) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
+    }
+
     /// Tokenize a PayPal request to be used with the PayPal Checkout or Pay Later flow.
     ///
     /// - Note: You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
@@ -89,6 +113,30 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         tokenize(request: request, completion: completion)
+    }
+
+    /// Tokenize a PayPal request to be used with the PayPal Checkout or Pay Later flow.
+    ///
+    /// - Note: You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+    /// server when this method completes without any additional user interaction.
+    ///
+    /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
+    ///
+    /// - Parameter request: A `BTPayPalCheckoutRequest`
+    /// - Returns: A `BTPayPalAccountNonce` if successful
+    /// - Throws: An `Error` describing the failure
+    @objc(tokenizeWithCheckoutRequest:completionHandler:)
+    public func tokenize(_ request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(request) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
     }
     
     // MARK: - Internal Methods
