@@ -12,6 +12,8 @@
     * Remove `BTApplePayErrorDomain` global constant
     * Remove `BTApplePayErrorType`
     * Make `BTApplePayCardNonce` initializer internal
+  * BraintreeDataCollector
+    * Update PPRiskMagnes to static XCFramework
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift
