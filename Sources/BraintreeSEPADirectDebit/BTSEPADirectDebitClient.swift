@@ -8,11 +8,15 @@ import BraintreeCore
 /// Used to integrate with SEPA Direct Debit.
 @objcMembers public class BTSEPADirectDebitClient: NSObject {
 
+    // MARK: - Internal Properties
+
     let apiClient: BTAPIClient
     
     var webAuthenticationSession: WebAuthenticationSession
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI
+
+    // MARK: - Initializers
 
     ///  Creates a SEPA Direct Debit client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
@@ -29,13 +33,16 @@ import BraintreeCore
         self.webAuthenticationSession = webAuthenticationSession
         self.sepaDirectDebitAPI = sepaDirectDebitAPI
     }
+
+    // MARK: - Public Methods
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
     /// - Parameters:
-    ///   - request: a BTSEPADebitRequest
+    ///   - request: a `BTSEPADebitRequest`
     ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs
+    @objc(tokenizeWithSEPADirectDebitRequest:completion:)
     public func tokenize(
-        request: BTSEPADirectDebitRequest,
+        _ request: BTSEPADirectDebitRequest,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.selected.started")
@@ -74,6 +81,25 @@ import BraintreeCore
             }
         }
     }
+
+
+    /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
+    /// - Parameter request: a `BTSEPADebitRequest`
+    /// - Returns: A `BTSEPADirectDebitNonce` if successful
+    /// - Throws: An `Error` describing the failure
+    public func tokenize(_ request: BTSEPADirectDebitRequest) async throws -> BTSEPADirectDebitNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(request) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
+    }
+
+    // MARK: - Internal Methods
     
     /// Calls `SEPADirectDebitAPI.createMandate` to create the mandate and returns the `approvalURL` in the `CreateMandateResult`
     /// that is used to display the mandate to the user during the web flow.
@@ -147,6 +173,8 @@ import BraintreeCore
             completion(false, SEPADirectDebitError.authenticationResultNil)
         }
     }
+
+    // MARK: - Private Methods
     
     private func getQueryStringParameter(url: String, param: String) -> String? {
         guard let url = URLComponents(string: url) else { return nil }
