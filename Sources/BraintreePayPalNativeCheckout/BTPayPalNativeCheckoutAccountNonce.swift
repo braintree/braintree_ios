@@ -9,7 +9,9 @@ import BraintreePayPal
 #endif
 
 /// Contains information about a PayPal payment method.
-@objc public class BTPayPalNativeCheckoutAccountNonce: BTPaymentMethodNonce {
+@objcMembers public class BTPayPalNativeCheckoutAccountNonce: BTPaymentMethodNonce {
+
+    // MARK: - Public Properties
 
     /// Payer's email address.
     public let email: String?
@@ -34,7 +36,9 @@ import BraintreePayPal
 
     /// Optional. Payer id associated with this transaction.
     /// Will be provided for Vault and Checkout.
-    let payerID: String?
+    public let payerID: String?
+
+    // MARK: - Initializer
 
     init?(json: BTJSON) {
         let paypalAccounts = json["paypalAccounts"][0]
