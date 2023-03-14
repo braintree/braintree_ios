@@ -24,6 +24,9 @@ import BraintreeCore
 
     // MARK: - Public Methods
 
+    /// Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
+    /// It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
+    /// - Parameter completion: A completion block that returns the payment request or an error.
     @objc(paymentRequest:)
     public func paymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -49,6 +52,11 @@ import BraintreeCore
         }
     }
 
+    /// Tokenizes an Apple Pay payment.
+    /// - Parameters:
+    ///   - payment: A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`
+    ///   - completion: A completion block that is invoked when tokenization has completed. If tokenization succeeds, we will return a `BTApplePayCardNonce`
+    ///   and `error` will be `nil`; if it fails, `BTApplePayCardNonce` will be `nil` and `error` will describe the failure.
     @objc(tokenizeApplePayPayment:completion:)
     public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent("ios.apple-pay.start")
