@@ -16,8 +16,13 @@
   * BraintreeVenmo
     * Rename `BTVenmoAccountNonce.externalId` to `BTVenmoAccountNonce.externalID`
     * Remove `BTVenmoErrorDomain` global constant
-    * Renamed `BTVenmoClient.tokenizeVenmoAccount(with:completion:)` to `BTVenmoClient.tokenize(_:, completion:)`
+    * Renamed `BTVenmoClient.tokenizeVenmoAccount(with:completion:)` to `BTVenmoClient.tokenize(_:completion:)`
     * Renamed `BTVenmoClient.isiOSAppAvailableForAppSwitch()` to `BTVenmoClient.isVenmoAppInstalled()`
+    * Add new `BTVenmoError`
+      * `.invalidBodyReturned`
+      * `.invalidRedirectURL`
+      * `.fetchConfigurationFailed`
+    * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift

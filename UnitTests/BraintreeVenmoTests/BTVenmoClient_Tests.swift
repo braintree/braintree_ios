@@ -176,7 +176,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
-            XCTAssertEqual(error.code, BTVenmoError.invalidRequestURL("").errorCode)
+            XCTAssertEqual(error.code, BTVenmoError.invalidRedirectURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support.")
             expectation.fulfill()
         }
@@ -198,7 +198,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertNil(venmoAccount)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
-            XCTAssertEqual(error.code, BTVenmoError.invalidRequestURL("").errorCode)
+            XCTAssertEqual(error.code, BTVenmoError.invalidRedirectURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Failed to fetch a Venmo paymentContextID while constructing the requestURL.")
             expectation.fulfill()
         }

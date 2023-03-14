@@ -28,6 +28,9 @@ enum BTVenmoAppSwitchError: Error, CustomNSError, LocalizedError {
 /// Error codes associated with Venmo
 enum BTVenmoError: Error, CustomNSError, LocalizedError {
 
+    /// Unknown error
+    case unknown
+
     /// Venmo is not enabled
     case disabled
 
@@ -37,17 +40,17 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
     /// Bundle display name is nil
     case bundleDisplayNameMissing
 
+    /// App Switch could not complete
+    case appSwitchFailed
+
     /// Return URL is invalid
     case invalidReturnURL(String)
 
     /// No body was returned from the request
     case invalidBodyReturned
 
-    /// App Switch could not complete
-    case appSwitchFailed
-
     /// Invalid request URL
-    case invalidRequestURL(String)
+    case invalidRedirectURL(String)
 
     /// Failed to fetch Braintree configuration
     case fetchConfigurationFailed
@@ -58,40 +61,44 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
 
     var errorCode: Int {
         switch self {
-        case .disabled:
+        case .unknown:
             return 0
-        case .appNotAvailable:
+        case .disabled:
             return 1
-        case .bundleDisplayNameMissing:
+        case .appNotAvailable:
             return 2
-        case .invalidReturnURL:
-            return 3
-        case .invalidBodyReturned:
+        case .bundleDisplayNameMissing:
             return 4
         case .appSwitchFailed:
             return 5
-        case .invalidRequestURL:
+        case .invalidReturnURL:
             return 6
-        case .fetchConfigurationFailed:
+        case .invalidBodyReturned:
             return 7
+        case .invalidRedirectURL:
+            return 8
+        case .fetchConfigurationFailed:
+            return 9
         }
     }
 
     var errorDescription: String? {
         switch self {
+        case .unknown:
+            return "An unknown error occurred. Please contact support."
         case .disabled:
             return "Venmo is not enabled for this merchant account."
         case .appNotAvailable:
             return "The Venmo app is not installed on this device, or it is not configured or available for app switch."
         case .bundleDisplayNameMissing:
             return "CFBundleDisplayName must be non-nil. Please set 'Bundle display name' in your Info.plist."
+        case .appSwitchFailed:
+            return "UIApplication failed to perform app switch to Venmo."
         case .invalidReturnURL(let missingValue):
             return "Return URL is missing \(missingValue)"
         case .invalidBodyReturned:
             return "The request returned a body that was missing or nil."
-        case .appSwitchFailed:
-            return "UIApplication failed to perform app switch to Venmo."
-        case .invalidRequestURL(let description):
+        case .invalidRedirectURL(let description):
             return description
         case .fetchConfigurationFailed:
             return "Failed to fetch Braintree configuration."

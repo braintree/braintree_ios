@@ -113,7 +113,7 @@ import BraintreeCore
                         self.apiClient.sendAnalyticsEvent("ios.pay-with-venmo.network-connection.failure")
                     }
 
-                    completion(nil, BTVenmoError.invalidRequestURL("Failed to fetch a Venmo paymentContextID while constructing the requestURL."))
+                    completion(nil, BTVenmoError.invalidRedirectURL("Failed to fetch a Venmo paymentContextID while constructing the requestURL."))
                     return
                 }
 
@@ -123,7 +123,7 @@ import BraintreeCore
                 }
 
                 guard let paymentContextID = body["data"]["createVenmoPaymentContext"]["venmoPaymentContext"]["id"].asString() else {
-                    completion(nil, BTVenmoError.invalidRequestURL("Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."))
+                    completion(nil, BTVenmoError.invalidRedirectURL("Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."))
                     return
                 }
 
@@ -136,7 +136,7 @@ import BraintreeCore
                     paymentContextID: paymentContextID,
                     metadata: metadata
                 ) else {
-                    completion(nil, BTVenmoError.invalidRequestURL("The request URL could not be constructed or was nil."))
+                    completion(nil, BTVenmoError.invalidRedirectURL("The request URL could not be constructed or was nil."))
                     return
                 }
 
