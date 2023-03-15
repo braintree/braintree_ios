@@ -80,10 +80,11 @@ Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 
 ## Demo
 
-A demo app is included in the project. To run it you will need to do the following:
-    1. Run `pod install`
-    2. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
-    3. Open `Braintree.xcworkspace` in Xcode. 
+1. Run `pod install`
+    * There is a known M1 mac issue with CocoaPods. See [this solution](https://github.com/CocoaPods/CocoaPods/issues/10220#issuecomment-730963835) to resolve `ffi` dependency issues.
+2. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
+3. Open `Braintree.xcworkspace` in Xcode
+4. Select the `Demo` scheme, and then run
 
 Xcode 13+ is required to run the demo app.
 
