@@ -3,6 +3,7 @@
 ## unreleased
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
 * Fixes error `@objcMembers attribute used without importing module 'Foundation'` in Xcode 14.3+
+* Add async/await support back to all public Swift methods
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
@@ -14,6 +15,10 @@
     * Make `BTApplePayCardNonce` initializer internal
   * BraintreeDataCollector
     * Update PPRiskMagnes to static XCFramework
+  * BraintreeAmericanExpress
+    * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(for:currencyISOCode:completion:)`
+  * BraintreeSEPADirectDebit
+    * Rename `BTSEPADirectDebitClient.tokenize(request:completion:)` to `BTSEPADirectDebitClient.tokenize(_:completion:)`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
