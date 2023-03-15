@@ -132,6 +132,7 @@ import BraintreeCore
     /// - Parameter payment: A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`
     /// - Returns: A `BTApplePayCardNonce`
     /// - Throws: An `Error` describing the failure
+    @objc(tokenizeApplePayPayment:completionHandler:)
     public func tokenize(_ payment: PKPayment) async throws -> BTApplePayCardNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(payment) { applePayNonce, error in
