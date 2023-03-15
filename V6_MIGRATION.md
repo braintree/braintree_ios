@@ -16,6 +16,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 8. [Union Pay](#union-pay)
 9. [SEPA Direct Debit](#sepa-direct-debit)
 10. [Payment Flow](#payment-flow)
+11. [American Express](#american-express)
 
 ## Supported Versions
 
@@ -159,9 +160,11 @@ cardClient.tokenizeCard(card) { (tokenizedCard, error) in
 ## SEPA Direct Debit
 We have removed the `context` parameter from the `BTSEPADirectDebit.tokenize()` method. Additionally, conformance to the `ASWebAuthenticationPresentationContextProviding` protocol is no longer needed.
 
+`BTSEPADirectDebitClient.tokenize(request: BTSEPADirectDebitRequest, context: ASWebAuthenticationPresentationContextProviding, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void)` has been renamed to `BTSEPADirectDebitClient.tokenize(_: BTSEPADirectDebitRequest, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void)`
+
 The updated `tokenize` method is as follows:
 ```
-sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
+sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
     // handle response
 }
 ```
@@ -174,3 +177,6 @@ We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in 
 Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
 
 Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
+
+## American Express
+`BTAmericanExpressClient.getRewardsBalance(forNonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)` has been renamed to `BTAmericanExpressClient.getRewardsBalance(for: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)`
