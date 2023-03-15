@@ -24,8 +24,9 @@ import BraintreeCore
     ///   `rewardsBalance` will contain information about the rewards balance and `error` will be `nil` (see exceptions in note);
     ///   if it fails, `rewardsBalance` will be `nil` and `error` will describe the failure.
     ///  - Note: If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
-    public func getRewardsBalance(forNonce nonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
-        let parameters = ["currencyIsoCode": currencyIsoCode, "paymentMethodNonce": nonce]
+    @objc(getRewardsBalanceForNonce:currencyIsoCode:completion:)
+    public func getRewardsBalance(for nonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
+        let parameters = ["currencyIsoCode": currencyISOCode, "paymentMethodNonce": nonce]
         apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.start")
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
@@ -55,9 +56,10 @@ import BraintreeCore
     ///   - currencyIsoCode: The currencyIsoCode to use. Example: 'USD'
     /// - Returns: A `BTAmericanExpressRewardsBalance` object with information about the rewards balance
     /// - Throws: An `Error` describing the failure
-    public func getRewardsBalance(forNonce nonce: String, currencyIsoCode: String) async throws -> BTAmericanExpressRewardsBalance {
+    @objc(getRewardsBalanceForNonce:currencyIsoCode:completionHandler:)
+    public func getRewardsBalance(for nonce: String, currencyISOCode: String) async throws -> BTAmericanExpressRewardsBalance {
         try await withCheckedThrowingContinuation { continuation in
-            getRewardsBalance(forNonce: nonce, currencyIsoCode: currencyIsoCode) { rewardsBalance, error in
+            getRewardsBalance(for: nonce, currencyISOCode: currencyISOCode) { rewardsBalance, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let rewardsBalance {
