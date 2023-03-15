@@ -181,4 +181,30 @@ class BTDataCollector_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
+
+    func testCollectDeviceData_returnsDeviceData() async throws {
+        let config: [String: Any] = ["environment": "development"]
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let deviceData = try await dataCollector.collectDeviceData()
+        XCTAssertNotNil(deviceData)
+    }
+
+    func testCollectDeviceData_encodingError_returnsError() async {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+
+        mockDataCollector.cannedDataCollectorError = BTDataCollectorError.encodingFailure
+
+        do {
+            let _ = try await mockDataCollector.collectDeviceData()
+        } catch {
+            let error = error as NSError
+            XCTAssertNotNil(error)
+            XCTAssertEqual(error.localizedDescription, BTDataCollectorError.encodingFailure.localizedDescription)
+        }
+    }
 }
