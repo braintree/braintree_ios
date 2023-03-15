@@ -145,6 +145,23 @@ import BraintreeCore
         }
     }
 
+    /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
+    /// - Parameter request: A `BTVenmoRequest`
+    /// - Returns: On success, you will receive an instance of `BTVenmoAccountNonce`
+    /// - Throws: An `Error` describing the failure
+    @objc(tokenizeWithVenmoRequest:completionHandler:)
+    public func tokenize(_ request: BTVenmoRequest) async throws -> BTVenmoAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(request) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
+    }
+
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
     public func isVenmoAppInstalled() -> Bool {
         if let _ = application as? UIApplication {

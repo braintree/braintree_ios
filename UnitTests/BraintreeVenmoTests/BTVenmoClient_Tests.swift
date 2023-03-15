@@ -568,6 +568,23 @@ class BTVenmoClient_Tests: XCTestCase {
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.pay-with-venmo.network-connection.failure"))
     }
+
+    func testTokenize_whenConfigurationIsInvalid_returnsError() async {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoClient.application = FakeApplication()
+        venmoClient.bundle = FakeBundle()
+
+        mockAPIClient.cannedConfigurationResponseBody = nil
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+
+        do {
+            let _ = try await venmoClient.tokenize(venmoRequest)
+        } catch {
+            let error = error as NSError
+            XCTAssertNotNil(error)
+            XCTAssertEqual(error.localizedDescription, BTVenmoError.fetchConfigurationFailed.localizedDescription)
+        }
+    }
     
     // MARK: - BTAppContextSwitchClient
 
