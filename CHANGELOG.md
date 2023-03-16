@@ -16,7 +16,7 @@
   * BraintreeDataCollector
     * Update PPRiskMagnes to static XCFramework
   * BraintreeAmericanExpress
-    * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(for:currencyISOCode:completion:)`
+    * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
   * BraintreeSEPADirectDebit
     * Rename `BTSEPADirectDebitClient.tokenize(request:completion:)` to `BTSEPADirectDebitClient.tokenize(_:completion:)`
     

@@ -26,7 +26,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
         
         let expectation = self.expectation(description: "Amex rewards balance response")
-        amexClient!.getRewardsBalance(for: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
             XCTAssertNil(error)
             XCTAssertNotNil(rewardsBalance)
             expectation.fulfill()
@@ -41,7 +41,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: [NSLocalizedDescriptionKey:"Fake description"])
 
         let expectation = self.expectation(description: "Amex rewards balance response")
-        amexClient!.getRewardsBalance(for: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
             
             if let error = error as NSError? {
                 XCTAssertEqual(error.code, 100)
@@ -62,7 +62,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
 
         let expectation = self.expectation(description: "Amex rewards balance response was nil")
-        amexClient!.getRewardsBalance(for: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
             
             if let error = error as NSError? {
                 XCTAssertEqual(error.code, BTAmericanExpressError.noRewardsData.errorCode)
@@ -91,14 +91,14 @@ class BTAmericanExpressClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        let rewardsBalance = try await amexClient?.getRewardsBalance(for: "fake-nonce", currencyISOCode: "USD")
+        let rewardsBalance = try await amexClient?.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD")
         XCTAssertNotNil(rewardsBalance)
         XCTAssertEqual("45256433", rewardsBalance?.rewardsAmount)
     }
 
     func testGetRewardsBalance_withInvalidNonce_returnError() async {
         do {
-            let _ = try await amexClient?.getRewardsBalance(for: "", currencyISOCode: "USD")
+            let _ = try await amexClient?.getRewardsBalance(forNonce: "", currencyISOCode: "USD")
         } catch {
             let error = error as NSError
             XCTAssertNotNil(error)

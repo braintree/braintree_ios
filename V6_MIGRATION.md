@@ -179,4 +179,4 @@ Your view no longer needs to conform to the `BTViewControllerPresentingDelegate`
 Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
 
 ## American Express
-`BTAmericanExpressClient.getRewardsBalance(forNonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)` has been renamed to `BTAmericanExpressClient.getRewardsBalance(for: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)`
+`BTAmericanExpressClient.getRewardsBalance(forNonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)` has been renamed to `BTAmericanExpressClient.getRewardsBalance(forNonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)`

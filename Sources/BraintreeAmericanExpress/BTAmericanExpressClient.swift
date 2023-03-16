@@ -25,7 +25,7 @@ import BraintreeCore
     ///   if it fails, `rewardsBalance` will be `nil` and `error` will describe the failure.
     ///  - Note: If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
     @objc(getRewardsBalanceForNonce:currencyIsoCode:completion:)
-    public func getRewardsBalance(for nonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
+    public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
         let parameters = ["currencyIsoCode": currencyISOCode, "paymentMethodNonce": nonce]
         apiClient.sendAnalyticsEvent("ios.amex.rewards-balance.start")
 
@@ -57,9 +57,9 @@ import BraintreeCore
     /// - Returns: A `BTAmericanExpressRewardsBalance` object with information about the rewards balance
     /// - Throws: An `Error` describing the failure
     @objc(getRewardsBalanceForNonce:currencyIsoCode:completionHandler:)
-    public func getRewardsBalance(for nonce: String, currencyISOCode: String) async throws -> BTAmericanExpressRewardsBalance {
+    public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String) async throws -> BTAmericanExpressRewardsBalance {
         try await withCheckedThrowingContinuation { continuation in
-            getRewardsBalance(for: nonce, currencyISOCode: currencyISOCode) { rewardsBalance, error in
+            getRewardsBalance(forNonce: nonce, currencyISOCode: currencyISOCode) { rewardsBalance, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let rewardsBalance {

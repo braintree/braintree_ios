@@ -1,3 +1,9 @@
+#if __has_include(<Braintree/BraintreeCard.h>)
+#import <Braintree/BraintreeCore-Swift.h>
+#else
+#import <BraintreeCore/BraintreeCore-Swift.h>
+#endif
+
 typedef NS_ENUM(NSInteger, BTCardNetwork);
 
 @class BTBinData;
@@ -9,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Contains information about a tokenized card.
  */
+// MEXT_MAJOR_VERSION: Subclass BTPaymentMethodNonce here and consider updating BTAmericanExpressClient.getRewardsBalance
+//to take in a BTPaymentMethodNonce vs a String then pulling out the string via the SDK.
 @interface BTCardNonce : NSObject
 
 /**
