@@ -52,12 +52,16 @@ The possible values for `BTVenmoPaymentMethodUsage` include:
 * `.multiUse` - the Venmo payment will be authorized for future payments and can be vaulted.
 * `.singleUse` - the Venmo payment will be authorized for a one-time payment and cannot be vaulted.
 
+`BTVenmoClient.tokenizeVenmoAccount(with: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void)` has been renamed to `BTVenmoClient.tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void)`
+
+`BTVenmoClient.isiOSAppAvailableForAppSwitch()` has been renamed to `BTVenmoClient.isVenmoAppInstalled()`
+
 ```
 let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
 venmoRequest.profileID = "my-profile-id"
 venmoRequest.vault = true
 
-venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccountNonce, error in
+venmoClient.tokenize(venmoRequest) { venmoAccountNonce, error in
     guard let venmoAccountNonce = venmoAccountNonce else {
         // handle error
     }
