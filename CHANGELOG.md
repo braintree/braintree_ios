@@ -25,6 +25,9 @@
       * `.invalidRedirectURL`
       * `.fetchConfigurationFailed`
     * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
+  * BraintreeThreeDSecure
+    * 3D Secure version 1 is no longer supported
+      * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion.version1` enum value
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
