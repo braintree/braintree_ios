@@ -406,44 +406,6 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
     }
 
-    func testHandleBrowserSwitchReturn_whenCreditFinancingReturned_shouldSendCreditAcceptedAnalyticsEvent() {
-        mockAPIClient.cannedResponseBody = BTJSON(value: [ "paypalAccounts":
-            [
-                [
-                    "description": "jane.doe@example.com",
-                    "details": [
-                        "email": "jane.doe@example.com",
-                        "creditFinancingOffered": [
-                            "cardAmountImmutable": true,
-                            "monthlyPayment": [
-                                "currency": "USD",
-                                "value": "13.88",
-                            ],
-                            "payerAcceptance": true,
-                            "term": 18,
-                            "totalCost": [
-                                "currency": "USD",
-                                "value": "250.00",
-                            ],
-                            "totalInterest": [
-                                "currency": "USD",
-                                "value": "0.00",
-                            ],
-                        ],
-                    ],
-                    "nonce": "a-nonce",
-                    "type": "PayPalAccount",
-                ]
-            ]
-        ])
-        payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
-
-        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
-
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
-    }
-
     func testHandleBrowserSwitchReturn_whenNonceIsNotCreated_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: ["not-a-paypalAccount"])
         payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
@@ -684,44 +646,6 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
 
-    func testHandleBrowserSwitchReturn_vault_whenCreditFinancingReturned_shouldSendCreditAcceptedAnalyticsEvent() {
-        mockAPIClient.cannedResponseBody = BTJSON(
-            value: [ "paypalAccounts": [
-                [
-                    "description": "jane.doe@example.com",
-                    "details": [
-                        "email": "jane.doe@example.com",
-                        "creditFinancingOffered": [
-                            "cardAmountImmutable": true,
-                            "monthlyPayment": [
-                                "currency": "USD",
-                                "value": "13.88",
-                            ],
-                            "payerAcceptance": true,
-                            "term": 18,
-                            "totalCost": [
-                                "currency": "USD",
-                                "value": "250.00",
-                            ],
-                            "totalInterest": [
-                                "currency": "USD",
-                                "value": "0.00",
-                            ],
-                        ],
-                    ],
-                    "nonce": "a-nonce",
-                    "type": "PayPalAccount",
-                ]
-            ]
-            ])
-
-        payPalClient.payPalRequest = BTPayPalVaultRequest()
-
-        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { _, _ in }
-
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
-    }
     
     func testTokenizePayPalAccountWithPayPalRequest_whenNetworkConnectionLost_sendsAnalytics() {
         mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
@@ -737,7 +661,7 @@ class BTPayPalClient_Tests: XCTestCase {
         
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal.tokenize.network-connection.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:network-connection:failed"))
     }
     
     func testHandleBrowserSwitchReturnURL_whenNetworkConnectionLost_sendsAnalytics() {
@@ -754,6 +678,6 @@ class BTPayPalClient_Tests: XCTestCase {
         
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal.handle-browser-switch.network-connection.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:browser-switch-network-connection:failed"))
     }
 }
