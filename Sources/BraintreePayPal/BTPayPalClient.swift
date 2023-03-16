@@ -290,6 +290,7 @@ import BraintreeDataCollector
                         }
                         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
                         completion(nil, BTPayPalError.canceled)
+                        return
                     }
                    
                     // User canceled by breaking out of the PayPal browser switch flow
