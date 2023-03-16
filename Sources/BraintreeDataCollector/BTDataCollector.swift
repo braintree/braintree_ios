@@ -36,7 +36,7 @@ import BraintreeCore
     ///  We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
     ///  calling it when the customer initiates checkout is also fine.
     ///  Use the return value on your server, e.g. with `Transaction.sale`.
-    ///  - Parameter completion:  A completion block that returns either a device data string that should be passed into server-side calls, such as `Transaction.sale` or an error with the failure reason.
+    ///  - Parameter completion:  A completion block that returns either a device data string that should be passed into server-side calls, such as `Transaction.sale`, or an error with the failure reason.
     public func collectDeviceData(_ completion: @escaping (String? , Error?) -> Void) {
         fetchConfiguration { configuration, error in
             guard let configuration = configuration else {
