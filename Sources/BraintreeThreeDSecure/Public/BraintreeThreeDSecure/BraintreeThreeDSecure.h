@@ -17,7 +17,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 #import <Braintree/BTThreeDSecurePostalAddress.h>
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>
-#import <Braintree/BTThreeDSecureV1UICustomization.h>
 #import <Braintree/BTThreeDSecureV2UICustomization.h>
 #import <Braintree/BTThreeDSecureV2ButtonCustomization.h>
 #import <Braintree/BTThreeDSecureV2LabelCustomization.h>
@@ -33,7 +32,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 #import <BraintreeThreeDSecure/BTThreeDSecurePostalAddress.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureV1UICustomization.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureV2ButtonCustomization.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureV2LabelCustomization.h>

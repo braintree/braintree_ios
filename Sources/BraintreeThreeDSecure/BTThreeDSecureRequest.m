@@ -3,7 +3,6 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 #import "BTThreeDSecureV2Provider.h"
-#import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
@@ -99,8 +98,6 @@
 
 - (NSString *)versionRequestedAsString {
     switch (self.versionRequested) {
-        case BTThreeDSecureVersion1:
-            return @"1";
         default:
             return @"2";
     }
@@ -210,7 +207,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
     BTPaymentFlowClient *paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:apiClient];
     
-    if (threeDSecureRequest.versionRequested == BTThreeDSecureVersion1 && threeDSecureRequest.threeDSecureRequestDelegate == nil) {
+    if (threeDSecureRequest.threeDSecureRequestDelegate == nil) {
         threeDSecureRequest.threeDSecureRequestDelegate = self;
     }
 
@@ -240,15 +237,8 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
         [self.paymentFlowClientDelegate onPaymentComplete:lookupResult error:nil];
         return;
     }
-    
     if (lookupResult.lookup.isThreeDSecureVersion2) {
         [self performV2Authentication:lookupResult];
-    } else {
-        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:BTCoreConstants.callbackURLScheme
-                                                                           assetsURL:[configuration.json[@"assetsUrl"] asString]
-                                                                 threeDSecureRequest:self
-                                                                  threeDSecureLookup:lookupResult.lookup];
-        [self.paymentFlowClientDelegate onPaymentWithURL:browserSwitchURL error:nil];
     }
 }
 
