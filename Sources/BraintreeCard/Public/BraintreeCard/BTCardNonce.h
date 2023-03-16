@@ -1,9 +1,3 @@
-#if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BraintreeCore-Swift.h>
-#else
-#import <BraintreeCore/BraintreeCore-Swift.h>
-#endif
-
 typedef NS_ENUM(NSInteger, BTCardNetwork);
 
 @class BTBinData;
