@@ -27,6 +27,9 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
     /// Unable to create BTPayPalAccountNonce
     case failedToCreateNonce
     
+    /// asWebAuthentication error
+    case webSessionError
+    
     static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -49,6 +52,8 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
             return 6
         case .failedToCreateNonce:
             return 7
+        case .webSessionError:
+            return 8
         }
     }
 
@@ -70,6 +75,8 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
             return "The URL action did not contain a valid URL."
         case .failedToCreateNonce:
             return "Unable to create BTPayPalAccountNonce. Either body did not contain paypalAccounts array or contents could not be parsed."
+        case .webSessionError:
+            return "ASWebAuthenticationSession failed"
         }
     }
 }
