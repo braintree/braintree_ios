@@ -78,8 +78,9 @@ import BraintreeCore
                 return
             }
 
-            var error: Error? = error
-            if !self.verifyAppSwitch(with: configuration, error: &error) {
+            do {
+                let _ = try self.verifyAppSwitch(with: configuration)
+            } catch {
                 completion(nil, error)
                 return
             }
@@ -337,22 +338,19 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    func verifyAppSwitch(with configuration: BTConfiguration, error: inout Error?) -> Bool {
+    func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
         if !configuration.isVenmoEnabled {
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.initiate.error.disabled")
-            error = BTVenmoError.disabled
-            return false
+            throw BTVenmoError.disabled
         }
 
         if !isVenmoAppInstalled() {
             apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.initiate.error.unavailable")
-            error = BTVenmoError.appNotAvailable
-            return false
+            throw BTVenmoError.appNotAvailable
         }
 
         guard bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") != nil else {
-            error = BTVenmoError.bundleDisplayNameMissing
-            return false
+            throw BTVenmoError.bundleDisplayNameMissing
         }
 
         return true
