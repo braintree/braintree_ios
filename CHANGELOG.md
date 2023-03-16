@@ -293,7 +293,7 @@
     * _Notes:_
       * This was a workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
       * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
-      * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
+      * You can also remove any run-script phase or post-action [previously required](https://github.com/braintree/braintree_ios/blob/5.x/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
   * Xcode 13 Beta
     * Remove invalid file path exclusions from `Package.swift` (thanks @JonathanDowning)
 
@@ -323,7 +323,7 @@
 * Add CardinalMobile.xcframework version 2.2.5-1
 * Update Kount SDK to v4.1.4
 
-**NOTE:** For Swift Package Manager integrations using `BraintreeThreeDSecure`, manually including `CardinalMobile.framework` is no longer required. You should delete it from your project and add `CardinalMobile` via SPM. If you added the run script to remove simulator architectures from `CardinalMobile.framework`, you should remove this as well. See the [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for more information.
+**NOTE:** For Swift Package Manager integrations using `BraintreeThreeDSecure`, manually including `CardinalMobile.framework` is no longer required. You should delete it from your project and add `CardinalMobile` via SPM. If you added the run script to remove simulator architectures from `CardinalMobile.framework`, you should remove this as well. See the [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/5.x/SWIFT_PACKAGE_MANAGER.md) for more information.
 
 ## 5.2.0 (2021-03-15)
 * Fix potential crash if `legacyCode` param missing from GraphQL error response
