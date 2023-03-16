@@ -391,7 +391,7 @@ class BTCardClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.custom.card.succeeded"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:succeeded"))
     }
 
     func testAnalyticsEvent_whenTokenizationFails_isSent() {
@@ -432,7 +432,7 @@ class BTCardClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.custom.card.failed"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:failed"))
     }
     
     func testTokenizeCard_whenNetworkConnectionLost_sendsAnalytics() {
@@ -453,7 +453,7 @@ class BTCardClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.tokenize-card.network-connection.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:network-connection:failed"))
     }
 
 
@@ -692,7 +692,7 @@ class BTCardClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 1, handler: nil)
 
-        XCTAssertTrue(mockApiClient.postedAnalyticsEvents.contains("ios.card.graphql.tokenization.success"))
+        XCTAssertTrue(mockApiClient.postedAnalyticsEvents.contains("card:tokenize:succeeded"))
     }
 
     func testAnalyticsEvent_whenTokenizationFailsWithGraphQL_isSent() {
@@ -739,7 +739,7 @@ class BTCardClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.card.graphql.tokenization.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:failed"))
     }
     
     func testTokenizeCard_withGraphQL_whenNetworkConnectionLost_sendsAnalytics() {
@@ -767,6 +767,6 @@ class BTCardClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.tokenize-card.graphQL.network-connection.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:network-connection:failed"))
     }
 }
