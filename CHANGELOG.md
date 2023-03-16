@@ -3,6 +3,7 @@
 ## unreleased
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
 * Fixes error `@objcMembers attribute used without importing module 'Foundation'` in Xcode 14.3+
+* Convert `BraintreeVenmo` module to Swift
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
@@ -14,6 +15,16 @@
     * Make `BTApplePayCardNonce` initializer internal
   * BraintreeDataCollector
     * Update PPRiskMagnes to static XCFramework
+  * BraintreeVenmo
+    * Rename `BTVenmoAccountNonce.externalId` to `BTVenmoAccountNonce.externalID`
+    * Remove `BTVenmoErrorDomain` global constant
+    * Renamed `BTVenmoClient.tokenizeVenmoAccount(with:completion:)` to `BTVenmoClient.tokenize(_:completion:)`
+    * Renamed `BTVenmoClient.isiOSAppAvailableForAppSwitch()` to `BTVenmoClient.isVenmoAppInstalled()`
+    * Add new `BTVenmoError`
+      * `.invalidBodyReturned`
+      * `.invalidRedirectURL`
+      * `.fetchConfigurationFailed`
+    * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
