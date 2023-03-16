@@ -17,6 +17,14 @@
     * Update PPRiskMagnes to static XCFramework
   * BraintreeVenmo
     * Rename `BTVenmoAccountNonce.externalId` to `BTVenmoAccountNonce.externalID`
+    * Remove `BTVenmoErrorDomain` global constant
+    * Renamed `BTVenmoClient.tokenizeVenmoAccount(with:completion:)` to `BTVenmoClient.tokenize(_:completion:)`
+    * Renamed `BTVenmoClient.isiOSAppAvailableForAppSwitch()` to `BTVenmoClient.isVenmoAppInstalled()`
+    * Add new `BTVenmoError`
+      * `.invalidBodyReturned`
+      * `.invalidRedirectURL`
+      * `.fetchConfigurationFailed`
+    * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

@@ -1,16 +1,19 @@
 import XCTest
+import BraintreeCore
 @testable import BraintreeVenmo
 
 class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
 
     func testAppSwitchURL_whenPaymentContextIDIsNotNil_returnsURLWithPaymentContextID() {
-        let requestURL = BTVenmoAppSwitchRedirectURL.appSwitch(forMerchantID: "merchant-id",
-                                                              accessToken: "access-token",
-                                                              returnURLScheme: "url-scheme",
-                                                              bundleDisplayName: "display-name",
-                                                              environment: "sandbox",
-                                                              paymentContextID: "12345",
-                                                              metadata: BTClientMetadata())
+        let requestURL = BTVenmoAppSwitchRedirectURL().appSwitch(
+            returnURLScheme: "url-scheme",
+            forMerchantID: "merchant-id",
+            accessToken: "access-token",
+            bundleDisplayName: "display-name",
+            environment: "sandbox",
+            paymentContextID: "12345",
+            metadata: BTClientMetadata()
+        )
 
         let components = requestURL.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
         guard let queryItems = components?.queryItems else { XCTFail(); return }
@@ -18,13 +21,15 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
     }
 
     func testAppSwitchURL_whenPaymentContextIDIsNil_returnsURLWithoutPaymentContextID() {
-        let requestURL = BTVenmoAppSwitchRedirectURL.appSwitch(forMerchantID: "merchant-id",
-                                                              accessToken: "access-token",
-                                                              returnURLScheme: "url-scheme",
-                                                              bundleDisplayName: "display-name",
-                                                              environment: "sandbox",
-                                                              paymentContextID: nil,
-                                                              metadata: BTClientMetadata())
+        let requestURL = BTVenmoAppSwitchRedirectURL().appSwitch(
+            returnURLScheme: "url-scheme",
+            forMerchantID: "merchant-id",
+            accessToken: "access-token",
+            bundleDisplayName: "display-name",
+            environment: "sandbox",
+            paymentContextID: nil,
+            metadata: BTClientMetadata()
+        )
 
         let components = requestURL.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
         guard let queryItems = components?.queryItems else { XCTFail(); return }

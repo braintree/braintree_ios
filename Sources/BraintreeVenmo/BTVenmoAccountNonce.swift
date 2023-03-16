@@ -34,9 +34,7 @@ import BraintreeCore
         super.init(nonce: nonce, type: "Venmo", isDefault: isDefault)
     }
 
-    // TODO: remove public and make non-objc once BTVenmoClient is in Swift
-    @objc(initWithPaymentContextJSON:)
-    public convenience init?(with paymentContextJSON: BTJSON) {
+    convenience init(with paymentContextJSON: BTJSON) {
         self.init(
             with: paymentContextJSON["data"]["node"]["paymentMethodId"].asString() ?? "",
             username: paymentContextJSON["data"]["node"]["userName"].asString() ?? "",
@@ -53,9 +51,7 @@ import BraintreeCore
 
     // MARK: - Internal Methods
 
-    // TODO: remove public and make non-objc once BTVenmoClient is in Swift
-    @objc(venmoAccountWithJSON:)
-    public static func venmoAccount(with json: BTJSON) -> BTVenmoAccountNonce? {
+    static func venmoAccount(with json: BTJSON) -> BTVenmoAccountNonce {
         BTVenmoAccountNonce(
             with: json["nonce"].asString() ?? "",
             username: json["details"]["username"].asString() ?? "",
