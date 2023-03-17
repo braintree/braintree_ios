@@ -10,20 +10,26 @@ import Foundation
         get { _headingTextColor }
         @objc(setHeadingTextColor:) set {
             _headingTextColor = newValue
-            LabelCustomization().headingTextColor = newValue
+            (cardinalValue as? LabelCustomization)?.headingTextColor = newValue
         }
     }
 
     /// Font type for the heading label text.
     public var headingTextFontName: String? {
         get { _headingTextFontName }
-        set { LabelCustomization().headingTextFontName = newValue }
+        @objc(setHeadingTextFontName:) set {
+            _headingTextFontName = newValue
+            (cardinalValue as? LabelCustomization)?.headingTextFontName = newValue
+        }
     }
 
     /// Font size for the heading label text.
     public var headingTextFontSize: Int {
         get { _headingTextFontSize }
-        set { LabelCustomization().headingTextFontSize = Int32(newValue) }
+        @objc(setHeadingTextFontSize:) set {
+            _headingTextFontSize = newValue
+            (cardinalValue as? LabelCustomization)?.headingTextFontSize = Int32(newValue)
+        }
     }
 
     // MARK: - Private Properties
@@ -36,4 +42,11 @@ import Foundation
 
     /// Used as a holder for Obj-C interoperability
     var _headingTextFontSize: Int = 0
+
+    // MARK: - Initializer
+
+    public override init() {
+        super.init()
+        cardinalValue = LabelCustomization()
+    }
 }

@@ -8,19 +8,28 @@ import Foundation
     /// Width (integer value) of the text box border.
     public var borderWidth: Int {
         get { _borderWidth }
-        set { TextBoxCustomization().borderWidth = Int32(newValue) }
+        @objc(setBorderWidth:) set {
+            _borderWidth = newValue
+            (cardinalValue as? TextBoxCustomization)?.borderWidth = Int32(newValue)
+        }
     }
 
     /// Color code in Hex format. For example, the color code can be “#999999”.
     public var borderColor: String? {
         get { _borderColor }
-        set { TextBoxCustomization().borderColor = newValue }
+        @objc(setBorderColor:) set {
+            _borderColor = newValue
+            (cardinalValue as? TextBoxCustomization)?.borderColor = newValue
+        }
     }
 
     /// Radius (integer value) for the text box corners.
     public var cornerRadius: Int {
         get { _cornerRadius }
-        set { TextBoxCustomization().cornerRadius = Int32(newValue) }
+        @objc(setCornerRadius:) set {
+            _cornerRadius = newValue
+            (cardinalValue as? TextBoxCustomization)?.cornerRadius = Int32(newValue)
+        }
     }
 
     // MARK: - Internal Properties
@@ -33,4 +42,11 @@ import Foundation
 
     /// Used as a holder for Obj-C interoperability
     var _cornerRadius: Int = 0
+
+    // MARK: - Initializer
+
+    public override init() {
+        super.init()
+        cardinalValue = TextBoxCustomization()
+    }
 }

@@ -26,7 +26,7 @@ import Foundation
     // MARK: - Internal Properties
 
     /// Used as a holder for Obj-C interoperability
-    var _backgroundColor: String? = nil
+    var _backgroundColor: String?
 
     /// Used as a holder for Obj-C interoperability
     var _cornerRadius: Int = 0
