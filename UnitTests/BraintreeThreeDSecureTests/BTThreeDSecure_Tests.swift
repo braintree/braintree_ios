@@ -22,7 +22,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     // MARK: - ThreeDSecure Authentication Tests
 
     func testStartPayment_v2_returnsErrorWhenCardinalAuthenticationJWT_isMissing() {
-        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         let expectation = self.expectation(description: "willCallCompletion")
@@ -97,7 +96,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_v2_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
-        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         let expectation = self.expectation(description: "willCallCompletion")
@@ -149,7 +147,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() {
-        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         let expectation = expectation(description: "willCallCompletion")
@@ -168,8 +165,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() {
-        threeDSecureRequest.versionRequested = .version2
-
         let expectation = expectation(description: "willCallCompletion")
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
