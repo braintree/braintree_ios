@@ -1,7 +1,6 @@
 #import "BTThreeDSecureV2Provider.h"
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
-#import "BTThreeDSecureV2UICustomization_Internal.h"
 #import <CardinalMobile/CardinalMobile.h>
 
 // MARK: - Objective-C File Imports for Package Managers
@@ -20,6 +19,13 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 
+#endif
+
+// MARK: - Temporary Swift Module Imports
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+#else                                            // SPM and Carthage
+#import <BraintreeThreeDSecure/BraintreeThreeDSecure-Swift.h>
 #endif
 
 // MARK: - Swift File Imports for Package Managers

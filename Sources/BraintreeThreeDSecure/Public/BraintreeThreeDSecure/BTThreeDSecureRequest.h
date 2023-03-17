@@ -1,11 +1,9 @@
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTPaymentFlowRequest.h>
 #import <Braintree/BTPaymentFlowClient.h>
-#import <Braintree/BTThreeDSecureV2UICustomization.h>
 #else
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization.h>
 #endif
 
 @class BTThreeDSecureRequest;
@@ -14,6 +12,7 @@
 @class BTThreeDSecurePostalAddress;
 @class BTThreeDSecureAdditionalInformation;
 @class UiCustomization;
+@class BTThreeDSecureV2UICustomization;
 @protocol BTThreeDSecureRequestDelegate;
 
 NS_ASSUME_NONNULL_BEGIN

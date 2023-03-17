@@ -8,6 +8,4 @@
 
 @interface BTThreeDSecureV2BaseCustomization ()
 
-@property (nonatomic, strong) Customization *cardinalValue;
-
 @end

@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <CardinalMobile/CardinalMobile.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
  * @property textFontSize Font size for the UI element.
  */
 @property (nonatomic) int textFontSize;
+
+// TODO: can be internal again once this file is converted to Swift
+@property (nonatomic, strong) Customization *cardinalValue;
 
 @end
 
