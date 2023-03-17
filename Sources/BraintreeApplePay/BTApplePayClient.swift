@@ -27,8 +27,8 @@ import BraintreeCore
     /// Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
     /// It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
     /// - Parameter completion: A completion block that returns the payment request or an error.
-    @objc(paymentRequest:)
-    public func paymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
+    @objc(makePaymentRequest:)
+    public func makePaymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.configuration")
@@ -56,9 +56,9 @@ import BraintreeCore
     /// It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
     /// - Returns: A `PKPaymentRequest`
     /// - Throws: An `Error` describing the failure
-    public func paymentRequest() async throws -> PKPaymentRequest {
+    public func makePaymentRequest() async throws -> PKPaymentRequest {
         try await withCheckedThrowingContinuation { continuation in
-            paymentRequest() { paymentRequest, error in
+            makePaymentRequest() { paymentRequest, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let paymentRequest {

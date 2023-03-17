@@ -17,6 +17,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 9. [SEPA Direct Debit](#sepa-direct-debit)
 10. [Payment Flow](#payment-flow)
 11. [American Express](#american-express)
+12. [Apple Pay](#apple-pay)
 
 ## Supported Versions
 
@@ -184,3 +185,8 @@ Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerP
 
 ## American Express
 `BTAmericanExpressClient.getRewardsBalance(forNonce: String, currencyIsoCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)` has been renamed to `BTAmericanExpressClient.getRewardsBalance(forNonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void)`
+
+## Apple Pay
+`BTApplePayClient.tokenizeApplePay(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void)` has been renamed to `BTApplePayClient.tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void)`
+
+`BTApplePayClient.paymentRequest()` has been renamed to `BTApplePayClient.makePaymentRequest()`
