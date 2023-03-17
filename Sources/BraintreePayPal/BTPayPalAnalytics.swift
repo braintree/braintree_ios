@@ -1,15 +1,16 @@
 import Foundation
 
 class BTPayPalAnalytics {
+    
     static let vaultRequestStarted = "paypal:vault-tokenize:started"
     static let checkoutRequestStarted = "paypal:checkout-tokenize:started"
     
-    // counted in conversion rates
+    // MARK: - Tokenize Events Counted in Conversion Rates
     static let tokenizeFailed = "paypal:tokenize:failed"
     static let tokenizeSucceeded = "paypal:tokenize:succeeded"
     static let browserLoginCanceled = "paypal:tokenize:browser-login:canceled"
    
-    // additional detail analytic messages
+    // MARK: - Tokenize Events Additional Detail analytic Messages
     static let tokenizeNetworkConnectionFailed = "paypal:tokenize:network-connection:failed"
     static let tokenizeBrowserSwitchNetworkConnectionLost = "paypal:tokenize:browser-switch-network-connection:failed"
 
