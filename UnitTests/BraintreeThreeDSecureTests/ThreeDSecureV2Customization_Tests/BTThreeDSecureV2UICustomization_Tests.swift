@@ -1,5 +1,6 @@
 import XCTest
 import CardinalMobile
+@testable import BraintreeThreeDSecure
 
 class BTThreeDSecureV2UICustomization_Tests: XCTestCase {
 
