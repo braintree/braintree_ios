@@ -6,7 +6,7 @@ import BraintreeCore
 #endif
 
 /// Used to integrate with SEPA Direct Debit.
-@objcMembers public class BTSEPADirectDebitClient: NSObject {
+@objc public class BTSEPADirectDebitClient: NSObject {
 
     // MARK: - Internal Properties
 
@@ -87,7 +87,6 @@ import BraintreeCore
     /// - Parameter request: a `BTSEPADebitRequest`
     /// - Returns: A `BTSEPADirectDebitNonce` if successful
     /// - Throws: An `Error` describing the failure
-    @objc(tokenizeWithSEPADirectDebitRequest:completionHandler:)
     public func tokenize(_ request: BTSEPADirectDebitRequest) async throws -> BTSEPADirectDebitNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in

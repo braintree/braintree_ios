@@ -50,7 +50,6 @@ import PayPalCheckout
     /// - Parameter request: A `BTPayPalNativeCheckoutRequest`
     /// - Returns: A `BTPayPalNativeCheckoutAccountNonce` if successful
     /// - Throws: An `Error` describing the failure
-    @objc(tokenizeWithNativeCheckoutRequest:completionHandler:)
     public func tokenize(_ request: BTPayPalNativeCheckoutRequest) async throws -> BTPayPalNativeCheckoutAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in
@@ -89,7 +88,6 @@ import PayPalCheckout
     /// - Parameter request: A `BTPayPalNativeVaultRequest`
     /// - Returns: A `BTPayPalNativeCheckoutAccountNonce` if successful
     /// - Throws: An `Error` describing the failure
-    @objc(tokenizeWithVaultRequest:completionHandler:)
     public func tokenize(_ request: BTPayPalNativeVaultRequest) async throws -> BTPayPalNativeCheckoutAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in

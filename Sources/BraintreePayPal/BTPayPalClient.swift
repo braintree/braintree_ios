@@ -9,7 +9,7 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-@objcMembers public class BTPayPalClient: NSObject {
+@objc public class BTPayPalClient: NSObject {
     
     // MARK: - Internal Properties
 
@@ -83,7 +83,6 @@ import BraintreeDataCollector
     /// - Parameter request: A `BTPayPalVaultRequest`
     /// - Returns: A `BTPayPalAccountNonce` if successful
     /// - Throws: An `Error` describing the failure
-    @objc(tokenizeWithVaultRequest:completionHandler:)
     public func tokenize(_ request: BTPayPalVaultRequest) async throws -> BTPayPalAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in
@@ -126,7 +125,6 @@ import BraintreeDataCollector
     /// - Parameter request: A `BTPayPalCheckoutRequest`
     /// - Returns: A `BTPayPalAccountNonce` if successful
     /// - Throws: An `Error` describing the failure
-    @objc(tokenizeWithCheckoutRequest:completionHandler:)
     public func tokenize(_ request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in
@@ -214,6 +212,7 @@ import BraintreeDataCollector
         }
     }
     
+    @objc
     func applicationDidBecomeActive(notification: Notification) {
         returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted
     }
@@ -461,6 +460,7 @@ import BraintreeDataCollector
 
 extension BTPayPalClient: ASWebAuthenticationPresentationContextProviding {
 
+    @objc
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if #available(iOS 15, *) {
             let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene

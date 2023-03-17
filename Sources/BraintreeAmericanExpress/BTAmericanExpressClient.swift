@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 ///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
-@objcMembers public class BTAmericanExpressClient: NSObject {
+@objc public class BTAmericanExpressClient: NSObject {
     
     private let apiClient: BTAPIClient
     
@@ -56,7 +56,6 @@ import BraintreeCore
     ///   - currencyIsoCode: The currencyIsoCode to use. Example: 'USD'
     /// - Returns: A `BTAmericanExpressRewardsBalance` object with information about the rewards balance
     /// - Throws: An `Error` describing the failure
-    @objc(getRewardsBalanceForNonce:currencyIsoCode:completionHandler:)
     public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String) async throws -> BTAmericanExpressRewardsBalance {
         try await withCheckedThrowingContinuation { continuation in
             getRewardsBalance(forNonce: nonce, currencyISOCode: currencyISOCode) { rewardsBalance, error in
