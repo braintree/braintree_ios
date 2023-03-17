@@ -151,12 +151,6 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
 @property (nonatomic, nullable, strong) BTThreeDSecureAdditionalInformation *additionalInformation;
 
 /**
- Optional. Set to BTThreeDSecureVersion2 if ThreeDSecure V2 flows are desired, when possible. Defaults to BTThreeDSecureVersion2
- */
-// TODO: as the conversion progresses of 3DS to Swift, consider if we want to keep this property - it may be helpful for an eventual v3?
-@property (nonatomic, assign) BTThreeDSecureVersion versionRequested;
-
-/**
  Optional. If set to true, an authentication challenge will be forced if possible.
  */
 @property (nonatomic) BOOL challengeRequested;

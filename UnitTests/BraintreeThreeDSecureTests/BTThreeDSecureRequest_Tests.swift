@@ -114,19 +114,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         XCTAssertEqual(request.requestedExemptionTypeAsString, nil)
     }
 
-    // MARK: - versionRequested and versionRequestedAsString
-
-    func testVersionRequested_defaultsToVersion2() {
-        let request = BTThreeDSecureRequest()
-        XCTAssertEqual(request.versionRequested, .version2)
-    }
-
-    func testVersionRequestedAsString_whenVersion2IsRequested_returns2() {
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
-        XCTAssertEqual(request.versionRequestedAsString, "2")
-    }
-
     // MARK: - handleRequest
     
     func testHandleRequest_whenAmountIsNotANumber_throwsError() {
@@ -172,7 +159,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         }
         
         let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
         request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
         
         request.handleOpen(url)
@@ -193,7 +179,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         }
         
         let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
         request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
         
         request.handleOpen(url)

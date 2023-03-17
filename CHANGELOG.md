@@ -27,7 +27,8 @@
     * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
   * BraintreeThreeDSecure
     * 3D Secure version 1 is no longer supported
-      * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion.version1` enum value
+      * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion` enum
+        * All 3D Secure requests will use version 2
       * Rename `BTThreeDSecureV2ButtonType` enum cases to: `.verify`, `.continue`, `.next`, `.cancel`, and `.resend`
     
 ## 5.21.0 (2023-03-14)

@@ -64,15 +64,6 @@
 
 @implementation BTThreeDSecureRequest
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _versionRequested = BTThreeDSecureVersion2;
-    }
-
-    return self;
-}
-
 - (NSString *)accountTypeAsString {
     switch (self.accountType) {
         case BTThreeDSecureAccountTypeCredit:
@@ -100,13 +91,6 @@
             return @"06";
         default:
             return nil;
-    }
-}
-
-- (NSString *)versionRequestedAsString {
-    switch (self.versionRequested) {
-        default:
-            return @"2";
     }
 }
 
@@ -144,7 +128,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
 
         NSError *integrationError;
 
-        if (self.versionRequested == BTThreeDSecureVersion2 && !configuration.cardinalAuthenticationJWT) {
+        if (!configuration.cardinalAuthenticationJWT) {
             NSLog(@"%@ BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
@@ -158,7 +142,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil or NaN."}];
         }
 
-        if (self.versionRequested == BTThreeDSecureVersion2 && self.threeDSecureRequestDelegate == nil) {
+        if (self.threeDSecureRequestDelegate == nil) {
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
                                                userInfo:@{NSLocalizedDescriptionKey: @"Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."}];
@@ -169,7 +153,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
             return;
         }
 
-        if (configuration.cardinalAuthenticationJWT && self.versionRequested == BTThreeDSecureVersion2) {
+        if (configuration.cardinalAuthenticationJWT) {
             [self prepareLookup:apiClient completion:^(NSError * _Nullable error) {
                 if (error != nil) {
                     [delegate onPaymentComplete:nil error:error];
@@ -177,8 +161,6 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
                     [self startRequest:request configuration:configuration];
                 }
             }];
-        } else {
-            [self startRequest:request configuration:configuration];
         }
     }];
 }
