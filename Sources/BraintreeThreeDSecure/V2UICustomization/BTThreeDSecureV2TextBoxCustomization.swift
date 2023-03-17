@@ -1,4 +1,5 @@
 import Foundation
+import CardinalMobile
 
 /// Text box customization options for 3D Secure 2 flows.
 @objcMembers public class BTThreeDSecureV2TextBoxCustomization: BTThreeDSecureV2BaseCustomization {
@@ -32,16 +33,16 @@ import Foundation
         }
     }
 
-    // MARK: - Internal Properties
+    // MARK: - Fileprivate Properties
 
     /// Used as a holder for Obj-C interoperability
-    var _borderWidth: Int = 0
+    fileprivate var _borderWidth: Int = 0
 
     /// Used as a holder for Obj-C interoperability
-    var _borderColor: String?
+    fileprivate var _borderColor: String?
 
     /// Used as a holder for Obj-C interoperability
-    var _cornerRadius: Int = 0
+    fileprivate var _cornerRadius: Int = 0
 
     // MARK: - Initializer
 

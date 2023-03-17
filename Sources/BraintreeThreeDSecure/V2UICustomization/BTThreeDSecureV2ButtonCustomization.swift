@@ -1,4 +1,5 @@
 import Foundation
+import CardinalMobile
 
 /// Button customization options for 3D Secure 2 flows.
 @objcMembers public class BTThreeDSecureV2ButtonCustomization: BTThreeDSecureV2BaseCustomization {
@@ -23,13 +24,13 @@ import Foundation
         }
     }
 
-    // MARK: - Internal Properties
+    // MARK: - Fileprivate Properties
 
     /// Used as a holder for Obj-C interoperability
-    var _backgroundColor: String?
+    fileprivate var _backgroundColor: String?
 
     /// Used as a holder for Obj-C interoperability
-    var _cornerRadius: Int = 0
+    fileprivate var _cornerRadius: Int = 0
 
     // MARK: - Initializer
 

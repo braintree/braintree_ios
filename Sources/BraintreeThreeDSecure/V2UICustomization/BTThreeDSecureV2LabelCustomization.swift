@@ -1,4 +1,5 @@
 import Foundation
+import CardinalMobile
 
 /// Label customization options for 3D Secure 2 flows.
 @objcMembers public class BTThreeDSecureV2LabelCustomization: BTThreeDSecureV2BaseCustomization {
@@ -32,16 +33,16 @@ import Foundation
         }
     }
 
-    // MARK: - Private Properties
+    // MARK: - Fileprivate Properties
 
     /// Used as a holder for Obj-C interoperability
-    private var _headingTextColor: String?
+    fileprivate var _headingTextColor: String?
 
     /// Used as a holder for Obj-C interoperability
-    private var _headingTextFontName: String?
+    fileprivate var _headingTextFontName: String?
 
     /// Used as a holder for Obj-C interoperability
-    var _headingTextFontSize: Int = 0
+    fileprivate var _headingTextFontSize: Int = 0
 
     // MARK: - Initializer
 

@@ -1,4 +1,5 @@
 import Foundation
+import CardinalMobile
 
 /// Toolbar customization options for 3D Secure 2 flows.
 @objcMembers public class BTThreeDSecureV2ToolbarCustomization: BTThreeDSecureV2BaseCustomization {
@@ -32,16 +33,16 @@ import Foundation
         }
     }
 
-    // MARK: - Internal Properties
+    // MARK: - Fileprivate Properties
 
     /// Used as a holder for Obj-C interoperability
-    var _backgroundColor: String?
+    fileprivate var _backgroundColor: String?
 
     /// Used as a holder for Obj-C interoperability
-    var _headerText: String?
+    fileprivate var _headerText: String?
 
     /// Used as a holder for Obj-C interoperability
-    var _buttonText: String?
+    fileprivate var _buttonText: String?
 
     // MARK: - Initializer
 
