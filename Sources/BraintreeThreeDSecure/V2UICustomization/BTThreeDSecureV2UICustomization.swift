@@ -29,7 +29,7 @@ import CardinalMobile
     public var toolbarCustomization: BTThreeDSecureV2ToolbarCustomization? {
         didSet {
             let toolbarCustomization = toolbarCustomization?.cardinalValue as? ToolbarCustomization
-            return cardinalValue.setToolbar(toolbarCustomization)
+            cardinalValue.setToolbar(toolbarCustomization)
         }
     }
 
@@ -37,7 +37,7 @@ import CardinalMobile
     public var labelCustomization: BTThreeDSecureV2LabelCustomization? {
         didSet {
             let labelCustomization = labelCustomization?.cardinalValue as? LabelCustomization
-            return cardinalValue.setLabel(labelCustomization)
+            cardinalValue.setLabel(labelCustomization)
         }
     }
 
@@ -45,7 +45,7 @@ import CardinalMobile
     public var textBoxCustomization: BTThreeDSecureV2TextBoxCustomization? {
         didSet {
             let textBoxCustomization = textBoxCustomization?.cardinalValue as? TextBoxCustomization
-            return cardinalValue.setTextBox(textBoxCustomization)
+            cardinalValue.setTextBox(textBoxCustomization)
         }
     }
 
