@@ -61,7 +61,7 @@ import CardinalMobile
     ///   - buttonCustomization: Button customization options
     ///   - buttonType: Button type
     @objc(setButtonCustomization:buttonType:)
-    public func setButton(_ buttonCustomization: BTThreeDSecureV2ButtonCustomization, withType buttonType: BTThreeDSecureV2ButtonType) {
+    public func setButton(_ buttonCustomization: BTThreeDSecureV2ButtonCustomization, withType buttonType: ButtonType) {
         let buttonCustomization = buttonCustomization.cardinalValue as? ButtonCustomization
         let buttonType = ButtonType(UInt32(buttonType.rawValue))
         cardinalValue.setButton(buttonCustomization, buttonType: buttonType)

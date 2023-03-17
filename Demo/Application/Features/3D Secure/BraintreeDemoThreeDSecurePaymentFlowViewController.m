@@ -186,6 +186,7 @@
         [labelCustomization setHeadingTextFontName:@"AmericanTypewriter"];
         
         [ui setToolbarCustomization:toolbarCustomization];
+        // TODO: fix this!
         [ui setButtonCustomization:buttonCustomization buttonType:ButtonTypeVerify];
         [ui setTextBoxCustomization:textBoxCustomization];
         [ui setLabelCustomization:labelCustomization];
