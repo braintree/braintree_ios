@@ -2,18 +2,6 @@
 #import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
 
-// MARK: - Objective-C File Imports for Package Managers
-#if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
-#import <Braintree/BTCardRequest.h>
-
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeCard/BTCardRequest.h>
-
-#else // Carthage
-#import <BraintreeCard/BTCardRequest.h>
-
-#endif
-
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
@@ -32,6 +20,13 @@
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#endif
+
+// MARK: - Temporary Swift Module Imports
+#if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+#else                                            // SPM and Carthage
+#import <BraintreeCard/BraintreeCard-Swift.h>
 #endif
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
