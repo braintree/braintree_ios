@@ -1,6 +1,5 @@
 #import "Foundation/Foundation.h"
 #import "BTCardNonce_Internal.h"
-#import "BTAuthenticationInsight_Internal.h"
 
 #if __has_include(<Braintree/BraintreeCard.h>)
 #import <Braintree/BTThreeDSecureInfo.h>
@@ -26,6 +25,13 @@
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#endif
+
+// MARK: - Temporary Swift Module Imports
+#if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+#else                                            // SPM and Carthage
+#import <BraintreeCard/BraintreeCard-Swift.h>
 #endif
 
 @implementation BTCardNonce
