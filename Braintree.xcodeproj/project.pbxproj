@@ -19,8 +19,6 @@
 		038C7FE31EA1648900241ABE /* BTPaymentFlowClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FC81EA1648900241ABE /* BTPaymentFlowClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		038C7FE41EA1648900241ABE /* BTPaymentFlowRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FC91EA1648900241ABE /* BTPaymentFlowRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		038C7FE51EA1648900241ABE /* BTPaymentFlowResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FCA1EA1648900241ABE /* BTPaymentFlowResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		03DE926F20201CCB00A78D29 /* BTThreeDSecureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */; };
-		03DE927120201CE800A78D29 /* BTThreeDSecureInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03DE927020201CD900A78D29 /* BTThreeDSecureInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D7212469AD000C5094 /* BTLocalPaymentResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D3212469AD000C5094 /* BTLocalPaymentResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D8212469AD000C5094 /* BTPaymentFlowClient+LocalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D4212469AD000C5094 /* BTPaymentFlowClient+LocalPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D9212469AD000C5094 /* BTLocalPaymentRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D5212469AD000C5094 /* BTLocalPaymentRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -633,8 +631,6 @@
 		038C7FCA1EA1648900241ABE /* BTPaymentFlowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentFlowResult.h; sourceTree = "<group>"; };
 		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
 		03BFA5D81FB4CA650003ABCE /* BTThreeDSecure_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecure_Tests.swift; sourceTree = "<group>"; };
-		03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureInfo.m; sourceTree = "<group>"; };
-		03DE927020201CD900A78D29 /* BTThreeDSecureInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureInfo.h; sourceTree = "<group>"; };
 		03E7E3D3212469AD000C5094 /* BTLocalPaymentResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTLocalPaymentResult.h; sourceTree = "<group>"; };
 		03E7E3D4212469AD000C5094 /* BTPaymentFlowClient+LocalPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTPaymentFlowClient+LocalPayment.h"; sourceTree = "<group>"; };
 		03E7E3D5212469AD000C5094 /* BTLocalPaymentRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTLocalPaymentRequest.h; sourceTree = "<group>"; };
@@ -1214,7 +1210,6 @@
 				A7C8899C1B5F0471007A0E9C /* BTCardClient.h */,
 				A7C889A11B5F0471007A0E9C /* BTCardNonce.h */,
 				A751CAAE1CAC4667008603E5 /* BTCardRequest.h */,
-				03DE927020201CD900A78D29 /* BTThreeDSecureInfo.h */,
 			);
 			path = BraintreeCard;
 			sourceTree = "<group>";
@@ -1544,9 +1539,8 @@
 				A7C889D71B5F0ACB007A0E9C /* BTCardNonce_Internal.h */,
 				A7C889A21B5F0471007A0E9C /* BTCardNonce.m */,
 				A751CAAA1CAC464C008603E5 /* BTCardRequest.m */,
-				03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */,
-				41777D451B8D01510026F987 /* Public */,
 				BE80C00629C5516E00793A6C /* BTThreeDSecureInfo.swift */,
+				41777D451B8D01510026F987 /* Public */,
 			);
 			path = BraintreeCard;
 			sourceTree = "<group>";
@@ -1873,7 +1867,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03DE927120201CE800A78D29 /* BTThreeDSecureInfo.h in Headers */,
 				A751CAAF1CAC4667008603E5 /* BTCardRequest.h in Headers */,
 				A7C889AA1B5F04AE007A0E9C /* BraintreeCard.h in Headers */,
 				A7C889A81B5F0471007A0E9C /* BTCardNonce.h in Headers */,
@@ -2982,7 +2975,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03DE926F20201CCB00A78D29 /* BTThreeDSecureInfo.m in Sources */,
 				A7C889A71B5F0471007A0E9C /* BTCard.m in Sources */,
 				A7C889A91B5F0471007A0E9C /* BTCardNonce.m in Sources */,
 				A751CAAD1CAC464C008603E5 /* BTCardRequest.m in Sources */,

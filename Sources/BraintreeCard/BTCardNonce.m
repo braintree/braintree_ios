@@ -1,12 +1,6 @@
 #import "Foundation/Foundation.h"
 #import "BTCardNonce_Internal.h"
 
-#if __has_include(<Braintree/BraintreeCard.h>)
-#import <Braintree/BTThreeDSecureInfo.h>
-#else
-#import <BraintreeCard/BTThreeDSecureInfo.h>
-#endif
-
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
