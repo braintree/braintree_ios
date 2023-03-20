@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCard
 
 class BTThreeDSecureInfo_Tests: XCTestCase {
     func testParsesJson() {
