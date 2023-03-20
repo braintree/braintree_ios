@@ -1,6 +1,7 @@
 import XCTest
 @testable import BraintreeCore
 @testable import BraintreeTestShared
+@testable import BraintreeCard
 
 class BTPaymentFlowClient_ThreeDSecure_Tests: XCTestCase {
 

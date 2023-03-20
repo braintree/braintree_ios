@@ -9,9 +9,6 @@ enum BTCardError: Error, CustomNSError, LocalizedError {
     /// Braintree SDK is integrated incorrectly
     case integration
 
-    /// Payment option (e.g. UnionPay) is not enabled for this merchant account
-    case paymentOptionNotEnabled
-
     /// Customer provided invalid input
     case customerInputInvalid([String: Any])
 
@@ -28,23 +25,19 @@ enum BTCardError: Error, CustomNSError, LocalizedError {
             return 0
         case .integration:
             return 1
-        case .paymentOptionNotEnabled:
-            return 2
         case .customerInputInvalid:
-            return 3
+            return 2
         case .cardAlreadyExists:
-            return 4
+            return 3
         }
     }
 
-    var errorUserInfo: [String : Any] {
+    var errorUserInfo: [String: Any] {
         switch self {
         case .unknown:
-            return [:]
+            return [NSLocalizedDescriptionKey :"An unknown error occurred. Please contact support."]
         case .integration:
-            return [:]
-        case .paymentOptionNotEnabled:
-            return [:]
+            return [NSLocalizedDescriptionKey: "BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true."]
         case .customerInputInvalid(let errorDictionary):
             return errorDictionary
         case .cardAlreadyExists(let errorDictionary):
