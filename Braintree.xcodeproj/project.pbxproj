@@ -295,6 +295,8 @@
 		BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */; };
 		BEFE6DA827E289DF002BE9C8 /* MockWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA727E289DF002BE9C8 /* MockWebAuthenticationSession.swift */; };
 		BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */; };
+		BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */; };
+		BEFE9A3D29C8ECAA00BF69AB /* BTCardError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -914,6 +916,8 @@
 		BEFE6DA727E289DF002BE9C8 /* MockWebAuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWebAuthenticationSession.swift; sourceTree = "<group>"; };
 		BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
 		BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthenticationSession.swift; sourceTree = "<group>"; };
+		BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardClient.swift; sourceTree = "<group>"; };
+		BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1519,13 +1523,15 @@
 			isa = PBXGroup;
 			children = (
 				BE80C00429C54F2000793A6C /* BTAuthenticationInsight.swift */,
+				BE80C00C29C8B4B900793A6C /* BTCard.swift */,
 				8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */,
 				A7C8899D1B5F0471007A0E9C /* BTCardClient.m */,
+				BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */,
 				BE80C00A29C66F4800793A6C /* BTCardNonce.swift */,
 				BE80C00829C559B800793A6C /* BTCardRequest.swift */,
 				BE80C00629C5516E00793A6C /* BTThreeDSecureInfo.swift */,
 				41777D451B8D01510026F987 /* Public */,
-				BE80C00C29C8B4B900793A6C /* BTCard.swift */,
+				BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */,
 			);
 			path = BraintreeCard;
 			sourceTree = "<group>";
@@ -2961,6 +2967,8 @@
 				BE80C00D29C8B4B900793A6C /* BTCard.swift in Sources */,
 				BE80C00529C54F2000793A6C /* BTAuthenticationInsight.swift in Sources */,
 				BE80C00729C5516E00793A6C /* BTThreeDSecureInfo.swift in Sources */,
+				BEFE9A3D29C8ECAA00BF69AB /* BTCardError.swift in Sources */,
+				BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
