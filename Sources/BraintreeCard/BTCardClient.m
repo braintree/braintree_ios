@@ -1,5 +1,4 @@
 #import "BTCardClient_Internal.h"
-#import "BTCardNonce_Internal.h"
 #import "BTCard_Internal.h"
 
 // MARK: - Swift File Imports for Package Managers
@@ -106,7 +105,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                  BTJSON *cardJSON = body[@"data"][@"tokenizeCreditCard"];
                  [self sendGraphQLAnalyticsEventWithSuccess:YES];
 
-                 BTCardNonce *cardNonce = [BTCardNonce cardNonceWithGraphQLJSON:cardJSON];
+                 BTCardNonce *cardNonce = [[BTCardNonce alloc] cardNonceWithGraphQLJSON:cardJSON];
                  completion(cardNonce, cardJSON.asError);
              }];
         } else {
@@ -139,7 +138,7 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                  [self sendAnalyticsEventWithSuccess:!cardJSON.isError];
 
                  // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
-                 BTCardNonce *cardNonce = [BTCardNonce cardNonceWithJSON:cardJSON];
+                 BTCardNonce *cardNonce = [[BTCardNonce alloc] cardNonceWithJSON:cardJSON];
                  completion(cardNonce, cardJSON.asError);
              }];
         }

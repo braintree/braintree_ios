@@ -1,18 +1,6 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureLookup_Internal.h"
 
-// MARK: - Objective-C File Imports for Package Managers
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
-#import <Braintree/BTCardNonce_Internal.h>
-
-#elif SWIFT_PACKAGE // SPM
-#import "../BraintreeCard/BTCardNonce_Internal.h"
-
-#else // Carthage
-#import <BraintreeCard/BTCardNonce_Internal.h>
-
-#endif
-
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
@@ -22,6 +10,7 @@
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
 @import BraintreeCore;
+@import BraintreeCard;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -31,6 +20,7 @@
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#import <BraintreeCard/BraintreeCard-Swift.h>
 #endif
 
 @implementation BTThreeDSecureResult
@@ -39,7 +29,7 @@
     self = [super init];
     if (self) {
         if ([json[@"paymentMethod"] asDictionary]) {
-            _tokenizedCard = [BTCardNonce cardNonceWithJSON:json[@"paymentMethod"]];
+            _tokenizedCard = [[BTCardNonce alloc] cardNonceWithJSON:json[@"paymentMethod"]];
         }
 
         if ([json[@"lookup"] asDictionary]) {

@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCard
 
 class BTCardNonce_Tests: XCTestCase {
     func testCardNonceWithJSON_createsCardWithExpectedValues() {
