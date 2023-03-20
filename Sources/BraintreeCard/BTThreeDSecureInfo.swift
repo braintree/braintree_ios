@@ -82,7 +82,7 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    // TODO: this can be internal and non-objc when BTCard nonce is in Swift
+    // TODO: this can be internal and non-objc when BTCardNonce is in Swift
     @objc(initWithJSON:)
     public init(json: BTJSON?) {
         threeDSecureJSON = json ?? BTJSON()

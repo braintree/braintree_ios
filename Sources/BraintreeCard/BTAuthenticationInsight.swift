@@ -10,14 +10,14 @@ import BraintreeCore
     // MARK: - Public Properties
 
     /// The regulation environment for the associated nonce to help determine the need for 3D Secure.
-    /// See https://developer.paypal.com/braintree/docs/guides/3d-secure/advanced-options/ios/v5#authentication-insight for a list of possible values.
+    /// See https://developer.paypal.com/braintree/docs/guides/3d-secure/advanced-options/ios/v5#authentication-insight
+    /// for a list of possible values.
     public var regulationEnvironment: String?
 
     // MARK: - Initializer
 
     // TODO: make internal and non @objc once BTCardNonce is in Swift
-    @objc(initWithJSON:
-    )
+    @objc(initWithJSON:)
     public init(json: BTJSON) {
         if let customerAuthenticationRegulationEnvironment = json["customerAuthenticationRegulationEnvironment"].asString() {
             self.regulationEnvironment = customerAuthenticationRegulationEnvironment
