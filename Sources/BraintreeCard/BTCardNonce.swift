@@ -85,9 +85,12 @@ import BraintreeCore
             authenticationInsightJSON = cardJSON?["authenticationInsight"]
         }
 
+        let cardTypeJSON = cardJSON?["details"]["cardType"].asString()
+        let cardNetwork = Self.cardNetworkFromGatewayCardType(cardTypeJSON ?? "unknown")
+
         self.init(
             withNonce: cardJSON?["nonce"].asString() ?? "",
-            cardNetwork: Self.cardNetworkFromGatewayCardType(cardJSON?["details"]["cardType"].asString() ?? "unknown") ?? BTCardNetwork.unknown,
+            cardNetwork: cardNetwork ?? BTCardNetwork.unknown,
             expirationMonth: cardJSON?["details"]["expirationMonth"].asString(),
             expirationYear: cardJSON?["details"]["expirationYear"].asString(),
             cardholderName: cardJSON?["details"]["cardholderName"].asString(),
@@ -117,9 +120,12 @@ import BraintreeCore
             authenticationInsightJSON = json?["authenticationInsight"]
         }
 
+        let cardBrandJSON = json?["creditCard"]["brand"].asString()
+        let cardNetwork = Self.cardNetworkFromGatewayCardType(cardBrandJSON ?? "unknown")
+
         self.init(
             withNonce: json?["token"].asString() ?? "",
-            cardNetwork: Self.cardNetworkFromGatewayCardType(json?["creditCard"]["brand"].asString() ?? "unknown") ?? BTCardNetwork.unknown,
+            cardNetwork: cardNetwork ?? BTCardNetwork.unknown,
             expirationMonth: json?["creditCard"]["expirationMonth"].asString(),
             expirationYear: json?["creditCard"]["expirationYear"].asString(),
             cardholderName: json?["creditCard"]["cardholderName"].asString(),

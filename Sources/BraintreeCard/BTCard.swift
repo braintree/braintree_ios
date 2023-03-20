@@ -1,6 +1,7 @@
 import Foundation
 
-/// The card tokenization request represents raw credit or debit card data provided by the customer. Its main purpose is to serve as the input for tokenization.
+/// The card tokenization request represents raw credit or debit card data provided by the customer.
+/// Its main purpose is to serve as the input for tokenization.
 @objcMembers public class BTCard: NSObject {
 
     // MARK: - Public Properties
@@ -15,7 +16,8 @@ import Foundation
     public var expirationYear: String?
 
     /// The card verification code (like CVV or CID).
-    /// - Note: If you wish to create a CVV-only payment method nonce to verify a card already stored in your Vault, omit all other properties to only collect CVV.
+    /// - Note: If you wish to create a CVV-only payment method nonce to verify a card already stored in your Vault,
+    /// omit all other properties to only collect CVV.
     public var cvv: String?
 
     /// The postal code associated with the card's billing address
@@ -156,13 +158,13 @@ import Foundation
             parameters["billing_address"] = billingAddressDictionary
         }
 
-        parameters["options"] = ["validate": shouldValidate]
+        let options: [String: Bool] = ["validate": shouldValidate]
+        parameters["options"] = options
         return parameters
     }
 
     // TODO: can be internal when BTCardClient is in Swift
     public func graphQLParameters() -> [String: Any] {
-        var inputDictionary: [String: Any] = [:]
         var cardDictionary: [String: Any] = [:]
 
         if let number {
@@ -239,9 +241,8 @@ import Foundation
             cardDictionary["billingAddress"] = billingAddressDictionary
         }
 
-        inputDictionary["creditCard"] = cardDictionary
-        inputDictionary["options"] = ["validate": shouldValidate]
-
+        let options: [String: Bool] = ["validate": shouldValidate]
+        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
         var variables: [String: Any] = ["input": inputDictionary]
 
         if authenticationInsightRequested {
@@ -266,27 +267,27 @@ import Foundation
 
         mutation.append(
             """
-            ) {\
-              tokenizeCreditCard(input: $input) {\
-                token\
-                creditCard {\
-                  brand\
-                  expirationMonth\
-                  expirationYear\
-                  cardholderName\
-                  last4\
-                  bin\
-                  binData {\
-                    prepaid\
-                    healthcare\
-                    debit\
-                    durbinRegulated\
-                    commercial\
-                    payroll\
-                    issuingBank\
-                    countryOfIssuance\
-                    productId\
-                  }\
+            ) {
+              tokenizeCreditCard(input: $input) {
+                token
+                creditCard {
+                  brand
+                  expirationMonth
+                  expirationYear
+                  cardholderName
+                  last4
+                  bin
+                  binData {
+                    prepaid
+                    healthcare
+                    debit
+                    durbinRegulated
+                    commercial
+                    payroll
+                    issuingBank
+                    countryOfIssuance
+                    productId
+                  }
                 }
             """
         )
@@ -294,8 +295,8 @@ import Foundation
         if authenticationInsightRequested {
             mutation.append(
                 """
-                    authenticationInsight(input: $authenticationInsightInput) {\
-                      customerAuthenticationRegulationEnvironment\
+                    authenticationInsight(input: $authenticationInsightInput) {
+                      customerAuthenticationRegulationEnvironment
                     }
                 """
             )
@@ -303,11 +304,11 @@ import Foundation
 
         mutation.append(
             """
-              }\
+              }
             }
             """
         )
 
-        return mutation
+        return mutation.replacingOccurrences(of: "\n", with: "")
     }
 }

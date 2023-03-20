@@ -82,9 +82,7 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    // TODO: this can be internal and non-objc when BTCardNonce is in Swift
-    @objc(initWithJSON:)
-    public init(json: BTJSON?) {
+    init(json: BTJSON?) {
         threeDSecureJSON = json ?? BTJSON()
 
         acsTransactionID = threeDSecureJSON["acsTransactionId"].asString()
