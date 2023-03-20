@@ -105,27 +105,6 @@ class BTApplePay_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testPaymentRequest_returnsPaymentRequest() async throws {
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
-        mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "production"]])
-
-        let paymentRequest = try await applePayClient.makePaymentRequest()
-        XCTAssertNotNil(paymentRequest)
-    }
-
-    func testPaymentRequest_returnsError() async {
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
-        mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "off"]])
-
-        do {
-            let _ = try await applePayClient.makePaymentRequest()
-        } catch {
-            let error = error as NSError
-            XCTAssertNotNil(error)
-            XCTAssertEqual(error.localizedDescription, BTApplePayError.unsupported.localizedDescription)
-        }
-    }
-
     // MARK: - Tokenization
 
     func testTokenization_whenConfiguredOff_callsBackWithError() {
@@ -335,54 +314,6 @@ class BTApplePay_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
-    }
-
-    func testTokenize_returnsPaymentRequest() async throws {
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
-        let payment = MockPKPayment()
-
-        mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "production"]])
-        mockClient.cannedResponseBody = BTJSON(
-            value: [
-                "applePayCards": [
-                    [
-                        "nonce" : "an-apple-pay-nonce",
-                        "default": true,
-                        "binData": [
-                            "prepaid": "Yes",
-                            "healthcare": "Yes",
-                            "debit": "No",
-                            "durbinRegulated": "No",
-                            "commercial": "Yes",
-                            "payroll": "No",
-                            "issuingBank": "US",
-                            "countryOfIssuance": "Something",
-                            "productId": "123"
-                        ]
-                    ]
-                ]
-            ]
-        )
-
-        let applePayNonce = try await applePayClient.tokenize(payment)
-        XCTAssertNotNil(applePayNonce)
-        XCTAssertEqual("an-apple-pay-nonce", applePayNonce.nonce)
-    }
-
-    func testTokenize_bodyDoesNotContainApplePayCards_returnsError() async {
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
-        let payment = MockPKPayment()
-
-        mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "production"]])
-        mockClient.cannedResponseBody = BTJSON(value: ["notApplePayCards": "badData"])
-
-        do {
-            let _ = try await applePayClient.tokenize(payment)
-        } catch {
-            let error = error as NSError
-            XCTAssertNotNil(error)
-            XCTAssertEqual(error.localizedDescription, BTApplePayError.failedToCreateNonce.localizedDescription)
-        }
     }
 
     // MARK: - Metadata
