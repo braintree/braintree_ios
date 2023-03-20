@@ -1,5 +1,4 @@
 #import "BTCardClient_Internal.h"
-#import "BTCard_Internal.h"
 
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
