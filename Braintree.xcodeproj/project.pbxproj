@@ -1519,13 +1519,13 @@
 			isa = PBXGroup;
 			children = (
 				BE80C00429C54F2000793A6C /* BTAuthenticationInsight.swift */,
+				BE80C00C29C8B4B900793A6C /* BTCard.swift */,
 				8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */,
 				A7C8899D1B5F0471007A0E9C /* BTCardClient.m */,
 				BE80C00A29C66F4800793A6C /* BTCardNonce.swift */,
 				BE80C00829C559B800793A6C /* BTCardRequest.swift */,
 				BE80C00629C5516E00793A6C /* BTThreeDSecureInfo.swift */,
 				41777D451B8D01510026F987 /* Public */,
-				BE80C00C29C8B4B900793A6C /* BTCard.swift */,
 			);
 			path = BraintreeCard;
 			sourceTree = "<group>";
