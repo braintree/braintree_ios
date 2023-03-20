@@ -163,8 +163,7 @@ import BraintreeCore
     }
 
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
-    @objc
-    public func isVenmoAppInstalled() -> Bool {
+    @objc public func isVenmoAppInstalled() -> Bool {
         if let _ = application as? UIApplication {
             guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
                 return false
@@ -177,8 +176,7 @@ import BraintreeCore
     }
 
     /// Switches to the App Store to download the Venmo application.
-    @objc
-    public func openVenmoAppPageInAppStore() {
+    @objc public func openVenmoAppPageInAppStore() {
         apiClient.sendAnalyticsEvent("ios.pay-with-venmo.app-store.invoked")
         if let _ = application as? UIApplication {
             UIApplication.shared.open(appStoreURL)
@@ -362,14 +360,12 @@ import BraintreeCore
 
 extension BTVenmoClient: BTAppContextSwitchClient {
 
-    @objc
-    public static func handleReturnURL(_ url: URL) {
+    @objc public static func handleReturnURL(_ url: URL) {
         venmoClient?.handleOpen(url)
         BTVenmoClient.venmoClient = nil
     }
 
-    @objc
-    public static func canHandleReturnURL(_ url: URL) -> Bool {
+    @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
         BTVenmoAppSwitchReturnURL.isValid(url: url)
     }
 }
