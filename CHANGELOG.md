@@ -4,6 +4,7 @@
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
 * Fixes error `@objcMembers attribute used without importing module 'Foundation'` in Xcode 14.3+
 * Convert `BraintreeVenmo` module to Swift
+* Convert `BraintreeCard` module to Swift
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
@@ -25,6 +26,9 @@
       * `.invalidRedirectURL`
       * `.fetchConfigurationFailed`
     * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
+  * BraintreeCard
+    * Make `BTAuthenticationInsight` initializer internal
+    
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
