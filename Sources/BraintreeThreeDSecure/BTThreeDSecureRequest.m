@@ -154,6 +154,11 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
                     [self startRequest:request configuration:configuration];
                 }
             }];
+        } else {
+            configurationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                   code:BTThreeDSecureFlowErrorTypeConfiguration
+                                               userInfo:@{NSLocalizedDescriptionKey: @"Merchant does not have the required Cardinal authentication JWT."}];
+            [delegate onPaymentComplete:nil error:configurationError];
         }
     }];
 }
