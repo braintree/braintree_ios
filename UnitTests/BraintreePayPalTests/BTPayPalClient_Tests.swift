@@ -678,6 +678,6 @@ class BTPayPalClient_Tests: XCTestCase {
         
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:browser-switch-network-connection:failed"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:network-connection:failed"))
     }
 }

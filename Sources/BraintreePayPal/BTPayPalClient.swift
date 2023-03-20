@@ -146,7 +146,7 @@ import BraintreeDataCollector
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, response, error in
             if let error = error as? NSError {
                 if error.code == BTCoreConstants.networkConnectionLostCode {
-                    self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeBrowserSwitchNetworkConnectionLost)
+                    self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeNetworkConnectionFailed)
                 }
 
                 self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
@@ -283,10 +283,10 @@ import BraintreeDataCollector
                     case ASWebAuthenticationSessionError.canceledLogin:
                         if self.returnedToAppAfterPermissionAlert == true {
                             // User tapped system cancel button in browser
-                            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.authsessionBrowserCancel)
+                            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.websessionBrowserCancel)
                         } else {
                             // User tapped system cancel button on permission alert
-                            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.authsessionAlertCancel)
+                            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.websessionAlertCancel)
                         }
                         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
                         completion(nil, BTPayPalError.canceled)
