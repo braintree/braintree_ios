@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeCore
 @testable import BraintreeCard
 
 class BTThreeDSecureInfo_Tests: XCTestCase {

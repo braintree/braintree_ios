@@ -35,7 +35,7 @@ import BraintreeCore
         let request = BTCardRequest(card: card)
 
         apiClient.fetchOrReturnRemoteConfiguration() { configuration, error in
-            guard let configuration, error != nil else {
+            guard let configuration, error == nil else {
                 completion(nil, error)
                 return
             }
@@ -194,7 +194,6 @@ import BraintreeCore
         return parameters
     }
 
-    // TODO: see if we can use error instead?
     func constructCallbackError(for errorUserInfo: [String: Any], error: NSError?) -> Error? {
         let errorResponse: BTJSON? = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
         let fieldErrors: BTJSON? = errorResponse?["fieldErrors"].asArray()?.first
@@ -202,7 +201,7 @@ import BraintreeCore
         var errorCode: BTJSON? = fieldErrors?["fieldErrors"].asArray()?.first?["code"]
         var callbackError: Error? = error
 
-        if errorCode != nil {
+        if errorCode == nil {
             let errorResponse: BTJSON? = errorUserInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
             errorCode = errorResponse?["errors"].asArray()?.first?["extensions"]["legacyCode"]
         }

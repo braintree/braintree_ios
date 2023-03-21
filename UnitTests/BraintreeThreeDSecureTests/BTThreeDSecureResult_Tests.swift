@@ -1,5 +1,6 @@
 import XCTest
 import BraintreeCore
+@testable import BraintreeCard
 
 class BTThreeDSecureResult_Tests: XCTestCase {
     func testInitWithJSON_whenLookupSucceeds() {

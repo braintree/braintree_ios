@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeCore
 @testable import BraintreeCard
 
 class BTAuthenticationInsight_Tests: XCTestCase {

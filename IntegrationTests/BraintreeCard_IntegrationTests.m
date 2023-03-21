@@ -1,10 +1,10 @@
 #import "BTNonceValidationHelper.h"
 #import "IntegrationTests-Swift.h"
-#import <BraintreeCard/BraintreeCard.h>
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
 
 @import BraintreeCore;
+@import BraintreeCard;
 
 @interface BTCardClient_IntegrationTests : XCTestCase
 @end
@@ -40,8 +40,8 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         XCTAssertNil(tokenizedCard);
-        XCTAssertEqualObjects(error.domain, BTCardClientErrorDomain);
-        XCTAssertEqual(error.code, BTCardClientErrorTypeCustomerInputInvalid);
+        XCTAssertEqualObjects(error.domain, @"com.braintreepayments.BTCardClientErrorDomain");
+        XCTAssertEqual(error.code, 2);
         XCTAssertEqualObjects(error.localizedDescription, @"Input is invalid");
         XCTAssertEqualObjects(error.localizedFailureReason, @"Credit card number must be 12-19 digits");
         [expectation fulfill];
