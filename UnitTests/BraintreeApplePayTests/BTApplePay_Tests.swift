@@ -22,7 +22,7 @@ class BTApplePay_Tests: XCTestCase {
         let applePayClient = BTApplePayClient(apiClient: mockClient)
 
         let expectation = self.expectation(description: "Callback invoked")
-        applePayClient.paymentRequest { (paymentRequest, error) in
+        applePayClient.makePaymentRequest { (paymentRequest, error) in
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
             XCTAssertEqual(error.code, BTApplePayError.unsupported.rawValue)
@@ -38,7 +38,7 @@ class BTApplePay_Tests: XCTestCase {
         let applePayClient = BTApplePayClient(apiClient: mockClient)
 
         let expectation = self.expectation(description: "Callback invoked")
-        applePayClient.paymentRequest { (paymentRequest, error) in
+        applePayClient.makePaymentRequest { (paymentRequest, error) in
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
             XCTAssertEqual(error.code, BTApplePayError.unsupported.rawValue)
@@ -62,7 +62,7 @@ class BTApplePay_Tests: XCTestCase {
         let applePayClient = BTApplePayClient(apiClient: mockClient)
 
         let expectation = self.expectation(description: "Callback invoked")
-        applePayClient.paymentRequest { (paymentRequest, error) in
+        applePayClient.makePaymentRequest { (paymentRequest, error) in
             guard let paymentRequest = paymentRequest else {
                 XCTFail()
                 return
@@ -88,7 +88,7 @@ class BTApplePay_Tests: XCTestCase {
         let applePayClient = BTApplePayClient(apiClient: mockClient)
 
         let expectation = self.expectation(description: "Callback invoked")
-        applePayClient.paymentRequest { (paymentRequest, error) in
+        applePayClient.makePaymentRequest { (paymentRequest, error) in
             guard let paymentRequest = paymentRequest else {
                 XCTFail()
                 return

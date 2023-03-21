@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// Used to process Venmo payments
-@objcMembers public class BTVenmoClient: NSObject {
+@objc public class BTVenmoClient: NSObject {
 
     // MARK: - Internal Properties
 
@@ -150,7 +150,6 @@ import BraintreeCore
     /// - Parameter request: A `BTVenmoRequest`
     /// - Returns: On success, you will receive an instance of `BTVenmoAccountNonce`
     /// - Throws: An `Error` describing the failure
-    @objc(tokenizeWithVenmoRequest:completionHandler:)
     public func tokenize(_ request: BTVenmoRequest) async throws -> BTVenmoAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in
@@ -164,7 +163,7 @@ import BraintreeCore
     }
 
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
-    public func isVenmoAppInstalled() -> Bool {
+    @objc public func isVenmoAppInstalled() -> Bool {
         if let _ = application as? UIApplication {
             guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
                 return false
@@ -177,7 +176,7 @@ import BraintreeCore
     }
 
     /// Switches to the App Store to download the Venmo application.
-    public func openVenmoAppPageInAppStore() {
+    @objc public func openVenmoAppPageInAppStore() {
         apiClient.sendAnalyticsEvent("ios.pay-with-venmo.app-store.invoked")
         if let _ = application as? UIApplication {
             UIApplication.shared.open(appStoreURL)
@@ -361,12 +360,12 @@ import BraintreeCore
 
 extension BTVenmoClient: BTAppContextSwitchClient {
 
-    public static func handleReturnURL(_ url: URL) {
+    @objc public static func handleReturnURL(_ url: URL) {
         venmoClient?.handleOpen(url)
         BTVenmoClient.venmoClient = nil
     }
 
-    public static func canHandleReturnURL(_ url: URL) -> Bool {
+    @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
         BTVenmoAppSwitchReturnURL.isValid(url: url)
     }
 }
