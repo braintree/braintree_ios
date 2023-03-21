@@ -185,7 +185,7 @@
         [labelCustomization setHeadingTextFontName:@"AmericanTypewriter"];
         
         [ui setToolbarCustomization:toolbarCustomization];
-        [ui setButtonCustomization:buttonCustomization buttonType:ButtonTypeVerify];
+        [ui setButtonCustomization:buttonCustomization buttonType:BTThreeDSecureV2ButtonTypeVerify];
         [ui setTextBoxCustomization:textBoxCustomization];
         [ui setLabelCustomization:labelCustomization];
 
