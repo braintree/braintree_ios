@@ -58,7 +58,7 @@ import BraintreeCore
                         var callbackError: Error? = error
 
                         if response?.statusCode == 422 {
-                            callbackError = self.constructCallbackError(for: error.userInfo, error: error)
+                            callbackError = self.constructCallbackError(with: error.userInfo, error: error)
                         }
 
                         self.sendGraphQLAnalyticsEvent(with: false)
@@ -86,7 +86,7 @@ import BraintreeCore
                         var callbackError: Error? = error
 
                         if response?.statusCode == 422 {
-                            callbackError = self.constructCallbackError(for: error.userInfo, error: error)
+                            callbackError = self.constructCallbackError(with: error.userInfo, error: error)
                         }
 
                         self.sendAnalyticsEvent(with: false)
@@ -122,9 +122,9 @@ import BraintreeCore
         }
     }
 
-    // MARK: - Internal Methods
+    // MARK: - Private Methods
 
-    func isGraphQLEnabled(for configuration: BTConfiguration) -> Bool {
+    private func isGraphQLEnabled(for configuration: BTConfiguration) -> Bool {
         if let graphQLFeatures = configuration.json?["graphQL"]["features"].asStringArray() {
             return !graphQLFeatures.isEmpty && graphQLFeatures.contains(graphQLTokenizeFeature)
         }
@@ -132,9 +132,29 @@ import BraintreeCore
         return false
     }
 
+    private func clientAPIParameters(for request: BTCardRequest) -> [String: Any] {
+        var parameters: [String: Any] = [:]
+        parameters["credit_card"] = request.card.parameters()
+
+        let metadata: [String: String] = [
+            "source": apiClient.metadata.sourceString,
+            "integration": apiClient.metadata.integrationString,
+            "sessionId": apiClient.metadata.sessionID
+        ]
+
+        parameters["_meta"] = metadata
+
+        if request.card.authenticationInsightRequested {
+            parameters["authenticationInsight"] = true
+            parameters["merchantAccountId"] = request.card.merchantAccountID
+        }
+
+        return parameters
+    }
+
     // MARK: - Analytics
 
-    func sendAnalyticsEvent(with success: Bool) {
+    private func sendAnalyticsEvent(with success: Bool) {
         let integration = apiClient.metadata.integrationString
         let status = success ? "succeeded" : "failed"
         let event = "ios.\(integration).card.\(status)"
@@ -142,7 +162,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(event)
     }
 
-    func sendGraphQLAnalyticsEvent(with success: Bool) {
+    private func sendGraphQLAnalyticsEvent(with success: Bool) {
         let status = success ? "success" : "failure"
         let event = "ios.card.graphql.tokenization.\(status)"
 
@@ -152,7 +172,7 @@ import BraintreeCore
     // MARK: - Error Construction Methods
 
     /// Convenience helper method for creating friendlier, more human-readable userInfo dictionaries for 422 HTTP errors
-    func validationError(with userInfo: [String: Any]) -> [String: Any] {
+    private func validationError(with userInfo: [String: Any]) -> [String: Any] {
         var finalUserInfo: [String: Any] = userInfo
         let jsonResponse: BTJSON? = userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
 
@@ -174,27 +194,7 @@ import BraintreeCore
         return finalUserInfo
     }
 
-    func clientAPIParameters(for request: BTCardRequest) -> [String: Any] {
-        var parameters: [String: Any] = [:]
-        parameters["credit_card"] = request.card.parameters()
-
-        let metadata: [String: String] = [
-            "source": apiClient.metadata.sourceString,
-            "integration": apiClient.metadata.integrationString,
-            "sessionId": apiClient.metadata.sessionID
-        ]
-
-        parameters["_meta"] = metadata
-
-        if request.card.authenticationInsightRequested {
-            parameters["authenticationInsight"] = true
-            parameters["merchantAccountId"] = request.card.merchantAccountID
-        }
-
-        return parameters
-    }
-
-    func constructCallbackError(for errorUserInfo: [String: Any], error: NSError?) -> Error? {
+    private func constructCallbackError(with errorUserInfo: [String: Any], error: NSError?) -> Error? {
         let errorResponse: BTJSON? = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
         let fieldErrors: BTJSON? = errorResponse?["fieldErrors"].asArray()?.first
 
