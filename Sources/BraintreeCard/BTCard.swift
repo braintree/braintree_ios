@@ -80,8 +80,7 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    // TODO: can be internal when BTCardClient is in Swift
-    public func parameters() -> [String: Any] {
+    func parameters() -> [String: Any] {
         var parameters: [String: Any] = [:]
 
         if let number {
@@ -163,8 +162,7 @@ import Foundation
         return parameters
     }
 
-    // TODO: can be internal when BTCardClient is in Swift
-    public func graphQLParameters() -> [String: Any] {
+    func graphQLParameters() -> [String: Any] {
         var cardDictionary: [String: Any] = [:]
 
         if let number {

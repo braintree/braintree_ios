@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeCard
+@testable import BraintreeCard
 
 // See also BTCard_Internal_Tests
 class BTCard_Tests: XCTestCase {
