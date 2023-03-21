@@ -73,7 +73,6 @@ import BraintreeCore
 
     /// Transaction identifier resulting from 3D Secure authentication. Uniquely identifies the transaction and sometimes required in the authorization message.
     /// This field will no longer be used in 3DS 2 authentications.
-    // TODO: do we need this now that we only use 3ds v2?
     public var xid: String?
 
     // MARK: - Internal Properties
