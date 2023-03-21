@@ -19,7 +19,7 @@ import BraintreeCore
     ///  Gets the rewards balance associated with a Braintree nonce. Only for American Express cards.
     /// - Parameters:
     ///   - nonce: A nonce representing a card that will be used to look up the rewards balance.
-    ///   - currencyIsoCode:  The currencyIsoCode to use. Example: 'USD'
+    ///   - currencyISOCode:  The currencyIsoCode to use. Example: 'USD'
     ///   - completion:  A completion block that is invoked when the request has completed. If the request succeeds,
     ///   `rewardsBalance` will contain information about the rewards balance and `error` will be `nil` (see exceptions in note);
     ///   if it fails, `rewardsBalance` will be `nil` and `error` will describe the failure.
@@ -53,7 +53,7 @@ import BraintreeCore
     ///  Gets the rewards balance associated with a Braintree nonce. Only for American Express cards.
     /// - Parameters:
     ///   - nonce: A nonce representing a card that will be used to look up the rewards balance.
-    ///   - currencyIsoCode: The currencyIsoCode to use. Example: 'USD'
+    ///   - currencyISOCode: The currencyIsoCode to use. Example: 'USD'
     /// - Returns: A `BTAmericanExpressRewardsBalance` object with information about the rewards balance
     /// - Throws: An `Error` describing the failure
     public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String) async throws -> BTAmericanExpressRewardsBalance {
