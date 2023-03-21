@@ -37,14 +37,14 @@ import CardinalMobile
 
     var cardinalValue: Customization?
 
-    // MARK: - Fileprivate Properties
+    // MARK: - Private Properties
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _textFontName: String?
+    private var _textFontName: String?
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _textColor: String?
+    private var _textColor: String?
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _textFontSize: Int = 0
+    private var _textFontSize: Int = 0
 }

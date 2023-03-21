@@ -33,16 +33,16 @@ import CardinalMobile
         }
     }
 
-    // MARK: - Fileprivate Properties
+    // MARK: - Private Properties
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _borderWidth: Int = 0
+    private var _borderWidth: Int = 0
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _borderColor: String?
+    private var _borderColor: String?
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _cornerRadius: Int = 0
+    private var _cornerRadius: Int = 0
 
     // MARK: - Initializer
 

@@ -33,16 +33,16 @@ import CardinalMobile
         }
     }
 
-    // MARK: - Fileprivate Properties
+    // MARK: - Private Properties
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _backgroundColor: String?
+    private var _backgroundColor: String?
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _headerText: String?
+    private var _headerText: String?
 
     /// Used as a holder for Obj-C interoperability
-    fileprivate var _buttonText: String?
+    private var _buttonText: String?
 
     // MARK: - Initializer
 
