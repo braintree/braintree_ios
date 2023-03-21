@@ -39,7 +39,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
 
         sepaDirectDebitClient.sepaDirectDebitAPI = mockSepaDirectDebitAPI
         
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
@@ -85,7 +85,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.webFlowCanceled.errorCode)
@@ -131,7 +131,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.presentationContextInvalid.errorCode)
@@ -171,7 +171,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.resultURLInvalid.errorCode)
@@ -201,7 +201,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         
         mockAPIClient.cannedResponseBody = nil
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.noBodyReturned.errorCode)
@@ -245,7 +245,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.approvalURLInvalid.errorCode)
@@ -285,7 +285,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.authenticationResultNil.errorCode)
@@ -337,7 +337,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
         
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil {
                 XCTFail("This request should be successful.")
             } else if nonce != nil {
@@ -390,7 +390,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
         
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil {
                 XCTFail("This request should be successful.")
             } else if nonce != nil {
@@ -436,7 +436,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
@@ -481,7 +481,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             sepaDirectDebitAPI: mockSepaDirectDebitAPI
         )
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { nonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { nonce, error in
             if error != nil, let error = error as NSError? {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)

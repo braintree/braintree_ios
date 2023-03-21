@@ -26,7 +26,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
         
         let expectation = self.expectation(description: "Amex rewards balance response")
-        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD") { rewardsBalance, error in
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
             XCTAssertNil(error)
             XCTAssertNotNil(rewardsBalance)
             expectation.fulfill()
@@ -41,7 +41,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: [NSLocalizedDescriptionKey:"Fake description"])
 
         let expectation = self.expectation(description: "Amex rewards balance response")
-        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD") { rewardsBalance, error in
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
             
             if let error = error as NSError? {
                 XCTAssertEqual(error.code, 100)
@@ -62,7 +62,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
 
         let expectation = self.expectation(description: "Amex rewards balance response was nil")
-        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD") { rewardsBalance, error in
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
             
             if let error = error as NSError? {
                 XCTAssertEqual(error.code, BTAmericanExpressError.noRewardsData.errorCode)
