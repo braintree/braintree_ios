@@ -1501,6 +1501,7 @@
 				BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */,
 				BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */,
 				BE80C00A29C66F4800793A6C /* BTCardNonce.swift */,
+                BE80C00829C559B800793A6C /* BTCardRequest.swift */,
 				BE80C00829C559B800793A6C /* BTCardRequest.swift */,
 				BE80C00629C5516E00793A6C /* BTThreeDSecureInfo.swift */,
 			);
