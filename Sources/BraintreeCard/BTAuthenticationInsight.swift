@@ -16,9 +16,7 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    // TODO: make internal and non @objc once BTCardNonce is in Swift
-    @objc(initWithJSON:)
-    public init(json: BTJSON) {
+    init(json: BTJSON) {
         if let customerAuthenticationRegulationEnvironment = json["customerAuthenticationRegulationEnvironment"].asString() {
             self.regulationEnvironment = customerAuthenticationRegulationEnvironment
         } else if let regulationEnvironment = json["regulationEnvironment"].asString() {
