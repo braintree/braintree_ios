@@ -114,25 +114,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         XCTAssertEqual(request.requestedExemptionTypeAsString, nil)
     }
 
-    // MARK: - versionRequested and versionRequestedAsString
-
-    func testVersionRequested_defaultsToVersion2() {
-        let request = BTThreeDSecureRequest()
-        XCTAssertEqual(request.versionRequested, .version2)
-    }
-
-    func testVersionRequestedAsString_whenVersion1IsRequested_returns1() {
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version1
-        XCTAssertEqual(request.versionRequestedAsString, "1")
-    }
-
-    func testVersionRequestedAsString_whenVersion2IsRequested_returns2() {
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
-        XCTAssertEqual(request.versionRequestedAsString, "2")
-    }
-
     // MARK: - handleRequest
     
     func testHandleRequest_whenAmountIsNotANumber_throwsError() {
@@ -159,53 +140,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    // MARK: - processLookupResult
-    
-    func testProcessLookupResult_when3DSv1_constructsRedirectUrl() {
-
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version1
-
-        let jsonString =
-            """
-            {
-                "lookup": {
-                    "acsUrl": "www.someAcsUrl.com",
-                    "md": "someMd",
-                    "pareq": "somePareq",
-                    "termUrl": "www.someTermUrl.com",
-                    "threeDSecureVersion": "1.0",
-                    "transactionId": "someTransactionId"
-                },
-                "paymentMethod": {
-                    "nonce": "someLookupNonce",
-                    "threeDSecureInfo": {
-                        "liabilityShiftPossible": true,
-                        "liabilityShifted": false
-                    }
-                }
-            }
-            """
-
-        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let lookupResult = BTThreeDSecureResult(json: json)
-        
-        let configuration = BTConfiguration(json: BTJSON(value: ["assetsUrl": "https://assets.com"]))
-        
-        let mockPaymentFlowClientDelegate = MockPaymentFlowClientDelegate()
-        mockPaymentFlowClientDelegate._returnURLScheme = "com.braintreepayments.Demo.payments"
-        
-        let expectation = self.expectation(description: "Calls onPaymentWithURL with result")
-        mockPaymentFlowClientDelegate.onPaymentWithURLHandler = { url, error in
-            XCTAssertNotNil(url)
-            expectation.fulfill()
-        }
-        request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
-        
-        request.processLookupResult(lookupResult, configuration: configuration)
-        waitForExpectations(timeout: 1.0, handler: nil)
-    }
-    
     // MARK: - handleOpenURL
     
     func testHandleOpenURL_whenAuthenticationSucceeds_returnsResult() {
@@ -225,28 +159,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         }
         
         let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
-        request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
-        
-        request.handleOpen(url)
-        
-        waitForExpectations(timeout: 1.0, handler: nil)
-    }
-    
-    func testHandleOpenURL_whenAuthenticationFailed_andVersion1Requested_returnsError() {
-        let url = URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22threeDSecureInfo%22:%7B%22liabilityShifted%22:false,%22liabilityShiftPossible%22:true%7D,%22error%22:%7B%22message%22:%22Failed+to+authenticate,+please+try+a+different+form+of+payment.%22%7D,%22success%22:false%7D")!
-        
-        let expectation = self.expectation(description: "Calls onPaymentComplete with error")
-        let mockPaymentFlowClientDelegate = MockPaymentFlowClientDelegate()
-        
-        mockPaymentFlowClientDelegate.onPaymentCompleteHandler = { result, error in
-            XCTAssertNil(result)
-            XCTAssertEqual(error?.localizedDescription, "Failed to authenticate, please try a different form of payment.")
-            expectation.fulfill()
-        }
-        
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version1
         request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
         
         request.handleOpen(url)
@@ -267,7 +179,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         }
         
         let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
         request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
         
         request.handleOpen(url)

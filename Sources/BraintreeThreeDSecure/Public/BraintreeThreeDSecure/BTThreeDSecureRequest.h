@@ -13,7 +13,6 @@
 @class BTThreeDSecureResult;
 @class BTThreeDSecurePostalAddress;
 @class BTThreeDSecureAdditionalInformation;
-@class BTThreeDSecureV1UICustomization;
 @class UiCustomization;
 @protocol BTThreeDSecureRequestDelegate;
 
@@ -23,8 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
  3D Secure version
  */
 typedef NS_ENUM(NSInteger, BTThreeDSecureVersion) {
-    /// 3DS 1.0
-    BTThreeDSecureVersion1,
 
     /// 3DS 2.0
     BTThreeDSecureVersion2
@@ -155,11 +152,6 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
 @property (nonatomic, nullable, strong) BTThreeDSecureAdditionalInformation *additionalInformation;
 
 /**
- Optional. Set to BTThreeDSecureVersion2 if ThreeDSecure V2 flows are desired, when possible. Defaults to BTThreeDSecureVersion2
- */
-@property (nonatomic, assign) BTThreeDSecureVersion versionRequested;
-
-/**
  Optional. If set to true, an authentication challenge will be forced if possible.
  */
 @property (nonatomic) BOOL challengeRequested;
@@ -195,11 +187,6 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
  Optional. UI Customization for 3DS2 challenge views.
  */
 @property (nonatomic, nullable, strong) BTThreeDSecureV2UICustomization *v2UICustomization;
-
-/**
- Optional. UI Customization for 3DS1 challenge views.
- */
-@property (nonatomic, nullable, strong) BTThreeDSecureV1UICustomization *v1UICustomization;
 
 /**
  A delegate for receiving information about the ThreeDSecure payment flow.

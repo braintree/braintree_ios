@@ -3,7 +3,6 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 #import "BTThreeDSecureV2Provider.h"
-#import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
@@ -58,15 +57,6 @@
 
 @implementation BTThreeDSecureRequest
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _versionRequested = BTThreeDSecureVersion2;
-    }
-
-    return self;
-}
-
 - (NSString *)accountTypeAsString {
     switch (self.accountType) {
         case BTThreeDSecureAccountTypeCredit:
@@ -94,15 +84,6 @@
             return @"06";
         default:
             return nil;
-    }
-}
-
-- (NSString *)versionRequestedAsString {
-    switch (self.versionRequested) {
-        case BTThreeDSecureVersion1:
-            return @"1";
-        default:
-            return @"2";
     }
 }
 
@@ -140,7 +121,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
 
         NSError *integrationError;
 
-        if (self.versionRequested == BTThreeDSecureVersion2 && !configuration.cardinalAuthenticationJWT) {
+        if (!configuration.cardinalAuthenticationJWT) {
             NSLog(@"%@ BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.", [BTLogLevelDescription stringFor:BTLogLevelCritical]);
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
@@ -154,7 +135,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil or NaN."}];
         }
 
-        if (self.versionRequested == BTThreeDSecureVersion2 && self.threeDSecureRequestDelegate == nil) {
+        if (self.threeDSecureRequestDelegate == nil) {
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
                                                userInfo:@{NSLocalizedDescriptionKey: @"Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."}];
@@ -165,7 +146,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
             return;
         }
 
-        if (configuration.cardinalAuthenticationJWT && self.versionRequested == BTThreeDSecureVersion2) {
+        if (configuration.cardinalAuthenticationJWT) {
             [self prepareLookup:apiClient completion:^(NSError * _Nullable error) {
                 if (error != nil) {
                     [delegate onPaymentComplete:nil error:error];
@@ -174,7 +155,10 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
                 }
             }];
         } else {
-            [self startRequest:request configuration:configuration];
+            configurationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                   code:BTThreeDSecureFlowErrorTypeConfiguration
+                                               userInfo:@{NSLocalizedDescriptionKey: @"Merchant does not have the required Cardinal authentication JWT."}];
+            [delegate onPaymentComplete:nil error:configurationError];
         }
     }];
 }
@@ -210,7 +194,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
     BTPaymentFlowClient *paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:apiClient];
     
-    if (threeDSecureRequest.versionRequested == BTThreeDSecureVersion1 && threeDSecureRequest.threeDSecureRequestDelegate == nil) {
+    if (threeDSecureRequest.threeDSecureRequestDelegate == nil) {
         threeDSecureRequest.threeDSecureRequestDelegate = self;
     }
 
@@ -240,15 +224,8 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
         [self.paymentFlowClientDelegate onPaymentComplete:lookupResult error:nil];
         return;
     }
-    
     if (lookupResult.lookup.isThreeDSecureVersion2) {
         [self performV2Authentication:lookupResult];
-    } else {
-        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:BTCoreConstants.callbackURLScheme
-                                                                           assetsURL:[configuration.json[@"assetsUrl"] asString]
-                                                                 threeDSecureRequest:self
-                                                                  threeDSecureLookup:lookupResult.lookup];
-        [self.paymentFlowClientDelegate onPaymentWithURL:browserSwitchURL error:nil];
     }
 }
 

@@ -31,6 +31,10 @@
     * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
   * BraintreeSEPADirectDebit
     * Rename `BTSEPADirectDebitClient.tokenize(request:completion:)` to `BTSEPADirectDebitClient.tokenize(_:completion:)`
+  * BraintreeThreeDSecure
+    * 3D Secure version 1 is no longer supported
+      * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion` enum
+        * All 3D Secure requests will use version 2
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

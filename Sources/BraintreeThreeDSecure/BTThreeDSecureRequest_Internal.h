@@ -38,11 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSString *shippingMethodAsString;
 
 /**
- The requested 3DS version as a raw string.
- */
-@property (nonatomic, readonly) NSString *versionRequestedAsString;
-
-/**
  The requested exemption type as a raw string.
  */
 @property (nonatomic, readonly, nullable) NSString *requestedExemptionTypeAsString;
