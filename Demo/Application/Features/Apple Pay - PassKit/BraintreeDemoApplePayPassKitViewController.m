@@ -49,7 +49,7 @@
 - (void)tappedApplePayButton {
     self.progressBlock(@"Constructing PKPaymentRequest");
 
-    [self.applePayClient paymentRequest:^(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error) {
+    [self.applePayClient makePaymentRequest:^(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
             return;

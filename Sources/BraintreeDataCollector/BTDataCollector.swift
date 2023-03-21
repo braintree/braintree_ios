@@ -8,7 +8,7 @@ import BraintreeCore
 #endif
 
 /// Braintree's advanced fraud protection solution.
-@objcMembers public class BTDataCollector: NSObject {
+@objc public class BTDataCollector: NSObject {
     
     var config: BTConfiguration?
 
@@ -27,7 +27,7 @@ import BraintreeCore
     /// - Parameter pairingID: A pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
     /// - Returns: A client metadata ID to send as a header
     /// - Note: This returns a raw client metadata ID, which is not the correct format for device data when creating a transaction. Instead, it is recommended to use `collectDeviceData`.
-    public func clientMetadataID(_ pairingID: String?) -> String {
+    @objc public func clientMetadataID(_ pairingID: String?) -> String {
         generateClientMetadataID(pairingID, disableBeacon: false, configuration: nil, data: nil)
     }
     
@@ -36,8 +36,8 @@ import BraintreeCore
     ///  We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
     ///  calling it when the customer initiates checkout is also fine.
     ///  Use the return value on your server, e.g. with `Transaction.sale`.
-    ///  - Parameter completion:  A completion block that returns a device data string that should be passed into server-side calls, such as `Transaction.sale`.
-    public func collectDeviceData(_ completion: @escaping (String? , Error?) -> Void) {
+    ///  - Parameter completion:  A completion block that returns either a device data string that should be passed into server-side calls, such as `Transaction.sale`, or an error with the failure reason.
+    @objc public func collectDeviceData(_ completion: @escaping (String? , Error?) -> Void) {
         fetchConfiguration { configuration, error in
             guard let configuration = configuration else {
                 completion(nil, error)
@@ -58,6 +58,25 @@ import BraintreeCore
             }
             
             completion(deviceData, nil)
+        }
+    }
+
+    /// Collects device data based on your merchant configuration.
+    ///
+    ///  We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+    ///  calling it when the customer initiates checkout is also fine.
+    ///  Use the return value on your server, e.g. with `Transaction.sale`.
+    /// - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`.
+    /// - Throws: An `Error` describing the failure
+    public func collectDeviceData() async throws -> String {
+        try await withCheckedThrowingContinuation { continuation in
+            collectDeviceData { deviceData, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let deviceData {
+                    continuation.resume(returning: deviceData)
+                }
+            }
         }
     }
     
