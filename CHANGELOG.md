@@ -4,12 +4,14 @@
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
 * Fixes error `@objcMembers attribute used without importing module 'Foundation'` in Xcode 14.3+
 * Convert `BraintreeVenmo` module to Swift
+* Add async/await support back to all public Swift methods
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
   * BraintreeApplePay
-    * Rename `BTApplePayClient.tokenizeApplePay` to `BTApplePayClient.tokenize`
+    * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
+    * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
     * Remove `BTApplePayErrorDomain` global constant
     * Remove `BTApplePayErrorType`
     * Make `BTApplePayCardNonce` initializer internal
@@ -25,6 +27,10 @@
       * `.invalidRedirectURL`
       * `.fetchConfigurationFailed`
     * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
+  * BraintreeAmericanExpress
+    * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
+  * BraintreeSEPADirectDebit
+    * Rename `BTSEPADirectDebitClient.tokenize(request:completion:)` to `BTSEPADirectDebitClient.tokenize(_:completion:)`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

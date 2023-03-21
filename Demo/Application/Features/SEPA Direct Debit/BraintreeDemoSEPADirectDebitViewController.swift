@@ -54,7 +54,7 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
 
-        sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
             if let sepaDirectDebitNonce = sepaDirectDebitNonce {
                 self.completionBlock(sepaDirectDebitNonce)
             } else if let error = error {
