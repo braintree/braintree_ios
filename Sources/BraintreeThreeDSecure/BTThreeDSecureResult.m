@@ -29,7 +29,7 @@
     self = [super init];
     if (self) {
         if ([json[@"paymentMethod"] asDictionary]) {
-            _tokenizedCard = [[BTCardNonce alloc] cardNonceWithJSON:json[@"paymentMethod"]];
+            _tokenizedCard = [[BTCardNonce alloc] initWithJSON:json[@"paymentMethod"]];
         }
 
         if ([json[@"lookup"] asDictionary]) {
