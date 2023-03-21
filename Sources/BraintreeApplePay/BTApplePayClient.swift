@@ -6,7 +6,7 @@ import BraintreeCore
 #endif
 
 /// Used to process Apple Pay payments
-@objcMembers public class BTApplePayClient: NSObject {
+@objc public class BTApplePayClient: NSObject {
 
     // MARK: - Internal Properties
 
@@ -24,8 +24,11 @@ import BraintreeCore
 
     // MARK: - Public Methods
 
-    @objc(paymentRequest:)
-    public func paymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
+    /// Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
+    /// It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
+    /// - Parameter completion: A completion block that returns the payment request or an error.
+    @objc(makePaymentRequest:)
+    public func makePaymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.configuration")
@@ -49,6 +52,27 @@ import BraintreeCore
         }
     }
 
+    /// Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
+    /// It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
+    /// - Returns: A `PKPaymentRequest`
+    /// - Throws: An `Error` describing the failure
+    public func makePaymentRequest() async throws -> PKPaymentRequest {
+        try await withCheckedThrowingContinuation { continuation in
+            makePaymentRequest() { paymentRequest, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let paymentRequest {
+                    continuation.resume(returning: paymentRequest)
+                }
+            }
+        }
+    }
+
+    /// Tokenizes an Apple Pay payment.
+    /// - Parameters:
+    ///   - payment: A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`
+    ///   - completion: A completion block that is invoked when tokenization has completed. If tokenization succeeds, we will return a `BTApplePayCardNonce`
+    ///   and `error` will be `nil`; if it fails, `BTApplePayCardNonce` will be `nil` and `error` will describe the failure.
     @objc(tokenizeApplePayPayment:completion:)
     public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent("ios.apple-pay.start")
@@ -100,6 +124,22 @@ import BraintreeCore
 
                 completion(applePayNonce, nil)
                 self.apiClient.sendAnalyticsEvent("ios.apple-pay.success")
+            }
+        }
+    }
+
+    /// Tokenizes an Apple Pay payment.
+    /// - Parameter payment: A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`
+    /// - Returns: A `BTApplePayCardNonce`
+    /// - Throws: An `Error` describing the failure
+    public func tokenize(_ payment: PKPayment) async throws -> BTApplePayCardNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(payment) { applePayNonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let applePayNonce {
+                    continuation.resume(returning: applePayNonce)
+                }
             }
         }
     }
