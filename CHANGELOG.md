@@ -35,7 +35,7 @@
   * BraintreeCard
     * Make `BTAuthenticationInsight` initializer internal
     * Remove `BTCardClientErrorDomain` global constant
-    * Rename `BTCardClient.tokenizeCard(card:completion)` to `BTCardClient.tokenize(_:completion:)`
+    * Rename `BTCardClient.tokenizeCard(_:completion)` to `BTCardClient.tokenize(_:completion:)`
     * Rename `BTCardClientErrorType` to `BTCardError`
       * Remove unused `BTCardClientErrorType.paymentOptionNotEnabled`
       * Update enum values:
