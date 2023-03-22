@@ -51,7 +51,7 @@
         * `.invalidURLAction`
         * `.failedToCreateNonce`
         * `.webSessionFailedToLaunch`
-        * `.webSessionError(Error)`
+        * `.webSessionError`
     * Make `BTPayPalNonce` initializer internal
   * BraintreePayPalNativeCheckout (BETA)
     * Renamed and replaced `BTPayPalNativeCheckoutClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`
