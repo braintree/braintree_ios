@@ -57,7 +57,7 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
             return 7
         case .webSessionFailedToLaunch:
             return 8
-        case .webSessionError(_):
+        case .webSessionError:
             return 9
         }
     }
@@ -83,7 +83,7 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
         case .webSessionFailedToLaunch:
             return "ASWebAuthenticationSession failed to launch"
         case .webSessionError(let error):
-            return "ASWebAuthenticationSession failed with \(error)"
+            return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         }
     }
 }
