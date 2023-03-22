@@ -59,6 +59,8 @@ The possible values for `BTVenmoPaymentMethodUsage` include:
 `BTVenmoClient.isiOSAppAvailableForAppSwitch()` has been renamed to `BTVenmoClient.isVenmoAppInstalled()`
 
 ```
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let venmoClient = BTVenmoClient(apiClient: apiClient)
 let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
 venmoRequest.profileID = "my-profile-id"
 venmoRequest.vault = true
@@ -78,7 +80,8 @@ The property `BTPayPalRequest.activeWindow` has been removed
 
 Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenize`:
 ```
-let payPalClient = BTPayPalClient(apiClient: <MY_BTAPIClient>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalClient = BTPayPalClient(apiClient: apiClient)
 let request = BTPayPalCheckoutRequest(amount: "1")
 
 payPalClient.tokenize(request) { payPalAccountNonce, error in
@@ -93,14 +96,16 @@ payPalClient.tokenize(request) { payPalAccountNonce, error in
 
 ```
 // BTPayPalCheckoutRequest
-let payPalClient = BTPayPalClient(apiClient: <MY_BTAPIClient>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalClient = BTPayPalClient(apiClient: apiClient)
 let request = BTPayPalCheckoutRequest(amount: "1")
 payPalClient.tokenize(request) { payPalAccountNonce, error in 
     // handle response
 }
 
 // BTPayPalVaultRequest
-let payPalClient = BTPayPalClient(apiClient: <MY_BTAPIClient>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalClient = BTPayPalClient(apiClient: apiClient)
 let request = BTPayPalVaultRequest()
 payPalClient.tokenize(request) { payPalAccountNonce, error in 
     // handle response
@@ -112,14 +117,16 @@ payPalClient.tokenize(request) { payPalAccountNonce, error in
 
 ```
 // BTPayPalNativeCheckoutRequest
-let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPIClient>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 let request = BTPayPalNativeCheckoutRequest(amount: "1")
 payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
     // handle response
 }
 
 // BTPayPalNativeVaultRequest
-let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPIClient>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 let request = BTPayPalNativeVaultRequest()
 payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
     // handle response
@@ -135,7 +142,8 @@ For merchants collecting device data for PayPal and Local Payment methods will n
 
 The new integration for collecting device data will look like the following:
 ```
-let dataCollector = BTDataCollector(apiClient: <MY_BTAPIClient>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let dataCollector = BTDataCollector(apiClient: apiClient)
 
 dataCollector.collectDeviceData { deviceData, error in
     // handle response
@@ -148,7 +156,8 @@ The `BraintreeUnionPay` module, and all containing classes, was removed in v6. U
 Now, you can tokenize just with the card details:
 
 ```
-let cardClient = BTCardClient(apiClient: <MY_BTAPIClient>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let cardClient = BTCardClient(apiClient: apiClient)
 
 let card = BTCard()
 card.number = "4111111111111111"
@@ -156,7 +165,7 @@ card.expirationMonth = "12"
 card.expirationYear = "2025"
 
 cardClient.tokenize(card) { tokenizedCard, error in
-    // Communicate the tokenizedCard.nonce to your server, or handle error
+    // handle response
 }
 ```
 
@@ -167,6 +176,9 @@ We have removed the `context` parameter from the `BTSEPADirectDebit.tokenize()` 
 
 The updated `tokenize` method is as follows:
 ```
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
+
 sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
     // handle response
 }
