@@ -107,11 +107,13 @@ import BraintreeDataCollector
         }
         
         guard let response = responseDictionary(from: url) else {
-            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
+            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
             completion(nil, BTPayPalError.canceled)
             return
         }
 
+        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginSucceeded)
+        
         var parameters: [String: Any] = ["paypal_account": response]
         var account: [String: Any] = [:]
         
@@ -160,8 +162,7 @@ import BraintreeDataCollector
                 completion(nil, BTPayPalError.failedToCreateNonce)
                 return
             }
-          
-            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginSucceeded)
+
             self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded)
             completion(tokenizedAccount, nil)
         }
