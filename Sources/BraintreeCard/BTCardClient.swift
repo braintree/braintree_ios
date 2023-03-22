@@ -194,7 +194,7 @@ import BraintreeCore
         return finalUserInfo
     }
 
-    private func constructCallbackError(with errorUserInfo: [String: Any], error: NSError?) -> Error? {
+    private func constructCallbackError(with errorUserInfo: [String: Any]?, error: NSError?) -> Error? {
         let errorResponse: BTJSON? = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
         let fieldErrors: BTJSON? = errorResponse?["fieldErrors"].asArray()?.first
 
@@ -202,7 +202,7 @@ import BraintreeCore
         var callbackError: Error? = error
 
         if errorCode == nil {
-            let errorResponse: BTJSON? = errorUserInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+            let errorResponse: BTJSON? = errorUserInfo?[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
             errorCode = errorResponse?["errors"].asArray()?.first?["extensions"]["legacyCode"]
         }
 
