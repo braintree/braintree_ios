@@ -72,34 +72,63 @@ import BraintreeCore
                 completion(nil, error)
                 return
             }
-
+            
             guard let configuration else {
                 completion(nil, BTVenmoError.fetchConfigurationFailed)
                 return
             }
-
+            
             do {
                 let _ = try self.verifyAppSwitch(with: configuration)
             } catch {
                 completion(nil, error)
                 return
             }
-
+            
             let merchantProfileID = request.profileID ?? configuration.venmoMerchantID
             let bundleDisplayName = self.bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-
+            
             let metadata = self.apiClient.metadata
             metadata.source = .venmoApp
-
+            
             var inputParameters: [String: String?] = [
                 "paymentMethodUsage": request.paymentMethodUsage.stringValue,
                 "merchantProfileId": merchantProfileID,
                 "customerClient": "MOBILE_APP",
-                "intent": "CONTINUE"
+                "intent": "CONTINUE",
+                "collectCustomerBillingAddress": String(request.collectCustomerBillingAddress),
+                "collectCustomerShippingAddress": String(request.collectCustomerShippingAddress)
             ]
-
+            
             if let displayName = request.displayName {
                 inputParameters["displayName"] = displayName
+            }
+
+            if let subTotalAmount = request.subTotalAmount {
+                inputParameters["subTotalAmount"] = subTotalAmount
+            }
+            
+            if let discountAmount = request.discountAmount {
+                inputParameters["discountAmount"] = discountAmount
+            }
+            
+            if let taxAmount = request.taxAmount {
+                inputParameters["taxAmount"] = taxAmount
+            }
+            
+            if let shippingAmount = request.shippingAmount {
+                inputParameters["shippingAmount"] = shippingAmount
+            }
+            
+            if let totalAmount = request.totalAmount {
+                inputParameters["totalAmount"] = totalAmount
+            }
+            
+            if let lineItems = request.lineItems, lineItems.count > 0 {
+                if let jsonLineItemData = try? JSONSerialization.data(withJSONObject: lineItems, options: []),
+                   let jsonLineItemString = String(data: jsonLineItemData, encoding: .utf8) {
+                    inputParameters["line_items"] = jsonLineItemString
+                }
             }
 
             let inputDictionary: [String: Any] = ["input": inputParameters]

@@ -108,7 +108,9 @@ class BTVenmoClient_Tests: XCTestCase {
                     "intent": "CONTINUE",
                     "merchantProfileId": "venmo_merchant_id",
                     "paymentMethodUsage": "MULTI_USE",
-                    "displayName": "app-display-name"
+                    "displayName": "app-display-name",
+                    "collectCustomerBillingAddress": "false",
+                    "collectCustomerShippingAddress": "false"
                 ]
             ]
         ] as NSObject)
@@ -131,7 +133,36 @@ class BTVenmoClient_Tests: XCTestCase {
                     "customerClient": "MOBILE_APP",
                     "intent": "CONTINUE",
                     "merchantProfileId": "venmo_merchant_id",
-                    "paymentMethodUsage": "MULTI_USE"
+                    "paymentMethodUsage": "MULTI_USE",
+                    "collectCustomerBillingAddress": "false",
+                    "collectCustomerShippingAddress": "false"
+                ]
+            ]
+        ] as NSObject)
+    }
+    
+    func testTokenizeVenmoAccount_whenCollectAddressFlagsSet_createsPaymentContextWithTheRightFlags() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.collectCustomerBillingAddress = true
+        venmoRequest.collectCustomerShippingAddress = true
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+
+        venmoClient.tokenize(venmoRequest) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters as NSObject?, [
+            "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
+            "variables": [
+                "input" : [
+                    "customerClient": "MOBILE_APP",
+                    "intent": "CONTINUE",
+                    "merchantProfileId": "venmo_merchant_id",
+                    "paymentMethodUsage": "MULTI_USE",
+                    "collectCustomerBillingAddress": "true",
+                    "collectCustomerShippingAddress": "true"
                 ]
             ]
         ] as NSObject)
