@@ -65,8 +65,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCard",
-            dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            dependencies: ["BraintreeCore"]
         ),
         .target(
             name: "BraintreeCore",

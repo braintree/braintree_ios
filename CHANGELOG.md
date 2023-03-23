@@ -34,6 +34,15 @@
     * Rename `BTSEPADirectDebitClient.tokenize(request:completion:)` to `BTSEPADirectDebitClient.tokenize(_:completion:)`
   * BraintreeCard
     * Make `BTAuthenticationInsight` initializer internal
+    * Remove `BTCardClientErrorDomain` global constant
+    * Rename `BTCardClient.tokenizeCard(_:completion)` to `BTCardClient.tokenize(_:completion:)`
+    * Rename `BTCardClientErrorType` to `BTCardError`
+      * Remove unused `BTCardClientErrorType.paymentOptionNotEnabled`
+      * Update enum values:
+        * `.unknown` = 0
+        * `.integration` = 1
+        * `.customerInputInvalid` = 2
+        * `.cardAlreadyExists` = 3
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

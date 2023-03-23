@@ -75,9 +75,9 @@ import BraintreeCore
         }
     }
 
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Create a `BTCardNonce` object from JSON.
-    // TODO: can be internal when BTCardClient in is Swift
-    @objc(cardNonceWithJSON:)
+    @objc(initWithJSON:)
     public convenience init(json cardJSON: BTJSON?) {
         var authenticationInsightJSON: BTJSON? = nil
 
@@ -103,9 +103,7 @@ import BraintreeCore
     }
 
     /// Create a `BTCardNonce` object from GraphQL JSON.
-    // TODO: can be internal when BTCardClient in is Swift
-    @objc(cardNonceWithGraphQLJSON:)
-    public convenience init(graphQLJSON json: BTJSON?) {
+    convenience init(graphQLJSON json: BTJSON?) {
         var lastFour: String = ""
 
         if let lastFourString = json?["creditCard"]["last4"].asString() {

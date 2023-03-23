@@ -12,21 +12,18 @@
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>
 #import <Braintree/BTThreeDSecureLookup.h>
-#import <Braintree/BraintreeCard.h>
 #import <Braintree/BTPaymentFlowClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeCard/BraintreeCard.h>
 #import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
-#import <BraintreeCard/BraintreeCard.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
 #endif
@@ -40,6 +37,7 @@
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
 @import BraintreeCore;
+@import BraintreeCard;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -49,6 +47,7 @@
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#import <BraintreeCard/BraintreeCard-Swift.h>
 #endif
 
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>
