@@ -114,20 +114,17 @@
 		A91E1EBA24FEEF3C007540E5 /* BTPaymentFlowClient+ThreeDSecure.m in Sources */ = {isa = PBXBuildFile; fileRef = 03800A5C1F04630C00068F53 /* BTPaymentFlowClient+ThreeDSecure.m */; };
 		A91E1EBB24FEEF3C007540E5 /* BTThreeDSecureAuthenticateJWT.m in Sources */ = {isa = PBXBuildFile; fileRef = A04F75382230550E00213077 /* BTThreeDSecureAuthenticateJWT.m */; };
 		A91E1EBC24FEEF3C007540E5 /* BTThreeDSecureAdditionalInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 801FD8E32231B4F000014DB0 /* BTThreeDSecureAdditionalInformation.m */; };
-		A91E1EBD24FEEF3C007540E5 /* BTThreeDSecureResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 423B921524D1DFB50048B655 /* BTThreeDSecureResult.m */; };
 		A91E1EC124FEEFA0007540E5 /* BraintreePaymentFlow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03502C841E9C0A1700F15EE6 /* BraintreePaymentFlow.framework */; platformFilter = ios; };
 		A91E1EC424FEF00A007540E5 /* BTPaymentFlowClient+ThreeDSecure.h in Headers */ = {isa = PBXBuildFile; fileRef = 03800A5E1F04632B00068F53 /* BTPaymentFlowClient+ThreeDSecure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A91E1EC524FEF00A007540E5 /* BTThreeDSecureAdditionalInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 80A1EE3F2236B04F00F6218B /* BTThreeDSecureAdditionalInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A91E1EC724FEF00A007540E5 /* BTThreeDSecurePostalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F921BB200EB7940076CD80 /* BTThreeDSecurePostalAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A91E1EC824FEF00A007540E5 /* BTThreeDSecureRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 03800A541F045F5600068F53 /* BTThreeDSecureRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A91E1EC924FEF00A007540E5 /* BTThreeDSecureResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A91E1ECB24FEF015007540E5 /* BraintreeThreeDSecure.h in Headers */ = {isa = PBXBuildFile; fileRef = A91E1EAD24FEEF21007540E5 /* BraintreeThreeDSecure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A91E1ECC24FEF041007540E5 /* BTPaymentFlowClient+ThreeDSecure_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CDCA81FB518CB00CEC47C /* BTPaymentFlowClient+ThreeDSecure_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A91E1ECD24FEF047007540E5 /* BTThreeDSecureAdditionalInformation_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 801FD8E72231C34500014DB0 /* BTThreeDSecureAdditionalInformation_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A91E1ED024FEF052007540E5 /* BTThreeDSecurePostalAddress_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 030825F2208EF14900AAB198 /* BTThreeDSecurePostalAddress_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A91E1ED124FEF052007540E5 /* BTThreeDSecureRequest_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A91E1ED224FEF052007540E5 /* BTThreeDSecureAuthenticateJWT.h in Headers */ = {isa = PBXBuildFile; fileRef = A04F75372230550E00213077 /* BTThreeDSecureAuthenticateJWT.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		A91E1ED324FEF052007540E5 /* BTThreeDSecureResult_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 423B921424D1DFB50048B655 /* BTThreeDSecureResult_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A91E1ED424FEF052007540E5 /* BTThreeDSecureV2Provider.h in Headers */ = {isa = PBXBuildFile; fileRef = A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A91E1EDA24FEF1EA007540E5 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; platformFilter = ios; };
 		A91E1EF724FEF2E4007540E5 /* BraintreeThreeDSecure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91E1EAB24FEEF21007540E5 /* BraintreeThreeDSecure.framework */; platformFilter = ios; };
@@ -637,9 +634,6 @@
 		4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Tests.swift; sourceTree = "<group>"; };
 		4228D80C2624D8C9001D2564 /* BTVenmoAccountNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAccountNonce_Tests.swift; sourceTree = "<group>"; };
 		4228D8682624E5C3001D2564 /* BTVenmoRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoRequest_Tests.swift; sourceTree = "<group>"; };
-		423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureResult.h; sourceTree = "<group>"; };
-		423B921424D1DFB50048B655 /* BTThreeDSecureResult_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureResult_Internal.h; sourceTree = "<group>"; };
-		423B921524D1DFB50048B655 /* BTThreeDSecureResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureResult.m; sourceTree = "<group>"; };
 		423B921824D1E0BF0048B655 /* BTThreeDSecureResult_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureResult_Tests.swift; sourceTree = "<group>"; };
 		4245D668256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTVenmoAppSwitchReturnURL_Tests.swift; sourceTree = "<group>"; };
 		4258677325EECEE100D5F160 /* BTLocalPaymentRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentRequest_Tests.swift; sourceTree = "<group>"; };
@@ -1173,7 +1167,6 @@
 				80A1EE3F2236B04F00F6218B /* BTThreeDSecureAdditionalInformation.h */,
 				03F921BB200EB7940076CD80 /* BTThreeDSecurePostalAddress.h */,
 				03800A541F045F5600068F53 /* BTThreeDSecureRequest.h */,
-				423B921224D1DE9B0048B655 /* BTThreeDSecureResult.h */,
 			);
 			path = BraintreeThreeDSecure;
 			sourceTree = "<group>";
@@ -1537,8 +1530,6 @@
 				03F921BD200EB9230076CD80 /* BTThreeDSecurePostalAddress.m */,
 				80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */,
 				03800A4D1F045F4B00068F53 /* BTThreeDSecureRequest.m */,
-				423B921424D1DFB50048B655 /* BTThreeDSecureResult_Internal.h */,
-				423B921524D1DFB50048B655 /* BTThreeDSecureResult.m */,
 				BE80C00229C549BE00793A6C /* BTThreeDSecureResult.swift */,
 				A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */,
 				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
@@ -1803,7 +1794,6 @@
 				A91E1ECB24FEF015007540E5 /* BraintreeThreeDSecure.h in Headers */,
 				A91E1ED224FEF052007540E5 /* BTThreeDSecureAuthenticateJWT.h in Headers */,
 				A91E1ECD24FEF047007540E5 /* BTThreeDSecureAdditionalInformation_Internal.h in Headers */,
-				A91E1ED324FEF052007540E5 /* BTThreeDSecureResult_Internal.h in Headers */,
 				A91E1EC424FEF00A007540E5 /* BTPaymentFlowClient+ThreeDSecure.h in Headers */,
 				A91E1ECC24FEF041007540E5 /* BTPaymentFlowClient+ThreeDSecure_Internal.h in Headers */,
 				A91E1ED024FEF052007540E5 /* BTThreeDSecurePostalAddress_Internal.h in Headers */,
@@ -1811,7 +1801,6 @@
 				A91E1ED424FEF052007540E5 /* BTThreeDSecureV2Provider.h in Headers */,
 				A91E1EC724FEF00A007540E5 /* BTThreeDSecurePostalAddress.h in Headers */,
 				A91E1EC824FEF00A007540E5 /* BTThreeDSecureRequest.h in Headers */,
-				A91E1EC924FEF00A007540E5 /* BTThreeDSecureResult.h in Headers */,
 				A91E1ED124FEF052007540E5 /* BTThreeDSecureRequest_Internal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2930,7 +2919,6 @@
 				A91E1EBC24FEEF3C007540E5 /* BTThreeDSecureAdditionalInformation.m in Sources */,
 				BE82E74129C4A1330059FE97 /* BTThreeDSecureV2TextBoxCustomization.swift in Sources */,
 				A91E1EBA24FEEF3C007540E5 /* BTPaymentFlowClient+ThreeDSecure.m in Sources */,
-				A91E1EBD24FEEF3C007540E5 /* BTThreeDSecureResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

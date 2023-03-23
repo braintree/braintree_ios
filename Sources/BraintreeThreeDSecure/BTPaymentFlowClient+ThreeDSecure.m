@@ -1,5 +1,4 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
-#import "BTThreeDSecureResult_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
@@ -40,6 +39,13 @@
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#endif
+
+// MARK: - Temporary Swift Module Imports
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+#else                                            // SPM and Carthage
+#import <BraintreeThreeDSecure/BraintreeThreeDSecure-Swift.h>
 #endif
 
 @implementation BTPaymentFlowClient (ThreeDSecure)

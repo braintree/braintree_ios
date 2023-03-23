@@ -4,6 +4,8 @@
 #import <BraintreePaymentFlow/BTPaymentFlowClient.h>
 #endif
 
+@class BTThreeDSecureResult;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
