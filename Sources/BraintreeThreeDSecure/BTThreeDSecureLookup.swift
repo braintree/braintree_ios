@@ -9,13 +9,14 @@ import BraintreeCore
 @objcMembers public class BTThreeDSecureLookup: NSObject {
 
     // MARK: - Public Properties
-    // TODO: consider renaming some of these to start lowercase and add to changelog
 
     /// The "PAReq" or "Payment Authentication Request" is the encoded request message used to initiate authentication.
-    public var PAReq: String?
+    @objc(PAReq)
+    public var paReq: String?
 
     /// The unique 3DS identifier assigned by Braintree to track the 3DS call as it progresses.
-    public var MD: String?
+    @objc(MD)
+    public var md: String?
 
     ///  The URL which the customer will be redirected to for a 3DS Interface.
     ///  In 3DS 2, the presence of an acsURL indicates there is a challenge as it would otherwise frictionlessly complete without an acsURL.
@@ -38,14 +39,14 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    init(json: BTJSON) {
-        PAReq = json["pareq"].asString()
-        MD = json["md"].asString()
-        acsURL = json["acsUrl"].asURL()
-        termURL = json["termUrl"].asURL()
-        threeDSecureVersion = json["threeDSecureVersion"].asString()
+    init(json: BTJSON? = nil) {
+        paReq = json?["pareq"].asString()
+        md = json?["md"].asString()
+        acsURL = json?["acsUrl"].asURL()
+        termURL = json?["termUrl"].asURL()
+        threeDSecureVersion = json?["threeDSecureVersion"].asString()
         isThreeDSecureVersion2 = threeDSecureVersion?.hasPrefix("2.") ?? false
-        transactionID = json["transactionId"].asString()
+        transactionID = json?["transactionId"].asString()
         requiresUserAuthentication = acsURL != nil
     }
 }
