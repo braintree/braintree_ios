@@ -1,5 +1,4 @@
 #import "BTThreeDSecureResult_Internal.h"
-#import "BTThreeDSecureLookup_Internal.h"
 
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
@@ -21,6 +20,13 @@
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeCard/BraintreeCard-Swift.h>
+#endif
+
+// MARK: - Temporary Swift Module Imports
+#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#import <Braintree/Braintree-Swift.h>
+#else                                            // SPM and Carthage
+#import <BraintreeThreeDSecure/BraintreeThreeDSecure-Swift.h>
 #endif
 
 @implementation BTThreeDSecureResult
