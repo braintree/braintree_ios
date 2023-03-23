@@ -2,18 +2,6 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
 
-// MARK: - Objective-C File Imports for Package Managers
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
-#import <Braintree/BraintreeCard.h>
-
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreeCard/BraintreeCard.h>
-
-#else // Carthage
-#import <BraintreeCard/BraintreeCard.h>
-
-#endif
-
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
@@ -23,6 +11,7 @@
  * See https://forums.swift.org/t/using-a-swift-package-in-a-mixed-swift-and-objective-c-project/27348
  */
 @import BraintreeCore;
+@import BraintreeCard;
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative
 /* Use quoted style when importing Swift headers for ReactNative support
@@ -32,6 +21,7 @@
 
 #else                                            // Carthage
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#import <BraintreeCard/BraintreeCard-Swift.h>
 #endif
 
 @implementation BTThreeDSecureAuthenticateJWT

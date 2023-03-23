@@ -18,6 +18,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 10. [Payment Flow](#payment-flow)
 11. [American Express](#american-express)
 12. [Apple Pay](#apple-pay)
+13. [Card](#card)
 
 ## Supported Versions
 
@@ -200,3 +201,6 @@ Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerP
 `BTApplePayClient.tokenizeApplePay(_:completion:)` has been renamed to `BTApplePayClient.tokenize(_:completion:)`
 
 `BTApplePayClient.paymentRequest()` has been renamed to `BTApplePayClient.makePaymentRequest()`
+
+## Card
+`BTCardClient.tokenizeCard(_:completion)` has been renamed to `BTCardClient.tokenize(_:completion)`
