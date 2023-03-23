@@ -13,7 +13,7 @@ final class BTPayPalAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTPayPalAnalytics.browserPresentationSucceeded, "paypal:tokenize:browser-presentation:succeeded")
         XCTAssertEqual(BTPayPalAnalytics.browserPresentationFailed, "paypal:tokenize:browser-presentation:failed")
         XCTAssertEqual(BTPayPalAnalytics.browserLoginFailed, "paypal:tokenize:browser-login:failed")
-        XCTAssertEqual(BTPayPalAnalytics.webSessionAlertCanceled, "paypal:tokenize:web-session-alert:canceled")
+        XCTAssertEqual(BTPayPalAnalytics.browserLoginAlertCanceled, "paypal:tokenize:browser-login:alert-canceled")
         XCTAssertEqual(BTPayPalAnalytics.browserLoginSucceeded, "paypal:tokenize:browser-login:succeeded")
     }
 }

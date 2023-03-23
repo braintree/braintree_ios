@@ -287,7 +287,7 @@ import BraintreeDataCollector
                     // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
                     if self.returnedToAppAfterPermissionAlert == true {
                         // User tapped system cancel button on permission alert
-                        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.webSessionAlertCanceled)
+                        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
                     }
                     // general login cancel message for both user cancel
                     self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)

@@ -2,13 +2,16 @@ import Foundation
 
 class BTPayPalAnalytics {
     
-    // MARK: - Tokenize Events Counted in Conversion Rates
+    // MARK: - Tokenize Events
+    
+    // Counted in conversion rates
     static let vaultRequestStarted = "paypal:vault-tokenize:started"
     static let checkoutRequestStarted = "paypal:checkout-tokenize:started"
-    
     static let tokenizeFailed = "paypal:tokenize:failed"
     static let tokenizeSucceeded = "paypal:tokenize:succeeded"
-    static let browserLoginCanceled = "paypal:tokenize:browser-login:canceled"
+    
+    // Specific fail
+    static let tokenizeNetworkConnectionFailed = "paypal:tokenize:network-connection:failed"
    
     // MARK: - Browser Presentation Events
   
@@ -17,9 +20,11 @@ class BTPayPalAnalytics {
     static let browserPresentationFailed = "paypal:tokenize:browser-presentation:failed"
     
     // MARK: - Browser Login Events
-    static let tokenizeNetworkConnectionFailed = "paypal:tokenize:network-connection:failed"
+    
     static let browserLoginFailed = "paypal:tokenize:browser-login:failed"
-    // specific cancel from permisison alert
-    static let webSessionAlertCanceled = "paypal:tokenize:web-session-alert:canceled"
     static let browserLoginSucceeded = "paypal:tokenize:browser-login:succeeded"
+    // general cancel used in conversion rates
+    static let browserLoginCanceled = "paypal:tokenize:browser-login:canceled"
+    // specific cancel from permisison alert
+    static let browserLoginAlertCanceled = "paypal:tokenize:browser-login:alert-canceled"
 }
