@@ -11,3 +11,4 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient.h>
 #import <BraintreeCore/BraintreeCore-Swift.h>
+#import <BraintreeCard/BraintreeCard-Swift.h>

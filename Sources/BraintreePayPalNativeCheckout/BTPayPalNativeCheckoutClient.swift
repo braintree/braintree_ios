@@ -29,6 +29,7 @@ import PayPalCheckout
     /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
     /// On failure or user cancelation you will receive an error. If the user cancels
     /// out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
+    /// 
     /// - Parameters:
     ///   - request: A `BTPayPalNativeCheckoutRequest`
     ///   - completion: The completion will be invoked exactly once: when tokenization is complete or an error occurs.
@@ -40,11 +41,33 @@ import PayPalCheckout
         tokenize(request: request, completion: completion)
     }
 
+    /// Tokenize a PayPal request to be used with the PayPal Native Checkout flow.
+    ///
+    /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
+    /// On failure or user cancelation you will receive an error. If the user cancels
+    /// out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
+    ///
+    /// - Parameter request: A `BTPayPalNativeCheckoutRequest`
+    /// - Returns: A `BTPayPalNativeCheckoutAccountNonce` if successful
+    /// - Throws: An `Error` describing the failure
+    public func tokenize(_ request: BTPayPalNativeCheckoutRequest) async throws -> BTPayPalNativeCheckoutAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(request) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
+    }
+
     /// Tokenize a PayPal request to be used with the PayPal Native Vault flow.
     ///
     /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
     /// On failure or user cancelation you will receive an error. If the user cancels
     /// out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
+    ///
     /// - Parameters:
     ///   - request: A `BTPayPalNativeVaultRequest`
     ///   - completion: The completion will be invoked exactly once: when tokenization is complete or an error occurs.
@@ -54,6 +77,27 @@ import PayPalCheckout
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         tokenize(request: request, completion: completion)
+    }
+
+    /// Tokenize a PayPal request to be used with the PayPal Native Vault flow.
+    ///
+    /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
+    /// On failure or user cancelation you will receive an error. If the user cancels
+    /// out of the flow, the error code will equal `BTPayPalNativeError.canceled.rawValue`.
+    ///
+    /// - Parameter request: A `BTPayPalNativeVaultRequest`
+    /// - Returns: A `BTPayPalNativeCheckoutAccountNonce` if successful
+    /// - Throws: An `Error` describing the failure
+    public func tokenize(_ request: BTPayPalNativeVaultRequest) async throws -> BTPayPalNativeCheckoutAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(request) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
     }
 
     // MARK: - Private Methods

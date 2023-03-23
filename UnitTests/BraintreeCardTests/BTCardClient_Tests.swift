@@ -24,7 +24,7 @@ class BTCardClient_Tests: XCTestCase {
         card.authenticationInsightRequested = true
         card.merchantAccountID = "some merchant account id"
 
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             
             XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
             XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .gateway)
@@ -65,7 +65,7 @@ class BTCardClient_Tests: XCTestCase {
         card.cvv = "1234"
         card.authenticationInsightRequested = false
         
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
             XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .gateway)
 
@@ -108,7 +108,7 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationMonth = "12"
         card.expirationYear = "2038"
 
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
                 XCTFail("Received an error: \(String(describing: error))")
                 return
@@ -139,7 +139,7 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationMonth = "12"
         card.expirationYear = "2038"
 
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
             XCTAssertEqual(error! as NSError, mockError)
             expectation.fulfill()
@@ -150,6 +150,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenTokenizationEndpointReturns422_callCompletionWithValidationError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
+        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
         let stubJSONResponse = BTJSON(value: [
             "error" : [
                 "message" : "Credit card is invalid"
@@ -181,11 +182,11 @@ class BTCardClient_Tests: XCTestCase {
         card.cvv = "123"
 
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
+        cardClient.tokenize(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error.code, BTCardClientErrorType.customerInputInvalid.rawValue)
+            XCTAssertEqual(error.domain, BTCardError.errorDomain)
+            XCTAssertEqual(error.code, BTCardError.customerInputInvalid([:]).errorCode)
             if let json = (error.userInfo as NSDictionary)[self.customerInputValidationErrorKey] as? NSDictionary {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
@@ -203,6 +204,7 @@ class BTCardClient_Tests: XCTestCase {
     
     func testTokenization_whenTokenizationEndpointReturns422AndCode81724_callCompletionWithValidationError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
+        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
         let stubJSONResponse = BTJSON(value: [
             "error" : [
                 "message" : "Credit card is invalid"
@@ -234,12 +236,12 @@ class BTCardClient_Tests: XCTestCase {
         card.cvv = "123"
 
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
+        cardClient.tokenize(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
             
-            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error.code, BTCardClientErrorType.cardAlreadyExists.rawValue)
+            XCTAssertEqual(error.domain, BTCardError.errorDomain)
+            XCTAssertEqual(error.code, BTCardError.cardAlreadyExists([:]).errorCode)
             if let json = (error.userInfo as NSDictionary)[self.customerInputValidationErrorKey] as? NSDictionary {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
@@ -309,12 +311,12 @@ class BTCardClient_Tests: XCTestCase {
         card.cvv = "123"
 
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
+        cardClient.tokenize(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
             
-            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error.code, BTCardClientErrorType.cardAlreadyExists.rawValue)
+            XCTAssertEqual(error.domain, BTCardError.errorDomain)
+            XCTAssertEqual(error.code, BTCardError.cardAlreadyExists([:]).errorCode)
             if let json = (error.userInfo as NSDictionary)[self.customerInputValidationErrorKey] as? NSDictionary {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
@@ -330,6 +332,7 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: nil)
+        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
         let cardClient = BTCardClient(apiClient: stubAPIClient)
 
         let card = BTCard()
@@ -339,7 +342,7 @@ class BTCardClient_Tests: XCTestCase {
         card.cvv = "123"
 
         let expectation = self.expectation(description: "Callback invoked with error")
-        cardClient.tokenizeCard(card) { (cardNonce, error) -> Void in
+        cardClient.tokenize(card) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
@@ -357,9 +360,11 @@ class BTCardClient_Tests: XCTestCase {
         card.number = "4111111111111111"
         card.expirationMonth = "12"
         card.expirationYear = "2038"
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
         
         let expectation = self.expectation(description: "Tokenized card")
-        cardClient.tokenizeCard(card) { _,_  -> Void in
+        cardClient.tokenize(card) { _,_  -> Void in
             expectation.fulfill()
         }
 
@@ -378,6 +383,8 @@ class BTCardClient_Tests: XCTestCase {
 
     func testAnalyticsEvent_whenTokenizationSucceeds_isSent() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+
         let cardClient = BTCardClient(apiClient: mockAPIClient)
         let card = BTCard()
         card.number = "4111111111111111"
@@ -385,7 +392,7 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
 
         let expectation = self.expectation(description: "Tokenized card")
-        cardClient.tokenizeCard(card) { _, _ -> Void in
+        cardClient.tokenize(card) { _, _ -> Void in
             expectation.fulfill()
         }
 
@@ -418,6 +425,7 @@ class BTCardClient_Tests: XCTestCase {
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
         let cardClient = BTCardClient(apiClient: mockAPIClient)
 
         let card = BTCard()
@@ -426,7 +434,7 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
 
         let expectation = self.expectation(description: "Tokenized card")
-        cardClient.tokenizeCard(card) { _, _ -> Void in
+        cardClient.tokenize(card) { _, _ -> Void in
             expectation.fulfill()
         }
 
@@ -435,9 +443,10 @@ class BTCardClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:failed"))
     }
     
-    func testTokenizeCard_whenNetworkConnectionLost_sendsAnalytics() {
+    func testTokenize_whenNetworkConnectionLost_sendsAnalytics() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
 
         let card = BTCard()
         card.number = "4111111111111111"
@@ -447,7 +456,7 @@ class BTCardClient_Tests: XCTestCase {
         let cardClient = BTCardClient(apiClient: mockAPIClient)
         
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.tokenizeCard(card) { nonce, error in
+        cardClient.tokenize(card) { nonce, error in
             XCTAssertNotNil(error)
             expectation.fulfill()
         }
@@ -480,7 +489,7 @@ class BTCardClient_Tests: XCTestCase {
         
         let expectation = self.expectation(description: "Returns an error")
         
-        cardClient.tokenizeCard(card) { (nonce, error) in
+        cardClient.tokenize(card) { (nonce, error) in
             XCTAssertNil(nonce)
             XCTAssertEqual(error?.localizedDescription,
                            "BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true.")
@@ -510,7 +519,7 @@ class BTCardClient_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Tokenize Card")
 
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.graphQLAPI)
             guard var lastPostParameters = mockApiClient.lastPOSTParameters else {
                 XCTFail()
@@ -539,7 +548,7 @@ class BTCardClient_Tests: XCTestCase {
         
         let expectation = self.expectation(description: "Tokenize Card")
         
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
             expectation.fulfill()
         }
@@ -566,7 +575,7 @@ class BTCardClient_Tests: XCTestCase {
         
         let expectation = self.expectation(description: "Tokenize Card")
         
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
 
             expectation.fulfill()
@@ -618,7 +627,7 @@ class BTCardClient_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Tokenize Card")
 
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
                 XCTFail()
                 return
@@ -686,7 +695,7 @@ class BTCardClient_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Tokenize Card")
 
-        cardClient.tokenizeCard(card) { _, _ -> Void in
+        cardClient.tokenize(card) { _, _ -> Void in
             expectation.fulfill()
         }
 
@@ -733,7 +742,7 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationYear = "2038"
 
         let expectation = self.expectation(description: "Tokenized card")
-        cardClient.tokenizeCard(card) { _, _ -> Void in
+        cardClient.tokenize(card) { _, _ -> Void in
             expectation.fulfill()
         }
 
@@ -742,7 +751,7 @@ class BTCardClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:failed"))
     }
     
-    func testTokenizeCard_withGraphQL_whenNetworkConnectionLost_sendsAnalytics() {
+    func testTokenize_withGraphQL_whenNetworkConnectionLost_sendsAnalytics() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
         
@@ -761,7 +770,7 @@ class BTCardClient_Tests: XCTestCase {
         let cardClient = BTCardClient(apiClient: mockAPIClient)
         
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.tokenizeCard(card) { nonce, error in
+        cardClient.tokenize(card) { nonce, error in
             XCTAssertNotNil(error)
             expectation.fulfill()
         }

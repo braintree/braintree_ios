@@ -65,8 +65,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCard",
-            dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            dependencies: ["BraintreeCore"]
         ),
         .target(
             name: "BraintreeCore",
@@ -113,8 +112,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeVenmo",
-            dependencies: ["BraintreeCore"],
-            publicHeadersPath: "Public"
+            dependencies: ["BraintreeCore"]
         ),
         .binaryTarget(
             name: "PPRiskMagnes",

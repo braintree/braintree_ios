@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCard
 
 final class BTCardAnalytics_Tests: XCTestCase {
     

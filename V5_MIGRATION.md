@@ -2,7 +2,7 @@
 
 See the [CHANGELOG](/CHANGELOG.md) for a complete list of changes. This migration guide outlines the basics for updating your client integration from v4 to v5.
 
-v5 introduces support for Swift Package Manager. See the [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for more details.
+v5 introduces support for Swift Package Manager. See the [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/5.x/SWIFT_PACKAGE_MANAGER.md) for more details.
 
 _Documentation for v5 will be published to https://developer.paypal.com/braintree/docs once it is available for general release._
 
@@ -79,7 +79,7 @@ You will need to add the `BraintreeThreeDSecure` framework to your project. See 
 
 ##### Swift Package Manager
 
-Include `BraintreeThreeDSecure` and `CardinalMobile`. [See the Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for additional instructions.
+Include `BraintreeThreeDSecure` and `CardinalMobile`. [See the Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/5.x/SWIFT_PACKAGE_MANAGER.md) for additional instructions.
 
 #### BTThreeDSecureRequestDelegate
 
