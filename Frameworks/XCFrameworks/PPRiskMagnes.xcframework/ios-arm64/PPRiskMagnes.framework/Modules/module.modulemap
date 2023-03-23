@@ -6,6 +6,6 @@ framework module PPRiskMagnes {
 }
 
 module PPRiskMagnes.Swift {
-    header "PPRiskMagnes-Swift.h"
-    requires objc
+  header "PPRiskMagnes-Swift.h"
+  requires objc
 }

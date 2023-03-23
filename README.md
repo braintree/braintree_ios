@@ -42,9 +42,6 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-**Braintree 5.4.2+ requires Xcode 12.5+ for SPM.** We recommend using the latest version for the simplest SPM integration. If using Braintree 5.4.1 and below, please see our [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/master/SWIFT_PACKAGE_MANAGER.md) for specific workarounds required to use these older versions.
-
-
 ### CocoaPods
 ```
 # Includes Cards and PayPal
@@ -84,10 +81,12 @@ Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 ## Demo
 
 A demo app is included in the project. To run it you will need to do the following:
-    1. You will need to install [CocoaPods](http://cocoapods.org/) version 1.11.3 to run the Demo
-    2. Run `pod install`
-    3. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
-    4. Open `Braintree.xcworkspace` in Xcode. 
+
+1. Run `pod install`
+    * There is a known M1 mac issue with CocoaPods. See [this solution](https://github.com/CocoaPods/CocoaPods/issues/10220#issuecomment-730963835) to resolve `ffi` dependency issues.
+2. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
+3. Open `Braintree.xcworkspace` in Xcode
+4. Select the `Demo` scheme, and then run
 
 Xcode 14+ is required to run the demo app.
 

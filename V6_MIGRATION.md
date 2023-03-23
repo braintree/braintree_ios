@@ -16,6 +16,9 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 8. [Union Pay](#union-pay)
 9. [SEPA Direct Debit](#sepa-direct-debit)
 10. [Payment Flow](#payment-flow)
+11. [American Express](#american-express)
+12. [Apple Pay](#apple-pay)
+13. [Card](#card)
 
 ## Supported Versions
 
@@ -52,12 +55,18 @@ The possible values for `BTVenmoPaymentMethodUsage` include:
 * `.multiUse` - the Venmo payment will be authorized for future payments and can be vaulted.
 * `.singleUse` - the Venmo payment will be authorized for a one-time payment and cannot be vaulted.
 
+`BTVenmoClient.tokenizeVenmoAccount(with:completion:)` has been renamed to `BTVenmoClient.tokenize(_:completion:)`
+
+`BTVenmoClient.isiOSAppAvailableForAppSwitch()` has been renamed to `BTVenmoClient.isVenmoAppInstalled()`
+
 ```
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let venmoClient = BTVenmoClient(apiClient: apiClient)
 let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
 venmoRequest.profileID = "my-profile-id"
 venmoRequest.vault = true
 
-venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccountNonce, error in
+venmoClient.tokenize(venmoRequest) { venmoAccountNonce, error in
     guard let venmoAccountNonce = venmoAccountNonce else {
         // handle error
     }
@@ -70,9 +79,10 @@ venmoClient.tokenizeVenmoAccount(with: venmoRequest) { venmoAccountNonce, error 
 
 The property `BTPayPalRequest.activeWindow` has been removed
 
-Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`:
+Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenize`:
 ```
-let payPalClient = BTPayPalClient(apiClient: <MY_BTAPICLIENT>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalClient = BTPayPalClient(apiClient: apiClient)
 let request = BTPayPalCheckoutRequest(amount: "1")
 
 payPalClient.tokenize(request) { payPalAccountNonce, error in
@@ -83,16 +93,20 @@ payPalClient.tokenize(request) { payPalAccountNonce, error in
 }
 ```
 
-`BTPayPalClient.tokenizePayPalAccount(with: BTPayPalRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)` has been replaced with two methods: `tokenize(_ request: BTPayPalVaultRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)` and `tokenize(_ request: BTPayPalCheckoutRequest, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void)`:
+`BTPayPalClient.tokenizePayPalAccount(with:completion:)` has been replaced with two methods called: `BTPayPalClient.tokenize(_:completion:)` taking in either a `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
 
 ```
 // BTPayPalCheckoutRequest
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalClient = BTPayPalClient(apiClient: apiClient)
 let request = BTPayPalCheckoutRequest(amount: "1")
 payPalClient.tokenize(request) { payPalAccountNonce, error in 
     // handle response
 }
 
 // BTPayPalVaultRequest
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalClient = BTPayPalClient(apiClient: apiClient)
 let request = BTPayPalVaultRequest()
 payPalClient.tokenize(request) { payPalAccountNonce, error in 
     // handle response
@@ -100,18 +114,20 @@ payPalClient.tokenize(request) { payPalAccountNonce, error in
 ```
 
 ## PayPal Native Checkout
-`BTPayPalNativeCheckoutClient.tokenizePayPalAccount(with: BTPayPalNativeRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)` has been replaced with two methods: `tokenize(_ request: BTPayPalNativeCheckoutRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)` and `tokenize(_ request: BTPayPalNativeVaultRequest, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void)`:
+`BTPayPalNativeCheckoutClient.tokenizePayPalAccount(with:completion:` has been replaced with two methods called: `tokenize(_:completion:)` taking in either a `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`
 
 ```
 // BTPayPalNativeCheckoutRequest
-let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPICLIENT>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 let request = BTPayPalNativeCheckoutRequest(amount: "1")
 payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
     // handle response
 }
 
 // BTPayPalNativeVaultRequest
-let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: <MY_BTAPICLIENT>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 let request = BTPayPalNativeVaultRequest()
 payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce, error in 
     // handle response
@@ -127,13 +143,11 @@ For merchants collecting device data for PayPal and Local Payment methods will n
 
 The new integration for collecting device data will look like the following:
 ```
-let dataCollector = BTDataCollector(apiClient: <MY_BTAPICLIENT>)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let dataCollector = BTDataCollector(apiClient: apiClient)
 
-dataCollector.collectDeviceData { deviceData, _ in
-    guard let deviceData = deviceData else {
-        // handle error
-    }
-    // Send deviceData to your server
+dataCollector.collectDeviceData { deviceData, error in
+    // handle response
 }
 ```
 
@@ -143,25 +157,30 @@ The `BraintreeUnionPay` module, and all containing classes, was removed in v6. U
 Now, you can tokenize just with the card details:
 
 ```
-let braintreeClient = BTAPIClient(authorization: "<CLIENT_AUTHORIZATION>")!
-let cardClient = BTCardClient(apiClient: braintreeClient)
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let cardClient = BTCardClient(apiClient: apiClient)
 
 let card = BTCard()
 card.number = "4111111111111111"
 card.expirationMonth = "12"
 card.expirationYear = "2025"
 
-cardClient.tokenizeCard(card) { (tokenizedCard, error) in
-    // Communicate the tokenizedCard.nonce to your server, or handle error
+cardClient.tokenize(card) { tokenizedCard, error in
+    // handle response
 }
 ```
 
 ## SEPA Direct Debit
 We have removed the `context` parameter from the `BTSEPADirectDebit.tokenize()` method. Additionally, conformance to the `ASWebAuthenticationPresentationContextProviding` protocol is no longer needed.
 
+`BTSEPADirectDebitClient.tokenize(request:context:completion:)` has been renamed to `BTSEPADirectDebitClient.tokenize(_:completion:)`
+
 The updated `tokenize` method is as follows:
 ```
-sepaDirectDebitClient.tokenize(request: sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
+
+sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
     // handle response
 }
 ```
@@ -174,3 +193,14 @@ We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in 
 Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
 
 Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
+
+## American Express
+`BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` has been renamed to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
+
+## Apple Pay
+`BTApplePayClient.tokenizeApplePay(_:completion:)` has been renamed to `BTApplePayClient.tokenize(_:completion:)`
+
+`BTApplePayClient.paymentRequest()` has been renamed to `BTApplePayClient.makePaymentRequest()`
+
+## Card
+`BTCardClient.tokenizeCard(_:completion)` has been renamed to `BTCardClient.tokenize(_:completion)`

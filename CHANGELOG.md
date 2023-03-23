@@ -2,15 +2,59 @@
 
 ## unreleased
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
+* Fixes error `@objcMembers attribute used without importing module 'Foundation'` in Xcode 14.3+
+* Add async/await support back to all public Swift methods
+* Convert `BraintreeVenmo` module to Swift
+* Convert `BraintreeCard` module to Swift
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
   * BraintreeApplePay
-    * Rename `BTApplePayClient.tokenizeApplePay` to `BTApplePayClient.tokenize`
+    * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
+    * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
     * Remove `BTApplePayErrorDomain` global constant
     * Remove `BTApplePayErrorType`
     * Make `BTApplePayCardNonce` initializer internal
+  * BraintreeDataCollector
+    * Update PPRiskMagnes to static XCFramework
+  * BraintreeVenmo
+    * Rename `BTVenmoAccountNonce.externalId` to `BTVenmoAccountNonce.externalID`
+    * Remove `BTVenmoErrorDomain` global constant
+    * Renamed `BTVenmoClient.tokenizeVenmoAccount(with:completion:)` to `BTVenmoClient.tokenize(_:completion:)`
+    * Renamed `BTVenmoClient.isiOSAppAvailableForAppSwitch()` to `BTVenmoClient.isVenmoAppInstalled()`
+    * Add new `BTVenmoError`
+      * `.invalidBodyReturned`
+      * `.invalidRedirectURL`
+      * `.fetchConfigurationFailed`
+    * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
+  * BraintreeAmericanExpress
+    * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
+  * BraintreeSEPADirectDebit
+    * Rename `BTSEPADirectDebitClient.tokenize(request:completion:)` to `BTSEPADirectDebitClient.tokenize(_:completion:)`
+  * BraintreeCard
+    * Make `BTAuthenticationInsight` initializer internal
+    * Remove `BTCardClientErrorDomain` global constant
+    * Rename `BTCardClient.tokenizeCard(_:completion)` to `BTCardClient.tokenize(_:completion:)`
+    * Rename `BTCardClientErrorType` to `BTCardError`
+      * Remove unused `BTCardClientErrorType.paymentOptionNotEnabled`
+      * Update enum values:
+        * `.unknown` = 0
+        * `.integration` = 1
+        * `.customerInputInvalid` = 2
+        * `.cardAlreadyExists` = 3
+    
+## 5.21.0 (2023-03-14)
+* Add missed deprecation warnings to `BTCardRequest` Union Pay properties
+* Update Cardinal SDK to version 2.2.5-6
+* BraintreePayPalNativeCheckout (BETA)
+  * Expose `payerID` property on `BTPayPalNativeCheckoutAccountNonce` publicly
+  * Expose all properties on `BTPayPalNativeCheckoutAccountNonce` to Objective-C
+
+## 5.20.1 (2023-01-31)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix bug where some request dictionaries were being constructed incorrectly
+  * Fix bug where passing `BTPayPalNativeVaultRequest.shippingAddressOverride` as `nil` was incorrectly throwing an error
 
 ## 6.0.0-beta2 (2023-01-30)
 * Convert `BraintreePayPal` module to Swift
@@ -278,7 +322,7 @@
     * _Notes:_
       * This was a workaround for an Xcode bug discussed in #576. The bug resolved in Xcode 12.5.
       * You can remove the `KountDataCollector`, `PPRiskMagnes`, and `CardinalMobile` explicit dependencies.
-      * You can also remove any run-script phase or post-action [previously required](/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
+      * You can also remove any run-script phase or post-action [previously required](https://github.com/braintree/braintree_ios/blob/5.x/SWIFT_PACKAGE_MANAGER.md) for using these frameworks.
   * Xcode 13 Beta
     * Remove invalid file path exclusions from `Package.swift` (thanks @JonathanDowning)
 
@@ -308,7 +352,7 @@
 * Add CardinalMobile.xcframework version 2.2.5-1
 * Update Kount SDK to v4.1.4
 
-**NOTE:** For Swift Package Manager integrations using `BraintreeThreeDSecure`, manually including `CardinalMobile.framework` is no longer required. You should delete it from your project and add `CardinalMobile` via SPM. If you added the run script to remove simulator architectures from `CardinalMobile.framework`, you should remove this as well. See the [Swift Package Manager guide](/SWIFT_PACKAGE_MANAGER.md) for more information.
+**NOTE:** For Swift Package Manager integrations using `BraintreeThreeDSecure`, manually including `CardinalMobile.framework` is no longer required. You should delete it from your project and add `CardinalMobile` via SPM. If you added the run script to remove simulator architectures from `CardinalMobile.framework`, you should remove this as well. See the [Swift Package Manager guide](https://github.com/braintree/braintree_ios/blob/5.x/SWIFT_PACKAGE_MANAGER.md) for more information.
 
 ## 5.2.0 (2021-03-15)
 * Fix potential crash if `legacyCode` param missing from GraphQL error response
