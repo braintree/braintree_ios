@@ -1,5 +1,6 @@
 import XCTest
-import BraintreeCard
+import BraintreeCore
+@testable import BraintreeCard
 
 class BTAuthenticationInsight_Tests: XCTestCase {
     
@@ -8,7 +9,7 @@ class BTAuthenticationInsight_Tests: XCTestCase {
             "regulationEnvironment": "unregulated"
             ]))
         
-        XCTAssertEqual(authInsight?.regulationEnvironment, "unregulated")
+        XCTAssertEqual(authInsight.regulationEnvironment, "unregulated")
     }
     
     func testInitWithJSON_whenRegulationEnvironmentIsNil_setsRegulationEnvironmentToNil() {
@@ -16,7 +17,7 @@ class BTAuthenticationInsight_Tests: XCTestCase {
             "regulationEnvironment": nil
             ]))
         
-        XCTAssertNil(authInsight?.regulationEnvironment)
+        XCTAssertNil(authInsight.regulationEnvironment)
     }
     
     func testInitWithJSON_whenJSONKeyIsCustomerAuthenticationRegulationEnvironment_setsRegulationEnvironment() {
@@ -24,7 +25,7 @@ class BTAuthenticationInsight_Tests: XCTestCase {
             "customerAuthenticationRegulationEnvironment": "unregulated"
             ]))
         
-        XCTAssertEqual(authInsight?.regulationEnvironment, "unregulated")
+        XCTAssertEqual(authInsight.regulationEnvironment, "unregulated")
     }
     
     func testInitWithJSON_whenRegulationEnvironmentContainsUppercaseLetters_setsLowercasedRegulationEnvironment() {
@@ -32,7 +33,7 @@ class BTAuthenticationInsight_Tests: XCTestCase {
             "customerAuthenticationRegulationEnvironment": "UnReGuLaTeD"
             ]))
         
-        XCTAssertEqual(authInsight?.regulationEnvironment, "unregulated")
+        XCTAssertEqual(authInsight.regulationEnvironment, "unregulated")
     }
     
     func testInitWithJSON_whenRegulationEnvironmentIsPSDTWO_setsRegulationEnvironmentToPsd2() {
@@ -40,7 +41,7 @@ class BTAuthenticationInsight_Tests: XCTestCase {
             "customerAuthenticationRegulationEnvironment": "PSDTWO"
             ]))
         
-        XCTAssertEqual(authInsight?.regulationEnvironment, "psd2")
+        XCTAssertEqual(authInsight.regulationEnvironment, "psd2")
     }
     
     func testInitWithJSON_whenCustomerAuthenticationRegulationEnvironmentIsNil_setsRegulationEnvironmentToNil() {
@@ -48,12 +49,12 @@ class BTAuthenticationInsight_Tests: XCTestCase {
             "customerAuthenticationRegulationEnvironment": nil
             ]))
         
-        XCTAssertNil(authInsight?.regulationEnvironment)
+        XCTAssertNil(authInsight.regulationEnvironment)
     }
     
     func testInitWithJSON_whenRegulationEnvironmentKeyIsNotPresent_setsRegulationEnvironmentToNil() {
         let authInsight = BTAuthenticationInsight(json: BTJSON(value: [:]))
         
-        XCTAssertNil(authInsight?.regulationEnvironment)
+        XCTAssertNil(authInsight.regulationEnvironment)
     }
 }

@@ -33,8 +33,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Card" do |s|
-    s.source_files  = "Sources/BraintreeCard/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeCard/Public/BraintreeCard/*.h"
+    s.source_files  = "Sources/BraintreeCard/*.swift"
     s.dependency "Braintree/Core"
   end
 

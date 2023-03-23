@@ -10,7 +10,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BraintreePaymentFlow.h>
-#import <Braintree/BraintreeCard.h>
 #import <Braintree/BTPaymentFlowClient+ThreeDSecure.h>
 #import <Braintree/BTThreeDSecureAdditionalInformation.h>
 #import <Braintree/BTThreeDSecureLookup.h>
@@ -19,7 +18,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 #import <Braintree/BTThreeDSecureResult.h>
 #else
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
-#import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureAdditionalInformation.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
