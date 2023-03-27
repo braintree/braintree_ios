@@ -23,7 +23,7 @@ import BraintreeCard
     public var errorMessage: String?
 
     // TODO: this can be internal when BTThreeDSecureAuthenticateJWT is in Swift
-    // TODO: add to our changelog that this is internal
+    // TODO: add to our changelog that this is internal once above change is made
     @objc(initWithJSON:)
     public init(json: BTJSON? = nil) {
         if json?["paymentMethod"].asDictionary() != nil {

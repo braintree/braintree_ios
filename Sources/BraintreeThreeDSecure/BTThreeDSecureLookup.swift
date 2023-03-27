@@ -11,11 +11,9 @@ import BraintreeCore
     // MARK: - Public Properties
 
     /// The "PAReq" or "Payment Authentication Request" is the encoded request message used to initiate authentication.
-    @objc(PAReq)
     public var paReq: String?
 
     /// The unique 3DS identifier assigned by Braintree to track the 3DS call as it progresses.
-    @objc(MD)
     public var md: String?
 
     ///  The URL which the customer will be redirected to for a 3DS Interface.
