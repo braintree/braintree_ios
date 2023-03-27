@@ -8,6 +8,10 @@ import BraintreeCore
 import BraintreeCard
 #endif
 
+#if canImport(BraintreePaymentFlow)
+import BraintreePaymentFlow
+#endif
+
 /// The result of a 3D Secure payment flow
 @objcMembers public class BTThreeDSecureResult: BTPaymentFlowResult {
 
