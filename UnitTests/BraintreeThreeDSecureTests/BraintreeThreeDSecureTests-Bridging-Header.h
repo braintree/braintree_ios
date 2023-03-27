@@ -1,7 +1,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest_Internal.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureAuthenticateJWT.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureAdditionalInformation_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecurePostalAddress_Internal.h>
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure_Internal.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient.h>
