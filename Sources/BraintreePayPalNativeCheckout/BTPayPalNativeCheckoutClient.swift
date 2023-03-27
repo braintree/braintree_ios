@@ -38,6 +38,7 @@ import PayPalCheckout
         _ request: BTPayPalNativeCheckoutRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
+        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.checkoutRequestStarted)
         tokenize(request: request, completion: completion)
     }
 
@@ -76,6 +77,7 @@ import PayPalCheckout
         _ request: BTPayPalNativeVaultRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
+        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.vaultRequestStarted)
         tokenize(request: request, completion: completion)
     }
 
@@ -106,13 +108,12 @@ import PayPalCheckout
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.started")
-
+        
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
             switch result {
             case .success(let order):
-                self?.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.started")
+                self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.createOrderStarted)
                 let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
                     clientID: order.payPalClientID,
                     createOrder: { action in
@@ -122,19 +123,20 @@ import PayPalCheckout
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
                         @unknown default:
+                            self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.createOrderInvalidPaymentType)
+                            self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
                             completion(nil, BTPayPalNativeError.invalidRequest)
                         }
                     },
                     onApprove: { [weak self] approval in
-                        self?.apiClient.sendAnalyticsEvent("ios.paypal-native.on-approve.started")
                         self?.tokenize(approval: approval, request: request, completion: completion)
                     },
                     onCancel: {
-                        self?.apiClient.sendAnalyticsEvent("ios.paypal-native.canceled")
+                        self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeCanceled)
                         completion(nil, BTPayPalNativeError.canceled)
                     },
                     onError: { error in
-                        self?.apiClient.sendAnalyticsEvent("ios.paypal-native.on-error.failed")
+                        self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
                         completion(nil, BTPayPalNativeError.checkoutSDKFailed)
                     },
                     environment: order.environment
@@ -147,7 +149,8 @@ import PayPalCheckout
               
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
-                self?.apiClient.sendAnalyticsEvent("ios.paypal-native.create-order.failed")
+                self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
+                self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.createOrderFailed)
                 completion(nil, error)
             }
         }
@@ -162,10 +165,9 @@ import PayPalCheckout
         tokenizationClient.tokenize(request: request, returnURL: approval.data.returnURL!.absoluteString) { result in
             switch result {
             case .success(let nonce):
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native.on-approve.succeeded")
                 completion(nonce, nil)
             case .failure(let error):
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native.on-approve.failed")
+                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
                 completion(nil, error)
             }
         }
