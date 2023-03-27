@@ -2,7 +2,12 @@
 
 @class BTAPIClient;
 @class BTPaymentFlowRequest;
+
+#if __has_include(<Braintree/BraintreePaymentFlow.h>)
+#import <Braintree/BTPaymentFlowResult.h>
+#else
 @class BTPaymentFlowResult;
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
