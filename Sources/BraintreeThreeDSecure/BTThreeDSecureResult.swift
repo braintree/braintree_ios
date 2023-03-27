@@ -22,8 +22,7 @@ import BraintreeCard
     /// The error message when the 3D Secure flow is unsuccessful
     public var errorMessage: String?
 
-    // TODO: this can be internal when BTThreeDSecureAuthenticateJWT is in Swift
-    // TODO: add to our changelog that this is internal once above change is made
+    // TODO: this can be internal when BTThreeDSecureAuthenticateJWT is in Swift (was not public so will not need changelog)
     @objc(initWithJSON:)
     public init(json: BTJSON? = nil) {
         if json?["paymentMethod"].asDictionary() != nil {
