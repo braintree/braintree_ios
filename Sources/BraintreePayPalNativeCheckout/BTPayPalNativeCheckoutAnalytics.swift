@@ -11,5 +11,5 @@ class BTPayPalNativeCheckoutAnalytics {
     
     // MARK: - Order Creation Fail
     
-    static let orderCreateFailed = "paypal-native:order-create:failed"
+    static let orderCreationFailed = "paypal-native:order-creation:failed"
 }

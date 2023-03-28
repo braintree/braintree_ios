@@ -7,6 +7,6 @@ final class BTPayPalNativeCheckoutAnalytics_tests: XCTestCase {
         XCTAssertEqual(BTPayPalNativeCheckoutAnalytics.tokenizeFailed, "paypal-native:tokenize:failed")
         XCTAssertEqual(BTPayPalNativeCheckoutAnalytics.tokenizeSucceeded, "paypal-native:tokenize:succeeded")
         XCTAssertEqual(BTPayPalNativeCheckoutAnalytics.tokenizeCanceled, "paypal-native:tokenize:canceled")
-        XCTAssertEqual(BTPayPalNativeCheckoutAnalytics.orderCreateFailed, "paypal-native:order-create:failed")
+        XCTAssertEqual(BTPayPalNativeCheckoutAnalytics.orderCreationFailed, "paypal-native:order-creation:failed")
     }
 }
