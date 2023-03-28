@@ -73,7 +73,7 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
                 XCTFail("A response without a nonce string should be a failure")
             case .failure(let error):
                 XCTAssertEqual(error, .parsingTokenizationResultFailed)
-                XCTAssertEqual(mockClient.postedAnalyticsEvents.last, BTPayPalNativeCheckoutAnalytics.tokenizeParsingResultFailed)
+                XCTAssertEqual(mockClient.postedAnalyticsEvents.last, BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
             }
         }
     }

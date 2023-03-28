@@ -113,7 +113,6 @@ import PayPalCheckout
         orderCreationClient.createOrder(with: request) { [weak self] result in
             switch result {
             case .success(let order):
-                self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.createOrderStarted)
                 let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
                     clientID: order.payPalClientID,
                     createOrder: { action in
@@ -123,7 +122,6 @@ import PayPalCheckout
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
                         @unknown default:
-                            self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.createOrderInvalidPaymentType)
                             self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
                             completion(nil, BTPayPalNativeError.invalidRequest)
                         }
@@ -150,7 +148,6 @@ import PayPalCheckout
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
                 self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
-                self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.createOrderFailed)
                 completion(nil, error)
             }
         }
@@ -167,7 +164,6 @@ import PayPalCheckout
             case .success(let nonce):
                 completion(nonce, nil)
             case .failure(let error):
-                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
                 completion(nil, error)
             }
         }
