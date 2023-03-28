@@ -37,12 +37,8 @@ import BraintreePaymentFlow
             lookup = BTThreeDSecureLookup(json: json?["lookup"])
         }
 
-        if let jsonErrors = json?["errors"].asArray() {
-            let firstError = jsonErrors.first
-
-            if let firstErrorMessage = firstError?["message"] {
-                errorMessage = firstErrorMessage.asString()
-            }
+        if let firstErrorMessage = json?["errors"].asArray()?.first?["message"] {
+            errorMessage = firstErrorMessage.asString()
         } else {
             errorMessage = json?["error"]["message"].asString()
         }
