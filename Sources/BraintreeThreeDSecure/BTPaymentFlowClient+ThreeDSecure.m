@@ -159,7 +159,16 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
                 return;
             }
 
-            completionBlock([[BTThreeDSecureResult alloc] initWithJSON:body], nil);
+            if (body) {
+                completionBlock([[BTThreeDSecureResult alloc] initWithJSON:body], nil);
+                return;
+            } else {
+                error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                            code:BTThreeDSecureFlowErrorTypeNoBodyReturned
+                                        userInfo:@{NSLocalizedDescriptionKey: @"A body was not returned from the API during the request."}];
+                completionBlock(nil, error);
+                return;
+            }
         }];
     }];
 }
