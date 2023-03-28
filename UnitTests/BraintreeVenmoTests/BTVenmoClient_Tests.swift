@@ -167,6 +167,36 @@ class BTVenmoClient_Tests: XCTestCase {
             ]
         ] as NSObject)
     }
+    
+    func testTokenizeVenmoAccount_withAmountsAndLineItemsSet_createsPaymentContext() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.subTotalAmount = "9"
+        venmoRequest.totalAmount = "9"
+        venmoRequest.lineItems = [BTVenmoLineItem(quantity: "1", unitAmount: "9", name: "name", kind: .debit)]
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+
+        venmoClient.tokenize(venmoRequest) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+        if let inputDict = params?["variables"] as? NSDictionary,
+        let input = inputDict["input"] as? [String:Any] {
+            XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
+            XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
+            XCTAssertEqual("false",input["collectCustomerShippingAddress"] as? String)
+            
+            if let transactionDetailsString = input["venmoPaysheetTransactionDetails"] as? String {
+                XCTAssertTrue(transactionDetailsString.contains("\"totalAmount\":\"9\""))
+                XCTAssertTrue(transactionDetailsString.contains("\"subTotalAmount\":\"9\""))
+                XCTAssertFalse(transactionDetailsString.contains("\"discountAmount\""))
+                XCTAssertTrue(transactionDetailsString.contains("\"lineItems\""))
+            }
+        }
+    }
 
     func testTokenizeVenmoAccount_opensVenmoURLWithPaymentContextID() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)

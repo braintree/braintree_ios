@@ -104,32 +104,44 @@ import BraintreeCore
                 inputParameters["displayName"] = displayName
             }
 
+            var transactionDetails: [String: String] = [:];
+            
             if let subTotalAmount = request.subTotalAmount {
-                inputParameters["subTotalAmount"] = subTotalAmount
+                transactionDetails["subTotalAmount"] = subTotalAmount
             }
             
             if let discountAmount = request.discountAmount {
-                inputParameters["discountAmount"] = discountAmount
+                transactionDetails["discountAmount"] = discountAmount
             }
             
             if let taxAmount = request.taxAmount {
-                inputParameters["taxAmount"] = taxAmount
+                transactionDetails["taxAmount"] = taxAmount
             }
             
             if let shippingAmount = request.shippingAmount {
-                inputParameters["shippingAmount"] = shippingAmount
+                transactionDetails["shippingAmount"] = shippingAmount
             }
             
             if let totalAmount = request.totalAmount {
-                inputParameters["totalAmount"] = totalAmount
+                transactionDetails["totalAmount"] = totalAmount
             }
             
             if let lineItems = request.lineItems, lineItems.count > 0 {
-                if let jsonLineItemData = try? JSONSerialization.data(withJSONObject: lineItems, options: []),
+                let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
+                if let jsonLineItemData = try? JSONSerialization.data(withJSONObject: lineItemsArray),
                    let jsonLineItemString = String(data: jsonLineItemData, encoding: .utf8) {
-                    inputParameters["line_items"] = jsonLineItemString
+                    transactionDetails["lineItems"] = jsonLineItemString
                 }
             }
+
+            if !transactionDetails.isEmpty {
+                if let jsonAmountData = try? JSONSerialization.data(withJSONObject: transactionDetails, options: []),
+                   let transactionDetailsString = String(data: jsonAmountData, encoding: .utf8) {
+                    inputParameters["venmoPaysheetTransactionDetails"] = transactionDetailsString
+                }
+            }
+            
+            
 
             let inputDictionary: [String: Any] = ["input": inputParameters]
             let graphQLParameters: [String: Any] = [
