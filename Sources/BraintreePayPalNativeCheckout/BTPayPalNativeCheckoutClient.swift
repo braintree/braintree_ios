@@ -146,6 +146,7 @@ import PayPalCheckout
               
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
+                self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreateFailed)
                 self?.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
                 completion(nil, error)
             }
