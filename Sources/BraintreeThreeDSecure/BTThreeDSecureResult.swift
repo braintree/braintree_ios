@@ -28,23 +28,19 @@ import BraintreePaymentFlow
 
     // TODO: this can be internal when BTThreeDSecureAuthenticateJWT is in Swift (was not public so will not need changelog)
     @objc(initWithJSON:)
-    public init(json: BTJSON? = nil) {
-        if json?["paymentMethod"].asDictionary() != nil {
-            tokenizedCard = BTCardNonce(json: json?["paymentMethod"])
+    public init(json: BTJSON) {
+        if json["paymentMethod"].asDictionary() != nil {
+            tokenizedCard = BTCardNonce(json: json["paymentMethod"])
         }
 
-        if json?["lookup"].asDictionary() != nil {
-            lookup = BTThreeDSecureLookup(json: json?["lookup"])
+        if json["lookup"].asDictionary() != nil {
+            lookup = BTThreeDSecureLookup(json: json["lookup"])
         }
 
-        if let jsonErrors = json?["errors"].asArray() {
-            let firstError = jsonErrors.first
-
-            if let firstErrorMessage = firstError?["message"] {
-                errorMessage = firstErrorMessage.asString()
-            }
+        if let firstErrorMessage = json["errors"].asArray()?.first?["message"] {
+            errorMessage = firstErrorMessage.asString()
         } else {
-            errorMessage = json?["error"]["message"].asString()
+            errorMessage = json["error"]["message"].asString()
         }
     }
 }

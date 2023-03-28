@@ -3,6 +3,7 @@
 @class BTAPIClient;
 @class BTPaymentFlowRequest;
 
+// Temporary import to resolve "attempting to use the forward class as a super class" cocoapods error
 #if __has_include(<Braintree/BraintreePaymentFlow.h>)
 #import <Braintree/BTPaymentFlowResult.h>
 #else
