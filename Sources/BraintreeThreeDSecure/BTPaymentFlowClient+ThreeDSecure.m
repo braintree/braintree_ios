@@ -1,6 +1,5 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecureAdditionalInformation_Internal.h"
 
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods

@@ -1,6 +1,5 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecureAdditionalInformation_Internal.h"
 #import "BTThreeDSecureV2Provider.h"
 #import <SafariServices/SafariServices.h>
 
