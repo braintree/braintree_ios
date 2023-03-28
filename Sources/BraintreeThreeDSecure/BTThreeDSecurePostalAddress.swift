@@ -46,50 +46,25 @@ import Foundation
     /// - Returns: A dictionary representing the postal address.
     @objc(asParametersWithPrefix:)
     public func asParameters(withPrefix prefix: String? = "") -> [String: String] {
-        var parameters: [String: String] = [:]
+        var parameters: [String: String?] = [
+            prepend(prefix, toKey: "givenName"): givenName,
+            prepend(prefix, toKey: "surname"): surname,
+            prepend(prefix, toKey: "line1"): streetAddress,
+            prepend(prefix, toKey: "line2"): extendedAddress,
+            prepend(prefix, toKey: "line3"): line3,
+            prepend(prefix, toKey: "city"): locality,
+            prepend(prefix, toKey: "state"): region,
+            prepend(prefix, toKey: "postalCode"): postalCode,
+            prepend(prefix, toKey: "countryCode"): countryCodeAlpha2
+        ]
 
-        if let givenName {
-            parameters[prepend(prefix, toKey: "givenName")] = givenName
-        }
+        let phoneKey: String = prefix == "shipping" ? "phone" : "phoneNumber"
+        parameters[prepend(prefix, toKey: phoneKey)] = phoneNumber
 
-        if let surname {
-            parameters[prepend(prefix, toKey: "surname")] = surname
-        }
+        // Remove all nil values and their key
+        let filteredParameters: [String: String] = parameters.compactMapValues { $0 }
 
-        if let streetAddress {
-            parameters[prepend(prefix, toKey: "line1")] = streetAddress
-        }
-
-        if let extendedAddress {
-            parameters[prepend(prefix, toKey: "line2")] = extendedAddress
-        }
-
-        if let line3 {
-            parameters[prepend(prefix, toKey: "line3")] = line3
-        }
-
-        if let locality {
-            parameters[prepend(prefix, toKey: "city")] = locality
-        }
-
-        if let region {
-            parameters[prepend(prefix, toKey: "state")] = region
-        }
-
-        if let postalCode {
-            parameters[prepend(prefix, toKey: "postalCode")] = postalCode
-        }
-
-        if let countryCodeAlpha2 {
-            parameters[prepend(prefix, toKey: "countryCode")] = countryCodeAlpha2
-        }
-
-        if let phoneNumber {
-            let key: String = prefix == "shipping" ? "phone" : "phoneNumber"
-            parameters[prepend(prefix, toKey: key)] = phoneNumber
-        }
-
-        return parameters
+        return filteredParameters
     }
 
     // MARK: Private Methods
