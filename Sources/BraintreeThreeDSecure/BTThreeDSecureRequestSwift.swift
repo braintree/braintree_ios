@@ -132,8 +132,64 @@ import BraintreeCore
     
     // MARK: - Private Methods
     
-    func handleRequest(request: BTPaymentFlowRequest, apiClient: BTAPIClient, paymentClientDelegate: BTPaymentFlowClientDelegate) {
+    func handleRequest(request: BTPaymentFlowRequest, apiClient: BTAPIClient, delegate: BTPaymentFlowClientDelegate) {
+        self.paymentFlowClientDelegate = delegate
         
+        apiClient.sendAnalyticsEvent("ios.three-d-secure.initialized")
+        
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, configurationError in
+            if let configurationError {
+                self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: configurationError)
+                return
+            }
+            
+            var integrationError: NSError?
+            
+            if (configuration?.cardinalAuthenticationJWT == nil) {
+                NSLog("%@ BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
+                integrationError = NSError(
+                    domain: BTThreeDSecureFlowErrorDomain,
+                    // TODO: - Create Error enum for 3DS module
+                    code: BTThreeDSecureFlowErrorType.configuration.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey: "BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."]
+                )
+            }
+            
+            if (self.amount.isNaN) {
+                NSLog("%@ BTThreeDSecureRequest amount can not be NaN.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
+                integrationError = NSError(
+                    domain: BTThreeDSecureFlowErrorDomain,
+                    // TODO: - Create Error enum for 3DS module
+                    code: BTThreeDSecureFlowErrorType.configuration.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey: "BTThreeDSecureRequest amount can not be NaN."]
+                )
+            }
+            
+            if let integrationError {
+                delegate.onPaymentComplete(nil, error: integrationError)
+                return
+            }
+            
+            guard let configuration, (configuration.cardinalAuthenticationJWT != nil) else {
+                let error = NSError(
+                    domain: BTThreeDSecureFlowErrorDomain,
+                    // TODO: - Create Error enum for 3DS module
+                    code: BTThreeDSecureFlowErrorType.configuration.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey: "Merchant does not have the required Cardinal authentication JWT."]
+                )
+                delegate.onPaymentComplete(nil, error: error)
+                return
+            }
+            
+            self.prepareLookup(apiClient: apiClient) { error in
+                if let error {
+                    delegate.onPaymentComplete(nil, error: error)
+                    return
+                }
+                
+                self.startRequest(request: request, configuration: configuration)
+            }
+        }
     }
     
     func startRequest(request: BTPaymentFlowRequest, configuration: BTConfiguration) {
