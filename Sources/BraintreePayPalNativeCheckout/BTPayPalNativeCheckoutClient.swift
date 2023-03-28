@@ -38,7 +38,6 @@ import PayPalCheckout
         _ request: BTPayPalNativeCheckoutRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.checkoutRequestStarted)
         tokenize(request: request, completion: completion)
     }
 
@@ -77,7 +76,6 @@ import PayPalCheckout
         _ request: BTPayPalNativeVaultRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.vaultRequestStarted)
         tokenize(request: request, completion: completion)
     }
 
@@ -109,6 +107,7 @@ import PayPalCheckout
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         
+        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeStarted)
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
             switch result {
