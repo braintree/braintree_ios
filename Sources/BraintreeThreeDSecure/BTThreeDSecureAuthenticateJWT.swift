@@ -10,19 +10,19 @@ class BTThreeDSecureAuthenticateJWT {
         jwt cardinalJWT: String,
         withAPIClient apiClient: BTAPIClient,
         forResult lookupResult: BTThreeDSecureResult?,
-        successHandler: @escaping (BTThreeDSecureResult?) -> Void,
-        failureHandler: @escaping (Error?) -> Void
+        success: @escaping (BTThreeDSecureResult?) -> Void,
+        failure: @escaping (Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.started")
 
         guard let nonce = lookupResult?.tokenizedCard?.nonce else {
             apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.errored")
-            failureHandler(BTThreeDSecureError.failedAuthentication)
+            failure(BTThreeDSecureError.failedAuthentication)
             return
         }
 
         guard let urlSafeNonce = nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            failureHandler(BTThreeDSecureError.failedAuthentication)
+            failure(BTThreeDSecureError.failedAuthentication)
             return
         }
     
@@ -35,12 +35,12 @@ class BTThreeDSecureAuthenticateJWT {
                 }
 
                 apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.errored")
-                failureHandler(error)
+                failure(error)
                 return
             }
 
             guard let body else {
-                failureHandler(BTThreeDSecureError.noBodyReturned)
+                failure(BTThreeDSecureError.noBodyReturned)
                 return
             }
 
@@ -56,7 +56,7 @@ class BTThreeDSecureAuthenticateJWT {
                 threeDSecureResult.tokenizedCard = lookupResult?.tokenizedCard
             }
 
-            successHandler(threeDSecureResult)
+            success(threeDSecureResult)
         }
     }
 }

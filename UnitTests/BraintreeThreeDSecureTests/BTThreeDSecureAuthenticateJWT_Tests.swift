@@ -45,7 +45,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         let authenticateJwtExpectation = self.expectation(description: "Will perform cardinal auth completion.")
 
-        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult, successHandler: { (result) in
+        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult, success: { (result) in
             guard let tokenizedCard = result?.tokenizedCard else { XCTFail(); return }
             XCTAssertEqual(tokenizedCard.nonce, "fake-nonce-to-test")
             XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShifted)
@@ -72,11 +72,11 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         let authenticateJwtExpectation = self.expectation(description: "Will perform cardinal auth completion.")
 
-        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult, successHandler: { (result) in
+        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult, success: { (result) in
             XCTAssertEqual(result?.tokenizedCard, self.threeDSecureLookupResult.tokenizedCard)
             XCTAssertEqual(result?.errorMessage, "test error")
             authenticateJwtExpectation.fulfill()
-        }, failureHandler: { (error) in
+        }, failure: { (error) in
             XCTFail()
         })
 
@@ -86,7 +86,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
     func testThreeDSecureAuthenticateJWT_FailsWithNoNonce() {
         let authenticateJwtExpectation = self.expectation(description: "Will perform cardinal auth completion.")
 
-        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: BTThreeDSecureResult(json: BTJSON()), successHandler: { (result) in
+        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: BTThreeDSecureResult(json: BTJSON()), success: { (result) in
             XCTFail()
         }) { (error) in
             XCTAssertEqual(error?.localizedDescription, "Tokenized card nonce is required")
@@ -103,7 +103,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult) { result in
             XCTFail()
-        } failureHandler: { error in
+        } failure: { error in
             XCTAssertNotNil(error)
             authenticateJwtExpectation.fulfill()
         }

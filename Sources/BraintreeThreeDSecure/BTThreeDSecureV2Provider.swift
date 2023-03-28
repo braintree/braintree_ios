@@ -127,8 +127,8 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 jwt: serverJWT,
                 withAPIClient: apiClient,
                 forResult: lookupResult,
-                successHandler: BTThreeDSecureV2Provider.successHandler,
-                failureHandler: BTThreeDSecureV2Provider.failureHandler
+                success: BTThreeDSecureV2Provider.successHandler,
+                failure: BTThreeDSecureV2Provider.failureHandler
             )
         case .error, .timeout:
             let userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]

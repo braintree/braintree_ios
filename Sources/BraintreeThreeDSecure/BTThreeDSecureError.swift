@@ -29,9 +29,9 @@ enum BTThreeDSecureError: Int, Error, CustomNSError, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unknown:
-            return ""
+            return "An unknown error occurred. Please contact support."
         case .failedLookup:
-            return ""
+            return "" // TODO: will be implemented when BTPaymentFlowClient+ThreeDSecure is converted to Swift
         case .failedAuthentication:
             return "Tokenized card nonce is required"
         case .configuration:
