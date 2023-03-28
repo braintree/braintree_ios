@@ -69,7 +69,6 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.vaultRequestStarted)
         tokenize(request: request, completion: completion)
     }
 
@@ -112,7 +111,6 @@ import BraintreeDataCollector
         _ request: BTPayPalCheckoutRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.checkoutRequestStarted)
         tokenize(request: request, completion: completion)
     }
 
@@ -157,8 +155,6 @@ import BraintreeDataCollector
             completion(nil, BTPayPalError.canceled)
             return
         }
-
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginSucceeded)
         
         var parameters: [String: Any] = ["paypal_account": response]
         var account: [String: Any] = [:]
@@ -255,6 +251,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
@@ -340,7 +337,6 @@ import BraintreeDataCollector
                     completion(nil, BTPayPalError.canceled)
                     return
                 default:
-                    self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginFailed)
                     self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
                     completion(nil, BTPayPalError.webSessionError(error))
                     return
@@ -352,7 +348,6 @@ import BraintreeDataCollector
         
         authenticationSession?.presentationContextProvider = self
         returnedToAppAfterPermissionAlert = false
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationStarted)
         isAuthenticationSessionStarted = authenticationSession?.start() ?? false
         
         if isAuthenticationSessionStarted {
