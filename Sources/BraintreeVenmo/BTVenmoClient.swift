@@ -67,7 +67,9 @@ import BraintreeCore
             NSLog("%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)", BTLogLevelDescription.string(for: .critical) ?? "[BraintreeSDK] CRITICAL", bundleIdentifier, returnURLScheme)
         }
 
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
+            guard let self else { return }
+
             if let error {
                 completion(nil, error)
                 return
