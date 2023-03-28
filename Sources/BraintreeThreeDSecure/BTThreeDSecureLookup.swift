@@ -37,14 +37,14 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    init(json: BTJSON? = nil) {
-        paReq = json?["pareq"].asString()
-        md = json?["md"].asString()
-        acsURL = json?["acsUrl"].asURL()
-        termURL = json?["termUrl"].asURL()
-        threeDSecureVersion = json?["threeDSecureVersion"].asString()
+    init(json: BTJSON) {
+        paReq = json["pareq"].asString()
+        md = json["md"].asString()
+        acsURL = json["acsUrl"].asURL()
+        termURL = json["termUrl"].asURL()
+        threeDSecureVersion = json["threeDSecureVersion"].asString()
         isThreeDSecureVersion2 = threeDSecureVersion?.hasPrefix("2.") ?? false
-        transactionID = json?["transactionId"].asString()
+        transactionID = json["transactionId"].asString()
         requiresUserAuthentication = acsURL != nil
     }
 }
