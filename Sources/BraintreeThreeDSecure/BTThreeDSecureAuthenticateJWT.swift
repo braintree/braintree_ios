@@ -9,13 +9,13 @@ class BTThreeDSecureAuthenticateJWT {
     static func authenticate(
         jwt cardinalJWT: String,
         withAPIClient apiClient: BTAPIClient,
-        forResult result: BTThreeDSecureResult?,
+        forResult lookupResult: BTThreeDSecureResult?,
         successHandler: @escaping (BTThreeDSecureResult?) -> Void,
         failureHandler: @escaping (Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.started")
 
-        guard let nonce = result?.tokenizedCard?.nonce else {
+        guard let nonce = lookupResult?.tokenizedCard?.nonce else {
             apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.errored")
             failureHandler(BTThreeDSecureError.failedAuthentication)
             return
@@ -53,10 +53,10 @@ class BTThreeDSecureAuthenticateJWT {
 
                 // If authentication wasn't successful, add the BTCardNonce from the lookup result to the authentication result
                 // so that merchants can transact with the lookup nonce if desired.
-                threeDSecureResult.tokenizedCard = result?.tokenizedCard
+                threeDSecureResult.tokenizedCard = lookupResult?.tokenizedCard
             }
 
-            successHandler(result)
+            successHandler(threeDSecureResult)
         }
     }
 }

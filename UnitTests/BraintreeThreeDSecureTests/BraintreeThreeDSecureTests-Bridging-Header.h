@@ -1,5 +1,4 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureAuthenticateJWT.h>
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure_Internal.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient.h>

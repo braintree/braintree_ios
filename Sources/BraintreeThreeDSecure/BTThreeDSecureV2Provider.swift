@@ -63,17 +63,17 @@ import BraintreeCore
     // TODO: can be internal when BTThreeDSecureRequest is in Swift
     @objc(processLookupResult:success:failure:)
     public func process(
-        result: BTThreeDSecureResult,
+        lookupResult: BTThreeDSecureResult,
         success: @escaping (BTThreeDSecureResult?) -> Void,
         failure: @escaping (Error?) -> Void
     ) {
-        self.lookupResult = result
+        self.lookupResult = lookupResult
         BTThreeDSecureV2Provider.successHandler = success
         BTThreeDSecureV2Provider.failureHandler = failure
 
         cardinalSession.continueWith(
-            transactionId: result.lookup?.transactionID ?? "",
-            payload: result.lookup?.paReq ?? "",
+            transactionId: lookupResult.lookup?.transactionID ?? "",
+            payload: lookupResult.lookup?.paReq ?? "",
             validationDelegate: self
         )
     }
@@ -122,7 +122,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.cardinal-sdk.action-code.\(analyticsString(for: validateResponse.actionCode))")
 
         switch validateResponse.actionCode {
-        case .failure:
+        case .success, .noAction, .failure:
             BTThreeDSecureAuthenticateJWT.authenticate(
                 jwt: serverJWT,
                 withAPIClient: apiClient,
@@ -130,7 +130,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 successHandler: BTThreeDSecureV2Provider.successHandler,
                 failureHandler: BTThreeDSecureV2Provider.failureHandler
             )
-        case .timeout:
+        case .error, .timeout:
             let userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
             var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
@@ -151,7 +151,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 failureHandler: BTThreeDSecureV2Provider.failureHandler
             )
         default:
-            return
+            break
         }
 
         lookupResult = nil
