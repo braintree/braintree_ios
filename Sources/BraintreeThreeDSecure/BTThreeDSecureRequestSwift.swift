@@ -9,7 +9,7 @@ import BraintreeCore
     
     public let amount: Decimal
     
-    public let accountType: BTThreeDSecureAccountType?
+    public let accountType: BTThreeDSecureAccountTypeSwift
     
     public let billingAddress: BTThreeDSecurePostalAddress?
     
@@ -17,7 +17,7 @@ import BraintreeCore
     
     public let email: String?
     
-    public let shippingMethod: BTThreeDSecureShippingMethod?
+    public let shippingMethod: BTThreeDSecureShippingMethodSwift
     
     public let additionalInformation: BTThreeDSecureAdditionalInformation?
     
@@ -25,7 +25,7 @@ import BraintreeCore
     
     public let exemptionRequested: Bool?
     
-    public let requestedExcemptionType: BTThreeDSecureRequestedExemptionType?
+    public let requestedExcemptionType: BTThreeDSecureRequestedExemptionTypeSwift
 
     public let dataOnlyRequested: Bool?
     
@@ -39,23 +39,65 @@ import BraintreeCore
     
     weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
     let dfReferenceID: String = ""
-    var accountTypeAsString: String = ""
-    let shippingMethodAsString: String = ""
-    let requestedExemptionTypeAsString: String = ""
+    
+    var accountTypeAsString: String? {
+        switch self.accountType {
+        case .credit:
+            return "credit"
+        case .debit:
+            return "debit"
+        case .unspecified:
+            return nil
+        }
+    }
+    
+    var shippingMethodAsString: String? {
+        switch self.shippingMethod {
+        case .sameDay:
+            return "01"
+        case .expedited:
+            return "02"
+        case .priority:
+            return "03"
+        case .ground:
+            return "04"
+        case .electronicDelivery:
+            return "05"
+        case .shipToStore:
+            return "06"
+        case .unspecified:
+            return nil
+        }
+    }
+    
+    var requestedExemptionTypeAsString: String? {
+        switch self.requestedExcemptionType {
+        case .lowValue:
+            return "low_value"
+        case .secureCorporate:
+            return "secure_corporate"
+        case .trustedBeneficiary:
+            return "trusted_beneficiary"
+        case .transactionRiskAnalysis:
+            return "transaction_risk_analysis"
+        case .unspecified:
+            return nil
+        }
+    }
     
     // MARK: - Initializer
     
     public init(
         nonce: String, amount: Decimal,
-        accountType: BTThreeDSecureAccountType? = nil,
+        accountType: BTThreeDSecureAccountTypeSwift = .unspecified,
         billingAddress: BTThreeDSecurePostalAddress? = nil,
         mobilePhoneNumber: String? = nil,
         email: String? = nil,
-        shippingMethod: BTThreeDSecureShippingMethod? = nil,
+        shippingMethod: BTThreeDSecureShippingMethodSwift = .unspecified,
         additionalInformation: BTThreeDSecureAdditionalInformation? = nil,
         challengeRequested: Bool? = nil,
         exemptionRequested: Bool? = nil,
-        requestedExcemptionType: BTThreeDSecureRequestedExemptionType? = nil,
+        requestedExcemptionType: BTThreeDSecureRequestedExemptionTypeSwift = .unspecified,
         dataOnlyRequested: Bool? = nil,
         cardAddChallenge: BTThreeDSecureCardAddChallenge? = nil,
         v2UICustomization: BTThreeDSecureV2UICustomization? = nil,
