@@ -5,8 +5,8 @@ import CardinalMobile
 import BraintreeCore
 #endif
 
-// TODO: Can be internal and maybe a struct once BTThreeDSecureAuthenticateJWT is in Swift
-@objcMembers public class BTThreeDSecureV2Provider {
+// TODO: Can be internal and maybe a struct once BTThreeDSecureRequest is in Swift
+@objcMembers public class BTThreeDSecureV2Provider: NSObject {
 
     // MARK: - Internal Properties
 
@@ -20,7 +20,9 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    init(
+    // TODO: can be internal and non obj-c when BTThreeDSecureRequest is in Swift
+    @objc(initWithConfiguration:apiClient:request:completion:)
+    public init(
         configuration: BTConfiguration,
         apiClient: BTAPIClient,
         request: BTThreeDSecureRequest,
@@ -58,8 +60,16 @@ import BraintreeCore
 
     // MARK: - Internal Methods
 
-    func process(result: BTThreeDSecureResult) {
+    // TODO: can be internal when BTThreeDSecureRequest is in Swift
+    @objc(processLookupResult:success:failure:)
+    public func process(
+        result: BTThreeDSecureResult,
+        success: @escaping (BTThreeDSecureResult?) -> Void,
+        failure: @escaping (Error?) -> Void
+    ) {
         self.lookupResult = result
+        BTThreeDSecureV2Provider.successHandler = success
+        BTThreeDSecureV2Provider.failureHandler = failure
 
         cardinalSession.continueWith(
             transactionId: result.lookup?.transactionID ?? "",

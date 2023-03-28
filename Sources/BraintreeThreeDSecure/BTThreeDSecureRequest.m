@@ -1,6 +1,5 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecureV2Provider.h"
 #import <SafariServices/SafariServices.h>
 
 // MARK: - Objective-C File Imports for Package Managers
@@ -168,7 +167,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
         }
 
         if (configuration.cardinalAuthenticationJWT) {
-            self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
+            self.threeDSecureV2Provider = [[BTThreeDSecureV2Provider alloc] initWithConfiguration:configuration
                                                                                               apiClient:apiClient
                                                                                                 request:self
                                                                                              completion:^(NSDictionary *lookupParameters) {
