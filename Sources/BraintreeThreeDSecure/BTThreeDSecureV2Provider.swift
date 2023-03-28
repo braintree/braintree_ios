@@ -120,7 +120,8 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
         stepUpValidated validateResponse: CardinalResponse!,
         serverJWT: String!
     ) {
-        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.cardinal-sdk.action-code.\(analyticsString(for: validateResponse.actionCode))")
+        let actionCodeString = analyticsString(for: validateResponse.actionCode)
+        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.cardinal-sdk.action-code.\(actionCodeString)")
 
         switch validateResponse.actionCode {
         case .success, .noAction, .failure:

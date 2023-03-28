@@ -27,7 +27,10 @@ class BTThreeDSecureAuthenticateJWT {
     
         let requestParameters = ["jwt": cardinalJWT, "paymentMethodNonce": nonce]
 
-        apiClient.post("v1/payment_methods/\(urlSafeNonce)/three_d_secure/authenticate_from_jwt", parameters: requestParameters) { body, _, error in
+        apiClient.post(
+            "v1/payment_methods/\(urlSafeNonce)/three_d_secure/authenticate_from_jwt",
+            parameters: requestParameters
+        ) { body, _, error in
             if let error = error as NSError? {
                 if error.code == BTCoreConstants.networkConnectionLostCode {
                     apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.network-connection.failure")
@@ -56,6 +59,7 @@ class BTThreeDSecureAuthenticateJWT {
             }
 
             completion(threeDSecureResult, nil)
+            return
         }
     }
 }
