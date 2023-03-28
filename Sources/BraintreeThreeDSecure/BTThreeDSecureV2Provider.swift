@@ -15,8 +15,7 @@ import BraintreeCore
 
     var lookupResult: BTThreeDSecureResult? = nil
 
-    static var successHandler: (BTThreeDSecureResult?) -> Void = { _ in }
-    static var failureHandler: (Error?) -> Void = { _ in }
+    static var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
 
     // MARK: - Initializer
 
@@ -43,11 +42,15 @@ import BraintreeCore
             cardinalEnvironment = .production
         }
 
+        guard let cardinalAuthenticationJWT = configuration.cardinalAuthenticationJWT else {
+            completion(nil)
+            return
+        }
+
         cardinalConfiguration.deploymentEnvironment = cardinalEnvironment
         cardinalSession.configure(cardinalConfiguration)
-        // TODO: don't force unwrap
         cardinalSession.setup(
-            jwtString: configuration.cardinalAuthenticationJWT!,
+            jwtString: cardinalAuthenticationJWT,
             completed: { consumerSessionID in
                 apiClient.sendAnalyticsEvent("ios.three-d-secure.cardinal-sdk.init.setup-completed")
                 completion(["dfReferenceId": consumerSessionID])
@@ -61,15 +64,13 @@ import BraintreeCore
     // MARK: - Internal Methods
 
     // TODO: can be internal when BTThreeDSecureRequest is in Swift
-    @objc(processLookupResult:success:failure:)
+    @objc(processLookupResult:completion:)
     public func process(
         lookupResult: BTThreeDSecureResult,
-        success: @escaping (BTThreeDSecureResult?) -> Void,
-        failure: @escaping (Error?) -> Void
+        completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
         self.lookupResult = lookupResult
-        BTThreeDSecureV2Provider.successHandler = success
-        BTThreeDSecureV2Provider.failureHandler = failure
+        BTThreeDSecureV2Provider.completionHandler = completion
 
         cardinalSession.continueWith(
             transactionId: lookupResult.lookup?.transactionID ?? "",
@@ -84,10 +85,10 @@ import BraintreeCore
         withDomain errorDomain: String,
         errorCode: Int,
         errorUserInfo: [String: Any]? = nil,
-        failureHandler: @escaping (Error?) -> Void
+        completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
         let error = NSError(domain: errorDomain, code: errorCode, userInfo: errorUserInfo)
-        failureHandler(error)
+        completion(nil, error)
     }
 
     private func analyticsString(for actionCode: CardinalResponseActionCode) -> String {
@@ -127,8 +128,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 jwt: serverJWT,
                 withAPIClient: apiClient,
                 forResult: lookupResult,
-                success: BTThreeDSecureV2Provider.successHandler,
-                failure: BTThreeDSecureV2Provider.failureHandler
+                completion: BTThreeDSecureV2Provider.completionHandler
             )
         case .error, .timeout:
             let userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
@@ -142,13 +142,13 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 withDomain: BTThreeDSecureError.errorDomain,
                 errorCode: errorCode,
                 errorUserInfo: userInfo,
-                failureHandler: BTThreeDSecureV2Provider.failureHandler
+                completion: BTThreeDSecureV2Provider.completionHandler
             )
         case .cancel:
             callFailureHandler(
                 withDomain: BTPaymentFlowErrorDomain,
                 errorCode: BTPaymentFlowErrorType.canceled.rawValue,
-                failureHandler: BTThreeDSecureV2Provider.failureHandler
+                completion: BTThreeDSecureV2Provider.completionHandler
             )
         default:
             break

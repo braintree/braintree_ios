@@ -25,7 +25,6 @@ enum BTThreeDSecureError: Int, Error, CustomNSError, LocalizedError {
         rawValue
     }
 
-    // TODO: errors
     var errorDescription: String? {
         switch self {
         case .unknown:
@@ -33,7 +32,7 @@ enum BTThreeDSecureError: Int, Error, CustomNSError, LocalizedError {
         case .failedLookup:
             return "" // TODO: will be implemented when BTPaymentFlowClient+ThreeDSecure is converted to Swift
         case .failedAuthentication:
-            return "Tokenized card nonce is required"
+            return "Tokenized card nonce is required."
         case .configuration:
             return "Merchant is not configured for 3SD 2."
         case .noBodyReturned:
