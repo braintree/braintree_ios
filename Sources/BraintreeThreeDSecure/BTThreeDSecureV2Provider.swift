@@ -14,8 +14,7 @@ import BraintreeCore
     let apiClient: BTAPIClient
 
     var lookupResult: BTThreeDSecureResult? = nil
-
-    static var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
+    var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
 
     // MARK: - Initializer
 
@@ -70,7 +69,7 @@ import BraintreeCore
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
         self.lookupResult = lookupResult
-        BTThreeDSecureV2Provider.completionHandler = completion
+        completionHandler = completion
 
         cardinalSession.continueWith(
             transactionId: lookupResult.lookup?.transactionID ?? "",
@@ -129,7 +128,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 jwt: serverJWT,
                 withAPIClient: apiClient,
                 forResult: lookupResult,
-                completion: BTThreeDSecureV2Provider.completionHandler
+                completion: completionHandler
             )
         case .error, .timeout:
             let userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
@@ -143,13 +142,13 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 withDomain: BTThreeDSecureError.errorDomain,
                 errorCode: errorCode,
                 errorUserInfo: userInfo,
-                completion: BTThreeDSecureV2Provider.completionHandler
+                completion: completionHandler
             )
         case .cancel:
             callFailureHandler(
                 withDomain: BTPaymentFlowErrorDomain,
                 errorCode: BTPaymentFlowErrorType.canceled.rawValue,
-                completion: BTThreeDSecureV2Provider.completionHandler
+                completion: completionHandler
             )
         default:
             break
