@@ -71,57 +71,12 @@ import BraintreePaymentFlow
     // MARK: - Internal Properties
 
     /// Set the BTPaymentFlowClientDelegate for handling the client events.
-    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
+    var paymentFlowClientDelegate: BTPaymentFlowClientDelegate
 
     /// The dfReferenceID for the session. Exposed for testing.
     var dfReferenceID: String = ""
 
     var threeDSecureV2Provider: BTThreeDSecureV2Provider?
-    
-    var accountTypeAsString: String? {
-        switch self.accountType {
-        case .credit:
-            return "credit"
-        case .debit:
-            return "debit"
-        case .unspecified:
-            return nil
-        }
-    }
-    
-    var shippingMethodAsString: String? {
-        switch self.shippingMethod {
-        case .sameDay:
-            return "01"
-        case .expedited:
-            return "02"
-        case .priority:
-            return "03"
-        case .ground:
-            return "04"
-        case .electronicDelivery:
-            return "05"
-        case .shipToStore:
-            return "06"
-        case .unspecified:
-            return nil
-        }
-    }
-    
-    var requestedExemptionTypeAsString: String? {
-        switch self.requestedExemptionType {
-        case .lowValue:
-            return "low_value"
-        case .secureCorporate:
-            return "secure_corporate"
-        case .trustedBeneficiary:
-            return "trusted_beneficiary"
-        case .transactionRiskAnalysis:
-            return "transaction_risk_analysis"
-        case .unspecified:
-            return nil
-        }
-    }
     
     // MARK: - Initializer
     
@@ -211,7 +166,7 @@ import BraintreePaymentFlow
     }
     
     func stringForBool(boolean: Bool) -> String {
-        return boolean ? "true" : "false"
+        boolean ? "true" : "false"
     }
 }
 
@@ -230,7 +185,7 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, configurationError in
             if let configurationError {
-                self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: configurationError)
+                self.paymentFlowClientDelegate.onPaymentComplete(nil, error: configurationError)
                 return
             }
 
@@ -284,7 +239,32 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
     }
 
     public func handleOpen(_ url: URL) {
-        // TODO: implement
+        guard let jsonAuthResponse = BTURLUtils.queryParameters(for: url)["auth_response"],
+                jsonAuthResponse.count != 0 else {
+            paymentFlowClientDelegate.apiClient().sendAnalyticsEvent("ios.three-d-secure.missing-auth-response")
+            paymentFlowClientDelegate.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response missing from URL."))
+            return
+        }
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonAuthResponse) else {
+            paymentFlowClientDelegate.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-response")
+            paymentFlowClientDelegate.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response JSON parsing error."))
+            return
+        }
+
+        let authBody = BTJSON(value: jsonData)
+        let apiClient = paymentFlowClientDelegate.apiClient()
+        let result = BTThreeDSecureResult(json: authBody)
+
+        if let errorMessage = result.errorMessage, result.tokenizedCard == nil {
+            apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
+
+            paymentFlowClientDelegate.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse(errorMessage))
+            return
+        }
+
+        logThreeDSecureCompletedAnalyticsForResult(result: result, apiClient: apiClient)
+        paymentFlowClientDelegate.onPaymentComplete(result, error: nil)
     }
 
     public func paymentFlowName() -> String {
