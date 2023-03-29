@@ -255,9 +255,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
-
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 completion(nil, error)
                 return
