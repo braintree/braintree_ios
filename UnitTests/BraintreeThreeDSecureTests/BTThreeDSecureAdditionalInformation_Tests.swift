@@ -57,7 +57,7 @@ class BTThreeDSecureAdditionalInformation_Tests: XCTestCase {
         info.sdkMaxTimeout = "10"
         info.workPhoneNumber = "5551115555"
 
-        let parameters = info.asParameters() as! Dictionary<String, String>
+        let parameters = info.asParameters()
 
         XCTAssertEqual(parameters["shippingGivenName"], "Given")
         XCTAssertEqual(parameters["shippingSurname"], "Surname")
@@ -115,7 +115,7 @@ class BTThreeDSecureAdditionalInformation_Tests: XCTestCase {
         let info = BTThreeDSecureAdditionalInformation()
         info.productCode = "AIR"
 
-        let parameters = info.asParameters() as! Dictionary<String, String>
+        let parameters = info.asParameters()
 
         XCTAssertNil(parameters["shippingMethodIndicator"])
         XCTAssertEqual(parameters["productCode"], "AIR")
