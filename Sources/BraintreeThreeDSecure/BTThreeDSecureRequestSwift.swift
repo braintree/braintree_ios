@@ -147,17 +147,24 @@ import BraintreePaymentFlow
         }
     }
     
-    func processLookupResult(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
-        
+    func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
+        if lookupResult.lookup?.requiresUserAuthentication == false {
+            paymentFlowClientDelegate?.onPaymentComplete(lookupResult, error: nil)
+            return
+        }
+
+        if lookupResult.lookup?.isThreeDSecureVersion2 == true {
+            performV2Authentication(with: lookupResult)
+        }
     }
     
     // MARK: - Private Methods
     
-    private func startRequest(request: BTPaymentFlowRequest, configuration: BTConfiguration) {
-        
+    private func start(request: BTPaymentFlowRequest, configuration: BTConfiguration) {
+        // TODO: implement
     }
     
-    private func performV2Authentication(lookupResult: BTThreeDSecureResult) {
+    private func performV2Authentication(with lookupResult: BTThreeDSecureResult) {
         guard let apiClient = paymentFlowClientDelegate?.apiClient() else {
             paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.invalidAPIClient)
             return
@@ -253,7 +260,7 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
                     return
                 }
 
-                self.startRequest(request: request, configuration: configuration)
+                self.start(request: request, configuration: configuration)
             }
         }
     }
