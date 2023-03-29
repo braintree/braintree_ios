@@ -80,7 +80,7 @@ import BraintreeCore
 
     // MARK: - Private Methods
 
-    private func callFailureHandler(
+    private func notifyError(
         withDomain errorDomain: String,
         errorCode: Int,
         errorUserInfo: [String: Any]? = nil,
@@ -138,14 +138,14 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 errorCode = BTThreeDSecureError.failedAuthentication.errorCode
             }
 
-            callFailureHandler(
+            notifyError(
                 withDomain: BTThreeDSecureError.errorDomain,
                 errorCode: errorCode,
                 errorUserInfo: userInfo,
                 completion: completionHandler
             )
         case .cancel:
-            callFailureHandler(
+            notifyError(
                 withDomain: BTPaymentFlowErrorDomain,
                 errorCode: BTPaymentFlowErrorType.canceled.rawValue,
                 completion: completionHandler
