@@ -6,18 +6,12 @@
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTThreeDSecureRequest.h>
-#import <Braintree/BTThreeDSecureResult.h>
-#import <Braintree/BTThreeDSecureLookup.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 
 #endif
 
@@ -98,7 +92,7 @@
     self.successHandler = successHandler;
     self.failureHandler = failureHandler;
     [self.cardinalSession continueWithTransactionId:lookupResult.lookup.transactionID
-                                            payload:lookupResult.lookup.PAReq
+                                            payload:lookupResult.lookup.paReq
                                 didValidateDelegate:self];
 }
 

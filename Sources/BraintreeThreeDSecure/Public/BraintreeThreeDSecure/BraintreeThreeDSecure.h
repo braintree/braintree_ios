@@ -12,16 +12,12 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 #import <Braintree/BraintreePaymentFlow.h>
 #import <Braintree/BTPaymentFlowClient+ThreeDSecure.h>
 #import <Braintree/BTThreeDSecureAdditionalInformation.h>
-#import <Braintree/BTThreeDSecureLookup.h>
 #import <Braintree/BTThreeDSecurePostalAddress.h>
 #import <Braintree/BTThreeDSecureRequest.h>
-#import <Braintree/BTThreeDSecureResult.h>
 #else
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureAdditionalInformation.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import <BraintreeThreeDSecure/BTThreeDSecurePostalAddress.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
 #endif

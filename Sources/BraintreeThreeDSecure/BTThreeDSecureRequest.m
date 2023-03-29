@@ -3,26 +3,19 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 #import "BTThreeDSecureV2Provider.h"
-#import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTThreeDSecureRequest.h>
-#import <Braintree/BTThreeDSecureResult.h>
-#import <Braintree/BTThreeDSecureLookup.h>
 #import <Braintree/BTPaymentFlowClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
 #endif
