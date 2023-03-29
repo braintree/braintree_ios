@@ -26,6 +26,9 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
 
     /// 3D Secure was not configured correctly
     BTThreeDSecureFlowErrorTypeConfiguration,
+
+    /// A body was not returned from the API during the request.
+    BTThreeDSecureFlowErrorTypeNoBodyReturned,
 };
 
 /**

@@ -51,8 +51,7 @@ import CardinalMobile
 
     // MARK: - Internal Properties
 
-    // TODO: make internal once BTThreeDSecureV2Provider is in Swift
-    public let cardinalValue: UiCustomization = UiCustomization()
+    let cardinalValue: UiCustomization = UiCustomization()
 
     // MARK: - Public Methods
 

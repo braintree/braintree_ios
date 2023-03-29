@@ -48,6 +48,8 @@
       * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion` enum
         * All 3D Secure requests will use version 2
       * Rename `BTThreeDSecureV2ButtonType` enum cases to: `.verify`, `.continue`, `.next`, `.cancel`, and `.resend`
+      * Add new `BTThreeDSecureError` 
+        * Add error `.noBodyReturned`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

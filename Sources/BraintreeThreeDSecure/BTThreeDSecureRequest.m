@@ -1,28 +1,18 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecurePostalAddress_Internal.h"
-#import "BTThreeDSecureAdditionalInformation_Internal.h"
-#import "BTThreeDSecureV2Provider.h"
-#import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTThreeDSecureRequest.h>
-#import <Braintree/BTThreeDSecureResult.h>
-#import <Braintree/BTThreeDSecureLookup.h>
 #import <Braintree/BTPaymentFlowClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureResult.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
 #endif
@@ -177,7 +167,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
         }
 
         if (configuration.cardinalAuthenticationJWT) {
-            self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
+            self.threeDSecureV2Provider = [[BTThreeDSecureV2Provider alloc] initWithConfiguration:configuration
                                                                                               apiClient:apiClient
                                                                                                 request:self
                                                                                              completion:^(NSDictionary *lookupParameters) {
@@ -239,13 +229,15 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     typeof(self) __weak weakSelf = self;
     BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
     [self.threeDSecureV2Provider processLookupResult:lookupResult
-                                             success:^(BTThreeDSecureResult *result) {
-                                                 [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
-                                                 [weakSelf.paymentFlowClientDelegate onPaymentComplete:result error:nil];
-                                             } failure:^(NSError *error) {
-                                                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
-                                                 [weakSelf.paymentFlowClientDelegate onPaymentComplete:nil error:error];
-                                             }];
+                                          completion:^(BTThreeDSecureResult *result, NSError *error) {
+        if (result) {
+            [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
+            [weakSelf.paymentFlowClientDelegate onPaymentComplete:result error:nil];
+        } else {
+            [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
+            [weakSelf.paymentFlowClientDelegate onPaymentComplete:nil error:error];
+        }
+    }];
 }
 
 - (void)handleOpenURL:(NSURL *)url {

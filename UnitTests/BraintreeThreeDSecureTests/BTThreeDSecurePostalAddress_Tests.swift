@@ -37,7 +37,7 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         address.countryCodeAlpha2 = "US"
         address.postalCode = "54321"
 
-        let parameters = address.asParameters() as! Dictionary<String, String>
+        let parameters = address.asParameters()
         XCTAssertEqual(parameters["givenName"], "Joe")
         XCTAssertEqual(parameters["surname"], "Guy")
         XCTAssertEqual(parameters["phoneNumber"], "12345678")
@@ -59,7 +59,7 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         address.countryCodeAlpha2 = "US"
         address.postalCode = "54321"
 
-        let parameters = address.asParameters() as! Dictionary<String, String>
+        let parameters = address.asParameters()
         XCTAssertEqual(parameters["givenName"], "Joe")
         XCTAssertEqual(parameters["surname"], "Guy")
         XCTAssertEqual(parameters["line1"], "555 Smith St.")
