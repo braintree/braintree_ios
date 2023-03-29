@@ -9,7 +9,7 @@ import BraintreePaymentFlow
 #endif
 
 /// Used to initialize a 3D Secure payment flow
-@objcMembers public class BTThreeDSecureRequestSwift: NSObject {
+@objcMembers public class BTThreeDSecureRequestSwift: BTPaymentFlowRequest {
     
     // MARK: - Public Properties
 
@@ -174,16 +174,17 @@ import BraintreePaymentFlow
             }
 
             if configuration.cardinalAuthenticationJWT != nil {
-                self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
-                    configuration: configuration,
-                    apiClient: apiClient,
-                    request: self
-                ) { lookupParameters in
-                    if let dfReferenceID = lookupParameters?["dfReferenceId"] {
-                        self.dfReferenceID = dfReferenceID
-                        completion(nil)
-                    }
-                }
+                // TODO: uncomment after removing Obj-C files
+//                self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
+//                    configuration: configuration,
+//                    apiClient: apiClient,
+//                    request: self
+//                ) { lookupParameters in
+//                    if let dfReferenceID = lookupParameters?["dfReferenceId"] {
+//                        self.dfReferenceID = dfReferenceID
+//                        completion(nil)
+//                    }
+//                }
             } else {
                 completion(BTThreeDSecureError.configuration)
                 return
@@ -216,10 +217,9 @@ import BraintreePaymentFlow
 
 // MARK: - BTPaymentFlowRequestDelegate Protocol Conformance
 
-// TODO: fix this - Type 'BTThreeDSecureRequestSwift' cannot conform to protocol 'BTPaymentFlowRequestDelegate' because it has requirements that cannot be satisfied
 extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
 
-    func handle(
+    public func handle(
         _ request: BTPaymentFlowRequest,
         client apiClient: BTAPIClient,
         paymentClientDelegate delegate: BTPaymentFlowClientDelegate
@@ -283,11 +283,11 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
         }
     }
 
-    func handleOpen(_ url: URL) {
+    public func handleOpen(_ url: URL) {
         // TODO: implement
     }
 
-    func paymentFlowName() -> String {
+    public func paymentFlowName() -> String {
         "three-d-secure"
     }
 }

@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+// TODO: we should make sure this isn't going to blow up pod lib lint
+@import BraintreeCore;
 
 @class BTAPIClient;
 @class BTPaymentFlowRequest;
