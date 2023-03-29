@@ -17,7 +17,11 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
     /// A body was not returned from the API during the request.
     case noBodyReturned
 
+    /// There was an issue with the authentication response
     case authenticationResponse(String)
+
+    /// The BTAPIClient was invalid or missing
+    case invalidAPIClient
 
     static var errorDomain: String {
         "com.braintreepayments.BTThreeDSecureFlowErrorDomain"
@@ -37,6 +41,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return 4
         case .authenticationResponse:
             return 5
+        case .invalidAPIClient:
+            return 6
         }
     }
 
@@ -54,6 +60,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return "A body was not returned from the API during the request."
         case .authenticationResponse(let description):
             return description
+        case .invalidAPIClient:
+            return "The BTAPIClient was invalid or missing."
         }
     }
 }

@@ -71,7 +71,7 @@ import BraintreePaymentFlow
     // MARK: - Internal Properties
 
     /// Set the BTPaymentFlowClientDelegate for handling the client events.
-    var paymentFlowClientDelegate: BTPaymentFlowClientDelegate
+    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
 
     /// The dfReferenceID for the session. Exposed for testing.
     var dfReferenceID: String = ""
@@ -161,11 +161,12 @@ import BraintreePaymentFlow
         
     }
     
-    private func logThreeDSecureCompletedAnalyticsForResult(result: BTThreeDSecureResult, apiClient: BTAPIClient) {
-        
+    private func logThreeDSecureCompletedAnalytics(forResult result: BTThreeDSecureResult, apiClient: BTAPIClient) {
+        let liabilityShiftPossible = result.tokenizedCard?.threeDSecureInfo.liabilityShiftPossible ?? false
+        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.liability-shift-possible.\(stringFor(liabilityShiftPossible))")
     }
     
-    func stringForBool(boolean: Bool) -> String {
+    func stringFor(_ boolean: Bool) -> String {
         boolean ? "true" : "false"
     }
 }
@@ -179,13 +180,13 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
         client apiClient: BTAPIClient,
         paymentClientDelegate delegate: BTPaymentFlowClientDelegate
     ) {
-        self.paymentFlowClientDelegate = delegate
+        paymentFlowClientDelegate = delegate
 
         apiClient.sendAnalyticsEvent("ios.three-d-secure.initialized")
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, configurationError in
             if let configurationError {
-                self.paymentFlowClientDelegate.onPaymentComplete(nil, error: configurationError)
+                self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: configurationError)
                 return
             }
 
@@ -241,30 +242,34 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
     public func handleOpen(_ url: URL) {
         guard let jsonAuthResponse = BTURLUtils.queryParameters(for: url)["auth_response"],
                 jsonAuthResponse.count != 0 else {
-            paymentFlowClientDelegate.apiClient().sendAnalyticsEvent("ios.three-d-secure.missing-auth-response")
-            paymentFlowClientDelegate.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response missing from URL."))
+            paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.missing-auth-response")
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response missing from URL."))
             return
         }
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonAuthResponse) else {
-            paymentFlowClientDelegate.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-response")
-            paymentFlowClientDelegate.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response JSON parsing error."))
+            paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-response")
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response JSON parsing error."))
             return
         }
 
         let authBody = BTJSON(value: jsonData)
-        let apiClient = paymentFlowClientDelegate.apiClient()
         let result = BTThreeDSecureResult(json: authBody)
+
+        guard let apiClient = paymentFlowClientDelegate?.apiClient() else {
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.invalidAPIClient)
+            return
+        }
 
         if let errorMessage = result.errorMessage, result.tokenizedCard == nil {
             apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
 
-            paymentFlowClientDelegate.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse(errorMessage))
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse(errorMessage))
             return
         }
 
-        logThreeDSecureCompletedAnalyticsForResult(result: result, apiClient: apiClient)
-        paymentFlowClientDelegate.onPaymentComplete(result, error: nil)
+        logThreeDSecureCompletedAnalytics(forResult: result, apiClient: apiClient)
+        paymentFlowClientDelegate?.onPaymentComplete(result, error: nil)
     }
 
     public func paymentFlowName() -> String {
