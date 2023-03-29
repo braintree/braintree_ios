@@ -1519,6 +1519,7 @@
 			children = (
 				034CDCA81FB518CB00CEC47C /* BTPaymentFlowClient+ThreeDSecure_Internal.h */,
 				03800A5C1F04630C00068F53 /* BTPaymentFlowClient+ThreeDSecure.m */,
+				80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */,
 				BE01A83C29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift */,
 				BE01A84029D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift */,
 				BE01A84229D32EA9000DFA24 /* BTThreeDSecureError.swift */,
@@ -1526,14 +1527,13 @@
 				BE01A83429D1F7B9000DFA24 /* BTThreeDSecurePostalAddress.swift */,
 				80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */,
 				03800A4D1F045F4B00068F53 /* BTThreeDSecureRequest.m */,
+				80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */,
+				80482F8729D3A571007E5F50 /* BTThreeDSecureRequestedExemptionType.swift */,
+				80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequestSwift.swift */,
 				BE80C00229C549BE00793A6C /* BTThreeDSecureResult.swift */,
+				80482F8529D3A498007E5F50 /* BTThreeDSecureShippingMethod.swift */,
 				BE01A83E29D32CA0000DFA24 /* BTThreeDSecureV2Provider.swift */,
 				A91E1EBE24FEEF47007540E5 /* Public */,
-				80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequestSwift.swift */,
-				80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */,
-				80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */,
-				80482F8529D3A498007E5F50 /* BTThreeDSecureShippingMethod.swift */,
-				80482F8729D3A571007E5F50 /* BTThreeDSecureRequestedExemptionType.swift */,
 				801A0A1725890DF200DAF851 /* V2UICustomization */,
 			);
 			path = BraintreeThreeDSecure;
