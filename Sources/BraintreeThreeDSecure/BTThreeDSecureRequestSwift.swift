@@ -158,12 +158,31 @@ import BraintreePaymentFlow
     }
     
     private func performV2Authentication(lookupResult: BTThreeDSecureResult) {
-        
+        guard let apiClient = paymentFlowClientDelegate?.apiClient() else {
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.invalidAPIClient)
+            return
+        }
+
+        threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
+            guard let result else {
+                apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
+                self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
+                return
+            }
+
+            self.logThreeDSecureCompletedAnalytics(forResult: lookupResult, apiClient: apiClient)
+            self.paymentFlowClientDelegate?.onPaymentComplete(result, error: error)
+        }
     }
     
     private func logThreeDSecureCompletedAnalytics(forResult result: BTThreeDSecureResult, apiClient: BTAPIClient) {
         let liabilityShiftPossible = result.tokenizedCard?.threeDSecureInfo.liabilityShiftPossible ?? false
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.liability-shift-possible.\(stringFor(liabilityShiftPossible))")
+
+        let liabilityShifted = result.tokenizedCard?.threeDSecureInfo.liabilityShiftPossible ?? false
+        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.liability-shifted.\(liabilityShifted)")
+
+        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.completed")
     }
     
     func stringFor(_ boolean: Bool) -> String {
