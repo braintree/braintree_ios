@@ -4,6 +4,9 @@
 #import <BraintreePaymentFlow/BTPaymentFlowClient.h>
 #endif
 
+@class BTThreeDSecureRequest;
+@class BTThreeDSecureResult;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -52,6 +55,10 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
  */
 - (void)initializeChallengeWithLookupResponse:(NSString *)lookupResponse request:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error))completionBlock;
+
+// TODO: make internal again once this class is converted to Swift - this is only being made public for interop purposes so BTThreeDSecureRequest has access in Swift
+- (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
+                       completion:(void (^)(BTThreeDSecureResult  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
 
 @end
 

@@ -161,7 +161,41 @@ import BraintreePaymentFlow
     // MARK: - Private Methods
     
     private func start(request: BTPaymentFlowRequest, configuration: BTConfiguration) {
-        // TODO: implement
+        guard let apiClient = paymentFlowClientDelegate?.apiClient() else {
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.invalidAPIClient)
+            return
+        }
+
+        guard let threeDSecureRequest = request as? BTThreeDSecureRequest else {
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.cannotCastRequest)
+            return
+        }
+
+        let paymentFlowClient = BTPaymentFlowClient(apiClient: apiClient)
+
+        if threeDSecureRequest.threeDSecureRequestDelegate == nil {
+            threeDSecureRequest.threeDSecureRequestDelegate = self
+        }
+
+        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.started")
+        paymentFlowClient.performThreeDSecureLookup(threeDSecureRequest) { lookupResult, error in
+            // TODO: this was all on the main thread before - should it still be?
+            DispatchQueue.main.async {
+                guard let lookupResult, error == nil else {
+                    self.paymentFlowClientDelegate?.onPayment(with: nil, error: error)
+                    return
+                }
+
+                let threeDSecureVersion = lookupResult.lookup?.threeDSecureVersion ?? "2"
+                apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.3ds-version\(threeDSecureVersion)")
+
+                self.threeDSecureRequestDelegate?.onLookupComplete(threeDSecureRequest, lookupResult: lookupResult) {
+                    let requiresUserAuthentication = lookupResult.lookup?.requiresUserAuthentication ?? false
+                    apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.challenge-presented\(self.stringFor(requiresUserAuthentication))")
+                    self.process(lookupResult: lookupResult, configuration: configuration)
+                }
+            }
+        }
     }
     
     private func performV2Authentication(with lookupResult: BTThreeDSecureResult) {
@@ -305,7 +339,7 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
 
 // MARK: - BTThreeDSecureRequestDelegate Protocol Conformance
 
-extension BTThreeDSecureRequestSwift: BTThreeDSecureRequestDelegateSwift {
+extension BTThreeDSecureRequestSwift: BTThreeDSecureRequestDelegate {
 
     public func onLookupComplete(
         _ request: BTThreeDSecureRequest,

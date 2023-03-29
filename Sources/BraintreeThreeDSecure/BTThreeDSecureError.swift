@@ -23,6 +23,9 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
     /// The BTAPIClient was invalid or missing
     case invalidAPIClient
 
+    /// Cannot cast BTPaymentFlowRequest to BTThreeDSecureRequest
+    case cannotCastRequest
+
     static var errorDomain: String {
         "com.braintreepayments.BTThreeDSecureFlowErrorDomain"
     }
@@ -43,6 +46,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return 5
         case .invalidAPIClient:
             return 6
+        case .cannotCastRequest:
+            return 7
         }
     }
 
@@ -62,6 +67,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return description
         case .invalidAPIClient:
             return "The BTAPIClient was invalid or missing."
+        case .cannotCastRequest:
+            return "Cannot cast BTPaymentFlowRequest to BTThreeDSecureRequest"
         }
     }
 }
