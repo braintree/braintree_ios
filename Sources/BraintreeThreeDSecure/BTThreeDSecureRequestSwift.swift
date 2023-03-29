@@ -197,23 +197,45 @@ import BraintreePaymentFlow
     
     // MARK: - Private Methods
     
-    private func handleRequest(
-        request: BTPaymentFlowRequest,
-        apiClient: BTAPIClient,
-        delegate: BTPaymentFlowClientDelegate
+    private func startRequest(request: BTPaymentFlowRequest, configuration: BTConfiguration) {
+        
+    }
+    
+    private func performV2Authentication(lookupResult: BTThreeDSecureResult) {
+        
+    }
+    
+    private func logThreeDSecureCompletedAnalyticsForResult(result: BTThreeDSecureResult, apiClient: BTAPIClient) {
+        
+    }
+    
+    func stringForBool(boolean: Bool) -> String {
+        return boolean ? "true" : "false"
+    }
+}
+
+// MARK: - BTPaymentFlowRequestDelegate Protocol Conformance
+
+// TODO: fix this - Type 'BTThreeDSecureRequestSwift' cannot conform to protocol 'BTPaymentFlowRequestDelegate' because it has requirements that cannot be satisfied
+extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
+
+    func handle(
+        _ request: BTPaymentFlowRequest,
+        client apiClient: BTAPIClient,
+        paymentClientDelegate delegate: BTPaymentFlowClientDelegate
     ) {
         self.paymentFlowClientDelegate = delegate
-        
+
         apiClient.sendAnalyticsEvent("ios.three-d-secure.initialized")
-        
+
         apiClient.fetchOrReturnRemoteConfiguration { configuration, configurationError in
             if let configurationError {
                 self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: configurationError)
                 return
             }
-            
+
             var integrationError: NSError?
-            
+
             if (configuration?.cardinalAuthenticationJWT == nil) {
                 NSLog("%@ BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
                 integrationError = NSError(
@@ -223,7 +245,7 @@ import BraintreePaymentFlow
                     userInfo: [NSLocalizedDescriptionKey: "BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."]
                 )
             }
-            
+
             if (self.amount.isNaN) {
                 NSLog("%@ BTThreeDSecureRequest amount can not be NaN.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
                 integrationError = NSError(
@@ -233,12 +255,12 @@ import BraintreePaymentFlow
                     userInfo: [NSLocalizedDescriptionKey: "BTThreeDSecureRequest amount can not be NaN."]
                 )
             }
-            
+
             if let integrationError {
                 delegate.onPaymentComplete(nil, error: integrationError)
                 return
             }
-            
+
             guard let configuration, (configuration.cardinalAuthenticationJWT != nil) else {
                 let error = NSError(
                     domain: BTThreeDSecureFlowErrorDomain,
@@ -249,40 +271,24 @@ import BraintreePaymentFlow
                 delegate.onPaymentComplete(nil, error: error)
                 return
             }
-            
+
             self.prepareLookup(apiClient: apiClient) { error in
                 if let error {
                     delegate.onPaymentComplete(nil, error: error)
                     return
                 }
-                
+
                 self.startRequest(request: request, configuration: configuration)
             }
         }
     }
-    
-    private func startRequest(request: BTPaymentFlowRequest, configuration: BTConfiguration) {
-        
+
+    func handleOpen(_ url: URL) {
+        // TODO: implement
     }
-    
-    private func performV2Authentication(lookupResult: BTThreeDSecureResult) {
-        
-    }
-    
-    private func handleOpenURL(url: NSURL) {
-        
-    }
-    
-    private func logThreeDSecureCompletedAnalyticsForResult(result: BTThreeDSecureResult, apiClient: BTAPIClient) {
-        
-    }
-    
+
     func paymentFlowName() -> String {
-        return "three-d-secure"
-    }
-    
-    func stringForBool(boolean: Bool) -> String {
-        return boolean ? "true" : "false"
+        "three-d-secure"
     }
 }
 
