@@ -1,7 +1,7 @@
 import Foundation
 
 /// Protocol for ThreeDSecure Request flow
-@objc public protocol BTThreeDSecureRequestDelegateSwift {
+@objc public protocol BTThreeDSecureRequestDelegate {
     
     ///  Required delegate method which returns the ThreeDSecure lookup result before the flow continues.
     ///  Use this to do any UI preparation or custom lookup result handling. Use the `next()` callback to continue the flow.

@@ -1,5 +1,5 @@
 /// The account type
-public enum BTThreeDSecureAccountTypeSwift: Int {
+@objc public enum BTThreeDSecureAccountType: Int {
     
     /// Unspecified
     case unspecified
@@ -9,15 +9,4 @@ public enum BTThreeDSecureAccountTypeSwift: Int {
     
     /// Debit
     case debit
-
-    var stringValue: String? {
-        switch self {
-        case .credit:
-            return "credit"
-        case .debit:
-            return "debit"
-        case .unspecified:
-            return nil
-        }
-    }
 }

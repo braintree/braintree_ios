@@ -1,5 +1,5 @@
 /// 3D Secure requested exemption type
-public enum BTThreeDSecureRequestedExemptionTypeSwift: Int {
+@objc public enum BTThreeDSecureRequestedExemptionType: Int {
     
     /// Unspecified
     case unspecified
@@ -15,19 +15,4 @@ public enum BTThreeDSecureRequestedExemptionTypeSwift: Int {
     
     /// Transaction risk analysis
     case transactionRiskAnalysis
-
-    var stringValue: String? {
-        switch self {
-        case .lowValue:
-            return "low_value"
-        case .secureCorporate:
-            return "secure_corporate"
-        case .trustedBeneficiary:
-            return "trusted_beneficiary"
-        case .transactionRiskAnalysis:
-            return "transaction_risk_analysis"
-        case .unspecified:
-            return nil
-        }
-    }
 }

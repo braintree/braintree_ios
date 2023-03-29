@@ -1,20 +1,16 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
-#import "BTThreeDSecureRequest_Internal.h"
 
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowClient+ThreeDSecure.h>
-#import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTPaymentFlowClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import "../BraintreePaymentFlow/BTPaymentFlowClient_Internal.h"
 
 #else // Carthage
 #import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
 #import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
 
 #endif
@@ -63,7 +59,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         }
 
         NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
-        NSMutableDictionary *requestParameters = [@{ @"amount": request.amount,
+        NSMutableDictionary *requestParameters = [@{ @"amount": [NSNumber numberWithDouble:request.amount],
                                                      @"customer": customer,
                                                      @"requestedThreeDSecureVersion": @"2" } mutableCopy];
         if (request.dfReferenceID) {

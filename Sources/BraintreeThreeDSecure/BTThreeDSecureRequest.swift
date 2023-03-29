@@ -9,7 +9,7 @@ import BraintreePaymentFlow
 #endif
 
 /// Used to initialize a 3D Secure payment flow
-@objcMembers public class BTThreeDSecureRequestSwift: BTPaymentFlowRequest {
+@objcMembers public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     
     // MARK: - Public Properties
 
@@ -17,11 +17,11 @@ import BraintreePaymentFlow
     public let nonce: String
 
     /// The amount for the transaction
-    public let amount: Decimal
+    public let amount: Double
 
     /// Optional. The account type selected by the cardholder
     /// - Note: Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.
-    public let accountType: BTThreeDSecureAccountTypeSwift
+    public let accountType: BTThreeDSecureAccountType
 
     /// Optional. The billing address used for verification
     public let billingAddress: BTThreeDSecurePostalAddress?
@@ -34,23 +34,23 @@ import BraintreePaymentFlow
     public let email: String?
 
     /// Optional. The shipping method chosen for the transaction
-    public let shippingMethod: BTThreeDSecureShippingMethodSwift
+    public let shippingMethod: BTThreeDSecureShippingMethod
 
     /// Optional. The additional information used for verification
     public let additionalInformation: BTThreeDSecureAdditionalInformation?
 
     /// Optional. If set to true, an authentication challenge will be forced if possible.
-    public let challengeRequested: Bool?
+    public let challengeRequested: Bool
 
     /// Optional. If set to true, an exemption to the authentication challenge will be requested.
-    public let exemptionRequested: Bool?
+    public let exemptionRequested: Bool
 
     /// Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
-    public let requestedExemptionType: BTThreeDSecureRequestedExemptionTypeSwift
+    public let requestedExemptionType: BTThreeDSecureRequestedExemptionType
 
     /// :nodoc:
     // TODO: do we need a doc string for this?
-    public let dataOnlyRequested: Bool?
+    public let dataOnlyRequested: Bool
 
     /// Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
     ///
@@ -60,7 +60,7 @@ import BraintreePaymentFlow
     /// If set to `.notRequested` the authentication challenge will not be requested from the issuer.
     /// If set to `.unspecified`, when the amount is 0, the authentication challenge will be requested from the issuer.
     /// If set to `.unspecified`, when the amount is greater than 0, the authentication challenge will not be requested from the issuer.
-    public let cardAddChallenge: BTThreeDSecureCardAddChallenge?
+    public let cardAddChallenge: BTThreeDSecureCardAddChallenge
 
     /// Optional. UI Customization for 3DS2 challenge views.
     public let v2UICustomization: BTThreeDSecureV2UICustomization?
@@ -71,29 +71,79 @@ import BraintreePaymentFlow
     // MARK: - Internal Properties
 
     /// Set the BTPaymentFlowClientDelegate for handling the client events.
-    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
+    // TODO: can be internal when BTPaymentFlowClient+ThreeDSecure
+    public weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
 
     /// The dfReferenceID for the session. Exposed for testing.
-    var dfReferenceID: String = ""
+    // TODO: can be internal when BTPaymentFlowClient+ThreeDSecure
+    public var dfReferenceID: String = ""
 
     var threeDSecureV2Provider: BTThreeDSecureV2Provider?
+
+    // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
+    public var accountTypeAsString: String? {
+        switch accountType {
+        case .credit:
+            return "credit"
+        case .debit:
+            return "debit"
+        case .unspecified:
+            return nil
+        }
+    }
+
+    // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
+    public var requestedExemptionTypeAsString: String? {
+        switch requestedExemptionType {
+        case .lowValue:
+            return "low_value"
+        case .secureCorporate:
+            return "secure_corporate"
+        case .trustedBeneficiary:
+            return "trusted_beneficiary"
+        case .transactionRiskAnalysis:
+            return "transaction_risk_analysis"
+        case .unspecified:
+            return nil
+        }
+    }
+
+    // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
+    public var shippingMethodAsString: String? {
+        switch shippingMethod {
+        case .sameDay:
+            return "01"
+        case .expedited:
+            return "02"
+        case .priority:
+            return "03"
+        case .ground:
+            return "04"
+        case .electronicDelivery:
+            return "05"
+        case .shipToStore:
+            return "06"
+        case .unspecified:
+            return nil
+        }
+    }
     
     // MARK: - Initializer
     
     public init(
         nonce: String,
-        amount: Decimal,
-        accountType: BTThreeDSecureAccountTypeSwift = .unspecified,
+        amount: Double,
+        accountType: BTThreeDSecureAccountType,
         billingAddress: BTThreeDSecurePostalAddress? = nil,
         mobilePhoneNumber: String? = nil,
         email: String? = nil,
-        shippingMethod: BTThreeDSecureShippingMethodSwift = .unspecified,
+        shippingMethod: BTThreeDSecureShippingMethod = .unspecified,
         additionalInformation: BTThreeDSecureAdditionalInformation? = nil,
-        challengeRequested: Bool? = nil,
-        exemptionRequested: Bool? = nil,
-        requestedExemptionType: BTThreeDSecureRequestedExemptionTypeSwift = .unspecified,
-        dataOnlyRequested: Bool? = nil,
-        cardAddChallenge: BTThreeDSecureCardAddChallenge? = nil,
+        challengeRequested: Bool = false,
+        exemptionRequested: Bool = false,
+        requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified,
+        dataOnlyRequested: Bool = false,
+        cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified,
         v2UICustomization: BTThreeDSecureV2UICustomization? = nil,
         threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate? = nil
     ) {
@@ -120,30 +170,41 @@ import BraintreePaymentFlow
     /// - Parameters:
     ///   - apiClient: The API client.
     ///   - completion: This completion will be invoked exactly once. If the error is nil then the preparation was successful.
-    func prepareLookup(
+    // TODO: can be internal and non obj-c when BTPaymentFlowClient+ThreeDSecure is in Swift
+    @objc(prepareLookup:completion:)
+    public func prepareLookup(
         apiClient: BTAPIClient,
-        configuration: BTConfiguration,
         completion: @escaping (Error?) -> Void
     ) {
-        if configuration.cardinalAuthenticationJWT != nil {
-            // TODO: uncomment after removing Obj-C files
-            //                self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
-            //                    configuration: configuration,
-            //                    apiClient: apiClient,
-            //                    request: self
-            //                ) { lookupParameters in
-            //                    if let dfReferenceID = lookupParameters?["dfReferenceId"] {
-            //                        self.dfReferenceID = dfReferenceID
-            //                        completion(nil)
-            //                    }
-            //                }
-        } else {
-            completion(BTThreeDSecureError.configuration("Merchant is not configured for 3SD 2."))
-            return
+        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
+            guard let self else { return }
+
+            guard let configuration, error == nil else {
+                completion(error)
+                return
+            }
+
+            if configuration.cardinalAuthenticationJWT != nil {
+                self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
+                    configuration: configuration,
+                    apiClient: apiClient,
+                    request: self
+                ) { lookupParameters in
+                    if let dfReferenceID = lookupParameters?["dfReferenceId"] {
+                        self.dfReferenceID = dfReferenceID
+                        completion(nil)
+                    }
+                }
+            } else {
+                completion(BTThreeDSecureError.configuration("Merchant is not configured for 3SD 2."))
+                return
+            }
         }
     }
-    
-    func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
+
+    // TODO: Can be internal once BTPaymentFlowClient+ThreeDSecure is in Swift
+    @objc(processLookupResult:configuration:)
+    public func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
         if lookupResult.lookup?.requiresUserAuthentication == false {
             paymentFlowClientDelegate?.onPaymentComplete(lookupResult, error: nil)
             return
@@ -175,7 +236,6 @@ import BraintreePaymentFlow
 
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.started")
         paymentFlowClient.performThreeDSecureLookup(threeDSecureRequest) { lookupResult, error in
-            // TODO: this was all on the main thread before - should it still be?
             DispatchQueue.main.async {
                 guard let lookupResult, error == nil else {
                     self.paymentFlowClientDelegate?.onPayment(with: nil, error: error)
@@ -229,7 +289,7 @@ import BraintreePaymentFlow
 
 // MARK: - BTPaymentFlowRequestDelegate Protocol Conformance
 
-extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
+extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
 
     public func handle(
         _ request: BTPaymentFlowRequest,
@@ -246,26 +306,16 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
                 return
             }
 
-            var integrationError: NSError?
+            var integrationError: Error?
 
             if (configuration?.cardinalAuthenticationJWT == nil) {
                 NSLog("%@ BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
-                integrationError = NSError(
-                    domain: BTThreeDSecureFlowErrorDomain,
-                    // TODO: - Create Error enum for 3DS module
-                    code: BTThreeDSecureFlowErrorType.configuration.rawValue,
-                    userInfo: [NSLocalizedDescriptionKey: "BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."]
-                )
+                integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.")
             }
 
             if (self.amount.isNaN) {
                 NSLog("%@ BTThreeDSecureRequest amount can not be NaN.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
-                integrationError = NSError(
-                    domain: BTThreeDSecureFlowErrorDomain,
-                    // TODO: - Create Error enum for 3DS module
-                    code: BTThreeDSecureFlowErrorType.configuration.rawValue,
-                    userInfo: [NSLocalizedDescriptionKey: "BTThreeDSecureRequest amount can not be NaN."]
-                )
+                integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be NaN.")
             }
 
             if let integrationError {
@@ -273,18 +323,12 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
                 return
             }
 
-            guard let configuration, (configuration.cardinalAuthenticationJWT != nil) else {
-                let error = NSError(
-                    domain: BTThreeDSecureFlowErrorDomain,
-                    // TODO: - Create Error enum for 3DS module
-                    code: BTThreeDSecureFlowErrorType.configuration.rawValue,
-                    userInfo: [NSLocalizedDescriptionKey: "Merchant does not have the required Cardinal authentication JWT."]
-                )
-                delegate.onPaymentComplete(nil, error: error)
+            guard let configuration, configuration.cardinalAuthenticationJWT != nil else {
+                delegate.onPaymentComplete(nil, error: BTThreeDSecureError.configuration("Merchant does not have the required Cardinal authentication JWT."))
                 return
             }
 
-            self.prepareLookup(apiClient: apiClient, configuration: configuration) { error in
+            self.prepareLookup(apiClient: apiClient) { error in
                 if let error {
                     delegate.onPaymentComplete(nil, error: error)
                     return
@@ -338,7 +382,7 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
 
 // MARK: - BTThreeDSecureRequestDelegate Protocol Conformance
 
-extension BTThreeDSecureRequestSwift: BTThreeDSecureRequestDelegate {
+extension BTThreeDSecureRequest: BTThreeDSecureRequestDelegate {
 
     public func onLookupComplete(
         _ request: BTThreeDSecureRequest,
