@@ -12,7 +12,7 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
     case failedAuthentication
 
     /// 3D Secure was not configured correctly
-    case configuration
+    case configuration(String)
 
     /// A body was not returned from the API during the request.
     case noBodyReturned
@@ -59,8 +59,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return "" // TODO: will be implemented when BTPaymentFlowClient+ThreeDSecure is converted to Swift
         case .failedAuthentication:
             return "Tokenized card nonce is required."
-        case .configuration:
-            return "Merchant is not configured for 3SD 2."
+        case .configuration(let description):
+            return description
         case .noBodyReturned:
             return "A body was not returned from the API during the request."
         case .authenticationResponse(let description):

@@ -116,34 +116,30 @@ import BraintreePaymentFlow
     
     // MARK: - Internal Methods
     
-    // TODO: maybe pass config in?
     /// Prepare for a 3DS 2.0 flow.
     /// - Parameters:
     ///   - apiClient: The API client.
     ///   - completion: This completion will be invoked exactly once. If the error is nil then the preparation was successful.
-    func prepareLookup(apiClient: BTAPIClient, completion: @escaping (Error?) -> Void) {
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            guard let configuration, error == nil else {
-                completion(error)
-                return
-            }
-
-            if configuration.cardinalAuthenticationJWT != nil {
-                // TODO: uncomment after removing Obj-C files
-//                self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
-//                    configuration: configuration,
-//                    apiClient: apiClient,
-//                    request: self
-//                ) { lookupParameters in
-//                    if let dfReferenceID = lookupParameters?["dfReferenceId"] {
-//                        self.dfReferenceID = dfReferenceID
-//                        completion(nil)
-//                    }
-//                }
-            } else {
-                completion(BTThreeDSecureError.configuration)
-                return
-            }
+    func prepareLookup(
+        apiClient: BTAPIClient,
+        configuration: BTConfiguration,
+        completion: @escaping (Error?) -> Void
+    ) {
+        if configuration.cardinalAuthenticationJWT != nil {
+            // TODO: uncomment after removing Obj-C files
+            //                self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
+            //                    configuration: configuration,
+            //                    apiClient: apiClient,
+            //                    request: self
+            //                ) { lookupParameters in
+            //                    if let dfReferenceID = lookupParameters?["dfReferenceId"] {
+            //                        self.dfReferenceID = dfReferenceID
+            //                        completion(nil)
+            //                    }
+            //                }
+        } else {
+            completion(BTThreeDSecureError.configuration("Merchant is not configured for 3SD 2."))
+            return
         }
     }
     
@@ -288,7 +284,7 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
                 return
             }
 
-            self.prepareLookup(apiClient: apiClient) { error in
+            self.prepareLookup(apiClient: apiClient, configuration: configuration) { error in
                 if let error {
                     delegate.onPaymentComplete(nil, error: error)
                     return
@@ -303,13 +299,17 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
         guard let jsonAuthResponse = BTURLUtils.queryParameters(for: url)["auth_response"],
                 jsonAuthResponse.count != 0 else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.missing-auth-response")
-            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response missing from URL."))
+
+            let error = BTThreeDSecureError.authenticationResponse("Auth Response missing from URL.")
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
             return
         }
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonAuthResponse) else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-response")
-            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse("Auth Response JSON parsing error."))
+
+            let error = BTThreeDSecureError.authenticationResponse("Auth Response JSON parsing error.")
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
             return
         }
 
@@ -323,7 +323,6 @@ extension BTThreeDSecureRequestSwift: BTPaymentFlowRequestDelegate {
 
         if let errorMessage = result.errorMessage, result.tokenizedCard == nil {
             apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
-
             paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse(errorMessage))
             return
         }
