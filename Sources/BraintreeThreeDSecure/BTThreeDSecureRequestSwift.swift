@@ -284,8 +284,17 @@ import BraintreePaymentFlow
     func stringForBool(boolean: Bool) -> String {
         return boolean ? "true" : "false"
     }
-    
-    func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult result: BTThreeDSecureResult, next: (() -> Void)) {
+}
+
+// MARK: - BTThreeDSecureRequestDelegate Protocol Conformance
+
+extension BTThreeDSecureRequestSwift: BTThreeDSecureRequestDelegateSwift {
+
+    public func onLookupComplete(
+        _ request: BTThreeDSecureRequest,
+        lookupResult result: BTThreeDSecureResult,
+        next: (() -> Void)
+    ) {
         next()
     }
 }
