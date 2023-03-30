@@ -59,7 +59,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         }
 
         NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
-        NSMutableDictionary *requestParameters = [@{ @"amount": [NSNumber numberWithDouble:request.amount],
+        NSMutableDictionary *requestParameters = [@{ @"amount": request.amount,
                                                      @"customer": customer,
                                                      @"requestedThreeDSecureVersion": @"2" } mutableCopy];
         if (request.dfReferenceID) {

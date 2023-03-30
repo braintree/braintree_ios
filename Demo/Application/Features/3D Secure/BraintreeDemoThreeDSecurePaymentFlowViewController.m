@@ -139,8 +139,10 @@
 
         self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:self.apiClient];
 
-        BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] initWithNonce:tokenizedCard.nonce amount:10.32];
+        BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;
+        request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
+        request.nonce = tokenizedCard.nonce;
         request.accountType = BTThreeDSecureAccountTypeCredit;
         request.requestedExemptionType = BTThreeDSecureRequestedExemptionTypeLowValue;
 

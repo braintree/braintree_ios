@@ -14,17 +14,17 @@ public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     // MARK: - Public Properties
 
     /// A nonce to be verified by ThreeDSecure
-    @objc public var nonce: String
+    @objc public var nonce: String?
 
     /// The amount for the transaction
-    @objc public var amount: Double
+    @objc public var amount: NSDecimalNumber?
 
     /// Optional. The account type selected by the cardholder
     /// - Note: Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.
-    @objc public var accountType: BTThreeDSecureAccountType
+    @objc public var accountType: BTThreeDSecureAccountType = .unspecified
 
     /// Optional. The billing address used for verification
-    @objc public var billingAddress: BTThreeDSecurePostalAddress?
+    @objc public var billingAddress: BTThreeDSecurePostalAddress? = nil
 
     /// Optional. The mobile phone number used for verification
     /// - Note: Only numbers. Remove dashes, parentheses and other characters
@@ -34,23 +34,23 @@ public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     @objc public var email: String?
 
     /// Optional. The shipping method chosen for the transaction
-    @objc public var shippingMethod: BTThreeDSecureShippingMethod
+    @objc public var shippingMethod: BTThreeDSecureShippingMethod = .unspecified
 
     /// Optional. The additional information used for verification
     @objc public var additionalInformation: BTThreeDSecureAdditionalInformation?
 
     /// Optional. If set to true, an authentication challenge will be forced if possible.
-    @objc public var challengeRequested: Bool
+    @objc public var challengeRequested: Bool = false
 
     /// Optional. If set to true, an exemption to the authentication challenge will be requested.
-    @objc public var exemptionRequested: Bool
+    @objc public var exemptionRequested: Bool = false
 
     /// Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
-    @objc public var requestedExemptionType: BTThreeDSecureRequestedExemptionType
+    @objc public var requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified
 
     /// :nodoc:
     // TODO: do we need a doc string for this?
-    @objc public var dataOnlyRequested: Bool
+    @objc public var dataOnlyRequested: Bool = false
 
     /// Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
     ///
@@ -60,7 +60,7 @@ public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     /// If set to `.notRequested` the authentication challenge will not be requested from the issuer.
     /// If set to `.unspecified`, when the amount is 0, the authentication challenge will be requested from the issuer.
     /// If set to `.unspecified`, when the amount is greater than 0, the authentication challenge will not be requested from the issuer.
-    @objc public var cardAddChallenge: BTThreeDSecureCardAddChallenge
+    @objc public var cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
 
     /// Optional. UI Customization for 3DS2 challenge views.
     @objc public var v2UICustomization: BTThreeDSecureV2UICustomization?
@@ -126,46 +126,6 @@ public class BTThreeDSecureRequest: BTPaymentFlowRequest {
         case .unspecified:
             return nil
         }
-    }
-    
-    // MARK: - Initializer
-    
-    @objc public convenience init(nonce: String, amount: Double) {
-        self.init(nonce: nonce, amount: amount)
-    }
-    
-    required public init(
-        nonce: String,
-        amount: Double,
-        accountType: BTThreeDSecureAccountType,
-        billingAddress: BTThreeDSecurePostalAddress? = nil,
-        mobilePhoneNumber: String? = nil,
-        email: String? = nil,
-        shippingMethod: BTThreeDSecureShippingMethod = .unspecified,
-        additionalInformation: BTThreeDSecureAdditionalInformation? = nil,
-        challengeRequested: Bool = false,
-        exemptionRequested: Bool = false,
-        requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified,
-        dataOnlyRequested: Bool = false,
-        cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified,
-        v2UICustomization: BTThreeDSecureV2UICustomization? = nil,
-        threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate? = nil
-    ) {
-        self.nonce = nonce
-        self.amount = amount
-        self.accountType = accountType
-        self.billingAddress = billingAddress
-        self.mobilePhoneNumber = mobilePhoneNumber
-        self.email = email
-        self.shippingMethod = shippingMethod
-        self.additionalInformation = additionalInformation
-        self.challengeRequested = challengeRequested
-        self.exemptionRequested = exemptionRequested
-        self.requestedExemptionType = requestedExemptionType
-        self.dataOnlyRequested = dataOnlyRequested
-        self.cardAddChallenge = cardAddChallenge
-        self.v2UICustomization = v2UICustomization
-        self.threeDSecureRequestDelegate = threeDSecureRequestDelegate
     }
     
     // MARK: - Internal Methods
@@ -319,7 +279,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.")
             }
 
-            if self.amount.isNaN {
+            if self.amount?.decimalValue.isNaN == false {
                 NSLog("%@ BTThreeDSecureRequest amount can not be NaN.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be NaN.")
             }
