@@ -9,48 +9,48 @@ import BraintreePaymentFlow
 #endif
 
 /// Used to initialize a 3D Secure payment flow
-public class BTThreeDSecureRequest: BTPaymentFlowRequest {
+@objcMembers public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     
     // MARK: - Public Properties
 
     /// A nonce to be verified by ThreeDSecure
-    @objc public var nonce: String?
+    public var nonce: String?
 
     /// The amount for the transaction
-    @objc public var amount: NSDecimalNumber?
+    public var amount: NSDecimalNumber?
 
     /// Optional. The account type selected by the cardholder
     /// - Note: Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.
-    @objc public var accountType: BTThreeDSecureAccountType = .unspecified
+    public var accountType: BTThreeDSecureAccountType = .unspecified
 
     /// Optional. The billing address used for verification
-    @objc public var billingAddress: BTThreeDSecurePostalAddress? = nil
+    public var billingAddress: BTThreeDSecurePostalAddress? = nil
 
     /// Optional. The mobile phone number used for verification
     /// - Note: Only numbers. Remove dashes, parentheses and other characters
-    @objc public var mobilePhoneNumber: String?
+    public var mobilePhoneNumber: String?
 
     /// Optional. The email used for verification
-    @objc public var email: String?
+    public var email: String?
 
     /// Optional. The shipping method chosen for the transaction
-    @objc public var shippingMethod: BTThreeDSecureShippingMethod = .unspecified
+    public var shippingMethod: BTThreeDSecureShippingMethod = .unspecified
 
     /// Optional. The additional information used for verification
-    @objc public var additionalInformation: BTThreeDSecureAdditionalInformation?
+    public var additionalInformation: BTThreeDSecureAdditionalInformation?
 
     /// Optional. If set to true, an authentication challenge will be forced if possible.
-    @objc public var challengeRequested: Bool = false
+    public var challengeRequested: Bool = false
 
     /// Optional. If set to true, an exemption to the authentication challenge will be requested.
-    @objc public var exemptionRequested: Bool = false
+    public var exemptionRequested: Bool = false
 
     /// Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
-    @objc public var requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified
+    public var requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified
 
     /// :nodoc:
     // TODO: do we need a doc string for this?
-    @objc public var dataOnlyRequested: Bool = false
+    public var dataOnlyRequested: Bool = false
 
     /// Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
     ///
@@ -60,28 +60,28 @@ public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     /// If set to `.notRequested` the authentication challenge will not be requested from the issuer.
     /// If set to `.unspecified`, when the amount is 0, the authentication challenge will be requested from the issuer.
     /// If set to `.unspecified`, when the amount is greater than 0, the authentication challenge will not be requested from the issuer.
-    @objc public var cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
+    public var cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
 
     /// Optional. UI Customization for 3DS2 challenge views.
-    @objc public var v2UICustomization: BTThreeDSecureV2UICustomization?
+    public var v2UICustomization: BTThreeDSecureV2UICustomization?
 
     /// A delegate for receiving information about the ThreeDSecure payment flow.
-    @objc public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
+    public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
     
     // MARK: - Internal Properties
 
     /// Set the BTPaymentFlowClientDelegate for handling the client events.
     // TODO: can be internal when BTPaymentFlowClient+ThreeDSecure
-    @objc public weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
+    public weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
 
     /// The dfReferenceID for the session. Exposed for testing.
     // TODO: can be internal when BTPaymentFlowClient+ThreeDSecure
-    @objc public var dfReferenceID: String = ""
+    public var dfReferenceID: String = ""
 
     var threeDSecureV2Provider: BTThreeDSecureV2Provider?
 
     // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
-    @objc public var accountTypeAsString: String? {
+    public var accountTypeAsString: String? {
         switch accountType {
         case .credit:
             return "credit"
@@ -93,7 +93,7 @@ public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     }
 
     // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
-    @objc public var requestedExemptionTypeAsString: String? {
+    public var requestedExemptionTypeAsString: String? {
         switch requestedExemptionType {
         case .lowValue:
             return "low_value"
@@ -109,7 +109,7 @@ public class BTThreeDSecureRequest: BTPaymentFlowRequest {
     }
 
     // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
-    @objc public var shippingMethodAsString: String? {
+    public var shippingMethodAsString: String? {
         switch shippingMethod {
         case .sameDay:
             return "01"
