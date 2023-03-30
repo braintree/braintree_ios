@@ -59,6 +59,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .fetchConfigurationFailed)
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "paypal-native:tokenize:order-creation:failed")
             }
         }
     }
@@ -73,6 +74,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .payPalNotEnabled)
+                XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "paypal-native:tokenize:order-creation:failed")
             }
         }
     }
@@ -90,6 +92,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .payPalClientIDNotFound)
+                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
             }
         }
     }
@@ -108,6 +111,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .invalidEnvironment)
+                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
             }
         }
     }
@@ -127,6 +131,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
 
             case .failure(let error):
                 XCTAssertEqual(error, .orderCreationFailed(BTPayPalNativeError.invalidJSONResponse))
+                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
             }
         }
     }
