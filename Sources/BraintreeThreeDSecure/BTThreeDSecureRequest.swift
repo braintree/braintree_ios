@@ -279,9 +279,9 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.")
             }
 
-            if self.amount?.decimalValue.isNaN == false {
-                NSLog("%@ BTThreeDSecureRequest amount can not be NaN.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
-                integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be NaN.")
+            if self.amount?.decimalValue.isNaN == true {
+                NSLog("%@ BTThreeDSecureRequest amount can not be nil or NaN.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
+                integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
             }
 
             if let integrationError {
