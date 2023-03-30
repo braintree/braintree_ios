@@ -304,20 +304,22 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
 
         apiClient.sendAnalyticsEvent("ios.three-d-secure.initialized")
 
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, configurationError in
-            if let configurationError {
-                self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: configurationError)
+        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
+            guard let self else { return }
+
+            if let error {
+                self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
                 return
             }
 
             var integrationError: Error?
 
-            if (configuration?.cardinalAuthenticationJWT == nil) {
+            if configuration?.cardinalAuthenticationJWT == nil {
                 NSLog("%@ BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.")
             }
 
-            if (self.amount.isNaN) {
+            if self.amount.isNaN {
                 NSLog("%@ BTThreeDSecureRequest amount can not be NaN.", BTLogLevelDescription.string(for: .critical)  ?? "[BraintreeSDK] CRITICAL")
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be NaN.")
             }
