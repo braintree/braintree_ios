@@ -13,8 +13,7 @@ class BTThreeDSecureV2Provider {
     let apiClient: BTAPIClient
 
     var lookupResult: BTThreeDSecureResult? = nil
-
-    static var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
+    var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
 
     // MARK: - Initializer
 
@@ -65,7 +64,7 @@ class BTThreeDSecureV2Provider {
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
         self.lookupResult = lookupResult
-        BTThreeDSecureV2Provider.completionHandler = completion
+        completionHandler = completion
 
         cardinalSession.continueWith(
             transactionId: lookupResult.lookup?.transactionID ?? "",
@@ -76,7 +75,7 @@ class BTThreeDSecureV2Provider {
 
     // MARK: - Private Methods
 
-    private func callFailureHandler(
+    private func notifyError(
         withDomain errorDomain: String,
         errorCode: Int,
         errorUserInfo: [String: Any]? = nil,
@@ -124,7 +123,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 jwt: serverJWT,
                 withAPIClient: apiClient,
                 forResult: lookupResult,
-                completion: BTThreeDSecureV2Provider.completionHandler
+                completion: completionHandler
             )
         case .error, .timeout:
             let userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
@@ -134,17 +133,17 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 errorCode = BTThreeDSecureError.failedAuthentication.errorCode
             }
 
-            callFailureHandler(
+            notifyError(
                 withDomain: BTThreeDSecureError.errorDomain,
                 errorCode: errorCode,
                 errorUserInfo: userInfo,
-                completion: BTThreeDSecureV2Provider.completionHandler
+                completion: completionHandler
             )
         case .cancel:
-            callFailureHandler(
+            notifyError(
                 withDomain: BTPaymentFlowErrorDomain,
                 errorCode: BTPaymentFlowErrorType.canceled.rawValue,
-                completion: BTThreeDSecureV2Provider.completionHandler
+                completion: completionHandler
             )
         default:
             break
