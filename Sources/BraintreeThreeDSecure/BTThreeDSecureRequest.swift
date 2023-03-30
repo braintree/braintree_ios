@@ -287,6 +287,10 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
             }
 
+            if self.threeDSecureRequestDelegate == nil {
+                integrationError = BTThreeDSecureError.configuration("Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2.")
+            }
+
             if let integrationError {
                 delegate.onPaymentComplete(nil, error: integrationError)
                 return
@@ -319,7 +323,15 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
             return
         }
 
-        guard let jsonData = jsonAuthResponse.data(using: .utf8) else {
+        guard let jsonAuthResponseData = jsonAuthResponse.data(using: .utf8) else {
+            paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-data")
+            
+            let error = BTThreeDSecureError.failedAuthentication("Auth Response cannot be converted to Data type.")
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
+            return
+        }
+
+        guard let jsonData = try? JSONSerialization.jsonObject(with: jsonAuthResponseData) else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-response")
 
             let error = BTThreeDSecureError.failedAuthentication("Auth Response JSON parsing error.")
@@ -327,7 +339,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
             return
         }
 
-        let authBody = BTJSON(data: jsonData)
+        let authBody = BTJSON(value: jsonData)
         let result = BTThreeDSecureResult(json: authBody)
 
         guard let apiClient = paymentFlowClientDelegate?.apiClient() else {

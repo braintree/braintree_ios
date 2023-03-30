@@ -62,8 +62,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.noBodyReturned.errorCode)
             expectation.fulfill()
         }
 
