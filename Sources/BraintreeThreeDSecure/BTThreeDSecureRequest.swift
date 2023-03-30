@@ -170,7 +170,7 @@ import BraintreePaymentFlow
     // TODO: Can be internal once BTPaymentFlowClient+ThreeDSecure is in Swift
     @objc(processLookupResult:configuration:)
     public func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
-        if lookupResult.lookup?.requiresUserAuthentication == false {
+        if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
             paymentFlowClientDelegate?.onPaymentComplete(lookupResult, error: nil)
             return
         }
@@ -325,7 +325,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
 
         guard let jsonAuthResponseData = jsonAuthResponse.data(using: .utf8) else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-data")
-            
+
             let error = BTThreeDSecureError.failedAuthentication("Auth Response cannot be converted to Data type.")
             paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
             return
