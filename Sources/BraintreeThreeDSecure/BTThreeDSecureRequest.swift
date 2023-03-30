@@ -256,6 +256,7 @@ import BraintreePaymentFlow
 
 extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
 
+    /// :nodoc:
     public func handle(
         _ request: BTPaymentFlowRequest,
         client apiClient: BTAPIClient,
@@ -306,6 +307,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
         }
     }
 
+    /// :nodoc:
     public func handleOpen(_ url: URL) {
         guard let jsonAuthResponse = BTURLUtils.queryParameters(for: url)["auth_response"],
                 jsonAuthResponse.count != 0 else {
@@ -342,6 +344,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
         paymentFlowClientDelegate?.onPaymentComplete(result, error: nil)
     }
 
+    /// :nodoc:
     public func paymentFlowName() -> String {
         "three-d-secure"
     }
