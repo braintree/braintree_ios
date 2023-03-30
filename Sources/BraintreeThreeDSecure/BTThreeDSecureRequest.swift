@@ -48,8 +48,9 @@ import BraintreePaymentFlow
     /// Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
     public var requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified
 
-    /// :nodoc:
-    // TODO: do we need a doc string for this?
+    /// Optional. Indicates whether to use the data only flow. In this flow, frictionless 3DS is ensured for Mastercard cardholders as the card scheme provides a risk score
+    /// for the issuer to determine whether to approve. If data only is not supported by the processor, a validation error will be raised.
+    /// Non-Mastercard cardholders will fallback to a normal 3DS flow.
     public var dataOnlyRequested: Bool = false
 
     /// Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
