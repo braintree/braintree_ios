@@ -25,6 +25,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         checkoutClient.tokenize(nativeCheckoutRequest) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual(error as? BTPayPalNativeError, .payPalClientIDNotFound)
+            XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, "paypal-native:tokenize:failed")
         }
     }
 }
