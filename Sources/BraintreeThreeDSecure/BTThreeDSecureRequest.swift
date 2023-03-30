@@ -17,7 +17,7 @@ import BraintreePaymentFlow
     public var nonce: String?
 
     /// The amount for the transaction
-    public var amount: NSDecimalNumber?
+    public var amount: NSDecimalNumber? = 0
 
     /// Optional. The account type selected by the cardholder
     /// - Note: Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.
@@ -157,8 +157,8 @@ import BraintreePaymentFlow
                 ) { lookupParameters in
                     if let dfReferenceID = lookupParameters?["dfReferenceId"] {
                         self.dfReferenceID = dfReferenceID
-                        completion(nil)
                     }
+                    completion(nil)
                 }
             } else {
                 completion(BTThreeDSecureError.configuration("Merchant is not configured for 3SD 2."))
@@ -203,16 +203,17 @@ import BraintreePaymentFlow
         paymentFlowClient.performThreeDSecureLookup(threeDSecureRequest) { lookupResult, error in
             DispatchQueue.main.async {
                 guard let lookupResult, error == nil else {
+                    apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
                     self.paymentFlowClientDelegate?.onPayment(with: nil, error: error)
                     return
                 }
 
                 let threeDSecureVersion = lookupResult.lookup?.threeDSecureVersion ?? "2"
-                apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.3ds-version\(threeDSecureVersion)")
+                apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.3ds-version.\(threeDSecureVersion)")
 
                 self.threeDSecureRequestDelegate?.onLookupComplete(threeDSecureRequest, lookupResult: lookupResult) {
                     let requiresUserAuthentication = lookupResult.lookup?.requiresUserAuthentication ?? false
-                    apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.challenge-presented\(self.stringFor(requiresUserAuthentication))")
+                    apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.challenge-presented.\(self.stringFor(requiresUserAuthentication))")
                     self.process(lookupResult: lookupResult, configuration: configuration)
                 }
             }
