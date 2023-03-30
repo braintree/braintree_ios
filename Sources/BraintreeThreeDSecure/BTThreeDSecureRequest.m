@@ -1,6 +1,5 @@
 #import "BTPaymentFlowClient+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureRequest_Internal.h"
-#import "BTThreeDSecureV2Provider.h"
 #import <SafariServices/SafariServices.h>
 
 // MARK: - Objective-C File Imports for Package Managers
@@ -168,7 +167,7 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
         }
 
         if (configuration.cardinalAuthenticationJWT) {
-            self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
+            self.threeDSecureV2Provider = [[BTThreeDSecureV2Provider alloc] initWithConfiguration:configuration
                                                                                               apiClient:apiClient
                                                                                                 request:self
                                                                                              completion:^(NSDictionary *lookupParameters) {
@@ -230,13 +229,15 @@ paymentClientDelegate:(id<BTPaymentFlowClientDelegate>)delegate {
     typeof(self) __weak weakSelf = self;
     BTAPIClient *apiClient = [self.paymentFlowClientDelegate apiClient];
     [self.threeDSecureV2Provider processLookupResult:lookupResult
-                                             success:^(BTThreeDSecureResult *result) {
-                                                 [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
-                                                 [weakSelf.paymentFlowClientDelegate onPaymentComplete:result error:nil];
-                                             } failure:^(NSError *error) {
-                                                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
-                                                 [weakSelf.paymentFlowClientDelegate onPaymentComplete:nil error:error];
-                                             }];
+                                          completion:^(BTThreeDSecureResult *result, NSError *error) {
+        if (result) {
+            [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
+            [weakSelf.paymentFlowClientDelegate onPaymentComplete:result error:nil];
+        } else {
+            [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
+            [weakSelf.paymentFlowClientDelegate onPaymentComplete:nil error:error];
+        }
+    }];
 }
 
 - (void)handleOpenURL:(NSURL *)url {

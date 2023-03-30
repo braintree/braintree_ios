@@ -13,6 +13,7 @@
 @class BTThreeDSecureAdditionalInformation;
 @class UiCustomization;
 @class BTThreeDSecureV2UICustomization;
+@class BTThreeDSecureV2Provider;
 @protocol BTThreeDSecureRequestDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
