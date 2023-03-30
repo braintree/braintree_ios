@@ -83,6 +83,7 @@
 		804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
+		8084100429D5E9AD00E4941B /* BTPaymentFlowClient+ThreeDSecure.m in Sources */ = {isa = PBXBuildFile; fileRef = 03800A5C1F04630C00068F53 /* BTPaymentFlowClient+ThreeDSecure.m */; };
 		80FF7D1A25881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7D1925881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift */; };
 		80FF7D9825882669001C32EF /* BTThreeDSecureV2ToolbarCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7D9725882669001C32EF /* BTThreeDSecureV2ToolbarCustomization_Tests.swift */; };
 		80FF7DAC25882768001C32EF /* BTThreeDSecureV2ButtonCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DAB25882768001C32EF /* BTThreeDSecureV2ButtonCustomization_Tests.swift */; };
@@ -2888,6 +2889,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8084100429D5E9AD00E4941B /* BTPaymentFlowClient+ThreeDSecure.m in Sources */,
 				BE48CE4829D5DDA600F0825C /* BTThreeDSecureV2TextBoxCustomization.swift in Sources */,
 				BEEBC3C129D5DD68009C7F77 /* BTThreeDSecureV2LabelCustomization.swift in Sources */,
 				BEEBC3C029D5DD16009C7F77 /* BTThreeDSecureV2UICustomization.swift in Sources */,
