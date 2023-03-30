@@ -309,7 +309,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
 
     /// :nodoc:
     public func handleOpen(_ url: URL) {
-        guard let jsonAuthResponse = BTURLUtils.queryParameters(for: url)["auth_response"],
+        guard let jsonAuthResponse: String = BTURLUtils.queryParameters(for: url)["auth_response"],
                 jsonAuthResponse.count != 0 else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.missing-auth-response")
 
@@ -318,7 +318,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
             return
         }
 
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonAuthResponse) else {
+        guard let jsonData = jsonAuthResponse.data(using: .utf8) else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-response")
 
             let error = BTThreeDSecureError.failedAuthentication("Auth Response JSON parsing error.")
@@ -326,7 +326,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
             return
         }
 
-        let authBody = BTJSON(value: jsonData)
+        let authBody = BTJSON(data: jsonData)
         let result = BTThreeDSecureResult(json: authBody)
 
         guard let apiClient = paymentFlowClientDelegate?.apiClient() else {
