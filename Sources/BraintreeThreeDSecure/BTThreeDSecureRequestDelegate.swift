@@ -9,5 +9,5 @@ import Foundation
     ///   - request: The `BTThreeDSecureRequest` associated with the lookup.
     ///   - result: `BTThreeDSecureResult` details.
     ///   - next: Must be called to continue the flow.
-    @objc func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult result: BTThreeDSecureResult, next: (() -> Void))
+    @objc func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult: BTThreeDSecureResult, next: @escaping () -> Void)
 }
