@@ -313,7 +313,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
                 jsonAuthResponse.count != 0 else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.missing-auth-response")
 
-            let error = BTThreeDSecureError.authenticationResponse("Auth Response missing from URL.")
+            let error = BTThreeDSecureError.failedAuthentication("Auth Response missing from URL.")
             paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
             return
         }
@@ -321,7 +321,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonAuthResponse) else {
             paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.three-d-secure.invalid-auth-response")
 
-            let error = BTThreeDSecureError.authenticationResponse("Auth Response JSON parsing error.")
+            let error = BTThreeDSecureError.failedAuthentication("Auth Response JSON parsing error.")
             paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
             return
         }
@@ -336,7 +336,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
 
         if let errorMessage = result.errorMessage, result.tokenizedCard == nil {
             apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
-            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.authenticationResponse(errorMessage))
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.failedAuthentication(errorMessage))
             return
         }
 

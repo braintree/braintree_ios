@@ -130,7 +130,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
             var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
             if validateResponse.errorNumber == 1050 {
-                errorCode = BTThreeDSecureError.failedAuthentication.errorCode
+                errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
             }
 
             notifyError(

@@ -9,16 +9,13 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
     case failedLookup
 
     /// 3D Secure failed during the user-facing authentication phase; please retry
-    case failedAuthentication
+    case failedAuthentication(String)
 
     /// 3D Secure was not configured correctly
     case configuration(String)
 
     /// A body was not returned from the API during the request.
     case noBodyReturned
-
-    /// There was an issue with the authentication response
-    case authenticationResponse(String)
 
     /// The BTAPIClient was invalid or missing
     case invalidAPIClient
@@ -42,12 +39,10 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return 3
         case .noBodyReturned:
             return 4
-        case .authenticationResponse:
-            return 5
         case .invalidAPIClient:
-            return 6
+            return 5
         case .cannotCastRequest:
-            return 7
+            return 6
         }
     }
 
@@ -57,14 +52,12 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return "An unknown error occurred. Please contact support."
         case .failedLookup:
             return "" // TODO: will be implemented when BTPaymentFlowClient+ThreeDSecure is converted to Swift
-        case .failedAuthentication:
-            return "Tokenized card nonce is required."
+        case .failedAuthentication(let description):
+            return description
         case .configuration(let description):
             return description
         case .noBodyReturned:
             return "A body was not returned from the API during the request."
-        case .authenticationResponse(let description):
-            return description
         case .invalidAPIClient:
             return "The BTAPIClient was invalid or missing."
         case .cannotCastRequest:

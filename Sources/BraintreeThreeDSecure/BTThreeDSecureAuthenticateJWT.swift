@@ -16,12 +16,12 @@ class BTThreeDSecureAuthenticateJWT {
 
         guard let nonce = lookupResult?.tokenizedCard?.nonce else {
             apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.errored")
-            completion(nil, BTThreeDSecureError.failedAuthentication)
+            completion(nil, BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
             return
         }
 
         guard let urlSafeNonce = nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            completion(nil, BTThreeDSecureError.failedAuthentication)
+            completion(nil, BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
             return
         }
     
