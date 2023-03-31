@@ -18,7 +18,7 @@
     /// The one-time use payment method nonce.
     public let nonce: String
     
-    /// Optional. Payer ID associated with this transaction.
+    /// Payer ID associated with this transaction.
     public let payerID: String
     
     /// Payer's phone number.
@@ -30,6 +30,7 @@
     /// The type of the tokenized payment.
     public let type: String
     
+    /// :nodoc:
     public init(
         nonce: String,
         type: String,
