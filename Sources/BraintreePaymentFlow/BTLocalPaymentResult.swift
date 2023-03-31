@@ -1,4 +1,4 @@
-@objcMembers public class BTLocalPaymentResultSwift: BTPaymentFlowResult {
+@objcMembers public class BTLocalPaymentResult: BTPaymentFlowResult {
     
     /// The billing address.
     public let billingAddress: BTPostalAddress
