@@ -282,7 +282,7 @@ extension BTThreeDSecureRequest: BTPaymentFlowRequestDelegate {
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.")
             }
 
-            if self.amount?.decimalValue.isNaN == true {
+            if self.amount?.decimalValue.isNaN == true || self.amount == nil {
                 NSLog("%@ BTThreeDSecureRequest amount can not be nil or NaN.", BTLogLevelDescription.string(for: .critical))
                 integrationError = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
             }
