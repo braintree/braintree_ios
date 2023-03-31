@@ -21,7 +21,7 @@ class BTThreeDSecureAuthenticateJWT {
         }
 
         guard let urlSafeNonce = nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            completion(nil, BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
+            completion(nil, BTThreeDSecureError.failedAuthentication("Unable to percent encode nonce as a URL safe nonce."))
             return
         }
     
