@@ -2,14 +2,14 @@ import Foundation
 
 class BTPayPalNativeCheckoutAnalytics {
     
-    // MARK: - Tokenize Events
+    // MARK: - Conversion Events
     
     static let tokenizeStarted = "paypal-native:tokenize:started"
     static let tokenizeFailed = "paypal-native:tokenize:failed"
     static let tokenizeSucceeded = "paypal-native:tokenize:succeeded"
     static let tokenizeCanceled = "paypal-native:tokenize:canceled"
     
-    // MARK: - Order Creation Fail
+    // MARK: - Additional Detail Events
     
     static let orderCreationFailed = "paypal-native:tokenize:order-creation:failed"
 }

@@ -28,19 +28,16 @@ class BTPayPalNativeOrderCreationClient {
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let config = configuration, error == nil else {
-                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
                 completion(.failure(.fetchConfigurationFailed))
                 return
             }
 
             guard let paypalEnabled = config.json?["paypalEnabled"].isTrue, paypalEnabled else {
-                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
                 completion(.failure(.payPalNotEnabled))
                 return
             }
 
             guard let payPalClientID = config.json?["paypal"]["clientId"].asString() else {
-                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
                 completion(.failure(.payPalClientIDNotFound))
                 return
             }
@@ -55,7 +52,6 @@ class BTPayPalNativeOrderCreationClient {
             }
 
             guard let environment = payPalEnvironment else {
-                self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
                 completion(.failure(.invalidEnvironment))
                 return
             }
@@ -66,7 +62,6 @@ class BTPayPalNativeOrderCreationClient {
             ) { json, response, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
                     let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse
-                    self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
                     completion(.failure(.orderCreationFailed(underlyingError)))
                     return
                 }
