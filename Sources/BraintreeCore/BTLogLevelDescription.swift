@@ -5,9 +5,6 @@ import Foundation
     
     public static func string(for level: BTLogLevel) -> String {
         switch level {
-        case .none:
-            return ""
-            
         case .critical:
             return "[BraintreeSDK] CRITICAL"
             
