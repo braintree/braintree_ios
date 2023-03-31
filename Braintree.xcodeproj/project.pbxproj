@@ -81,6 +81,8 @@
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
 		80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */; };
 		80BA64B029D78DBD00E15264 /* BTPaymentFlowResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64AF29D78DBD00E15264 /* BTPaymentFlowResult.swift */; };
+		80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */; };
+		80BA64B429D795D000E15264 /* BTLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */; };
 		80FF7D1A25881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7D1925881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift */; };
 		80FF7D9825882669001C32EF /* BTThreeDSecureV2ToolbarCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7D9725882669001C32EF /* BTThreeDSecureV2ToolbarCustomization_Tests.swift */; };
 		80FF7DAC25882768001C32EF /* BTThreeDSecureV2ButtonCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DAB25882768001C32EF /* BTThreeDSecureV2ButtonCustomization_Tests.swift */; };
@@ -680,6 +682,8 @@
 		80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = Frameworks/XCFrameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentResult.swift; sourceTree = "<group>"; };
 		80BA64AF29D78DBD00E15264 /* BTPaymentFlowResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentFlowResult.swift; sourceTree = "<group>"; };
+		80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentRequest.swift; sourceTree = "<group>"; };
+		80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentRequestDelegate.swift; sourceTree = "<group>"; };
 		80DBE69423A931A600373230 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		80FF7D1925881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2UICustomization_Tests.swift; sourceTree = "<group>"; };
 		80FF7D9725882669001C32EF /* BTThreeDSecureV2ToolbarCustomization_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2ToolbarCustomization_Tests.swift; sourceTree = "<group>"; };
@@ -1093,6 +1097,8 @@
 			children = (
 				80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */,
 				80BA64AF29D78DBD00E15264 /* BTPaymentFlowResult.swift */,
+				80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */,
+				80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */,
 				033248C62123DD1A009F2B31 /* BTLocalPaymentRequest.m */,
 				038C7FBD1EA1648900241ABE /* BTPaymentFlowClient_Internal.h */,
 				038C7FBC1EA1648900241ABE /* BTPaymentFlowClient.m */,
@@ -2646,6 +2652,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				038C7FD51EA1648900241ABE /* BTPaymentFlowRequest.m in Sources */,
+				80BA64B429D795D000E15264 /* BTLocalPaymentRequestDelegate.swift in Sources */,
+				80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */,
 				80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */,
 				033248CB2123DD1A009F2B31 /* BTLocalPaymentRequest.m in Sources */,
 				038C7FD21EA1648900241ABE /* BTPaymentFlowClient.m in Sources */,
