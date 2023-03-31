@@ -6,6 +6,7 @@
 * Add async/await support back to all public Swift methods
 * Convert `BraintreeVenmo` module to Swift
 * Convert `BraintreeCard` module to Swift
+* Convert `BraintreeThreeDSecure` module to Swift
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
@@ -48,8 +49,12 @@
       * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion` enum
         * All 3D Secure requests will use version 2
       * Rename `BTThreeDSecureV2ButtonType` enum cases to: `.verify`, `.continue`, `.next`, `.cancel`, and `.resend`
+      * Remove `BTThreeDSecureFlowErrorDomain` global constant
       * Add new `BTThreeDSecureError` 
         * Add error `.noBodyReturned`
+        * Add error `.invalidAPIClient`
+        * Add error `.cannotCastRequest`
+        * Add error `.jsonSerializationFailure`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
