@@ -5,6 +5,10 @@ import CardinalMobile
 import BraintreeCore
 #endif
 
+#if canImport(BraintreePaymentFlow)
+import BraintreePaymentFlow
+#endif
+
 class BTThreeDSecureV2Provider {
 
     // MARK: - Internal Properties
