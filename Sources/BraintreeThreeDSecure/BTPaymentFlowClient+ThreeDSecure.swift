@@ -46,7 +46,7 @@ extension BTPaymentFlowClient {
                 "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
             ]
 
-            if threeDSecureRequest.dfReferenceID != "" {
+            if threeDSecureRequest.dfReferenceID == nil {
                 requestParameters["dfReferenceId"] = threeDSecureRequest.dfReferenceID
             }
 
@@ -98,14 +98,15 @@ extension BTPaymentFlowClient {
     ) {
         setupPaymentFlow(request, completion: completion)
 
-        guard let dataResponse = lookupResponse.data(using: .utf8, allowLossyConversion: false) else {
-            completion(nil, BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey :"Lookup response cannot be converted to Data type."]))
+        guard let dataResponse = lookupResponse.data(using: .utf8) else {
+            completion(nil, BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."]))
             return
         }
 
         let jsonResponse = BTJSON(data: dataResponse)
         let lookupResult = BTThreeDSecureResult(json: jsonResponse)
         let threeDSecureRequest = request as? BTThreeDSecureRequest
+
         threeDSecureRequest?.paymentFlowClientDelegate = self
 
         apiClient().fetchOrReturnRemoteConfiguration { configuration, error in
@@ -171,11 +172,10 @@ extension BTPaymentFlowClient {
                 requestParameters["cardAdd"] = false
             }
 
-            var additionalInformation: [String: Any?] = [
+            var additionalInformation: [String: String?] = [
                 "mobilePhoneNumber": request.mobilePhoneNumber,
                 "email": request.email,
-                "shippingMethod": request.shippingMethod.stringValue,
-
+                "shippingMethod": request.shippingMethod.stringValue
             ]
 
             additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
@@ -189,7 +189,10 @@ extension BTPaymentFlowClient {
                 return
             }
 
-            self.apiClient().post("v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup", parameters: requestParameters) { body, _, error in
+            self.apiClient().post(
+                "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
+                parameters: requestParameters
+            ) { body, _, error in
                 if let error = error as NSError? {
                     if error.code == BTCoreConstants.networkConnectionLostCode {
                         self.apiClient().sendAnalyticsEvent("ios.three-d-secure.lookup.network-connection.failure")
