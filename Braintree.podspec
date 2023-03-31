@@ -74,8 +74,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "ThreeDSecure" do |s|
-    s.source_files = "Sources/BraintreeThreeDSecure/**/*.{swift,h,m}"
-    s.public_header_files = "Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/*.h"
+    s.source_files = "Sources/BraintreeThreeDSecure/**/*.{swift}"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PaymentFlow"
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"

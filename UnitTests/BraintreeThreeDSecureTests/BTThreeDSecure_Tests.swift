@@ -37,8 +37,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.configuration("").errorCode)
             expectation.fulfill()
         }
 
@@ -88,8 +88,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.configuration("").errorCode)
             expectation.fulfill()
         }
 
@@ -178,8 +178,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.configuration("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2.")
             expectation.fulfill()
         }
@@ -222,8 +222,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.failedAuthentication("").errorCode)
             paymentFinishedExpectation.fulfill()
         }
 
@@ -246,8 +246,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.failedAuthentication("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Auth Response missing from URL.")
             paymentFinishedExpectation.fulfill()
         }
@@ -273,8 +273,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.failedAuthentication("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Auth Response JSON parsing error.")
             paymentFinishedExpectation.fulfill()
         }
@@ -300,8 +300,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.failedAuthentication("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Auth Response JSON parsing error.")
             paymentFinishedExpectation.fulfill()
         }

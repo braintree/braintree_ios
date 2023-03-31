@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeThreeDSecure
 
 class BTThreeDSecurePostalAddress_Tests: XCTestCase {
     func testCopiesAllProperties() {

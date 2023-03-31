@@ -200,8 +200,8 @@ class BTPaymentFlowClient_ThreeDSecure_Tests: XCTestCase {
         client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
             let e = error! as NSError
 
-            XCTAssertEqual(e.domain, BTThreeDSecureFlowErrorDomain)
-            XCTAssertEqual(e.code, BTThreeDSecureFlowErrorType.failedLookup.rawValue)
+            XCTAssertEqual(e.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(e.code, BTThreeDSecureError.failedLookup([:]).errorCode)
             XCTAssertEqual(e.userInfo[NSLocalizedDescriptionKey] as? String, "testMessage")
             XCTAssertEqual(e.userInfo["com.braintreepayments.BTThreeDSecureFlowValidationErrorsKey"] as? [String : String], ["message" : "testMessage"])
             XCTAssertNil(result)

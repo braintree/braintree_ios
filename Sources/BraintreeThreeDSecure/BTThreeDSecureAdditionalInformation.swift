@@ -211,8 +211,7 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    // TODO: can be internal when BTPaymentFlowClient+ThreeDSecure is converted to Swift
-    public func asParameters() -> [String: String] {
+    func asParameters() -> [String: String] {
         var parameters: [String: String?] = [
             "shippingMethodIndicator": shippingMethodIndicator,
             "productCode": productCode,

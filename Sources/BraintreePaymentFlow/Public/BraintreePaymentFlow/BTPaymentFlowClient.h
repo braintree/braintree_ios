@@ -4,7 +4,6 @@
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;
 
-// Temporary import to resolve "attempting to use the forward class as a super class" cocoapods error
 #if __has_include(<Braintree/BraintreePaymentFlow.h>)
 #import <Braintree/BTPaymentFlowResult.h>
 #else
@@ -131,6 +130,15 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowErrorType) {
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
  */
 - (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)( BTPaymentFlowResult * _Nullable result,  NSError * _Nullable error))completionBlock;
+
+/**
+ :nodoc:
+ Set up the BTPaymentFlowClient with a request object and a completion block without starting the flow.
+
+ @param request A BTPaymentFlowRequest to set on the BTPaymentFlow
+ @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
+ */
+- (void)setupPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *_Nonnull)request completion:(void (^_Nullable)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock;
 
 @end
 
