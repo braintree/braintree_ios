@@ -5,8 +5,7 @@ import CardinalMobile
 import BraintreeCore
 #endif
 
-// TODO: Can be internal and maybe a struct once BTThreeDSecureRequest is in Swift
-@objcMembers public class BTThreeDSecureV2Provider: NSObject {
+class BTThreeDSecureV2Provider {
 
     // MARK: - Internal Properties
 
@@ -18,9 +17,7 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    // TODO: can be internal and non obj-c when BTThreeDSecureRequest is in Swift
-    @objc(initWithConfiguration:apiClient:request:completion:)
-    public init(
+    init(
         configuration: BTConfiguration,
         apiClient: BTAPIClient,
         request: BTThreeDSecureRequest,
@@ -62,9 +59,7 @@ import BraintreeCore
 
     // MARK: - Internal Methods
 
-    // TODO: can be internal when BTThreeDSecureRequest is in Swift
-    @objc(processLookupResult:completion:)
-    public func process(
+    func process(
         lookupResult: BTThreeDSecureResult,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
@@ -135,7 +130,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
             var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
             if validateResponse.errorNumber == 1050 {
-                errorCode = BTThreeDSecureError.failedAuthentication.errorCode
+                errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
             }
 
             notifyError(
