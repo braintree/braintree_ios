@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeThreeDSecure
 
 class BTThreeDSecureAdditionalInformation_Tests: XCTestCase {
     func testAsParameters_parameterizesAllProperties() {

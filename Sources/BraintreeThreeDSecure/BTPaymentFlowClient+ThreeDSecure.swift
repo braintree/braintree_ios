@@ -46,8 +46,8 @@ extension BTPaymentFlowClient {
                 "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
             ]
 
-            if threeDSecureRequest.dfReferenceID == nil {
-                requestParameters["dfReferenceId"] = threeDSecureRequest.dfReferenceID
+            if let dfReferenceID = threeDSecureRequest.dfReferenceID {
+                requestParameters["dfReferenceId"] = dfReferenceID
             }
 
             let clientMetadata: [String: String?] = [
