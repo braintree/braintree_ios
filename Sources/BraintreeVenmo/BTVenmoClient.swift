@@ -69,11 +69,13 @@ import BraintreeCore
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
+                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
                 completion(nil, error)
                 return
             }
 
             guard let configuration else {
+                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
                 completion(nil, BTVenmoError.fetchConfigurationFailed)
                 return
             }
@@ -81,6 +83,7 @@ import BraintreeCore
             do {
                 let _ = try self.verifyAppSwitch(with: configuration)
             } catch {
+                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
                 completion(nil, error)
                 return
             }
@@ -303,9 +306,9 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchSucceeded)
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
-        } else {
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
+        } else {            
             apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
             completion(nil, BTVenmoError.appSwitchFailed)
         }
     }
@@ -321,23 +324,29 @@ import BraintreeCore
                 if error.code == BTCoreConstants.networkConnectionLostCode {
                     self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeNetworkConnectionLost)
                 }
-
+                
                 self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
                 self.appSwitchCompletion(nil, error)
                 return
             }
-
+            
             guard let body else {
                 self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
                 self.appSwitchCompletion(nil, BTVenmoError.invalidBodyReturned)
                 return
             }
-
+            
             let venmoAccountJSON: BTJSON = body["venmoAccounts"][0]
             let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
-
-            self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
-            self.appSwitchCompletion(venmoAccountNonce, venmoAccountJSON.asError())
+            
+            guard let venmoJSONError = venmoAccountJSON.asError() else {
+                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
+                self.appSwitchCompletion(venmoAccountNonce, nil)
+                return
+            }
+            
+            self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
+            self.appSwitchCompletion(nil, venmoJSONError)
             return
         }
     }
@@ -346,12 +355,10 @@ import BraintreeCore
 
     func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
         if !configuration.isVenmoEnabled {
-            apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.initiate.error.disabled")
             throw BTVenmoError.disabled
         }
 
         if !isVenmoAppInstalled() {
-            apiClient.sendAnalyticsEvent("ios.pay-with-venmo.appswitch.initiate.error.unavailable")
             throw BTVenmoError.appNotAvailable
         }
 
