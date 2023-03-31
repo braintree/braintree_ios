@@ -101,8 +101,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeThreeDSecure",
-            dependencies: ["BraintreePaymentFlow", "BraintreeCard", "CardinalMobile", "PPRiskMagnes"],
-            cSettings: [.headerSearchPath("V2UICustomization")]
+            dependencies: ["BraintreePaymentFlow", "BraintreeCard", "CardinalMobile", "PPRiskMagnes", "BraintreeCore"]
         ),
         .binaryTarget(
             name: "CardinalMobile",
