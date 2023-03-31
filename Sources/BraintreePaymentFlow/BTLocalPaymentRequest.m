@@ -38,6 +38,7 @@
 #import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
+#import <BraintreePaymentFlow/BraintreePaymentFlow-Swift.h>
 
 @interface BTLocalPaymentRequest ()
 
@@ -242,7 +243,7 @@
                      shippingAddress = [details[@"payerInfo"][@"accountAddress"] asAddress];
                  }
 
-                 BTLocalPaymentResult *tokenizedLocalPayment = [[BTLocalPaymentResult alloc] initWithNonce:nonce
+                 BTLocalPaymentResultSwift *tokenizedLocalPayment = [[BTLocalPaymentResultSwift alloc] initWithNonce:nonce
                                                                                                       type:type
                                                                                                       email:email
                                                                                                   firstName:firstName
