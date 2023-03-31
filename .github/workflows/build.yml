@@ -107,8 +107,8 @@ jobs:
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
       - name: Run carthage build without --use-xcframeworks
         run: |
-          carthage build --no-skip-current
-          carthage archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADirectDebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" "BraintreePayPalNativeCheckout" --output Braintree.framework.zip
+          ./carthage.sh build --no-skip-current
+          ./carthage.sh archive "BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreePaymentFlow" "BraintreePayPal" "BraintreeSEPADirectDebit" "BraintreeThreeDSecure" "BraintreeUnionPay" "BraintreeVenmo" "PayPalDataCollector" "BraintreePayPalNativeCheckout" --output Braintree.framework.zip
   spm_xcode_13:
     name: SPM (Xcode 13)
     runs-on: macOS-11
