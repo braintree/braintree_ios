@@ -72,62 +72,12 @@ import BraintreePaymentFlow
     // MARK: - Internal Properties
 
     /// Set the BTPaymentFlowClientDelegate for handling the client events.
-    // TODO: can be internal when BTPaymentFlowClient+ThreeDSecure
-    public weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
+    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
 
     /// The dfReferenceID for the session. Exposed for testing.
-    // TODO: can be internal when BTPaymentFlowClient+ThreeDSecure
-    public var dfReferenceID: String = ""
+    var dfReferenceID: String? = nil
 
     var threeDSecureV2Provider: BTThreeDSecureV2Provider?
-
-    // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
-    public var accountTypeAsString: String? {
-        switch accountType {
-        case .credit:
-            return "credit"
-        case .debit:
-            return "debit"
-        case .unspecified:
-            return nil
-        }
-    }
-
-    // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
-    public var requestedExemptionTypeAsString: String? {
-        switch requestedExemptionType {
-        case .lowValue:
-            return "low_value"
-        case .secureCorporate:
-            return "secure_corporate"
-        case .trustedBeneficiary:
-            return "trusted_beneficiary"
-        case .transactionRiskAnalysis:
-            return "transaction_risk_analysis"
-        case .unspecified:
-            return nil
-        }
-    }
-
-    // TODO: Can be moved into the enum once BTPaymentFlowClient+ThreeDSecure is in Swift
-    public var shippingMethodAsString: String? {
-        switch shippingMethod {
-        case .sameDay:
-            return "01"
-        case .expedited:
-            return "02"
-        case .priority:
-            return "03"
-        case .ground:
-            return "04"
-        case .electronicDelivery:
-            return "05"
-        case .shipToStore:
-            return "06"
-        case .unspecified:
-            return nil
-        }
-    }
     
     // MARK: - Internal Methods
     
@@ -135,9 +85,7 @@ import BraintreePaymentFlow
     /// - Parameters:
     ///   - apiClient: The API client.
     ///   - completion: This completion will be invoked exactly once. If the error is nil then the preparation was successful.
-    // TODO: can be internal and non obj-c when BTPaymentFlowClient+ThreeDSecure is in Swift
-    @objc(prepareLookup:completion:)
-    public func prepareLookup(
+    func prepareLookup(
         apiClient: BTAPIClient,
         completion: @escaping (Error?) -> Void
     ) {
@@ -167,9 +115,7 @@ import BraintreePaymentFlow
         }
     }
 
-    // TODO: Can be internal once BTPaymentFlowClient+ThreeDSecure is in Swift
-    @objc(processLookupResult:configuration:)
-    public func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
+    func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
         if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
             paymentFlowClientDelegate?.onPaymentComplete(lookupResult, error: nil)
             return

@@ -28,9 +28,7 @@ import BraintreePaymentFlow
 
     // MARK: - Initializer
 
-    // TODO: this can be internal when BTPaymentFlowClient+ThreeDSecure is in Swift (was not public so will not need changelog)
-    @objc(initWithJSON:)
-    public init(json: BTJSON) {
+    init(json: BTJSON) {
         if json["paymentMethod"].asDictionary() != nil {
             tokenizedCard = BTCardNonce(json: json["paymentMethod"])
         }

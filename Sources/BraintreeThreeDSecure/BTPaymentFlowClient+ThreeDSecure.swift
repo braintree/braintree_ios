@@ -15,7 +15,7 @@ extension BTPaymentFlowClient {
 
     /// Creates a stringified JSON object containing the information necessary to perform a lookup.
     /// - Parameters:
-    ///   - request: The `BTThreeDSecureRequest` object where prepareLookup was called.
+    ///   - request: The `BTPaymentFlowRequest` object where prepareLookup was called.
     ///   - completion: This completion will be invoked exactly once with the client payload string or an error.
     @objc(prepareLookup:completion:)
     public func prepareLookup(
@@ -70,7 +70,7 @@ extension BTPaymentFlowClient {
 
     /// Creates a stringified JSON object containing the information necessary to perform a lookup.
     /// - Parameters:
-    ///   - request: The `BTThreeDSecureRequest` object where prepareLookup was called.
+    ///   - request: The `BTPaymentFlowRequest` object where prepareLookup was called.
     /// - Returns: On success, you will receive a client payload string
     /// - Throws: An `Error` describing the failure
     public func prepareLookup(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate) async throws -> String {
@@ -145,8 +145,7 @@ extension BTPaymentFlowClient {
         _ request: BTThreeDSecureRequest,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
-        apiClient().fetchOrReturnRemoteConfiguration { [weak self] _, error in
-            guard let self else { return }
+        apiClient().fetchOrReturnRemoteConfiguration { _, error in
             if let error {
                 completion(nil, error)
                 return
@@ -158,11 +157,11 @@ extension BTPaymentFlowClient {
                 "amount": request.amount ?? 0,
                 "customer": customer,
                 "requestedThreeDSecureVersion": "2",
-                "dfReferenceId": request.dfReferenceID,
-                "accountType": request.accountTypeAsString ?? "",
+                "dfReferenceId": request.dfReferenceID ?? "",
+                "accountType": request.accountType.stringValue ?? "",
                 "challengeRequested": request.challengeRequested,
                 "exemptionRequested": request.exemptionRequested,
-                "requestedExemptionType": request.requestedExemptionTypeAsString ?? "",
+                "requestedExemptionType": request.requestedExemptionType.stringValue ?? "",
                 "dataOnlyRequested": request.dataOnlyRequested
             ]
 
@@ -175,7 +174,7 @@ extension BTPaymentFlowClient {
             var additionalInformation: [String: Any?] = [
                 "mobilePhoneNumber": request.mobilePhoneNumber,
                 "email": request.email,
-                "shippingMethod": request.shippingMethodAsString,
+                "shippingMethod": request.shippingMethod.stringValue,
 
             ]
 

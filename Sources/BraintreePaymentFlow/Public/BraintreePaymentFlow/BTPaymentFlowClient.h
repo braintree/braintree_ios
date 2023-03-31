@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+@import BraintreeCore;
 @class BTAPIClient;
 @class BTPaymentFlowRequest;
 @class BTPaymentFlowResult;

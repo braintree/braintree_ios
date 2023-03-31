@@ -9,4 +9,15 @@
     
     /// Debit
     case debit
+
+    var stringValue: String? {
+        switch self {
+        case .credit:
+            return "credit"
+        case .debit:
+            return "debit"
+        case .unspecified:
+            return nil
+        }
+    }
 }
