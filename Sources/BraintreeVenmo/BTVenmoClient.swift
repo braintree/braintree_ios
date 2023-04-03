@@ -197,8 +197,7 @@ import BraintreeCore
     // MARK: - App Switch Methods
 
     func handleOpen(_ url: URL) {
-        guard let returnURL = BTVenmoAppSwitchReturnURL(url: url) else {
-          
+        guard let returnURL = BTVenmoAppSwitchReturnURL(url: url) else {          
             apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
             appSwitchCompletion(nil, BTVenmoError.invalidReturnURL(""))
             return
