@@ -23,10 +23,13 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
 
     /// Missing nonce value in account response
     case failedToCreateNonce
+    
+    /// Failed to fetch Braintree configuration
+    case fetchConfigurationFailed
 
-    static var domain = "com.braintreepayments.BTPaymentFlowErrorDomain"
+    static var errorDomain = "com.braintreepayments.BTPaymentFlowErrorDomain"
 
-    var code: Int {
+    var errorCode: Int {
         switch self {
         case .unknown:
             return 0
@@ -42,10 +45,12 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
             return 5
         case .failedToCreateNonce:
             return 6
+        case .fetchConfigurationFailed:
+            return 7
         }
     }
 
-    var description: String {
+    var errorDescription: String {
         switch self {
         case .unknown:
             return ""
@@ -61,6 +66,8 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
             return "Missing response data from /v1/payment_methods/ call."
         case .failedToCreateNonce:
             return "Received valid response data, but missing `nonce` key value."
+        case .fetchConfigurationFailed:
+            return "Failed to fetch Braintree configuration."
         }
     }
 }

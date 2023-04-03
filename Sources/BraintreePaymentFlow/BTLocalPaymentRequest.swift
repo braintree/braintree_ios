@@ -86,7 +86,10 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             let dataCollector = BTDataCollector(apiClient: apiClient)
             self.correlationID = dataCollector.clientMetadataID(nil)
 
-            guard let configuration else { return } // TODO: - error for no config
+            guard let configuration else {
+                delegate.onPaymentComplete(nil, error: BTPaymentFlowError.fetchConfigurationFailed)
+                return
+            }
             
             if !configuration.isLocalPaymentEnabled {
                 // TODO: - Audit logging throughout the SDK, this module uses it more than others.
@@ -97,15 +100,15 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.integration)
                 return
-            } else if (localPaymentRequest.amount == nil) {
+            } else if (localPaymentRequest.amount == nil || (localPaymentRequest.paymentType == nil)) {
                 NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.integration)
                 return
             }
 
-            var params = [
-                "amount": localPaymentRequest.amount,
-                "funding_source": localPaymentRequest.paymentType,
+            var params: [String: Any] = [
+                "amount": localPaymentRequest.amount ?? "",
+                "funding_source": localPaymentRequest.paymentType ?? "",
                 "intent": "sale",
                 "return_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/success",
                 "cancel_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/cancel"
@@ -126,7 +129,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             }
 
             if let currencyCode = localPaymentRequest.currencyCode {
-                params["currency_ios_code"] = currencyCode
+                params["currency_iso_code"] = currencyCode
             }
 
             if let givenName = localPaymentRequest.givenName {

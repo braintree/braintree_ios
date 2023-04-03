@@ -45,32 +45,6 @@ class BTLocalPaymentRequest_UnitTests: XCTestCase {
 
         guard let params = mockClient.lastPOSTParameters else { XCTFail(); return }
 
-        let expectedParams: [String : Any] = [
-            "amount": "100.00",
-            "funding_source": "payment-type",
-            "intent": "sale",
-            "return_url": "sdk.ios.braintree://x-callback-url/braintree/local-payment/success",
-            "cancel_url": "sdk.ios.braintree://x-callback-url/braintree/local-payment/cancel",
-            "payment_type_country_code": "US",
-            "line1": "street-address",
-            "line2": "extended-address",
-            "city": "Chicago",
-            "state": "IL",
-            "postal_code": "12345",
-            "country_code": "US",
-            "currency_iso_code": "USD",
-            "first_name": "Jane",
-            "last_name": "Doe",
-            "payer_email": "test@example.com",
-            "phone": "1231231234",
-            "merchant_account_id": "account-id",
-            "bic": "bank-id-code",
-            "experience_profile": [
-                "brand_name": "My Brand!",
-                "no_shipping": false
-            ]
-        ]
-
         XCTAssertEqual(params["amount"] as! String, "100.00")
         XCTAssertEqual(params["funding_source"] as! String, "payment-type")
         XCTAssertEqual(params["intent"] as! String, "sale")
