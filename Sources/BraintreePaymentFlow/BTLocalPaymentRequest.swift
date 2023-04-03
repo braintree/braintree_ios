@@ -7,7 +7,7 @@ import BraintreeDataCollector
 #endif
 
 /// Used to initialize a local payment flow
-@objcMembers public class BTLocalPaymentRequestSwift: BTPaymentFlowRequest {
+@objcMembers public class BTLocalPaymentRequest: BTPaymentFlowRequest {
     
     // MARK: - Public Properties
     
@@ -23,6 +23,9 @@ import BraintreeDataCollector
     
     /// Optional: The address of the customer. An error will occur if this address is not valid.
     public var merchantAccountID: String?
+    
+    /// Optional: The address of the customer. An error will occur if this address is not valid.
+    public var address: BTPostalAddress?
     
     /// The amount for the transaction.
     public var amount: String?
@@ -46,7 +49,7 @@ import BraintreeDataCollector
     public var phone: String?
     
     ///  Indicates whether or not the payment needs to be shipped. For digital goods, this should be false. Defaults to false.
-    public var shippingAddressRequired: Bool = false
+    public var isShippingAddressRequired: Bool = false
     
     /// Optional: Bank Identification Code of the customer (specific to iDEAL transactions).
     public var bic: String?
@@ -62,7 +65,7 @@ import BraintreeDataCollector
 
 // MARK: - BTPaymentFlowRequestDelegate Protocol Conformance
 
-extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
+extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
 
     /// :nodoc:
     public func handle(

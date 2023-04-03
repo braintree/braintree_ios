@@ -1,18 +1,6 @@
 #import "BTPaymentFlowClient_Internal.h"
 #import <AuthenticationServices/AuthenticationServices.h>
 
-// MARK: - Objective-C File Imports for Package Managers
-#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
-#import <Braintree/BTPaymentFlowRequest.h>
-
-#elif SWIFT_PACKAGE // SPM
-#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
-
-#else // Carthage
-#import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
-
-#endif
-
 // MARK: - Swift File Imports for Package Managers
 #if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
