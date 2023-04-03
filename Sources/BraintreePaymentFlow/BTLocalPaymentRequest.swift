@@ -75,28 +75,42 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
         
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else { return }
-            
+
             if let error {
                 delegate.onPaymentComplete(nil, error: error)
             }
-            
+
             let dataCollector = BTDataCollector(apiClient: apiClient)
             self.correlationID = dataCollector.clientMetadataID(nil)
 
-            var integrationError: NSError
-
-            if configuration?.isLocalPaymentEnabled? {
+            guard let configuration else { return } // TODO
+            
+            var integrationError: NSError? = nil
+            if configuration.isLocalPaymentEnabled {
+                // TODO: - Audit logging throughout the SDK, this module uses it more than others.
                 NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
-                integrationError = NSError(domain: BTPaymentFlowErrorDomain, code: BTPaymentFlowErrorType.disabled, userInfo: [NSLocalizedDescriptionKey:"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."])
+                integrationError = NSError(
+                    domain: BTPaymentFlowErrorDomain,
+                    code: BTPaymentFlowErrorType.disabled.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey:"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."]
+                )
             } else if (localPaymentRequest.localPaymentFlowDelegate == nil) {
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
-                integrationError = NSError(domain: BTPaymentFlowErrorDomain, code: BTPaymentFlowErrorType.integration, userInfo: [NSLocalizedDescriptionKey:"Failed to begin payment flow: BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."])
+                integrationError = NSError(
+                    domain: BTPaymentFlowErrorDomain,
+                    code: BTPaymentFlowErrorType.integration.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey:"Failed to begin payment flow: BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."]
+                )
             } else if (localPaymentRequest.amount == nil) {
                 NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
-                integrationError = NSError(domain: BTPaymentFlowErrorDomain, code: BTPaymentFlowErrorType.integration, userInfo: [NSLocalizedDescriptionKey:"Failed to begin payment flow: BTLocalPaymentRequest amount and paymentType can not be nil."])
+                integrationError = NSError(
+                    domain: BTPaymentFlowErrorDomain,
+                    code: BTPaymentFlowErrorType.integration.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey:"Failed to begin payment flow: BTLocalPaymentRequest amount and paymentType can not be nil."]
+                )
             }
 
-            if integrationError != nil {
+            if let integrationError {
                 delegate.onPaymentComplete(nil, error: integrationError)
                 return
             }
@@ -163,12 +177,32 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
 
             apiClient.post("v1/local_payments/create", parameters: params) { body, response, error in
                 if let error {
-                    // LEFT OFF HERE
-                    self.paymentID = body?["paymentResource"]["paymentToken"].asString()
-                    let approvalURLString = body?["paymentResource"]["redirectUrl"]
-                    let url = URL(string: approvalURLString)
-
-                    // continue
+                    if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
+                        apiClient.sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
+                    }
+                    
+                    delegate.onPayment(with: nil, error: error)
+                    return
+                }
+                
+                if let paymentID = body?["paymentResource"]["paymentToken"].asString(),
+                   let approvalURLString = body?["paymentResource"]["redirectUrl"].asString(),
+                   let url = URL(string: approvalURLString) {
+                    
+                    // TODO: - once Swift name is dropped
+//                    localPaymentFlowDelegate?.localPaymentStarted(self, paymentID: paymentID, start: {
+//                        delegate.onPayment(with: url, error: error)
+//                    })
+                } else {
+                    NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
+                    let appSwitchError = NSError(
+                        domain: BTPaymentFlowErrorDomain,
+                        code: BTPaymentFlowErrorType.appSwitchFailed.rawValue,
+                        userInfo: [NSLocalizedDescriptionKey:"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."]
+                    )
+                    
+                    delegate.onPaymentComplete(nil, error: appSwitchError)
+                    return
                 }
             }
         }
