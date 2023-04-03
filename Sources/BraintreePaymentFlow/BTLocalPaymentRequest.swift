@@ -85,33 +85,18 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
 
             guard let configuration else { return } // TODO
             
-            var integrationError: NSError? = nil
             if configuration.isLocalPaymentEnabled {
                 // TODO: - Audit logging throughout the SDK, this module uses it more than others.
                 NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
-                integrationError = NSError(
-                    domain: BTPaymentFlowErrorDomain,
-                    code: BTPaymentFlowErrorType.disabled.rawValue,
-                    userInfo: [NSLocalizedDescriptionKey:"Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments."]
-                )
+                delegate.onPaymentComplete(nil, error: BTPaymentFlowError.disabled)
+                return
             } else if (localPaymentRequest.localPaymentFlowDelegate == nil) {
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
-                integrationError = NSError(
-                    domain: BTPaymentFlowErrorDomain,
-                    code: BTPaymentFlowErrorType.integration.rawValue,
-                    userInfo: [NSLocalizedDescriptionKey:"Failed to begin payment flow: BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."]
-                )
+                delegate.onPaymentComplete(nil, error: BTPaymentFlowError.integration)
+                return
             } else if (localPaymentRequest.amount == nil) {
                 NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
-                integrationError = NSError(
-                    domain: BTPaymentFlowErrorDomain,
-                    code: BTPaymentFlowErrorType.integration.rawValue,
-                    userInfo: [NSLocalizedDescriptionKey:"Failed to begin payment flow: BTLocalPaymentRequest amount and paymentType can not be nil."]
-                )
-            }
-
-            if let integrationError {
-                delegate.onPaymentComplete(nil, error: integrationError)
+                delegate.onPaymentComplete(nil, error: BTPaymentFlowError.integration)
                 return
             }
 
@@ -195,13 +180,7 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
 //                    })
                 } else {
                     NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
-                    let appSwitchError = NSError(
-                        domain: BTPaymentFlowErrorDomain,
-                        code: BTPaymentFlowErrorType.appSwitchFailed.rawValue,
-                        userInfo: [NSLocalizedDescriptionKey:"Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists."]
-                    )
-                    
-                    delegate.onPaymentComplete(nil, error: appSwitchError)
+                    delegate.onPaymentComplete(nil, error: BTPaymentFlowError.appSwitchFailed)
                     return
                 }
             }
@@ -212,10 +191,7 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
     public func handleOpen(_ url: URL) {
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
             // canceled case
-            let error = NSError(
-                domain: BTPaymentFlowErrorDomain,
-                code: BTPaymentFlowErrorType.canceled.rawValue,
-                userInfo: [:])
+            self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(paymentFlowName()))
             
         } else {
             // success case
@@ -255,50 +231,14 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
                     return
                 } else {
                     guard let body else {
-                        // TODO: - handle case of no body
+                        self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.noAccountData)
                         return
                     }
-                    let paypalAccount = body["paypalAccounts"][0]
-                    let nonce = paypalAccount["nonce"].asString()
-                    let type = paypalAccount["type"].asString()
                     
-                    let details = paypalAccount["details"]
-                    
-                    let clientMetadataID = details["correlationId"].asString()
-                    
-                    var email: String?
-                    if (details["payerInfo"]["email"].isString) {
-                        email = details["payerInfo"]["email"].asString()
-                    } else {
-                        email = details["email"].asString()
+                    guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
+                        self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.failedToCreateNonce)
+                        return
                     }
-                    
-                    let firstName = details["payerInfo"]["firstName"].asString()
-                    let lastName = details["payerInfo"]["lastName"].asString()
-                    let phone = details["payerInfo"]["phone"].asString()
-                    let payerID = details["payerInfo"]["payerId"].asString()
-                    
-                    var shippingAddress: BTPostalAddress?
-                    if let payerShippingAddress = details["payerInfo"]["shippingAddress"].asAddress() {
-                        shippingAddress = payerShippingAddress
-                    } else {
-                        shippingAddress = details["payerInfo"]["accountAddress"].asAddress()
-                    }
-                    
-                    let billingAddress = details["payerInfo"]["shippingAddress"].asAddress()
-
-                    let tokenizedLocalPayment = BTLocalPaymentResult(
-                        nonce: nonce,
-                        type: type,
-                        email: email,
-                        firstName: firstName,
-                        lastName: lastName,
-                        phone: phone,
-                        billingAddress: billingAddress,
-                        shippingAddress: shippingAddress,
-                        clientMetadataID: clientMetadataID,
-                        payerID: payerID
-                    )
                     
                     self.paymentFlowClientDelegate?.onPaymentComplete(tokenizedLocalPayment, error: nil)
                 }
