@@ -191,7 +191,7 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
     public func handleOpen(_ url: URL) {
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
             // canceled case
-            self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(paymentFlowName()))
+            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(paymentFlowName()))
             
         } else {
             // success case
@@ -214,14 +214,16 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
             params["paypal_account"] = paypalAccount
             
             // TODO: - audit use of self throughout re-write
-            let metadata = self.paymentFlowClientDelegate?.apiClient().metadata
+            let metadata = paymentFlowClientDelegate?.apiClient().metadata
             params["_meta"] = [
                 "source": metadata?.sourceString,
                 "integraton": metadata?.integrationString,
                 "sessionId": metadata?.sessionID
             ]
             
-            paymentFlowClientDelegate?.apiClient().post("/v1/payment_methods/paypal_accounts", parameters: params, completion: { body, response, error in
+            paymentFlowClientDelegate?.apiClient().post("/v1/payment_methods/paypal_accounts", parameters: params, completion: { [weak self] body, response, error in
+                guard let self else { return }
+                
                 if let error {
                     if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
                         self.paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
@@ -248,7 +250,7 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
 
     /// :nodoc:
     public func paymentFlowName() -> String {
-        let paymentType = self.paymentType?.lowercased() ??  "unknown"
+        let paymentType = paymentType?.lowercased() ??  "unknown"
         return "\(paymentType).local-payment"
     }
 }
