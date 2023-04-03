@@ -138,7 +138,7 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
             }
 
             if let currencyCode = localPaymentRequest.currencyCode {
-                params["currency_ios_code"]
+                params["currency_ios_code"] = currencyCode
             }
 
             if let givenName = localPaymentRequest.givenName {
@@ -210,7 +210,100 @@ extension BTLocalPaymentRequestSwift: BTPaymentFlowRequestDelegate {
 
     /// :nodoc:
     public func handleOpen(_ url: URL) {
-        
+        if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
+            // canceled case
+            let error = NSError(
+                domain: BTPaymentFlowErrorDomain,
+                code: BTPaymentFlowErrorType.canceled.rawValue,
+                userInfo: [:])
+            
+        } else {
+            // success case
+            var params: [String: Any] = [:]
+            
+            var paypalAccount: [String: Any] = [:]
+            paypalAccount["response"] = ["webURL": url.absoluteString]
+            paypalAccount["response_type"] = "web"
+            paypalAccount["options"] = ["validate": false]
+            paypalAccount["intent"] = "sale"
+
+            if let correlationID {
+                paypalAccount["correlation_id"] = correlationID
+            }
+
+            if let merchantAccountID {
+                params["merchant_account_id"] = merchantAccountID
+            }
+            
+            params["paypal_account"] = paypalAccount
+            
+            // TODO: - audit use of self throughout re-write
+            let metadata = self.paymentFlowClientDelegate?.apiClient().metadata
+            params["_meta"] = [
+                "source": metadata?.sourceString,
+                "integraton": metadata?.integrationString,
+                "sessionId": metadata?.sessionID
+            ]
+            
+            paymentFlowClientDelegate?.apiClient().post("/v1/payment_methods/paypal_accounts", parameters: params, completion: { body, response, error in
+                if let error {
+                    if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
+                        self.paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
+                    }
+                    
+                    self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
+                    return
+                } else {
+                    guard let body else {
+                        // TODO: - handle case of no body
+                        return
+                    }
+                    let paypalAccount = body["paypalAccounts"][0]
+                    let nonce = paypalAccount["nonce"].asString()
+                    let type = paypalAccount["type"].asString()
+                    
+                    let details = paypalAccount["details"]
+                    
+                    let clientMetadataID = details["correlationId"].asString()
+                    
+                    var email: String?
+                    if (details["payerInfo"]["email"].isString) {
+                        email = details["payerInfo"]["email"].asString()
+                    } else {
+                        email = details["email"].asString()
+                    }
+                    
+                    let firstName = details["payerInfo"]["firstName"].asString()
+                    let lastName = details["payerInfo"]["lastName"].asString()
+                    let phone = details["payerInfo"]["phone"].asString()
+                    let payerID = details["payerInfo"]["payerId"].asString()
+                    
+                    var shippingAddress: BTPostalAddress?
+                    if let payerShippingAddress = details["payerInfo"]["shippingAddress"].asAddress() {
+                        shippingAddress = payerShippingAddress
+                    } else {
+                        shippingAddress = details["payerInfo"]["accountAddress"].asAddress()
+                    }
+                    
+                    let billingAddress = details["payerInfo"]["shippingAddress"].asAddress()
+
+                    let tokenizedLocalPayment = BTLocalPaymentResult(
+                        nonce: nonce,
+                        type: type,
+                        email: email,
+                        firstName: firstName,
+                        lastName: lastName,
+                        phone: phone,
+                        billingAddress: billingAddress,
+                        shippingAddress: shippingAddress,
+                        clientMetadataID: clientMetadataID,
+                        payerID: payerID
+                    )
+                    
+                    self.paymentFlowClientDelegate?.onPaymentComplete(tokenizedLocalPayment, error: nil)
+                }
+            })
+        }
     }
 
     /// :nodoc:
