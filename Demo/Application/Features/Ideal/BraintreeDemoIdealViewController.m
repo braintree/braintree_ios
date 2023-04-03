@@ -64,7 +64,7 @@
     request.address.streetAddress = @"836486 of 22321 Park Lake";
     request.address.locality = @"Den Haag";
     request.email = @"lingo-buyer@paypal.com";
-    request.shippingAddressRequired = NO;
+    request.isShippingAddressRequired = NO;
     request.localPaymentFlowDelegate = self;
 
     void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {

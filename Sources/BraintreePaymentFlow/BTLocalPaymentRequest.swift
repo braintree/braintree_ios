@@ -86,9 +86,9 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             let dataCollector = BTDataCollector(apiClient: apiClient)
             self.correlationID = dataCollector.clientMetadataID(nil)
 
-            guard let configuration else { return } // TODO
+            guard let configuration else { return } // TODO: - error for no config
             
-            if configuration.isLocalPaymentEnabled {
+            if !configuration.isLocalPaymentEnabled {
                 // TODO: - Audit logging throughout the SDK, this module uses it more than others.
                 NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.disabled)
@@ -154,7 +154,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             }
 
             var experienceProfile: [String: Any] = [
-                "no_shipping": localPaymentRequest.isShippingAddressRequired,
+                "no_shipping": !localPaymentRequest.isShippingAddressRequired,
             ]
 
             if let displayName = localPaymentRequest.displayName {
@@ -177,10 +177,9 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
                    let approvalURLString = body?["paymentResource"]["redirectUrl"].asString(),
                    let url = URL(string: approvalURLString) {
                     
-                    // TODO: - once Swift name is dropped
-//                    localPaymentFlowDelegate?.localPaymentStarted(self, paymentID: paymentID, start: {
-//                        delegate.onPayment(with: url, error: error)
-//                    })
+                    self.localPaymentFlowDelegate?.localPaymentStarted(self, paymentID: paymentID, start: {
+                        delegate.onPayment(with: url, error: error)
+                    })
                 } else {
                     NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
                     delegate.onPaymentComplete(nil, error: BTPaymentFlowError.appSwitchFailed)
