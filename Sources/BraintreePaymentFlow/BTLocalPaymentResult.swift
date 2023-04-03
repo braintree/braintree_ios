@@ -31,6 +31,7 @@
     public let type: String
     
     /// :nodoc:
+    // TODO: - Make internal once whole module is in Swift
     public init(
         nonce: String,
         type: String,
