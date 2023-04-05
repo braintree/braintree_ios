@@ -5,15 +5,12 @@
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTLocalPaymentRequest.h>
-#import <Braintree/BTLocalPaymentResult.h>
 
 #elif SWIFT_PACKAGE                                   // SPM
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
-#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
 
 #else                                                 // Carthage and Local Builds
 #import <BraintreePaymentFlow/BTLocalPaymentRequest.h>
-#import <BraintreePaymentFlow/BTLocalPaymentResult.h>
 #endif
 
 // MARK: - Swift File Imports for Package Managers
@@ -38,6 +35,7 @@
 #import <BraintreeCore/BraintreeCore-Swift.h>
 #endif
 
+#import <BraintreePaymentFlow/BraintreePaymentFlow-Swift.h>
 
 @interface BTLocalPaymentRequest ()
 

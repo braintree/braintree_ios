@@ -4,15 +4,12 @@
 // MARK: - Objective-C File Imports for Package Managers
 #if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowRequest.h>
-#import <Braintree/BTPaymentFlowResult.h>
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
-#import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 
 #else // Carthage
 #import <BraintreePaymentFlow/BTPaymentFlowRequest.h>
-#import <BraintreePaymentFlow/BTPaymentFlowResult.h>
 
 #endif
 
