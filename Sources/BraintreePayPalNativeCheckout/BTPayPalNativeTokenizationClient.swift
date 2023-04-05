@@ -33,18 +33,15 @@ class BTPayPalNativeTokenizationClient {
         ) { body, _, error in
             guard let json = body, error == nil else {
                 let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.tokenize-url-request.failed")
                 completion(.failure(.tokenizationFailed(underlyingError)))
                 return
             }
 
             guard let accountNonce = BTPayPalNativeCheckoutAccountNonce(json: json) else {
-                self.apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.parsing-result.failed")
                 completion(.failure(.parsingTokenizationResultFailed))
                 return
             }
-
-            self.apiClient.sendAnalyticsEvent("ios.paypal-native.tokenize.succeeded")
+            
             completion(.success(accountNonce))
         }
     }
