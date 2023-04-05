@@ -26,8 +26,7 @@ class BTPayPalNativeOrderCreationClient {
         with request: BTPayPalRequest,
         completion: @escaping (Result<BTPayPalNativeOrder, BTPayPalNativeError>) -> Void
     ) {
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
 
             guard let config = configuration, error == nil else {
                 completion(.failure(.fetchConfigurationFailed))
