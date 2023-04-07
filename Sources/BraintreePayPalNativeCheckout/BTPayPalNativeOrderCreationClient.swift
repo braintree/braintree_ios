@@ -27,7 +27,6 @@ class BTPayPalNativeOrderCreationClient {
         completion: @escaping (Result<BTPayPalNativeOrder, BTPayPalNativeError>) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-
             guard let config = configuration, error == nil else {
                 completion(.failure(.fetchConfigurationFailed))
                 return

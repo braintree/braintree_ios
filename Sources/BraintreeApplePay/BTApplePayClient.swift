@@ -29,9 +29,7 @@ import BraintreeCore
     /// - Parameter completion: A completion block that returns the payment request or an error.
     @objc(makePaymentRequest:)
     public func makePaymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
-            
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.configuration")
                 self.completionHandler(onMainThreadWithPaymentRequest: nil, error: error, completion: completion)
@@ -79,9 +77,7 @@ import BraintreeCore
     public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent("ios.apple-pay.start")
 
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
-            
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent("ios.apple-pay.error.configuration")
                 completion(nil, error)

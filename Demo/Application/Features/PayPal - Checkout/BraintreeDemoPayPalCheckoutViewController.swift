@@ -3,8 +3,6 @@ import BraintreePayPal
 
 class BraintreeDemoPayPalCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
     
-    private lazy var paypalClient = BTPayPalClient(apiClient: apiClient)
-    
     override func createPaymentButton() -> UIView! {
         lazy var payPalCheckoutButton: UIButton = {
             let payPalCheckoutButton = UIButton(type: .system)
@@ -24,9 +22,10 @@ class BraintreeDemoPayPalCheckoutViewController: BraintreeDemoPaymentButtonBaseV
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
+        let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalCheckoutRequest(amount: "4.30")
         
-        paypalClient.tokenize(request) { nonce, error in
+        client.tokenize(request) { nonce, error in
             sender.isEnabled = true
             
             guard let nonce = nonce else {

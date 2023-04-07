@@ -81,9 +81,7 @@ class BTAnalyticsService: Equatable {
     }
 
     func flush(_ completion: @escaping (Error?) -> Void = { _ in }) {
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
-
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
                 if let error {
                     completion(error)
