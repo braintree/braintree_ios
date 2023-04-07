@@ -73,6 +73,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
+    // Sends analytics event right away, without checking # of events against flush threshold
     func sendAnalyticsEvent(_ eventName: String, completion: @escaping (Error?) -> Void = { _ in }) {
         DispatchQueue.main.async {
             self.enqueueEvent(eventName)
@@ -80,6 +81,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
+    // Actually OK to send a request now
     func flush(_ completion: @escaping (Error?) -> Void = { _ in }) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
@@ -132,6 +134,7 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Helpers
 
+    // Add event to queue
     func enqueueEvent(_ eventName: String) {
         let timestampInMilliseconds = Date().timeIntervalSince1970 * 1000
         let event = BTAnalyticsEvent(eventName: eventName, timestamp: UInt64(timestampInMilliseconds))
@@ -150,6 +153,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
+    // Determine if ready to send event based on # of queued events
     func flushIfAtThreshold() {
         var eventCount = 0
 
@@ -164,7 +168,11 @@ class BTAnalyticsService: Equatable {
         }
     }
 
+    // Creates full blob to post
     func createAnalyticsEvent(with sessionID: String) -> [String: Any] {
+        
+        // TODO: - Wrap this dictionary construction logic into a new struct for the batch request
+        // Update to return a Codable
         var session = self.analyticsSessions[sessionID]
         let metadataParameters: [String: Any] = [
             "sessionId": session?.sessionID ?? "",

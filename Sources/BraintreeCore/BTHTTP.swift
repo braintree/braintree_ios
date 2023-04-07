@@ -122,6 +122,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
+    
+    func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
+        // TODO: - 
+    }
 
     func put(_ path: String, completion: @escaping RequestCompletion) {
         put(path, parameters: nil, completion: completion)
