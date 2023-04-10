@@ -9,7 +9,7 @@ import BraintreeCore
     
     // MARK: - Private Properies
     
-    private let x_apiClient: BTAPIClient
+    private let _apiClient: BTAPIClient
     private var paymentFlowRequestDelegate: BTPaymentFlowRequestDelegate?
     private var request: BTPaymentFlowRequest?
     private var paymentFlowCompletionBlock: ((BTPaymentFlowResult?, Error?) -> Void)?
@@ -26,7 +26,7 @@ import BraintreeCore
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
-        self.x_apiClient = apiClient
+        self._apiClient = apiClient
     }
     
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
@@ -35,8 +35,8 @@ import BraintreeCore
     ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion: @escaping (BTPaymentFlowResult?, Error?) -> Void) {
         setupPaymentFlow(request, completion: completion)
-        x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.selected")
-        paymentFlowRequestDelegate?.handle(request, client: x_apiClient, paymentClientDelegate: self)
+        _apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.selected")
+        paymentFlowRequestDelegate?.handle(request, client: _apiClient, paymentClientDelegate: self)
     }
     
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
@@ -72,7 +72,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
 
     public func onPayment(with url: URL?, error: Error?) {
         if let error {
-            x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.failed")
+            _apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.failed")
             onPaymentComplete(nil, error: error)
             return
         }
@@ -82,7 +82,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             return
         }
         
-        x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).webswitch.initiate.succeeded")
+        _apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).webswitch.initiate.succeeded")
         
         authenticationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: BTCoreConstants.callbackURLScheme, completionHandler: { callbackURL, error in
             // Required to avoid memory leak for BTPaymentFlowClient
@@ -92,7 +92,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             if let error = error as? NSError {
                 if error.domain == ASWebAuthenticationSessionError.errorDomain,
                    error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    self.x_apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName)).authsession.browser.cancel")
+                    self._apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName)).authsession.browser.cancel")
                 }
                 
                 self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
@@ -100,7 +100,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             }
             
             if let callbackURL {
-                self.x_apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName).webswitch.succeeded")
+                self._apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName).webswitch.succeeded")
                 self.paymentFlowRequestDelegate?.handleOpen(callbackURL)
             } else {
                 self.onPaymentComplete(nil, error: BTPaymentFlowError.missingReturnURL)
@@ -116,7 +116,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
     }
     
     public func apiClient() -> BraintreeCore.BTAPIClient {
-        return x_apiClient
+        return _apiClient
     }
 }
 
