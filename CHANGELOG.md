@@ -11,6 +11,11 @@
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
+    * Rename `BTLocalPaymentRequest.shippingAddressRequired` to `isShippingAddressRequired`
+    * Add `BTPaymentFlowError` cases
+      * `.noAccountData`
+      * `.failedToCreateNonce`
+      * `.fetchConfigurationFailed`
   * BraintreeApplePay
     * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
     * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
