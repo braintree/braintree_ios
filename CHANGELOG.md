@@ -18,6 +18,9 @@
       * `.fetchConfigurationFailed` = 7
       * `.missingRedirectURL` = 8
       * `.missingReturnURL` = 9
+    * Update `BTPaymentFlowError` values
+      * `.integration` = 3
+      * `.canceled` = 4
   * BraintreeApplePay
     * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
     * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
