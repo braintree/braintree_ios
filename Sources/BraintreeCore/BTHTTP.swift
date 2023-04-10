@@ -123,8 +123,23 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
     
-    func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
-        // TODO: - 
+    
+    func post(_ path: String, parameters: Codable, completion: @escaping RequestCompletion) {
+        // TODO: -
+        
+        guard let data = try? JSONEncoder().encode(parameters) else {
+            //
+            return
+        }
+        
+        var request = URLRequest(url: URL(string: "https://api-m.paypal.com/v1/tracking/batch/events")!)
+        request.httpBody = data
+        request.httpMethod = "POST"
+
+        self.session.dataTask(with: request) { [weak self] data, response, error in
+            guard let self = self else { return }
+            self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+        }.resume()
     }
 
     func put(_ path: String, completion: @escaping RequestCompletion) {
