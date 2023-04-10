@@ -35,8 +35,7 @@ import BraintreeCore
     public let type: String?
     
     /// :nodoc:
-    // TODO: - make internal once entire module in Swift
-    public init?(json: BTJSON) {
+    init?(json: BTJSON) {
         let paypalAccount = json["paypalAccounts"][0]
         
         guard let nonce = paypalAccount["nonce"].asString() else { return nil }

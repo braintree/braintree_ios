@@ -13,7 +13,9 @@ import BraintreeCore
     private var paymentFlowRequestDelegate: BTPaymentFlowRequestDelegate?
     private var request: BTPaymentFlowRequest?
     private var paymentFlowCompletionBlock: ((BTPaymentFlowResult?, Error?) -> Void)?
-    
+    private var paymentFlowName: String {
+        return paymentFlowRequestDelegate?.paymentFlowName() ?? "local-payments"
+    }
     // MARK: - Internal Properties
     
     var authenticationSession: ASWebAuthenticationSession?
@@ -33,13 +35,14 @@ import BraintreeCore
     ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion: @escaping (BTPaymentFlowResult?, Error?) -> Void) {
         setupPaymentFlow(request, completion: completion)
-        x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowRequestDelegate?.paymentFlowName()).start-payment.selected")
+        x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.selected")
         paymentFlowRequestDelegate?.handle(request, client: x_apiClient, paymentClientDelegate: self)
     }
     
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
     /// - Parameter request: A BTPaymentFlowRequest request.
-    /// - Returns: // TODO
+    /// - Returns: A `BTPaymentFlowResult` if successful
+    /// - Throws: An `Error` describing the failure
     public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate) async throws -> BTPaymentFlowResult {
         try await withCheckedThrowingContinuation { continuation in
             startPaymentFlow(request) { result, error in
@@ -69,14 +72,19 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
 
     public func onPayment(with url: URL?, error: Error?) {
         if let error {
-            x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowRequestDelegate?.paymentFlowName()).start-payment.failed")
+            x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.failed")
             onPaymentComplete(nil, error: error)
+            return
         }
         
-        x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowRequestDelegate?.paymentFlowName()).webswitch.initiate.succeeded")
+        guard let url else {
+            onPaymentComplete(nil, error: BTPaymentFlowError.missingRedirectURL)
+            return
+        }
         
-        // TODO = fix force unwrap
-        authenticationSession = ASWebAuthenticationSession(url: url!, callbackURLScheme: BTCoreConstants.callbackURLScheme, completionHandler: { callbackURL, error in
+        x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).webswitch.initiate.succeeded")
+        
+        authenticationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: BTCoreConstants.callbackURLScheme, completionHandler: { callbackURL, error in
             // Required to avoid memory leak for BTPaymentFlowClient
             self.authenticationSession = nil
             
@@ -84,15 +92,19 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             if let error = error as? NSError {
                 if error.domain == ASWebAuthenticationSessionError.errorDomain,
                    error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    self.x_apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowRequestDelegate?.paymentFlowName()).authsession.browser.cancel")
+                    self.x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName)).authsession.browser.cancel")
                 }
                 
-                self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? "TODO"))
+                self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
                 return
             }
             
-            self.x_apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowRequestDelegate?.paymentFlowName()).webswitch.succeeded")
-            self.paymentFlowRequestDelegate?.handleOpen(callbackURL!) // TODO handle force
+            if let callbackURL {
+                self.x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).webswitch.succeeded")
+                self.paymentFlowRequestDelegate?.handleOpen(callbackURL)
+            } else {
+                self.onPaymentComplete(nil, error: BTPaymentFlowError.missingReturnURL)
+            }
         })
         
         authenticationSession?.presentationContextProvider = self

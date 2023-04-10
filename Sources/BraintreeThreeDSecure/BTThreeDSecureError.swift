@@ -25,6 +25,9 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
 
     /// The request could not be serialized.
     case jsonSerializationFailure
+    
+    /// User canceled the 3DS 2 flow.
+    case canceled
 
     static var errorDomain: String {
         "com.braintreepayments.BTThreeDSecureFlowErrorDomain"
@@ -48,6 +51,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return 6
         case .jsonSerializationFailure:
             return 7
+        case .canceled:
+            return 8
         }
     }
 
@@ -69,6 +74,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: "Cannot cast BTPaymentFlowRequest to BTThreeDSecureRequest"]
         case .jsonSerializationFailure:
             return [NSLocalizedDescriptionKey: "The request could not be serialized."]
+        case .canceled:
+            return [NSLocalizedDescriptionKey: "The user canceled the 3DS 2 flow."]
         }
     }
 }

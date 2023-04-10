@@ -26,6 +26,12 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
     
     /// Failed to fetch Braintree configuration
     case fetchConfigurationFailed
+    
+    /// No URL found to display for payment authorization
+    case missingRedirectURL
+    
+    /// No URL was returned via the ASWebAuthenticationSession completion callback
+    case missingReturnURL
 
     static var errorDomain = "com.braintreepayments.BTPaymentFlowErrorDomain"
 
@@ -47,6 +53,10 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
             return 6
         case .fetchConfigurationFailed:
             return 7
+        case .missingRedirectURL:
+            return 8
+        case .missingReturnURL:
+            return 9
         }
     }
 
@@ -68,6 +78,10 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
             return "Received valid response data, but missing `nonce` key value."
         case .fetchConfigurationFailed:
             return "Failed to fetch Braintree configuration."
+        case .missingRedirectURL:
+            return "Failed to complete payment flow due to missing redirectURL."
+        case .missingReturnURL:
+            return "An error occured completing the payment authorization flow. The ASWebAuthenticationSession returned a nil URL."
         }
     }
 }
