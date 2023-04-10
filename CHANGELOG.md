@@ -13,9 +13,11 @@
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
     * Rename `BTLocalPaymentRequest.shippingAddressRequired` to `isShippingAddressRequired`
     * Add `BTPaymentFlowError` cases
-      * `.noAccountData`
-      * `.failedToCreateNonce`
-      * `.fetchConfigurationFailed`
+      * `.noAccountData` = 5
+      * `.failedToCreateNonce` = 6
+      * `.fetchConfigurationFailed` = 7
+      * `.missingRedirectURL` = 8
+      * `.missingReturnURL` = 9
   * BraintreeApplePay
     * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
     * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
@@ -60,6 +62,7 @@
         * Add error `.invalidAPIClient`
         * Add error `.cannotCastRequest`
         * Add error `.jsonSerializationFailure`
+        * Add error `.canceled`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
