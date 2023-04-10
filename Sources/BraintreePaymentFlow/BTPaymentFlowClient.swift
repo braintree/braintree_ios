@@ -7,6 +7,10 @@ import BraintreeCore
 
 @objcMembers public class BTPaymentFlowClient: NSObject {
     
+    // MARK: - Internal Properties
+    
+    var authenticationSession: ASWebAuthenticationSession?
+    
     // MARK: - Private Properies
     
     private let _apiClient: BTAPIClient
@@ -16,9 +20,6 @@ import BraintreeCore
     private var paymentFlowName: String {
         return paymentFlowRequestDelegate?.paymentFlowName() ?? "local-payments"
     }
-    // MARK: - Internal Properties
-    
-    var authenticationSession: ASWebAuthenticationSession?
     
     // MARK: - Public Methods
     
