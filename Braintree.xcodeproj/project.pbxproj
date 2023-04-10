@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		033248BA2123DC5E009F2B31 /* BraintreePaymentFlow.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FC71EA1648900241ABE /* BraintreePaymentFlow.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		038C7FD21EA1648900241ABE /* BTPaymentFlowClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C7FBC1EA1648900241ABE /* BTPaymentFlowClient.m */; };
-		038C7FD31EA1648900241ABE /* BTPaymentFlowClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FBD1EA1648900241ABE /* BTPaymentFlowClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		038C7FE31EA1648900241ABE /* BTPaymentFlowClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C7FC81EA1648900241ABE /* BTPaymentFlowClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
 		3DAB5933286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5932286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift */; };
 		3DAB5937286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5936286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift */; };
@@ -580,10 +577,7 @@
 		0357C47C1F96869600E63851 /* BraintreeAmericanExpress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeAmericanExpress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0357C49B1F97ED1F00E63851 /* BTAmericanExpressClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressClient_Tests.swift; sourceTree = "<group>"; };
 		035A59D91EA5DE97002960C8 /* BTLocalPayment_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTLocalPayment_Tests.swift; sourceTree = "<group>"; };
-		038C7FBC1EA1648900241ABE /* BTPaymentFlowClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentFlowClient.m; sourceTree = "<group>"; };
-		038C7FBD1EA1648900241ABE /* BTPaymentFlowClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentFlowClient_Internal.h; sourceTree = "<group>"; };
 		038C7FC71EA1648900241ABE /* BraintreePaymentFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreePaymentFlow.h; sourceTree = "<group>"; };
-		038C7FC81EA1648900241ABE /* BTPaymentFlowClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentFlowClient.h; sourceTree = "<group>"; };
 		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
 		03BFA5D81FB4CA650003ABCE /* BTThreeDSecure_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecure_Tests.swift; sourceTree = "<group>"; };
 		03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecurePostalAddress_Tests.swift; sourceTree = "<group>"; };
@@ -1100,8 +1094,6 @@
 				80BA64AF29D78DBD00E15264 /* BTPaymentFlowResult.swift */,
 				80E2461029E49FEC00945A1D /* BTPaymentFlowRequestDelegate.swift */,
 				80E2461229E49FFE00945A1D /* BTPaymentFlowClientDelegate.swift */,
-				038C7FBD1EA1648900241ABE /* BTPaymentFlowClient_Internal.h */,
-				038C7FBC1EA1648900241ABE /* BTPaymentFlowClient.m */,
 				038C7FC61EA1648900241ABE /* Public */,
 			);
 			path = BraintreePaymentFlow;
@@ -1138,7 +1130,6 @@
 			isa = PBXGroup;
 			children = (
 				038C7FC71EA1648900241ABE /* BraintreePaymentFlow.h */,
-				038C7FC81EA1648900241ABE /* BTPaymentFlowClient.h */,
 			);
 			path = BraintreePaymentFlow;
 			sourceTree = "<group>";
@@ -1675,8 +1666,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				033248BA2123DC5E009F2B31 /* BraintreePaymentFlow.h in Headers */,
-				038C7FE31EA1648900241ABE /* BTPaymentFlowClient.h in Headers */,
-				038C7FD31EA1648900241ABE /* BTPaymentFlowClient_Internal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2649,7 +2638,6 @@
 				80CF988729DB7B9800D51979 /* BTPaymentFlowRequest.swift in Sources */,
 				80E2461129E49FEC00945A1D /* BTPaymentFlowRequestDelegate.swift in Sources */,
 				80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */,
-				038C7FD21EA1648900241ABE /* BTPaymentFlowClient.m in Sources */,
 				80BA64B029D78DBD00E15264 /* BTPaymentFlowResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

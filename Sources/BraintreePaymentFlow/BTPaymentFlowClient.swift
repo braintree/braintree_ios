@@ -1,7 +1,11 @@
 import Foundation
 import AuthenticationServices
 
-@objcMembers public class BTPaymentFlowClientSwift: NSObject {
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
+@objcMembers public class BTPaymentFlowClient: NSObject {
     
     // MARK: - Private Properies
     
@@ -36,7 +40,7 @@ import AuthenticationServices
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
     /// - Parameter request: A BTPaymentFlowRequest request.
     /// - Returns: // TODO
-    func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate) async throws -> BTPaymentFlowResult {
+    public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate) async throws -> BTPaymentFlowResult {
         try await withCheckedThrowingContinuation { continuation in
             startPaymentFlow(request) { result, error in
                 if let error {
@@ -52,7 +56,7 @@ import AuthenticationServices
     /// - Parameters:
     ///   - request: A BTPaymentFlowRequest to set on the BTPaymentFlow
     ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
-    func setupPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion completionBlock: ((BTPaymentFlowResult?, Error?) -> Void)? = nil) {
+    public func setupPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion completionBlock: ((BTPaymentFlowResult?, Error?) -> Void)? = nil) {
         self.request = request
         self.paymentFlowCompletionBlock = completionBlock
         self.paymentFlowRequestDelegate = request
@@ -61,7 +65,7 @@ import AuthenticationServices
 
 // MARK: - BTPaymentFlowClientDelegate conformance
 
-extension BTPaymentFlowClientSwift: BTPaymentFlowClientDelegate {
+extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
 
     public func onPayment(with url: URL?, error: Error?) {
         if let error {
@@ -106,7 +110,7 @@ extension BTPaymentFlowClientSwift: BTPaymentFlowClientDelegate {
 
 // MARK: - ASWebAuthenticationPresentationContextProviding conformance
 
-extension BTPaymentFlowClientSwift: ASWebAuthenticationPresentationContextProviding {
+extension BTPaymentFlowClient: ASWebAuthenticationPresentationContextProviding {
     
     @objc public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if #available(iOS 15, *) {

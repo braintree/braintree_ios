@@ -197,7 +197,7 @@
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {
-                if (error.code == BTPaymentFlowErrorTypeCanceled) {
+                if (error.code == 5) {
                     self.progressBlock(@"Canceled 🎲");
                 } else {
                     self.progressBlock(error.localizedDescription);

@@ -145,8 +145,8 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
             )
         case .cancel:
             notifyError(
-                withDomain: BTPaymentFlowErrorDomain,
-                errorCode: BTPaymentFlowErrorType.canceled.rawValue,
+                withDomain: BTThreeDSecureError.errorDomain,
+                errorCode: 1, // TODO
                 completion: completionHandler
             )
         default:

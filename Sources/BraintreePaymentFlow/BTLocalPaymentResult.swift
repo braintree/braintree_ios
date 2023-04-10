@@ -1,3 +1,7 @@
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 @objcMembers public class BTLocalPaymentResult: BTPaymentFlowResult {
     
     /// The billing address.
