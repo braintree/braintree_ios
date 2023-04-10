@@ -116,7 +116,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
         paymentFlowCompletionBlock?(result, error)
     }
     
-    public func apiClient() -> BraintreeCore.BTAPIClient {
+    public func apiClient() -> BTAPIClient {
         return _apiClient
     }
 }
