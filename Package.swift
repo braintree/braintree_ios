@@ -77,7 +77,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreePaymentFlow",
-            dependencies: ["BraintreeCore", "BraintreeDataCollector"],
+            dependencies: ["BraintreeCore", "BraintreeDataCollector"]
         ),
         .target(
             name: "BraintreePayPal",
