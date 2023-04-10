@@ -31,37 +31,13 @@
     public let type: String?
     
     /// :nodoc:
-    public init(
-        nonce: String,
-        type: String,
-        email: String,
-        firstName: String,
-        lastName: String,
-        phone: String,
-        billingAddress: BTPostalAddress,
-        shippingAddress: BTPostalAddress,
-        clientMetadataID: String,
-        payerID: String
-    ) {
-        self.billingAddress = billingAddress
-        self.clientMetadataID = clientMetadataID
-        self.email = email
-        self.firstName = firstName
-        self.lastName = lastName
-        self.nonce = nonce
-        self.payerID = payerID
-        self.phone = phone
-        self.shippingAddress = shippingAddress
-        self.type = type
-    }
-    
-    /// :nodoc:
     // TODO: - make internal once entire module in Swift
     public init?(json: BTJSON) {
-        guard let nonce = json["nonce"].asString() else { return nil }
+        let paypalAccount = json["paypalAccounts"][0]
+        
+        guard let nonce = paypalAccount["nonce"].asString() else { return nil }
         self.nonce = nonce
         
-        let paypalAccount = json["paypalAccounts"][0]
         type = paypalAccount["type"].asString()
         
         let details = paypalAccount["details"]

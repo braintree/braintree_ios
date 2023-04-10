@@ -76,9 +76,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
         paymentFlowClientDelegate = delegate
         let localPaymentRequest = request as! BTLocalPaymentRequest
         
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
-
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 delegate.onPaymentComplete(nil, error: error)
             }
@@ -92,7 +90,6 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             }
             
             if !configuration.isLocalPaymentEnabled {
-                // TODO: - Audit logging throughout the SDK, this module uses it more than others.
                 NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.disabled)
                 return
@@ -118,7 +115,6 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
                 params["payment_type_country_code"] = countryCode
             }
 
-            // TODO - don't think we ned this chaos and constant nil checking
             if let address = localPaymentRequest.address {
                 params["line1"] = address.streetAddress
                 params["line2"] = address.extendedAddress
@@ -218,7 +214,6 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             
             params["paypal_account"] = paypalAccount
             
-            // TODO: - audit use of self throughout re-write
             let metadata = paymentFlowClientDelegate?.apiClient().metadata
             params["_meta"] = [
                 "source": metadata?.sourceString,
