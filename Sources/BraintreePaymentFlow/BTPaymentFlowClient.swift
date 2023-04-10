@@ -92,7 +92,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             if let error = error as? NSError {
                 if error.domain == ASWebAuthenticationSessionError.errorDomain,
                    error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    self.x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName)).authsession.browser.cancel")
+                    self.x_apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName)).authsession.browser.cancel")
                 }
                 
                 self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
@@ -100,7 +100,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             }
             
             if let callbackURL {
-                self.x_apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).webswitch.succeeded")
+                self.x_apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName).webswitch.succeeded")
                 self.paymentFlowRequestDelegate?.handleOpen(callbackURL)
             } else {
                 self.onPaymentComplete(nil, error: BTPaymentFlowError.missingReturnURL)
