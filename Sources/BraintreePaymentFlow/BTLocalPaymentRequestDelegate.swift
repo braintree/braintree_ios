@@ -1,3 +1,5 @@
+import Foundation
+
 @objc public protocol BTLocalPaymentRequestDelegate {
          
     /// Required delegate method which returns the payment ID before the flow starts.
