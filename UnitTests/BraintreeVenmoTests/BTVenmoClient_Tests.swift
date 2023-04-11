@@ -464,7 +464,7 @@ class BTVenmoClient_Tests: XCTestCase {
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         waitForExpectations(timeout: 2)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.vault.success")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
     }
 
     func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() {
@@ -489,7 +489,7 @@ class BTVenmoClient_Tests: XCTestCase {
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         waitForExpectations(timeout: 2)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.vault.failure")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithNoError() {
@@ -566,7 +566,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.pay-with-venmo.network-connection.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.tokenizeNetworkConnectionLost))
     }
 
     func testTokenize_whenConfigurationIsInvalid_returnsError() async {
@@ -656,7 +656,7 @@ class BTVenmoClient_Tests: XCTestCase {
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
         waitForExpectations(timeout: 2)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.appswitch.handle.success")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
     }
 
     // Note: testing of handleReturnURL is done implicitly while testing authorizeAccountWithCompletion
