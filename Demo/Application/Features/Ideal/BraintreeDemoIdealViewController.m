@@ -9,6 +9,8 @@
 
 @end
 
+NSInteger const BTLocalPaymentCancelCode = 5;
+
 @implementation BraintreeDemoIdealViewController
 
 - (void)viewDidLoad {
@@ -69,7 +71,7 @@
 
     void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
-            if (error.code == 5) {
+            if (error.code == BTLocalPaymentCancelCode) {
                 self.progressBlock(@"Canceled 🎲");
             } else {
                 self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);

@@ -15,6 +15,8 @@
 
 @end
 
+NSInteger const BTThreeDSecureCancelCode = 5;
+
 @implementation BraintreeDemoThreeDSecurePaymentFlowViewController
 
 - (void)viewDidLoad {
@@ -197,7 +199,7 @@
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {
-                if (error.code == 5) {
+                if (error.code == BTThreeDSecureCancelCode) {
                     self.progressBlock(@"Canceled 🎲");
                 } else {
                     self.progressBlock(error.localizedDescription);
