@@ -84,8 +84,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
      func testThreeDSecurePaymentFlowV2_returnsToApp_whenCancelTapped() {
          app.enterCardDetailsWith(cardNumber: "4000000000001091")
          app.tokenizeButton.tap()
-         sleep(2)
-         
+
          waitForElementToAppear(app.buttons["Close"])
 
          app.buttons["Close"].forceTapElement()
