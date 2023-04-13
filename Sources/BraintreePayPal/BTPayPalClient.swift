@@ -328,7 +328,7 @@ import BraintreeDataCollector
                 case ASWebAuthenticationSessionError.canceledLogin:
                     // User canceled by breaking out of the PayPal browser switch flow
                     // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                    if self.returnedToAppAfterPermissionAlert == true {
+                    if self.returnedToAppAfterPermissionAlert == false {
                         // User tapped system cancel button on permission alert
                         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
                     }

@@ -15,6 +15,13 @@ import BraintreeCore
     var webAuthenticationSession: WebAuthenticationSession
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI
+    
+    /// Exposed for testing, for determining if ASWebAuthenticationSession was started
+    var isAuthenticationSessionStarted: Bool = false
+
+    // MARK: - Private Properties
+
+    private var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializers
 
@@ -25,6 +32,13 @@ import BraintreeCore
         self.apiClient = apiClient
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession =  WebAuthenticationSession()
+        super.init()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
     }
     
     /// Internal for testing.
@@ -34,6 +48,9 @@ import BraintreeCore
         self.sepaDirectDebitAPI = sepaDirectDebitAPI
     }
 
+    @objc func applicationDidBecomeActive(notification: Notification) {
+        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted
+    }
     // MARK: - Public Methods
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -136,9 +153,21 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        self.webAuthenticationSession.start(url: url, context: context) { url, error in
-            self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
-        }
+        self.webAuthenticationSession.start(
+            url: url,
+            context: context,
+            sessionDidDisplay: { [weak self] didDisplay in
+                if didDisplay {
+                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
+                    self?.isAuthenticationSessionStarted = true
+                } else {
+                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+                }
+            },
+            sessionDidComplete: { url, error in
+                self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+            }
+        )
     }
     
     /// Handles the result from the web authentication flow when returning to the app. Returns a success result or an error.
@@ -150,17 +179,18 @@ import BraintreeCore
         if let error = error {
             switch error {
             case ASWebAuthenticationSessionError.canceledLogin:
+                if !returnedToAppAfterPermissionAlert {
+                    self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
+                }
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
                 completion(false, SEPADirectDebitError.webFlowCanceled)
                 return
             default:
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(false, SEPADirectDebitError.presentationContextInvalid)
                 return
             }
         } else if let url = url {
-            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {

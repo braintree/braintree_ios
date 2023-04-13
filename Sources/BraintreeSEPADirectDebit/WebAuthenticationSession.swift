@@ -12,17 +12,19 @@ class WebAuthenticationSession: NSObject {
     func start(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
-        completion: @escaping (URL?, Error?) -> Void
+        sessionDidDisplay: @escaping (Bool) -> Void,
+        sessionDidComplete: @escaping (URL?, Error?) -> Void
     ) {
-        self.authenticationSession = ASWebAuthenticationSession(
+        let authenticationSession = ASWebAuthenticationSession(
             url: url,
             callbackURLScheme: BTCoreConstants.callbackURLScheme,
-            completionHandler: completion
+            completionHandler: sessionDidComplete
         )
 
-        authenticationSession?.prefersEphemeralWebBrowserSession = true
-        authenticationSession?.presentationContextProvider = context
-
-        authenticationSession?.start()
+        authenticationSession.prefersEphemeralWebBrowserSession = true
+        authenticationSession.presentationContextProvider = context
+        DispatchQueue.main.async {
+            sessionDidDisplay(authenticationSession.start())
+        }
     }
 }
