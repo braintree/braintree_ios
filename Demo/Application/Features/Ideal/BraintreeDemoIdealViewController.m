@@ -9,6 +9,8 @@
 
 @end
 
+NSInteger const BTLocalPaymentCancelCode = 5;
+
 @implementation BraintreeDemoIdealViewController
 
 - (void)viewDidLoad {
@@ -64,12 +66,12 @@
     request.address.streetAddress = @"836486 of 22321 Park Lake";
     request.address.locality = @"Den Haag";
     request.email = @"lingo-buyer@paypal.com";
-    request.shippingAddressRequired = NO;
+    request.isShippingAddressRequired = NO;
     request.localPaymentFlowDelegate = self;
 
     void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
-            if (error.code == BTPaymentFlowErrorTypeCanceled) {
+            if (error.code == BTLocalPaymentCancelCode) {
                 self.progressBlock(@"Canceled 🎲");
             } else {
                 self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
