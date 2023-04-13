@@ -12,13 +12,15 @@
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
     * Rename `BTLocalPaymentRequest.shippingAddressRequired` to `isShippingAddressRequired`
+    * Remove `BTPaymentFlowErrorDomain` global constant & `BTPaymentFlowErrorType`
     * Add `BTPaymentFlowError` cases
-      * `.noAccountData` = 5
+      * `.noAccountData` = 4
       * `.failedToCreateNonce` = 6
       * `.fetchConfigurationFailed` = 7
+      * `.missingRedirectURL` = 8
+      * `.missingReturnURL` = 9
     * Update `BTPaymentFlowError` values
       * `.integration` = 3
-      * `.canceled` = 4
   * BraintreeApplePay
     * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
     * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
@@ -59,10 +61,11 @@
       * Rename `BTThreeDSecureV2ButtonType` enum cases to: `.verify`, `.continue`, `.next`, `.cancel`, and `.resend`
       * Remove `BTThreeDSecureFlowErrorDomain` global constant
       * Add new `BTThreeDSecureError` 
-        * Add error `.noBodyReturned`
-        * Add error `.invalidAPIClient`
-        * Add error `.cannotCastRequest`
-        * Add error `.jsonSerializationFailure`
+        * Add error `.noBodyReturned` = 4
+        * Add error `.canceled` = 5
+        * Add error `.invalidAPIClient` = 6
+        * Add error `.cannotCastRequest`= 7
+        * Add error `.jsonSerializationFailure` = 8
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

@@ -1,3 +1,7 @@
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 @objcMembers public class BTLocalPaymentResult: BTPaymentFlowResult {
     
     /// The billing address.
@@ -31,8 +35,7 @@
     public let type: String?
     
     /// :nodoc:
-    // TODO: - make internal once entire module in Swift
-    public init?(json: BTJSON) {
+    init?(json: BTJSON) {
         let paypalAccount = json["paypalAccounts"][0]
         
         guard let nonce = paypalAccount["nonce"].asString() else { return nil }

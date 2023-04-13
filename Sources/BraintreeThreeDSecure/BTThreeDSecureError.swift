@@ -13,9 +13,12 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
 
     /// 3D Secure was not configured correctly
     case configuration(String)
-
+    
     /// A body was not returned from the API during the request.
     case noBodyReturned
+
+    /// User canceled the 3DS 2 flow.
+    case canceled
 
     /// The BTAPIClient was invalid or missing
     case invalidAPIClient
@@ -42,12 +45,14 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return 3
         case .noBodyReturned:
             return 4
-        case .invalidAPIClient:
+        case .canceled:
             return 5
-        case .cannotCastRequest:
+        case .invalidAPIClient:
             return 6
-        case .jsonSerializationFailure:
+        case .cannotCastRequest:
             return 7
+        case .jsonSerializationFailure:
+            return 8
         }
     }
 
@@ -63,6 +68,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: description]
         case .noBodyReturned:
             return [NSLocalizedDescriptionKey: "A body was not returned from the API during the request."]
+        case .canceled:
+            return [NSLocalizedDescriptionKey: "The user canceled the 3DS 2 flow."]
         case .invalidAPIClient:
             return [NSLocalizedDescriptionKey: "The BTAPIClient was invalid or missing."]
         case .cannotCastRequest:
