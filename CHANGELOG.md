@@ -7,6 +7,7 @@
 * Convert `BraintreeVenmo` module to Swift
 * Convert `BraintreeCard` module to Swift
 * Convert `BraintreeThreeDSecure` module to Swift
+* Convert `BraintreePaymentFlow` module to Swift
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
