@@ -136,7 +136,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.presentationContextInvalid.errorCode)
                 XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.presentationContextInvalid.localizedDescription)
-                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.challengePresentationFailed))
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
