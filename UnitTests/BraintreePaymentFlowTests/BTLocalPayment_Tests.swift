@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-import BraintreePaymentFlow
+@testable import BraintreePaymentFlow
 @testable import BraintreeCore
 @testable import BraintreeTestShared
 
@@ -19,6 +19,21 @@ class BTLocalPayment_UnitTests: XCTestCase {
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.my-return-url-scheme"
     }
+    
+    func testStartPayment_returnsErrorWhenConfigurationNil() {
+        mockAPIClient.cannedConfigurationResponseBody = nil
+        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        let expectation = expectation(description: "Start payment fails with error")
+
+        client.startPaymentFlow(localPaymentRequest) { _, error in
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowError.fetchConfigurationFailed.errorCode)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
 
     func testStartPayment_returnsErrorWhenLocalPaymentsNotEnabled() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": false ])
@@ -28,7 +43,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowErrorType.disabled.rawValue)
+            XCTAssertEqual(error.code, BTPaymentFlowError.disabled.errorCode)
             expectation.fulfill()
         }
 
@@ -44,7 +59,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowErrorType.integration.rawValue)
+            XCTAssertEqual(error.code, BTPaymentFlowError.integration.errorCode)
             expectation.fulfill()
         }
 
@@ -60,7 +75,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowErrorType.integration.rawValue)
+            XCTAssertEqual(error.code, BTPaymentFlowError.integration.errorCode)
             expectation.fulfill()
         }
 
@@ -76,7 +91,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowErrorType.integration.rawValue)
+            XCTAssertEqual(error.code, BTPaymentFlowError.integration.errorCode)
             expectation.fulfill()
         }
 
@@ -152,8 +167,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowErrorType.appSwitchFailed.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowError.errorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowError.appSwitchFailed.errorCode)
             expectation.fulfill()
         }
 
@@ -175,8 +190,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowErrorType.appSwitchFailed.rawValue)
+            XCTAssertEqual(error.domain, BTPaymentFlowError.errorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowError.appSwitchFailed.errorCode)
             expectation.fulfill()
         }
 
@@ -274,7 +289,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTPaymentFlowErrorDomain)
-            XCTAssertEqual(error.code, BTPaymentFlowErrorType.canceled.rawValue)
+            XCTAssertEqual(error.code, BTPaymentFlowError.canceled("flow-type").errorCode)
         }
 
         localPaymentRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
@@ -283,7 +298,6 @@ class BTLocalPayment_UnitTests: XCTestCase {
     func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
         let client = BTPaymentFlowClient(apiClient: mockAPIClient)
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
                 "paymentResource": [
@@ -297,6 +311,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(result)
         }
+        
+        mockAPIClient.cannedResponseBody = nil
     }
 
     func testStartPaymentFlow_whenNetworkConnectionLost_sendsAnalytics() {
@@ -325,6 +341,25 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         localPaymentRequest.handleOpen(URL(string: "an-error-url")!)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
+    }
+    
+    func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {
+        let expectation = self.expectation(description: "Calls onPaymentComplete with result")
+
+        mockAPIClient.cannedResponseBody = nil
+        
+        let mockClientDelegate = MockPaymentFlowClientDelegate()
+        mockClientDelegate.onPaymentCompleteHandler = { _, error in
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.domain, BTPaymentFlowError.errorDomain)
+            XCTAssertEqual(error.code, BTPaymentFlowError.noAccountData.errorCode)
+            expectation.fulfill()
+        }
+        
+        localPaymentRequest.paymentFlowClientDelegate = mockClientDelegate
+        localPaymentRequest.handleOpen(URL(string: "www.fake.com")!)
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 }
 
