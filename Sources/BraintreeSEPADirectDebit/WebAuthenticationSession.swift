@@ -6,9 +6,6 @@ import BraintreeCore
 #endif
 
 class WebAuthenticationSession: NSObject {
-
-    var authenticationSession: ASWebAuthenticationSession?
-
     func start(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
@@ -21,7 +18,7 @@ class WebAuthenticationSession: NSObject {
             completionHandler: sessionDidComplete
         )
 
-        authenticationSession.prefersEphemeralWebBrowserSession = true
+     //   authenticationSession.prefersEphemeralWebBrowserSession = true
         authenticationSession.presentationContextProvider = context
         DispatchQueue.main.async {
             sessionDidDisplay(authenticationSession.start())

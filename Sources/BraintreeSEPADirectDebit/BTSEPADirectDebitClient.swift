@@ -16,10 +16,10 @@ import BraintreeCore
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI
     
-    /// Exposed for testing, for determining if ASWebAuthenticationSession was started
-    var isAuthenticationSessionStarted: Bool = false
-
+   
     // MARK: - Private Properties
+
+    private var isAuthenticationSessionStarted: Bool = false
 
     private var returnedToAppAfterPermissionAlert: Bool = false
 
