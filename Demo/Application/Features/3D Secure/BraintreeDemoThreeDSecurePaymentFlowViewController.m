@@ -5,9 +5,11 @@
 @import BraintreeCard;
 @import BraintreePaymentFlow;
 
+#import <BraintreeThreeDSecure/BraintreeThreeDSecure-Swift.h>
+
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTThreeDSecureRequestDelegate>
 
-@property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
+@property (nonatomic, strong) BTThreeDSecureClient *threeDSecureClient;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
 @property (nonatomic, strong) BTCardFormView *cardFormView;
 @property (nonatomic, strong) UIButton *autofillButton3DS;
@@ -140,7 +142,7 @@ NSInteger const BTThreeDSecureCancelCode = 5;
 
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
 
-        self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:self.apiClient];
+        self.threeDSecureClient = [[BTThreeDSecureClient alloc] initWithAPIClient:self.apiClient];
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.threeDSecureRequestDelegate = self;
@@ -194,8 +196,8 @@ NSInteger const BTThreeDSecureCancelCode = 5;
         [ui setLabelCustomization:labelCustomization];
 
         request.v2UICustomization = ui;
-
-        [self.paymentFlowClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
+        
+        [self.threeDSecureClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {
