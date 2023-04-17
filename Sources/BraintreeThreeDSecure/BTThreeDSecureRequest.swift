@@ -79,16 +79,3 @@ import BraintreePaymentFlow
 
     var threeDSecureV2Provider: BTThreeDSecureV2Provider?
 }
-
-// MARK: - BTThreeDSecureRequestDelegate Protocol Conformance
-
-//extension BTThreeDSecureRequest: BTThreeDSecureRequestDelegate {
-//
-//    public func onLookupComplete(
-//        _ request: BTThreeDSecureRequest,
-//        lookupResult result: BTThreeDSecureResult,
-//        next: (() -> Void)
-//    ) {
-//        next()
-//    }
-//}
