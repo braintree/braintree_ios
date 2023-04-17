@@ -1,14 +1,4 @@
-#import <BraintreeThreeDSecure/BTThreeDSecureResult_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureLookup_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureAuthenticateJWT.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureAdditionalInformation_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecurePostalAddress_Internal.h>
-#import <BraintreeThreeDSecure/BTPaymentFlowClient+ThreeDSecure_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureV1BrowserSwitchHelper.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureV2BaseCustomization_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureRequest.h>
-#import <BraintreePaymentFlow/BTPaymentFlowClient.h>
+#import <BraintreePaymentFlow/BraintreePaymentFlow-Swift.h>
 #import <BraintreeCore/BraintreeCore-Swift.h>
 #import <BraintreeCard/BraintreeCard-Swift.h>
+#import <BraintreeThreeDSecure/BraintreeThreeDSecure-Swift.h>
