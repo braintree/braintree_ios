@@ -8,17 +8,19 @@ The included demo app utilizes a [sandbox sample merchant server](https://braint
 
 ## Tests
 
-There are a number of test targets for each section of the project.
+Each module has a corresponding unit test target. These can be run individually, or all at once via the `UnitTests` scheme.
 
-It's a good idea to run `rake`, which runs all unit tests, before committing.
+To run the tests:
+1. Fetch test dependencies
+    * `pod install`
+1. Fetch PayPal Checkout SPM package
+    * `swift package resolve`
+    * **OR** via the Xcode UI "File" > "Packages" > "Resolve Package Versions"
+1. Run tests
+    * `xcodebuild test -workspace Braintree.xcworkspace -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 14'`
+    * **OR** via the Xcode UI by selecting the `UnitTests` scheme + `⌘U`
 
-Running the tests requires Xcode 13+.
-
-Use the following commands to run tests:
-* UI tests: `bundle && rake spec:ui`
-* Unit tests: `bundle && rake spec:unit`
-* Integration tests: `bundle && rake spec:integration`
-* All tests: `bundle && rake spec:all`
+_Note:_ Running the `UI` and `IntegrationTests` schemes follows the same steps as above, just replacing the `UnitTests` scheme name in step 3.
 
 ## Importing Header Files
 
