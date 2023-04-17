@@ -67,7 +67,7 @@ import Foundation
         BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self, flushThreshold: 5)
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
-        let errorString = BTLogLevelDescription.string(for: .error) ?? "[BraintreeSDK] ERROR"
+        let errorString = BTLogLevelDescription.string(for: .error) 
 
         switch authorizationType {
         case .tokenizationKey:

@@ -6,10 +6,22 @@
 * Add async/await support back to all public Swift methods
 * Convert `BraintreeVenmo` module to Swift
 * Convert `BraintreeCard` module to Swift
+* Convert `BraintreeThreeDSecure` module to Swift
+* Convert `BraintreePaymentFlow` module to Swift
 * Breaking Changes
   * BraintreePaymentFlow
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
+    * Rename `BTLocalPaymentRequest.shippingAddressRequired` to `isShippingAddressRequired`
+    * Remove `BTPaymentFlowErrorDomain` global constant & `BTPaymentFlowErrorType`
+    * Add `BTPaymentFlowError` cases
+      * `.noAccountData` = 4
+      * `.failedToCreateNonce` = 6
+      * `.fetchConfigurationFailed` = 7
+      * `.missingRedirectURL` = 8
+      * `.missingReturnURL` = 9
+    * Update `BTPaymentFlowError` values
+      * `.integration` = 3
   * BraintreeApplePay
     * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
     * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
@@ -43,6 +55,18 @@
         * `.integration` = 1
         * `.customerInputInvalid` = 2
         * `.cardAlreadyExists` = 3
+  * BraintreeThreeDSecure
+    * 3D Secure version 1 is no longer supported
+      * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion` enum
+        * All 3D Secure requests will use version 2
+      * Rename `BTThreeDSecureV2ButtonType` enum cases to: `.verify`, `.continue`, `.next`, `.cancel`, and `.resend`
+      * Remove `BTThreeDSecureFlowErrorDomain` global constant
+      * Add new `BTThreeDSecureError` 
+        * Add error `.noBodyReturned` = 4
+        * Add error `.canceled` = 5
+        * Add error `.invalidAPIClient` = 6
+        * Add error `.cannotCastRequest`= 7
+        * Add error `.jsonSerializationFailure` = 8
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

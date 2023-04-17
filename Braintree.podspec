@@ -49,8 +49,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PaymentFlow" do |s|
-    s.source_files = "Sources/BraintreePaymentFlow/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
+    s.source_files = "Sources/BraintreePaymentFlow/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/DataCollector"
   end
@@ -74,8 +73,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "ThreeDSecure" do |s|
-    s.source_files = "Sources/BraintreeThreeDSecure/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/*.h"
+    s.source_files = "Sources/BraintreeThreeDSecure/**/*.{swift}"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PaymentFlow"
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"

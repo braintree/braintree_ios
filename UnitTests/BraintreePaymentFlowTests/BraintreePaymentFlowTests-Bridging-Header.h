@@ -1,3 +1,2 @@
-#import <BraintreePaymentFlow/BTPaymentFlowClient_Internal.h>
-#import <BraintreePaymentFlow/BTPaymentFlowClient.h>
+#import <BraintreePaymentFlow/BraintreePaymentFlow-Swift.h>
 #import <BraintreeCore/BraintreeCore-Swift.h>

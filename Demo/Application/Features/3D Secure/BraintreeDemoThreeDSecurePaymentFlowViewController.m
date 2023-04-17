@@ -3,6 +3,7 @@
 @import BraintreeThreeDSecure;
 @import BraintreeCore;
 @import BraintreeCard;
+@import BraintreePaymentFlow;
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTThreeDSecureRequestDelegate>
 
@@ -13,6 +14,8 @@
 @property (nonatomic) int callbackCount;
 
 @end
+
+NSInteger const BTThreeDSecureCancelCode = 5;
 
 @implementation BraintreeDemoThreeDSecurePaymentFlowViewController
 
@@ -143,7 +146,6 @@
         request.threeDSecureRequestDelegate = self;
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
-        request.versionRequested = BTThreeDSecureVersion2;
         request.accountType = BTThreeDSecureAccountTypeCredit;
         request.requestedExemptionType = BTThreeDSecureRequestedExemptionTypeLowValue;
 
@@ -187,7 +189,7 @@
         [labelCustomization setHeadingTextFontName:@"AmericanTypewriter"];
         
         [ui setToolbarCustomization:toolbarCustomization];
-        [ui setButtonCustomization:buttonCustomization buttonType:ButtonTypeVerify];
+        [ui setButtonCustomization:buttonCustomization buttonType:BTThreeDSecureV2ButtonTypeVerify];
         [ui setTextBoxCustomization:textBoxCustomization];
         [ui setLabelCustomization:labelCustomization];
 
@@ -197,7 +199,7 @@
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {
-                if (error.code == BTPaymentFlowErrorTypeCanceled) {
+                if (error.code == BTThreeDSecureCancelCode) {
                     self.progressBlock(@"Canceled 🎲");
                 } else {
                     self.progressBlock(error.localizedDescription);
