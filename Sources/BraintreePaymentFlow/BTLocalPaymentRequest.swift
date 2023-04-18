@@ -167,7 +167,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             apiClient.post("v1/local_payments/create", parameters: params) { body, response, error in
                 if let error {
                     if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
-                        apiClient.sendAnalyticsEvent("local-payment: \(BTPaymentFlowAnalytics.paymentNetworkConnectionLost)")
+                        apiClient.sendAnalyticsEvent("local-payment:\(BTPaymentFlowAnalytics.paymentNetworkConnectionLost)")
                     }
                     
                     delegate.onPayment(with: nil, error: error)
