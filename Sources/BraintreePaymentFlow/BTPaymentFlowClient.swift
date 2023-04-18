@@ -128,9 +128,12 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
                         self.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginAlertCanceled)
                     }
                     self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentCanceled)
+                    self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
+                    return
                 }
                 
-                self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
+                self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
+                self.onPaymentComplete(nil, error: BTPaymentFlowError.webSessionError(error))
                 return
             }
             

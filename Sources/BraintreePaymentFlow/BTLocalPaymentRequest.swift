@@ -183,6 +183,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
                     })
                 } else {
                     NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
+                    apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                     delegate.onPaymentComplete(nil, error: BTPaymentFlowError.appSwitchFailed)
                     return
                 }
