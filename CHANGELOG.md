@@ -67,6 +67,9 @@
         * Add error `.invalidAPIClient` = 6
         * Add error `.cannotCastRequest`= 7
         * Add error `.jsonSerializationFailure` = 8
+    * Add `BTThreeDSecureClient`
+      * Remove `BTPaymentFlowClient+ThreeDSecure` extension
+      * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
     
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
