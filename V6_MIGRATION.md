@@ -19,6 +19,7 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 11. [American Express](#american-express)
 12. [Apple Pay](#apple-pay)
 13. [Card](#card)
+14. [3D Secure](#3d-secure)
 
 ## Supported Versions
 
@@ -204,3 +205,28 @@ Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerP
 
 ## Card
 `BTCardClient.tokenizeCard(_:completion)` has been renamed to `BTCardClient.tokenize(_:completion)`
+
+## 3D Secure
+
+Instantiate a `BTThreeDSecureClient` instead of a `BTPaymentFlowDriver`. The result returned in the `startPaymentFlow()` completion no longer needs to be cast to `BTThreeDSecureResult`.
+
+`BTViewControllerPresentingDelegate` was removed, since 3DS 1 is no longer supported.
+
+```diff
+- let paymentFlowDriver = BTPaymentFlowDriver(apiClient: self.apiClient)
+- paymentFlowDriver.viewControllerPresentingDelegate = self
++ let threeDSecureClient = BTThreeDSecureClient(apiClient: self.apiClient)
+
+ cardClient.tokenize(cardDetails) { (tokenizedCard, error) in
+     // Handle error
+
+     request.threeDSecureRequestDelegate = self
+
+-    self.paymentFlowDriver.startPaymentFlow(request) { (result, error) in
++    self.threeDSecureClient.startPaymentFlow(request) { (result, error) in
+-        guard let result = result as? BTThreeDSecureResult else { return }
+
+         // Handle result
+    }
+ }
+```
