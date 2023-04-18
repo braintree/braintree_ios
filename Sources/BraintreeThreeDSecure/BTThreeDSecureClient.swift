@@ -28,6 +28,8 @@ import BraintreeCore
     // MARK: - Public Methods
     
     public func startPaymentFlow(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.selected")
+        
         self.request = request
         self.merchantCompletion = completion
         
@@ -70,6 +72,7 @@ import BraintreeCore
             // STEP 2 - Move prepare lookup off request
             self.prepareLookup(apiClient: self.apiClient) { error in
                 if let error {
+                    self.apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.failed")
                     completion(nil, error)
                     return
                 }
@@ -91,6 +94,8 @@ import BraintreeCore
         _ request: BTThreeDSecureRequest,
         completion: @escaping (String?, Error?) -> Void
     ) {
+        self.request = request
+        
         guard apiClient.clientToken != nil else {
             completion(nil, BTThreeDSecureError.configuration("A client token must be used for ThreeDSecure integrations."))
             return
@@ -273,6 +278,7 @@ import BraintreeCore
             DispatchQueue.main.async {
                 guard let lookupResult, error == nil else {
                     self.apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
+                    self.apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.failed")
                     self.merchantCompletion?(nil, error)
                     return
                 }
