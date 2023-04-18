@@ -20,7 +20,9 @@ import BraintreeCore
     private var paymentFlowName: String {
         return paymentFlowRequestDelegate?.paymentFlowName() ?? "local-payments"
     }
-    
+    private var isAuthenticationSessionStarted: Bool = false
+    private var returnedToAppAfterPermissionAlert: Bool = false
+
     // MARK: - Public Methods
     
     /// Initialize a new BTPaymentFlowClient instance.
@@ -28,7 +30,18 @@ import BraintreeCore
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self._apiClient = apiClient
+        super.init()
+        NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(applicationDidBecomeActive),
+                    name: UIApplication.didBecomeActiveNotification,
+                    object: nil
+                )
     }
+    
+    @objc func applicationDidBecomeActive(notification: Notification) {
+           returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted
+       }
     
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
     /// - Parameters:
@@ -36,7 +49,7 @@ import BraintreeCore
     ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion: @escaping (BTPaymentFlowResult?, Error?) -> Void) {
         setupPaymentFlow(request, completion: completion)
-        _apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.selected")
+        sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentStarted)
         paymentFlowRequestDelegate?.handle(request, client: _apiClient, paymentClientDelegate: self)
     }
     
@@ -65,6 +78,20 @@ import BraintreeCore
         self.paymentFlowCompletionBlock = completionBlock
         self.paymentFlowRequestDelegate = request
     }
+    
+    // MARK: - Analytics Helpers
+    
+    private func sendAnalyticsEvent(_ paymentFlowMessage: String) {
+        var paymentType: String = "unknown"
+        let flowName: String? = paymentFlowRequestDelegate?.paymentFlowName()
+        if flowName != nil {
+            let components = flowName!.split(separator: ".")
+            paymentType = components.count > 1 ? String(components[1]): "unknown"
+        }
+        
+        let analyticMessage = paymentType + ":" + paymentFlowMessage
+        _apiClient.sendAnalyticsEvent(analyticMessage)
+    }
 }
 
 // MARK: - BTPaymentFlowClientDelegate conformance
@@ -73,17 +100,16 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
 
     public func onPayment(with url: URL?, error: Error?) {
         if let error {
-            _apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.failed")
+            sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
             onPaymentComplete(nil, error: error)
             return
         }
         
         guard let url else {
+            sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
             onPaymentComplete(nil, error: BTPaymentFlowError.missingRedirectURL)
             return
-        }
-        
-        _apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).webswitch.initiate.succeeded")
+        }        
         
         authenticationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: BTCoreConstants.callbackURLScheme, completionHandler: { callbackURL, error in
             // Required to avoid memory leak for BTPaymentFlowClient
@@ -93,7 +119,10 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             if let error = error as? NSError {
                 if error.domain == ASWebAuthenticationSessionError.errorDomain,
                    error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    self._apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName)).authsession.browser.cancel")
+                    if !self.returnedToAppAfterPermissionAlert {
+                        self.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginAlertCanceled)
+                    }
+                    self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentCanceled)
                 }
                 
                 self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
@@ -101,15 +130,24 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             }
             
             if let callbackURL {
-                self._apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName).webswitch.succeeded")
                 self.paymentFlowRequestDelegate?.handleOpen(callbackURL)
             } else {
+                self.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginFailed)
+                self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                 self.onPaymentComplete(nil, error: BTPaymentFlowError.missingReturnURL)
             }
         })
         
         authenticationSession?.presentationContextProvider = self
-        authenticationSession?.start()
+        isAuthenticationSessionStarted = authenticationSession?.start() ?? false
+        if isAuthenticationSessionStarted {
+            sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationSucceeded)
+        } else {
+            sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationFailed)
+            sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
+            onPaymentComplete(nil, error: BTPaymentFlowError.webSessionFailedToLaunch)
+            return
+        }
     }
     
     public func onPaymentComplete(_ result: BTPaymentFlowResult?, error: Error?) {

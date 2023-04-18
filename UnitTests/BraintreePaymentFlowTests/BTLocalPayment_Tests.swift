@@ -234,8 +234,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.selected"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.webswitch.initiate.succeeded"))
+        let analyticMessage = "local-payment:" + BTPaymentFlowAnalytics.browserPresentationSucceeded
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(analyticMessage))
     }
 
     func testStartPayment_failure_sendsAnalyticsEvents() {
@@ -246,8 +246,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.selected"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.failed"))
+        let analyticMessage = "local-payment:" + BTPaymentFlowAnalytics.paymentFailed
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(analyticMessage))
     }
 
     func testStartPayment_successfulResult_callsCompletionBlock() {
