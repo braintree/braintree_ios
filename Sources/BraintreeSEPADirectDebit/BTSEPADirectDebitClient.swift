@@ -20,7 +20,6 @@ import BraintreeCore
     // MARK: - Private Properties
 
     private var isAuthenticationSessionStarted: Bool = false
-
     private var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializers
@@ -179,7 +178,10 @@ import BraintreeCore
         if let error = error {
             switch error {
             case ASWebAuthenticationSessionError.canceledLogin:
+                // User canceled by breaking out of the PayPal browser switch flow
+                // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
                 if !returnedToAppAfterPermissionAlert {
+                    // User tapped system cancel button on permission alert
                     self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
                 }
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
