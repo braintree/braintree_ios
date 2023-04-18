@@ -114,21 +114,18 @@ jobs:
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-sepa-direct-debit.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeAmericanExpress -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-american-express.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeDataCollector -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-data-collector.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeApplePay -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-apple-pay.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePaymentFlow -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-payment-flow.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeThreeDSecure -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-three-d-secure.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeCard -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-card.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPal -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-paypal.json
+          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeVenmo -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-venmo.json
 
           # merge sourcekitten output
-          jq -s '.[0] + .[1] + .[2] + .[3] + .[4]' braintree-core.json braintree-pay-pal-native-checkout.json braintree-sepa-direct-debit.json braintree-american-express.json braintree-data-collector.json > swiftDoc.json
+          jq -s ''.[0] + .[1] + .[2] + .[3] + .[4] + .[5] + .[6] + .[7] + .[8] + .[9] + .[10]' braintree-core.json braintree-pay-pal-native-checkout.json braintree-sepa-direct-debit.json braintree-american-express.json braintree-data-collector.json braintree-apple-pay.json braintree-payment-flow.json braintree-three-d-secure.json braintree-card.json braintree-paypal.json braintree-venmo.json > swiftDoc.json
 
-          sourcekitten doc --objc Docs/Braintree-Umbrella-Header.h -- \
-            -x objective-c -isysroot $(xcrun --show-sdk-path --sdk iphonesimulator) \
-            -I $(pwd)/Sources/BraintreeApplePay/Public \
-            -I $(pwd)/Sources/BraintreeCard/Public \
-            -I $(pwd)/Sources/BraintreePaymentFlow/Public \
-            -I $(pwd)/Sources/BraintreePayPal/Public \
-            -I $(pwd)/Sources/BraintreeThreeDSecure/Public \
-            -I $(pwd)/Sources/BraintreeVenmo/Public \
-            > objcDoc.json
           jazzy \
-            --sourcekitten-sourcefile swiftDoc.json,objcDoc.json \
+            --sourcekitten-sourcefile swiftDoc.json \
             --author Braintree \
             --author_url http://braintreepayments.com \
             --github_url https://github.com/braintree/braintree_ios \
