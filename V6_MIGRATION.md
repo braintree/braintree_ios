@@ -7,18 +7,15 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
-2. [Carthage](#carthage)
-3. [Braintree Core](#braintree-core)
-4. [Venmo](#venmo)
-5. [PayPal](#paypal)
-6. [PayPal Native Checkout](#paypal-native-checkout)
-7. [Data Collector](#data-collector)
-8. [Union Pay](#union-pay)
-9. [SEPA Direct Debit](#sepa-direct-debit)
-10. [Payment Flow](#payment-flow)
-11. [American Express](#american-express)
-12. [Apple Pay](#apple-pay)
-13. [Card](#card)
+1. [Carthage](#carthage)
+1. [Braintree Core](#braintree-core)
+1. [Venmo](#venmo)
+1. [PayPal](#paypal)
+1. [PayPal Native Checkout](#paypal-native-checkout)
+1. [Data Collector](#data-collector)
+1. [Union Pay](#union-pay)
+1. [SEPA Direct Debit](#sepa-direct-debit)
+1. [Payment Flow](#payment-flow)
 
 ## Supported Versions
 
@@ -193,14 +190,3 @@ We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in 
 Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
 
 Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
-
-## American Express
-`BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` has been renamed to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
-
-## Apple Pay
-`BTApplePayClient.tokenizeApplePay(_:completion:)` has been renamed to `BTApplePayClient.tokenize(_:completion:)`
-
-`BTApplePayClient.paymentRequest()` has been renamed to `BTApplePayClient.makePaymentRequest()`
-
-## Card
-`BTCardClient.tokenizeCard(_:completion)` has been renamed to `BTCardClient.tokenize(_:completion)`
