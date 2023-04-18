@@ -53,7 +53,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["requestedThreeDSecureVersion"] as! String, "2")
-//            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as! String, "df-reference-id")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as! String, "df-reference-id")
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["accountType"] as! String, "credit")
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["challengeRequested"] as! Bool)
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["exemptionRequested"] as! Bool)
@@ -115,7 +115,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
-
 
     func testPerformThreeDSecureLookup_whenSuccessful_callsBackWithResult() {
         let responseBody =
@@ -292,6 +291,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
             XCTAssertEqual(error.code, BTThreeDSecureError.configuration("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "Missing the required Cardinal authentication JWT.")
             expectation.fulfill()
         }
 
@@ -500,7 +500,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     // MARK: - prepareLookup
 
-    func testThreeDSecureRequest_prepareLookup_getsJsonString() {
+    func testPrepareLookup_getsJsonString() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
@@ -528,5 +528,26 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 3)
+    }
+    
+    func testPrepareLookup_withTokenizationKey_throwsError() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
+            "assetsUrl": "http://assets.example.com"
+        ])
+        
+        let mockAPIClient = MockAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+        let client = BTThreeDSecureClient(apiClient: mockAPIClient)
+        let expectation = expectation(description: "willCallCompletion")
+
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
+
+        client.prepareLookup(threeDSecureRequest) { _, error in
+            XCTAssertEqual(error?.localizedDescription, "A client token must be used for ThreeDSecure integrations.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
 }

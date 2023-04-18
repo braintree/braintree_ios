@@ -70,12 +70,7 @@ import BraintreePaymentFlow
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
     
     // MARK: - Internal Properties
-
-    /// Set the BTPaymentFlowClientDelegate for handling the client events.
-    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
-
+    
     /// The dfReferenceID for the session. Exposed for testing.
     var dfReferenceID: String? = nil
-
-    var threeDSecureV2Provider: BTThreeDSecureV2Provider?
 }

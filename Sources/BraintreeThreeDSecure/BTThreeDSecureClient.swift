@@ -12,9 +12,7 @@ import BraintreeCore
     private var request: BTThreeDSecureRequest?
     private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void)? = nil
-    
-    /// The dfReferenceID for the session. Exposed for testing.
-    var dfReferenceID: String? = nil
+    private var dfReferenceID: String?
 
     // MARK: - Initializer
     
@@ -44,9 +42,9 @@ import BraintreeCore
                 return
             }
 
-            if configuration?.cardinalAuthenticationJWT == nil {
-                NSLog("%@ BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.", BTLogLevelDescription.string(for: .critical))
-                let error = BTThreeDSecureError.configuration("BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly.")
+            guard let configuration, configuration.cardinalAuthenticationJWT != nil else {
+                NSLog("%@ Missing the required Cardinal authentication JWT.", BTLogLevelDescription.string(for: .critical))
+                let error = BTThreeDSecureError.configuration("Missing the required Cardinal authentication JWT.")
                 completion(nil, error)
                 return
             }
@@ -64,13 +62,8 @@ import BraintreeCore
                 return
             }
 
-            guard let configuration, configuration.cardinalAuthenticationJWT != nil else {
-                completion(nil, BTThreeDSecureError.configuration("Merchant does not have the required Cardinal authentication JWT."))
-                return
-            }
-
             // STEP 2 - Move prepare lookup off request
-            self.prepareLookup(apiClient: self.apiClient) { error in
+            self.prepareLookup(request: request) { error in
                 if let error {
                     self.apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.failed")
                     completion(nil, error)
@@ -106,7 +99,7 @@ import BraintreeCore
             return
         }
 
-        prepareLookup(apiClient: apiClient) { error in
+        prepareLookup(request: request) { error in
             if let error {
                 completion(nil, error)
                 return
@@ -178,7 +171,7 @@ import BraintreeCore
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
-                request.paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
+                self.merchantCompletion?(nil, error)
                 return
             }
 
@@ -214,7 +207,7 @@ import BraintreeCore
     ///   - apiClient: The API client.
     ///   - completion: This completion will be invoked exactly once. If the error is nil then the preparation was successful.
     private func prepareLookup(
-        apiClient: BTAPIClient,
+        request: BTThreeDSecureRequest,
         completion: @escaping (Error?) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
@@ -224,18 +217,12 @@ import BraintreeCore
                 completion(error)
                 return
             }
-            
-            guard let request = self.request else {
-                completion(BTThreeDSecureError.invalidAPIClient) // some other error
-                return
-                // TODO
-            }
 
             if configuration.cardinalAuthenticationJWT != nil {
                 self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
                     configuration: configuration,
                     apiClient: apiClient,
-                    request: request // TODO - avoid force
+                    request: request
                 ) { lookupParameters in
                     if let dfReferenceID = lookupParameters?["dfReferenceId"] {
                         self.dfReferenceID = dfReferenceID
@@ -252,24 +239,6 @@ import BraintreeCore
     // MARK: - Private Methods
     
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) {
-// Remove invalidAPIClient error
-//        guard let apiClient = paymentFlowClientDelegate?.apiClient() else {
-//            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.invalidAPIClient)
-//            return
-//        }
-
-        // Remove BTThreeDSecureError.cannotCastRequest error
-//        guard let threeDSecureRequest = request as? BTThreeDSecureRequest else {
-//            paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTThreeDSecureError.cannotCastRequest)
-//            return
-//        }
-
-//        let paymentFlowClient = BTPaymentFlowClient(apiClient: apiClient)
-
-//        if threeDSecureRequest.threeDSecureRequestDelegate == nil {
-//            threeDSecureRequest.threeDSecureRequestDelegate = self
-//        }
-
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.started")
         
         // STEP 4 - move perform3DS lookup to 3dsclient from paymentClient extension
@@ -349,7 +318,7 @@ import BraintreeCore
                 "amount": request.amount ?? 0,
                 "customer": customer,
                 "requestedThreeDSecureVersion": "2",
-                "dfReferenceId": self.dfReferenceID, // TODO
+                "dfReferenceId": request.dfReferenceID ?? "", // TODO
                 "accountType": request.accountType.stringValue ?? "",
                 "challengeRequested": request.challengeRequested,
                 "exemptionRequested": request.exemptionRequested,
