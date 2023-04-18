@@ -340,7 +340,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         }
 
         localPaymentRequest.handleOpen(URL(string: "an-error-url")!)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("local-payment: \(BTPaymentFlowAnalytics.paymentNetworkConnectionLost)"))
     }
     
     func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {

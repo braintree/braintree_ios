@@ -85,8 +85,13 @@ import BraintreeCore
         var paymentType: String = "unknown"
         let flowName: String? = paymentFlowRequestDelegate?.paymentFlowName()
         if flowName != nil {
-            let components = flowName!.split(separator: ".")
-            paymentType = components.count > 1 ? String(components[1]): "unknown"
+            // ThreeDSecure returns "three-d-secure"
+            if let flowName = flowName, flowName == "three-d-secure" {
+                paymentType = flowName
+            } else {
+                let components = flowName!.split(separator: ".")
+                paymentType = components.count > 1 ? String(components[1]): "unknown"
+            }
         }
         
         let analyticMessage = paymentType + ":" + paymentFlowMessage
