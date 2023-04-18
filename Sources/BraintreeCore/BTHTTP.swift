@@ -123,23 +123,13 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
     
-    
     func post(_ path: String, parameters: Codable, completion: @escaping RequestCompletion) {
-        // TODO: -
-        
-        guard let data = try? JSONEncoder().encode(parameters) else {
-            //
-            return
+        do {
+            let dict = try parameters.toDictionary()
+            post(path, parameters: dict, completion: completion)
+        } catch let error {
+            // TODO: - throw appropriate error
         }
-        
-        var request = URLRequest(url: URL(string: "https://api-m.paypal.com/v1/tracking/batch/events")!)
-        request.httpBody = data
-        request.httpMethod = "POST"
-
-        self.session.dataTask(with: request) { [weak self] data, response, error in
-            guard let self = self else { return }
-            self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
-        }.resume()
     }
 
     func put(_ path: String, completion: @escaping RequestCompletion) {
@@ -235,6 +225,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         let fullPathURL: URL?
         let isDataURL: Bool = baseURL.scheme == "data"
 
+        // Here we are adding a `/` when we don't need it
         if !isDataURL {
             fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
         } else {
@@ -514,5 +505,20 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         } else {
             completionHandler(.performDefaultHandling, nil)
         }
+    }
+}
+
+
+extension Encodable {
+
+    /// Converting object to postable dictionary
+    func toDictionary(_ encoder: JSONEncoder = JSONEncoder()) throws -> [String: Any] {
+        let data = try encoder.encode(self)
+        let object = try JSONSerialization.jsonObject(with: data)
+        guard let json = object as? [String: Any] else {
+            let context = DecodingError.Context(codingPath: [], debugDescription: "Deserialized object is not a dictionary")
+            throw DecodingError.typeMismatch(type(of: object), context)
+        }
+        return json
     }
 }

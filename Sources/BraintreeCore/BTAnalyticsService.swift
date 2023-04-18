@@ -91,10 +91,12 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            guard let analyticsURL = configuration.json?["analytics"]["url"].asURL() else {
-                completion(BTAnalyticsServiceError.missingAnalyticsURL)
-                return
-            }
+//            guard let analyticsURL = configuration.json?["analytics"]["url"].asURL() else {
+//                completion(BTAnalyticsServiceError.missingAnalyticsURL)
+//                return
+//            }
+            
+            let analyticsURL = URL(string: "https://api-m.paypal.com")!
 
             if self.http == nil {
                 if let clientToken = self.apiClient.clientToken {
@@ -121,7 +123,8 @@ class BTAnalyticsService: Equatable {
 
                 self.analyticsSessions.keys.forEach { sessionID in
                     let postParameters = self.createAnalyticsEvent2(with: sessionID)
-                    self.http?.post("/", parameters: postParameters) { body, response, error in
+                    // TODO: _ Why is it adding a `/` to the end
+                    self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, response, error in
                         if let error {
                             completion(error)
                         }
@@ -190,7 +193,7 @@ class BTAnalyticsService: Equatable {
             mobileDeviceModel: "123",
             platform: "123",
             sessionID: "123",
-            tenantName: "123"
+            tenantName: "Braintree"
         )
         return FPTIBatchEvent(events: [
             Event(batchParams: batchParams, eventParams: fptiEvents!)
