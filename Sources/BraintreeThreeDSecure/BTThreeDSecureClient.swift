@@ -220,7 +220,7 @@ import BraintreeCore
             if configuration.cardinalAuthenticationJWT != nil {
                 self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
                     configuration: configuration,
-                    apiClient: apiClient,
+                    apiClient: self.apiClient,
                     request: request
                 ) { lookupParameters in
                     if let dfReferenceID = lookupParameters?["dfReferenceId"] {
@@ -237,9 +237,7 @@ import BraintreeCore
         
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) {
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.started")
-        
-        // STEP 4 - move perform3DS lookup to 3dsclient from paymentClient extension
-        
+                
         performThreeDSecureLookup(request) { lookupResult, error in
             DispatchQueue.main.async {
                 guard let lookupResult, error == nil else {
