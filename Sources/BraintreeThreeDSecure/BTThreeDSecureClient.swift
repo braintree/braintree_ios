@@ -25,13 +25,16 @@ import BraintreeCore
     
     // MARK: - Public Methods
     
+    /// Starts the 3DS flow using a BTThreeDSecureRequest.
+    /// - Parameters:
+    ///   - request: A BTThreeDSecureRequest request.
+    ///   - completionBlock: This completion will be invoked exactly once when the 3DS flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.selected")
         
         self.request = request
         self.merchantCompletion = completion
         
-        // STEP 1 - BTPaymentFlowRequestDelegate.handle()
         apiClient.sendAnalyticsEvent("ios.three-d-secure.initialized")
 
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
@@ -62,7 +65,6 @@ import BraintreeCore
                 return
             }
 
-            // STEP 2 - Move prepare lookup off request
             self.prepareLookup(request: request) { error in
                 if let error {
                     self.apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.failed")
@@ -70,12 +72,9 @@ import BraintreeCore
                     return
                 }
 
-                // STEP 3 - Move start off request
                 self.start(request: request, configuration: configuration)
             }
         }
-        
-
     }
         
     /// Creates a stringified JSON object containing the information necessary to perform a lookup.
@@ -200,7 +199,7 @@ import BraintreeCore
         }
     }
     
-    // MARK: - Internal Methods
+    // MARK: - Private Methods
     
     /// Prepare for a 3DS 2.0 flow.
     /// - Parameters:
@@ -235,9 +234,7 @@ import BraintreeCore
             }
         }
     }
-    
-    // MARK: - Private Methods
-    
+        
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) {
         apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.started")
         
@@ -264,7 +261,7 @@ import BraintreeCore
         }
     }
     
-    func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
+    private func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
         if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
             merchantCompletion?(lookupResult, nil)
             return
@@ -301,6 +298,8 @@ import BraintreeCore
     private func stringFor(_ boolean: Bool) -> String {
         boolean ? "true" : "false"
     }
+    
+    // MARK: - Internal Methods
     
     func performThreeDSecureLookup(
         _ request: BTThreeDSecureRequest,
