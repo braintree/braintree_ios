@@ -5,8 +5,6 @@
 @import BraintreeCard;
 @import BraintreePaymentFlow;
 
-#import <BraintreeThreeDSecure/BraintreeThreeDSecure-Swift.h>
-
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTThreeDSecureRequestDelegate>
 
 @property (nonatomic, strong) BTThreeDSecureClient *threeDSecureClient;
