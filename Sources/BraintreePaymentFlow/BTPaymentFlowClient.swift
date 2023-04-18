@@ -124,7 +124,10 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             if let error = error as? NSError {
                 if error.domain == ASWebAuthenticationSessionError.errorDomain,
                    error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
+                    // User canceled by breaking out of the PayPal browser switch flow
+                    // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
                     if !self.returnedToAppAfterPermissionAlert {
+                        // User tapped system cancel button on permission alert
                         self.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginAlertCanceled)
                     }
                     self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentCanceled)
