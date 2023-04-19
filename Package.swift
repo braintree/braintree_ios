@@ -106,8 +106,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PayPalCheckout",
-            url: "https://github.com/paypal/paypalcheckout-ios/releases/download/0.110.0/PayPalCheckout.xcframework.zip",
-            checksum: "e9895c202b090a7bde5c47685e96aef68b6f334e3f3798a79dd49b32c81fe130"
+            url: "https://github.com/paypal/paypalcheckout-ios/releases/download/0.112.0/PayPalCheckout.xcframework.zip",
+            checksum: "8d53d2d42f80e2980ff570f0fa6a2986f56ab2ed13d7834ab1c362db21ca8c88"
         ),
         .target(
             name: "BraintreeSEPADirectDebit",

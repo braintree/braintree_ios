@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+* BraintreePayPalNativeCheckout
+  * Update NativeCheckout version from 0.110.0 to 0.112.0
+
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
 * Update Cardinal SDK to version 2.2.5-6
