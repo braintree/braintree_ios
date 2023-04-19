@@ -5,7 +5,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   cocoapods:
-    name: CocoaPods (Xcode 14.0)
+    name: CocoaPods (Xcode 14)
     runs-on: macOS-latest
     steps:
       - name: Check out repository
@@ -13,14 +13,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 14.0
+      - name: Use Xcode 14
         run: sudo xcode-select -switch /Applications/Xcode_14.1.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
         run: pod lib lint
   carthage:
-    name: Carthage (Xcode 14.0)
+    name: Carthage (Xcode 14)
     runs-on: macOS-latest
     steps:
       - name: Check out repository
@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 14.0
+      - name: Use Xcode 14
         run: sudo xcode-select -switch /Applications/Xcode_14.1.app
       - name: Remove SPMTest
         run: |
