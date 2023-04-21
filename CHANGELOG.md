@@ -2,7 +2,7 @@
 
 ## Unreleased
 * BraintreePayPalNativeCheckout
-  * Update NativeCheckout version from 0.110.0 to 0.112.0
+  * Update NativeCheckout version from 0.110.0 to 0.112.1
 
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
