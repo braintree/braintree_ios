@@ -6,7 +6,7 @@ concurrency:
 jobs:
   unit_test_job:
     name: Unit
-    runs-on: macOS-12
+    runs-on: macOS-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -14,7 +14,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.0.app
+        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
@@ -23,7 +23,7 @@ jobs:
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
-    runs-on: macOS-12
+    runs-on: macOS-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -31,14 +31,14 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.0.app
+        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run UI Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   integration_test_job:
     name: Integration
-    runs-on: macOS-12
+    runs-on: macOS-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.0.app
+        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
