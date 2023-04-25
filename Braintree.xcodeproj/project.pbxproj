@@ -1222,6 +1222,7 @@
 				BECE564828F99FD2001B0F25 /* BTAnalyticsMetadata.swift */,
 				BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */,
 				BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */,
+				800E78C329E0DD5300D1B0FC /* FPTIBatchEvent.swift */,
 				570B93AF2853980C0041BAFE /* BTAPIClient.swift */,
 				BE24C67428E7491E0067B11A /* BTAPIClientAuthorization.swift */,
 				BE24C66D28E49A730067B11A /* BTAPIClientError.swift */,
@@ -1259,7 +1260,6 @@
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				BEBC6E5D2927CF59004E25A0 /* Braintree.h */,
-				800E78C329E0DD5300D1B0FC /* FPTIBatchEvent.swift */,
 			);
 			path = BraintreeCore;
 			sourceTree = "<group>";

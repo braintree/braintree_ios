@@ -122,7 +122,7 @@ class BTAnalyticsService: Equatable {
                 }
 
                 self.analyticsSessions.keys.forEach { sessionID in
-                    let postParameters = self.createAnalyticsEvent2(with: sessionID)
+                    let postParameters = self.createAnalyticsEvent2(config: configuration, sessionID: sessionID)
                     // TODO: _ Why is it adding a `/` to the end
                     self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, response, error in
                         if let error {
@@ -171,30 +171,24 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    func createAnalyticsEvent2(with sessionID: String) -> Codable {
+    func createAnalyticsEvent2(config: BTConfiguration, sessionID: String) -> Codable {
         let session = self.analyticsSessions[sessionID]
         
         let fptiEvents = session?.events.map({ event in
-            EventParam(eventName: event.eventName, t: String(event.timestamp))
+            EventParam(
+                eventName: event.eventName,
+                timestamp: String(event.timestamp)
+            )
         })
         
         let batchParams = BatchParams(
-            appID: "123",
-            appName: "123",
-            cSDKVer: "123",
-            clientOS: "123",
-            comp: "123",
-            deviceManufacturer: "123",
-            eventSource: "123",
-            iosPackageManager: "123",
-            isSimulator: true,
-            mapv: "123",
-            merchantID: "123",
-            mobileDeviceModel: "123",
-            platform: "123",
-            sessionID: "123",
-            tenantName: "Braintree"
+            authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
+            environment: config.environment ?? "TODO",
+            merchantID: "TODO",
+            sessionID: sessionID,
+            tokenizationKey: apiClient.tokenizationKey
         )
+        
         return FPTIBatchEvent(events: [
             Event(batchParams: batchParams, eventParams: fptiEvents!)
         ])
