@@ -14,8 +14,7 @@ import BraintreeCore
     
     var webAuthenticationSession: WebAuthenticationSession
         
-    var sepaDirectDebitAPI: SEPADirectDebitAPI
-    
+    var sepaDirectDebitAPI: SEPADirectDebitAPI    
    
     // MARK: - Private Properties
 
