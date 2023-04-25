@@ -1,6 +1,14 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
+* Breaking Changes    
+  * BraintreeThreeDSecure
+    * Add `BTThreeDSecureClient`
+      * Remove `BTPaymentFlowClient+ThreeDSecure` extension
+      * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
+    
+## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
 * Fixes error `@objcMembers attribute used without importing module 'Foundation'` in Xcode 14.3+
 * Add async/await support back to all public Swift methods
@@ -67,10 +75,7 @@
         * Add error `.invalidAPIClient` = 6
         * Add error `.cannotCastRequest`= 7
         * Add error `.jsonSerializationFailure` = 8
-    * Add `BTThreeDSecureClient`
-      * Remove `BTPaymentFlowClient+ThreeDSecure` extension
-      * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
-    
+
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
 * Update Cardinal SDK to version 2.2.5-6
