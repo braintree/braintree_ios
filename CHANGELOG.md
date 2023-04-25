@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## unreleased
 * BraintreePayPalNativeCheckout
   * Update NativeCheckout version from 0.110.0 to 0.112.1
 
