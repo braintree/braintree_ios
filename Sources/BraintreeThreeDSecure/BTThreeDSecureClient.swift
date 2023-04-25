@@ -12,7 +12,6 @@ import BraintreeCore
     private var request: BTThreeDSecureRequest?
     private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void)? = nil
-    private var dfReferenceID: String?
 
     // MARK: - Initializer
     
@@ -224,7 +223,7 @@ import BraintreeCore
                     request: request
                 ) { lookupParameters in
                     if let dfReferenceID = lookupParameters?["dfReferenceId"] {
-                        self.dfReferenceID = dfReferenceID
+                        request.dfReferenceID = dfReferenceID
                     }
                     completion(nil)
                 }
@@ -315,7 +314,7 @@ import BraintreeCore
                 "amount": request.amount ?? 0,
                 "customer": customer,
                 "requestedThreeDSecureVersion": "2",
-                "dfReferenceId": request.dfReferenceID ?? "", // TODO
+                "dfReferenceId": request.dfReferenceID ?? "",
                 "accountType": request.accountType.stringValue ?? "",
                 "challengeRequested": request.challengeRequested,
                 "exemptionRequested": request.exemptionRequested,
