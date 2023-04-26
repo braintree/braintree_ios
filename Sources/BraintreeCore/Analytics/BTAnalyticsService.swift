@@ -49,6 +49,9 @@ class BTAnalyticsService: Equatable {
     /// are sent from only one session. In practice, BTAPIClient.metadata.sessionID should never change, so this
     /// is defensive.
     var analyticsSessions: [String: BTAnalyticsSession] = [:]
+    
+    /// The FPTI URL to post all analytic events.
+    static let url = URL(string: "https://api-m.paypal.com")!
 
     private let apiClient: BTAPIClient
 
@@ -91,18 +94,11 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-//            guard let analyticsURL = configuration.json?["analytics"]["url"].asURL() else {
-//                completion(BTAnalyticsServiceError.missingAnalyticsURL)
-//                return
-//            }
-            
-            let analyticsURL = URL(string: "https://api-m.paypal.com")!
-
             if self.http == nil {
                 if let clientToken = self.apiClient.clientToken {
-                    self.http = BTHTTP(url: analyticsURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: clientToken.authorizationFingerprint)
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
-                    self.http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
+                    self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: tokenizationKey)
                 } else {
                     completion(BTAnalyticsServiceError.invalidAPIClient)
                     return
@@ -123,7 +119,6 @@ class BTAnalyticsService: Equatable {
 
                 self.analyticsSessions.keys.forEach { sessionID in
                     let postParameters = self.createAnalyticsEvent2(config: configuration, sessionID: sessionID)
-                    // TODO: _ Why is it adding a `/` to the end
                     self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, response, error in
                         if let error {
                             completion(error)
@@ -225,6 +220,11 @@ class BTAnalyticsService: Equatable {
         session?.events.removeAll()
         return postParameters
     }
+    
+    // TODO
+//    private func getMerchantID() -> String {
+//        if apiClient.clientToken.
+//    }
 
     // MARK: Equitable Protocol Conformance
 

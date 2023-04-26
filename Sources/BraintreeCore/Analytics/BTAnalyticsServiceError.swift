@@ -4,9 +4,9 @@ import Foundation
 enum BTAnalyticsServiceError: Int, Error, CustomNSError, LocalizedError {
 
     /// 0. Missing analytics URL
-    case missingAnalyticsURL
+    case missingAnalyticsURL // TODO: - remove or replace
 
-    /// 1. Invalid API client
+    /// 0. Invalid API client
     case invalidAPIClient
 
     static var errorDomain: String {

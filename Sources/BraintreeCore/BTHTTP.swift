@@ -119,6 +119,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         post(path, parameters: nil, completion: completion)
     }
 
+    // TODO: - Remove in favor of only supporting POST with Codable types
     func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
@@ -225,7 +226,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         let fullPathURL: URL?
         let isDataURL: Bool = baseURL.scheme == "data"
 
-        // Here we are adding a `/` when we don't need it
         if !isDataURL {
             fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
         } else {
@@ -234,7 +234,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
-        if case .authorizationFingerprint(let fingerprint) = clientAuthorization {
+        if case .authorizationFingerprint(let fingerprint) = clientAuthorization,
+           !baseURL.isPayPalURL {
             mutableParameters["authorization_fingerprint"] = fingerprint
         }
 
@@ -505,20 +506,5 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         } else {
             completionHandler(.performDefaultHandling, nil)
         }
-    }
-}
-
-
-extension Encodable {
-
-    /// Converting object to postable dictionary
-    func toDictionary(_ encoder: JSONEncoder = JSONEncoder()) throws -> [String: Any] {
-        let data = try encoder.encode(self)
-        let object = try JSONSerialization.jsonObject(with: data)
-        guard let json = object as? [String: Any] else {
-            let context = DecodingError.Context(codingPath: [], debugDescription: "Deserialized object is not a dictionary")
-            throw DecodingError.typeMismatch(type(of: object), context)
-        }
-        return json
     }
 }
