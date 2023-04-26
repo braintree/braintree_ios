@@ -222,7 +222,13 @@ class BTLocalPayment_UnitTests: XCTestCase {
     func testStartPayment_success_sendsAnalyticsEvents() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        mockWebAuthenticationSession.cannedSessionDidDisplay = true
+        mockWebAuthenticationSession.cannedResponseURL =  URL(string: "https://example/sepa/success?success=true")
+        mockWebAuthenticationSession.cannedErrorResponse = nil
+        
         let client = BTPaymentFlowClient(apiClient: mockAPIClient)
+        client.webAuthenticationSession = mockWebAuthenticationSession
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
                 "paymentResource": [
