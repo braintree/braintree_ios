@@ -4,7 +4,7 @@ import Foundation
 struct BTAnalyticsSession {
 
     let sessionID: String
-    var events: [FPTIEvent] = []
+    var events: [FPTIBatchData.Event] = []
     
     init(with sessionID: String) {
         self.sessionID = sessionID
@@ -115,7 +115,7 @@ class BTAnalyticsService: Equatable {
     // Add event to queue
     func enqueueEvent(_ eventName: String) {
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
-        let event = FPTIEvent(eventName: eventName, timestamp: String(timestampInMilliseconds))
+        let event = FPTIBatchData.Event(eventName: eventName, timestamp: String(timestampInMilliseconds))
         let session = BTAnalyticsSession(with: apiClient.metadata.sessionID)
 
         sessionsQueue.async {
@@ -144,7 +144,7 @@ class BTAnalyticsService: Equatable {
 
     // Creates full blob to post
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String) -> Codable {
-        let batchParams = MetadataParameters(
+        let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.environment,
             integrationType: apiClient.metadata.integrationString,
@@ -155,7 +155,7 @@ class BTAnalyticsService: Equatable {
         
         let session = self.analyticsSessions[sessionID]
 
-        return FPTIBatchEventData(batchParams: batchParams, eventParams: session?.events)
+        return FPTIBatchData(metadata: batchMetadata, events: session?.events)
     }
 
     // MARK: Equitable Protocol Conformance

@@ -2,11 +2,11 @@ import UIKit
 import XCTest
 @testable import BraintreeCore
 
-final class FPTIBatchEventData_Tests: XCTestCase {
+final class FPTIBatchData_Tests: XCTestCase {
     
-    var sut: FPTIBatchEventData!
+    var sut: FPTIBatchData!
     
-    let batchParms = MetadataParameters(
+    let batchMetadata = FPTIBatchData.Metadata(
         authorizationFingerprint: "fake-auth",
         environment: "fake-env",
         integrationType: "fake-integration-type",
@@ -15,13 +15,13 @@ final class FPTIBatchEventData_Tests: XCTestCase {
         tokenizationKey: "fake-auth"
     )
     
-    let eventParams = [FPTIEvent(eventName: "fake-event-1", timestamp: "fake-time-1"),
-                       FPTIEvent(eventName: "fake-event-2", timestamp: "fake-time-2")]
+    let eventParams = [FPTIBatchData.Event(eventName: "fake-event-1", timestamp: "fake-time-1"),
+                       FPTIBatchData.Event(eventName: "fake-event-2", timestamp: "fake-time-2")]
         
     override func setUp() {
         super.setUp()
         
-        sut = FPTIBatchEventData(batchParams: batchParms, eventParams: eventParams)
+        sut = FPTIBatchData(metadata: batchMetadata, events: eventParams)
     }
     
     func testInit_formatsJSONBody() throws {
