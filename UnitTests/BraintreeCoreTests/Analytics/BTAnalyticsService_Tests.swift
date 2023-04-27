@@ -246,10 +246,19 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertNotNil(batchParams["app_id"] as? String)
         XCTAssertNotNil(batchParams["app_name"] as? String)
         XCTAssertNotNil(batchParams["mapv"] as? String)
+        XCTAssertTrue((batchParams["api_integration_type"] as! String).matches("dropin|dropin2|custom"))
         XCTAssertEqual(batchParams["device_manufacturer"] as? String, "Apple")
         XCTAssertNotNil(batchParams["mobile_device_model"] as? String)
         XCTAssertNotNil(batchParams["ios_package_manager"] as? String)
         XCTAssertNotNil(batchParams["is_simulator"] as? Bool)
+        
+        // TODO: - only test these
+//    authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
+//    environment: config.environment,
+//    integrationType: apiClient.metadata.integrationString,
+//    merchantID: "", // TODO: - In follow-up PR, extract merchantID and ClientToken & TokenizationKey class levels
+//    sessionID: sessionID,
+//    tokenizationKey: apiClient.tokenizationKey
     }
     
     func parseTimestamp(_ postParameters: [String: Any]?, at index: Int = 0) -> UInt64? {

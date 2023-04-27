@@ -1,36 +1,14 @@
 import Foundation
 
-/// Encapsulates a single analytics event
-struct BTAnalyticsEvent {
-
-    var eventName: String
-    var timestamp: UInt64
-
-    var description: String {
-        "\(eventName) at \(timestamp)"
-    }
-
-    /// Event serialized to JSON
-    var json: [String: Any] {
-        [
-            "kind": eventName,
-            "timestamp": timestamp
-        ]
-    }
-}
-
 /// Encapsulates analytics events for a given session
 struct BTAnalyticsSession {
 
-    // TODO: - Currently, we're ignoring these
     let sessionID: String
-    let source: String
-    let integration: String
-
-    var events: [BTAnalyticsEvent] = []
-
-    /// Dictionary of analytics metadata from `BTAnalyticsMetadata`
-    let metadataParameters: [String: Any] = BTAnalyticsMetadata.metadata
+    var events: [FPTIEvent] = []
+    
+    init(with sessionID: String) {
+        self.sessionID = sessionID
+    }
 }
 
 class BTAnalyticsService: Equatable {
@@ -136,13 +114,9 @@ class BTAnalyticsService: Equatable {
 
     // Add event to queue
     func enqueueEvent(_ eventName: String) {
-        let timestampInMilliseconds = Date().timeIntervalSince1970 * 1000
-        let event = BTAnalyticsEvent(eventName: eventName, timestamp: UInt64(timestampInMilliseconds))
-        let session = BTAnalyticsSession(
-            sessionID: apiClient.metadata.sessionID,
-            source: apiClient.metadata.sourceString,
-            integration: apiClient.metadata.integrationString
-        )
+        let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
+        let event = FPTIEvent(eventName: eventName, timestamp: String(timestampInMilliseconds))
+        let session = BTAnalyticsSession(with: apiClient.metadata.sessionID)
 
         sessionsQueue.async {
             if self.analyticsSessions[session.sessionID] == nil {
@@ -170,24 +144,18 @@ class BTAnalyticsService: Equatable {
 
     // Creates full blob to post
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String) -> Codable {
-        let session = self.analyticsSessions[sessionID]
-        
-        let fptiEvents = session?.events.map({ event in
-            EventParam(
-                eventName: event.eventName,
-                timestamp: String(event.timestamp)
-            )
-        })
-        
-        let batchParams = BatchParams(
+        let batchParams = MetadataParameters(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.environment,
+            integrationType: apiClient.metadata.integrationString,
             merchantID: "", // TODO: - In follow-up PR, extract merchantID and ClientToken & TokenizationKey class levels
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )
         
-        return FPTIBatchEventData(batchParams: batchParams, eventParams: fptiEvents)
+        let session = self.analyticsSessions[sessionID]
+
+        return FPTIBatchEventData(batchParams: batchParams, eventParams: session?.events)
     }
 
     // MARK: Equitable Protocol Conformance

@@ -6,16 +6,17 @@ final class FPTIBatchEventData_Tests: XCTestCase {
     
     var sut: FPTIBatchEventData!
     
-    let batchParms = BatchParams(
+    let batchParms = MetadataParameters(
         authorizationFingerprint: "fake-auth",
         environment: "fake-env",
+        integrationType: "fake-integration-type",
         merchantID: "fake-merchant-id",
         sessionID: "fake-session",
         tokenizationKey: "fake-auth"
     )
     
-    let eventParams = [EventParam(eventName: "fake-event-1", timestamp: "fake-time-1"),
-                       EventParam(eventName: "fake-event-2", timestamp: "fake-time-2")]
+    let eventParams = [FPTIEvent(eventName: "fake-event-1", timestamp: "fake-time-1"),
+                       FPTIEvent(eventName: "fake-event-2", timestamp: "fake-time-2")]
         
     override func setUp() {
         super.setUp()
@@ -52,6 +53,7 @@ final class FPTIBatchEventData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["merchant_sdk_env"] as? String, "fake-env")
         XCTAssertEqual(batchParams["event_source"] as? String, "mobile-native")
         XCTAssertTrue((batchParams["ios_package_manager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
+        XCTAssertEqual(batchParams["api_integration_type"] as? String, "fake-integration-type")
         XCTAssertEqual(batchParams["is_simulator"] as? Bool, true)
         XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
         XCTAssertTrue((batchParams["mobile_device_model"] as! String).matches("iPhone\\d,\\d|x86_64|arm64"))

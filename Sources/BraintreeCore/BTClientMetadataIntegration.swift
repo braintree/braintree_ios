@@ -6,6 +6,7 @@
     /// Drop-in
     case dropIn
     
+    // TODO: - Remove DropIn2 option
     /// Drop-in 2
     case dropIn2
     

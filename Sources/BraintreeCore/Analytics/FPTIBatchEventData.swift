@@ -2,29 +2,34 @@ import Foundation
 import UIKit
 
 struct FPTIBatchEventData: Codable {
-    let events: [Event]
+    let topLevelKey: [Event] // Top-level, single-element array required by FPTI formatting
     
-    init(batchParams: BatchParams, eventParams: [EventParam]?) {
-        self.events = [Event(
-            batchParams: batchParams,
-            eventParams: eventParams ?? []
+    init(metadata: MetadataParameters, eventParams: [FPTIEvent]?) {
+        self.topLevelKey = [Event(
+            metadata: metadata,
+            fptiEvents: eventParams ?? []
         )]
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case topLevelKey = "events"
     }
 }
 
 struct Event: Codable {
     
-    let batchParams: BatchParams
-    let eventParams: [EventParam]
+    let metadata: MetadataParameters
+    let fptiEvents: [FPTIEvent]
 
     enum CodingKeys: String, CodingKey {
-        case batchParams = "batch_params"
-        case eventParams = "event_params"
+        case metadata = "batch_params"
+        case fptiEvents = "event_params"
     }
 }
 
-struct BatchParams: Codable {
-    
+/// Contains metdata applicable to all events in the batch upload.
+struct MetadataParameters: Codable {
+        
     let appID: String = Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? "N/A"
 
     let appName: String = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "N/A"
@@ -63,6 +68,8 @@ struct BatchParams: Codable {
             "Carthage or Other"
         #endif
     }()
+    
+    let integrationType: String
 
     let isSimulator: Bool = {
         #if targetEnvironment(simulator)
@@ -96,6 +103,7 @@ struct BatchParams: Codable {
         case eventSource = "event_source"
         case environment = "merchant_sdk_env"
         case packageManager = "ios_package_manager"
+        case integrationType = "api_integration_type"
         case isSimulator = "is_simulator"
         case merchantAppVersion = "mapv"
         case merchantID = "merchant_id"
@@ -106,7 +114,8 @@ struct BatchParams: Codable {
     }
 }
 
-struct EventParam: Codable {
+/// Encapsulates a single event by it's name and timestamp.
+struct FPTIEvent: Codable {
     
     let eventName: String
     let timestamp: String
