@@ -3,36 +3,68 @@ import XCTest
 @testable import BraintreeCore
 
 final class BTAnalyticsMetadata_Tests: XCTestCase {
+    
+    var sut: FPTIBatchEventData!
+    
+    let batchParms = BatchParams(
+        authorizationFingerprint: "fake-auth",
+        environment: "fake-env",
+        merchantID: "fake-merchant-id",
+        sessionID: "fake-session",
+        tokenizationKey: "fake-auth"
+    )
+    
+    let eventParams = [EventParam(eventName: "fake-event-1", timestamp: "fake-time-1"),
+                       EventParam(eventName: "fake-event-2", timestamp: "fake-time-2")]
+        
+    override func setUp() {
+        super.setUp()
+        
+        sut = FPTIBatchEventData(batchParams: batchParms, eventParams: eventParams)
+    }
+    
+    func testInit_formatsJSONBody() throws {
+        let jsonBody = try sut.toDictionary()
+        
+        guard let events = jsonBody["events"] as? [[String: Any]] else {
+            XCTFail("JSON body missing top level `events` key.")
+            return
+        }
+        
+        guard let eventParams = events[0]["event_params"] as? [[String: Any]] else {
+            XCTFail("JSON body missing `event_params` key.")
+            return
+        }
+        
+        guard let batchParams = events[0]["batch_params"] as? [String: Any]  else {
+            XCTFail("JSON body missing `batch_params` key.")
+            return
+        }
 
-    func testMetadata_ContainsValidData() {
-        let metadata = BTAnalyticsMetadata.metadata
+        // Veriy batch parameters
+        XCTAssertEqual(batchParams["app_id"] as? String, "com.apple.dt.xctest.tool")
+        XCTAssertEqual(batchParams["app_name"] as? String, "xctest")
+        XCTAssertEqual(batchParams["auth_fingerprint"] as! String, "fake-auth")
+        XCTAssertTrue((batchParams["c_sdk_ver"] as! String).matches("^\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$"))
+        XCTAssertTrue((batchParams["client_os"] as! String).matches("iOS \\d+\\.\\d+|iPadOS \\d+\\.\\d+"))
+        XCTAssertEqual(batchParams["comp"] as? String, "btmobilesdk")
+        XCTAssertEqual(batchParams["device_manufacturer"] as? String, "Apple")
+        XCTAssertEqual(batchParams["merchant_sdk_env"] as? String, "fake-env")
+        XCTAssertEqual(batchParams["event_source"] as? String, "mobile-native")
+        XCTAssertTrue((batchParams["ios_package_manager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
+        XCTAssertEqual(batchParams["is_simulator"] as? Bool, true)
+        XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
+        XCTAssertTrue((batchParams["mobile_device_model"] as! String).matches("iPhone\\d,\\d|x86_64|arm64"))
+        XCTAssertEqual(batchParams["merchant_id"] as! String, "fake-merchant-id")
+        XCTAssertEqual(batchParams["platform"] as? String, "iOS")
+        XCTAssertEqual(batchParams["session_id"] as? String, "fake-session")
+        XCTAssertEqual(batchParams["tenant_name"] as? String, "Braintree")
+        XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
 
-        XCTAssertEqual(metadata["platform"] as? String, "iOS")
-        XCTAssertTrue((metadata["sdkVersion"] as! String).matches("^\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$"))
-        XCTAssertEqual(metadata["merchantAppId"] as? String, "com.apple.dt.xctest.tool")
-        XCTAssertEqual(metadata["merchantAppName"] as? String, "xctest")
-        XCTAssertNotNil(metadata["merchantAppVersion"] as? String)
-        XCTAssertNotNil(metadata["iosDeviceName"] as? String)
-        XCTAssertTrue((metadata["iosSystemName"] as! String).matches("iOS|iPadOS"))
-        XCTAssertEqual(metadata["deviceManufacturer"] as? String, "Apple")
-        XCTAssertTrue((metadata["deviceModel"] as! String).matches("iPhone\\d,\\d|i386|x86_64|arm64"))
-        XCTAssertTrue((metadata["iosPackageManager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
-        XCTAssertEqual(metadata["isSimulator"] as? Bool, true)
+        // Verify event-level parameters
+        XCTAssertEqual(eventParams[0]["t"] as? String, "fake-time-1")
+        XCTAssertEqual(eventParams[1]["t"] as? String, "fake-time-2")
+        XCTAssertEqual(eventParams[0]["event_name"] as? String, "fake-event-1")
+        XCTAssertEqual(eventParams[1]["event_name"] as? String, "fake-event-2")
     }
-    
-    // TODO: - Update to test FPTIBatchEventData
-    
-    func testInit_containsValidBatchParams() {
-        
-    }
-    
-    func testInit_containsValidEventParams() {
-        
-    }
-    
-    func testInit_properlyFormatsPOSTBody() {
-        
-    }
-    
-    
 }

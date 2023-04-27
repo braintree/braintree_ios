@@ -294,6 +294,7 @@ import Foundation
                 return
             }
 
+            // TODO: - Are we posting metadata params in every single BT call?
             let postParameters = self.metadataParametersWith(parameters, for: httpType)
             self.http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }

@@ -22,6 +22,7 @@ struct BTAnalyticsEvent {
 /// Encapsulates analytics events for a given session
 struct BTAnalyticsSession {
 
+    // TODO: - Currently, we're ignoring these
     let sessionID: String
     let source: String
     let integration: String
