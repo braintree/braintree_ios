@@ -178,8 +178,8 @@ class BTAnalyticsService: Equatable {
         
         let batchParams = BatchParams(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
-            environment: config.environment ?? "TODO",
-            merchantID: "TODO",
+            environment: config.environment,
+            merchantID: "", // TODO: - In follow-up PR, extract merchantID and ClientToken & TokenizationKey class levels
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )
@@ -220,11 +220,6 @@ class BTAnalyticsService: Equatable {
         session?.events.removeAll()
         return postParameters
     }
-    
-    // TODO
-//    private func getMerchantID() -> String {
-//        if apiClient.clientToken.
-//    }
 
     // MARK: Equitable Protocol Conformance
 

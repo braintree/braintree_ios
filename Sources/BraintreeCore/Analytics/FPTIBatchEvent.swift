@@ -47,7 +47,7 @@ struct BatchParams: Codable {
 
     let eventSource = "mobile-native"
 
-    let environment: String
+    let environment: String?
     
     let packageManager: String = {
         #if COCOAPODS
