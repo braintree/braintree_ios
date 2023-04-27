@@ -1,6 +1,6 @@
 import UIKit
 
-// TODO: - Remove to mirror metadata params sent in all POST bodies in Android and JS SDKs
+// TODO: - Update to mirror params sent in Android and JS SDKs. Currently these analytics details params are being sent in all POST bodies.
 struct BTAnalyticsMetadata {
 
     // MARK: Metadata Properties

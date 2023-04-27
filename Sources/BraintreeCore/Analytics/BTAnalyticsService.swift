@@ -55,7 +55,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    // Sends analytics event right away, without checking # of events against flush threshold
+    /// Sends request to FPTI immediately, without checking # of events in queue against flush threshold
     func sendAnalyticsEvent(_ eventName: String, completion: @escaping (Error?) -> Void = { _ in }) {
         DispatchQueue.main.async {
             self.enqueueEvent(eventName)
@@ -63,7 +63,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    // Actually OK to send a request now
+    /// Executes API request to FPTI
     func flush(_ completion: @escaping (Error?) -> Void = { _ in }) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
@@ -112,7 +112,7 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Helpers
 
-    // Add event to queue
+    /// Adds an event to the queue
     func enqueueEvent(_ eventName: String) {
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
         let event = FPTIBatchData.Event(eventName: eventName, timestamp: String(timestampInMilliseconds))
@@ -127,7 +127,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    // Determine if ready to send event based on # of queued events
+    /// Checks queued event count to determine if ready to fire API request
     func flushIfAtThreshold() {
         var eventCount = 0
 
@@ -142,13 +142,13 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    // Creates full blob to post
+    /// Constructs POST params to be sent to FPTI from the queued events in the session
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.environment,
             integrationType: apiClient.metadata.integrationString,
-            merchantID: "", // TODO: - In follow-up PR, extract merchantID and ClientToken & TokenizationKey class levels
+            merchantID: "", // TODO: - In follow-up PR, extract merchantID at ClientToken & TokenizationKey class levels
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )

@@ -241,24 +241,11 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let topLevelEvent = postParameters?["events"] as? [[String: Any]]
         let batchParams = topLevelEvent?[0]["batch_params"] as! [String: Any]
         
-        XCTAssertEqual(batchParams["platform"] as? String, "iOS")
-        XCTAssertEqual(batchParams["c_sdk_ver"] as? String, BTCoreConstants.braintreeSDKVersion)
-        XCTAssertNotNil(batchParams["app_id"] as? String)
-        XCTAssertNotNil(batchParams["app_name"] as? String)
-        XCTAssertNotNil(batchParams["mapv"] as? String)
-        XCTAssertTrue((batchParams["api_integration_type"] as! String).matches("dropin|dropin2|custom"))
-        XCTAssertEqual(batchParams["device_manufacturer"] as? String, "Apple")
-        XCTAssertNotNil(batchParams["mobile_device_model"] as? String)
-        XCTAssertNotNil(batchParams["ios_package_manager"] as? String)
-        XCTAssertNotNil(batchParams["is_simulator"] as? Bool)
-        
-        // TODO: - only test these
-//    authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
-//    environment: config.environment,
-//    integrationType: apiClient.metadata.integrationString,
-//    merchantID: "", // TODO: - In follow-up PR, extract merchantID and ClientToken & TokenizationKey class levels
-//    sessionID: sessionID,
-//    tokenizationKey: apiClient.tokenizationKey
+        XCTAssertTrue((batchParams["api_integration_type"] as! String).matches("custom|dropin"))
+        XCTAssertNotNil(batchParams["merchant_id"])
+        XCTAssertNotNil(batchParams["session_id"])
+        let authKey = batchParams["tokenization_key"] as? String ?? batchParams["auth_fingerprint"] as? String
+        XCTAssertNotNil(authKey)
     }
     
     func parseTimestamp(_ postParameters: [String: Any]?, at index: Int = 0) -> UInt64? {

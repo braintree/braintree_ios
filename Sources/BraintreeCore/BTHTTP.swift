@@ -124,12 +124,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
     
-    func post(_ path: String, parameters: Codable, completion: @escaping RequestCompletion) {
+    func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters.toDictionary()
             post(path, parameters: dict, completion: completion)
         } catch let error {
-            // TODO: - throw appropriate error
+            completion(nil, nil, error)
         }
     }
 
@@ -197,9 +197,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 return
             }
 
-            if let data = request.httpBody {
-                print(String(data: data, encoding: .utf8))
-            }
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self = self else { return }
                 self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
