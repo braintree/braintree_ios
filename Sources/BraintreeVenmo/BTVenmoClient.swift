@@ -73,34 +73,86 @@ import BraintreeCore
                 self.notifyFailure(with: error, completion: completion)
                 return
             }
-
+            
             guard let configuration else {
                 self.notifyFailure(with: BTVenmoError.fetchConfigurationFailed, completion: completion)
                 return
             }
-
+            
             do {
                 let _ = try self.verifyAppSwitch(with: configuration)
             } catch {
                 self.notifyFailure(with: error, completion: completion)
                 return
             }
-
+            
             let merchantProfileID = request.profileID ?? configuration.venmoMerchantID
             let bundleDisplayName = self.bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-
+            
             let metadata = self.apiClient.metadata
             metadata.source = .venmoApp
-
+            
             var inputParameters: [String: String?] = [
                 "paymentMethodUsage": request.paymentMethodUsage.stringValue,
                 "merchantProfileId": merchantProfileID,
                 "customerClient": "MOBILE_APP",
                 "intent": "CONTINUE"
             ]
-
+            
             if let displayName = request.displayName {
                 inputParameters["displayName"] = displayName
+            }
+
+            var paysheetDetails: [String: String] = [:]
+            paysheetDetails["collectCustomerBillingAddress"] = String(request.collectCustomerBillingAddress)
+            paysheetDetails["collectCustomerShippingAddress"] = String(request.collectCustomerShippingAddress)
+            
+            var transactionDetails: [String: String] = [:]
+            if let subTotalAmount = request.subTotalAmount {
+                transactionDetails["subTotalAmount"] = subTotalAmount
+            }
+            
+            if let discountAmount = request.discountAmount {
+                transactionDetails["discountAmount"] = discountAmount
+            }
+            
+            if let taxAmount = request.taxAmount {
+                transactionDetails["taxAmount"] = taxAmount
+            }
+            
+            if let shippingAmount = request.shippingAmount {
+                transactionDetails["shippingAmount"] = shippingAmount
+            }
+            
+            if let totalAmount = request.totalAmount {
+                transactionDetails["totalAmount"] = totalAmount
+            }
+            
+            if let lineItems = request.lineItems, lineItems.count > 0 {
+                for item in lineItems {
+                    if item.unitTaxAmount == nil || item.unitTaxAmount == "" {
+                        item.unitTaxAmount = "0"
+                    }
+                }
+                let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
+                if let jsonLineItemData = try? JSONSerialization.data(withJSONObject: lineItemsArray),
+                   let jsonLineItemString = String(data: jsonLineItemData, encoding: .utf8) {
+                    transactionDetails["lineItems"] = jsonLineItemString
+                }
+            }
+
+            if !transactionDetails.isEmpty {
+                if let jsonAmountData = try? JSONSerialization.data(withJSONObject: transactionDetails, options: []),
+                   let transactionDetailsString = String(data: jsonAmountData, encoding: .utf8) {
+                    paysheetDetails["transactionDetails"] = transactionDetailsString
+                }
+            }
+            
+            if !paysheetDetails.isEmpty {
+                if let paysheetDetailsData = try? JSONSerialization.data(withJSONObject: paysheetDetails, options: []),
+                   let paysheetDetailsString = String(data: paysheetDetailsData, encoding: .utf8) {
+                    inputParameters["paysheetDetails"] = paysheetDetailsString
+                }
             }
 
             let inputDictionary: [String: Any] = ["input": inputParameters]
@@ -205,7 +257,7 @@ import BraintreeCore
         case .succeededWithPaymentContext:
             let variablesDictionary: [String: String?] = ["id": returnURL.paymentContextID]
             let graphQLParameters: [String: Any] = [
-                "query": "query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName } } } }",
+                "query": "query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName shippingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } billingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } } } } }",
                 "variables": variablesDictionary
             ]
 
