@@ -4,10 +4,10 @@ class BTPaymentFlowAnalytics {
     
     // MARK: - Conversion Events
       
-    static let paymentStarted = "local-payment:start-payment:started" // ✅
-    static let paymentSucceeded = "local-payment:start-payment:succeeded" // ✅
-    static let paymentFailed = "local-payment:start-payment:failed" // ✅
-    static let paymentCanceled = "local-payment:start-payment:browser-login:canceled" // ✅
+    static let paymentStarted = "local-payment:start-payment:started"
+    static let paymentSucceeded = "local-payment:start-payment:succeeded"
+    static let paymentFailed = "local-payment:start-payment:failed"
+    static let paymentCanceled = "local-payment:start-payment:browser-login:canceled"
       
     // MARK: - Browser Presentation Events
     
@@ -22,5 +22,5 @@ class BTPaymentFlowAnalytics {
     
     // MARK: - Network Connection Event
     
-    static let paymentNetworkConnectionLost = "local-payment:start-payment:network-connection:failed" // ✅
+    static let paymentNetworkConnectionLost = "local-payment:start-payment:network-connection:failed"
 }
