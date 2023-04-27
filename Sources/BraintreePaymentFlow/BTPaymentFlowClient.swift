@@ -20,7 +20,7 @@ import BraintreeCore
     private var paymentFlowName: String {
         return paymentFlowRequestDelegate?.paymentFlowName() ?? "local-payments"
     }
-    private var returnedToAppAfterPermissionAlert: Bool = false
+    public var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Public Methods
     
@@ -41,7 +41,7 @@ import BraintreeCore
     }
     
     @objc func applicationDidBecomeActive(notification: Notification) {
-           returnedToAppAfterPermissionAlert = false
+           returnedToAppAfterPermissionAlert = true
        }
     
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
@@ -126,7 +126,6 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
                     self?.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationSucceeded)
                 } else {
                     self?.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationFailed)
-                    self?.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                 }
             },
             sessionDidComplete: { url, error in
