@@ -19,4 +19,20 @@ final class BTAnalyticsMetadata_Tests: XCTestCase {
         XCTAssertTrue((metadata["iosPackageManager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
         XCTAssertEqual(metadata["isSimulator"] as? Bool, true)
     }
+    
+    // TODO: - Update to test FPTIBatchEventData
+    
+    func testInit_containsValidBatchParams() {
+        
+    }
+    
+    func testInit_containsValidEventParams() {
+        
+    }
+    
+    func testInit_properlyFormatsPOSTBody() {
+        
+    }
+    
+    
 }

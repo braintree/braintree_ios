@@ -1,13 +1,19 @@
 import Foundation
 import UIKit
 
-// MARK: - Welcome
-struct FPTIBatchEvent: Codable {
+struct FPTIBatchEventData: Codable {
     let events: [Event]
+    
+    init(batchParams: BatchParams, eventParams: [EventParam]?) {
+        self.events = [Event(
+            batchParams: batchParams,
+            eventParams: eventParams ?? []
+        )]
+    }
 }
 
-// MARK: - Event
 struct Event: Codable {
+    
     let batchParams: BatchParams
     let eventParams: [EventParam]
 
@@ -17,7 +23,6 @@ struct Event: Codable {
     }
 }
 
-// MARK: - BatchParams
 struct BatchParams: Codable {
     
     let appID: String = Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? "N/A"
@@ -101,7 +106,6 @@ struct BatchParams: Codable {
     }
 }
 
-// MARK: - EventParam
 struct EventParam: Codable {
     
     let eventName: String

@@ -94,6 +94,7 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
+            // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
             if self.http == nil {
                 if let clientToken = self.apiClient.clientToken {
                     self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -118,7 +119,7 @@ class BTAnalyticsService: Equatable {
                 }
 
                 self.analyticsSessions.keys.forEach { sessionID in
-                    let postParameters = self.createAnalyticsEvent2(config: configuration, sessionID: sessionID)
+                    let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: sessionID)
                     self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, response, error in
                         if let error {
                             completion(error)
@@ -166,7 +167,8 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    func createAnalyticsEvent2(config: BTConfiguration, sessionID: String) -> Codable {
+    // Creates full blob to post
+    func createAnalyticsEvent(config: BTConfiguration, sessionID: String) -> Codable {
         let session = self.analyticsSessions[sessionID]
         
         let fptiEvents = session?.events.map({ event in
@@ -184,41 +186,7 @@ class BTAnalyticsService: Equatable {
             tokenizationKey: apiClient.tokenizationKey
         )
         
-        return FPTIBatchEvent(events: [
-            Event(batchParams: batchParams, eventParams: fptiEvents!)
-        ])
-    }
-    
-    // Creates full blob to post
-    func createAnalyticsEvent(with sessionID: String) -> [String: Any] {
-        
-        // TODO: - Wrap this dictionary construction logic into a new struct for the batch request
-        // Update to return a Codable
-        var session = self.analyticsSessions[sessionID]
-        let metadataParameters: [String: Any] = [
-            "sessionId": session?.sessionID ?? "",
-            "integrationType": session?.integration ?? "",
-            "source": session?.source ?? ""
-        ]
-            .merging(session?.metadataParameters ?? [:]) { $1 }
-
-        var postParameters: [String: Any] = [:]
-
-        if let sessionEvents = session?.events {
-            // Map array of BTAnalyticsEvent to JSON
-            postParameters["analytics"] = sessionEvents.map { $0.json }
-        }
-
-        postParameters["_meta"] = metadataParameters
-
-        if let authorizationFingerprint = self.apiClient.clientToken?.authorizationFingerprint {
-            postParameters["authorization_fingerprint"] = authorizationFingerprint
-        } else if let tokenizationKey = self.apiClient.tokenizationKey {
-            postParameters["tokenization_key"] = tokenizationKey
-        }
-
-        session?.events.removeAll()
-        return postParameters
+        return FPTIBatchEventData(batchParams: batchParams, eventParams: fptiEvents)
     }
 
     // MARK: Equitable Protocol Conformance
