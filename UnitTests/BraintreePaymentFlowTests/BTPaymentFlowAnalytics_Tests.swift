@@ -4,16 +4,16 @@ import XCTest
 final class BTPaymentFlow_Tests: XCTestCase {
 
     func test_startPaymentAnalyticsEvents_sendsExpectedEventNames() {
-        XCTAssertEqual(BTPaymentFlowAnalytics.paymentStarted, "start-payment:started")
-        XCTAssertEqual(BTPaymentFlowAnalytics.paymentSucceeded, "start-payment:succeeded")
-        XCTAssertEqual(BTPaymentFlowAnalytics.paymentFailed, "start-payment:failed")
-        XCTAssertEqual(BTPaymentFlowAnalytics.paymentCanceled, "start-payment:browser-login:canceled")
+        XCTAssertEqual(BTPaymentFlowAnalytics.paymentStarted, "local-payment:start-payment:started")
+        XCTAssertEqual(BTPaymentFlowAnalytics.paymentSucceeded, "local-payment:start-payment:succeeded")
+        XCTAssertEqual(BTPaymentFlowAnalytics.paymentFailed, "local-payment:start-payment:failed")
+        XCTAssertEqual(BTPaymentFlowAnalytics.paymentCanceled, "local-payment:start-payment:browser-login:canceled")
 
-        XCTAssertEqual(BTPaymentFlowAnalytics.browserPresentationSucceeded, "start-payment:browser-presentation:succeeded")
-        XCTAssertEqual(BTPaymentFlowAnalytics.browserPresentationFailed, "start-payment:browser-presentation:failed")
-        XCTAssertEqual(BTPaymentFlowAnalytics.browserLoginAlertCanceled, "start-payment:browser-login:alert-canceled")
-        XCTAssertEqual(BTPaymentFlowAnalytics.browserLoginFailed, "start-payment:browser-login:failed")
-        XCTAssertEqual(BTPaymentFlowAnalytics.paymentNetworkConnectionLost, "start-payment:network-connection:failed")
+        XCTAssertEqual(BTPaymentFlowAnalytics.browserPresentationSucceeded, "local-payment:start-payment:browser-presentation:succeeded")
+        XCTAssertEqual(BTPaymentFlowAnalytics.browserPresentationFailed, "local-payment:start-payment:browser-presentation:failed")
+        XCTAssertEqual(BTPaymentFlowAnalytics.browserLoginAlertCanceled, "local-payment:start-payment:browser-login:alert-canceled")
+        XCTAssertEqual(BTPaymentFlowAnalytics.browserLoginFailed, "local-payment:start-payment:browser-login:failed")
+        XCTAssertEqual(BTPaymentFlowAnalytics.paymentNetworkConnectionLost, "local-payment:start-payment:network-connection:failed")
     }
 }
 

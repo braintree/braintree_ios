@@ -50,7 +50,7 @@ import BraintreeCore
     ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion: @escaping (BTPaymentFlowResult?, Error?) -> Void) {
         setupPaymentFlow(request, completion: completion)
-        sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentStarted)
+        _apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentStarted)
         paymentFlowRequestDelegate?.handle(request, client: _apiClient, paymentClientDelegate: self)
     }
     
@@ -79,25 +79,6 @@ import BraintreeCore
         self.paymentFlowCompletionBlock = completionBlock
         self.paymentFlowRequestDelegate = request
     }
-    
-    // MARK: - Analytics Helpers
-    
-    private func sendAnalyticsEvent(_ paymentFlowMessage: String) {
-        var paymentType: String = "unknown"
-        let flowName: String? = paymentFlowRequestDelegate?.paymentFlowName()
-        if flowName != nil {
-            // ThreeDSecure returns "three-d-secure"
-            if let flowName = flowName, flowName == "three-d-secure" {
-                paymentType = flowName
-            } else {
-                let components = flowName!.split(separator: ".")
-                paymentType = components.count > 1 ? String(components[1]): "unknown"
-            }
-        }
-        
-        let analyticMessage = paymentType + ":" + paymentFlowMessage
-        _apiClient.sendAnalyticsEvent(analyticMessage)
-    }
 }
 
 // MARK: - BTPaymentFlowClientDelegate conformance
@@ -106,13 +87,13 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
 
     public func onPayment(with url: URL?, error: Error?) {
         if let error {
-            sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
+            _apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
             onPaymentComplete(nil, error: error)
             return
         }
         
         guard let url else {
-            sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
+            _apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
             onPaymentComplete(nil, error: BTPaymentFlowError.missingRedirectURL)
             return
         }
@@ -123,9 +104,9 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
             context: self,
             sessionDidDisplay: { [weak self] didDisplay in
                 if didDisplay {
-                    self?.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationSucceeded)
+                    self?._apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationSucceeded)
                 } else {
-                    self?.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationFailed)
+                    self?._apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserPresentationFailed)
                 }
             },
             sessionDidComplete: { url, error in
@@ -136,14 +117,14 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
                         // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
                         if !self.returnedToAppAfterPermissionAlert {
                             // User tapped system cancel button on permission alert
-                            self.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginAlertCanceled)
+                            self._apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginAlertCanceled)
                         }
-                        self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentCanceled)
+                        self._apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentCanceled)
                         self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
                         return
                     }
                     
-                    self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
+                    self._apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                     self.onPaymentComplete(nil, error: BTPaymentFlowError.webSessionError(error))
                     return
                 }
@@ -151,8 +132,8 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
                 if let url {
                     self.paymentFlowRequestDelegate?.handleOpen(url)
                 } else {
-                    self.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginFailed)
-                    self.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
+                    self._apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.browserLoginFailed)
+                    self._apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                     self.onPaymentComplete(nil, error: BTPaymentFlowError.missingReturnURL)
                 }
             }

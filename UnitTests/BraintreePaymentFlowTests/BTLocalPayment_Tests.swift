@@ -241,42 +241,9 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
-        let analyticMessage = "local-payment:" + BTPaymentFlowAnalytics.browserPresentationSucceeded
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(analyticMessage))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.browserPresentationSucceeded))
     }
-    
-    func testStartPayment_alert_cancel_sendsAnalyticEvent() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        mockWebAuthenticationSession.cannedSessionDidDisplay = false
-        mockWebAuthenticationSession.cannedResponseURL =  nil
-        
-        mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
-            _bridgedNSError: NSError(
-                domain: ASWebAuthenticationSessionError.errorDomain,
-                code: ASWebAuthenticationSessionError.canceledLogin.rawValue,
-                userInfo: ["Description": "Mock cancellation error description."]
-            )
-        )
-        
-        let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-        client.returnedToAppAfterPermissionAlert = false
-        client.webAuthenticationSession = mockWebAuthenticationSession
-        mockAPIClient.cannedResponseBody = BTJSON(
-            value: [
-                "paymentResource": [
-                    "redirectUrl": "https://www.somebankurl.com",
-                    "paymentToken": "123aaa-123-543-777",
-                ]
-            ]
-        )
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
-
-        let analyticMessage = "local-payment:" + BTPaymentFlowAnalytics.browserLoginAlertCanceled
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(analyticMessage))
-    }
-    
     func testStartPayment_browser_cancel_sendsAnalyticEvent() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
@@ -292,7 +259,6 @@ class BTLocalPayment_UnitTests: XCTestCase {
         )
         
         let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-        client.returnedToAppAfterPermissionAlert = true
         client.webAuthenticationSession = mockWebAuthenticationSession
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -305,20 +271,37 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
-        let analyticMessage = "local-payment:" + BTPaymentFlowAnalytics.browserLoginAlertCanceled
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(analyticMessage))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.browserLoginAlertCanceled))
     }
 
     func testStartPayment_failure_sendsAnalyticsEvents() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        mockWebAuthenticationSession.cannedSessionDidDisplay = false
+        mockWebAuthenticationSession.cannedResponseURL =  nil
+        
+        mockWebAuthenticationSession.cannedErrorResponse = ASWebAuthenticationSessionError(
+            _bridgedNSError: NSError(
+                domain: ASWebAuthenticationSessionError.errorDomain,
+                code: ASWebAuthenticationSessionError.presentationContextNotProvided.rawValue,
+                userInfo: ["Description": "Mock failure to present browser error description."]
+            )
+        )
 
         let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-        mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500)
+        client.webAuthenticationSession = mockWebAuthenticationSession
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "paymentResource": [
+                    "redirectUrl": "https://www.somebankurl.com",
+                    "paymentToken": "123aaa-123-543-777",
+                ]
+            ]
+        )
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
-
-        let analyticMessage = "local-payment:" + BTPaymentFlowAnalytics.paymentFailed
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(analyticMessage))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.paymentFailed))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.browserPresentationFailed))
     }
 
     func testStartPayment_successfulResult_callsCompletionBlock() {
@@ -345,9 +328,9 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
     func testStartPayment_cancelResult_callsCompletionBlock() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-
+        
         let client = BTPaymentFlowClient(apiClient: mockAPIClient)
-
+        
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
                 "paymentResource": [
@@ -356,14 +339,15 @@ class BTLocalPayment_UnitTests: XCTestCase {
                 ]
             ]
         )
-
+        
         client.startPaymentFlow(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTPaymentFlowError.errorDomain)
             XCTAssertEqual(error.code, BTPaymentFlowError.canceled("flow-type").errorCode)
         }
-
+        
         localPaymentRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.paymentCanceled))
     }
 
     func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
@@ -411,7 +395,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         }
 
         localPaymentRequest.handleOpen(URL(string: "an-error-url")!)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("local-payment:\(BTPaymentFlowAnalytics.paymentNetworkConnectionLost)"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.paymentNetworkConnectionLost))
     }
     
     func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {
