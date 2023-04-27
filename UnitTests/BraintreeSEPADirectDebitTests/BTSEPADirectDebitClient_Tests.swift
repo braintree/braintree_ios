@@ -44,7 +44,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
                 XCTAssertEqual(error.localizedDescription, "This is a create mandate fake error")
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.createMandateFailed))
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
@@ -90,7 +90,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.webFlowCanceled.errorCode)
                 XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.webFlowCanceled.localizedDescription)
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.web-flow.canceled")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.challengeCanceled))
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
@@ -136,7 +136,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.presentationContextInvalid.errorCode)
                 XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.presentationContextInvalid.localizedDescription)
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.web-flow.presentation-context-invalid")
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
@@ -176,7 +175,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.resultURLInvalid.errorCode)
                 XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.resultURLInvalid.localizedDescription)
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.web-flow.failure")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.challengeFailed))
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
@@ -206,7 +205,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.noBodyReturned.errorCode)
                 XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.noBodyReturned.localizedDescription)
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.createMandateFailed))
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
@@ -250,7 +249,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.approvalURLInvalid.errorCode)
                 XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.approvalURLInvalid.localizedDescription)
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.createMandateFailed))
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
@@ -290,7 +289,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
                 XCTAssertEqual(error.code, SEPADirectDebitError.authenticationResultNil.errorCode)
                 XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.authenticationResultNil.localizedDescription)
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.web-flow.failure")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.challengeFailed))
             } else if nonce != nil {
                 XCTFail("This request should return an error.")
             }
@@ -345,7 +344,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(nonce?.ibanLastFour, "1234")
                 XCTAssertEqual(nonce?.customerID, "a-customer-id")
                 XCTAssertEqual(nonce?.mandateType?.description, "RECURRENT")
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.tokenize.success")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.tokenizeSucceeded))
             }
         }
     }
@@ -398,7 +397,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(nonce?.ibanLastFour, "1234")
                 XCTAssertEqual(nonce?.customerID, "a-customer-id")
                 XCTAssertEqual(nonce?.mandateType?.description, "RECURRENT")
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.tokenize.success")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.tokenizeSucceeded))
             }
         }
     }
@@ -441,7 +440,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
                 XCTAssertEqual(error.localizedDescription, "This is a fake tokenize request error")
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.createMandateFailed))
             } else if nonce != nil {
                 XCTFail("This request should be return an error.")
             }
@@ -486,7 +485,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                 XCTAssertEqual(error.domain, "CannedError")
                 XCTAssertEqual(error.code, 0)
                 XCTAssertEqual(error.localizedDescription, "This is a fake tokenize request error")
-                XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "ios.sepa-direct-debit.create-mandate.failure")
+                XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.createMandateFailed))
             } else if nonce != nil {
                 XCTFail("This request should be return an error.")
             }

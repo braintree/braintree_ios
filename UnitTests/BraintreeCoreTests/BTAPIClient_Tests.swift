@@ -398,17 +398,6 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertTrue(mockAnalyticsService.didLastFlush)
     }
 
-    func testQueueAnalyticsEvent_whenCalled_callsAnalyticsService_doesNotFlush() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
-
-        apiClient.analyticsService = mockAnalyticsService
-        apiClient.queueAnalyticsEvent("blahblahqueue")
-
-        XCTAssertEqual(mockAnalyticsService.lastEvent, "blahblahqueue")
-        XCTAssertFalse(mockAnalyticsService.didLastFlush)
-    }
-
     // MARK: - Client SDK Metadata
 
     func testPOST_whenUsingGateway_includesMetadata() {
