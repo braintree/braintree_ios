@@ -2,7 +2,7 @@ import UIKit
 import XCTest
 @testable import BraintreeCore
 
-final class BTAnalyticsMetadata_Tests: XCTestCase {
+final class FPTIBatchEventData_Tests: XCTestCase {
     
     var sut: FPTIBatchEventData!
     
@@ -41,7 +41,7 @@ final class BTAnalyticsMetadata_Tests: XCTestCase {
             return
         }
 
-        // Veriy batch parameters
+        // Verify batch parameters
         XCTAssertEqual(batchParams["app_id"] as? String, "com.apple.dt.xctest.tool")
         XCTAssertEqual(batchParams["app_name"] as? String, "xctest")
         XCTAssertEqual(batchParams["auth_fingerprint"] as! String, "fake-auth")

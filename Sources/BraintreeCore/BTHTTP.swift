@@ -197,6 +197,9 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 return
             }
 
+            if let data = request.httpBody {
+                print(String(data: data, encoding: .utf8))
+            }
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self = self else { return }
                 self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
