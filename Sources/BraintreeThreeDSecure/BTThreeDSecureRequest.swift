@@ -4,12 +4,8 @@ import Foundation
 import BraintreeCore
 #endif
 
-#if canImport(BraintreePaymentFlow)
-import BraintreePaymentFlow
-#endif
-
 /// Used to initialize a 3D Secure payment flow
-@objcMembers public class BTThreeDSecureRequest: BTPaymentFlowRequest {
+@objcMembers public class BTThreeDSecureRequest: NSObject {
     
     // MARK: - Public Properties
 
