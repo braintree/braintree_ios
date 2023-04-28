@@ -1459,11 +1459,11 @@
 		A91E1EAC24FEEF21007540E5 /* BraintreeThreeDSecure */ = {
 			isa = PBXGroup;
 			children = (
-				80D1638529E75766001D880E /* BTThreeDSecureClient.swift */,
 				80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */,
 				BE01A83C29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift */,
 				BE01A84029D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift */,
 				BE01A84829D4C529000DFA24 /* BTThreeDSecureCardAddChallenge.swift */,
+				80D1638529E75766001D880E /* BTThreeDSecureClient.swift */,
 				BE01A84229D32EA9000DFA24 /* BTThreeDSecureError.swift */,
 				BE01A82C29CCCDE9000DFA24 /* BTThreeDSecureLookup.swift */,
 				BE01A83429D1F7B9000DFA24 /* BTThreeDSecurePostalAddress.swift */,
