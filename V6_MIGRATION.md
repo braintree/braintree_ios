@@ -167,7 +167,7 @@ sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, e
 The following changes apply to both 3D Secure and Local Payment Methods as they both use the underlying `BraintreePaymentFlow` module:
 
 We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method and 3D Secure flows. With this change, you no longer need to:
-    * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
-    * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`
+  * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
+  * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`
 
 The `BTViewControllerPresentingDelegate` has been removed.
