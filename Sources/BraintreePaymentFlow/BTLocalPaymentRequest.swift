@@ -63,6 +63,9 @@ import BraintreeDataCollector
     var paymentID: String?
     weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
     var correlationID: String?
+    var paymentFlowAPIClient: BTAPIClient? {
+        return paymentFlowClientDelegate?.apiClient()
+    }
 }
 
 // MARK: - BTPaymentFlowRequestDelegate Protocol Conformance
@@ -265,11 +268,5 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
     public func paymentFlowName() -> String {
         let paymentType = paymentType?.lowercased() ??  "unknown"
         return "\(paymentType).local-payment"
-    }
-}
-
-extension BTLocalPaymentRequest {
-    var paymentFlowAPIClient: BTAPIClient? {
-        return paymentFlowClientDelegate?.apiClient()
     }
 }

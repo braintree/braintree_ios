@@ -241,6 +241,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.paymentStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentFlowAnalytics.browserPresentationSucceeded))
     }
 

@@ -20,8 +20,7 @@
       * `.fetchConfigurationFailed` = 7
       * `.missingRedirectURL` = 8
       * `.missingReturnURL` = 9
-      * `.webSessionFailedToLaunch` = 10
-      * `.webSessionError` = 11
+      * `.webSessionError` = 10
     * Update `BTPaymentFlowError` values
       * `.integration` = 3
   * BraintreeApplePay
