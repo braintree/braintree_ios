@@ -1165,6 +1165,8 @@
 				BE9FB82C28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift */,
 				BE63A3A6288F3026001936DA /* BTPostalAddress.swift */,
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
+				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
+				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				BEBC6E5D2927CF59004E25A0 /* Braintree.h */,
 			);
@@ -1251,8 +1253,6 @@
 				BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */,
 				BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */,
 				800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */,
-				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
-				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
