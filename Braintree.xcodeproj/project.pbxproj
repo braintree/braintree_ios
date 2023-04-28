@@ -1203,7 +1203,6 @@
 				BECE564A28F9B306001B0F25 /* BTAnalyticsMetadata_Tests.swift */,
 				BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */,
 				8053F05329FAB6B00076F988 /* FPTIBatchData_Tests.swift */,
-				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
 				BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */,
 			);
 			path = Analytics;
@@ -1614,7 +1613,6 @@
 			isa = PBXGroup;
 			children = (
 				8053F05529FAB6FF0076F988 /* Analytics */,
-				A9E5C23524FD703B00EE691F /* BraintreeCoreTests-Bridging-Header.h */,
 				842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */,
 				A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */,
 				030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */,
@@ -1629,6 +1627,8 @@
 				805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */,
 				A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */,
 				A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */,
+				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
+				A9E5C23524FD703B00EE691F /* BraintreeCoreTests-Bridging-Header.h */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
 			);
