@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "6.0.0-beta2"
+  s.version          = "6.0.0-beta3"
   s.summary          = "Braintree iOS SDK: Helps you accept card and alternative payments in your iOS app."
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -49,8 +49,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PaymentFlow" do |s|
-    s.source_files = "Sources/BraintreePaymentFlow/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
+    s.source_files = "Sources/BraintreePaymentFlow/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/DataCollector"
   end
@@ -74,8 +73,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "ThreeDSecure" do |s|
-    s.source_files = "Sources/BraintreeThreeDSecure/**/*.{h,m}"
-    s.public_header_files = "Sources/BraintreeThreeDSecure/Public/BraintreeThreeDSecure/*.h"
+    s.source_files = "Sources/BraintreeThreeDSecure/**/*.{swift}"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PaymentFlow"
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"

@@ -4,10 +4,7 @@ import Foundation
 // NEXT_MAJOR_VERSION (v7): when all modules are converted to Swift, we should used a var on this enum for the description vs using a separate class as a wrapper for Obj-C compatibility
 // NEXT_MAJOR_VERSION (v7): use Foundations Logger instead of NSLog once all modules are in Swift
 @objc public enum BTLogLevel: Int {
-    
-    /// Suppress all log output
-    case none
-    
+
     /// Only log critical issues (e.g. irrecoverable errors)
     case critical
     

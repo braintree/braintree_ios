@@ -60,11 +60,11 @@ import BraintreeCore
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
         if returnURLScheme == "" {
-            NSLog("%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", BTLogLevelDescription.string(for: .critical) ?? "[BraintreeSDK] CRITICAL")
+            NSLog("%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", BTLogLevelDescription.string(for: .critical))
             completion(nil, BTVenmoError.appNotAvailable)
             return
         } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) {
-            NSLog("%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)", BTLogLevelDescription.string(for: .critical) ?? "[BraintreeSDK] CRITICAL", bundleIdentifier, returnURLScheme)
+            NSLog("%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)", BTLogLevelDescription.string(for: .critical), bundleIdentifier, returnURLScheme)
         }
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -359,12 +359,14 @@ import BraintreeCore
 // MARK: - BTAppContextSwitchClient Protocol Conformance
 
 extension BTVenmoClient: BTAppContextSwitchClient {
-
+    
+    /// :nodoc:
     @objc public static func handleReturnURL(_ url: URL) {
         venmoClient?.handleOpen(url)
         BTVenmoClient.venmoClient = nil
     }
-
+    
+    /// :nodoc:
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
         BTVenmoAppSwitchReturnURL.isValid(url: url)
     }

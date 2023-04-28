@@ -10,19 +10,7 @@ __Note on Translations:__ We cannot accept language translation requests. We sup
 
 ## Development
 
-Clone this repo and ensure you have [CocoaPods](http://cocoapods.org/) version 1.11.3 installed to run the project. If you have CocoaPods installed but are unsure of the version, you can run the following:
-```
-pod --version
-```
-
-
-Once you've installed CocoaPods you can install the project's development dependencies:
-
-```
-pod install
-```
-
-Read our [development guidelines](DEVELOPMENT.md) to get a sense of how we think about working on this codebase.
+See our instructions for running the [Demo app](README.md#demo), and [tests](DEVELOPMENT.md#tests).
 
 ## Environments
 

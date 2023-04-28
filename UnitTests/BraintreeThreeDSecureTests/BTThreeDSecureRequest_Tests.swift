@@ -1,5 +1,6 @@
 import XCTest
 @testable import BraintreeTestShared
+@testable import BraintreeThreeDSecure
 
 class BTThreeDSecureRequest_Tests: XCTestCase {
 
@@ -8,24 +9,24 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     func testAccountTypeAsString_whenAccountTypeIsCredit_returnsCredit() {
         let request = BTThreeDSecureRequest()
         request.accountType = .credit
-        XCTAssertEqual(request.accountTypeAsString, "credit")
+        XCTAssertEqual(request.accountType.stringValue, "credit")
     }
 
     func testAccountTypeAsString_whenAccountTypeIsDebit_returnsDebit() {
         let request = BTThreeDSecureRequest()
         request.accountType = .debit
-        XCTAssertEqual(request.accountTypeAsString, "debit")
+        XCTAssertEqual(request.accountType.stringValue, "debit")
     }
 
     func testAccountTypeAsString_whenAccountTypeIsUnspecified_returnsNil() {
         let request = BTThreeDSecureRequest()
         request.accountType = .unspecified
-        XCTAssertEqual(request.accountTypeAsString, nil)
+        XCTAssertEqual(request.accountType.stringValue, nil)
     }
 
     func testAccountTypeAsString_whenAccountTypeIsNotSet_returnsNil() {
         let request = BTThreeDSecureRequest()
-        XCTAssertEqual(request.accountTypeAsString, nil)
+        XCTAssertEqual(request.accountType.stringValue, nil)
     }
 
     // MARK: - shippingMethodAsString
@@ -33,48 +34,48 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     func testShippingMethodAsString_whenShippingMethodIsSameDay_returns01() {
         let request = BTThreeDSecureRequest()
         request.shippingMethod = .sameDay
-        XCTAssertEqual(request.shippingMethodAsString, "01")
+        XCTAssertEqual(request.shippingMethod.stringValue, "01")
     }
 
     func testShippingMethodAsString_whenShippingMethodIsExpedited_returns02() {
         let request = BTThreeDSecureRequest()
         request.shippingMethod = .expedited
-        XCTAssertEqual(request.shippingMethodAsString, "02")
+        XCTAssertEqual(request.shippingMethod.stringValue, "02")
     }
 
     func testShippingMethodAsString_whenShippingMethodIsPriority_returns03() {
         let request = BTThreeDSecureRequest()
         request.shippingMethod = .priority
-        XCTAssertEqual(request.shippingMethodAsString, "03")
+        XCTAssertEqual(request.shippingMethod.stringValue, "03")
     }
 
     func testShippingMethodAsString_whenShippingMethodIsGround_returns04() {
         let request = BTThreeDSecureRequest()
         request.shippingMethod = .ground
-        XCTAssertEqual(request.shippingMethodAsString, "04")
+        XCTAssertEqual(request.shippingMethod.stringValue, "04")
     }
 
     func testShippingMethodAsString_whenShippingMethodIsElectronicDelivery_returns05() {
         let request = BTThreeDSecureRequest()
         request.shippingMethod = .electronicDelivery
-        XCTAssertEqual(request.shippingMethodAsString, "05")
+        XCTAssertEqual(request.shippingMethod.stringValue, "05")
     }
 
     func testShippingMethodAsString_whenShippingMethodIsShipToStore_returns06() {
         let request = BTThreeDSecureRequest()
         request.shippingMethod = .shipToStore
-        XCTAssertEqual(request.shippingMethodAsString, "06")
+        XCTAssertEqual(request.shippingMethod.stringValue, "06")
     }
 
     func testShippingMethodAsString_whenShippingMethodIsUnspecified_returnsNil() {
         let request = BTThreeDSecureRequest()
         request.shippingMethod = .unspecified
-        XCTAssertEqual(request.shippingMethodAsString, nil)
+        XCTAssertEqual(request.shippingMethod.stringValue, nil)
     }
 
     func testShippingMethodAsString_whenShippingMethodIsNotSet_returnsNil() {
         let request = BTThreeDSecureRequest()
-        XCTAssertEqual(request.shippingMethodAsString, nil)
+        XCTAssertEqual(request.shippingMethod.stringValue, nil)
     }
 
     // MARK: - requestedExemptionTypeAsString
@@ -82,55 +83,36 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsLowValue_returnsLowValue() {
         let request = BTThreeDSecureRequest()
         request.requestedExemptionType = .lowValue
-        XCTAssertEqual(request.requestedExemptionTypeAsString, "low_value")
+        XCTAssertEqual(request.requestedExemptionType.stringValue, "low_value")
     }
 
     func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsSecureCorporate_returnsSecureCorporate() {
         let request = BTThreeDSecureRequest()
         request.requestedExemptionType = .secureCorporate
-        XCTAssertEqual(request.requestedExemptionTypeAsString, "secure_corporate")
+        XCTAssertEqual(request.requestedExemptionType.stringValue, "secure_corporate")
     }
 
     func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsTrustedBeneficiary_returnsTrustedBeneficiary() {
         let request = BTThreeDSecureRequest()
         request.requestedExemptionType = .trustedBeneficiary
-        XCTAssertEqual(request.requestedExemptionTypeAsString, "trusted_beneficiary")
+        XCTAssertEqual(request.requestedExemptionType.stringValue, "trusted_beneficiary")
     }
 
     func testRequestedExemptionTypeAsString_whenRequestedExemptionTypeIsTransactionRiskAnalysis_returnsTransactionRiskAnalysis() {
         let request = BTThreeDSecureRequest()
         request.requestedExemptionType = .transactionRiskAnalysis
-        XCTAssertEqual(request.requestedExemptionTypeAsString, "transaction_risk_analysis")
+        XCTAssertEqual(request.requestedExemptionType.stringValue, "transaction_risk_analysis")
     }
 
     func testRequestedExemptionTypeAsString_whenAccountTypeIsUnspecified_returnsNil() {
         let request = BTThreeDSecureRequest()
         request.requestedExemptionType = .unspecified
-        XCTAssertEqual(request.requestedExemptionTypeAsString, nil)
+        XCTAssertEqual(request.requestedExemptionType.stringValue, nil)
     }
 
     func testRequestedExemptionTypeAsString_whenAccountTypeIsNotSet_returnsNil() {
         let request = BTThreeDSecureRequest()
-        XCTAssertEqual(request.requestedExemptionTypeAsString, nil)
-    }
-
-    // MARK: - versionRequested and versionRequestedAsString
-
-    func testVersionRequested_defaultsToVersion2() {
-        let request = BTThreeDSecureRequest()
-        XCTAssertEqual(request.versionRequested, .version2)
-    }
-
-    func testVersionRequestedAsString_whenVersion1IsRequested_returns1() {
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version1
-        XCTAssertEqual(request.versionRequestedAsString, "1")
-    }
-
-    func testVersionRequestedAsString_whenVersion2IsRequested_returns2() {
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
-        XCTAssertEqual(request.versionRequestedAsString, "2")
+        XCTAssertEqual(request.requestedExemptionType.stringValue, nil)
     }
 
     // MARK: - handleRequest
@@ -159,53 +141,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    // MARK: - processLookupResult
-    
-    func testProcessLookupResult_when3DSv1_constructsRedirectUrl() {
-
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version1
-
-        let jsonString =
-            """
-            {
-                "lookup": {
-                    "acsUrl": "www.someAcsUrl.com",
-                    "md": "someMd",
-                    "pareq": "somePareq",
-                    "termUrl": "www.someTermUrl.com",
-                    "threeDSecureVersion": "1.0",
-                    "transactionId": "someTransactionId"
-                },
-                "paymentMethod": {
-                    "nonce": "someLookupNonce",
-                    "threeDSecureInfo": {
-                        "liabilityShiftPossible": true,
-                        "liabilityShifted": false
-                    }
-                }
-            }
-            """
-
-        let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
-        let lookupResult = BTThreeDSecureResult(json: json)
-        
-        let configuration = BTConfiguration(json: BTJSON(value: ["assetsUrl": "https://assets.com"]))
-        
-        let mockPaymentFlowClientDelegate = MockPaymentFlowClientDelegate()
-        mockPaymentFlowClientDelegate._returnURLScheme = "com.braintreepayments.Demo.payments"
-        
-        let expectation = self.expectation(description: "Calls onPaymentWithURL with result")
-        mockPaymentFlowClientDelegate.onPaymentWithURLHandler = { url, error in
-            XCTAssertNotNil(url)
-            expectation.fulfill()
-        }
-        request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
-        
-        request.processLookupResult(lookupResult, configuration: configuration)
-        waitForExpectations(timeout: 1.0, handler: nil)
-    }
-    
     // MARK: - handleOpenURL
     
     func testHandleOpenURL_whenAuthenticationSucceeds_returnsResult() {
@@ -225,28 +160,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         }
         
         let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
-        request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
-        
-        request.handleOpen(url)
-        
-        waitForExpectations(timeout: 1.0, handler: nil)
-    }
-    
-    func testHandleOpenURL_whenAuthenticationFailed_andVersion1Requested_returnsError() {
-        let url = URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22threeDSecureInfo%22:%7B%22liabilityShifted%22:false,%22liabilityShiftPossible%22:true%7D,%22error%22:%7B%22message%22:%22Failed+to+authenticate,+please+try+a+different+form+of+payment.%22%7D,%22success%22:false%7D")!
-        
-        let expectation = self.expectation(description: "Calls onPaymentComplete with error")
-        let mockPaymentFlowClientDelegate = MockPaymentFlowClientDelegate()
-        
-        mockPaymentFlowClientDelegate.onPaymentCompleteHandler = { result, error in
-            XCTAssertNil(result)
-            XCTAssertEqual(error?.localizedDescription, "Failed to authenticate, please try a different form of payment.")
-            expectation.fulfill()
-        }
-        
-        let request = BTThreeDSecureRequest()
-        request.versionRequested = .version1
         request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
         
         request.handleOpen(url)
@@ -267,7 +180,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         }
         
         let request = BTThreeDSecureRequest()
-        request.versionRequested = .version2
         request.paymentFlowClientDelegate = mockPaymentFlowClientDelegate
         
         request.handleOpen(url)
