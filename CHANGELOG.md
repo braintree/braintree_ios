@@ -7,6 +7,7 @@
     * Add `BTThreeDSecureClient`
       * Remove `BTPaymentFlowClient+ThreeDSecure` extension
       * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
+      * Remove `BTThreeDSecureError.cannotCastRequest` case
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`

@@ -78,7 +78,7 @@ import BraintreeCore
         
     /// Creates a stringified JSON object containing the information necessary to perform a lookup.
     /// - Parameters:
-    ///   - request: The `BTPaymentFlowRequest` object where prepareLookup was called.
+    ///   - request: The `BTThreeDSecureRequest` object where prepareLookup was called.
     ///   - completion: This completion will be invoked exactly once with the client payload string or an error.
     @objc(prepareLookup:completion:)
     public func prepareLookup(
@@ -133,7 +133,7 @@ import BraintreeCore
 
     /// Creates a stringified JSON object containing the information necessary to perform a lookup.
     /// - Parameters:
-    ///   - request: The `BTPaymentFlowRequest` object where prepareLookup was called.
+    ///   - request: The `BTThreeDSecureRequest` object where prepareLookup was called.
     /// - Returns: On success, you will receive a client payload string
     /// - Throws: An `Error` describing the failure
     public func prepareLookup(_ request: BTThreeDSecureRequest) async throws -> String {
