@@ -359,12 +359,14 @@ import BraintreeCore
 // MARK: - BTAppContextSwitchClient Protocol Conformance
 
 extension BTVenmoClient: BTAppContextSwitchClient {
-
+    
+    /// :nodoc:
     @objc public static func handleReturnURL(_ url: URL) {
         venmoClient?.handleOpen(url)
         BTVenmoClient.venmoClient = nil
     }
-
+    
+    /// :nodoc:
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
         BTVenmoAppSwitchReturnURL.isValid(url: url)
     }

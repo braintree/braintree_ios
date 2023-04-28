@@ -1,5 +1,6 @@
 import Foundation
 
+/// :nodoc:
 @objc public protocol BTAppContextSwitchClient: AnyObject {
     
     /// :nodoc: Determine whether the return URL can be handled.
