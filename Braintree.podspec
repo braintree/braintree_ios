@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Core" do |s|
-    s.source_files  = "Sources/BraintreeCore/*.{swift,h}"
+    s.source_files  = "Sources/BraintreeCore/**/*.{swift,h}"
     s.public_header_files = "Sources/BraintreeCore/*.h"
   end
 
