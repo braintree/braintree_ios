@@ -1,6 +1,7 @@
 import UIKit
 
 // TODO: - Update to mirror params sent in Android and JS SDKs. Currently these analytics details params are being sent in all POST bodies.
+// JIRA - DTBTSDK-2683
 struct BTAnalyticsMetadata {
 
     // MARK: Metadata Properties

@@ -234,6 +234,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
+        // TODO: - Investigate for parity on JS and Android
+        // JIRA - DTBTSDK-2682
         if case .authorizationFingerprint(let fingerprint) = clientAuthorization,
            !baseURL.isPayPalURL {
             mutableParameters["authorization_fingerprint"] = fingerprint

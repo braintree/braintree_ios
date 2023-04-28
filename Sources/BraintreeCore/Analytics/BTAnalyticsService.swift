@@ -148,7 +148,7 @@ class BTAnalyticsService: Equatable {
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.environment,
             integrationType: apiClient.metadata.integrationString,
-            merchantID: "", // TODO: - In follow-up PR, extract merchantID at ClientToken & TokenizationKey class levels
+            merchantID: "", // TODO: - In follow-up PR, extract merchantID at ClientToken & TokenizationKey class levels. JIRA - DTBTSDK-2684
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )
