@@ -7,21 +7,6 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
-<<<<<<< HEAD
-2. [Carthage](#carthage)
-3. [Braintree Core](#braintree-core)
-4. [Venmo](#venmo)
-5. [PayPal](#paypal)
-6. [PayPal Native Checkout](#paypal-native-checkout)
-7. [Data Collector](#data-collector)
-8. [Union Pay](#union-pay)
-9. [SEPA Direct Debit](#sepa-direct-debit)
-10. [Payment Flow](#payment-flow)
-11. [American Express](#american-express)
-12. [Apple Pay](#apple-pay)
-13. [Card](#card)
-14. [3D Secure](#3d-secure)
-=======
 1. [Carthage](#carthage)
 1. [Venmo](#venmo)
 1. [PayPal](#paypal)
@@ -29,8 +14,8 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 1. [Data Collector](#data-collector)
 1. [Union Pay](#union-pay)
 1. [SEPA Direct Debit](#sepa-direct-debit)
-1. [3DS & Local Payments](#3ds-and-local-payments)
->>>>>>> master
+1. [Local Payments](#local-payments)
+1. [3D Secure](#3d-secure)
 
 ## Supported Versions
 
@@ -179,26 +164,11 @@ sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, e
 }
 ```
 
-## 3DS and Local Payments
-The following changes apply to both 3D Secure and Local Payment Methods as they both use the underlying `BraintreePaymentFlow` module:
+## Local Payments
 
-We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method and 3D Secure flows. With this change, you no longer need to:
+We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method flow. With this change, you no longer need to:
   * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
   * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`
-
-## 3D Secure
-
-Instantiate a `BTThreeDSecureClient` instead of a `BTPaymentFlowDriver`. The result returned in the `startPaymentFlow()` completion no longer needs to be cast to `BTThreeDSecureResult`.
-
-```diff
-- let paymentFlowDriver = BTPaymentFlowDriver(apiClient: self.apiClient)
-- paymentFlowDriver.viewControllerPresentingDelegate = self
-+ let threeDSecureClient = BTThreeDSecureClient(apiClient: self.apiClient)
-
- cardClient.tokenize(cardDetails) { (tokenizedCard, error) in
-     // Handle error
-
-     request.threeDSecureRequestDelegate = self
 
 ## 3D Secure
 
