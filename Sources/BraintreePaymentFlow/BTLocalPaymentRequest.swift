@@ -59,13 +59,12 @@ import BraintreeDataCollector
     public weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
     
     // MARK: - Internal Properties
-    
-    var paymentID: String?
-    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
-    var correlationID: String?
     var paymentFlowAPIClient: BTAPIClient? {
-        return paymentFlowClientDelegate?.apiClient()
+        paymentFlowClientDelegate?.apiClient()
     }
+    var paymentID: String?
+    var correlationID: String?
+    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
 }
 
 // MARK: - BTPaymentFlowRequestDelegate Protocol Conformance

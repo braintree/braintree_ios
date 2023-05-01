@@ -19,8 +19,7 @@ import BraintreeCore
     public var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Public Methods
-    
-    var webAuthenticationSession: WebAuthenticationSession
+ 
     /// Initialize a new BTPaymentFlowClient instance.
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
@@ -35,6 +34,9 @@ import BraintreeCore
             object: nil
         )
     }
+    
+    // MARK: - Internal Methods
+    var webAuthenticationSession: WebAuthenticationSession
     
     @objc func applicationDidBecomeActive(notification: Notification) {
            returnedToAppAfterPermissionAlert = true
