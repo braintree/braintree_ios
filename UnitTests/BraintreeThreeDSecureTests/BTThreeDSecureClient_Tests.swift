@@ -469,13 +469,10 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 4)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.selected"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.initialized"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.started"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.3ds-version.1.0"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.challenge-presented.true"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.challengeRequired))
     }
-
+    
     func testStartPayment_failure_sendsAnalyticsEvents() {
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
@@ -491,11 +488,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 4)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.selected"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.initialized"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.started"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.failed"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.failed"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
     // MARK: - prepareLookup

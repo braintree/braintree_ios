@@ -57,7 +57,7 @@ class BTThreeDSecureAuthenticateJWT {
                 // so that merchants can transact with the lookup nonce if desired.
                 threeDSecureResult.tokenizedCard = lookupResult?.tokenizedCard
             }
-
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthSucceeded)
             completion(threeDSecureResult, nil)
             return
         }

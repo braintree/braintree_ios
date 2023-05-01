@@ -29,7 +29,7 @@ import BraintreeCore
     ///   - request: A BTThreeDSecureRequest request.
     ///   - completionBlock: This completion will be invoked exactly once when the 3DS flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.selected")
+        apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyStarted)
         
         self.request = request
         self.merchantCompletion = completion
@@ -235,13 +235,10 @@ import BraintreeCore
     }
         
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) {
-        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.started")
-                
         performThreeDSecureLookup(request) { lookupResult, error in
             DispatchQueue.main.async {
                 guard let lookupResult, error == nil else {
-                    self.apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
-                    self.apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.failed")
+                    self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyFailed)
                     self.merchantCompletion?(nil, error)
                     return
                 }
@@ -251,7 +248,9 @@ import BraintreeCore
 
                 self.request?.threeDSecureRequestDelegate?.onLookupComplete(request, lookupResult: lookupResult) {
                     let requiresUserAuthentication = lookupResult.lookup?.requiresUserAuthentication ?? false
-                    self.apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.challenge-presented.\(self.stringFor(requiresUserAuthentication))")
+                    if requiresUserAuthentication {
+                        self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeRequired)
+                    }
                     self.process(lookupResult: lookupResult, configuration: configuration)
                 }
             }
@@ -260,6 +259,8 @@ import BraintreeCore
     
     private func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
         if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
+            // looup succeeded
+            // verify succeeded
             merchantCompletion?(lookupResult, nil)
             return
         }
@@ -272,11 +273,12 @@ import BraintreeCore
     private func performV2Authentication(with lookupResult: BTThreeDSecureResult) {
         threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
             guard let result else {
-                self.apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.failed")
+                self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyFailed)
                 self.merchantCompletion?(nil, error)
                 return
             }
 
+            self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
             self.logThreeDSecureCompletedAnalytics(forResult: lookupResult, apiClient: self.apiClient)
             self.merchantCompletion?(result, error)
         }
