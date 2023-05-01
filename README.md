@@ -10,7 +10,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 v6 is the latest major version of Braintree iOS and is currently in Beta. For stable releases, please point to v5 of the SDK. While preparing for general availability, we expect to make breaking changes in the beta releases. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/master/V6_MIGRATION.md).
 
-**The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14+ and Swift 5.7+.
+**The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14.1+ and Swift 5.7.1+.
 
 ## Supported Payment Methods
 
@@ -79,8 +79,6 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 
 ## Demo
-
-A demo app is included in the project. To run it you will need to do the following:
 
 1. Run `pod install`
     * There is a known M1 mac issue with CocoaPods. See [this solution](https://github.com/CocoaPods/CocoaPods/issues/10220#issuecomment-730963835) to resolve `ffi` dependency issues.
