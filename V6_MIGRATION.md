@@ -7,18 +7,14 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
-2. [Carthage](#carthage)
-3. [Braintree Core](#braintree-core)
-4. [Venmo](#venmo)
-5. [PayPal](#paypal)
-6. [PayPal Native Checkout](#paypal-native-checkout)
-7. [Data Collector](#data-collector)
-8. [Union Pay](#union-pay)
-9. [SEPA Direct Debit](#sepa-direct-debit)
-10. [Payment Flow](#payment-flow)
-11. [American Express](#american-express)
-12. [Apple Pay](#apple-pay)
-13. [Card](#card)
+1. [Carthage](#carthage)
+1. [Venmo](#venmo)
+1. [PayPal](#paypal)
+1. [PayPal Native Checkout](#paypal-native-checkout)
+1. [Data Collector](#data-collector)
+1. [Union Pay](#union-pay)
+1. [SEPA Direct Debit](#sepa-direct-debit)
+1. [3DS & Local Payments](#3ds-and-local-payments)
 
 ## Supported Versions
 
@@ -30,20 +26,6 @@ v6 requires Carthage v0.38.0+, which adds support for xcframework binary depende
 
 ```
 carthage update --use-xcframeworks
-```
-
-## Braintree Core
-`BTAppContextSwitchDriver` has been renamed to `BTAppContextSwitchClient`
-
-`BTViewControllerPresentingDelegate` protocol functions `paymentDriver` are renamed to `paymentClient` now takes in the `client` parameter instead of `driver`:
-```
-public func paymentClient(_ client: Any, requestsDismissalOf viewController: UIViewController) {
-    // implementation here
-}
-
-public func paymentClient(_ client: Any, requestsPresentationOf viewController: UIViewController) {
-    // implementation here
-}
 ```
 
 ## Venmo
@@ -76,8 +58,6 @@ venmoClient.tokenize(venmoRequest) { venmoAccountNonce, error in
 
 ## PayPal
 `BTPayPalDriver` has been renamed to `BTPayPalClient`
-
-The property `BTPayPalRequest.activeWindow` has been removed
 
 Removed `BTPayPalDriver.requestOneTimePayment` and `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenize`:
 ```
@@ -135,11 +115,7 @@ payPalNativeCheckoutClient.tokenize(request) { payPalNativeCheckoutAccountNonce,
 ```
 
 ## Data Collector
-Note: Kount is no longer supported through the SDK in this version. Kount will continue to be supported in v5 of the SDK.
-
-`PayPalDataCollector` module has been removed. All data collection for payment flows will use the `BraintreeDataCollector` module.
-
-For merchants collecting device data for PayPal and Local Payment methods will now need to replace the `PayPalDataCollector` module with the `BraintreeDataCollector` module in their integration.
+`PayPalDataCollector` module has been removed in favor of `BraintreeDataCollector`.
 
 The new integration for collecting device data will look like the following:
 ```
@@ -150,6 +126,8 @@ dataCollector.collectDeviceData { deviceData, error in
     // handle response
 }
 ```
+
+Note: Kount is no longer supported.
 
 ## Union Pay
 The `BraintreeUnionPay` module, and all containing classes, was removed in v6. UnionPay cards can now be processed as regular cards, through the `BraintreeCard` module. You no longer need to manage card enrollment via SMS authorization. 
@@ -185,22 +163,34 @@ sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, e
 }
 ```
 
-## Payment Flow
-The following changes apply to both 3D Secure and Local Payment Methods as they both use the underlying Payment Flow module:
+## 3DS and Local Payments
+The following changes apply to both 3D Secure and Local Payment Methods as they both use the underlying `BraintreePaymentFlow` module:
 
-We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method and 3D Secure flows. With this change, you no longer need to register a URL Schemes for these flows or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method or handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)` methods.
+We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method and 3D Secure flows. With this change, you no longer need to:
+  * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
+  * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`
 
-Your view no longer needs to conform to the `BTViewControllerPresentingDelegate` protocol. The methods `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsPresentationOfViewController: UIViewController)` and `BTPaymentFlowClient.paymentClient(BTPaymentFlowClient, requestsDismissalOfViewController: UIViewController)` have been removed. 
+## 3D Secure
 
-Additionally, you do not need to assign the `BTPaymentFlowClient.viewControllerPresentingDelegate` property in your view.
+Instantiate a `BTThreeDSecureClient` instead of a `BTPaymentFlowDriver`. The result returned in the `startPaymentFlow()` completion no longer needs to be cast to `BTThreeDSecureResult`.
 
-## American Express
-`BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` has been renamed to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
+```diff
+- let paymentFlowDriver = BTPaymentFlowDriver(apiClient: self.apiClient)
+- paymentFlowDriver.viewControllerPresentingDelegate = self
++ let threeDSecureClient = BTThreeDSecureClient(apiClient: self.apiClient)
 
-## Apple Pay
-`BTApplePayClient.tokenizeApplePay(_:completion:)` has been renamed to `BTApplePayClient.tokenize(_:completion:)`
+ cardClient.tokenize(cardDetails) { (tokenizedCard, error) in
+     // Handle error
 
-`BTApplePayClient.paymentRequest()` has been renamed to `BTApplePayClient.makePaymentRequest()`
+     request.threeDSecureRequestDelegate = self
 
-## Card
-`BTCardClient.tokenizeCard(_:completion)` has been renamed to `BTCardClient.tokenize(_:completion)`
+-    self.paymentFlowDriver.startPaymentFlow(request) { (result, error) in
++    self.threeDSecureClient.startPaymentFlow(request) { (result, error) in
+-        guard let result = result as? BTThreeDSecureResult else { return }
+
+         // Handle result
+    }
+ }
+```
+
+The `BTViewControllerPresentingDelegate` has been removed, since 3DS 1 is no longer supported.

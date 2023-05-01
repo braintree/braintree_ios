@@ -23,9 +23,6 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
     /// The BTAPIClient was invalid or missing
     case invalidAPIClient
 
-    /// Cannot cast BTPaymentFlowRequest to BTThreeDSecureRequest
-    case cannotCastRequest
-
     /// The request could not be serialized.
     case jsonSerializationFailure
 
@@ -49,8 +46,6 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return 5
         case .invalidAPIClient:
             return 6
-        case .cannotCastRequest:
-            return 7
         case .jsonSerializationFailure:
             return 8
         }
@@ -72,8 +67,6 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: "The user canceled the 3DS 2 flow."]
         case .invalidAPIClient:
             return [NSLocalizedDescriptionKey: "The BTAPIClient was invalid or missing."]
-        case .cannotCastRequest:
-            return [NSLocalizedDescriptionKey: "Cannot cast BTPaymentFlowRequest to BTThreeDSecureRequest"]
         case .jsonSerializationFailure:
             return [NSLocalizedDescriptionKey: "The request could not be serialized."]
         }
