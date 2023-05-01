@@ -86,6 +86,12 @@ import BraintreeCore
                 return
             }
             
+            /// Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
+            if ((request.collectCustomerShippingAddress || request.collectCustomerBillingAddress) && !configuration.isVenmoEnrichedCustomerDataEnabled) {
+                completion(nil, BTVenmoError.ecdDisabled)
+                return
+            }
+            
             let merchantProfileID = request.profileID ?? configuration.venmoMerchantID
             let bundleDisplayName = self.bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
             

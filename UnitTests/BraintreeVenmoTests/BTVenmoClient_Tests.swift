@@ -131,7 +131,43 @@ class BTVenmoClient_Tests: XCTestCase {
         }
     }
     
+    func testTokenizeVenmoAccount_whenEcdDisabled_doesNotAllowCollectingAddresses() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "payWithVenmo" : [
+                "environment": "sandbox",
+                "merchantId": "venmo_merchant_id",
+                "accessToken": "venmo-access-token",
+                "enrichedCustomerDataEnabled": false
+            ]
+        ])
+
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.collectCustomerBillingAddress = true
+        venmoRequest.collectCustomerShippingAddress = true
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+        let expectation = expectation(description: "Tokenize fails with error")
+
+        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
+            guard let error = error as NSError? else {return}
+            XCTAssertEqual(error.code, BTVenmoError.ecdDisabled.errorCode)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
     func testTokenizeVenmoAccount_whenCollectAddressFlagsSet_createsPaymentContextWithTheRightFlags() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "payWithVenmo" : [
+                "environment": "sandbox",
+                "merchantId": "venmo_merchant_id",
+                "accessToken": "venmo-access-token",
+                "enrichedCustomerDataEnabled": true
+            ]
+        ])
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoRequest.collectCustomerBillingAddress = true
         venmoRequest.collectCustomerShippingAddress = true
