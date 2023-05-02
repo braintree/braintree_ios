@@ -250,8 +250,6 @@ import BraintreeCore
                     return
                 }
 
-                let threeDSecureVersion = lookupResult.lookup?.threeDSecureVersion ?? "2"
-
                 self.request?.threeDSecureRequestDelegate?.onLookupComplete(request, lookupResult: lookupResult) {
                     let requiresUserAuthentication = lookupResult.lookup?.requiresUserAuthentication ?? false
                     if requiresUserAuthentication {
