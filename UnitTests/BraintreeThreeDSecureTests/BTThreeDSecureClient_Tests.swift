@@ -212,21 +212,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
     
-    func testPerformThreeDSecureLookup_whenNetworkConnectionLost_sendsAnalytics() {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        
-        let expectation = self.expectation(description: "Callback envoked")
-
-        client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.lookup.network-connection.failure"))
-    }
-    
     // MARK: - startPaymentFlow
     
     func testStartPaymentFlow_whenAmountIsNotANumber_throwsError() {
@@ -459,7 +444,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
                 "pareq": "",
                 "md": "",
                 "termUrl": "http://example.com",
-                "threeDSecureVersion": "1.0"
+                "threeDSecureVersion": "2.0"
             ]
         ] as [String : Any]
 

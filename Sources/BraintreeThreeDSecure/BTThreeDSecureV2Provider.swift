@@ -52,10 +52,8 @@ class BTThreeDSecureV2Provider {
         cardinalSession.setup(
             jwtString: cardinalAuthenticationJWT,
             completed: { consumerSessionID in
-                apiClient.sendAnalyticsEvent("ios.three-d-secure.cardinal-sdk.init.setup-completed")
                 completion(["dfReferenceId": consumerSessionID])
             }, validated: { _ in
-                apiClient.sendAnalyticsEvent("ios.three-d-secure.cardinal-sdk.init.setup-failed")
                 completion([:])
             }
         )
@@ -118,11 +116,24 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
         stepUpValidated validateResponse: CardinalResponse!,
         serverJWT: String!
     ) {
-        let actionCodeString = analyticsString(for: validateResponse.actionCode)
-        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.cardinal-sdk.action-code.\(actionCodeString)")
-
         switch validateResponse.actionCode {
-        case .success, .noAction, .failure:
+        case .success:
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
+            BTThreeDSecureAuthenticateJWT.authenticate(
+                jwt: serverJWT,
+                withAPIClient: apiClient,
+                forResult: lookupResult,
+                completion: completionHandler
+            )
+        case .failure:
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
+            BTThreeDSecureAuthenticateJWT.authenticate(
+                jwt: serverJWT,
+                withAPIClient: apiClient,
+                forResult: lookupResult,
+                completion: completionHandler
+            )
+        case .noAction:
             BTThreeDSecureAuthenticateJWT.authenticate(
                 jwt: serverJWT,
                 withAPIClient: apiClient,
@@ -136,7 +147,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
             if validateResponse.errorNumber == 1050 {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
             }
-
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
             notifyError(
                 withDomain: BTThreeDSecureError.errorDomain,
                 errorCode: errorCode,
