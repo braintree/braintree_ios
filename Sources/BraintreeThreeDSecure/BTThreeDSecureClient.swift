@@ -259,8 +259,8 @@ import BraintreeCore
     
     private func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
         if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
-            // looup succeeded
-            // verify succeeded
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded)
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifySucceeded)
             merchantCompletion?(lookupResult, nil)
             return
         }
@@ -279,7 +279,7 @@ import BraintreeCore
             }
 
             self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
-            self.logThreeDSecureCompletedAnalytics(forResult: lookupResult, apiClient: self.apiClient)
+            self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifySucceeded)
             self.merchantCompletion?(result, error)
         }
     }
