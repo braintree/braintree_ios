@@ -130,6 +130,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 completion: completionHandler
             )
         case .noAction:
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
             BTThreeDSecureAuthenticateJWT.authenticate(
                 jwt: serverJWT,
                 withAPIClient: apiClient,

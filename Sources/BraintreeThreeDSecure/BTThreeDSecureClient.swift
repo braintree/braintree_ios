@@ -274,8 +274,8 @@ import BraintreeCore
     
     private func performV2Authentication(with lookupResult: BTThreeDSecureResult) {
         threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
-            guard let result else {
-                if let nsError = error as NSError?, nsError.code == BTThreeDSecureError.canceled.errorCode {
+            guard let result, error == nil else {
+                if let error = error as NSError?, error.code == BTThreeDSecureError.canceled.errorCode {
                     self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyCanceled)
                 } else {
                     self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyFailed)
@@ -285,7 +285,7 @@ import BraintreeCore
             }
 
             self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifySucceeded)
-            self.merchantCompletion?(result, error)
+            self.merchantCompletion?(result, nil)
         }
     }
     
