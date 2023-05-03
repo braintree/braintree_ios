@@ -244,7 +244,6 @@ import BraintreeCore
         performThreeDSecureLookup(request) { lookupResult, error in
             DispatchQueue.main.async {
                 guard let lookupResult, error == nil else {
-                    self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                     self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyFailed)
                     self.merchantCompletion?(nil, error)
                     return
