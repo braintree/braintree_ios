@@ -119,7 +119,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         post(path, parameters: nil, completion: completion)
     }
 
-    // TODO: - Remove in favor of only supporting POST with Codable types
+    // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
     func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }

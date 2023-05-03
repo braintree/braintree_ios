@@ -55,7 +55,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    /// Sends request to FPTI immediately, without checking # of events in queue against flush threshold
+    /// Sends request to FPTI immediately, without checking number of events in queue against flush threshold
     func sendAnalyticsEvent(_ eventName: String, completion: @escaping (Error?) -> Void = { _ in }) {
         DispatchQueue.main.async {
             self.enqueueEvent(eventName)

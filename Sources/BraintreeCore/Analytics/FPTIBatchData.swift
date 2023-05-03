@@ -3,6 +3,7 @@ import UIKit
 
 /// The POST body for a batch upload of FPTI events
 struct FPTIBatchData: Codable {
+    
     let events: [EventsContainer] // Single-element "events" array required by FPTI formatting
     
     init(metadata: Metadata, events fptiEvents: [Event]?) {
