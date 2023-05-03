@@ -170,4 +170,27 @@ We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in 
   * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
   * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`
 
-The `BTViewControllerPresentingDelegate` has been removed.
+## 3D Secure
+
+Instantiate a `BTThreeDSecureClient` instead of a `BTPaymentFlowDriver`. The result returned in the `startPaymentFlow()` completion no longer needs to be cast to `BTThreeDSecureResult`.
+
+```diff
+- let paymentFlowDriver = BTPaymentFlowDriver(apiClient: self.apiClient)
+- paymentFlowDriver.viewControllerPresentingDelegate = self
++ let threeDSecureClient = BTThreeDSecureClient(apiClient: self.apiClient)
+
+ cardClient.tokenize(cardDetails) { (tokenizedCard, error) in
+     // Handle error
+
+     request.threeDSecureRequestDelegate = self
+
+-    self.paymentFlowDriver.startPaymentFlow(request) { (result, error) in
++    self.threeDSecureClient.startPaymentFlow(request) { (result, error) in
+-        guard let result = result as? BTThreeDSecureResult else { return }
+
+         // Handle result
+    }
+ }
+```
+
+The `BTViewControllerPresentingDelegate` has been removed, since 3DS 1 is no longer supported.
