@@ -14,7 +14,8 @@ _Documentation for v6 will be published to https://developer.paypal.com/braintre
 1. [Data Collector](#data-collector)
 1. [Union Pay](#union-pay)
 1. [SEPA Direct Debit](#sepa-direct-debit)
-1. [3DS & Local Payments](#3ds-and-local-payments)
+1. [Local Payments](#local-payments)
+1. [3D Secure](#3d-secure)
 
 ## Supported Versions
 
@@ -163,10 +164,9 @@ sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, e
 }
 ```
 
-## 3DS and Local Payments
-The following changes apply to both 3D Secure and Local Payment Methods as they both use the underlying `BraintreePaymentFlow` module:
+## Local Payments
 
-We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method and 3D Secure flows. With this change, you no longer need to:
+We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method flow. With this change, you no longer need to:
   * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
   * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`
 

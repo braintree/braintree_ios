@@ -195,7 +195,7 @@ NSInteger const BTThreeDSecureCancelCode = 5;
 
         request.v2UICustomization = ui;
         
-        [self.threeDSecureClient startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
+        [self.threeDSecureClient startPaymentFlow:request completion:^(BTThreeDSecureResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
             if (error) {
