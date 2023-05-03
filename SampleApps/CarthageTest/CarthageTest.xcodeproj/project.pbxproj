@@ -50,7 +50,7 @@
 		BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../../Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE777AA127D90DA900487D23 /* BraintreeSEPADirectDebit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeSEPADirectDebit.xcframework; path = ../../Carthage/Build/BraintreeSEPADirectDebit.xcframework; sourceTree = "<group>"; };
 		BE9D76A92A02FD2000DF9023 /* BraintreePayPalNativeCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreePayPalNativeCheckout.xcframework; path = ../../Carthage/Build/BraintreePayPalNativeCheckout.xcframework; sourceTree = "<group>"; };
-		BE9D76AD2A02FE7700DF9023 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = ../../../../../Downloads/PayPalCheckout.xcframework; sourceTree = "<group>"; };
+		BE9D76AD2A02FE7700DF9023 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = ../../Carthage/Build/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
