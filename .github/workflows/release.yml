@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Xcode 14
+      - name: Use Xcode 14.1
         run: sudo xcode-select -switch /Applications/Xcode_14.1.app
 
       - name: Check for unreleased section in changelog
@@ -111,17 +111,6 @@ jobs:
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: pod trunk push Braintree.podspec
-
-  docs:
-    name: Publish Reference Docs
-    runs-on: macOS-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
-
       - name: Publish reference docs
         run: |
           gem install jazzy
