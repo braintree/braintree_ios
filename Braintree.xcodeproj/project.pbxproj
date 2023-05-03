@@ -242,8 +242,6 @@
 		BEBC6F3329380B82004E25A0 /* BTExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBC6F3129380B82004E25A0 /* BTExceptionCatcher.m */; };
 		BEC3F11328A4401E0074DF0F /* BTHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC3F11228A4401E0074DF0F /* BTHTTPError.swift */; };
 		BEC66DBE2901CC9E0030B6B2 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
-		BECE564928F99FD2001B0F25 /* BTAnalyticsMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECE564828F99FD2001B0F25 /* BTAnalyticsMetadata.swift */; };
-		BECE564B28F9B306001B0F25 /* BTAnalyticsMetadata_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECE564A28F9B306001B0F25 /* BTAnalyticsMetadata_Tests.swift */; };
 		BED00CAC28A4504E00D74AEC /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAD28A5419900D74AEC /* BTBinData.swift */; };
 		BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAF28A579D700D74AEC /* BTClientToken.swift */; };
@@ -839,8 +837,6 @@
 		BEBC6F3429380BA6004E25A0 /* BTExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTExceptionCatcher.h; sourceTree = "<group>"; };
 		BEC3F11228A4401E0074DF0F /* BTHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTPError.swift; sourceTree = "<group>"; };
 		BECA56C929C3F0A80098EC3C /* BTThreeDSecureV2UICustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2UICustomization.swift; sourceTree = "<group>"; };
-		BECE564828F99FD2001B0F25 /* BTAnalyticsMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAnalyticsMetadata.swift; sourceTree = "<group>"; };
-		BECE564A28F9B306001B0F25 /* BTAnalyticsMetadata_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAnalyticsMetadata_Tests.swift; sourceTree = "<group>"; };
 		BED00CAD28A5419900D74AEC /* BTBinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTBinData.swift; sourceTree = "<group>"; };
 		BED00CAF28A579D700D74AEC /* BTClientToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken.swift; sourceTree = "<group>"; };
 		BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientTokenError.swift; sourceTree = "<group>"; };
@@ -1198,7 +1194,6 @@
 		8053F05529FAB6FF0076F988 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				BECE564A28F9B306001B0F25 /* BTAnalyticsMetadata_Tests.swift */,
 				BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */,
 				8053F05329FAB6B00076F988 /* FPTIBatchData_Tests.swift */,
 				BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */,
@@ -1246,7 +1241,6 @@
 		80F4F4D529F8A628003EACB1 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				BECE564828F99FD2001B0F25 /* BTAnalyticsMetadata.swift */,
 				BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */,
 				BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */,
 				800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */,
@@ -2695,7 +2689,6 @@
 				574891ED286F7ECA0020DA36 /* BTClientMetadata.swift in Sources */,
 				BE24C66E28E49A730067B11A /* BTAPIClientError.swift in Sources */,
 				BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */,
-				BECE564928F99FD2001B0F25 /* BTAnalyticsMetadata.swift in Sources */,
 				BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */,
 				BC17F9C028D255B9004B18CC /* BTGraphQLSingleErrorNode.swift in Sources */,
 				BE5C8C0328A2C183004F9130 /* BTConfiguration+Extensions.swift in Sources */,
@@ -2990,7 +2983,6 @@
 				BEBC6F282937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift in Sources */,
 				BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */,
 				BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */,
-				BECE564B28F9B306001B0F25 /* BTAnalyticsMetadata_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
