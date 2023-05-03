@@ -263,7 +263,6 @@ import BraintreeCore
     
     private func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
         if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
-            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded)
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifySucceeded)
             merchantCompletion?(lookupResult, nil)
             return
@@ -303,6 +302,7 @@ import BraintreeCore
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { _, error in
             if let error {
+                self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 completion(nil, error)
                 return
             }
@@ -340,6 +340,7 @@ import BraintreeCore
             requestParameters = requestParameters.compactMapValues { $0 }
 
             guard let urlSafeNonce = request.nonce?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+                self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 completion(nil, BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
                 return
             }
@@ -370,20 +371,23 @@ import BraintreeCore
                             let validationErrorsKey = "com.braintreepayments.BTThreeDSecureFlowValidationErrorsKey"
                             userInfo[validationErrorsKey] = error.asDictionary()
                         }
-
+                        self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                         completion(nil, BTThreeDSecureError.failedLookup(userInfo))
                         return
                     }
 
+                    self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                     completion(nil, error)
                     return
                 }
 
                 guard let body else {
+                    self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                     completion(nil, BTThreeDSecureError.noBodyReturned)
                     return
                 }
 
+                self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded) 
                 completion(BTThreeDSecureResult(json: body), nil)
                 return
             }
