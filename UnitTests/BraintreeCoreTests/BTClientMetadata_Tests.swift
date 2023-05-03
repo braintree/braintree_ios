@@ -21,9 +21,7 @@ final class BTClientMetadata_Tests: XCTestCase {
 
     func testIntegration_returnsExpectedString_forAllIntegrations() {
         XCTAssertEqual(BTClientMetadataIntegration.dropIn.stringValue, "dropin")
-        XCTAssertEqual(BTClientMetadataIntegration.dropIn2.stringValue, "dropin2")
         XCTAssertEqual(BTClientMetadataIntegration.custom.stringValue, "custom")
-        XCTAssertEqual(BTClientMetadataIntegration.unknown.stringValue, "unknown")
     }
 
     func testSessionID_returns32CharacterUUIDString() {

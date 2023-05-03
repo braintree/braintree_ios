@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: macOS-12
+    runs-on: macOS-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
 
       - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.0.app
+        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
 
       - name: Check for unreleased section in changelog
         run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
@@ -95,13 +95,13 @@ jobs:
 
   docs:
     name: Publish Reference Docs
-    runs-on: macOS-12
+    runs-on: macOS-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
 
       - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.0.app
+        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
 
       - name: Publish reference docs
         run: |
