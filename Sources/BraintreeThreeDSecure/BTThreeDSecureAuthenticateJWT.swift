@@ -12,8 +12,6 @@ class BTThreeDSecureAuthenticateJWT {
         forResult lookupResult: BTThreeDSecureResult?,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.started")
-
         guard let nonce = lookupResult?.tokenizedCard?.nonce else {
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
             completion(nil, BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
