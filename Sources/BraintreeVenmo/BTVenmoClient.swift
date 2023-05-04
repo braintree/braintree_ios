@@ -255,7 +255,7 @@ import BraintreeCore
                         "nonce": nonce,
                         "details": detailsDictionary,
                         "description": username
-                    ]
+                    ] as [String: Any]
                 )
 
                 let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: json)
