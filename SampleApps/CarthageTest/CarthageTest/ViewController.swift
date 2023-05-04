@@ -8,7 +8,6 @@ import BraintreePaymentFlow
 import BraintreePayPal
 import BraintreeThreeDSecure
 import BraintreeVenmo
-import PayPalCheckout
 import BraintreePayPalNativeCheckout
 import BraintreeSEPADirectDebit
 

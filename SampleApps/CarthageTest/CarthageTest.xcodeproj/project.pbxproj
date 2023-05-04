@@ -25,7 +25,6 @@
 		BE57E0E32846A4FF002CFBAC /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */; };
 		BE777ABD27D9122D00487D23 /* BraintreeSEPADirectDebit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE777AA127D90DA900487D23 /* BraintreeSEPADirectDebit.xcframework */; };
 		BE9D76AA2A02FD2000DF9023 /* BraintreePayPalNativeCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9D76A92A02FD2000DF9023 /* BraintreePayPalNativeCheckout.xcframework */; };
-		BE9D76AE2A02FE7700DF9023 /* PayPalCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9D76AD2A02FE7700DF9023 /* PayPalCheckout.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,7 +49,6 @@
 		BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../../Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE777AA127D90DA900487D23 /* BraintreeSEPADirectDebit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeSEPADirectDebit.xcframework; path = ../../Carthage/Build/BraintreeSEPADirectDebit.xcframework; sourceTree = "<group>"; };
 		BE9D76A92A02FD2000DF9023 /* BraintreePayPalNativeCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreePayPalNativeCheckout.xcframework; path = ../../Carthage/Build/BraintreePayPalNativeCheckout.xcframework; sourceTree = "<group>"; };
-		BE9D76AD2A02FE7700DF9023 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = ../../Carthage/Build/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +68,6 @@
 				429925BB266189020085F77D /* BraintreeCard.xcframework in Frameworks */,
 				429925C1266189020085F77D /* BraintreeThreeDSecure.xcframework in Frameworks */,
 				429925AD266189010085F77D /* BraintreeDataCollector.xcframework in Frameworks */,
-				BE9D76AE2A02FE7700DF9023 /* PayPalCheckout.xcframework in Frameworks */,
 				429925AB266189010085F77D /* BraintreeAmericanExpress.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
