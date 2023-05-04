@@ -35,6 +35,9 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
 
     /// The authorization fingerprint is invalid
     case invalidAuthorizationFingerprint
+    
+    /// Failed to convert `Encodable` type to `[String: Any]` dictionary
+    case serializationError(String)
 
     static var errorDomain: String {
         BTCoreConstants.httpErrorDomain
@@ -64,6 +67,8 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
             return 9
         case .invalidAuthorizationFingerprint:
             return 10
+        case .serializationError:
+            return 11
         }
     }
 
@@ -91,6 +96,8 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: "Client API URL is not a valid URL."]
         case .invalidAuthorizationFingerprint:
             return [NSLocalizedDescriptionKey: "BTClientToken contained a nil or empty authorizationFingerprint."]
+        case .serializationError(let errorDescription):
+            return [NSLocalizedDescriptionKey: errorDescription]
         }
     }
 }
