@@ -228,6 +228,7 @@
 		BE9BD7C52888467700022983 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
 		BE9BD7EB28884EA100022983 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BE9BD7EF2888517300022983 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
+		BE9D76BC2A03F92F00DF9023 /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BE9D76BB2A03F92F00DF9023 /* PayPalCheckout */; };
 		BE9EC0982899CF040022EC63 /* BTAPIPinnedCertificates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC0972899CF040022EC63 /* BTAPIPinnedCertificates.swift */; };
 		BE9FB82B2898324C00D6FE2F /* BTPaymentMethodNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9FB82A2898324C00D6FE2F /* BTPaymentMethodNonce.swift */; };
 		BE9FB82D28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9FB82C28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift */; };
@@ -251,7 +252,6 @@
 		BEDB820829B675DC00075AF3 /* BTVenmoAccountNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDB820729B675DC00075AF3 /* BTVenmoAccountNonce.swift */; };
 		BEDB820A29B7A9E600075AF3 /* BTVenmoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDB820929B7A9E600075AF3 /* BTVenmoClient.swift */; };
 		BEE2E4A728FDB64400C03FDD /* BTAnalyticsService_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */; };
-		BEE2E4B72900436600C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B62900436600C03FDD /* PayPalCheckout */; };
 		BEE2E4B9290043A200C03FDD /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BEE2E4B8290043A200C03FDD /* PayPalCheckout */; };
 		BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */; };
 		BEEBC3C029D5DD16009C7F77 /* BTThreeDSecureV2UICustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECA56C929C3F0A80098EC3C /* BTThreeDSecureV2UICustomization.swift */; };
@@ -908,7 +908,7 @@
 			files = (
 				BEBC6E4B29258FD4004E25A0 /* BraintreeCore.framework in Frameworks */,
 				3DF4B4CD285B77A80072DC60 /* BraintreePayPal.framework in Frameworks */,
-				BEE2E4B72900436600C03FDD /* PayPalCheckout in Frameworks */,
+				BE9D76BC2A03F92F00DF9023 /* PayPalCheckout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1845,7 +1845,7 @@
 			);
 			name = BraintreePayPalNativeCheckout;
 			packageProductDependencies = (
-				BEE2E4B62900436600C03FDD /* PayPalCheckout */,
+				BE9D76BB2A03F92F00DF9023 /* PayPalCheckout */,
 			);
 			productName = BraintreeCard;
 			productReference = 9CE51784282D51DD0013C740 /* BraintreePayPalNativeCheckout.framework */;
@@ -6094,7 +6094,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BEE2E4B62900436600C03FDD /* PayPalCheckout */ = {
+		BE9D76BB2A03F92F00DF9023 /* PayPalCheckout */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */;
 			productName = PayPalCheckout;
