@@ -53,12 +53,3 @@ jobs:
         run: pod install
       - name: Run Integration Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
-
-name: "Install xcbeautify"
-description: "Installes xcbeautify via homebrew"
-runs:
-  using: "composite"
-  steps: 
-  - id: install-xcbeautify
-    run: brew install xcbeautify
-    shell: bash
