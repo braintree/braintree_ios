@@ -2,6 +2,8 @@
 
 ## unreleased
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
+* Require Xcode 14.3+ and Swift 5.8+
+* Move from Braintree to PayPal analytics service
 * Breaking Changes    
   * BraintreeThreeDSecure
     * Add `BTThreeDSecureClient`
