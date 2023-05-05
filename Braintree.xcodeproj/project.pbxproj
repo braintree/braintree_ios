@@ -1085,6 +1085,7 @@
 		038C7FBB1EA1648900241ABE /* BraintreePaymentFlow */ = {
 			isa = PBXGroup;
 			children = (
+				BE9834A12A041B6200B6C3CC /* BTConfiguration+PaymentFlow.swift */,
 				80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */,
 				80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */,
 				80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */,
@@ -1094,7 +1095,6 @@
 				80CF988629DB7B9800D51979 /* BTPaymentFlowRequest.swift */,
 				80E2461029E49FEC00945A1D /* BTPaymentFlowRequestDelegate.swift */,
 				80BA64AF29D78DBD00E15264 /* BTPaymentFlowResult.swift */,
-				BE9834A12A041B6200B6C3CC /* BTConfiguration+PaymentFlow.swift */,
 			);
 			path = BraintreePaymentFlow;
 			sourceTree = "<group>";
@@ -1241,15 +1241,15 @@
 		9CE51786282D527E0013C740 /* BraintreePayPalNativeCheckout */ = {
 			isa = PBXGroup;
 			children = (
+				57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift */,
 				3DF38AF328524A0800225F2A /* BTPayPalNativeCheckoutClient.swift */,
-				3DF38AE728523F7500225F2A /* BTPayPalNativeVaultRequest.swift */,
-				3DF38AEF2852493700225F2A /* BTPayPalNativeHermesResponse.swift */,
 				3DF38AFC28590B5600225F2A /* BTPayPalNativeCheckoutRequest.swift */,
 				3DF38AF1285249AE00225F2A /* BTPayPalNativeError.swift */,
-				3DF38AEB2852421B00225F2A /* BTPayPalNativeTokenizationClient.swift */,
+				3DF38AEF2852493700225F2A /* BTPayPalNativeHermesResponse.swift */,
 				3DF38AED2852488E00225F2A /* BTPayPalNativeOrderCreationClient.swift */,
+				3DF38AEB2852421B00225F2A /* BTPayPalNativeTokenizationClient.swift */,
 				3DF38AE928523FC300225F2A /* BTPayPalNativeTokenizationRequest.swift */,
-				57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift */,
+				3DF38AE728523F7500225F2A /* BTPayPalNativeVaultRequest.swift */,
 			);
 			path = BraintreePayPalNativeCheckout;
 			sourceTree = "<group>";
