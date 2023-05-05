@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 workspace 'Braintree.xcworkspace'
-platform :ios, '12.0'
+platform :ios, '14.0'
 use_frameworks!
 inhibit_all_warnings!
 
@@ -21,11 +21,14 @@ abstract_target 'Tests' do
   target 'BraintreeCoreTests'
 end
 
-# https://github.com/CocoaPods/CocoaPods/issues/7314
-post_install do |pi|
-  pi.pods_project.targets.each do |t|
-    t.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+# Workaround required for Xcode 14.3 
+# https://stackoverflow.com/questions/75574268/missing-file-libarclite-iphoneos-a-xcode-14-3
+post_install do |installer|
+  installer.generated_projects.each do |project|
+    project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      end
     end
   end
 end

@@ -6,15 +6,15 @@ concurrency:
 jobs:
   unit_test_job:
     name: Unit
-    runs-on: macOS-latest
+    runs-on: macOS-13
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
+      - name: Use Xcode 14.3
+        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
@@ -23,33 +23,42 @@ jobs:
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
-    runs-on: macOS-latest
+    runs-on: macOS-13
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
+      - name: Use Xcode 14.3
+        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run UI Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   integration_test_job:
     name: Integration
-    runs-on: macOS-latest
+    runs-on: macOS-13
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 14
-        run: sudo xcode-select -switch /Applications/Xcode_14.1.app
+      - name: Use Xcode 14.3
+        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 11,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+
+name: "Install xcbeautify"
+description: "Installes xcbeautify via homebrew"
+runs:
+  using: "composite"
+  steps: 
+  - id: install-xcbeautify
+    run: brew install xcbeautify
+    shell: bash
