@@ -5,6 +5,7 @@
 * Require Xcode 14.3+ and Swift 5.8+
 * Move from Braintree to PayPal analytics service
 * Breaking Changes    
+  * Require Xcode 14.3+ and Swift 5.8+
   * BraintreeThreeDSecure
     * Add `BTThreeDSecureClient`
       * Remove `BTPaymentFlowClient+ThreeDSecure` extension
