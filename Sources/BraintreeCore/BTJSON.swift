@@ -39,7 +39,7 @@ import Foundation
 ///    json["quux"] = NSSet() // json.isError => true, json.asJSON => throws NSError(domain: BTJSONErrorDomain, code: BTJSONErrorInvalidData)
 /// ```
 @objcMembers public class BTJSON: NSObject {
-    var value: Any? = [:]
+    var value: Any? = [:] as [AnyHashable?: Any]
 
     // MARK: Initializers
 
