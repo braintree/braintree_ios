@@ -1,6 +1,7 @@
 import XCTest
 import PassKit
 @testable import BraintreeCore
+@testable import BraintreeApplePay
 @testable import BraintreeTestShared
 
 class BTConfiguration_ApplePay_Tests : XCTestCase {

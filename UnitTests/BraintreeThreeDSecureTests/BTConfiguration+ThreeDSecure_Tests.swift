@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+@testable import BraintreeThreeDSecure
 
 class BTConfiguration_ThreeDSecure_Tests: XCTestCase {
 
