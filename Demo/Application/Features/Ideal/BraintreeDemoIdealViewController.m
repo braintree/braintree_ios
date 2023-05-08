@@ -69,7 +69,7 @@ NSInteger const BTLocalPaymentCancelCode = 5;
     request.isShippingAddressRequired = NO;
     request.localPaymentFlowDelegate = self;
 
-    void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {
+    void (^paymentFlowCompletionBlock)(BTLocalPaymentResult *, NSError *) = ^(BTLocalPaymentResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             if (error.code == BTLocalPaymentCancelCode) {
                 self.progressBlock(@"Canceled 🎲");

@@ -14,7 +14,7 @@ import BraintreeCore
     /// - Parameters:
     ///   - result: The BTPaymentFlowResult of the payment flow.
     ///   - error: NSError containing details of the error.
-    @objc func onPaymentComplete(_ result: BTPaymentFlowResult?, error: Error?)
+    @objc func onPaymentComplete(_ result: BTLocalPaymentResult?, error: Error?)
     
     /// :nodoc: Returns the BTAPIClient used by the BTPaymentFlowClientDelegate.
     /// - Returns: The BTAPIClient used by the client.

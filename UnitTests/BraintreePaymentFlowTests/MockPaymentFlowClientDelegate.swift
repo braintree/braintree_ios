@@ -8,7 +8,7 @@ class MockPaymentFlowClientDelegate: BTPaymentFlowClientDelegate {
 
     var onPaymentWithURLHandler: ((URL?, Error?) -> Void)?
     var onPaymentCancelHandler: (() -> Void)?
-    var onPaymentCompleteHandler: ((BTPaymentFlowResult?, Error?) -> Void)?
+    var onPaymentCompleteHandler: ((BTLocalPaymentResult?, Error?) -> Void)?
 
     func onPayment(with url: URL?, error: Error?) {
         onPaymentWithURLHandler?(url, error)
@@ -18,7 +18,7 @@ class MockPaymentFlowClientDelegate: BTPaymentFlowClientDelegate {
         onPaymentCancelHandler?()
     }
 
-    func onPaymentComplete(_ result: BTPaymentFlowResult?, error: Error?) {
+    func onPaymentComplete(_ result: BTLocalPaymentResult?, error: Error?) {
         onPaymentCompleteHandler?(result, error)
     }
 

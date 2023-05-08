@@ -11,12 +11,12 @@ import BraintreeCore
     
     var authenticationSession: ASWebAuthenticationSession?
     
-    // MARK: - Private Properies
+    // MARK: - Private Properties
     
     private let _apiClient: BTAPIClient
     private var paymentFlowRequestDelegate: BTPaymentFlowRequestDelegate?
     private var request: BTPaymentFlowRequest?
-    private var paymentFlowCompletionBlock: ((BTPaymentFlowResult?, Error?) -> Void)?
+    private var paymentFlowCompletionBlock: ((BTLocalPaymentResult?, Error?) -> Void)?
     private var paymentFlowName: String {
         return paymentFlowRequestDelegate?.paymentFlowName() ?? "local-payments"
     }
@@ -33,8 +33,8 @@ import BraintreeCore
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
     /// - Parameters:
     ///   - request: A BTPaymentFlowRequest request.
-    ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
-    public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion: @escaping (BTPaymentFlowResult?, Error?) -> Void) {
+    ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
+    public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
         setupPaymentFlow(request, completion: completion)
         _apiClient.sendAnalyticsEvent("ios.\(paymentFlowName).start-payment.selected")
         paymentFlowRequestDelegate?.handle(request, client: _apiClient, paymentClientDelegate: self)
@@ -44,7 +44,7 @@ import BraintreeCore
     /// - Parameter request: A BTPaymentFlowRequest request.
     /// - Returns: A `BTPaymentFlowResult` if successful
     /// - Throws: An `Error` describing the failure
-    public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate) async throws -> BTPaymentFlowResult {
+    public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate) async throws -> BTLocalPaymentResult {
         try await withCheckedThrowingContinuation { continuation in
             startPaymentFlow(request) { result, error in
                 if let error {
@@ -60,7 +60,7 @@ import BraintreeCore
     /// - Parameters:
     ///   - request: A BTPaymentFlowRequest to set on the BTPaymentFlow
     ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
-    public func setupPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion completionBlock: ((BTPaymentFlowResult?, Error?) -> Void)? = nil) {
+    public func setupPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion completionBlock: ((BTLocalPaymentResult?, Error?) -> Void)? = nil) {
         self.request = request
         self.paymentFlowCompletionBlock = completionBlock
         self.paymentFlowRequestDelegate = request
@@ -112,7 +112,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
         authenticationSession?.start()
     }
     
-    public func onPaymentComplete(_ result: BTPaymentFlowResult?, error: Error?) {
+    public func onPaymentComplete(_ result: BTLocalPaymentResult?, error: Error?) {
         paymentFlowCompletionBlock?(result, error)
     }
     
