@@ -1,7 +1,7 @@
 import Foundation
 
 /// Error codes associated with Payment Flow
-enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
+enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
     
     /// Unknown error
     case unknown

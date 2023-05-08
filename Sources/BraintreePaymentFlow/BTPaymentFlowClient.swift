@@ -79,7 +79,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
         }
         
         guard let url else {
-            onPaymentComplete(nil, error: BTPaymentFlowError.missingRedirectURL)
+            onPaymentComplete(nil, error: BTLocalPaymentError.missingRedirectURL)
             return
         }
         
@@ -96,7 +96,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
                     self._apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName)).authsession.browser.cancel")
                 }
                 
-                self.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
+                self.onPaymentComplete(nil, error: BTLocalPaymentError.canceled(self.paymentFlowRequestDelegate?.paymentFlowName() ?? ""))
                 return
             }
             
@@ -104,7 +104,7 @@ extension BTPaymentFlowClient: BTPaymentFlowClientDelegate {
                 self._apiClient.sendAnalyticsEvent("ios.\(self.paymentFlowName).webswitch.succeeded")
                 self.paymentFlowRequestDelegate?.handleOpen(callbackURL)
             } else {
-                self.onPaymentComplete(nil, error: BTPaymentFlowError.missingReturnURL)
+                self.onPaymentComplete(nil, error: BTLocalPaymentError.missingReturnURL)
             }
         })
         
