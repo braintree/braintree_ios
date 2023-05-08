@@ -77,6 +77,10 @@
         * Add error `.invalidAPIClient` = 6
         * Add error `.cannotCastRequest`= 7
         * Add error `.jsonSerializationFailure` = 8
+  * BraintreePayPal
+    * Add `BTPaymentFlowError` case
+        * Add error `.webSessionError` = 8
+    
 
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
@@ -128,8 +132,6 @@
         * `.asWebAuthenticationSessionURLInvalid`
         * `.invalidURLAction`
         * `.failedToCreateNonce`
-        * `.webSessionFailedToLaunch`
-        * `.webSessionError`
     * Make `BTPayPalNonce` initializer internal
   * BraintreePayPalNativeCheckout (BETA)
     * Renamed and replaced `BTPayPalNativeCheckoutClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`
