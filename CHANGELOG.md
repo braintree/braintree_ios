@@ -9,6 +9,9 @@
       * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
       * Remove `BTThreeDSecureError.cannotCastRequest` case
     * Remove dependency on `BraintreePaymentFlow` module
+   * BraintreePaymentFlow
+      * Add `BTPaymentFlowError` case
+        * `.webSessionError` = 10
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
@@ -30,7 +33,6 @@
       * `.fetchConfigurationFailed` = 7
       * `.missingRedirectURL` = 8
       * `.missingReturnURL` = 9
-      * `.webSessionError` = 10
     * Update `BTPaymentFlowError` values
       * `.integration` = 3
   * BraintreeApplePay

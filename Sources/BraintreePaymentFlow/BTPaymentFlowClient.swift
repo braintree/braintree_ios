@@ -35,7 +35,7 @@ import BraintreeCore
         )
     }
     
-    // MARK: - Internal Methods
+    // MARK: - Internal Properties
     var webAuthenticationSession: WebAuthenticationSession
     
     @objc func applicationDidBecomeActive(notification: Notification) {
