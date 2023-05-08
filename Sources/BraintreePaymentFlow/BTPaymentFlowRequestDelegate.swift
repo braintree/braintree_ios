@@ -10,7 +10,7 @@ import BraintreeCore
     /// :nodoc: Handle payment request for a variety of web/app switch flows.
     ///
     /// Use the delegate to handle success/error/cancel flows.
-    @objc func handle(_ request: BTPaymentFlowRequest, client apiClient: BTAPIClient, paymentClientDelegate delegate: BTPaymentFlowClientDelegate)
+    @objc func handle(_ request: BTLocalPaymentRequest, client apiClient: BTAPIClient, paymentClientDelegate delegate: BTPaymentFlowClientDelegate)
     
     /// :nodoc: Handles the return URL and completes and post processing.
     /// - Parameter url: The URL to check.

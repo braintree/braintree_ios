@@ -76,7 +76,6 @@
 		80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */; };
 		80BA64B429D795D000E15264 /* BTLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */; };
 		80CF988529DB64D400D51979 /* BTPaymentFlowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CF988429DB64D400D51979 /* BTPaymentFlowError.swift */; };
-		80CF988729DB7B9800D51979 /* BTPaymentFlowRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CF988629DB7B9800D51979 /* BTPaymentFlowRequest.swift */; };
 		80D1638729E75CF1001D880E /* BTThreeDSecureClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D1638529E75766001D880E /* BTThreeDSecureClient.swift */; };
 		80E2460F29E492DF00945A1D /* BTPaymentFlowClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2460E29E492DF00945A1D /* BTPaymentFlowClient.swift */; };
 		80E2461129E49FEC00945A1D /* BTPaymentFlowRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2461029E49FEC00945A1D /* BTPaymentFlowRequestDelegate.swift */; };
@@ -671,7 +670,6 @@
 		80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentRequest.swift; sourceTree = "<group>"; };
 		80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentRequestDelegate.swift; sourceTree = "<group>"; };
 		80CF988429DB64D400D51979 /* BTPaymentFlowError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentFlowError.swift; sourceTree = "<group>"; };
-		80CF988629DB7B9800D51979 /* BTPaymentFlowRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentFlowRequest.swift; sourceTree = "<group>"; };
 		80D1638529E75766001D880E /* BTThreeDSecureClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureClient.swift; sourceTree = "<group>"; };
 		80DBE69423A931A600373230 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		80E2460E29E492DF00945A1D /* BTPaymentFlowClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentFlowClient.swift; sourceTree = "<group>"; };
@@ -1090,7 +1088,6 @@
 				80E2460E29E492DF00945A1D /* BTPaymentFlowClient.swift */,
 				80E2461229E49FFE00945A1D /* BTPaymentFlowClientDelegate.swift */,
 				80CF988429DB64D400D51979 /* BTPaymentFlowError.swift */,
-				80CF988629DB7B9800D51979 /* BTPaymentFlowRequest.swift */,
 				80E2461029E49FEC00945A1D /* BTPaymentFlowRequestDelegate.swift */,
 			);
 			path = BraintreePaymentFlow;
@@ -2633,7 +2630,6 @@
 				80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */,
 				80CF988529DB64D400D51979 /* BTPaymentFlowError.swift in Sources */,
 				80E2461329E49FFE00945A1D /* BTPaymentFlowClientDelegate.swift in Sources */,
-				80CF988729DB7B9800D51979 /* BTPaymentFlowRequest.swift in Sources */,
 				80E2461129E49FEC00945A1D /* BTPaymentFlowRequestDelegate.swift in Sources */,
 				80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */,
 			);

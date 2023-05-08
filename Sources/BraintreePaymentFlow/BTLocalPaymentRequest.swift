@@ -9,7 +9,7 @@ import BraintreeDataCollector
 #endif
 
 /// Used to initialize a local payment flow
-@objcMembers public class BTLocalPaymentRequest: BTPaymentFlowRequest {
+@objcMembers public class BTLocalPaymentRequest: NSObject {
     
     // MARK: - Public Properties
     
@@ -71,7 +71,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
 
     /// :nodoc:
     public func handle(
-        _ request: BTPaymentFlowRequest,
+        _ request: BTLocalPaymentRequest,
         client apiClient: BTAPIClient,
         paymentClientDelegate delegate: BTPaymentFlowClientDelegate
     ) {
