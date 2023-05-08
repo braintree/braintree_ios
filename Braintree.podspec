@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.platform         = :ios, "14.0"
   s.compiler_flags   = "-Wall -Werror -Wextra"
-  s.swift_version    = "5.7"
+  s.swift_version    = "5.8"
 
   s.default_subspecs = %w[Core Card PayPal]
 
