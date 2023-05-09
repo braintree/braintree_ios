@@ -8,19 +8,24 @@ import BraintreePaymentFlow
 import BraintreePayPal
 import BraintreeThreeDSecure
 import BraintreeVenmo
+import BraintreePayPalNativeCheckout
 import BraintreeSEPADirectDebit
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
-        super.viewDidLoad()
+        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+
+        let amexClient = BTAmericanExpressClient(apiClient: apiClient)
+        let applePayClient = BTApplePayClient(apiClient: apiClient)
+        let cardClient = BTCardClient(apiClient: apiClient)
+        let dataCollector = BTDataCollector(apiClient: apiClient)
+        let paymentFlowClient = BTPaymentFlowClient(apiClient: apiClient)
+        let payPalClient = BTPayPalClient(apiClient: apiClient)
+        let threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
+        let venmoClient = BTVenmoClient(apiClient: apiClient)
+        let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }
 

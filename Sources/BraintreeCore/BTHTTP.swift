@@ -119,8 +119,18 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         post(path, parameters: nil, completion: completion)
     }
 
+    // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
     func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
+    }
+    
+    func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
+        do {
+            let dict = try parameters.toDictionary()
+            post(path, parameters: dict, completion: completion)
+        } catch let error {
+            completion(nil, nil, error)
+        }
     }
 
     func put(_ path: String, completion: @escaping RequestCompletion) {
@@ -224,7 +234,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
-        if case .authorizationFingerprint(let fingerprint) = clientAuthorization {
+        // TODO: - Investigate for parity on JS and Android
+        // JIRA - DTBTSDK-2682
+        if case .authorizationFingerprint(let fingerprint) = clientAuthorization,
+           !baseURL.isPayPalURL {
             mutableParameters["authorization_fingerprint"] = fingerprint
         }
 
