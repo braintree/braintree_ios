@@ -21,7 +21,6 @@ import BraintreeDataCollector
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
-
     private var request: BTLocalPaymentRequest?
 
     // MARK: - Initializer
@@ -49,6 +48,7 @@ import BraintreeDataCollector
             if let error {
                 self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, error)
+                return
             }
 
             let dataCollector = BTDataCollector(apiClient: self.apiClient)
@@ -65,12 +65,12 @@ import BraintreeDataCollector
                 self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, BTLocalPaymentError.disabled)
                 return
-            } else if (request.localPaymentFlowDelegate == nil) {
+            } else if request.localPaymentFlowDelegate == nil {
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
                 self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, BTLocalPaymentError.integration)
                 return
-            } else if (request.amount == nil || (request.paymentType == nil)) {
+            } else if request.amount == nil || request.paymentType == nil {
                 NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
                 self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, BTLocalPaymentError.integration)
@@ -106,17 +106,18 @@ import BraintreeDataCollector
             return
         }
 
-        var requestParameters: [String: Any] = [:]
-
-        var paypalAccount: [String: Any] = [:]
-        paypalAccount["response"] = ["webURL": url.absoluteString]
-        paypalAccount["response_type"] = "web"
-        paypalAccount["options"] = ["validate": false]
-        paypalAccount["intent"] = "sale"
+        var paypalAccount: [String: Any] = [
+            "response": ["webURL": url.absoluteString],
+            "response_type": "web",
+            "options": ["validate": false],
+            "intent": "sale"
+        ]
 
         if let correlationID = request?.correlationID {
             paypalAccount["correlation_id"] = correlationID
         }
+
+        var requestParameters: [String: Any] = [:]
 
         if let merchantAccountID = request?.merchantAccountID {
             requestParameters["merchant_account_id"] = merchantAccountID
@@ -253,6 +254,7 @@ import BraintreeDataCollector
         }
 
         guard let url else {
+            apiClient.sendAnalyticsEvent("ios.\(request?.paymentType ?? "").local-payment.start-payment.failed")
             merchantCompletion?(nil, BTLocalPaymentError.missingRedirectURL)
             return
         }
@@ -270,11 +272,13 @@ import BraintreeDataCollector
                     self.apiClient.sendAnalyticsEvent("ios.\(self.request?.paymentType ?? "").local-payment.authsession.browser.cancel")
                 }
 
+                self.apiClient.sendAnalyticsEvent("ios.\(self.request?.paymentType ?? "").local-payment.start-payment.failed")
                 self.merchantCompletion?(nil, BTLocalPaymentError.canceled(self.request?.paymentType ?? "unknown"))
                 return
             }
 
             guard let callbackURL else {
+                self.apiClient.sendAnalyticsEvent("ios.\(self.request?.paymentType ?? "").local-payment.start-payment.failed")
                 self.merchantCompletion?(nil, BTLocalPaymentError.missingReturnURL)
                 return
             }
