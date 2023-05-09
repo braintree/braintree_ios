@@ -4,7 +4,7 @@
 
 @interface BraintreeDemoIdealViewController () <BTLocalPaymentRequestDelegate>
 
-@property (nonatomic, strong) BTPaymentFlowClient *paymentFlowClient;
+@property (nonatomic, strong) BTLocalPaymentClient *paymentFlowClient;
 @property (nonatomic, weak) UILabel *paymentIDLabel;
 
 @end
@@ -50,7 +50,7 @@ NSInteger const BTLocalPaymentCancelCode = 5;
 
 - (void)startPaymentWithBank {
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_f252zhq7_hh4cpc39zq4rgjcg"];
-    self.paymentFlowClient = [[BTPaymentFlowClient alloc] initWithAPIClient:client];
+    self.paymentFlowClient = [[BTLocalPaymentClient alloc] initWithAPIClient:client];
 
     BTLocalPaymentRequest *request = [[BTLocalPaymentRequest alloc] init];
     request.paymentType = @"ideal";

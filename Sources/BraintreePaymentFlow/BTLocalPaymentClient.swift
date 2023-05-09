@@ -11,7 +11,7 @@ import BraintreeDataCollector
 
 // TODO: look through methods and rename / refactor as needed
 
-@objcMembers public class BTPaymentFlowClient: NSObject {
+@objcMembers public class BTLocalPaymentClient: NSObject {
     
     // MARK: - Internal Properties
     
@@ -26,7 +26,7 @@ import BraintreeDataCollector
 
     // MARK: - Initializer
 
-    /// Initialize a new BTThreeDSecureClient instance.
+    /// Initialize a new `BTLocalPaymentClient` instance.
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
@@ -35,10 +35,10 @@ import BraintreeDataCollector
 
     // MARK: - Public Methods
 
-    /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
+    /// Starts a payment flow using a `BTLocalPaymentRequest`
     /// - Parameters:
-    ///   - request: A BTPaymentFlowRequest request.
-    ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
+    ///   - request: A `BTLocalPaymentRequest` request.
+    ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent("ios.local-payment.start-payment.selected")
 
@@ -78,9 +78,9 @@ import BraintreeDataCollector
         }
     }
     
-    /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
-    /// - Parameter request: A BTPaymentFlowRequest request.
-    /// - Returns: A `BTPaymentFlowResult` if successful
+    /// Starts a payment flow using a `BTLocalPaymentRequest`
+    /// - Parameter request: A `BTLocalPaymentRequest` request.
+    /// - Returns: A `BTLocalPaymentResult` if successful
     /// - Throws: An `Error` describing the failure
     public func startPaymentFlow(_ request: BTLocalPaymentRequest) async throws -> BTLocalPaymentResult {
         try await withCheckedThrowingContinuation { continuation in
@@ -287,7 +287,7 @@ import BraintreeDataCollector
 
 // MARK: - ASWebAuthenticationPresentationContextProviding conformance
 
-extension BTPaymentFlowClient: ASWebAuthenticationPresentationContextProviding {
+extension BTLocalPaymentClient: ASWebAuthenticationPresentationContextProviding {
     
     @objc public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         if #available(iOS 15, *) {
