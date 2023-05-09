@@ -244,8 +244,12 @@ class BTLocalPayment_UnitTests: XCTestCase {
         let client = BTLocalPaymentClient(apiClient: mockAPIClient)
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500)
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        let expectation = expectation(description: "Start payment expectation")
+        client.startPaymentFlow(localPaymentRequest) { _, _ in
+            expectation.fulfill()
+        }
 
+        waitForExpectations(timeout: 4)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.selected"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.failed"))
     }

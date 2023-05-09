@@ -40,41 +40,44 @@ import BraintreeDataCollector
     ///   - request: A `BTLocalPaymentRequest` request.
     ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent("ios.local-payment.start-payment.selected")
+        apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.selected")
 
         self.request = request
         self.merchantCompletion = completion
 
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
-
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
+                self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, error)
             }
 
-            let dataCollector = BTDataCollector(apiClient: apiClient)
+            let dataCollector = BTDataCollector(apiClient: self.apiClient)
             request.correlationID = dataCollector.clientMetadataID(nil)
 
             guard let configuration else {
+                self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, BTLocalPaymentError.fetchConfigurationFailed)
                 return
             }
 
             if !configuration.isLocalPaymentEnabled {
                 NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
+                self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, BTLocalPaymentError.disabled)
                 return
             } else if (request.localPaymentFlowDelegate == nil) {
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
+                self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, BTLocalPaymentError.integration)
                 return
             } else if (request.amount == nil || (request.paymentType == nil)) {
                 NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
+                self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 completion(nil, BTLocalPaymentError.integration)
                 return
             }
 
-            start(request: request, configuration: configuration)
+            self.start(request: request, configuration: configuration)
         }
     }
     
@@ -221,6 +224,7 @@ import BraintreeDataCollector
                     self.apiClient.sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
                 }
 
+                self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 self.merchantCompletion?(nil, error)
                 return
             }
@@ -234,6 +238,7 @@ import BraintreeDataCollector
                 }
             } else {
                 NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
+                self.apiClient.sendAnalyticsEvent("ios.\(request.paymentType ?? "").local-payment.start-payment.failed")
                 self.merchantCompletion?(nil, BTLocalPaymentError.appSwitchFailed)
                 return
             }
@@ -242,7 +247,7 @@ import BraintreeDataCollector
 
     private func onPayment(with url: URL?, error: Error?) {
         if let error {
-            apiClient.sendAnalyticsEvent("ios.local-payment.start-payment.failed")
+            apiClient.sendAnalyticsEvent("ios.\(request?.paymentType ?? "").local-payment.start-payment.failed")
             merchantCompletion?(nil, error)
             return
         }
@@ -252,7 +257,7 @@ import BraintreeDataCollector
             return
         }
 
-        apiClient.sendAnalyticsEvent("ios.local-payment.webswitch.initiate.succeeded")
+        apiClient.sendAnalyticsEvent("ios.\(request?.paymentType ?? "").local-payment.webswitch.initiate.succeeded")
 
         authenticationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: BTCoreConstants.callbackURLScheme) { callbackURL, error in
             // Required to avoid memory leak for BTLocalPaymentClient
@@ -262,7 +267,7 @@ import BraintreeDataCollector
             if let error = error as? NSError {
                 if error.domain == ASWebAuthenticationSessionError.errorDomain,
                    error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    self.apiClient.sendAnalyticsEvent("ios.local-payment.authsession.browser.cancel")
+                    self.apiClient.sendAnalyticsEvent("ios.\(self.request?.paymentType ?? "").local-payment.authsession.browser.cancel")
                 }
 
                 self.merchantCompletion?(nil, BTLocalPaymentError.canceled(self.request?.paymentType ?? "unknown"))
@@ -274,7 +279,7 @@ import BraintreeDataCollector
                 return
             }
 
-            self.apiClient.sendAnalyticsEvent("ios.local-payment.webswitch.succeeded")
+            self.apiClient.sendAnalyticsEvent("ios.\(self.request?.paymentType ?? "").local-payment.webswitch.succeeded")
             self.handleOpen(callbackURL)
         }
 
