@@ -177,8 +177,8 @@ Instantiate a `BTLocalPaymentClient` instead of a `BTPaymentFlowDriver`. The res
 - paymentFlowDriver.viewControllerPresentingDelegate = self
 + let localPaymentClient = BTLocalPaymentClient(apiClient: self.apiClient)
 
-- self.paymentFlowDriver.startPaymentFlow(request) { result, error in
-+ self.localPaymentClient.startPaymentFlow(request) { result, error in
+- paymentFlowDriver.startPaymentFlow(request) { result, error in
++ localPaymentClient.startPaymentFlow(request) { result, error in
 -     guard let result = result as? BTLocalPaymentResult else { return }
          // Handle result
     }
