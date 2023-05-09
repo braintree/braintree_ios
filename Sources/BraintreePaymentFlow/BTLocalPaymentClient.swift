@@ -9,8 +9,6 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-// TODO: look through methods and rename / refactor as needed
-
 @objcMembers public class BTLocalPaymentClient: NSObject {
     
     // MARK: - Internal Properties
@@ -94,109 +92,6 @@ import BraintreeDataCollector
         }
     }
 
-    // MARK: - Internal Methods
-
-    func onPayment(with url: URL?, error: Error?) {
-        if let error {
-            apiClient.sendAnalyticsEvent("ios.local-payment.start-payment.failed")
-            merchantCompletion?(nil, error)
-            return
-        }
-
-        guard let url else {
-            merchantCompletion?(nil, BTLocalPaymentError.missingRedirectURL)
-            return
-        }
-
-        apiClient.sendAnalyticsEvent("ios.local-payment.webswitch.initiate.succeeded")
-
-        authenticationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: BTCoreConstants.callbackURLScheme) { callbackURL, error in
-            // Required to avoid memory leak for BTPaymentFlowClient
-            self.authenticationSession = nil
-
-            // TODO: - Refactor similar to BTPayPalClient to handle distinct cancellations b/w system alert or system browser
-            if let error = error as? NSError {
-                if error.domain == ASWebAuthenticationSessionError.errorDomain,
-                   error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    self.apiClient.sendAnalyticsEvent("ios.local-payment.authsession.browser.cancel")
-                }
-
-                self.merchantCompletion?(nil, BTLocalPaymentError.canceled(self.request?.paymentType ?? "unknown"))
-                return
-            }
-
-            if let callbackURL {
-                self.apiClient.sendAnalyticsEvent("ios.local-payment.webswitch.succeeded")
-                self.handleOpen(callbackURL)
-            } else {
-                self.merchantCompletion?(nil, BTLocalPaymentError.missingReturnURL)
-            }
-        }
-
-        authenticationSession?.presentationContextProvider = self
-        authenticationSession?.start()
-    }
-
-    func handleOpen(_ url: URL) {
-        if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
-            // canceled case
-            merchantCompletion?(nil, BTLocalPaymentError.canceled(request?.paymentType ?? "unknown"))
-
-        } else {
-            // success case
-            var params: [String: Any] = [:]
-
-            var paypalAccount: [String: Any] = [:]
-            paypalAccount["response"] = ["webURL": url.absoluteString]
-            paypalAccount["response_type"] = "web"
-            paypalAccount["options"] = ["validate": false]
-            paypalAccount["intent"] = "sale"
-
-            if let correlationID = request?.correlationID {
-                paypalAccount["correlation_id"] = correlationID
-            }
-
-            if let merchantAccountID = request?.merchantAccountID {
-                params["merchant_account_id"] = merchantAccountID
-            }
-
-            params["paypal_account"] = paypalAccount
-
-            let metadataParameters: [String: String] = [
-                "source": apiClient.metadata.sourceString,
-                "integration": apiClient.metadata.integrationString,
-                "sessionId": apiClient.metadata.sessionID
-            ]
-
-            params["_meta"] = metadataParameters
-
-            apiClient.post("/v1/payment_methods/paypal_accounts", parameters: params, completion: { [weak self] body, response, error in
-                guard let self else { return }
-
-                if let error = error as? NSError {
-                    if error.code == BTCoreConstants.networkConnectionLostCode {
-                        apiClient.sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
-                    }
-
-                    merchantCompletion?(nil, error)
-                    return
-                } else {
-                    guard let body else {
-                        merchantCompletion?(nil, BTLocalPaymentError.noAccountData)
-                        return
-                    }
-
-                    guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
-                        merchantCompletion?(nil, BTLocalPaymentError.failedToCreateNonce)
-                        return
-                    }
-
-                    merchantCompletion?(tokenizedLocalPayment, nil)
-                }
-            })
-        }
-    }
-
     // MARK: - Private Methods
 
     private func start(request: BTLocalPaymentRequest, configuration: BTConfiguration) {
@@ -249,9 +144,7 @@ import BraintreeDataCollector
             requestParameters["bic"] = bic
         }
 
-        var experienceProfile: [String: Any] = [
-            "no_shipping": !request.isShippingAddressRequired,
-        ]
+        var experienceProfile: [String: Any] = ["no_shipping": !request.isShippingAddressRequired]
 
         if let displayName = request.displayName {
             experienceProfile["brand_name"] = displayName
@@ -260,12 +153,12 @@ import BraintreeDataCollector
         requestParameters["experience_profile"] = experienceProfile
 
         apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, response, error in
-            if let error {
-                if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
+            if let error = error as? NSError {
+                if error.code == BTCoreConstants.networkConnectionLostCode {
                     self.apiClient.sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
                 }
 
-                self.onPayment(with: nil, error: error)
+                self.merchantCompletion?(nil, error)
                 return
             }
 
@@ -273,14 +166,117 @@ import BraintreeDataCollector
                let approvalURLString = body?["paymentResource"]["redirectUrl"].asString(),
                let url = URL(string: approvalURLString) {
 
-                self.request?.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID, start: {
+                self.request?.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID) {
                     self.onPayment(with: url, error: error)
-                })
+                }
             } else {
                 NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
                 self.merchantCompletion?(nil, BTLocalPaymentError.appSwitchFailed)
                 return
             }
+        }
+    }
+
+    // MARK: - App Switch Methods
+
+    func onPayment(with url: URL?, error: Error?) {
+        if let error {
+            apiClient.sendAnalyticsEvent("ios.local-payment.start-payment.failed")
+            merchantCompletion?(nil, error)
+            return
+        }
+
+        guard let url else {
+            merchantCompletion?(nil, BTLocalPaymentError.missingRedirectURL)
+            return
+        }
+
+        apiClient.sendAnalyticsEvent("ios.local-payment.webswitch.initiate.succeeded")
+
+        authenticationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: BTCoreConstants.callbackURLScheme) { callbackURL, error in
+            // Required to avoid memory leak for BTLocalPaymentClient
+            self.authenticationSession = nil
+
+            // TODO: - Refactor similar to BTPayPalClient to handle distinct cancellations b/w system alert or system browser
+            if let error = error as? NSError {
+                if error.domain == ASWebAuthenticationSessionError.errorDomain,
+                   error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
+                    self.apiClient.sendAnalyticsEvent("ios.local-payment.authsession.browser.cancel")
+                }
+
+                self.merchantCompletion?(nil, BTLocalPaymentError.canceled(self.request?.paymentType ?? "unknown"))
+                return
+            }
+
+            guard let callbackURL else {
+                self.merchantCompletion?(nil, BTLocalPaymentError.missingReturnURL)
+                return
+            }
+
+            self.apiClient.sendAnalyticsEvent("ios.local-payment.webswitch.succeeded")
+            self.handleOpen(callbackURL)
+        }
+
+        authenticationSession?.presentationContextProvider = self
+        authenticationSession?.start()
+    }
+
+    func handleOpen(_ url: URL) {
+        if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
+            // canceled case
+            merchantCompletion?(nil, BTLocalPaymentError.canceled(request?.paymentType ?? "unknown"))
+            return
+        }
+
+        var requestParameters: [String: Any] = [:]
+
+        var paypalAccount: [String: Any] = [:]
+        paypalAccount["response"] = ["webURL": url.absoluteString]
+        paypalAccount["response_type"] = "web"
+        paypalAccount["options"] = ["validate": false]
+        paypalAccount["intent"] = "sale"
+
+        if let correlationID = request?.correlationID {
+            paypalAccount["correlation_id"] = correlationID
+        }
+
+        if let merchantAccountID = request?.merchantAccountID {
+            requestParameters["merchant_account_id"] = merchantAccountID
+        }
+
+        requestParameters["paypal_account"] = paypalAccount
+
+        let metadataParameters: [String: String] = [
+            "source": apiClient.metadata.sourceString,
+            "integration": apiClient.metadata.integrationString,
+            "sessionId": apiClient.metadata.sessionID
+        ]
+
+        requestParameters["_meta"] = metadataParameters
+
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, response, error in
+            guard let self else { return }
+
+            if let error = error as? NSError {
+                if error.code == BTCoreConstants.networkConnectionLostCode {
+                    apiClient.sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
+                }
+
+                merchantCompletion?(nil, error)
+                return
+            }
+
+            guard let body else {
+                merchantCompletion?(nil, BTLocalPaymentError.noAccountData)
+                return
+            }
+
+            guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
+                merchantCompletion?(nil, BTLocalPaymentError.failedToCreateNonce)
+                return
+            }
+
+            merchantCompletion?(tokenizedLocalPayment, nil)
         }
     }
 }
