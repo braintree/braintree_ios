@@ -66,7 +66,9 @@ final class BTClientMetadata_Tests: XCTestCase {
         let expectedParameters: [String: String] = [
             "integration": metadata.integrationString,
             "source": metadata.sourceString,
-            "sessionId": metadata.sessionID
+            "sessionId": metadata.sessionID,
+            "platform": "iOS",
+            "version": BTCoreConstants.braintreeSDKVersion
         ]
 
         XCTAssertEqual(parameters, expectedParameters)

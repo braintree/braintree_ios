@@ -303,22 +303,14 @@ import Foundation
 
     // MARK: Analytics Internal Methods
 
-    func metadataParameters() -> [String: Any] {
-        metadata.parameters.merging(BTAnalyticsMetadata.metadata) { $1 }
-    }
-
-    func graphQLMetadata() -> [String: Any] {
-        metadata.parameters
-    }
-
     func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
         switch httpType {
         case .gateway:
-            return parameters?.merging(["_meta": metadataParameters()]) { $1 }
+            return parameters?.merging(["_meta": metadata.parameters]) { $1 }
         case .braintreeAPI:
             return parameters
         case .graphQLAPI:
-            return parameters?.merging(["clientSdkMetadata": graphQLMetadata()]) { $1 }
+            return parameters?.merging(["clientSdkMetadata": metadata.parameters]) { $1 }
         }
     }
 

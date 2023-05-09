@@ -10,7 +10,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 v6 is the latest major version of Braintree iOS and is currently in Beta. For stable releases, please point to v5 of the SDK. While preparing for general availability, we expect to make breaking changes in the beta releases. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/master/V6_MIGRATION.md).
 
-**The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14.1+ and Swift 5.7.1+.
+**The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14.3+ and Swift 5.8+.
 
 ## Supported Payment Methods
 
