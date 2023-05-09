@@ -77,8 +77,7 @@ NSInteger const BTLocalPaymentCancelCode = 5;
                 self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
             }
         } else if (result) {
-            BTLocalPaymentResult *localPaymentResult = (BTLocalPaymentResult *)result;
-            BTPaymentMethodNonce *nonce = [[BTPaymentMethodNonce alloc] initWithNonce:localPaymentResult.nonce];
+            BTPaymentMethodNonce *nonce = [[BTPaymentMethodNonce alloc] initWithNonce:result.nonce];
             self.nonceStringCompletionBlock(nonce.nonce);
         }
     };

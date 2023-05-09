@@ -169,6 +169,21 @@ sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, e
 We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method flow. With this change, you no longer need to:
   * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
   * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`
+  
+Instantiate a `BTLocalPaymentClient` instead of a `BTPaymentFlowDriver`. The result returned in the `startPaymentFlow()` completion no longer needs to be cast to `BTLocalPaymentResult`.
+
+```diff
+- let paymentFlowDriver = BTPaymentFlowDriver(apiClient: self.apiClient)
+- paymentFlowDriver.viewControllerPresentingDelegate = self
++ let localPaymentClient = BTLocalPaymentClient(apiClient: self.apiClient)
+
+- self.paymentFlowDriver.startPaymentFlow(request) { result, error in
++ self.localPaymentClient.startPaymentFlow(request) { result, error in
+-     guard let result = result as? BTLocalPaymentResult else { return }
+         // Handle result
+    }
+ }
+```
 
 ## 3D Secure
 
