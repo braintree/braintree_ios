@@ -6,7 +6,7 @@ import BraintreeCore
 
 @objcMembers public class BTThreeDSecureClient: NSObject {
     
-    // MARK: - Private Properies
+    // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
     private var request: BTThreeDSecureRequest?
