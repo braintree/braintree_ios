@@ -266,7 +266,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
-        localPaymentRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         let paypalAccount = mockAPIClient.lastPOSTParameters?["paypal_account"] as! [String:Any]
         XCTAssertNotNil(paypalAccount["correlation_id"] as? String)
@@ -292,7 +292,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
             XCTAssertEqual(error.code, BTLocalPaymentError.canceled("flow-type").errorCode)
         }
 
-        localPaymentRequest.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
+        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
     }
 
     func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
@@ -339,25 +339,24 @@ class BTLocalPayment_UnitTests: XCTestCase {
             XCTAssertNil(result)
         }
 
-        localPaymentRequest.handleOpen(URL(string: "an-error-url")!)
+        client.handleOpen(URL(string: "an-error-url")!)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment-methods.network-connection.failure"))
     }
     
     func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {
+        let client = BTLocalPaymentClient(apiClient: mockAPIClient)
         let expectation = self.expectation(description: "Calls onPaymentComplete with result")
 
         mockAPIClient.cannedResponseBody = nil
         
-        let mockClientDelegate = MockPaymentFlowClientDelegate()
-        mockClientDelegate.onPaymentCompleteHandler = { _, error in
+        client.merchantCompletion = { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.noAccountData.errorCode)
             expectation.fulfill()
         }
         
-        localPaymentRequest.paymentFlowClientDelegate = mockClientDelegate
-        localPaymentRequest.handleOpen(URL(string: "www.fake.com")!)
+        client.handleOpen(URL(string: "www.fake.com")!)
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
