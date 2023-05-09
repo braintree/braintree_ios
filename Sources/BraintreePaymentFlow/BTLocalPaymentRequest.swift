@@ -70,6 +70,7 @@ import BraintreeDataCollector
 extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
 
     /// :nodoc:
+    @_documentation(visibility: private)
     public func handle(
         _ request: BTPaymentFlowRequest,
         client apiClient: BTAPIClient,
@@ -191,6 +192,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
     }
 
     /// :nodoc:
+    @_documentation(visibility: private)
     public func handleOpen(_ url: URL) {
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
             // canceled case
@@ -251,6 +253,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
     }
 
     /// :nodoc:
+    @_documentation(visibility: private)
     public func paymentFlowName() -> String {
         let paymentType = paymentType?.lowercased() ??  "unknown"
         return "\(paymentType).local-payment"
