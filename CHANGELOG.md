@@ -12,6 +12,12 @@
       * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
       * Remove `BTThreeDSecureError.cannotCastRequest` case
     * Remove dependency on `BraintreePaymentFlow` module
+  * BraintreePaymentFlow
+    * Rename `BTPaymentFlowClient` to `BTLocalPaymentClient`
+    * Rename `BTPaymentFlowResult` to `BTLocalPaymentResult`
+    * Rename `BTPaymentFlowError` to BTLocalPaymentError`
+      * Rename `BTLocalPaymentError.errorDomain` from `BTPaymentFlowErrorDomain` to `BTLocalPaymentErrorDomain`
+    * Move `BTLocalPaymentRequest` methods to `BTLocalPaymentClient`
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
