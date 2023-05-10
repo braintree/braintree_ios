@@ -27,7 +27,7 @@ import BraintreeCore
     /// Starts the 3DS flow using a BTThreeDSecureRequest.
     /// - Parameters:
     ///   - request: A BTThreeDSecureRequest request.
-    ///   - completionBlock: This completion will be invoked exactly once when the 3DS flow is complete or an error occurs.
+    ///   - completion: This completion will be invoked exactly once when the 3DS flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent("ios.three-d-secure.start-payment.selected")
         

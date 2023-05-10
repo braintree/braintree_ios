@@ -280,8 +280,35 @@ final class BTHTTP_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
+    
+    func testSendsPOSTRequestWithCodableParameters() {
+        struct FakeCodable: Codable {
+            let param: String
+        }
+        let parameters = FakeCodable(param: "value")
+        
+        let expectation = expectation(description: "POST request")
 
-    func testSendsPOSTRequestWithParameters() {
+        http?.post("200.json", parameters: parameters) { body, response, error in
+            XCTAssertNotNil(body)
+            XCTAssertNotNil(response)
+            XCTAssertNil(error)
+
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
+            XCTAssertEqual(httpRequest.httpMethod, "POST")
+            XCTAssertNil(httpRequest.url?.query)
+
+            let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
+            XCTAssertEqual(json["param"].asString(), "value")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testSendsPOSTRequestWithDictionaryParameters() {
         let expectation = expectation(description: "POST request")
 
         http?.post("200.json", parameters: ["param": "value"]) { body, response, error in
@@ -465,6 +492,25 @@ final class BTHTTP_Tests: XCTestCase {
 
             let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
             XCTAssertEqual(httpRequestBody, "{\"authorization_fingerprint\":\"test-authorization-fingerprint\"}")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_doesNotSendAuthorizationInBody() {
+        let expectation = expectation(description: "POST callback")
+
+        let http = BTHTTP(url: URL(string: "https://api-m.paypal.com")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http.session = testURLSession
+        
+        http.post("200.json") { body, response, error in
+            XCTAssertNotNil(body)
+            XCTAssertNotNil(response)
+            XCTAssertNil(error)
+
+            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
+            XCTAssertFalse(httpRequestBody.contains("authorization_fingerprint"))
             expectation.fulfill()
         }
 

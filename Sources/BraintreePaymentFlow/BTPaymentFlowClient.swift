@@ -45,7 +45,7 @@ import BraintreeCore
     /// Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
     /// - Parameters:
     ///   - request: A BTPaymentFlowRequest request.
-    ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
+    ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion: @escaping (BTPaymentFlowResult?, Error?) -> Void) {
         setupPaymentFlow(request, completion: completion)
         _apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentStarted)
