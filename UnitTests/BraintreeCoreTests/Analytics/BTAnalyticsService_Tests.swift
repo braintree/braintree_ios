@@ -13,29 +13,14 @@ final class BTAnalyticsService_Tests: XCTestCase {
         oneSecondLater = UInt64((Date().timeIntervalSince1970 * 1000) + 999)
     }
 
-    func testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_returnsError() {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        let expectation = expectation(description: "Sends analytics event")
-        analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTAnalyticsServiceError.errorDomain)
-            XCTAssertEqual(error.code, Int(BTAnalyticsServiceError.missingAnalyticsURL.rawValue))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSendAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL() {
+    func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
 
         let expectation = expectation(description: "Sends analytics event")
         analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
             XCTAssertNil(error)
-            XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "test://do-not-send.url")
+            XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api-m.paypal.com")
             expectation.fulfill()
         }
 
@@ -55,14 +40,14 @@ final class BTAnalyticsService_Tests: XCTestCase {
         // Pause briefly to allow analytics service to dispatch async blocks
         RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
 
-        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
-
-        let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-        let timestamp = parameters?[0]["timestamp"] as! UInt64
-        XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
+        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+        
+        let timestamp = parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
+        let eventName = parseEventName(mockAnalyticsHTTP.lastRequestParameters)
+        XCTAssertEqual(eventName, "an.analytics.event")
         XCTAssertGreaterThanOrEqual(timestamp, currentTime)
         XCTAssertLessThanOrEqual(timestamp, oneSecondLater)
-        validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)
+        validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
     }
 
     func testSendAnalyticsEvent_whenFlushThresholdIsGreaterThanNumberOfBatchedEvents_doesNotSendAnalyticsEvent() {
@@ -93,20 +78,21 @@ final class BTAnalyticsService_Tests: XCTestCase {
         analyticsService.sendAnalyticsEvent("another.analytics.event") { error in
             XCTAssertNil(error)
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
-            XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
+            XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
 
-            let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! UInt64
-            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
-
-            XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
+            let timestampOne = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 0)!
+            let timestampTwo = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 1)!
+            
+            let eventOne = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 0)
+            XCTAssertEqual(eventOne, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
             XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
 
-            XCTAssertEqual(parameters?[1]["kind"] as? String, "another.analytics.event")
+            let eventTwo = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 1)
+            XCTAssertEqual(eventTwo, "another.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
             XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
-            self.validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)
+            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
             expectation.fulfill()
         }
 
@@ -133,18 +119,19 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertNil(error)
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
-            let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! UInt64
-            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
+            let timestampOne = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 0)!
+            let timestampTwo = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 1)!
 
-            XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event")
+            let eventOne = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 0)
+            XCTAssertEqual(eventOne, "an.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
             XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
 
-            XCTAssertEqual(parameters?[1]["kind"] as? String, "another.analytics.event")
+            let eventTwo = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 1)
+            XCTAssertEqual(eventTwo, "another.analytics.event")
             XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
             XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
-            self.validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)
+            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
             expectation.fulfill()
         }
 
@@ -217,18 +204,19 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertNil(error)
             XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
-            let parameters = mockAnalyticsHTTP.lastRequestParameters?["analytics"] as? [[String: Any]]
-            let timestampOne = parameters?[0]["timestamp"] as! UInt64
-            let timestampTwo = parameters?[1]["timestamp"] as! UInt64
+            let timestampOne = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 0)!
+            let timestampTwo = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 1)!
 
-            XCTAssertEqual(parameters?[0]["kind"] as? String, "an.analytics.event.1")
+            let eventOne = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 0)
+            XCTAssertEqual(eventOne, "an.analytics.event.1")
             XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
             XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
 
-            XCTAssertEqual(parameters?[1]["kind"] as? String, "an.analytics.event.2")
+            let eventTwo = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 1)
+            XCTAssertEqual(eventTwo, "an.analytics.event.2")
             XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
             XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
-            self.validateMetadataParameters(metadataParameters: (mockAnalyticsHTTP.lastRequestParameters!["_meta"] as? [String: Any])!)
+            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
             expectation2.fulfill()
         }
 
@@ -249,15 +237,30 @@ final class BTAnalyticsService_Tests: XCTestCase {
         return stubAPIClient!
     }
 
-    func validateMetadataParameters(metadataParameters: [String: Any]) {
-        XCTAssertEqual(metadataParameters["platform"] as? String, "iOS")
-        XCTAssertEqual(metadataParameters["sdkVersion"] as? String, BTCoreConstants.braintreeSDKVersion)
-        XCTAssertNotNil(metadataParameters["merchantAppId"] as? String)
-        XCTAssertNotNil(metadataParameters["merchantAppName"] as? String)
-        XCTAssertNotNil(metadataParameters["merchantAppVersion"] as? String)
-        XCTAssertEqual(metadataParameters["deviceManufacturer"] as? String, "Apple")
-        XCTAssertNotNil(metadataParameters["deviceModel"] as? String)
-        XCTAssertNotNil(metadataParameters["iosPackageManager"] as? String)
-        XCTAssertNotNil(metadataParameters["isSimulator"] as? Bool)
+    func validateMetadataParameters(_ postParameters: [String: Any]?) {
+        let topLevelEvent = postParameters?["events"] as? [[String: Any]]
+        let batchParams = topLevelEvent?[0]["batch_params"] as! [String: Any]
+        
+        XCTAssertTrue((batchParams["api_integration_type"] as! String).matches("custom|dropin"))
+        XCTAssertNotNil(batchParams["merchant_id"])
+        XCTAssertNotNil(batchParams["session_id"])
+        let authKey = batchParams["tokenization_key"] as? String ?? batchParams["auth_fingerprint"] as? String
+        XCTAssertNotNil(authKey)
+    }
+    
+    func parseTimestamp(_ postParameters: [String: Any]?, at index: Int = 0) -> UInt64? {
+        let topLevelEvent = postParameters?["events"] as? [[String: Any]]
+        let eventParams = topLevelEvent?[0]["event_params"] as? [[String: Any]]
+        if let timestampString = eventParams?[index]["t"] as? String {
+            return UInt64(timestampString)
+        } else {
+            return nil
+        }
+    }
+
+    func parseEventName(_ postParameters: [String: Any]?, at index: Int = 0) -> String? {
+        let topLevelEvent = postParameters?["events"] as? [[String: Any]]
+        let eventParams = topLevelEvent?[0]["event_params"] as? [[String: Any]]
+        return eventParams?[index]["event_name"] as? String
     }
 }

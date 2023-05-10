@@ -1,35 +1,14 @@
 import Foundation
 
-/// Encapsulates a single analytics event
-struct BTAnalyticsEvent {
-
-    var eventName: String
-    var timestamp: UInt64
-
-    var description: String {
-        "\(eventName) at \(timestamp)"
-    }
-
-    /// Event serialized to JSON
-    var json: [String: Any] {
-        [
-            "kind": eventName,
-            "timestamp": timestamp
-        ]
-    }
-}
-
 /// Encapsulates analytics events for a given session
 struct BTAnalyticsSession {
 
     let sessionID: String
-    let source: String
-    let integration: String
-
-    var events: [BTAnalyticsEvent] = []
-
-    /// Dictionary of analytics metadata from `BTAnalyticsMetadata`
-    let metadataParameters: [String: Any] = BTAnalyticsMetadata.metadata
+    var events: [FPTIBatchData.Event] = []
+    
+    init(with sessionID: String) {
+        self.sessionID = sessionID
+    }
 }
 
 class BTAnalyticsService: Equatable {
@@ -49,6 +28,9 @@ class BTAnalyticsService: Equatable {
     /// are sent from only one session. In practice, BTAPIClient.metadata.sessionID should never change, so this
     /// is defensive.
     var analyticsSessions: [String: BTAnalyticsSession] = [:]
+    
+    /// The FPTI URL to post all analytic events.
+    static let url = URL(string: "https://api-m.paypal.com")!
 
     private let apiClient: BTAPIClient
 
@@ -73,6 +55,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
+    /// Sends request to FPTI immediately, without checking number of events in queue against flush threshold
     func sendAnalyticsEvent(_ eventName: String, completion: @escaping (Error?) -> Void = { _ in }) {
         DispatchQueue.main.async {
             self.enqueueEvent(eventName)
@@ -80,6 +63,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
+    /// Executes API request to FPTI
     func flush(_ completion: @escaping (Error?) -> Void = { _ in }) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
@@ -89,16 +73,12 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            guard let analyticsURL = configuration.json?["analytics"]["url"].asURL() else {
-                completion(BTAnalyticsServiceError.missingAnalyticsURL)
-                return
-            }
-
+            // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
             if self.http == nil {
                 if let clientToken = self.apiClient.clientToken {
-                    self.http = BTHTTP(url: analyticsURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: clientToken.authorizationFingerprint)
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
-                    self.http = BTHTTP(url: analyticsURL, tokenizationKey: tokenizationKey)
+                    self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: tokenizationKey)
                 } else {
                     completion(BTAnalyticsServiceError.invalidAPIClient)
                     return
@@ -118,8 +98,8 @@ class BTAnalyticsService: Equatable {
                 }
 
                 self.analyticsSessions.keys.forEach { sessionID in
-                    let postParameters = self.createAnalyticsEvent(with: sessionID)
-                    self.http?.post("/", parameters: postParameters) { body, response, error in
+                    let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: sessionID)
+                    self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, response, error in
                         if let error {
                             completion(error)
                         }
@@ -132,14 +112,11 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Helpers
 
+    /// Adds an event to the queue
     func enqueueEvent(_ eventName: String) {
-        let timestampInMilliseconds = Date().timeIntervalSince1970 * 1000
-        let event = BTAnalyticsEvent(eventName: eventName, timestamp: UInt64(timestampInMilliseconds))
-        let session = BTAnalyticsSession(
-            sessionID: apiClient.metadata.sessionID,
-            source: apiClient.metadata.sourceString,
-            integration: apiClient.metadata.integrationString
-        )
+        let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
+        let event = FPTIBatchData.Event(eventName: eventName, timestamp: String(timestampInMilliseconds))
+        let session = BTAnalyticsSession(with: apiClient.metadata.sessionID)
 
         sessionsQueue.async {
             if self.analyticsSessions[session.sessionID] == nil {
@@ -150,6 +127,7 @@ class BTAnalyticsService: Equatable {
         }
     }
 
+    /// Checks queued event count to determine if ready to fire API request
     func flushIfAtThreshold() {
         var eventCount = 0
 
@@ -164,32 +142,20 @@ class BTAnalyticsService: Equatable {
         }
     }
 
-    func createAnalyticsEvent(with sessionID: String) -> [String: Any] {
-        var session = self.analyticsSessions[sessionID]
-        let metadataParameters: [String: Any] = [
-            "sessionId": session?.sessionID ?? "",
-            "integrationType": session?.integration ?? "",
-            "source": session?.source ?? ""
-        ]
-            .merging(session?.metadataParameters ?? [:]) { $1 }
+    /// Constructs POST params to be sent to FPTI from the queued events in the session
+    func createAnalyticsEvent(config: BTConfiguration, sessionID: String) -> Codable {
+        let batchMetadata = FPTIBatchData.Metadata(
+            authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
+            environment: config.environment,
+            integrationType: apiClient.metadata.integrationString,
+            merchantID: "", // TODO: - In follow-up PR, extract merchantID at ClientToken & TokenizationKey class levels. JIRA - DTBTSDK-2684
+            sessionID: sessionID,
+            tokenizationKey: apiClient.tokenizationKey
+        )
+        
+        let session = self.analyticsSessions[sessionID]
 
-        var postParameters: [String: Any] = [:]
-
-        if let sessionEvents = session?.events {
-            // Map array of BTAnalyticsEvent to JSON
-            postParameters["analytics"] = sessionEvents.map { $0.json }
-        }
-
-        postParameters["_meta"] = metadataParameters
-
-        if let authorizationFingerprint = self.apiClient.clientToken?.authorizationFingerprint {
-            postParameters["authorization_fingerprint"] = authorizationFingerprint
-        } else if let tokenizationKey = self.apiClient.tokenizationKey {
-            postParameters["tokenization_key"] = tokenizationKey
-        }
-
-        session?.events.removeAll()
-        return postParameters
+        return FPTIBatchData(metadata: batchMetadata, events: session?.events)
     }
 
     // MARK: Equitable Protocol Conformance
