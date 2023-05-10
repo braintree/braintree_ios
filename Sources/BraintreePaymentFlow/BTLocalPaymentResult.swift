@@ -37,6 +37,7 @@ import BraintreeCore
     public let type: String?
     
     /// :nodoc:
+    @_documentation(visibility: private)
     init?(json: BTJSON) {
         let paypalAccount = json["paypalAccounts"][0]
         

@@ -249,6 +249,7 @@ import Foundation
     ///   On success, `body` and `response` will contain the JSON body response and the
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
+    @_documentation(visibility: private)
     @objc(GET:parameters:completion:)
     public func get(_ path: String, parameters: [String: String]? = nil, completion: @escaping RequestCompletion) {
         get(path, parameters: parameters, httpType: .gateway, completion: completion)
@@ -263,12 +264,14 @@ import Foundation
     ///   On success, `body` and `response` will contain the JSON body response and the
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
+    @_documentation(visibility: private)
     @objc(POST:parameters:completion:)
     public func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         post(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
     /// :nodoc:
+    @_documentation(visibility: private)
     @objc(GET:parameters:httpType:completion:)
     public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
@@ -284,6 +287,7 @@ import Foundation
     }
 
     /// :nodoc:
+    @_documentation(visibility: private)
     @objc(POST:parameters:httpType:completion:)
     public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
@@ -300,6 +304,7 @@ import Foundation
     }
 
     ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    @_documentation(visibility: private)
     public func sendAnalyticsEvent(_ eventName: String) {
         analyticsService?.sendAnalyticsEvent(eventName, completion: { _ in})
     }
