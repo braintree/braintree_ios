@@ -244,7 +244,7 @@ import Foundation
         var variables: [String: Any] = ["input": inputDictionary]
 
         if authenticationInsightRequested {
-            variables["authenticationInsightInput"] = merchantAccountID != nil ? ["merchantAccountId": merchantAccountID] : [:] as [String?: Any]
+            variables["authenticationInsightInput"] = merchantAccountID != nil ? ["merchantAccountId": merchantAccountID] : [:] as [String?: Any]?
         }
 
         return [
