@@ -1,6 +1,7 @@
 import Foundation
 
 /// :nodoc:
+@_documentation(visibility: private)
 @objc public enum BTAPIClientHTTPService: Int {
     /// Use the Gateway
     case gateway

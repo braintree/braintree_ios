@@ -60,6 +60,7 @@ import BraintreeCore
     /// - Parameters:
     ///   - request: A BTPaymentFlowRequest to set on the BTPaymentFlow
     ///   - completionBlock: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
+    @_documentation(visibility: private)
     public func setupPaymentFlow(_ request: BTPaymentFlowRequest & BTPaymentFlowRequestDelegate, completion completionBlock: ((BTPaymentFlowResult?, Error?) -> Void)? = nil) {
         self.request = request
         self.paymentFlowCompletionBlock = completionBlock
