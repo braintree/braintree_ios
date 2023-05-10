@@ -17,7 +17,6 @@ final class BTThreeDSecureAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTThreeDSecureAnalytics.challengeFailed, "3ds:verify:challenge.failed")
         
         XCTAssertEqual(BTThreeDSecureAnalytics.jwtAuthSucceeded, "3ds:verify:authenticate-jwt:succeeded")
-        XCTAssertEqual(BTThreeDSecureAnalytics.jwtAuthFailed, "3ds:verify:authenticate-jwt:failed")
-        
+        XCTAssertEqual(BTThreeDSecureAnalytics.jwtAuthFailed, "3ds:verify:authenticate-jwt:failed")        
     }
 }
