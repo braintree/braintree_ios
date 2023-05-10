@@ -12,6 +12,9 @@
       * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
       * Remove `BTThreeDSecureError.cannotCastRequest` case
     * Remove dependency on `BraintreePaymentFlow` module
+  * BraintreePayPal
+    * Add `BTPaymentFlowError` case
+      * Add error `.webSessionError` = 8
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
@@ -79,11 +82,7 @@
         * Add error `.canceled` = 5
         * Add error `.invalidAPIClient` = 6
         * Add error `.cannotCastRequest`= 7
-        * Add error `.jsonSerializationFailure` = 8
-  * BraintreePayPal
-    * Add `BTPaymentFlowError` case
-        * Add error `.webSessionError` = 8
-    
+        * Add error `.jsonSerializationFailure` = 8    
 
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

@@ -354,8 +354,6 @@ import BraintreeDataCollector
             apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
         } else {
             apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
-            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
-            return
         }
     }
     
