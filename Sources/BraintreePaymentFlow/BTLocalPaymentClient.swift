@@ -100,8 +100,9 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
 
     func handleOpen(_ url: URL) {
+        // canceled case
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
-            // canceled case
+            apiClient.sendAnalyticsEvent("ios.\(request?.paymentType ?? "").local-payment.start-payment.failed")
             merchantCompletion?(nil, BTLocalPaymentError.canceled(request?.paymentType ?? "unknown"))
             return
         }
@@ -141,16 +142,19 @@ import BraintreeDataCollector
                     apiClient.sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
                 }
 
+                apiClient.sendAnalyticsEvent("ios.\(request?.paymentType ?? "").local-payment.start-payment.failed")
                 merchantCompletion?(nil, error)
                 return
             }
 
             guard let body else {
+                apiClient.sendAnalyticsEvent("ios.\(request?.paymentType ?? "").local-payment.start-payment.failed")
                 merchantCompletion?(nil, BTLocalPaymentError.noAccountData)
                 return
             }
 
             guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
+                apiClient.sendAnalyticsEvent("ios.\(request?.paymentType ?? "").local-payment.start-payment.failed")
                 merchantCompletion?(nil, BTLocalPaymentError.failedToCreateNonce)
                 return
             }
