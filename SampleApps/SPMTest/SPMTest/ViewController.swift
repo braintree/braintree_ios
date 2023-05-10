@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         let applePayClient = BTApplePayClient(apiClient: apiClient)
         let cardClient = BTCardClient(apiClient: apiClient)
         let dataCollector = BTDataCollector(apiClient: apiClient)
-        let paymentFlowClient = BTPaymentFlowClient(apiClient: apiClient)
+        let localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
         let payPalClient = BTPayPalClient(apiClient: apiClient)
         let threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
         let venmoClient = BTVenmoClient(apiClient: apiClient)
