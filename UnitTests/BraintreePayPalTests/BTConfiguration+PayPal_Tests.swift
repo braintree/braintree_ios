@@ -1,5 +1,6 @@
 import XCTest
 import BraintreeTestShared
+@testable import BraintreePayPal
 
 class BTConfiguration_PayPal_Tests : XCTestCase {
     func testIsPayPalEnable_whenEnabled_returnsTrue() {
