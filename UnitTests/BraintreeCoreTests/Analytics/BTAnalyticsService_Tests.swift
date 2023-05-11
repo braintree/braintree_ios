@@ -231,7 +231,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         if analyticsURL != nil {
             stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: ["analytics": ["url": analyticsURL]])
         } else {
-            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:])
+            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
         }
 
         return stubAPIClient!
