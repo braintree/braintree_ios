@@ -17,8 +17,8 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         apiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "environment": environment,
-            "paypal": ["clientId": nil]
-        ])
+            "paypal": ["clientId": nil] as [String: Any?]
+        ] as [String: Any])
 
         let nativeCheckoutRequest = BTPayPalNativeCheckoutRequest(amount: "4.30")
         let checkoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
