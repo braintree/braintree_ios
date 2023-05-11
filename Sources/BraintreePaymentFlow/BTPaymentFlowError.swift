@@ -88,7 +88,7 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
         case .missingReturnURL:
             return "An error occured completing the payment authorization flow. The ASWebAuthenticationSession returned a nil URL."
         case .webSessionError(let error):
-                   return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
+            return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         }
     }
 }

@@ -17,4 +17,3 @@ final class BTPaymentFlow_Tests: XCTestCase {
     }
 }
 
-
