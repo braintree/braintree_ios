@@ -17,7 +17,7 @@ class BTSEPADirectDebitNonce_Tests: XCTestCase {
                         "merchantOrPartnerCustomerId": "a-customer-id",
                         "mandateType": "ONE_OFF"
                     ]
-                ]
+                ] as [String: Any]
             )
         )
 
