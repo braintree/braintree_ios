@@ -15,7 +15,7 @@
   * BraintreePaymentFlow
     * Rename `BTPaymentFlowClient` to `BTLocalPaymentClient`
     * Rename `BTPaymentFlowResult` to `BTLocalPaymentResult`
-    * Rename `BTPaymentFlowError` to BTLocalPaymentError`
+    * Rename `BTPaymentFlowError` to `BTLocalPaymentError`
       * Rename `BTLocalPaymentError.errorDomain` from `BTPaymentFlowErrorDomain` to `BTLocalPaymentErrorDomain`
     * Move `BTLocalPaymentRequest` methods to `BTLocalPaymentClient`
     
