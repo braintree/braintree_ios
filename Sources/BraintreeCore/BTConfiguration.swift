@@ -8,7 +8,11 @@ import Foundation
 
     /// The environment (production or sandbox)
     public var environment: String? {
-        self.json?["environment"].asString()
+        json?["environment"].asString()
+    }
+
+    var merchantID: String? {
+        json?["merchantId"].asString()
     }
 
     ///  Used to initialize a `BTConfiguration`

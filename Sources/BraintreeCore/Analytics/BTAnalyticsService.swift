@@ -148,7 +148,7 @@ class BTAnalyticsService: Equatable {
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.environment,
             integrationType: apiClient.metadata.integrationString,
-            merchantID: config.json?["merchantId"].asString() ?? "",
+            merchantID: config.merchantID,
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )
