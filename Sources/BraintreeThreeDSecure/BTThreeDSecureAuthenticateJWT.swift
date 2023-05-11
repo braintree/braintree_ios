@@ -31,6 +31,9 @@ class BTThreeDSecureAuthenticateJWT {
             parameters: requestParameters
         ) { body, _, error in
             if let error = error as NSError? {
+                if error.code == BTCoreConstants.networkConnectionLostCode {
+                    apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.networkConnectionLost)
+                }
                 apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
                 completion(nil, error)
                 return
