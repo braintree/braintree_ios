@@ -34,7 +34,7 @@ class BTApplePay_Tests: XCTestCase {
     }
 
     func testPaymentRequest_whenConfigurationIsMissingApplePayStatus_callsBackWithError() {
-        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [AnyHashable: Any])
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [AnyHashable: Any?])
         let applePayClient = BTApplePayClient(apiClient: mockClient)
 
         let expectation = self.expectation(description: "Callback invoked")

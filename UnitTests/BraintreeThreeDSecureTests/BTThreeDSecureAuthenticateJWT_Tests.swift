@@ -32,9 +32,9 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
                     "liabilityShiftPossible": true,
                     "liabilityShifted": true,
                     "status": "authenticate_successful",
-                ],
+                ] as [String: Any],
                 "type": "CreditCard",
-            ],
+            ] as [String: Any],
             "threeDSecureInfo":     [
                 "liabilityShiftPossible": true,
                 "liabilityShifted": true,
