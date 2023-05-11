@@ -16,4 +16,3 @@ final class BTPaymentFlow_Tests: XCTestCase {
         XCTAssertEqual(BTPaymentFlowAnalytics.paymentNetworkConnectionLost, "local-payment:start-payment:network-connection:failed")
     }
 }
-
