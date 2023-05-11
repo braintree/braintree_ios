@@ -11,10 +11,6 @@ import Foundation
         json?["environment"].asString()
     }
 
-    var merchantID: String? {
-        json?["merchantId"].asString()
-    }
-
     ///  Used to initialize a `BTConfiguration`
     /// - Parameter json: The `BTJSON` to initialize with
     @objc(initWithJSON:)

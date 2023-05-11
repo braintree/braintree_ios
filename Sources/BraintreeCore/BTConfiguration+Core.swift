@@ -7,4 +7,9 @@ extension BTConfiguration {
     var isGraphQLEnabled: Bool {
         (json?["graphQL"]["url"].asString()?.count ?? 0) > 0
     }
+
+    /// The merchant ID
+    var merchantID: String? {
+        json?["merchantId"].asString()
+    }
 }
