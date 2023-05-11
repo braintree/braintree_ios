@@ -13,6 +13,8 @@ final class BTThreeDSecureAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTThreeDSecureAnalytics.lookupSucceeded, "3ds:verify:lookup:succeeded")
         XCTAssertEqual(BTThreeDSecureAnalytics.lookupFailed, "3ds:verify:lookup:failed")
         
+        XCTAssertEqual(BTThreeDSecureAnalytics.networkConnectionLost, "3ds:verify:lookup:network-connection:failed")
+        
         XCTAssertEqual(BTThreeDSecureAnalytics.challengeSucceeded, "3ds:verify:challenge.succeeded")
         XCTAssertEqual(BTThreeDSecureAnalytics.challengeFailed, "3ds:verify:challenge.failed")
         

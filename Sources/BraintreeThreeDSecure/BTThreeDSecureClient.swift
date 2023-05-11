@@ -349,6 +349,9 @@ import BraintreeCore
                 parameters: requestParameters
             ) { body, _, error in
                 if let error = error as NSError? {
+                    if error.code == BTCoreConstants.networkConnectionLostCode {
+                        self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.networkConnectionLost)
+                    }
                     // Provide more context for card validation error when status code 422
                     if error.domain == BTCoreConstants.httpErrorDomain,
                         error.code == 2, // BTHTTPError.errorCode.clientError
