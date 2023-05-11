@@ -82,7 +82,7 @@
         * Add error `.canceled` = 5
         * Add error `.invalidAPIClient` = 6
         * Add error `.cannotCastRequest`= 7
-        * Add error `.jsonSerializationFailure` = 8    
+        * Add error `.jsonSerializationFailure` = 8
 
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
