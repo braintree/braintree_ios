@@ -527,6 +527,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 4)
+
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.lookupSucceeded))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifySucceeded))
@@ -548,6 +549,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 4)
+
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
