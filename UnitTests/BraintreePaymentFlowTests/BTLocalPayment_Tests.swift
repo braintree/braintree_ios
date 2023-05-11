@@ -130,6 +130,7 @@ class BTLocalPayment_UnitTests: XCTestCase {
         localPaymentRequest.email = "lingo-buyer@paypal.com"
         localPaymentRequest.isShippingAddressRequired = true
         localPaymentRequest.displayName = "My Brand!"
+        localPaymentRequest.bic = "111222333"
 
         client.startPaymentFlow(localPaymentRequest) { _, _ in }
 
@@ -142,14 +143,22 @@ class BTLocalPayment_UnitTests: XCTestCase {
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["last_name"] as? String, "Ngo")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["phone"] as? String, "639847934")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["payer_email"] as? String, "lingo-buyer@paypal.com")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["intent"] as! String, "sale")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["return_url"] as! String, "sdk.ios.braintree://x-callback-url/braintree/local-payment/success")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["cancel_url"] as! String, "sdk.ios.braintree://x-callback-url/braintree/local-payment/cancel")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["line1"] as? String, "836486 of 22321 Park Lake")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["line2"] as? String, "#102")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["city"] as? String, "Den Haag")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["state"] as? String, "CA")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["postal_code"] as? String, "2585 GJ")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["country_code"] as? String, "NL")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["first_name"] as! String, "Linh")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["last_name"] as! String, "Ngo")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["payer_email"] as! String, "lingo-buyer@paypal.com")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["phone"] as! String, "639847934")
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["bic"] as! String, "111222333")
 
-        guard let experienceProfile = mockAPIClient.lastPOSTParameters!["experience_profile"] as? Dictionary<String, AnyObject> else {
+        guard let experienceProfile = mockAPIClient.lastPOSTParameters!["experience_profile"] as? [String: Any] else {
             XCTFail()
             return
         }
