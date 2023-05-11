@@ -194,8 +194,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
 
     func testErrorResponse_whenErrorTypeIsUserError_containsExpectedError() {
         let expectation = expectation(description: "POST callback")
-        let stubGraphQLErrorResponse: [String: Any] = [
-            "data": ["tokenizeCreditCard": nil],
+        let stubGraphQLErrorResponse: [String: Any?] = [
+            "data": ["tokenizeCreditCard": nil] as [String: Any?],
             "errors": [
                 [
                     "message": "Expiration month is invalid",
@@ -207,8 +207,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                         "errorType": "user_error",
                         "legacyCode": "81712",
                         "inputPath": ["input", "creditCard", "expirationMonth"]
-                    ]
-                ],
+                    ] as [String: Any]
+                ] as [String: Any],
                 [
                     "message": "Expiration year is invalid",
                     "path": ["tokenizeCreditCard"],
@@ -219,7 +219,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                         "errorType": "user_error",
                         "legacyCode": "81713",
                         "inputPath": ["input", "creditCard", "expirationYear"]
-                    ]
+                    ] as [String: Any]
                 ],
                 [
                     "message": "CVV verification failed",
@@ -231,7 +231,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                         "errorType": "user_error",
                         "legacyCode": "81736",
                         "inputPath": ["input", "creditCard", "cvv"]
-                    ]
+                    ] as [String: Any]
                 ],
                 [
                     "message": "Street address verification failed",
@@ -243,7 +243,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                         "errorType": "user_error",
                         "legacyCode": "12345",
                         "inputPath": ["input", "creditCard", "billingAddress", "streetAddress"]
-                    ]
+                    ] as [String: Any]
                 ]
             ],
             "extensions": ["requestId": "de1f7c67-4861-455f-89bb-1d208915f270"]
@@ -269,7 +269,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                             "field": "cvv",
                             "code": "81736",
                             "message": "CVV verification failed"
-                        ],
+                        ] as [String: Any],
                         [
                             "field": "billingAddress",
                             "fieldErrors": [
@@ -281,7 +281,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                             ]
                         ]
                     ]
-                ]
+                ] as [String: Any]
             ]
         ]
 
@@ -309,8 +309,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
 
     func testErrorResponse_whenErrorTypeIsNotUserError_containsExpectedError() {
         let expectation = expectation(description: "POST callback")
-        let stubGraphQLErrorResponse: [String: Any] = [
-            "data": ["tokenizeCard": nil],
+        let stubGraphQLErrorResponse: [String: Any?] = [
+            "data": ["tokenizeCard": nil] as [String: Any?],
             "errors": [
                 [
                     "message": "Validation is not supported for requests authorized with a tokenization key.",
@@ -322,8 +322,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                         "errorType": "developer_error",
                         "legacyCode": "50000",
                         "inputPath": ["input", "options", "validate"]
-                    ]
-                ]
+                    ] as [String: Any]
+                ] as [String: Any]
             ]
         ]
 
@@ -456,8 +456,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
 
     func testErrorResponse_whenErrorIsMissingLegacyCode_doesNotSetCodeNumber() {
         let expectation = expectation(description: "POST callback")
-        let stubGraphQLErrorResponse: [String: Any] = [
-            "data": ["tokenizeCreditCard": nil],
+        let stubGraphQLErrorResponse: [String: Any?] = [
+            "data": ["tokenizeCreditCard": nil] as [String: Any?],
             "errors": [
                 [
                     "message": "Expiration month is invalid",
@@ -465,12 +465,12 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                     "extensions": [
                         "errorType": "user_error",
                         "inputPath": ["input", "creditCard", "expirationMonth"]
-                    ]
-                ]
+                    ] as [String: Any]
+                ] as [String: Any]
             ],
         ]
 
-        let expectedErrorBody: [String: Any] = [
+        let expectedErrorBody: [String: Any?] = [
             "error": ["message": "Input is invalid"],
             "fieldErrors": [
                 [
@@ -481,7 +481,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                             "message": "Expiration month is invalid"
                         ]
                     ]
-                ]
+                ] as [String: Any]
             ]
         ]
 
