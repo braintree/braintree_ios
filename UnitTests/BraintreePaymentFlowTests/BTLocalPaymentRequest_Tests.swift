@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeCore
 @testable import BraintreePaymentFlow
 @testable import BraintreeTestShared
 
