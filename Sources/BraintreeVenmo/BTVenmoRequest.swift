@@ -50,28 +50,22 @@ import Foundation
     /// Defaults to `false`
     public var collectCustomerShippingAddress: Bool = false
     
-    /// Optional.
-    /// The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
+    /// Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
     public var subTotalAmount: String?
     
-    /// Optional.
-    /// The total discount amount applied on the transaction to be displayed on the paysheet.
+    /// Optional. The total discount amount applied on the transaction to be displayed on the paysheet.
     public var discountAmount: String?
     
-    /// Optional.
-    /// The total tax amount for the transaction to be displayed on the paysheet.
+    /// Optional. The total tax amount for the transaction to be displayed on the paysheet.
     public var taxAmount: String?
     
-    /// Optional.
-    /// The shipping amount for the transaction to be displayed on the paysheet.
+    /// Optional. The shipping amount for the transaction to be displayed on the paysheet.
     public var shippingAmount: String?
     
-    /// Optional.
-    /// The grand total amount on the transaction that should be displayed on the paysheet.
+    /// Optional. The grand total amount on the transaction that should be displayed on the paysheet.
     public var totalAmount: String?
     
-    /// Optional.
-    /// The line items for this transaction. It can include up to 249 line items.
+    /// Optional. The line items for this transaction. It can include up to 249 line items.
     public var lineItems: [BTVenmoLineItem]?
 
     // MARK: - Initializer

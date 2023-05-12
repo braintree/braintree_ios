@@ -86,9 +86,9 @@ import BraintreeCore
                 return
             }
             
-            /// Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
+            // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
             if ((request.collectCustomerShippingAddress || request.collectCustomerBillingAddress) && !configuration.isVenmoEnrichedCustomerDataEnabled) {
-                completion(nil, BTVenmoError.ecdDisabled)
+                completion(nil, BTVenmoError.enrichedCustomerDataDisabled)
                 return
             }
             
@@ -109,9 +109,10 @@ import BraintreeCore
                 inputParameters["displayName"] = displayName
             }
 
-            var paysheetDetails: [String: String] = [:]
-            paysheetDetails["collectCustomerBillingAddress"] = String(request.collectCustomerBillingAddress)
-            paysheetDetails["collectCustomerShippingAddress"] = String(request.collectCustomerShippingAddress)
+            var paysheetDetails: [String: String] = [
+                "collectCustomerBillingAddress": "\(request.collectCustomerBillingAddress)",
+                "collectCustomerShippingAddress": "\(request.collectCustomerShippingAddress)"
+            ]
             
             var transactionDetails: [String: String] = [:]
             if let subTotalAmount = request.subTotalAmount {
@@ -148,14 +149,14 @@ import BraintreeCore
             }
 
             if !transactionDetails.isEmpty {
-                if let jsonAmountData = try? JSONSerialization.data(withJSONObject: transactionDetails, options: []),
+                if let jsonAmountData = try? JSONSerialization.data(withJSONObject: transactionDetails),
                    let transactionDetailsString = String(data: jsonAmountData, encoding: .utf8) {
                     paysheetDetails["transactionDetails"] = transactionDetailsString
                 }
             }
             
             if !paysheetDetails.isEmpty {
-                if let paysheetDetailsData = try? JSONSerialization.data(withJSONObject: paysheetDetails, options: []),
+                if let paysheetDetailsData = try? JSONSerialization.data(withJSONObject: paysheetDetails),
                    let paysheetDetailsString = String(data: paysheetDetailsData, encoding: .utf8) {
                     inputParameters["paysheetDetails"] = paysheetDetailsString
                 }

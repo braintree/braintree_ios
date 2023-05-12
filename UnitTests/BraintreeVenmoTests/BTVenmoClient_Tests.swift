@@ -123,7 +123,7 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
         if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String:Any] {
+           let input = inputDict["input"] as? [String: Any] {
             XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
             XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
             XCTAssertEqual("MULTI_USE", input["paymentMethodUsage"] as? String)
@@ -131,7 +131,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
     }
     
-    func testTokenizeVenmoAccount_whenEcdDisabled_doesNotAllowCollectingAddresses() {
+    func testTokenizeVenmoAccount_whenEnrichedCustomerDataDisabled_doesNotAllowCollectingAddresses() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
                 "environment": "sandbox",
@@ -152,7 +152,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
             guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.code, BTVenmoError.ecdDisabled.errorCode)
+            XCTAssertEqual(error.code, BTVenmoError.enrichedCustomerDataDisabled.errorCode)
             expectation.fulfill()
         }
 
@@ -182,7 +182,7 @@ class BTVenmoClient_Tests: XCTestCase {
         
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
         if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String:Any] {
+           let input = inputDict["input"] as? [String: Any] {
             if let paysheetDetails = input["paysheetDetails"] as? String {
                 if let jsonData = paysheetDetails.data(using: .utf8),
                    let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
@@ -209,7 +209,7 @@ class BTVenmoClient_Tests: XCTestCase {
         
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
         if let inputDict = params?["variables"] as? NSDictionary,
-        let input = inputDict["input"] as? [String:Any] {
+        let input = inputDict["input"] as? [String: Any] {
             XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
             XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
             

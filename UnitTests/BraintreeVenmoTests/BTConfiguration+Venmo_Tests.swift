@@ -41,22 +41,20 @@ class BTConfiguration_Venmo_Tests: XCTestCase {
     
     func testVenmoEnrichedCustomerDataEnabled_returnsEcd() {
         var configurationJSON = BTJSON(value: [
-            "payWithVenmo": ["enrichedCustomerDataEnabled" : true ]
+            "payWithVenmo": ["enrichedCustomerDataEnabled": true]
         ])
         var configuration = BTConfiguration(json: configurationJSON)
 
         XCTAssertTrue(configuration.isVenmoEnrichedCustomerDataEnabled)
         
         configurationJSON = BTJSON(value: [
-            "payWithVenmo": ["enrichedCustomerDataEnabled" : false ]
+            "payWithVenmo": ["enrichedCustomerDataEnabled": false]
         ])
         configuration = BTConfiguration(json: configurationJSON)
 
         XCTAssertFalse(configuration.isVenmoEnrichedCustomerDataEnabled)
 
-        configurationJSON = BTJSON(value: [
-            "payWithVenmo": [:]
-        ])
+        configurationJSON = BTJSON(value: ["payWithVenmo": [:]])
         configuration = BTConfiguration(json: configurationJSON)
 
         XCTAssertFalse(configuration.isVenmoEnrichedCustomerDataEnabled)

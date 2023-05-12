@@ -1,10 +1,3 @@
-//
-//  BTVenmoLineItem.swift
-//  BraintreeVenmo
-//
-//  Created by Khushboo Mukesh Chandwani on 3/23/23.
-//
-
 import Foundation
 
 /// Use this option to specify whether a line item is a debit (sale) or credit (refund) to the customer.
@@ -61,17 +54,17 @@ import Foundation
         self.kind = kind
     }
     
-    // MARK: - Public Methods
+    // MARK: - Internal Methods
 
     /// Returns the line item in a dictionary.
     /// - Returns: A dictionary with the line item information formatted for a request.
-    public func requestParameters() -> [String: Any] {
-        var requestParameters = [
+    func requestParameters() -> [String: Any] {
+        var requestParameters: [String: Any] = [
             "quantity": quantity,
             "unit_amount": unitAmount,
             "name": name,
             "kind": kind == .debit ? "debit" : "credit"
-        ] as [String : Any]
+        ]
 
         if let unitTaxAmount, unitTaxAmount != "" {
             requestParameters["unit_tax_amount"] = unitTaxAmount
