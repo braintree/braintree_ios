@@ -229,7 +229,12 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)
 
         if analyticsURL != nil {
-            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: ["analytics": ["url": analyticsURL]])
+            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(
+                value: [
+                    "analytics": ["url": analyticsURL],
+                    "merchantId": "a-fake-merchantID"
+                ]
+            )
         } else {
             stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:])
         }
