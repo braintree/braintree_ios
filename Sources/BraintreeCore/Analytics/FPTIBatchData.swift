@@ -90,7 +90,7 @@ struct FPTIBatchData: Codable {
 
         let merchantAppVersion: String = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? "N/A"
 
-        let merchantID: String
+        let merchantID: String?
         
         let platform = "iOS"
 
