@@ -13,9 +13,13 @@ class BTAuthenticationInsight_Tests: XCTestCase {
     }
     
     func testInitWithJSON_whenRegulationEnvironmentIsNil_setsRegulationEnvironmentToNil() {
-        let authInsight = BTAuthenticationInsight(json: BTJSON(value: [
-            "regulationEnvironment": nil
-            ]))
+        let authInsight = BTAuthenticationInsight(
+            json: BTJSON(
+                value: [
+                    "regulationEnvironment": nil
+                ] as [String: Any?]
+            )
+        )
         
         XCTAssertNil(authInsight.regulationEnvironment)
     }
@@ -45,15 +49,19 @@ class BTAuthenticationInsight_Tests: XCTestCase {
     }
     
     func testInitWithJSON_whenCustomerAuthenticationRegulationEnvironmentIsNil_setsRegulationEnvironmentToNil() {
-        let authInsight = BTAuthenticationInsight(json: BTJSON(value: [
-            "customerAuthenticationRegulationEnvironment": nil
-            ]))
+        let authInsight = BTAuthenticationInsight(
+            json: BTJSON(
+                value: [
+                    "customerAuthenticationRegulationEnvironment": nil
+                ] as [String: Any?]
+            )
+        )
         
         XCTAssertNil(authInsight.regulationEnvironment)
     }
     
     func testInitWithJSON_whenRegulationEnvironmentKeyIsNotPresent_setsRegulationEnvironmentToNil() {
-        let authInsight = BTAuthenticationInsight(json: BTJSON(value: [:]))
+        let authInsight = BTAuthenticationInsight(json: BTJSON(value: [:] as [String?: Any]))
         
         XCTAssertNil(authInsight.regulationEnvironment)
     }

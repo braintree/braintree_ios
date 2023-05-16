@@ -13,7 +13,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
             "paypal": [
                 "environment": "offline"
             ]
-        ])
+        ] as [String: Any])
 
         configuration = BTConfiguration(json: json)
     }
@@ -133,10 +133,8 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_whenCurrencyCodeNotSet_usesConfigCurrencyCode() {
         let json = BTJSON(value: [
             "paypalEnabled": true,
-            "paypal": [
-                "currencyIsoCode": "currency-code"
-            ]
-        ])
+            "paypal": ["currencyIsoCode": "currency-code"]
+        ] as [String: Any])
 
         configuration = BTConfiguration(json: json)
 

@@ -1,6 +1,6 @@
 import Foundation
 
-class BTPaymentFlowAnalytics {
+class BTLocalPaymentAnalytics {
     
     // MARK: - Conversion Events
       

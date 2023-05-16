@@ -12,9 +12,17 @@
       * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
       * Remove `BTThreeDSecureError.cannotCastRequest` case
     * Remove dependency on `BraintreePaymentFlow` module
-   * BraintreePaymentFlow
-      * Add `BTPaymentFlowError` case
-        * `.webSessionError` = 10
+  * BraintreePaymentFlow
+    * Rename `BTPaymentFlowClient` to `BTLocalPaymentClient`
+    * Rename `BTPaymentFlowError` to `BTLocalPaymentError`
+      * Rename `BTLocalPaymentError.errorDomain` from `BTPaymentFlowErrorDomain` to `BTLocalPaymentErrorDomain`
+    * Move `BTLocalPaymentRequest` methods to `BTLocalPaymentClient`
+    * Add `BTLocalPaymentError` case
+      * `.webSessionError` = 10
+  * BraintreePayPal
+    * Add `BTPayPalError` case
+      * Add error `.webSessionError` = 8
+  * BraintreePaymentFlow
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
@@ -134,8 +142,6 @@
         * `.asWebAuthenticationSessionURLInvalid`
         * `.invalidURLAction`
         * `.failedToCreateNonce`
-        * `.webSessionFailedToLaunch`
-        * `.webSessionError`
     * Make `BTPayPalNonce` initializer internal
   * BraintreePayPalNativeCheckout (BETA)
     * Renamed and replaced `BTPayPalNativeCheckoutClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`

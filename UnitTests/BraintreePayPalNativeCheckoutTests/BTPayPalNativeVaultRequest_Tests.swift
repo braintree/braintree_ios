@@ -13,7 +13,7 @@ class BTPayPalNativeVaultRequest_Tests: XCTestCase {
             "paypal": [
                 "environment": "offline"
             ]
-        ])
+        ] as [String: Any])
         configuration = BTConfiguration(json: json)
     }
     

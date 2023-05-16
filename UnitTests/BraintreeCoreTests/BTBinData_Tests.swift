@@ -21,7 +21,7 @@ class BTBinData_Tests: XCTestCase {
                 "productId": "123"
             ],
             "nonce": "fake-nonce",
-            ])
+        ] as [String: Any])
         let binData = BTBinData(json: json["binData"])
 
         XCTAssertEqual(binData.prepaid, "Yes")

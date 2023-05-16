@@ -174,11 +174,11 @@ class BTCard_Tests: XCTestCase {
                             "countryCodeNumeric": "123",
                             "postalCode": "94107"
                         ],
-                    ],
+                    ] as [String: Any],
                     "options": ["validate": false]
                 ]
             ]
-        ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
 
     func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
@@ -190,13 +190,11 @@ class BTCard_Tests: XCTestCase {
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": [
-                        "cvv": "123"
-                    ],
+                    "creditCard": ["cvv": "123"] as [String: String],
                     "options": ["validate": false]
-                ]
+                ] as [String: Any]
             ]
-        ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
@@ -214,12 +212,12 @@ class BTCard_Tests: XCTestCase {
                         "number": "4111111111111111",
                     ],
                     "options": [ "validate": false ],
-                ],
+                ] as [String: Any],
                 "authenticationInsightInput": [
                     "merchantAccountId": "some id"
                 ]
             ]
-        ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
@@ -233,13 +231,11 @@ class BTCard_Tests: XCTestCase {
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": [
-                        "number": "4111111111111111",
-                    ],
-                    "options": [ "validate": false ],
-                ]
+                    "creditCard": ["number": "4111111111111111"] as [String: String],
+                    "options": ["validate": false],
+                ] as [String: Any]
             ]
-            ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
@@ -260,7 +256,7 @@ class BTCard_Tests: XCTestCase {
                 ],
                 "authenticationInsightInput": NSDictionary()
             ]
-            ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
@@ -274,12 +270,10 @@ class BTCard_Tests: XCTestCase {
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": [
-                        "number": "4111111111111111",
-                    ],
+                    "creditCard": ["number": "4111111111111111"] as [String: String],
                     "options": [ "validate": false ],
-                ]
+                ] as [String: Any]
             ]
-            ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
 }

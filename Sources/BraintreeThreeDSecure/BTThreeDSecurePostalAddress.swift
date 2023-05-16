@@ -44,6 +44,7 @@ import Foundation
     /// The prefix value will be prepended to each key in the return dictionary
     /// - Parameter prefix: The prefix to prepend to the key in the dictionary
     /// - Returns: A dictionary representing the postal address.
+    @_documentation(visibility: private)
     func asParameters(withPrefix prefix: String? = "") -> [String: String] {
         var parameters: [String: String?] = [
             prepend(prefix, toKey: "givenName"): givenName,

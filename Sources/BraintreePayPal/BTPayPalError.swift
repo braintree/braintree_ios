@@ -27,9 +27,6 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
     /// Unable to create BTPayPalAccountNonce
     case failedToCreateNonce
     
-    /// Unable to launch ASWebAuthenticationSession
-    case webSessionFailedToLaunch
-    
     /// ASWebAuthentication error
     case webSessionError(Error)
     
@@ -55,10 +52,8 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
             return 6
         case .failedToCreateNonce:
             return 7
-        case .webSessionFailedToLaunch:
-            return 8
         case .webSessionError:
-            return 9
+            return 8
         }
     }
 
@@ -80,8 +75,6 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
             return "The URL action did not contain a valid URL."
         case .failedToCreateNonce:
             return "Unable to create BTPayPalAccountNonce. Either body did not contain paypalAccounts array or contents could not be parsed."
-        case .webSessionFailedToLaunch:
-            return "ASWebAuthenticationSession failed to launch"
         case .webSessionError(let error):
             return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         }

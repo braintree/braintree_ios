@@ -27,7 +27,7 @@ final class BTPayPalNativeCheckoutAccountNonce_Tests: XCTestCase {
                                     "state": "FU",
                                     "postalCode": "42",
                                     "country": "USA"
-                                ],
+                                ] as [String: Any],
                                 "billingAddress": [
                                     "recipientName": "Bar Foo",
                                     "line1": "2 Foo Ct",
@@ -46,9 +46,9 @@ final class BTPayPalNativeCheckoutAccountNonce_Tests: XCTestCase {
                                     "postalCode": "24",
                                     "countryCode": "US"
                                 ]
-                            ]
-                        ]
-                    ]
+                            ] as [String: Any]
+                        ] as [String: Any]
+                    ] as [String: Any]
                 ]
             ]
         )

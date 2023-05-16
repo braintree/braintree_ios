@@ -9,10 +9,8 @@ class BTPayPalRequest_Tests: XCTestCase {
         super.setUp()
         let json = BTJSON(value: [
             "paypalEnabled": true,
-            "paypal": [
-                "environment": "offline"
-            ]
-        ])
+            "paypal": ["environment": "offline"]
+        ] as [String: Any])
 
         configuration = BTConfiguration(json: json)
     }

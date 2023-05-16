@@ -93,16 +93,6 @@ jobs:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: pod trunk push Braintree.podspec
 
-  docs:
-    name: Publish Reference Docs
-    runs-on: macOS-13
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Use Xcode 14.3
-        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
-
       - name: Publish reference docs
         run: |
           gem install jazzy
