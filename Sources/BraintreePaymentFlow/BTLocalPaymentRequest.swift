@@ -59,10 +59,12 @@ import BraintreeDataCollector
     public weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
     
     // MARK: - Internal Properties
-    
+    var paymentFlowAPIClient: BTAPIClient? {
+        paymentFlowClientDelegate?.apiClient()
+    }
     var paymentID: String?
-    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
     var correlationID: String?
+    weak var paymentFlowClientDelegate: BTPaymentFlowClientDelegate?
 }
 
 // MARK: - BTPaymentFlowRequestDelegate Protocol Conformance
@@ -80,6 +82,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
         
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
+                apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                 delegate.onPaymentComplete(nil, error: error)
             }
 
@@ -87,20 +90,24 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             self.correlationID = dataCollector.clientMetadataID(nil)
 
             guard let configuration else {
+                apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.fetchConfigurationFailed)
                 return
             }
             
             if !configuration.isLocalPaymentEnabled {
                 NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
+                apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.disabled)
                 return
             } else if (localPaymentRequest.localPaymentFlowDelegate == nil) {
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
+                apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.integration)
                 return
             } else if (localPaymentRequest.amount == nil || (localPaymentRequest.paymentType == nil)) {
                 NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
+                apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                 delegate.onPaymentComplete(nil, error: BTPaymentFlowError.integration)
                 return
             }
@@ -167,7 +174,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
             apiClient.post("v1/local_payments/create", parameters: params) { body, response, error in
                 if let error {
                     if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
-                        apiClient.sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
+                        apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentNetworkConnectionLost)
                     }
                     
                     delegate.onPayment(with: nil, error: error)
@@ -183,6 +190,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
                     })
                 } else {
                     NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
+                    apiClient.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                     delegate.onPaymentComplete(nil, error: BTPaymentFlowError.appSwitchFailed)
                     return
                 }
@@ -194,6 +202,7 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
     public func handleOpen(_ url: URL) {
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
             // canceled case
+            self.paymentFlowAPIClient?.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentCanceled)
             paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.canceled(paymentFlowName()))
             
         } else {
@@ -223,27 +232,31 @@ extension BTLocalPaymentRequest: BTPaymentFlowRequestDelegate {
                 "sessionId": metadata?.sessionID
             ]
             
-            paymentFlowClientDelegate?.apiClient().post("/v1/payment_methods/paypal_accounts", parameters: params, completion: { [weak self] body, response, error in
+            paymentFlowAPIClient?.post("/v1/payment_methods/paypal_accounts", parameters: params, completion: { [weak self] body, response, error in
                 guard let self else { return }
                 
                 if let error {
                     if (error as NSError).code == BTCoreConstants.networkConnectionLostCode {
-                        self.paymentFlowClientDelegate?.apiClient().sendAnalyticsEvent("ios.local-payment-methods.network-connection.failure")
+                        self.paymentFlowAPIClient?.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentNetworkConnectionLost)
                     }
                     
+                    self.paymentFlowAPIClient?.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                     self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: error)
                     return
                 } else {
                     guard let body else {
+                        self.paymentFlowAPIClient?.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                         self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.noAccountData)
                         return
                     }
                     
                     guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
+                        self.paymentFlowAPIClient?.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentFailed)
                         self.paymentFlowClientDelegate?.onPaymentComplete(nil, error: BTPaymentFlowError.failedToCreateNonce)
                         return
                     }
                     
+                    self.paymentFlowAPIClient?.sendAnalyticsEvent(BTPaymentFlowAnalytics.paymentSucceeded)
                     self.paymentFlowClientDelegate?.onPaymentComplete(tokenizedLocalPayment, error: nil)
                 }
             })

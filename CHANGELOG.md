@@ -13,8 +13,11 @@
       * Remove `BTThreeDSecureError.cannotCastRequest` case
     * Remove dependency on `BraintreePaymentFlow` module
   * BraintreePayPal
-    * Add `BTPaymentFlowError` case
+    * Add `BTPayPalError` case
       * Add error `.webSessionError` = 8
+  * BraintreePaymentFlow
+    * Add `BTPaymentFlowError` case
+      * `.webSessionError` = 10
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
