@@ -18,7 +18,6 @@ import BraintreeCore
    
     // MARK: - Private Properties
 
-    private var isAuthenticationSessionStarted: Bool = false
     private var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializers
@@ -47,7 +46,7 @@ import BraintreeCore
     }
 
     @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted
+        returnedToAppAfterPermissionAlert = true
     }
     // MARK: - Public Methods
     
@@ -151,13 +150,14 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
+        returnedToAppAfterPermissionAlert = false
+        
         self.webAuthenticationSession.start(
             url: url,
             context: context,
             sessionDidDisplay: { [weak self] didDisplay in
                 if didDisplay {
                     self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
-                    self?.isAuthenticationSessionStarted = true
                 } else {
                     self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
                 }
