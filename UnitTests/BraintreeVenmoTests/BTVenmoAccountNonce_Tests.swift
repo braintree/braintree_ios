@@ -33,7 +33,7 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
                         "lastName": "venmo-last-name",
                         "phoneNumber": "venmo-phone-number"
                     ]
-                ]
+                ] as [String: Any]
             ]
         ])
 
@@ -57,10 +57,10 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
                     "details": ["username": "jane.doe.username@example.com", "cardType": "Discover"],
                     "isLocked": false,
                     "nonce": "a-nonce",
-                    "securityQuestions": [],
+                    "securityQuestions": [] as [Any?],
                     "type": "VenmoAccount",
                     "default": true
-                ]
+                ] as [String: Any]
             )
         )
 

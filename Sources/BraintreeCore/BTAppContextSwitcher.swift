@@ -16,6 +16,7 @@ import UIKit
     /// :nodoc: Determine whether the return URL can be handled.
     /// - Parameters: url the URL you receive in  `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate) when returning to your app
     /// - Returns: `true` when the SDK can process the return URL
+    @_documentation(visibility: private)
     @objc(handleOpenURLContext:)
     public func handleOpenURL(context: UIOpenURLContext) -> Bool {
         handleOpen(context.url)
@@ -24,6 +25,7 @@ import UIKit
     /// :nodoc: Complete payment flow after returning from app or browser switch.
     /// - Parameter url:  The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate)
     /// - Returns: `true` when the SDK has handled the URL successfully
+    @_documentation(visibility: private)
     @objc(handleOpenURL:)
     public func handleOpen(_ url: URL) -> Bool {
         for appContextSwitchClient in appContextSwitchClients {

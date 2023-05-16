@@ -45,7 +45,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
 
     func testTokenizeVenmoAccount_whenVenmoConfigurationDisabled_callsBackWithError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String: Any?])
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
 
@@ -60,7 +60,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
 
     func testTokenizeVenmoAccount_whenVenmoConfigurationMissing_callsBackWithError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String: Any?])
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
 
@@ -111,7 +111,7 @@ class BTVenmoClient_Tests: XCTestCase {
                     "displayName": "app-display-name"
                 ]
             ]
-        ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
 
     func testTokenizeVenmoAccount_whenDisplayNameNotSet_createsPaymentContextWithoutDisplayName() {
@@ -134,7 +134,7 @@ class BTVenmoClient_Tests: XCTestCase {
                     "paymentMethodUsage": "MULTI_USE"
                 ]
             ]
-        ] as NSObject)
+        ] as [String: Any] as NSObject)
     }
 
     func testTokenizeVenmoAccount_opensVenmoURLWithPaymentContextID() {
@@ -417,7 +417,7 @@ class BTVenmoClient_Tests: XCTestCase {
                     "cardType": "Discover",
                     "username": "venmojoe"
                 ]
-            ]]
+            ] as [String: Any]]
         ])
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
@@ -458,7 +458,7 @@ class BTVenmoClient_Tests: XCTestCase {
                     "cardType": "Discover",
                     "username": "venmojoe"
                 ]
-            ]]
+            ] as [String: Any]]
         ])
 
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)

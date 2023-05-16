@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-@objcMembers public class BTLocalPaymentResult: BTPaymentFlowResult {
+@objcMembers public class BTLocalPaymentResult: NSObject {
     
     /// The billing address.
     public let billingAddress: BTPostalAddress?
@@ -37,6 +37,7 @@ import BraintreeCore
     public let type: String?
     
     /// :nodoc:
+    @_documentation(visibility: private)
     init?(json: BTJSON) {
         let paypalAccount = json["paypalAccounts"][0]
         

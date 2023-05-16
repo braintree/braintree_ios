@@ -22,7 +22,7 @@ class BTConfiguration_PayPal_Tests : XCTestCase {
     }
 
     func testIsPayPalEnabled_whenPayPalEnabledStatusNotPresentInConfigurationJSON_returnsFalse() {
-        let configuration = BTConfiguration(json: BTJSON(value: []))
+        let configuration = BTConfiguration(json: BTJSON(value: [] as [Any?]))
         XCTAssertFalse(configuration.isPayPalEnabled)
     }
 

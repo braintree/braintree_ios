@@ -90,9 +90,11 @@ import BraintreeCore
     public var riskCorrelationID: String?
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    @_documentation(visibility: private)
     public var hermesPath: String
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    @_documentation(visibility: private)
     public var paymentType: BTPayPalPaymentType
 
     // MARK: - Static Properties
@@ -132,6 +134,7 @@ import BraintreeCore
     // MARK: Public Methods
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
+    @_documentation(visibility: private)
     public func parameters(with configuration: BTConfiguration) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
 

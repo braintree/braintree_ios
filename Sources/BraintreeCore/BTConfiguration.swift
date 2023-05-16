@@ -8,7 +8,7 @@ import Foundation
 
     /// The environment (production or sandbox)
     public var environment: String? {
-        self.json?["environment"].asString()
+        json?["environment"].asString()
     }
 
     ///  Used to initialize a `BTConfiguration`

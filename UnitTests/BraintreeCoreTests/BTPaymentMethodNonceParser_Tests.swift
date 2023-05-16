@@ -44,7 +44,7 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
     }
     
     func testParseJSON_whenTypeIsNotRegisteredAndJSONDoesNotContainNonce_returnsNil() {
-        let paymentMethodNonce = parser.parseJSON(BTJSON(value: ["details": []]), withParsingBlockForType: "MyType")
+        let paymentMethodNonce = parser.parseJSON(BTJSON(value: ["details": [] as [Any?]]), withParsingBlockForType: "MyType")
         
        XCTAssertNil(paymentMethodNonce)
     }
@@ -54,12 +54,12 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
         let JSON = BTJSON(value: [
             "consumed": false,
             "description": "Some thing",
-            "details": [],
+            "details": [] as [Any?],
             "isLocked": false,
             "nonce": "a-nonce",
             "type": "asdfasdfasdf",
             "default": true
-            ])
+            ] as [String: Any])
 
         let unknownNonce = sharedParser.parseJSON(JSON, withParsingBlockForType: "asdfasdfasdf")!
 

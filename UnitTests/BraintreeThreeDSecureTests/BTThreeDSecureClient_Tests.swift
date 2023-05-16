@@ -233,7 +233,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         
         let request =  BTThreeDSecureRequest()
         request.amount = NSDecimalNumber.notANumber
@@ -259,7 +259,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)
 
         client.startPaymentFlow(threeDSecureRequest) { result, error in
@@ -280,9 +280,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "willCallCompletion")
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": [],
+            "threeDSecure": [] as [Any?],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)
 
         client.startPaymentFlow(threeDSecureRequest) { result, error in
@@ -306,7 +306,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)
         let responseBody = [
             "paymentMethod": [
@@ -322,9 +322,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
                     "liabilityShiftPossible": false,
                     "liabilityShifted": false,
                     "status": "authenticate_successful_issuer_not_participating",
-                ],
+                ] as [String: Any],
                 "type": "CreditCard",
-            ],
+            ] as [String: Any],
             "success": true,
             "threeDSecureInfo":     [
                 "liabilityShiftPossible": false,
@@ -358,7 +358,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)
 
         client.startPaymentFlow(threeDSecureRequest) { result, error in
@@ -374,7 +374,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)
 
         client.startPaymentFlow(threeDSecureRequest) { result, error in
@@ -405,9 +405,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
                     "liabilityShiftPossible": true,
                     "liabilityShifted": true,
                     "status": "authenticate_successful",
-                ],
+                ] as [String: Any],
                 "type": "CreditCard",
-            ],
+            ] as [String: Any],
             "success": true,
             "threeDSecureInfo":     [
                 "liabilityShiftPossible": true,
@@ -430,7 +430,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
 
         let responseBody = [
             "paymentMethod": [
@@ -446,9 +446,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
                     "liabilityShiftPossible": true,
                     "liabilityShifted": true,
                     "status": "authenticate_successful",
-                ],
+                ] as [String: Any],
                 "type": "CreditCard",
-            ],
+            ] as [String: Any],
             "success": true,
             "threeDSecureInfo":     [
                 "liabilityShiftPossible": true,
@@ -482,7 +482,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
@@ -507,7 +507,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)
         let expectation = expectation(description: "willCallCompletion")
 
@@ -537,7 +537,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com"
-        ])
+        ] as [String: Any])
         
         let mockAPIClient = MockAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
         let client = BTThreeDSecureClient(apiClient: mockAPIClient)

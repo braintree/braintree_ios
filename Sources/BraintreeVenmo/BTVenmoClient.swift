@@ -374,12 +374,14 @@ import BraintreeCore
 extension BTVenmoClient: BTAppContextSwitchClient {
     
     /// :nodoc:
+    @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
         venmoClient?.handleOpen(url)
         BTVenmoClient.venmoClient = nil
     }
     
     /// :nodoc:
+    @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
         BTVenmoAppSwitchReturnURL.isValid(url: url)
     }

@@ -67,7 +67,7 @@ public class TestClientTokenFactory: NSObject {
                 "environment": "offline",
                 "merchantAccountId": "a_merchant_account_id",
                 "currencyIsoCode": "USD"
-                ],
+                ] as [String: Any?],
                 "merchantId": "a_merchant_id",
                 "venmo": "offline",
                 "applePay": [
@@ -75,10 +75,8 @@ public class TestClientTokenFactory: NSObject {
                     "countryCode": "US",
                     "currencyCode": "USD",
                     "merchantIdentifier": "apple-pay-merchant-id",
-                    "supportedNetworks": ["visa",
-                                          "mastercard",
-                                          "amex"]
-                ],
+                    "supportedNetworks": ["visa", "mastercard","amex"]
+                ] as [String: Any],
                 "merchantAccountId": "some-merchant-account-id",
             ]
         } else {
@@ -116,7 +114,7 @@ public class TestClientTokenFactory: NSObject {
                 "environment": "offline",
                 "merchantAccountId": "a_merchant_account_id",
                 "currencyIsoCode": "USD"
-            ],
+            ] as [String: Any?],
             "merchantId": "a_merchant_id",
             "venmo": "offline",
             "applePay": [
@@ -124,11 +122,9 @@ public class TestClientTokenFactory: NSObject {
                 "countryCode": "US",
                 "currencyCode": "USD",
                 "merchantIdentifier": "apple-pay-merchant-id",
-                "supportedNetworks": [ "visa",
-                                       "mastercard",
-                                       "amex" ]
+                "supportedNetworks": ["visa", "mastercard", "amex"]
 
-            ],
+            ] as [String: Any],
             "merchantAccountId": "some-merchant-account-id",
         ]
     }

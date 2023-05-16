@@ -147,7 +147,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
                     "merchantOrPartnerCustomerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
-            ]
+            ] as [String: Any]
         )
         
         mockAPIClient.cannedResponseBody = json
