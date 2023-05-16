@@ -14,7 +14,7 @@ class BTConfiguration_Venmo_Tests: XCTestCase {
 
     func testIsVenmoEnabled_whenAccessTokenNotPresent_returnsFalse() {
         let configurationJSON = BTJSON(value: [
-            "payWithVenmo": [:]
+            "payWithVenmo": [:] as [String: Any?]
         ])
         let configuration = BTConfiguration(json: configurationJSON)
 

@@ -32,7 +32,7 @@ class BTCardNonce_Tests: XCTestCase {
             "authenticationInsight": [
                 "regulationEnvironment": "UNREGULATED"
             ]
-        ]))
+        ] as [String: Any]))
 
         XCTAssertNotNil(cardNonce.threeDSecureInfo)
         XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShiftPossible)
@@ -84,7 +84,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "productId": "123"
             ],
             "nonce": "fake-nonce",
-        ]))
+        ] as [String: Any]))
 
         XCTAssertNotNil(cardNonce.threeDSecureInfo)
         XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShiftPossible)
@@ -114,7 +114,7 @@ class BTCardNonce_Tests: XCTestCase {
                 "lastFour": "1111"
             ],
             "nonce": "fake-nonce",
-        ]))
+        ] as [String: Any]))
 
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
@@ -211,11 +211,11 @@ class BTCardNonce_Tests: XCTestCase {
                     "countryOfIssuance": "USA",
                     "productId": "123"
                 ]
-            ],
+            ] as [String: Any],
             "authenticationInsight": [
                 "customerAuthenticationRegulationEnvironment": "UNREGULATED"
             ]
-        ]))
+        ] as [String: Any]))
 
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.expirationMonth, "01")
@@ -246,14 +246,18 @@ class BTCardNonce_Tests: XCTestCase {
     }
 
     func testCardNonceWithGraphQLJSON_ignoresCaseWhenParsingCardType() {
-        let cardNonce = BTCardNonce(graphQLJSON: BTJSON(value: [
-            "token": "fake-nonce",
-            "creditCard": [
-                "token": "fake-nonce",
-                "brand": "vIsA",
-                "last4": "1111"
-            ]
-        ]))
+        let cardNonce = BTCardNonce(
+            graphQLJSON: BTJSON(
+                value: [
+                    "token": "fake-nonce",
+                    "creditCard": [
+                        "token": "fake-nonce",
+                        "brand": "vIsA",
+                        "last4": "1111"
+                    ]
+                ] as [String: Any]
+            )
+        )
 
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
@@ -330,14 +334,18 @@ class BTCardNonce_Tests: XCTestCase {
     }
 
     func testCardNonceWithGraphQLJSON_withCVVOnlyTokenization_createsNonceWithExpectedValues() {
-        let cardNonce = BTCardNonce(graphQLJSON: BTJSON(value: [
-            "token": "fake-nonce",
-            "creditCard": [
-                "brand": nil,
-                "last4": nil,
-                "binData": nil
-            ]
-        ]))
+        let cardNonce = BTCardNonce(
+            graphQLJSON: BTJSON(
+                value: [
+                    "token": "fake-nonce",
+                    "creditCard": [
+                        "brand": nil,
+                        "last4": nil,
+                        "binData": nil
+                    ] as [String: Any?]
+                ] as [String: Any]
+            )
+        )
 
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.unknown)
         XCTAssertEqual(cardNonce.lastTwo, "")
@@ -372,7 +380,7 @@ class BTCardNonce_Tests: XCTestCase {
                     "threeDSecureInfo": NSNull(),
                     "type": "CreditCard",
                     "default": true
-                ]
+                ] as [String: Any]
             )
         )
 

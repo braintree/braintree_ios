@@ -5,16 +5,18 @@ import XCTest
 class BTApplePayCardNonce_Tests: XCTestCase {
 
     func testInitWithJSON_populatesAllProperties() {
-        let applePayCard = BTJSON(value: [
-            "consumed": false,
-            "binData": [
-                "commercial": "yes"
-            ],
-            "details": [
-                "cardType": "fake-card-type"
-            ],
-            "nonce": "a-nonce"
-        ])
+        let applePayCard = BTJSON(
+            value: [
+                "consumed": false,
+                "binData": [
+                    "commercial": "yes"
+                ],
+                "details": [
+                    "cardType": "fake-card-type"
+                ],
+                "nonce": "a-nonce"
+            ] as [String: Any]
+        )
 
         let applePayNonce = BTApplePayCardNonce(json: applePayCard)
         XCTAssertEqual(applePayNonce?.nonce, "a-nonce")
@@ -23,13 +25,15 @@ class BTApplePayCardNonce_Tests: XCTestCase {
     }
 
     func testInitWithJSON_setsDefaultProperties() {
-        let applePayCard = BTJSON(value: [
-            "consumed": false,
-            "binData": [
-                "commercial": "yes"
-            ],
-            "nonce": "a-nonce"
-        ])
+        let applePayCard = BTJSON(
+            value: [
+                "consumed": false,
+                "binData": [
+                    "commercial": "yes"
+                ],
+                "nonce": "a-nonce"
+            ] as [String: Any]
+        )
 
         let applePayNonce = BTApplePayCardNonce(json: applePayCard)
         XCTAssertEqual(applePayNonce?.type, "ApplePayCard")
@@ -45,9 +49,9 @@ class BTApplePayCardNonce_Tests: XCTestCase {
                     ],
                     "isLocked": false,
                     "nonce": "a-nonce",
-                    "securityQuestions": [],
+                    "securityQuestions": [] as [Any],
                     "type": "ApplePayCard",
-                ]
+                ] as [String: Any]
             )
         )
 

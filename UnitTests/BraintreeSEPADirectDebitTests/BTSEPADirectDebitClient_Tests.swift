@@ -325,7 +325,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "merchantOrPartnerCustomerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
-            ]
+            ] as [String: Any]
         )
         
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")
@@ -378,7 +378,7 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
                     "merchantOrPartnerCustomerId": "a-customer-id",
                     "mandateType": "RECURRENT"
                 ]
-            ]
+            ] as [String: Any]
         )
         
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://example/sepa/success?success=true")

@@ -13,10 +13,10 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
                     ],
                     "isLocked": false,
                     "nonce": "a-nonce",
-                    "securityQuestions": [],
+                    "securityQuestions": [] as [Any?],
                     "type": "PayPalAccount",
                     "default": true
-                ]
+                ] as [String: Any]
             )
         )
 
@@ -58,7 +58,7 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
                 "currency": "XYZ",
                 "value": "456.78",
             ],
-        ])
+        ] as [String: Any])
 
         guard let creditFinancing = payPalCreditFinancing.asPayPalCreditFinancing() else {
             XCTFail("Expected credit financing")
@@ -106,7 +106,7 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
                             "monthlyPayment": [
                                 "currency": "USD",
                                 "value": "13.88",
-                            ],
+                            ] as [String: Any],
                             "payerAcceptance": true,
                             "term": 18,
                             "totalCost": [
@@ -117,14 +117,14 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
                                 "currency": "USD",
                                 "value": "0.00",
                             ],
-                        ],
-                    ],
+                        ] as [String: Any],
+                    ] as [String: Any],
                     "isLocked": false,
                     "nonce": "a-nonce",
-                    "securityQuestions": [],
+                    "securityQuestions": [] as [Any?],
                     "type": "PayPalAccount",
                     "default": true,
-                ]
+                ] as [String: Any]
             )
         )
 

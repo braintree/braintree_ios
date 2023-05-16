@@ -34,7 +34,7 @@ class BTApplePay_Tests: XCTestCase {
     }
 
     func testPaymentRequest_whenConfigurationIsMissingApplePayStatus_callsBackWithError() {
-        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [AnyHashable: Any?])
         let applePayClient = BTApplePayClient(apiClient: mockClient)
 
         let expectation = self.expectation(description: "Callback invoked")
@@ -57,7 +57,7 @@ class BTApplePay_Tests: XCTestCase {
                 "currencyCode": "BTB",
                 "merchantIdentifier": "merchant.com.braintree-unit-tests",
                 "supportedNetworks": ["visa", "mastercard", "amex"]
-            ]
+            ] as [String: Any]
         ])
         let applePayClient = BTApplePayClient(apiClient: mockClient)
 
@@ -129,7 +129,7 @@ class BTApplePay_Tests: XCTestCase {
     }
 
     func testTokenization_whenConfigurationIsMissingApplePayStatus_callsBackWithError() {
-        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [AnyHashable: Any])
         let expectation = self.expectation(description: "Unsuccessful tokenization")
 
         let client = BTApplePayClient(apiClient: mockClient)
@@ -208,25 +208,27 @@ class BTApplePay_Tests: XCTestCase {
                 "status" : "production"
             ]
         ])
-        mockClient.cannedResponseBody = BTJSON(value: [
-            "applePayCards": [
-                [
-                    "nonce" : "an-apple-pay-nonce",
-                    "default": true,
-                    "binData": [
-                        "prepaid": "Yes",
-                        "healthcare": "Yes",
-                        "debit": "No",
-                        "durbinRegulated": "No",
-                        "commercial": "Yes",
-                        "payroll": "No",
-                        "issuingBank": "US",
-                        "countryOfIssuance": "Something",
-                        "productId": "123"
+        mockClient.cannedResponseBody = BTJSON(
+            value: [
+                "applePayCards": [
+                    [
+                        "nonce" : "an-apple-pay-nonce",
+                        "default": true,
+                        "binData": [
+                            "prepaid": "Yes",
+                            "healthcare": "Yes",
+                            "debit": "No",
+                            "durbinRegulated": "No",
+                            "commercial": "Yes",
+                            "payroll": "No",
+                            "issuingBank": "US",
+                            "countryOfIssuance": "Something",
+                            "productId": "123"
+                        ]
                     ]
-                ]
+                ] as [[String: Any]]
             ]
-        ])
+        )
         let expectation = self.expectation(description: "successful tokenization")
 
         let client = BTApplePayClient(apiClient: mockClient)

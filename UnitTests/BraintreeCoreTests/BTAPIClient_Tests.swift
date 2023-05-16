@@ -7,7 +7,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
     }
 
     // MARK: - Initialization
@@ -64,7 +64,7 @@ class BTAPIClient_Tests: XCTestCase {
     func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
         let mockHTTP = FakeHTTP.fakeHTTP()
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.configurationHTTP = mockHTTP
 
         let expectation = expectation(description: "Callback invoked")
@@ -158,7 +158,7 @@ class BTAPIClient_Tests: XCTestCase {
         let mockHTTP = FakeHTTP.fakeHTTP()
 
         apiClient?.configurationHTTP = mockConfigurationHTTP
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
 
         let expectation = expectation(description: "Callback invoked")
@@ -177,7 +177,7 @@ class BTAPIClient_Tests: XCTestCase {
         let mockHTTP = FakeHTTP.fakeHTTP()
 
         apiClient?.configurationHTTP = mockConfigurationHTTP
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
 
         let expectation = expectation(description: "Callback invoked")
@@ -195,7 +195,7 @@ class BTAPIClient_Tests: XCTestCase {
         let mockHTTP = FakeHTTP.fakeHTTP()
 
         apiClient?.configurationHTTP = mockConfigurationHTTP
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
 
         let expectation = expectation(description: "Callback invoked")
@@ -221,11 +221,11 @@ class BTAPIClient_Tests: XCTestCase {
                     ],
                     "nonce": "fake-nonce1",
                     "type": "CreditCard"
-                ],
+                ] as [String: Any?],
                 [
                     "default" : false,
                     "description": "jane.doe@example.com",
-                    "details": [],
+                    "details": [] as [Any?],
                     "nonce": "fake-nonce2",
                     "type": "PayPalAccount"
                 ]
@@ -283,7 +283,7 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: clientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
         apiClient?.configurationHTTP = mockConfigurationHTTP
 
@@ -305,7 +305,7 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: clientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
         apiClient?.configurationHTTP = mockConfigurationHTTP
 
@@ -324,7 +324,7 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: clientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
         apiClient?.configurationHTTP = mockConfigurationHTTP
 
@@ -347,7 +347,7 @@ class BTAPIClient_Tests: XCTestCase {
         // Override apiClient.http so that requests don't fail
         apiClient?.configurationHTTP = mockHTTP
         apiClient?.http = mockHTTP
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
 
         let expectation1 = expectation(description: "Fetch configuration")
         apiClient?.fetchOrReturnRemoteConfiguration() { _, _ in
@@ -418,7 +418,7 @@ class BTAPIClient_Tests: XCTestCase {
 
         apiClient?.http = mockHTTP
         apiClient?.configurationHTTP = mockHTTP
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
 
         let expectation = expectation(description: "POST callback")
         apiClient?.post("/", parameters: [:], httpType: .gateway) { _, _, _ in
@@ -438,7 +438,7 @@ class BTAPIClient_Tests: XCTestCase {
 
         apiClient?.apiHTTP = mockAPIHTTP
         apiClient?.configurationHTTP = mockHTTP
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
 
         let expectation = expectation(description: "POST callback")
         apiClient?.post("/", parameters: [:], httpType: .braintreeAPI) { _, _, _ in
@@ -458,7 +458,7 @@ class BTAPIClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ]
 
         apiClient?.graphQLHTTP = mockGraphQLHTTP

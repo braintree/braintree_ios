@@ -236,7 +236,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
                 ]
             )
         } else {
-            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:])
+            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
         }
 
         return stubAPIClient!

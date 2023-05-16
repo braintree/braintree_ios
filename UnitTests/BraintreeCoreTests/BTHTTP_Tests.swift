@@ -760,7 +760,7 @@ final class BTHTTP_Tests: XCTestCase {
             return true
         } withStubResponse: { request in
             return HTTPStubsResponse(
-                data: try! JSONSerialization.data(withJSONObject: [], options: .prettyPrinted),
+                data: try! JSONSerialization.data(withJSONObject: [] as [Any?], options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
@@ -817,7 +817,7 @@ final class BTHTTP_Tests: XCTestCase {
             return true
         } withStubResponse: { request in
             return HTTPStubsResponse(
-                data: try! JSONSerialization.data(withJSONObject: [:], options: .prettyPrinted),
+                data: try! JSONSerialization.data(withJSONObject: [:] as [String: Any?], options: .prettyPrinted),
                 statusCode: 429,
                 headers: ["Content-Type": "application/json"]
                 )

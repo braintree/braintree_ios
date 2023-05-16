@@ -13,14 +13,10 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
-            "paypal": [
-                "environment": "offline"
-            ]
-        ])
+            "paypal": ["environment": "offline"]
+        ] as [String: Any])
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "http://fakeURL.com"
-            ]
+            "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
 
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
@@ -395,7 +391,7 @@ class BTPayPalClient_Tests: XCTestCase {
                     ],
                     "nonce": "a-nonce",
                     "type": "PayPalAccount",
-                    ]
+                    ] as [String: Any]
                 ]
         ])
         payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
@@ -429,11 +425,11 @@ class BTPayPalClient_Tests: XCTestCase {
                                 "currency": "USD",
                                 "value": "0.00",
                             ],
-                        ],
-                    ],
+                        ] as [String: Any],
+                    ] as [String: Any],
                     "nonce": "a-nonce",
                     "type": "PayPalAccount",
-                ]
+                ] as [String: Any]
             ]
         ])
         payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
@@ -528,9 +524,9 @@ class BTPayPalClient_Tests: XCTestCase {
                                 "postalCode": "24",
                                 "countryCode": "US"
                             ]
-                        ]
-                    ]
-                ]
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ] as [String: Any]
             ]
         ]
 
@@ -596,9 +592,9 @@ class BTPayPalClient_Tests: XCTestCase {
                                 "postalCode": "24",
                                 "countryCode": "ASU"
                             ]
-                        ]
-                    ]
-                ]
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ] as [String: Any]
             ]
         ]
 
@@ -625,11 +621,9 @@ class BTPayPalClient_Tests: XCTestCase {
                     "nonce": "fake-nonce",
                     "details": [
                         "email": "not-hello@world.com",
-                        "payerInfo": [
-                            "email": "hello@world.com",
-                        ]
-                    ],
-                ]
+                        "payerInfo": ["email": "hello@world.com"]
+                    ] as [String: Any],
+                ] as [String: Any]
             ]
         ]
         mockAPIClient.cannedResponseBody = BTJSON(value: checkoutResponse as [String : AnyObject])
@@ -664,18 +658,19 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     func testHandleBrowserSwitchReturn_vault_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {
-        mockAPIClient.cannedResponseBody = BTJSON(value: [ "paypalAccounts":
-            [
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paypalAccounts":
                 [
-                    "description": "jane.doe@example.com",
-                    "details": [
-                        "email": "jane.doe@example.com",
-                    ],
-                    "nonce": "a-nonce",
-                    "type": "PayPalAccount",
-                    ]
-            ]
-            ])
+                    [
+                        "description": "jane.doe@example.com",
+                        "details": [
+                            "email": "jane.doe@example.com",
+                        ],
+                        "nonce": "a-nonce",
+                        "type": "PayPalAccount",
+                    ] as [String: Any]
+                ]
+        ])
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: "bar://hello/world")!
@@ -707,11 +702,11 @@ class BTPayPalClient_Tests: XCTestCase {
                                 "currency": "USD",
                                 "value": "0.00",
                             ],
-                        ],
-                    ],
+                        ] as [String: Any],
+                    ] as [String: Any],
                     "nonce": "a-nonce",
                     "type": "PayPalAccount",
-                ]
+                ] as [String: Any]
             ]
             ])
 

@@ -23,7 +23,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
             "paypalEnabled": true,
             "environment": environment,
             "paypal": ["clientId": clientId]
-        ])
+        ] as [String: Any])
 
         apiClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
@@ -82,8 +82,8 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
     func testCreateOrder_NoClientID_ThrowsClientIDError() {
         apiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
-            "paypal": ["clientId": nil]
-        ])
+            "paypal": ["clientId": nil] as [String: Any?]
+        ] as [String: Any])
 
         orderCreationClient.createOrder(with: request) { result in
             switch result {
@@ -102,7 +102,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
             "paypalEnabled": true,
             "environment": "staging",
             "paypal": ["clientId": "12345"]
-        ])
+        ] as [String: Any])
 
         orderCreationClient.createOrder(with: request) { result in
             switch result {
@@ -121,7 +121,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
             "paypalEnabled": true,
             "environment": "sandbox",
             "paypal": ["clientId": "12345"]
-        ])
+        ] as [String: Any])
         apiClient.cannedResponseBody = nil
 
         orderCreationClient.createOrder(with: request) { result in

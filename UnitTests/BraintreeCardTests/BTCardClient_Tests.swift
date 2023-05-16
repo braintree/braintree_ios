@@ -11,7 +11,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
 
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
 
         let cardClient = BTCardClient(apiClient: mockAPIClient)
 
@@ -54,7 +54,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Tokenize Card")
 
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         
         let cardClient = BTCardClient(apiClient: mockAPIClient)
 
@@ -93,12 +93,12 @@ class BTCardClient_Tests: XCTestCase {
                     "details": [
                         "lastTwo" : "11",
                         "cardType": "visa"]
-                ]
+                ] as [String: Any]
             ]
         ]
 
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         mockAPIClient.cannedResponseBody = BTJSON(value: mockTokenizeResponse)
 
         let cardClient = BTCardClient(apiClient: mockAPIClient)
@@ -129,7 +129,7 @@ class BTCardClient_Tests: XCTestCase {
         let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
 
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         mockAPIClient.cannedResponseError = mockError
 
         let cardClient = BTCardClient(apiClient: mockAPIClient)
@@ -150,24 +150,26 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenTokenizationEndpointReturns422_callCompletionWithValidationError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
-        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
-        let stubJSONResponse = BTJSON(value: [
-            "error" : [
-                "message" : "Credit card is invalid"
-            ],
-            "fieldErrors" : [
-                [
-                    "field" : "creditCard",
-                    "fieldErrors" : [
-                        [
-                            "field" : "number",
-                            "message" : "Credit card number must be 12-19 digits",
-                            "code" : "81716"
+        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
+        let stubJSONResponse = BTJSON(
+            value: [
+                "error" : [
+                    "message" : "Credit card is invalid"
+                ],
+                "fieldErrors" : [
+                    [
+                        "field" : "creditCard",
+                        "fieldErrors" : [
+                            [
+                                "field" : "number",
+                                "message" : "Credit card number must be 12-19 digits",
+                                "code" : "81716"
+                            ]
                         ]
-                    ]
+                    ] as [String: Any]
                 ]
-            ]
-        ])
+            ] as [String: Any]
+        )
         let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
             BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
@@ -204,24 +206,26 @@ class BTCardClient_Tests: XCTestCase {
     
     func testTokenization_whenTokenizationEndpointReturns422AndCode81724_callCompletionWithValidationError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
-        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
-        let stubJSONResponse = BTJSON(value: [
-            "error" : [
-                "message" : "Credit card is invalid"
-            ],
-            "fieldErrors" : [
-                [
-                    "field" : "creditCard",
-                    "fieldErrors" : [
-                        [
-                            "field" : "number",
-                            "message" : "Duplicate card exists in the vault.",
-                            "code" : "81724"
+        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
+        let stubJSONResponse = BTJSON(
+            value: [
+                "error" : [
+                    "message" : "Credit card is invalid"
+                ],
+                "fieldErrors" : [
+                    [
+                        "field" : "creditCard",
+                        "fieldErrors" : [
+                            [
+                                "field" : "number",
+                                "message" : "Duplicate card exists in the vault.",
+                                "code" : "81724"
+                            ]
                         ]
-                    ]
+                    ] as [String: Any]
                 ]
-            ]
-        ])
+            ] as [String: Any]
+        )
         let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
             BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
@@ -263,40 +267,42 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
-        let stubJSONResponse = BTJSON(value: [
-            "errors": [
-                [
-                    "message": "Duplicate card exists in the vault",
-                    "locations": [
-                        [
-                            "line": 2,
-                            "column": 3
-                        ]
-                    ],
-                    "path": [
-                        "tokenizeCreditCard"
-                    ],
-                    "extensions": [
-                        "errorClass": "VALIDATION",
-                        "errorType": "user_error",
-                        "inputPath": [
-                            "input",
-                            "creditCard",
-                            "number"
+        let stubJSONResponse = BTJSON(
+            value: [
+                "errors": [
+                    [
+                        "message": "Duplicate card exists in the vault",
+                        "locations": [
+                            [
+                                "line": 2,
+                                "column": 3
+                            ]
                         ],
-                        "legacyCode": "81724"
-                    ]
+                        "path": [
+                            "tokenizeCreditCard"
+                        ],
+                        "extensions": [
+                            "errorClass": "VALIDATION",
+                            "errorType": "user_error",
+                            "inputPath": [
+                                "input",
+                                "creditCard",
+                                "number"
+                            ],
+                            "legacyCode": "81724"
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ],
+                "data": [
+                    "tokenizeCreditCard": "null"
+                ],
+                "extensions": [
+                    "requestId": "3521c97e-a420-47f4-a8ef-a8cefb0fa635"
                 ]
-            ],
-            "data": [
-                "tokenizeCreditCard": "null"
-            ],
-            "extensions": [
-                "requestId": "3521c97e-a420-47f4-a8ef-a8cefb0fa635"
-            ]
-        ])
+            ] as [String: Any]
+        )
         let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
             BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
@@ -332,7 +338,7 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
         let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: nil)
-        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [])
+        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         let cardClient = BTCardClient(apiClient: stubAPIClient)
 
         let card = BTCard()
@@ -361,7 +367,7 @@ class BTCardClient_Tests: XCTestCase {
         card.expirationMonth = "12"
         card.expirationYear = "2038"
 
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
         
         let expectation = self.expectation(description: "Tokenized card")
         cardClient.tokenize(card) { _,_  -> Void in
@@ -383,7 +389,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testAnalyticsEvent_whenTokenizationSucceeds_isSent() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
 
         let cardClient = BTCardClient(apiClient: mockAPIClient)
         let card = BTCard()
@@ -403,29 +409,31 @@ class BTCardClient_Tests: XCTestCase {
 
     func testAnalyticsEvent_whenTokenizationFails_isSent() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let stubJSONResponse = BTJSON(value: [
-            "error" : [
-                "message" : "Credit card is invalid"
-            ],
-            "fieldErrors" : [
-                [
-                    "field" : "creditCard",
-                    "fieldErrors" : [
-                        [
-                            "field" : "number",
-                            "message" : "Credit card number must be 12-19 digits",
-                            "code" : "81716"
+        let stubJSONResponse = BTJSON(
+            value: [
+                "error" : [
+                    "message" : "Credit card is invalid"
+                ],
+                "fieldErrors" : [
+                    [
+                        "field" : "creditCard",
+                        "fieldErrors" : [
+                            [
+                                "field" : "number",
+                                "message" : "Credit card number must be 12-19 digits",
+                                "code" : "81716"
+                            ]
                         ]
-                    ]
+                    ] as [String: Any]
                 ]
-            ]
-        ])
+            ] as [String: Any]
+        )
         let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
             BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
         let cardClient = BTCardClient(apiClient: mockAPIClient)
 
         let card = BTCard()
@@ -446,7 +454,7 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenize_whenNetworkConnectionLost_sendsAnalytics() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
 
         let card = BTCard()
         card.number = "4111111111111111"
@@ -474,7 +482,7 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
@@ -505,7 +513,7 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
@@ -535,8 +543,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenGraphQLIsDisabled_postsCardDataToGatewayAPI() {
         let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
-        ])
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
         let card = BTCard()
@@ -562,7 +569,7 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["do_not_tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
         
         let cardClient = BTCardClient(apiClient: mockApiClient)
@@ -590,32 +597,33 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
-        mockApiClient.cannedResponseBody = BTJSON(value: [
-            "data": [
-                "tokenizeCreditCard" : [
-                    "token" : "a-nonce",
-                    "creditCard" : [
-                        "brand" : "Visa",
-                        "last4" : "1111",
-                        "binData": [
-                            "prepaid": "Yes",
-                            "healthcare": "Yes",
-                            "debit": "No",
-                            "durbinRegulated": "No",
-                            "commercial": "Yes",
-                            "payroll": "No",
-                            "issuingBank": "US",
-                            "countryOfIssuance": "Something",
-                            "productId": "123"
-                        ]
-                    ]
-                ]
-            ],
-            "extensions": [
-            ]
-        ])
+        mockApiClient.cannedResponseBody = BTJSON(
+            value: [
+                "data": [
+                    "tokenizeCreditCard" : [
+                        "token" : "a-nonce",
+                        "creditCard" : [
+                            "brand" : "Visa",
+                            "last4" : "1111",
+                            "binData": [
+                                "prepaid": "Yes",
+                                "healthcare": "Yes",
+                                "debit": "No",
+                                "durbinRegulated": "No",
+                                "commercial": "Yes",
+                                "payroll": "No",
+                                "issuingBank": "US",
+                                "countryOfIssuance": "Something",
+                                "productId": "123"
+                            ]
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ],
+                "extensions": [] as [Any?]
+            ] as [String: Any]
+        )
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
 
@@ -659,7 +667,7 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
         mockApiClient.cannedResponseBody = BTJSON(value: [
             "data": [
@@ -679,11 +687,11 @@ class BTCardClient_Tests: XCTestCase {
                             "countryOfIssuance": "Something",
                             "productId": "123"
                         ]
-                    ]
-                ]
+                    ] as [String: Any]
+                ] as [String: Any]
             ],
-            "extensions": []
-        ])
+            "extensions": [] as [Any?]
+        ] as [String: Any])
 
         let cardClient = BTCardClient(apiClient: mockApiClient)
 
@@ -710,7 +718,7 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
         let stubJSONResponse = BTJSON(value: [
             "error" : [
@@ -726,9 +734,9 @@ class BTCardClient_Tests: XCTestCase {
                             "code" : "81716"
                         ]
                     ]
-                ]
+                ] as [String: Any]
             ]
-        ])
+        ] as [String: Any])
         let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: [
             BTCoreConstants.urlResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
@@ -759,7 +767,7 @@ class BTCardClient_Tests: XCTestCase {
             "graphQL": [
                 "url": "graphql://graphql",
                 "features": ["tokenize_credit_cards"]
-            ]
+            ] as [String: Any]
         ])
 
         let card = BTCard()

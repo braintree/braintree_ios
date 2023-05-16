@@ -4,30 +4,30 @@ import BraintreeCore
 
 class BTThreeDSecureInfo_Tests: XCTestCase {
     func testParsesJson() {
-        let json = BTJSON(value:
-                            [
-                                "acsTransactionId": "fake-acs-transaction-id",
-                                "cavv": "fake-cavv",
-                                "dsTransactionId": "fake-txn-id",
-                                "eciFlag": "07",
-                                "enrolled": "Y",
-                                "liabilityShiftPossible": true,
-                                "liabilityShifted": false,
-                                "paresStatus": "U",
-                                "status": "lookup_enrolled",
-                                "threeDSecureAuthenticationId" : "3fg8syh4nsmq3nzrmv",
-                                "threeDSecureServerTransactionId": "fake-threedsecure-server-transaction-id",
-                                "threeDSecureVersion": "2.2.0",
-                                "xid": "fake-xid",
-                                "authentication": [
-                                    "transStatus": "Y",
-                                    "transStatusReason": "02"
-                                ],
-                                "lookup": [
-                                    "transStatus": "N",
-                                    "transStatusReason": "01"
-                                ]
-                            ]
+        let json = BTJSON(
+            value: [
+                "acsTransactionId": "fake-acs-transaction-id",
+                "cavv": "fake-cavv",
+                "dsTransactionId": "fake-txn-id",
+                "eciFlag": "07",
+                "enrolled": "Y",
+                "liabilityShiftPossible": true,
+                "liabilityShifted": false,
+                "paresStatus": "U",
+                "status": "lookup_enrolled",
+                "threeDSecureAuthenticationId" : "3fg8syh4nsmq3nzrmv",
+                "threeDSecureServerTransactionId": "fake-threedsecure-server-transaction-id",
+                "threeDSecureVersion": "2.2.0",
+                "xid": "fake-xid",
+                "authentication": [
+                    "transStatus": "Y",
+                    "transStatusReason": "02"
+                ],
+                "lookup": [
+                    "transStatus": "N",
+                    "transStatusReason": "01"
+                ]
+            ] as [String: Any]
         )
         let info = BTThreeDSecureInfo(json: json)
         

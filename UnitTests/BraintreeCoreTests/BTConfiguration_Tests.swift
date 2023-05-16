@@ -8,7 +8,7 @@ class BTConfiguration_Tests: XCTestCase {
         let json = BTJSON(value: [
             "some": "things",
             "number": 1,
-            "array": [1, 2, 3]])
+            "array": [1, 2, 3]] as [String: Any])
         let configuration = BTConfiguration(json: json)
 
         XCTAssertEqual(configuration.json, json)
@@ -28,8 +28,8 @@ class BTConfiguration_Tests: XCTestCase {
         let configurationJSON = BTJSON(value: [
             "graphQL": [
                 "url": nil
-            ]
-        ])
+            ] as [String: Any?]
+        ] as [String: Any])
         let configuration = BTConfiguration(json: configurationJSON)
         XCTAssertFalse(configuration.isGraphQLEnabled)
     }
