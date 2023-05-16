@@ -1,7 +1,7 @@
 import Foundation
 
 /// Error codes associated with Payment Flow
-enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
+enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
     
     /// Unknown error
     case unknown
@@ -33,7 +33,7 @@ enum BTPaymentFlowError: Error, CustomNSError, LocalizedError {
     /// No URL was returned via the ASWebAuthenticationSession completion callback
     case missingReturnURL
 
-    static var errorDomain = "com.braintreepayments.BTPaymentFlowErrorDomain"
+    static var errorDomain = "com.braintreepayments.BTLocalPaymentErrorDomain"
 
     var errorCode: Int {
         switch self {

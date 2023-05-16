@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-@objcMembers public class BTLocalPaymentResult: BTPaymentFlowResult {
+@objcMembers public class BTLocalPaymentResult: NSObject {
     
     /// The billing address.
     public let billingAddress: BTPostalAddress?
