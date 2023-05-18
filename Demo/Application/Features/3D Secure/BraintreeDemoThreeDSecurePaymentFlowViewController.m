@@ -192,6 +192,10 @@
 
         request.v2UICustomization = ui;
 
+        // MARK: - UI and Render Type Customization
+
+        request.uiType = BTThreeDSecureUITypeBoth;
+
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];

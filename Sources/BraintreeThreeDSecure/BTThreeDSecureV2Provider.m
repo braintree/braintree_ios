@@ -60,6 +60,17 @@
         cardinalEnvironment = CardinalSessionEnvironmentProduction;
     }
     cardinalConfiguration.deploymentEnvironment = cardinalEnvironment;
+
+    if (request.uiType) {
+        CardinalSessionUIType uiType = [self uiTypeAsCardinalUIType:request];
+        cardinalConfiguration.uiType = uiType;
+    }
+
+    if (request.renderType) {
+        CardinalSessionRenderTypeArray *renderType = [self renderTypeAsCardinalRenderType:request];
+        cardinalConfiguration.renderType = renderType;
+    }
+
     [instance.cardinalSession configure:cardinalConfiguration];
 
     [instance.cardinalSession setupWithJWT:configuration.cardinalAuthenticationJWT
@@ -95,6 +106,39 @@
     if (failureHandler != nil) {
         failureHandler(error);
     }
+}
+
++ (CardinalSessionUIType)uiTypeAsCardinalUIType:(BTThreeDSecureRequest *)request {
+    switch (request.uiType) {
+        case BTThreeDSecureUITypeBoth:
+            return CardinalSessionUITypeBoth;
+
+        case BTThreeDSecureUITypeNative:
+            return CardinalSessionUITypeNative;
+
+        case BTThreeDSecureUITypeHTML:
+            return CardinalSessionUITypeHTML;
+    }
+}
+
++ (CardinalSessionRenderTypeArray *)renderTypeAsCardinalRenderType:(BTThreeDSecureRequest *)request {
+    CardinalSessionRenderTypeArray *renderTypes = [[CardinalSessionRenderTypeArray alloc] init];
+
+    for (NSString *renderType in request.renderType) {
+//        if (renderType == BTThreeDSecureRenderTypeOTP) {
+//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeOTP];
+//        } else if (renderType == BTThreeDSecureRenderTypeHTML) {
+//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeHTML];
+//        } else if (renderType == BTThreeDSecureRenderTypeOOB) {
+//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeOOB];
+//        } else if (renderType == BTThreeDSecureRenderTypeSingleSelect) {
+//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeSingleSelect];
+//        } else if (renderType == BTThreeDSecureRenderTypeMultiSelect) {
+//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeMultiSelect];
+//        }
+    }
+
+    return renderTypes;
 }
 
 #pragma mark - Cardinal Delegate

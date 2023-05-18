@@ -105,6 +105,37 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
 };
 
 /**
+ The interface types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
+ */
+typedef NS_ENUM(NSInteger, BTThreeDSecureUIType) {
+    /// Both
+    BTThreeDSecureUITypeBoth,
+
+    /// Native
+    BTThreeDSecureUITypeNative,
+
+    /// HTML
+    BTThreeDSecureUITypeHTML
+};
+
+typedef NSString *BTThreeDSecureRenderType;
+
+/// OTP
+extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeOTP;
+
+/// HTML
+extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeHTML;
+
+/// Single select
+extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeSingleSelect;
+
+/// Multi select
+extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeMultiSelect;
+
+/// OOB
+extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeOOB;
+
+/**
  Used to initialize a 3D Secure payment flow
  */
 @interface BTThreeDSecureRequest : BTPaymentFlowRequest <BTPaymentFlowRequestDelegate>
@@ -205,6 +236,19 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureRequestedExemptionType) {
  A delegate for receiving information about the ThreeDSecure payment flow.
  */
 @property (nonatomic, nullable, weak) id<BTThreeDSecureRequestDelegate> threeDSecureRequestDelegate;
+
+/**
+ Optional. The interface types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
+ */
+@property (nonatomic, assign) BTThreeDSecureUIType uiType;
+
+/**
+ Optional.  List of all the render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
+
+ - Note: When using `BTThreeDSecureUITypeBoth` or `BTThreeDSecureUITypeHTML`, all `renderType` options must be set.
+ When using `BTThreeDSecureUITypeNative`, all `renderType` options except `BTThreeDSecureRenderTypeHTML` must be set.
+ */
+@property (nonatomic, copy) NSArray<BTThreeDSecureRenderType> *renderType;
 
 @end
 
