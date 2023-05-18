@@ -239,11 +239,16 @@ extern BTThreeDSecureRenderType BTThreeDSecureRenderTypeOOB;
 
 /**
  Optional. The interface types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
+
+ Defaults to `BTThreeDSecureUITypeBoth`
  */
 @property (nonatomic, assign) BTThreeDSecureUIType uiType;
 
 /**
  Optional.  List of all the render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
+
+ Defaults to `BTThreeDSecureRenderTypeOTP`, `BTThreeDSecureRenderTypeHTML`, `BTThreeDSecureRenderTypeOOB`, `BTThreeDSecureRenderTypeSingleSelect`,
+ `BTThreeDSecureRenderTypeMultiSelect`
 
  - Note: When using `BTThreeDSecureUITypeBoth` or `BTThreeDSecureUITypeHTML`, all `renderType` options must be set.
  When using `BTThreeDSecureUITypeNative`, all `renderType` options except `BTThreeDSecureRenderTypeHTML` must be set.
