@@ -67,8 +67,7 @@
     }
 
     if (request.renderType) {
-        CardinalSessionRenderTypeArray *renderType = [self renderTypeAsCardinalRenderType:request];
-        cardinalConfiguration.renderType = renderType;
+        cardinalConfiguration.renderType = request.renderType;
     }
 
     [instance.cardinalSession configure:cardinalConfiguration];
@@ -119,26 +118,6 @@
         case BTThreeDSecureUITypeHTML:
             return CardinalSessionUITypeHTML;
     }
-}
-
-+ (CardinalSessionRenderTypeArray *)renderTypeAsCardinalRenderType:(BTThreeDSecureRequest *)request {
-    CardinalSessionRenderTypeArray *renderTypes = [[CardinalSessionRenderTypeArray alloc] init];
-
-    for (NSString *renderType in request.renderType) {
-//        if (renderType == BTThreeDSecureRenderTypeOTP) {
-//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeOTP];
-//        } else if (renderType == BTThreeDSecureRenderTypeHTML) {
-//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeHTML];
-//        } else if (renderType == BTThreeDSecureRenderTypeOOB) {
-//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeOOB];
-//        } else if (renderType == BTThreeDSecureRenderTypeSingleSelect) {
-//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeSingleSelect];
-//        } else if (renderType == BTThreeDSecureRenderTypeMultiSelect) {
-//            [renderTypes arrayByAddingObject:CardinalSessionRenderTypeMultiSelect];
-//        }
-    }
-
-    return renderTypes;
 }
 
 #pragma mark - Cardinal Delegate

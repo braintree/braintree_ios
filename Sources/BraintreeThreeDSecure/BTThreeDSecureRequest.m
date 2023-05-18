@@ -42,6 +42,12 @@
 
 #endif
 
+BTThreeDSecureRenderType BTThreeDSecureRenderTypeOTP = @"CardinalSessionRenderTypeOTP";
+BTThreeDSecureRenderType BTThreeDSecureRenderTypeHTML = @"CardinalSessionRenderTypeHTML";
+BTThreeDSecureRenderType BTThreeDSecureRenderTypeSingleSelect = @"CardinalSessionRenderTypeSingleSelect";
+BTThreeDSecureRenderType BTThreeDSecureRenderTypeMultiSelect = @"CardinalSessionRenderTypeMultiSelect";
+BTThreeDSecureRenderType BTThreeDSecureRenderTypeOOB = @"CardinalSessionRenderTypeOOB";
+
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>
 
 @property (nonatomic, strong) BTThreeDSecureV2Provider *threeDSecureV2Provider;

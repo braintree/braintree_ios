@@ -118,22 +118,22 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureUIType) {
     BTThreeDSecureUITypeHTML
 };
 
-typedef NSString *BTThreeDSecureRenderType;
+typedef NSString * BTThreeDSecureRenderType;
 
 /// OTP
-extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeOTP;
+extern BTThreeDSecureRenderType BTThreeDSecureRenderTypeOTP;
 
 /// HTML
-extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeHTML;
+extern BTThreeDSecureRenderType BTThreeDSecureRenderTypeHTML;
 
 /// Single select
-extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeSingleSelect;
+extern BTThreeDSecureRenderType BTThreeDSecureRenderTypeSingleSelect;
 
 /// Multi select
-extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeMultiSelect;
+extern BTThreeDSecureRenderType BTThreeDSecureRenderTypeMultiSelect;
 
 /// OOB
-extern BTThreeDSecureRenderType const BTThreeDSecureRenderTypeOOB;
+extern BTThreeDSecureRenderType BTThreeDSecureRenderTypeOOB;
 
 /**
  Used to initialize a 3D Secure payment flow

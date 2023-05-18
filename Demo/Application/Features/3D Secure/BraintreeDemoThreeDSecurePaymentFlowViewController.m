@@ -195,6 +195,14 @@
         // MARK: - UI and Render Type Customization
 
         request.uiType = BTThreeDSecureUITypeBoth;
+        request.renderType = [[NSArray alloc] initWithObjects:
+                              BTThreeDSecureRenderTypeHTML,
+                              BTThreeDSecureRenderTypeOOB,
+                              BTThreeDSecureRenderTypeOTP,
+                              BTThreeDSecureRenderTypeMultiSelect,
+                              BTThreeDSecureRenderTypeSingleSelect,
+                              nil
+        ];
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
