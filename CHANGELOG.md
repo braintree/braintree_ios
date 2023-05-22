@@ -6,13 +6,14 @@
 * Make `BTConfiguration` extensions internal
 * Breaking Changes    
   * Require Xcode 14.3+ and Swift 5.8+
+  * Rename `BraintreePaymentFlow` module to `BraintreeLocalPayment`
   * BraintreeThreeDSecure
     * Add `BTThreeDSecureClient`
       * Remove `BTPaymentFlowClient+ThreeDSecure` extension
       * Move `BTPaymentFlowClient+ThreeDSecure` and `BTThreeDSecureRequest` methods to `BTThreeDSecureClient`
       * Remove `BTThreeDSecureError.cannotCastRequest` case
     * Remove dependency on `BraintreePaymentFlow` module
-  * BraintreePaymentFlow
+  * BraintreeLocalPayment (formerly named BraintreePaymentFlow)
     * Rename `BTPaymentFlowClient` to `BTLocalPaymentClient`
     * Rename `BTPaymentFlowError` to `BTLocalPaymentError`
       * Rename `BTLocalPaymentError.errorDomain` from `BTPaymentFlowErrorDomain` to `BTLocalPaymentErrorDomain`
