@@ -33,6 +33,9 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
     /// No URL was returned via the ASWebAuthenticationSession completion callback
     case missingReturnURL
 
+    /// ASWebAuthentication error
+    case webSessionError(Error)
+
     static var errorDomain = "com.braintreepayments.BTLocalPaymentErrorDomain"
 
     var errorCode: Int {
@@ -57,6 +60,8 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
             return 8
         case .missingReturnURL:
             return 9
+        case .webSessionError:
+            return 10
         }
     }
 
@@ -82,6 +87,8 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
             return "Failed to complete payment flow due to missing redirectURL."
         case .missingReturnURL:
             return "An error occured completing the payment authorization flow. The ASWebAuthenticationSession returned a nil URL."
+        case .webSessionError(let error):
+            return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         }
     }
 }

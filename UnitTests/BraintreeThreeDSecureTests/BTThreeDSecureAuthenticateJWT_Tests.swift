@@ -56,6 +56,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 4, handler: nil)
+        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthSucceeded))
     }
 
     func testThreeDSecureAuthenticateJWT_ReturnsLookupNonce_withErrorMessage() {
@@ -79,6 +80,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 4, handler: nil)
+        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthFailed))
     }
 
     func testThreeDSecureAuthenticateJWT_FailsWithNoNonce() {
@@ -93,6 +95,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 4, handler: nil)
+        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthFailed))
     }
     
     func testAuthenticateJWT_whenNetworkConnectionLost_sendsAnalytics() {
@@ -108,6 +111,7 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.network-connection.failure"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.networkConnectionLost))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthFailed))
     }
 }

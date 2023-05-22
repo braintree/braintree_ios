@@ -59,7 +59,7 @@ import BraintreeDataCollector
     public weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
     
     // MARK: - Internal Properties
-    
+
     var paymentID: String?
     var correlationID: String?
 }

@@ -17,6 +17,12 @@
     * Rename `BTPaymentFlowError` to `BTLocalPaymentError`
       * Rename `BTLocalPaymentError.errorDomain` from `BTPaymentFlowErrorDomain` to `BTLocalPaymentErrorDomain`
     * Move `BTLocalPaymentRequest` methods to `BTLocalPaymentClient`
+    * Add `BTLocalPaymentError` case
+      * `.webSessionError` = 10
+  * BraintreePayPal
+    * Add `BTPayPalError` case
+      * Add error `.webSessionError` = 8
+  * BraintreePaymentFlow
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`

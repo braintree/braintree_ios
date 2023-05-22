@@ -14,7 +14,11 @@ import BraintreeCore
     
     var webAuthenticationSession: WebAuthenticationSession
         
-    var sepaDirectDebitAPI: SEPADirectDebitAPI
+    var sepaDirectDebitAPI: SEPADirectDebitAPI    
+   
+    // MARK: - Private Properties
+
+    private var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializers
 
@@ -25,6 +29,13 @@ import BraintreeCore
         self.apiClient = apiClient
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession =  WebAuthenticationSession()
+        super.init()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
     }
     
     /// Internal for testing.
@@ -34,6 +45,9 @@ import BraintreeCore
         self.sepaDirectDebitAPI = sepaDirectDebitAPI
     }
 
+    @objc func applicationDidBecomeActive(notification: Notification) {
+        returnedToAppAfterPermissionAlert = true
+    }
     // MARK: - Public Methods
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -45,26 +59,27 @@ import BraintreeCore
         _ request: BTSEPADirectDebitRequest,
         completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.selected.started")
+        apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeStarted)
         createMandate(request: request) { createMandateResult, error in
             guard error == nil else {
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(nil, error)
                 return
             }
 
             guard let createMandateResult = createMandateResult else {
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(nil, SEPADirectDebitError.resultReturnedNil)
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
             if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
                 self.tokenize(createMandateResult: createMandateResult, completion: completion)
                 return
             } else if let url = URL(string: createMandateResult.approvalURL) {
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.success")
                 self.startAuthenticationSession(url: url, context: self) { success, error in
                     switch success {
                     case true:
@@ -76,7 +91,8 @@ import BraintreeCore
                     }
                 }
             } else {
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.failure")
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(nil, SEPADirectDebitError.approvalURLInvalid)
             }
         }
@@ -107,7 +123,7 @@ import BraintreeCore
         request: BTSEPADirectDebitRequest,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.create-mandate.requested")
+        apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateChallengeRequired)
         sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request) { result, error in
             completion(result, error)
         }
@@ -117,14 +133,13 @@ import BraintreeCore
         createMandateResult: CreateMandateResult,
         completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
-        self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.requested")
         self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
             guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.failure")
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(nil, error)
                 return
             }
-            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.tokenize.success")
+            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeSucceeded)
             completion(sepaDirectDebitNonce, nil)
         }
     }
@@ -135,10 +150,22 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.started")
-        self.webAuthenticationSession.start(url: url, context: context) { url, error in
-            self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
-        }
+        returnedToAppAfterPermissionAlert = false
+        
+        self.webAuthenticationSession.start(
+            url: url,
+            context: context,
+            sessionDidDisplay: { [weak self] didDisplay in
+                if didDisplay {
+                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
+                } else {
+                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+                }
+            },
+            sessionDidComplete: { url, error in
+                self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+            }
+        )
     }
     
     /// Handles the result from the web authentication flow when returning to the app. Returns a success result or an error.
@@ -150,11 +177,17 @@ import BraintreeCore
         if let error = error {
             switch error {
             case ASWebAuthenticationSessionError.canceledLogin:
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.canceled")
+                // User canceled by breaking out of the PayPal browser switch flow
+                // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+                if !returnedToAppAfterPermissionAlert {
+                    // User tapped system cancel button on permission alert
+                    self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
+                }
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
                 completion(false, SEPADirectDebitError.webFlowCanceled)
                 return
             default:
-                self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.presentation-context-invalid")
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(false, SEPADirectDebitError.presentationContextInvalid)
                 return
             }
@@ -162,14 +195,16 @@ import BraintreeCore
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {
-                      self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.failure")
-                      completion(false, SEPADirectDebitError.resultURLInvalid)
-                      return
-                  }
-            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.success")
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
+                completion(false, SEPADirectDebitError.resultURLInvalid)
+                return
+            }
+            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeSucceeded)
             completion(true, nil)
         } else {
-            self.apiClient.sendAnalyticsEvent("ios.sepa-direct-debit.web-flow.failure")
+            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
+            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
             completion(false, SEPADirectDebitError.authenticationResultNil)
         }
     }

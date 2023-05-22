@@ -81,7 +81,6 @@ import Foundation
 
             tokenizationKey = authorization
             configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
-            queueAnalyticsEvent("ios.started.client-key")
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
@@ -92,8 +91,6 @@ import Foundation
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
             }
-
-            queueAnalyticsEvent("ios.started.client-token")
         }
 
         configurationHTTP?.session = session
@@ -310,10 +307,6 @@ import Foundation
     }
 
     // MARK: Analytics Internal Methods
-
-    func queueAnalyticsEvent(_ eventName: String) {
-        analyticsService?.sendAnalyticsEvent(eventName)
-    }
 
     func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
         switch httpType {

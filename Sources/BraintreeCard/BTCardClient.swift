@@ -32,16 +32,19 @@ import BraintreeCore
     ///    `tokenize` will contain a nonce and `error` will be `nil`; if it fails, `tokenize` will be `nil` and `error`will describe the failure.
     @objc(tokenizeCard:completion:)
     public func tokenize(_ card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeStarted)
         let request = BTCardRequest(card: card)
 
         apiClient.fetchOrReturnRemoteConfiguration() { configuration, error in
             guard let configuration, error == nil else {
+                self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
                 completion(nil, error)
                 return
             }
 
             if self.isGraphQLEnabled(for: configuration) {
                 if request.card.authenticationInsightRequested && request.card.merchantAccountID == nil {
+                    self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
                     completion(nil, BTCardError.integration)
                     return
                 }
@@ -51,7 +54,10 @@ import BraintreeCore
                 self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
                     if let error = error as NSError? {
                         if error.code == BTCoreConstants.networkConnectionLostCode {
-                            self.apiClient.sendAnalyticsEvent("ios.tokenize-card.graphQL.network-connection.failure")
+                            self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeNetworkConnectionLost)
+                            self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
+                            completion(nil, error)
+                            return
                         }
 
                         let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
@@ -61,16 +67,23 @@ import BraintreeCore
                             callbackError = self.constructCallbackError(with: error.userInfo, error: error)
                         }
 
-                        self.sendGraphQLAnalyticsEvent(with: false)
+                        self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
                         completion(nil, callbackError)
                         return
                     }
 
                     let cardJSON: BTJSON = body?["data"]["tokenizeCreditCard"] ?? BTJSON()
-                    self.sendGraphQLAnalyticsEvent(with: true)
+
+                    if let cardJSONError = cardJSON.asError() {
+                        self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
+                        completion(nil, cardJSONError)
+                        return
+                    }
 
                     let cardNonce: BTCardNonce = BTCardNonce(graphQLJSON: cardJSON)
-                    completion(cardNonce, cardJSON.asError())
+
+                    self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
+                    completion(cardNonce, nil)
                     return
                 }
             } else {
@@ -79,7 +92,10 @@ import BraintreeCore
                 self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
                     if let error = error as NSError? {
                         if error.code == BTCoreConstants.networkConnectionLostCode {
-                            self.apiClient.sendAnalyticsEvent("ios.tokenize-card.network-connection.failure")
+                            self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeNetworkConnectionLost)
+                            self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
+                            completion(nil, error)
+                            return
                         }
 
                         let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
@@ -89,17 +105,23 @@ import BraintreeCore
                             callbackError = self.constructCallbackError(with: error.userInfo, error: error)
                         }
 
-                        self.sendAnalyticsEvent(with: false)
+                        self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
                         completion(nil, callbackError)
                         return
                     }
 
                     let cardJSON: BTJSON = body?["creditCards"][0] ?? BTJSON()
-                    self.sendAnalyticsEvent(with: !cardJSON.isError)
 
-                    // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
+                    if let cardJSONError = cardJSON.asError() {
+                        self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed)
+                        completion(nil, cardJSONError)
+                        return
+                    }
+
                     let cardNonce: BTCardNonce = BTCardNonce(json: cardJSON)
-                    completion(cardNonce, cardJSON.asError())
+
+                    self.apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
+                    completion(cardNonce, nil)
                     return
                 }
             }
@@ -150,23 +172,6 @@ import BraintreeCore
         }
 
         return parameters
-    }
-
-    // MARK: - Analytics
-
-    private func sendAnalyticsEvent(with success: Bool) {
-        let integration = apiClient.metadata.integrationString
-        let status = success ? "succeeded" : "failed"
-        let event = "ios.\(integration).card.\(status)"
-
-        apiClient.sendAnalyticsEvent(event)
-    }
-
-    private func sendGraphQLAnalyticsEvent(with success: Bool) {
-        let status = success ? "success" : "failure"
-        let event = "ios.card.graphql.tokenization.\(status)"
-
-        apiClient.sendAnalyticsEvent(event)
     }
 
     // MARK: - Error Construction Methods
