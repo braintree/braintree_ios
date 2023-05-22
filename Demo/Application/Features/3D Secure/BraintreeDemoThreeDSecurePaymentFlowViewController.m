@@ -3,7 +3,6 @@
 @import BraintreeThreeDSecure;
 @import BraintreeCore;
 @import BraintreeCard;
-@import BraintreePaymentFlow;
 
 @interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTThreeDSecureRequestDelegate>
 

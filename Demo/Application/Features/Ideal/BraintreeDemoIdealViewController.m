@@ -1,10 +1,10 @@
 #import "BraintreeDemoIdealViewController.h"
-@import BraintreePaymentFlow;
+@import BraintreeLocalPayment;
 @import BraintreeCore;
 
 @interface BraintreeDemoIdealViewController () <BTLocalPaymentRequestDelegate>
 
-@property (nonatomic, strong) BTLocalPaymentClient *paymentFlowClient;
+@property (nonatomic, strong) BTLocalPaymentClient *localPaymentClient;
 @property (nonatomic, weak) UILabel *paymentIDLabel;
 
 @end
@@ -50,7 +50,7 @@ NSInteger const BTLocalPaymentCancelCode = 5;
 
 - (void)startPaymentWithBank {
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_f252zhq7_hh4cpc39zq4rgjcg"];
-    self.paymentFlowClient = [[BTLocalPaymentClient alloc] initWithAPIClient:client];
+    self.localPaymentClient = [[BTLocalPaymentClient alloc] initWithAPIClient:client];
 
     BTLocalPaymentRequest *request = [[BTLocalPaymentRequest alloc] init];
     request.paymentType = @"ideal";
@@ -69,7 +69,7 @@ NSInteger const BTLocalPaymentCancelCode = 5;
     request.isShippingAddressRequired = NO;
     request.localPaymentFlowDelegate = self;
 
-    void (^paymentFlowCompletionBlock)(BTLocalPaymentResult *, NSError *) = ^(BTLocalPaymentResult * _Nullable result, NSError * _Nullable error) {
+    void (^localPaymentCompletionBlock)(BTLocalPaymentResult *, NSError *) = ^(BTLocalPaymentResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             if (error.code == BTLocalPaymentCancelCode) {
                 self.progressBlock(@"Canceled 🎲");
@@ -82,7 +82,7 @@ NSInteger const BTLocalPaymentCancelCode = 5;
         }
     };
 
-    [self.paymentFlowClient startPaymentFlow:request completion:paymentFlowCompletionBlock];
+    [self.localPaymentClient startPaymentFlow:request completion:localPaymentCompletionBlock];
 }
 
 #pragma mark BTIdealRequestDelegate

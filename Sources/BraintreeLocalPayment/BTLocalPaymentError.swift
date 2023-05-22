@@ -6,7 +6,7 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
     /// Unknown error
     case unknown
 
-    /// PaymentFlow is disabled in configuration
+    /// Local Payments are disabled in configuration
     case disabled
     
     /// UIApplication failed to switch to browser
@@ -77,8 +77,8 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
             return "Failed to begin payment flow: BTLocalPaymentRequest localPaymentFlowDelegate can not be nil."
         case .noAccountData:
             return "Missing response data from /v1/payment_methods/ call."
-        case .canceled(let paymentFlowName):
-            return "\(paymentFlowName) flow was canceled by the user."
+        case .canceled(let localPaymentName):
+            return "\(localPaymentName) flow was canceled by the user."
         case .failedToCreateNonce:
             return "Received valid response data, but missing `nonce` key value."
         case .fetchConfigurationFailed:

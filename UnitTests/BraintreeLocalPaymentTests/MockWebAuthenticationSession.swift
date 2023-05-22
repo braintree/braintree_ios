@@ -1,6 +1,6 @@
 import Foundation
 import AuthenticationServices
-@testable import BraintreePaymentFlow
+@testable import BraintreeLocalPayment
 
 class MockWebAuthenticationSession: WebAuthenticationSession {
     var cannedResponseURL: URL?
