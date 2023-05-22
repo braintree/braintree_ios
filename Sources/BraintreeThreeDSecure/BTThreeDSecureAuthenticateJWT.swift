@@ -12,15 +12,14 @@ class BTThreeDSecureAuthenticateJWT {
         forResult lookupResult: BTThreeDSecureResult?,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.started")
-
         guard let nonce = lookupResult?.tokenizedCard?.nonce else {
-            apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.errored")
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
             completion(nil, BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
             return
         }
 
         guard let urlSafeNonce = nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
             completion(nil, BTThreeDSecureError.failedAuthentication("Unable to percent encode nonce as a URL safe nonce."))
             return
         }
@@ -33,15 +32,15 @@ class BTThreeDSecureAuthenticateJWT {
         ) { body, _, error in
             if let error = error as NSError? {
                 if error.code == BTCoreConstants.networkConnectionLostCode {
-                    apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.network-connection.failure")
+                    apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.networkConnectionLost)
                 }
-
-                apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.errored")
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
                 completion(nil, error)
                 return
             }
 
             guard let body else {
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
                 completion(nil, BTThreeDSecureError.noBodyReturned)
                 return
             }
@@ -49,15 +48,14 @@ class BTThreeDSecureAuthenticateJWT {
             let threeDSecureResult: BTThreeDSecureResult = BTThreeDSecureResult(json: body)
 
             if threeDSecureResult.tokenizedCard != nil && threeDSecureResult.errorMessage == nil {
-                apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.succeeded")
-            } else {
-                apiClient.sendAnalyticsEvent("ios.three-d-secure.verification-flow.upgrade-payment-method.failure.returned-lookup-nonce")
-
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthSucceeded)
+            } else {                
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
                 // If authentication wasn't successful, add the BTCardNonce from the lookup result to the authentication result
                 // so that merchants can transact with the lookup nonce if desired.
                 threeDSecureResult.tokenizedCard = lookupResult?.tokenizedCard
             }
-
+           
             completion(threeDSecureResult, nil)
             return
         }
