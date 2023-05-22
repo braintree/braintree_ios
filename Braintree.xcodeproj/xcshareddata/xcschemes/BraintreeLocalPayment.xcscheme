@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A91E1E8924FEDD7F007540E5"
-               BuildableName = "BraintreePaymentFlowTests.xctest"
-               BlueprintName = "BraintreePaymentFlowTests"
+               BuildableName = "BraintreeLocalPaymentTests.xctest"
+               BlueprintName = "BraintreeLocalPaymentTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -48,8 +48,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A91E1E8924FEDD7F007540E5"
-               BuildableName = "BraintreePaymentFlowTests.xctest"
-               BlueprintName = "BraintreePaymentFlowTests"
+               BuildableName = "BraintreeLocalPaymentTests.xctest"
+               BlueprintName = "BraintreeLocalPaymentTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
