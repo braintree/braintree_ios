@@ -89,8 +89,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "03502C831E9C0A1700F15EE6"
-            BuildableName = "BraintreePaymentFlow.framework"
-            BlueprintName = "BraintreePaymentFlow"
+            BuildableName = "BraintreeLocalPayment.framework"
+            BlueprintName = "BraintreeLocalPayment"
             ReferencedContainer = "container:../Braintree.xcodeproj">
          </BuildableReference>
          <BuildableReference
