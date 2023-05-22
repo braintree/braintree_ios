@@ -113,24 +113,13 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
         serverJWT: String!
     ) {
         switch validateResponse.actionCode {
-        case .success:
-            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
-            BTThreeDSecureAuthenticateJWT.authenticate(
-                jwt: serverJWT,
-                withAPIClient: apiClient,
-                forResult: lookupResult,
-                completion: completionHandler
-            )
-        case .failure:
-            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
-            BTThreeDSecureAuthenticateJWT.authenticate(
-                jwt: serverJWT,
-                withAPIClient: apiClient,
-                forResult: lookupResult,
-                completion: completionHandler
-            )
-        case .noAction:
-            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
+        case .success, .noAction, .failure:
+            if validateResponse.actionCode == .failure {
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
+            } else {
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
+            }
+
             BTThreeDSecureAuthenticateJWT.authenticate(
                 jwt: serverJWT,
                 withAPIClient: apiClient,
