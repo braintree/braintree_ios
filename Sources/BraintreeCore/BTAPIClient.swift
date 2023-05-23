@@ -302,8 +302,12 @@ import Foundation
 
     ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
-    public func sendAnalyticsEvent(_ eventName: String) {
-        analyticsService?.sendAnalyticsEvent(eventName, completion: { _ in})
+    public func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil) {
+        analyticsService?.sendAnalyticsEvent(
+            eventName,
+            errorDescription: errorDescription,
+            completion: { _ in }
+        )
     }
 
     // MARK: Analytics Internal Methods
