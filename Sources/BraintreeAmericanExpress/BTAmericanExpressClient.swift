@@ -27,7 +27,7 @@ import BraintreeCore
     @objc(getRewardsBalanceForNonce:currencyIsoCode:completion:)
     public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
         let parameters = ["currencyIsoCode": currencyISOCode, "paymentMethodNonce": nonce]
-        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceStarted)
+        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.started)
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
             guard let self = self else { return }
@@ -72,13 +72,13 @@ import BraintreeCore
         with result: BTAmericanExpressRewardsBalance,
         completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceSucceeded)
+        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.succeeded)
         completion(result, nil)
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
-            BTAmericanExpressAnalytics.rewardsBalanceFailed,
+            BTAmericanExpressAnalytics.failed,
             errorDescription: error.localizedDescription
         )
         completion(nil, error)
