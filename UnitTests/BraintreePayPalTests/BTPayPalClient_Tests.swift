@@ -264,7 +264,7 @@ class BTPayPalClient_Tests: XCTestCase {
         // Make sure analytics event was sent when switch occurred
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
-        XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.paylater.offered.started"))
+        XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
     }
 
     func testTokenizePayPalAccount_whenPayPalCreditOffered_performsSwitchCorrectly() {
@@ -287,7 +287,7 @@ class BTPayPalClient_Tests: XCTestCase {
         // Make sure analytics event was sent when switch occurred
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
-        XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-ba.webswitch.credit.offered.started"))
+        XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
     }
 
     func testTokenizePayPalAccount_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
