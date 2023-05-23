@@ -195,7 +195,7 @@
         // MARK: - UI and Render Type Customization
 
         request.uiType = BTThreeDSecureUITypeBoth;
-        request.renderType = [[NSArray alloc] initWithObjects:
+        request.renderTypes = [[NSArray alloc] initWithObjects:
                               BTThreeDSecureRenderTypeHTML,
                               BTThreeDSecureRenderTypeOOB,
                               BTThreeDSecureRenderTypeOTP,

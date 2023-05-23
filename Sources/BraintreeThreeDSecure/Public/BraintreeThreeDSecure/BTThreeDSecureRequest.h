@@ -253,7 +253,7 @@ extern BTThreeDSecureRenderType BTThreeDSecureRenderTypeOOB;
  - Note: When using `BTThreeDSecureUITypeBoth` or `BTThreeDSecureUITypeHTML`, all `renderType` options must be set.
  When using `BTThreeDSecureUITypeNative`, all `renderType` options except `BTThreeDSecureRenderTypeHTML` must be set.
  */
-@property (nonatomic, copy) NSArray<BTThreeDSecureRenderType> *renderType;
+@property (nonatomic, copy) NSArray<BTThreeDSecureRenderType> *renderTypes;
 
 @end
 

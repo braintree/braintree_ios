@@ -66,8 +66,8 @@
         cardinalConfiguration.uiType = uiType;
     }
 
-    if (request.renderType) {
-        cardinalConfiguration.renderType = request.renderType;
+    if (request.renderTypes) {
+        cardinalConfiguration.renderType = request.renderTypes;
     }
 
     [instance.cardinalSession configure:cardinalConfiguration];
