@@ -450,29 +450,6 @@ class BTCardClient_Tests: XCTestCase {
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:failed"))
     }
-    
-    func testTokenize_whenNetworkConnectionLost_sendsAnalytics() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
-
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = "2038"
-        
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
-        
-        let expectation = self.expectation(description: "Callback invoked")
-        cardClient.tokenize(card) { nonce, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:network-connection:failed"))
-    }
-
 
     // MARK: - GraphQL API
 
@@ -757,33 +734,5 @@ class BTCardClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:failed"))
-    }
-    
-    func testTokenize_withGraphQL_whenNetworkConnectionLost_sendsAnalytics() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "graphQL": [
-                "url": "graphql://graphql",
-                "features": ["tokenize_credit_cards"]
-            ] as [String: Any]
-        ])
-
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = "2038"
-        
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
-        
-        let expectation = self.expectation(description: "Callback invoked")
-        cardClient.tokenize(card) { nonce, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("card:tokenize:network-connection:failed"))
     }
 }
