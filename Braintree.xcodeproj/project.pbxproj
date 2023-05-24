@@ -1138,6 +1138,7 @@
 				57544821294A3B6900DEB7B0 /* BTConfiguration+PayPal.swift */,
 				57544F5B295254A500DEB7B0 /* BTJSON+PayPal.swift */,
 				57544F572952298900DEB7B0 /* BTPayPalAccountNonce.swift */,
+				3B7A261029C0CAA40087059D /* BTPayPalAnalytics.swift */,
 				BE8E5CEE294B6937001BF017 /* BTPayPalCheckoutRequest.swift */,
 				57544F5929524E4D00DEB7B0 /* BTPayPalClient.swift */,
 				5754481F294A2EBE00DEB7B0 /* BTPayPalCreditFinancing.swift */,
@@ -1147,7 +1148,6 @@
 				57D9436D2968A8080079EAB1 /* BTPayPalLocaleCode.swift */,
 				BE349112294B798300D2CF68 /* BTPayPalRequest.swift */,
 				BE349110294B77E100D2CF68 /* BTPayPalVaultRequest.swift */,
-				3B7A261029C0CAA40087059D /* BTPayPalAnalytics.swift */,
 			);
 			path = BraintreePayPal;
 			sourceTree = "<group>";
