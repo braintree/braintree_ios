@@ -166,6 +166,7 @@ sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, e
 
 ## Local Payments
 
+We have renamed the module `BraintreePaymentFlow` to `BraintreeLocalPayment`
 We have replaced `SFAuthenticationSession` with `ASWebAuthenticationSession` in the Local Payment Method flow. With this change, you no longer need to:
   * Register a URL Scheme or set a return URL via the `BTAppContextSwitcher.setReturnURLScheme()` method
   * Handle app context switching via the `BTAppContextSwitcher.handleOpenURL(context: UIOpenURLContext)` or `BTAppContextSwitcher.handleOpenURL(URL)`

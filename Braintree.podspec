@@ -48,8 +48,8 @@ Pod::Spec.new do |s|
     s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
   end
 
-  s.subspec "PaymentFlow" do |s|
-    s.source_files = "Sources/BraintreePaymentFlow/*.swift"
+  s.subspec "LocalPayment" do |s|
+    s.source_files = "Sources/BraintreeLocalPayment/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/DataCollector"
   end

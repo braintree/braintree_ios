@@ -28,8 +28,8 @@ let package = Package(
             targets: ["BraintreeDataCollector", "PPRiskMagnes"]
         ),
         .library(
-            name: "BraintreePaymentFlow",
-            targets: ["BraintreePaymentFlow", "PPRiskMagnes"]
+            name: "BraintreeLocalPayment",
+            targets: ["BraintreeLocalPayment", "PPRiskMagnes"]
         ),
         .library(
             name: "BraintreePayPal",
@@ -76,7 +76,7 @@ let package = Package(
             dependencies: ["BraintreeCore", "PPRiskMagnes"]
         ),
         .target(
-            name: "BraintreePaymentFlow",
+            name: "BraintreeLocalPayment",
             dependencies: ["BraintreeCore", "BraintreeDataCollector"]
         ),
         .target(

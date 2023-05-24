@@ -217,23 +217,6 @@ import BraintreeDataCollector
         }
         performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
     }
-    
-    // MARK: - Analytics Helpers
-    
-    private func sendAnalyticsEvent(for paymentType: BTPayPalPaymentType, success: Bool) {
-        let successString = success ? "started" : "failed"
-        
-        apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.initiate.\(successString)")
-        
-        if let checkoutRequest = payPalRequest as? BTPayPalCheckoutRequest,
-           checkoutRequest.offerPayLater {
-            apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.paylater.offered.\(successString)")
-        }
-        
-        if let vaultRequest = payPalRequest as? BTPayPalVaultRequest, vaultRequest.offerCredit {
-            apiClient.sendAnalyticsEvent("ios.\(paymentType.stringValue).webswitch.credit.offered.\(successString)")
-        }
-    }
 
     // MARK: - Private Methods
 
@@ -285,7 +268,6 @@ import BraintreeDataCollector
                 let pairingID = self.token(from: approvalURL)
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
-                self.sendAnalyticsEvent(for: request.paymentType, success: error == nil)
                 self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
             }
         }

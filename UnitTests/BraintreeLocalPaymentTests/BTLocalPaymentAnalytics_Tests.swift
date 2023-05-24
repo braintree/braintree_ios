@@ -1,7 +1,7 @@
 import XCTest
-@testable import BraintreePaymentFlow
+@testable import BraintreeLocalPayment
 
-final class BTPaymentFlow_Tests: XCTestCase {
+final class BTLocalPaymentAnalytics_Tests: XCTestCase {
 
     func test_startPaymentAnalyticsEvents_sendsExpectedEventNames() {
         XCTAssertEqual(BTLocalPaymentAnalytics.paymentStarted, "local-payment:start-payment:started")

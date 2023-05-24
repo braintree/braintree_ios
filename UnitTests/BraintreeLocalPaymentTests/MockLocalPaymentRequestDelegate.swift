@@ -1,5 +1,5 @@
 import XCTest
-import BraintreePaymentFlow
+import BraintreeLocalPayment
 
 class MockLocalPaymentRequestDelegate : NSObject, BTLocalPaymentRequestDelegate {
     var paymentID: String?

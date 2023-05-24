@@ -4,7 +4,7 @@ import BraintreeApplePay
 import BraintreeCard
 import BraintreeCore
 import BraintreeDataCollector
-import BraintreePaymentFlow
+import BraintreeLocalPayment
 import BraintreePayPal
 import BraintreeThreeDSecure
 import BraintreeVenmo
