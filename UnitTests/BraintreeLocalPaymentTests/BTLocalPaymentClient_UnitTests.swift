@@ -1,7 +1,7 @@
 import UIKit
 import XCTest
 import AuthenticationServices
-@testable import BraintreePaymentFlow
+@testable import BraintreeLocalPayment
 @testable import BraintreeCore
 @testable import BraintreeTestShared
 
