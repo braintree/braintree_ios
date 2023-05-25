@@ -315,14 +315,14 @@ import BraintreeCore
             }
             
             let venmoAccountJSON: BTJSON = body["venmoAccounts"][0]
-            let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
-            
-            guard let venmoJSONError = venmoAccountJSON.asError() else {
-                self.notifySuccess(with: venmoAccountNonce, completion: self.appSwitchCompletion)
+
+            if let venmoJSONError = venmoAccountJSON.asError() {
+                self.notifyFailure(with: venmoJSONError, completion: self.appSwitchCompletion)
                 return
             }
-            
-            self.notifyFailure(with: venmoJSONError, completion: self.appSwitchCompletion)
+
+            let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
+            self.notifySuccess(with: venmoAccountNonce, completion: self.appSwitchCompletion)
             return
         }
     }

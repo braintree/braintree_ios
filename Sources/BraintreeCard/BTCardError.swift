@@ -40,7 +40,7 @@ enum BTCardError: Error, CustomNSError, LocalizedError {
     var errorUserInfo: [String: Any] {
         switch self {
         case .unknown:
-            return [NSLocalizedDescriptionKey : "An unknown error occurred. Please contact support."]
+            return [NSLocalizedDescriptionKey: "An unknown error occurred. Please contact support."]
         case .integration:
             return [NSLocalizedDescriptionKey: "BTCardClient tokenization failed because a merchant account ID is required when authenticationInsightRequested is true."]
         case .customerInputInvalid(let errorDictionary):
@@ -48,7 +48,7 @@ enum BTCardError: Error, CustomNSError, LocalizedError {
         case .cardAlreadyExists(let errorDictionary):
             return errorDictionary
         case .fetchConfigurationFailed:
-            return [NSLocalizedDescriptionKey : "Failed to fetch Braintree configuration."]
+            return [NSLocalizedDescriptionKey: "Failed to fetch Braintree configuration."]
         }
     }
 }

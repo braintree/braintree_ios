@@ -85,7 +85,7 @@ import BraintreeCore
         self.request = request
         
         guard apiClient.clientToken != nil else {
-            notifyPrepareLookupFailure(
+            notifyFailure(
                 with: BTThreeDSecureError.configuration("A client token must be used for ThreeDSecure integrations."),
                 completion: completion
             )
@@ -93,7 +93,7 @@ import BraintreeCore
         }
 
         guard request.nonce != nil else {
-            notifyPrepareLookupFailure(
+            notifyFailure(
                 with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce can not be nil."),
                 completion: completion
             )
@@ -102,7 +102,7 @@ import BraintreeCore
 
         prepareLookup(request: request) { error in
             if let error {
-                self.notifyPrepareLookupFailure(with: error, completion: completion)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
@@ -124,16 +124,16 @@ import BraintreeCore
             requestParameters["clientMetadata"] = clientMetadata
 
             guard let jsonData = try? JSONSerialization.data(withJSONObject: requestParameters) else {
-                self.notifyPrepareLookupFailure(with: BTThreeDSecureError.jsonSerializationFailure, completion: completion)
+                self.notifyFailure(with: BTThreeDSecureError.jsonSerializationFailure, completion: completion)
                 return
             }
 
             guard let jsonString = String(data: jsonData, encoding: .utf8) else {
-                self.notifyPrepareLookupFailure(with: BTThreeDSecureError.jsonSerializationFailure, completion: completion)
+                self.notifyFailure(with: BTThreeDSecureError.jsonSerializationFailure, completion: completion)
                 return
             }
 
-            self.notifyPrepareLookupSuccess(with: jsonString, completion: completion)
+            self.notifySuccess(with: jsonString, completion: completion)
             return
         }
     }
@@ -428,7 +428,7 @@ import BraintreeCore
         completion(nil, error)
     }
 
-    private func notifyPrepareLookupFailure(with error: Error, completion: @escaping (String?, Error?) -> Void) {
+    private func notifyFailure(with error: Error, completion: @escaping (String?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTThreeDSecureAnalytics.verifyFailed,
             errorDescription: error.localizedDescription
@@ -436,8 +436,8 @@ import BraintreeCore
         completion(nil, error)
     }
 
-    private func notifyPrepareLookupSuccess(with result: String, completion: @escaping (String?, Error?) -> Void) {
+    private func notifySuccess(with payload: String, completion: @escaping (String?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifySucceeded)
-        completion(result, nil)
+        completion(payload, nil)
     }
 }
