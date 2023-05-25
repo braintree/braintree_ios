@@ -110,7 +110,7 @@ import BraintreeCore
             ]
 
             self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
-                if let error {
+                if error != nil {
                     self.notifyFailure(
                         with: BTVenmoError.invalidRedirectURL("Failed to fetch a Venmo paymentContextID while constructing the requestURL."),
                         completion: completion
