@@ -13,7 +13,7 @@ import BraintreeDataCollector
     
     // MARK: - Internal Properties
     
-    var webAuthenticationSession: WebAuthenticationSession
+    var webAuthenticationSession: BTWebAuthenticationSession
     var returnedToAppAfterPermissionAlert: Bool = false
 
     /// exposed for testing
@@ -31,7 +31,7 @@ import BraintreeDataCollector
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.webAuthenticationSession = WebAuthenticationSession()
+        self.webAuthenticationSession = BTWebAuthenticationSession()
         super.init()
         NotificationCenter.default.addObserver(
             self,
