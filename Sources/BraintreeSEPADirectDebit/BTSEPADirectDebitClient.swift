@@ -12,7 +12,7 @@ import BraintreeCore
 
     let apiClient: BTAPIClient
     
-    var webAuthenticationSession: WebAuthenticationSession
+    var webAuthenticationSession: BTWebAuthenticationSession
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI    
    
@@ -28,7 +28,7 @@ import BraintreeCore
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
-        self.webAuthenticationSession =  WebAuthenticationSession()
+        self.webAuthenticationSession =  BTWebAuthenticationSession()
         super.init()
         NotificationCenter.default.addObserver(
             self,
@@ -39,7 +39,7 @@ import BraintreeCore
     }
     
     /// Internal for testing.
-    init(apiClient: BTAPIClient, webAuthenticationSession: WebAuthenticationSession, sepaDirectDebitAPI: SEPADirectDebitAPI) {
+    init(apiClient: BTAPIClient, webAuthenticationSession: BTWebAuthenticationSession, sepaDirectDebitAPI: SEPADirectDebitAPI) {
         self.apiClient = apiClient
         self.webAuthenticationSession = webAuthenticationSession
         self.sepaDirectDebitAPI = sepaDirectDebitAPI
@@ -152,20 +152,15 @@ import BraintreeCore
     ) {
         returnedToAppAfterPermissionAlert = false
         
-        self.webAuthenticationSession.start(
-            url: url,
-            context: context,
-            sessionDidDisplay: { [weak self] didDisplay in
-                if didDisplay {
-                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
-                } else {
-                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
-                }
-            },
-            sessionDidComplete: { url, error in
-                self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
-            }
-        )
+        self.webAuthenticationSession.start(url: url, context: context) { [weak self] didDisplay in
+        if didDisplay {
+            self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
+        } else {
+            self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+        }
+    } sessionDidComplete: { url, error in
+        self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+    }
     }
     
     /// Handles the result from the web authentication flow when returning to the app. Returns a success result or an error.
