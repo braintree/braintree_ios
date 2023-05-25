@@ -248,10 +248,10 @@ class BTPayPalClient_Tests: XCTestCase {
         request.currencyCode = "GBP"
         request.offerPayLater = true
 
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.tokenize(request) { _, _ in }
 
-        XCTAssertNotNil(payPalClient.authenticationSession)
-        XCTAssertTrue(payPalClient.isAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalClient.webAuthenticationSession)
 
         // Ensure the payment resource had the correct parameters
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
@@ -271,10 +271,10 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalVaultRequest()
         request.offerCredit = true
 
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.tokenize(request) { _, _ in }
 
-        XCTAssertNotNil(payPalClient.authenticationSession)
-        XCTAssertTrue(payPalClient.isAuthenticationSessionStarted)
+        XCTAssertNotNil(payPalClient.webAuthenticationSession)
 
         // Ensure the payment resource had the correct parameters
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
@@ -294,9 +294,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
 
-        XCTAssertNotNil(payPalClient.authenticationSession)
-        XCTAssertTrue(payPalClient.isAuthenticationSessionStarted)
-
+        XCTAssertNotNil(payPalClient.webAuthenticationSession)
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
