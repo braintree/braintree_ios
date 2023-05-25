@@ -153,14 +153,14 @@ import BraintreeCore
         returnedToAppAfterPermissionAlert = false
         
         self.webAuthenticationSession.start(url: url, context: context) { [weak self] didDisplay in
-        if didDisplay {
-            self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
-        } else {
-            self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+            if didDisplay {
+                self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
+            } else {
+                self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+            }
+        } sessionDidComplete: { url, error in
+            self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         }
-    } sessionDidComplete: { url, error in
-        self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
-    }
     }
     
     /// Handles the result from the web authentication flow when returning to the app. Returns a success result or an error.

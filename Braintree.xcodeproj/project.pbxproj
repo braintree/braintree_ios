@@ -1151,7 +1151,6 @@
 			isa = PBXGroup;
 			children = (
 				80F4F4D529F8A628003EACB1 /* Analytics */,
-				BEBC6E5D2927CF59004E25A0 /* Braintree.h */,
 				570B93AF2853980C0041BAFE /* BTAPIClient.swift */,
 				BE24C67428E7491E0067B11A /* BTAPIClientAuthorization.swift */,
 				BE24C66D28E49A730067B11A /* BTAPIClientError.swift */,
@@ -1191,6 +1190,7 @@
 				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
+				BEBC6E5D2927CF59004E25A0 /* Braintree.h */,
 			);
 			path = BraintreeCore;
 			sourceTree = "<group>";
