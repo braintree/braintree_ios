@@ -1188,8 +1188,8 @@
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
 				BEBD05212A1FE8BE0003C15C /* BTWebAuthenticationSession.swift */,
 				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
-				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
+				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				BEBC6E5D2927CF59004E25A0 /* Braintree.h */,
 			);
 			path = BraintreeCore;
