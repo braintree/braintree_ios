@@ -550,24 +550,6 @@ class BTVenmoClient_Tests: XCTestCase {
         
         XCTAssertEqual(venmoClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)
     }
-    
-    func testTokenizeVenmoAccount_whenNetworkConnectionLost_sendsAnalytics() {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        
-        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        venmoClient.application = FakeApplication()
-        venmoClient.bundle = FakeBundle()
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-
-        let expectation = expectation(description: "Callback invoked")
-        venmoClient.tokenize(venmoRequest) { nonce, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.tokenizeNetworkConnectionLost))
-    }
 
     func testTokenize_whenConfigurationIsInvalid_returnsError() async {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)

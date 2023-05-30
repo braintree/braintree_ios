@@ -377,34 +377,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         
         mockAPIClient.cannedResponseBody = nil
     }
-
-    func testStartPaymentFlow_whenNetworkConnectionLost_sendsAnalytics() {
-        let client = BTLocalPaymentClient(apiClient: mockAPIClient)
-
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        mockAPIClient.cannedResponseError = NSError(
-            domain: NSURLErrorDomain,
-            code: -1005,
-            userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."]
-        )
-
-        mockAPIClient.cannedResponseBody = BTJSON(
-            value: [
-                "paymentResource": [
-                    "redirectUrl": "https://www.somebankurl.com",
-                    "paymentToken": "123aaa-123-543-777",
-                ]
-            ]
-        )
-
-        client.startPaymentFlow(localPaymentRequest) { result, error in
-            XCTAssertNotNil(error)
-            XCTAssertNil(result)
-        }
-
-        client.handleOpen(URL(string: "an-error-url")!)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.paymentNetworkConnectionLost))
-    }
     
     func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {
         let client = BTLocalPaymentClient(apiClient: mockAPIClient)

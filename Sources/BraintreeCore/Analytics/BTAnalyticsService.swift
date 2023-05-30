@@ -48,17 +48,21 @@ class BTAnalyticsService: Equatable {
     ///  Events are queued and sent in batches to the analytics service, based on the status of the app and
     ///  the number of queued events. After exiting this method, there is no guarantee that the event has been sent.
     /// - Parameter eventName: String representing the event name
-    func sendAnalyticsEvent(_ eventName: String) {
+    func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil) {
         DispatchQueue.main.async {
-            self.enqueueEvent(eventName)
+            self.enqueueEvent(eventName, errorDescription: errorDescription)
             self.flushIfAtThreshold()
         }
     }
 
     /// Sends request to FPTI immediately, without checking number of events in queue against flush threshold
-    func sendAnalyticsEvent(_ eventName: String, completion: @escaping (Error?) -> Void = { _ in }) {
+    func sendAnalyticsEvent(
+        _ eventName: String,
+        errorDescription: String? = nil,
+        completion: @escaping (Error?) -> Void = { _ in }
+    ) {
         DispatchQueue.main.async {
-            self.enqueueEvent(eventName)
+            self.enqueueEvent(eventName, errorDescription: errorDescription)
             self.flush(completion)
         }
     }
@@ -113,9 +117,13 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     /// Adds an event to the queue
-    func enqueueEvent(_ eventName: String) {
+    func enqueueEvent(_ eventName: String, errorDescription: String?) {
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
-        let event = FPTIBatchData.Event(eventName: eventName, timestamp: String(timestampInMilliseconds))
+        let event = FPTIBatchData.Event(
+            errorDescription: errorDescription,
+            eventName: eventName,
+            timestamp: String(timestampInMilliseconds)
+        )
         let session = BTAnalyticsSession(with: apiClient.metadata.sessionID)
 
         sessionsQueue.async {

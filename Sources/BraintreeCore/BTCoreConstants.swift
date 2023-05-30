@@ -9,8 +9,6 @@ import Foundation
     public static var apiVersion: String = "2016-10-07"
     
     public static var graphQLVersion: String = "2018-03-06"
-
-    public static var networkConnectionLostCode: Int = -1005
     
     public static let callbackURLScheme: String = "sdk.ios.braintree"
 

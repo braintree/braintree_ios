@@ -50,7 +50,7 @@ class SEPADirectDebitAPI {
             }
 
             guard let body = body else {
-                completion(nil, SEPADirectDebitError.noBodyReturned)
+                completion(nil, BTSEPADirectDebitError.noBodyReturned)
                 return
             }
 
@@ -76,7 +76,7 @@ class SEPADirectDebitAPI {
             }
 
             guard let body = body else {
-                completion(nil, SEPADirectDebitError.noBodyReturned)
+                completion(nil, BTSEPADirectDebitError.noBodyReturned)
                 return
             }
 

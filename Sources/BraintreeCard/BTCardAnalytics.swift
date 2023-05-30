@@ -7,5 +7,4 @@ class BTCardAnalytics {
     static let cardTokenizeStarted = "card:tokenize:started"
     static let cardTokenizeFailed = "card:tokenize:failed"
     static let cardTokenizeSucceeded = "card:tokenize:succeeded"
-    static let cardTokenizeNetworkConnectionLost = "card:tokenize:network-connection:failed"
 }

@@ -9,9 +9,6 @@ class BTPayPalAnalytics {
     static let tokenizeStarted = "paypal:tokenize:started"
     static let tokenizeFailed = "paypal:tokenize:failed"
     static let tokenizeSucceeded = "paypal:tokenize:succeeded"
-    
-    // Specific fail
-    static let tokenizeNetworkConnectionFailed = "paypal:tokenize:network-connection:failed"
    
     // MARK: - Browser Presentation Events
   

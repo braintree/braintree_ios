@@ -50,17 +50,15 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeStarted)
         createMandate(request: request) { createMandateResult, error in
-            guard error == nil else {
+            if let error {
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-                completion(nil, error)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
             guard let createMandateResult = createMandateResult else {
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-                completion(nil, SEPADirectDebitError.resultReturnedNil)
+                self.notifyFailure(with: BTSEPADirectDebitError.resultReturnedNil, completion: completion)
                 return
             }
             // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
@@ -75,14 +73,15 @@ import BraintreeCore
                         self.tokenize(createMandateResult: createMandateResult, completion: completion)
                         return
                     case false:
-                        completion(nil, error)
-                        return
+                        if let error {
+                            self.notifyFailure(with: error, completion: completion)
+                            return
+                        }
                     }
                 }
             } else {
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-                completion(nil, SEPADirectDebitError.approvalURLInvalid)
+                self.notifyFailure(with: BTSEPADirectDebitError.approvalURLInvalid, completion: completion)
             }
         }
     }
@@ -123,13 +122,17 @@ import BraintreeCore
         completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
         self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
-            guard let sepaDirectDebitNonce = sepaDirectDebitNonce else {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-                completion(nil, error)
+            if let error {
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
-            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeSucceeded)
-            completion(sepaDirectDebitNonce, nil)
+
+            guard let sepaDirectDebitNonce else {
+                self.notifyFailure(with: BTSEPADirectDebitError.failedToCreateNonce, completion: completion)
+                return
+            }
+
+            self.notifySuccess(with: sepaDirectDebitNonce, completion: completion)
         }
     }
     
@@ -151,7 +154,7 @@ import BraintreeCore
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. Cancel button on the WebAuthenticationSession)
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
-            completion(false, SEPADirectDebitError.webFlowCanceled)
+            completion(false, BTSEPADirectDebitError.webFlowCanceled)
             return
         }
     }
@@ -168,7 +171,7 @@ import BraintreeCore
                   queryParameter.contains("true") else {
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-                completion(false, SEPADirectDebitError.resultURLInvalid)
+                completion(false, BTSEPADirectDebitError.resultURLInvalid)
                 return
             }
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeSucceeded)
@@ -186,5 +189,28 @@ import BraintreeCore
     private func getQueryStringParameter(url: String, param: String) -> String? {
         guard let url = URLComponents(string: url) else { return nil }
         return url.queryItems?.first { $0.name == param }?.value
+    }
+
+    // MARK: - Analytics Helper Methods
+
+    private func notifySuccess(
+        with result: BTSEPADirectDebitNonce,
+        completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeSucceeded)
+        completion(result, nil)
+    }
+
+    private func notifyFailure(with error: Error, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(
+            BTSEPADirectAnalytics.tokenizeFailed,
+            errorDescription: error.localizedDescription
+        )
+        completion(nil, error)
+    }
+
+    private func notifyCancel(completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
+        self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
+        completion(nil, BTSEPADirectDebitError.webFlowCanceled)
     }
 }

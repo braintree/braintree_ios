@@ -123,13 +123,13 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     
     func testCreateMandate_onNoBodyReturned_returnsError() {
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
-        mockAPIClient.cannedResponseError = SEPADirectDebitError.noBodyReturned as NSError
+        mockAPIClient.cannedResponseError = BTSEPADirectDebitError.noBodyReturned as NSError
         
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { result, error in
             if error != nil, let error = error as NSError? {
-                XCTAssertEqual(error.domain, SEPADirectDebitError.errorDomain)
-                XCTAssertEqual(error.code, SEPADirectDebitError.noBodyReturned.errorCode)
-                XCTAssertEqual(error.localizedDescription, SEPADirectDebitError.noBodyReturned.localizedDescription)
+                XCTAssertEqual(error.domain, BTSEPADirectDebitError.errorDomain)
+                XCTAssertEqual(error.code, BTSEPADirectDebitError.noBodyReturned.errorCode)
+                XCTAssertEqual(error.localizedDescription, BTSEPADirectDebitError.noBodyReturned.localizedDescription)
             } else if result != nil {
                 XCTFail("This request should fail.")
             }

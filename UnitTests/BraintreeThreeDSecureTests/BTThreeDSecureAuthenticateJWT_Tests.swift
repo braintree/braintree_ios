@@ -97,21 +97,4 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
         XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthFailed))
     }
-    
-    func testAuthenticateJWT_whenNetworkConnectionLost_sendsAnalytics() {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        
-        let authenticateJwtExpectation = self.expectation(description: "Callback envoked")
-
-        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult) { result, error in
-            XCTAssertNil(result)
-            XCTAssertNotNil(error)
-            authenticateJwtExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.networkConnectionLost))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthFailed))
-    }
 }
