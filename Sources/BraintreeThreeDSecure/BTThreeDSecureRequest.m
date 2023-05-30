@@ -122,7 +122,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     if (self.versionRequested == BTThreeDSecureVersion1) {
         NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                code:BTThreeDSecureFlowErrorTypeConfiguration
-                                           userInfo:@{NSLocalizedDescriptionKey: @"3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side/android/v4 for more information."}];
+                                           userInfo:@{NSLocalizedDescriptionKey: @"3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."}];
         
         [delegate onPaymentComplete:nil error:error];
         return;
@@ -236,19 +236,21 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 }
 
 - (void)processLookupResult:(BTThreeDSecureResult *)lookupResult configuration:(BTConfiguration *)configuration {
-    if (!lookupResult.lookup.requiresUserAuthentication) {
-        [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult error:nil];
+    if (!lookupResult.lookup.isThreeDSecureVersion2) {
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                               code:BTThreeDSecureFlowErrorTypeConfiguration
+                                           userInfo:@{NSLocalizedDescriptionKey: @"3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."}];
+        
+        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
         return;
     }
     
-    if (lookupResult.lookup.isThreeDSecureVersion2) {
-        [self performV2Authentication:lookupResult];
+    if (!lookupResult.lookup.requiresUserAuthentication) {
+        [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult error:nil];
+        return;
     } else {
-        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:self.paymentFlowDriverDelegate.returnURLScheme
-                                                                           assetsURL:[configuration.json[@"assetsUrl"] asString]
-                                                                 threeDSecureRequest:self
-                                                                  threeDSecureLookup:lookupResult.lookup];
-        [self.paymentFlowDriverDelegate onPaymentWithURL:browserSwitchURL error:nil];
+        [self performV2Authentication:lookupResult];
+        return;
     }
 }
 

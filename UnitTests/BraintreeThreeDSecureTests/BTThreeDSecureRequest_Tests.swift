@@ -161,7 +161,7 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     
     // MARK: - processLookupResult
     
-    func testProcessLookupResult_when3DSv1_constructsRedirectUrl() {
+    func testProcessLookupResult_when3DSv1_returnsError() {
 
         let request = BTThreeDSecureRequest()
         request.versionRequested = .version1
@@ -196,8 +196,13 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         mockPaymentFlowDriverDelegate._returnURLScheme = "com.braintreepayments.Demo.payments"
         
         let expectation = self.expectation(description: "Calls onPaymentWithURL with result")
-        mockPaymentFlowDriverDelegate.onPaymentWithURLHandler = { url, error in
-            XCTAssertNotNil(url)
+        mockPaymentFlowDriverDelegate.onPaymentCompleteHandler = { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else {return}
+            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
+            XCTAssertEqual(error.localizedDescription, "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information.")
             expectation.fulfill()
         }
         request.paymentFlowDriverDelegate = mockPaymentFlowDriverDelegate

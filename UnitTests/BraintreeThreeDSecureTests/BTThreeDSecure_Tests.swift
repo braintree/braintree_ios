@@ -61,7 +61,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
             XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
-            XCTAssertEqual(error.localizedDescription, "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side/android/v4 for more information.")
+            XCTAssertEqual(error.localizedDescription, "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information.")
             expectation.fulfill()
         }
 
