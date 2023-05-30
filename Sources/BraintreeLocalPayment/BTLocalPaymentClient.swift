@@ -14,7 +14,10 @@ import BraintreeDataCollector
     // MARK: - Internal Properties
     
     var webAuthenticationSession: BTWebAuthenticationSession
-    var returnedToAppAfterPermissionAlert: Bool = false
+
+    /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
+    /// Will only be `true` if the user proceed through the `UIAlertController`
+    var webSessionReturned: Bool = false
 
     /// exposed for testing
     var merchantCompletion: ((BTLocalPaymentResult?, Error?) -> Void)? = nil
@@ -109,7 +112,7 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
 
     @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = true
+        webSessionReturned = true
     }
 
     func handleOpen(_ url: URL) {
@@ -277,7 +280,7 @@ import BraintreeDataCollector
             return
         }
 
-        returnedToAppAfterPermissionAlert = false
+        webSessionReturned = false
         webAuthenticationSession.start(url: url, context: self) { url, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
@@ -301,7 +304,7 @@ import BraintreeDataCollector
         } sessionDidCancel: {
             // User canceled by breaking out of the LocalPayment browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            if !self.returnedToAppAfterPermissionAlert {
+            if !self.webSessionReturned {
                 // User tapped system cancel button on permission alert
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
             }

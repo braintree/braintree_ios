@@ -30,7 +30,9 @@ import BraintreeDataCollector
 
     // MARK: - Private Properties
 
-    private var returnedToAppAfterPermissionAlert: Bool = false
+    /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
+    /// Will only be `true` if the user proceed through the `UIAlertController`
+    private var webSessionReturned: Bool = false
 
     // MARK: - Initializer
 
@@ -210,7 +212,7 @@ import BraintreeDataCollector
     }
     
     @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = true
+        webSessionReturned = true
     }
     
     func handlePayPalRequest(
@@ -299,7 +301,7 @@ import BraintreeDataCollector
     ) {
         approvalURL = appSwitchURL
 
-        returnedToAppAfterPermissionAlert = false
+        webSessionReturned = false
         
         webAuthenticationSession.start(url: appSwitchURL, context: self) { url, error in
             if let error {
@@ -316,13 +318,13 @@ import BraintreeDataCollector
                 self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
             }
         } sessionDidCancel: {
-            // User canceled by breaking out of the PayPal browser switch flow
-            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            if self.returnedToAppAfterPermissionAlert == false {
+            if !self.webSessionReturned {
                 // User tapped system cancel button on permission alert
                 self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
             }
-            // general login cancel message for both user cancel
+
+            // User canceled by breaking out of the PayPal browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
             completion(nil, BTPayPalError.canceled)
             return

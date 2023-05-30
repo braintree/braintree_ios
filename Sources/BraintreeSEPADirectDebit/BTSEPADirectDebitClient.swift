@@ -18,7 +18,9 @@ import BraintreeCore
    
     // MARK: - Private Properties
 
-    private var returnedToAppAfterPermissionAlert: Bool = false
+    /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
+    /// Will only be `true` if the user proceed through the `UIAlertController`
+    private var webSessionReturned: Bool = false
 
     // MARK: - Initializers
 
@@ -49,7 +51,7 @@ import BraintreeCore
     }
 
     @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = true
+        webSessionReturned = true
     }
     // MARK: - Public Methods
     
@@ -153,7 +155,7 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        returnedToAppAfterPermissionAlert = false
+        webSessionReturned = false
         
         self.webAuthenticationSession.start(url: url, context: context) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
@@ -164,12 +166,13 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
             }
         } sessionDidCancel: {
-            // User canceled by breaking out of the PayPal browser switch flow
-            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            if !self.returnedToAppAfterPermissionAlert {
+            if !self.webSessionReturned {
                 // User tapped system cancel button on permission alert
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
             }
+
+            // User canceled by breaking out of the PayPal browser switch flow
+            // (e.g. Cancel button on permission alert or cancel button on the WebAuthenticationSession)
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
             completion(false, SEPADirectDebitError.webFlowCanceled)
             return
