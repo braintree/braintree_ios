@@ -9,7 +9,7 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-@objc public class BTPayPalClient: NSObject {
+@objc public class BTPayPalClient: BTWebAuthenticationSessionClient {
     
     // MARK: - Internal Properties
 
@@ -431,21 +431,5 @@ import BraintreeDataCollector
         }
 
         return action
-    }
-}
-
-// MARK: - ASWebAuthenticationPresentationContextProviding conformance
-
-extension BTPayPalClient: ASWebAuthenticationPresentationContextProviding {
-
-    @objc public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
     }
 }

@@ -9,7 +9,7 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-@objcMembers public class BTLocalPaymentClient: NSObject {
+@objcMembers public class BTLocalPaymentClient: BTWebAuthenticationSessionClient {
     
     // MARK: - Internal Properties
     
@@ -311,22 +311,6 @@ import BraintreeDataCollector
             self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
             self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
             return
-        }
-    }
-}
-
-// MARK: - ASWebAuthenticationPresentationContextProviding conformance
-
-extension BTLocalPaymentClient: ASWebAuthenticationPresentationContextProviding {
-    
-    @objc public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
         }
     }
 }

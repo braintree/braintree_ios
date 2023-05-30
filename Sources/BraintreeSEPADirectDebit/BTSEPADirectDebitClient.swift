@@ -6,7 +6,7 @@ import BraintreeCore
 #endif
 
 /// Used to integrate with SEPA Direct Debit.
-@objc public class BTSEPADirectDebitClient: NSObject {
+@objc public class BTSEPADirectDebitClient: BTWebAuthenticationSessionClient {
 
     // MARK: - Internal Properties
 
@@ -166,6 +166,7 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
             }
         } sessionDidCancel: {
+            // TODO: don't need this for SEPA
             if !self.webSessionReturned {
                 // User tapped system cancel button on permission alert
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
@@ -209,21 +210,5 @@ import BraintreeCore
     private func getQueryStringParameter(url: String, param: String) -> String? {
         guard let url = URLComponents(string: url) else { return nil }
         return url.queryItems?.first { $0.name == param }?.value
-    }
-}
-
-// MARK: - ASWebAuthenticationPresentationContextProviding conformance
-
-extension BTSEPADirectDebitClient: ASWebAuthenticationPresentationContextProviding {
-
-    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
     }
 }
