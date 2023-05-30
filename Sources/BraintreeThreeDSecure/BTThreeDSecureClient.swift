@@ -35,7 +35,10 @@ import BraintreeCore
         self.merchantCompletion = completion
         
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                // TODO: return error
+                return
+            }
 
             if let error {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyFailed)
@@ -215,7 +218,10 @@ import BraintreeCore
         completion: @escaping (Error?) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                // TODO: return error
+                return
+            }
 
             guard let configuration, error == nil else {
                 completion(error)

@@ -30,7 +30,10 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceStarted)
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
-            guard let self = self else { return }
+            guard let self else {
+                // TODO: return error
+                return
+            }
 
             if let error = error {
                 self.apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceFailed)

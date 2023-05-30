@@ -147,7 +147,10 @@ import Foundation
         let parameters: [String: Any] = ["configVersion": "3"]
 
         configurationHTTP?.get(configPath, parameters: parameters, shouldCache: true) { [weak self] body, response, error in
-            guard let self else { return }
+            guard let self else {
+                // TODO: return error
+                return
+            }
 
             if error != nil {
                 completion(nil, error)
@@ -272,7 +275,10 @@ import Foundation
     @objc(GET:parameters:httpType:completion:)
     public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                // TODO: return error
+                return
+            }
 
             if let error {
                 completion(nil, nil, error)
@@ -288,7 +294,10 @@ import Foundation
     @objc(POST:parameters:httpType:completion:)
     public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                // TODO: return error
+                return
+            }
 
             if let error {
                 completion(nil, nil, error)

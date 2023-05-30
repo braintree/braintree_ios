@@ -148,7 +148,10 @@ import BraintreeDataCollector
         requestParameters["_meta"] = metadataParameters
 
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, response, error in
-            guard let self else { return }
+            guard let self else {
+                // TODO: return error
+                return
+            }
 
             if let error = error as? NSError {
                 if error.code == BTCoreConstants.networkConnectionLostCode {

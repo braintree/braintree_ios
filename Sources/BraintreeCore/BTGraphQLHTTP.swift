@@ -96,7 +96,11 @@ class BTGraphQLHTTP: BTHTTP {
 
             // Perform the actual request
             session.dataTask(with: request) { [weak self] data, response, error in
-                guard let self = self else { return }
+                guard let self else {
+                    // TODO: return error
+                    return
+                }
+
                 self.handleRequestCompletion(data: data, response: response, error: error, completion: completion)
             }.resume()
         } catch {

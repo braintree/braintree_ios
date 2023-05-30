@@ -177,7 +177,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                     self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
                 } else {
                     self.session.dataTask(with: request) { [weak self] data, response, error in
-                        guard let self = self else { return }
+                        guard let self else {
+                            // TODO: return error
+                            return
+                        }
+
                         self.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
                     }.resume()
                 }
@@ -198,7 +202,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             }
 
             self.session.dataTask(with: request) { [weak self] data, response, error in
-                guard let self = self else { return }
+                guard let self else {
+                    // TODO: return error
+                    return
+                }
+
                 self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
             }.resume()
         }
@@ -347,7 +355,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
         if httpResponse.statusCode >= 400 {
             handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
-                guard let self = self else { return }
+                guard let self else {
+                    // TODO: return error
+                    return
+                }
+
                 self.callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
             }
             return
@@ -357,7 +369,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
             handleJSONResponseError(json: json, response: response) { [weak self] error in
-                guard let self = self else { return }
+                guard let self else {
+                    // TODO: return error
+                    return
+                }
+
                 self.callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             }
             return
