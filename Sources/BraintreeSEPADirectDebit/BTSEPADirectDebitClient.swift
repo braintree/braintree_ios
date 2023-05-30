@@ -29,6 +29,9 @@ import BraintreeCore
         self.apiClient = apiClient
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession =  BTWebAuthenticationSession()
+
+        webAuthenticationSession.prefersEphemeralWebBrowserSession = true
+
         super.init()
         NotificationCenter.default.addObserver(
             self,
