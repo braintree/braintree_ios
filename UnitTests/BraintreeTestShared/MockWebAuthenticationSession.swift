@@ -10,11 +10,11 @@ class MockWebAuthenticationSession: BTWebAuthenticationSession {
     override func start(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
-        sessionDidDisplay: @escaping (Bool) -> Void,
         sessionDidComplete: @escaping (URL?, Error?) -> Void,
+        sessionDidAppear: @escaping (Bool) -> Void,
         sessionDidCancel: @escaping () -> Void
     ) {
-        sessionDidDisplay(cannedSessionDidDisplay)
+        sessionDidAppear(cannedSessionDidDisplay)
 
         if let error = cannedErrorResponse as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
             sessionDidCancel()
