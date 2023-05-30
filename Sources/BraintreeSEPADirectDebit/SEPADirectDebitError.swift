@@ -9,9 +9,6 @@ enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
     /// SEPA Direct Debit flow was canceled by the user.
     case webFlowCanceled
 
-    /// SEPA Direct Debit presentation context misconfiguration.
-    case presentationContextInvalid
-
     /// The URL returned from the web flow was invalid.
     case resultURLInvalid
 
@@ -42,10 +39,7 @@ enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
             
         case .webFlowCanceled:
             return "SEPA Direct Debit flow was canceled by the user."
-            
-        case .presentationContextInvalid:
-            return "The presentation context provided to the tokenize method was invalid or not provided."
-            
+
         case .resultURLInvalid:
             return "The URL returned from the web flow result was invalid."
 

@@ -160,6 +160,16 @@ import BraintreeCore
             }
         } sessionDidComplete: { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+        } sessionDidCancel: {
+            // User canceled by breaking out of the PayPal browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+            if !self.returnedToAppAfterPermissionAlert {
+                // User tapped system cancel button on permission alert
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
+            }
+            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
+            completion(false, SEPADirectDebitError.webFlowCanceled)
+            return
         }
     }
     
@@ -169,24 +179,7 @@ import BraintreeCore
         error: Error?,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        if let error = error {
-            switch error {
-            case ASWebAuthenticationSessionError.canceledLogin:
-                // User canceled by breaking out of the PayPal browser switch flow
-                // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                if !returnedToAppAfterPermissionAlert {
-                    // User tapped system cancel button on permission alert
-                    self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
-                }
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
-                completion(false, SEPADirectDebitError.webFlowCanceled)
-                return
-            default:
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-                completion(false, SEPADirectDebitError.presentationContextInvalid)
-                return
-            }
-        } else if let url = url {
+        if let url {
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {
@@ -200,7 +193,8 @@ import BraintreeCore
         } else {
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-            completion(false, SEPADirectDebitError.authenticationResultNil)
+            completion(false, error)
+            return
         }
     }
 

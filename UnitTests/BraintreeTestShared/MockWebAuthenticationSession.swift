@@ -11,9 +11,15 @@ class MockWebAuthenticationSession: BTWebAuthenticationSession {
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
         sessionDidDisplay: @escaping (Bool) -> Void,
-        sessionDidComplete: @escaping (URL?, Error?) -> Void
+        sessionDidComplete: @escaping (URL?, Error?) -> Void,
+        sessionDidCancel: @escaping () -> Void
     ) {
         sessionDidDisplay(cannedSessionDidDisplay)
-        sessionDidComplete(cannedResponseURL, cannedErrorResponse)
+
+        if let error = cannedErrorResponse as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
+            sessionDidCancel()
+        } else {
+            sessionDidComplete(cannedResponseURL, cannedErrorResponse)
+        }
     }
 }

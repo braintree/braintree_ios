@@ -285,20 +285,7 @@ import BraintreeDataCollector
                 self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
             }
         } sessionDidComplete: { url, error in
-            if let error = error as? NSError {
-                if error.domain == ASWebAuthenticationSessionError.errorDomain,
-                   error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    // User canceled by breaking out of the LocalPayment browser switch flow
-                    // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                    if !self.returnedToAppAfterPermissionAlert {
-                        // User tapped system cancel button on permission alert
-                        self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
-                    }
-                    self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
-                    self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
-                    return
-                }
-
+            if let error {
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.webSessionError(error))
                 return
@@ -311,6 +298,16 @@ import BraintreeDataCollector
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
             }
+        } sessionDidCancel: {
+            // User canceled by breaking out of the LocalPayment browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+            if !self.returnedToAppAfterPermissionAlert {
+                // User tapped system cancel button on permission alert
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
+            }
+            self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
+            self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
+            return
         }
     }
 }

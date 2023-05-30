@@ -10,13 +10,19 @@ public class BTWebAuthenticationSession: NSObject {
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
         sessionDidDisplay: @escaping (Bool) -> Void,
-        sessionDidComplete: @escaping (URL?, Error?) -> Void
+        sessionDidComplete: @escaping (URL?, Error?) -> Void,
+        sessionDidCancel: @escaping () -> Void
     ) {
         let authenticationSession = ASWebAuthenticationSession(
             url: url,
-            callbackURLScheme: BTCoreConstants.callbackURLScheme,
-            completionHandler: sessionDidComplete
-        )
+            callbackURLScheme: BTCoreConstants.callbackURLScheme
+        ) { url, error in
+                if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
+                    sessionDidCancel()
+                } else {
+                    sessionDidComplete(url, error)
+                }
+            }
 
         authenticationSession.presentationContextProvider = context
         DispatchQueue.main.async {

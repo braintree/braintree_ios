@@ -308,27 +308,24 @@ import BraintreeDataCollector
                 self?.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
             }
         } sessionDidComplete: { url, error in
-            if let error = error as? NSError {
-                switch error {
-                case ASWebAuthenticationSessionError.canceledLogin:
-                    // User canceled by breaking out of the PayPal browser switch flow
-                    // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                    if self.returnedToAppAfterPermissionAlert == false {
-                        // User tapped system cancel button on permission alert
-                        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
-                    }
-                    // general login cancel message for both user cancel
-                    self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
-                    completion(nil, BTPayPalError.canceled)
-                    return
-                default:
-                    self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
-                    completion(nil, BTPayPalError.webSessionError(error))
-                    return
-                }
+            if let error {
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
+                completion(nil, BTPayPalError.webSessionError(error))
+                return
             }
 
             self.handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
+        } sessionDidCancel: {
+            // User canceled by breaking out of the PayPal browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+            if self.returnedToAppAfterPermissionAlert == false {
+                // User tapped system cancel button on permission alert
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
+            }
+            // general login cancel message for both user cancel
+            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+            completion(nil, BTPayPalError.canceled)
+            return
         }
     }
     
