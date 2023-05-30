@@ -5,7 +5,6 @@
 #import <BraintreeThreeDSecure/BTThreeDSecureAdditionalInformation_Internal.h>
 #import <BraintreeThreeDSecure/BTThreeDSecurePostalAddress_Internal.h>
 #import <BraintreeThreeDSecure/BTPaymentFlowDriver+ThreeDSecure_Internal.h>
-#import <BraintreeThreeDSecure/BTThreeDSecureV1BrowserSwitchHelper.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureV2UICustomization_Internal.h>
 #import <BraintreeThreeDSecure/BTThreeDSecureV2BaseCustomization_Internal.h>
 #import <BraintreeCore/Braintree-Version.h>
