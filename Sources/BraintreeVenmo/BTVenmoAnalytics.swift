@@ -11,7 +11,6 @@ class BTVenmoAnalytics {
     
     // MARK: - Additional Detail Events
     
-    static let tokenizeNetworkConnectionLost = "venmo:tokenize:network-connection:failed"
     static let appSwitchSucceeded = "venmo:tokenize:app-switch:succeeded"
     static let appSwitchFailed = "venmo:tokenize:app-switch:failed"
 }

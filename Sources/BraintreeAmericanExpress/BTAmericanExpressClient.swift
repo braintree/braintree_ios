@@ -27,26 +27,23 @@ import BraintreeCore
     @objc(getRewardsBalanceForNonce:currencyIsoCode:completion:)
     public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
         let parameters = ["currencyIsoCode": currencyISOCode, "paymentMethodNonce": nonce]
-        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceStarted)
+        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.started)
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
             guard let self = self else { return }
 
-            if let error = error {
-                self.apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceFailed)
-                completion(nil, error)
+            if let error {
+                notifyFailure(with: error, completion: completion)
                 return
             }
 
-            guard let body = body else {
-                self.apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceFailed)
-                completion(nil, BTAmericanExpressError.noRewardsData)
+            guard let body else {
+                notifyFailure(with: BTAmericanExpressError.noRewardsData, completion: completion)
                 return
             }
 
             let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
-            self.apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.rewardsBalanceSucceeded)
-            completion(rewardsBalance, nil)
+            notifySuccess(with: rewardsBalance, completion: completion)
             return
         }
     }
@@ -67,5 +64,23 @@ import BraintreeCore
                 }
             }
         }
+    }
+    
+    // MARK: - Analytics Helper Methods
+    
+    private func notifySuccess(
+        with result: BTAmericanExpressRewardsBalance,
+        completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.succeeded)
+        completion(result, nil)
+    }
+
+    private func notifyFailure(with error: Error, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(
+            BTAmericanExpressAnalytics.failed,
+            errorDescription: error.localizedDescription
+        )
+        completion(nil, error)
     }
 }

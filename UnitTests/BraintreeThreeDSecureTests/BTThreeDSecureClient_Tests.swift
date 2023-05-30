@@ -228,7 +228,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         
         waitForExpectations(timeout: 2)
         
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.networkConnectionLost))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.lookupFailed))
     }
     

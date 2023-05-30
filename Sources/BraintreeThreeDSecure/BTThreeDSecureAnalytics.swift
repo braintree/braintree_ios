@@ -17,10 +17,6 @@ class BTThreeDSecureAnalytics {
     static let lookupFailed = "3ds:verify:lookup:failed"
     static let challengeRequired = "3ds:verify:lookup:challenge-required"
     
-    // MARK: Network Connnection Lost
-    
-    static let networkConnectionLost = "3ds:verify:lookup:network-connection:failed"
-    
     // MARK: Challenge Events
     
     static let challengeSucceeded = "3ds:verify:challenge.succeeded"

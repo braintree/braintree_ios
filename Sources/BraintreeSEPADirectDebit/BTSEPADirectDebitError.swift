@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with SEPA Direct Debit.
-enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
+enum BTSEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
@@ -26,6 +26,9 @@ enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
     
     /// A body was not returned from the API during the request.
     case noBodyReturned
+
+    /// Unable to create BTSEPADirectDebitNonce
+    case failedToCreateNonce
 
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
@@ -60,6 +63,9 @@ enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
             
         case .noBodyReturned:
             return "A body was not returned from the API during the request."
+
+        case .failedToCreateNonce:
+            return "Unable to create BTSEPADirectDebitNonce. Nonce was not returned from the tokenize method."
         }
     }
 }

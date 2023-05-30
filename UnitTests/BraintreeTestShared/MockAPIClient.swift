@@ -77,7 +77,7 @@ public class MockAPIClient: BTAPIClient {
         completion([], nil)
     }
 
-    public override func sendAnalyticsEvent(_ name: String) {
+    public override func sendAnalyticsEvent(_ name: String, errorDescription: String? = nil) {
         postedAnalyticsEvents.append(name)
     }
 

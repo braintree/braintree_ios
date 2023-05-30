@@ -13,6 +13,5 @@ final class BTLocalPaymentAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTLocalPaymentAnalytics.browserPresentationFailed, "local-payment:start-payment:browser-presentation:failed")
         XCTAssertEqual(BTLocalPaymentAnalytics.browserLoginAlertCanceled, "local-payment:start-payment:browser-login:alert-canceled")
         XCTAssertEqual(BTLocalPaymentAnalytics.browserLoginFailed, "local-payment:start-payment:browser-login:failed")
-        XCTAssertEqual(BTLocalPaymentAnalytics.paymentNetworkConnectionLost, "local-payment:start-payment:network-connection:failed")
     }
 }

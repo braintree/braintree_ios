@@ -640,38 +640,4 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
-    
-    func testTokenizePayPalAccountWithPayPalRequest_whenNetworkConnectionLost_sendsAnalytics() {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        let expectation = expectation(description: "Callback envoked")
-        
-        payPalClient.tokenize(request) { nonce, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:network-connection:failed"))
-    }
-    
-    func testHandleBrowserSwitchReturnURL_whenNetworkConnectionLost_sendsAnalytics() {
-        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        
-        let expectation = expectation(description: "Callback envoked")
-        
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { nonce, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:network-connection:failed"))
-    }
 }
