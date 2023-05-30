@@ -119,6 +119,15 @@
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
+    if (self.versionRequested == BTThreeDSecureVersion1) {
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                               code:BTThreeDSecureFlowErrorTypeConfiguration
+                                           userInfo:@{NSLocalizedDescriptionKey: @"3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side/android/v4 for more information."}];
+        
+        [delegate onPaymentComplete:nil error:error];
+        return;
+    }
+    
     self.paymentFlowDriverDelegate = delegate;
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.initialized"];
