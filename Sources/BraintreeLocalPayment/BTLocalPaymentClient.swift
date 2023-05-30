@@ -278,13 +278,7 @@ import BraintreeDataCollector
         }
 
         returnedToAppAfterPermissionAlert = false
-        webAuthenticationSession.start(url: url, context: self) { [weak self] didDisplay in
-            if didDisplay {
-                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
-            } else {
-                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
-            }
-        } sessionDidComplete: { url, error in
+        webAuthenticationSession.start(url: url, context: self) { url, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.webSessionError(error))
@@ -297,6 +291,12 @@ import BraintreeDataCollector
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginFailed)
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
+            }
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
+            } else {
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
             }
         } sessionDidCancel: {
             // User canceled by breaking out of the LocalPayment browser switch flow

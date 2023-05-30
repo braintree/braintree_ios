@@ -9,8 +9,8 @@ public class BTWebAuthenticationSession: NSObject {
     public func start(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
-        sessionDidDisplay: @escaping (Bool) -> Void,
         sessionDidComplete: @escaping (URL?, Error?) -> Void,
+        sessionDidAppear: @escaping (Bool) -> Void,
         sessionDidCancel: @escaping () -> Void
     ) {
         let authenticationSession = ASWebAuthenticationSession(
@@ -26,7 +26,7 @@ public class BTWebAuthenticationSession: NSObject {
 
         authenticationSession.presentationContextProvider = context
         DispatchQueue.main.async {
-            sessionDidDisplay(authenticationSession.start())
+            sessionDidAppear(authenticationSession.start())
         }
     }
 }

@@ -301,13 +301,7 @@ import BraintreeDataCollector
 
         returnedToAppAfterPermissionAlert = false
         
-        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] didDisplay in
-            if didDisplay {
-                self?.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
-            } else {
-                self?.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
-            }
-        } sessionDidComplete: { url, error in
+        webAuthenticationSession.start(url: appSwitchURL, context: self) { url, error in
             if let error {
                 self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
                 completion(nil, BTPayPalError.webSessionError(error))
@@ -315,6 +309,12 @@ import BraintreeDataCollector
             }
 
             self.handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
+            } else {
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+            }
         } sessionDidCancel: {
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)

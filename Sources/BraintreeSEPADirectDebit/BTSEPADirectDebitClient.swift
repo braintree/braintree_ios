@@ -152,14 +152,14 @@ import BraintreeCore
     ) {
         returnedToAppAfterPermissionAlert = false
         
-        self.webAuthenticationSession.start(url: url, context: context) { [weak self] didDisplay in
-            if didDisplay {
-                self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
-            } else {
-                self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
-            }
-        } sessionDidComplete: { url, error in
+        self.webAuthenticationSession.start(url: url, context: context) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
+            } else {
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+            }
         } sessionDidCancel: {
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
