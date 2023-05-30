@@ -178,7 +178,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 } else {
                     self.session.dataTask(with: request) { [weak self] data, response, error in
                         guard let self else {
-                            // TODO: return error
+                            completion?(nil, nil, BTHTTPError.deallocatedHTTPClient("BTHTTP"))
                             return
                         }
 
@@ -203,7 +203,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
-                    // TODO: return error
+                    completion?(nil, nil, BTHTTPError.deallocatedHTTPClient("BTHTTP"))
                     return
                 }
 
@@ -356,7 +356,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         if httpResponse.statusCode >= 400 {
             handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
                 guard let self else {
-                    // TODO: return error
+                    completion(nil, nil, BTHTTPError.deallocatedHTTPClient("BTHTTP"))
                     return
                 }
 
@@ -370,7 +370,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         if json.isError {
             handleJSONResponseError(json: json, response: response) { [weak self] error in
                 guard let self else {
-                    // TODO: return error
+                    completion(nil, nil, BTHTTPError.deallocatedHTTPClient("BTHTTP"))
                     return
                 }
 
