@@ -16,7 +16,6 @@ class BTSEPADirectAnalytics {
     static let createMandateFailed = "sepa:tokenize:create-mandate:failed"
     static let challengePresentationSucceeded = "sepa:tokenize:challenge-presentation:succeeded"
     static let challengePresentationFailed = "sepa:tokenize:challenge-presentation:failed"
-    static let challengeAlertCanceled = "sepa:tokenize:challenge:alert-canceled"
     static let challengeSucceeded = "sepa:tokenize:challenge:succeeded"
     static let challengeFailed = "sepa:tokenize:challenge:failed"
 }

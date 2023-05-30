@@ -15,12 +15,6 @@ import BraintreeCore
     var webAuthenticationSession: BTWebAuthenticationSession
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI    
-   
-    // MARK: - Private Properties
-
-    /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
-    /// Will only be `true` if the user proceed through the `UIAlertController`
-    private var webSessionReturned: Bool = false
 
     // MARK: - Initializers
 
@@ -32,15 +26,8 @@ import BraintreeCore
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession =  BTWebAuthenticationSession()
 
+        // We do not need to require the user authentication UIAlertViewController on SEPA since user log in is not required
         webAuthenticationSession.prefersEphemeralWebBrowserSession = true
-
-        super.init()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(applicationDidBecomeActive),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
     }
     
     /// Internal for testing.
@@ -50,9 +37,6 @@ import BraintreeCore
         self.sepaDirectDebitAPI = sepaDirectDebitAPI
     }
 
-    @objc func applicationDidBecomeActive(notification: Notification) {
-        webSessionReturned = true
-    }
     // MARK: - Public Methods
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -155,8 +139,6 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        webSessionReturned = false
-        
         self.webAuthenticationSession.start(url: url, context: context) { url, error in
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         } sessionDidAppear: { didAppear in
@@ -166,14 +148,8 @@ import BraintreeCore
                 self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
             }
         } sessionDidCancel: {
-            // TODO: don't need this for SEPA
-            if !self.webSessionReturned {
-                // User tapped system cancel button on permission alert
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
-            }
-
             // User canceled by breaking out of the PayPal browser switch flow
-            // (e.g. Cancel button on permission alert or cancel button on the WebAuthenticationSession)
+            // (e.g. Cancel button on the WebAuthenticationSession)
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
             completion(false, SEPADirectDebitError.webFlowCanceled)
             return
