@@ -554,6 +554,11 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testStartPaymentFlow_whenV1ReturnedInLookup_callsBackWithResult() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
+            "assetsUrl": "http://assets.example.com"
+        ] as [String: Any])
+
         let responseBody =
             """
             {
@@ -578,6 +583,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: String.Encoding.utf8)!)
         let expectation = self.expectation(description: "willCallCompletion")
 
+        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+
         client.startPaymentFlow(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
@@ -589,7 +596,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.lookupFailed))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
     // MARK: - prepareLookup
