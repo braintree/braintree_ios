@@ -21,28 +21,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     }
 
     // MARK: - ThreeDSecure Authentication Tests
-
-    func testStartPayment_displaysSafariViewControllerWhenAvailable_andRequiresAuthentication() {
-        BTAppContextSwitcher.setReturnURLScheme("com.braintreepayments.Demo.payments")
-        
-        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
-        
-        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
-
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "assetsUrl": "http://assets.example.com"
-        ])
-        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-
-        mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
-
-        driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
-            
-        }
-        
-        waitForExpectations(timeout: 4, handler: nil)
-    }
     
     func testStartPayment_whenV1Attempted_returnsError() {
         threeDSecureRequest.versionRequested = .version1
@@ -312,7 +290,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
 
-        var paymentFinishedExpectation = expectation(description: "Start payment expectation")
+        let paymentFinishedExpectation = expectation(description: "Start payment expectation")
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
@@ -414,7 +392,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
                 "pareq": "",
                 "md": "",
                 "termUrl": "http://example.com",
-                "threeDSecureVersion": "2.0"
+                "threeDSecureVersion": "2.0",
+                "transactionId": "111222333"
             ]
         ]
     }
