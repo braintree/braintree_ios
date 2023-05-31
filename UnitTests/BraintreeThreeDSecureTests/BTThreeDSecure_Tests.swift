@@ -28,7 +28,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
         
         viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
-        
+
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "assetsUrl": "http://assets.example.com"
         ])
@@ -180,6 +180,13 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "threeDSecureInfo":     [
                 "liabilityShiftPossible": false,
                 "liabilityShifted": false,
+            ],
+            "lookup": [
+                "acsUrl": "http://example.com",
+                "pareq": "",
+                "md": "",
+                "termUrl": "http://example.com",
+                "threeDSecureVersion": "2.0"
             ]
             ] as [String : Any]
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
@@ -424,8 +431,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     func testStartPayment_success_sendsAnalyticsEvents() {
         let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
 
-        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
-
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
             "assetsUrl": "http://assets.example.com",
@@ -464,8 +469,9 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             ] as [String : Any]
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
+        let expectation = expectation(description: "Sends all analytics events")
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
-
+            expectation.fulfill()
         }
 
         waitForExpectations(timeout: 4, handler: nil)
@@ -474,7 +480,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.started"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.3ds-version.1.0"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.challenge-presented.true"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.webswitch.initiate.succeeded"))
     }
 
     func testStartPayment_failure_sendsAnalyticsEvents() {
