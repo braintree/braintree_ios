@@ -182,7 +182,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
                 "liabilityShifted": false,
             ],
             "lookup": [
-                "acsUrl": "http://example.com",
+                "acsUrl": nil,
                 "pareq": "",
                 "md": "",
                 "termUrl": "http://example.com",
@@ -336,15 +336,11 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             "assetsUrl": "http://assets.example.com",
             ])
 
-        let viewControllerPresentingDelegate = MockViewControllerPresentingDelegate()
-        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
-
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
-        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
 
         mockAPIClient.cannedResponseBody = BTJSON(value: getAuthRequiredLookupResponse())
 
-        var paymentFinishedExpectation: XCTestExpectation? = nil
+        let paymentFinishedExpectation = expectation(description: "Start payment expectation")
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
@@ -352,12 +348,9 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
             XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.failedAuthentication.rawValue)
             XCTAssertEqual(error.localizedDescription, "Auth Response JSON parsing error.")
-            paymentFinishedExpectation!.fulfill()
+            paymentFinishedExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
-
-        paymentFinishedExpectation = self.expectation(description: "Start payment expectation")
         BTPaymentFlowDriver.handleReturnURL(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,BAD-JSON")!)
 
         waitForExpectations(timeout: 2, handler: nil)
