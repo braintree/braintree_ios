@@ -28,7 +28,8 @@
       * Add error `.fetchConfigurationFailed` = 4
   * BraintreeSEPADirectDebit
     * Add `BTSEPADirectDebitError` case
-      * Add error `.failedToCreateNonce` = 8
+      * Add error `.failedToCreateNonce` = 7
+    * Remove `BTSEPADirectDebitError.presentationContextInvalid`
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`

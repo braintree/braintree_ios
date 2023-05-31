@@ -9,12 +9,15 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-@objcMembers public class BTLocalPaymentClient: NSObject {
+@objcMembers public class BTLocalPaymentClient: BTWebAuthenticationSessionClient {
     
     // MARK: - Internal Properties
     
-    var webAuthenticationSession: WebAuthenticationSession
-    var returnedToAppAfterPermissionAlert: Bool = false
+    var webAuthenticationSession: BTWebAuthenticationSession
+
+    /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
+    /// Will only be `true` if the user proceed through the `UIAlertController`
+    var webSessionReturned: Bool = false
 
     /// exposed for testing
     var merchantCompletion: ((BTLocalPaymentResult?, Error?) -> Void) = { _, _ in }
@@ -31,7 +34,7 @@ import BraintreeDataCollector
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.webAuthenticationSession = WebAuthenticationSession()
+        self.webAuthenticationSession = BTWebAuthenticationSession()
         super.init()
         NotificationCenter.default.addObserver(
             self,
@@ -104,7 +107,7 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
 
     @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = true
+        webSessionReturned = true
     }
 
     func handleOpen(_ url: URL) {
@@ -256,28 +259,9 @@ import BraintreeDataCollector
             return
         }
 
-        returnedToAppAfterPermissionAlert = false
-        webAuthenticationSession.start(url: url, context: self) { [weak self] didDisplay in
-            if didDisplay {
-                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
-            } else {
-                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
-            }
-        } sessionDidComplete: { url, error in
-            if let error = error as? NSError {
-                if error.domain == ASWebAuthenticationSessionError.errorDomain,
-                   error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    // User canceled by breaking out of the LocalPayment browser switch flow
-                    // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                    if !self.returnedToAppAfterPermissionAlert {
-                        // User tapped system cancel button on permission alert
-                        self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
-                    }
-                    self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
-                    self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
-                    return
-                }
-
+        webSessionReturned = false
+        webAuthenticationSession.start(url: url, context: self) { url, error in
+            if let error {
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.webSessionError(error))
                 return
@@ -290,6 +274,23 @@ import BraintreeDataCollector
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
             }
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
+            } else {
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
+            }
+        } sessionDidCancel: {
+            if !self.webSessionReturned {
+                // User tapped system cancel button on permission alert
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
+            }
+
+            // User canceled by breaking out of the LocalPayment browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+            self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
+            self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
+            return
         }
     }
 
@@ -309,21 +310,5 @@ import BraintreeDataCollector
             errorDescription: error.localizedDescription
         )
         completion(nil, error)
-    }
-}
-
-// MARK: - ASWebAuthenticationPresentationContextProviding conformance
-
-extension BTLocalPaymentClient: ASWebAuthenticationPresentationContextProviding {
-    
-    @objc public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
     }
 }

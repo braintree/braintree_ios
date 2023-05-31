@@ -6,19 +6,15 @@ import BraintreeCore
 #endif
 
 /// Used to integrate with SEPA Direct Debit.
-@objc public class BTSEPADirectDebitClient: NSObject {
+@objc public class BTSEPADirectDebitClient: BTWebAuthenticationSessionClient {
 
     // MARK: - Internal Properties
 
     let apiClient: BTAPIClient
     
-    var webAuthenticationSession: WebAuthenticationSession
+    var webAuthenticationSession: BTWebAuthenticationSession
         
     var sepaDirectDebitAPI: SEPADirectDebitAPI    
-   
-    // MARK: - Private Properties
-
-    private var returnedToAppAfterPermissionAlert: Bool = false
 
     // MARK: - Initializers
 
@@ -28,26 +24,19 @@ import BraintreeCore
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
-        self.webAuthenticationSession =  WebAuthenticationSession()
-        super.init()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(applicationDidBecomeActive),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
+        self.webAuthenticationSession =  BTWebAuthenticationSession()
+
+        // We do not need to require the user authentication UIAlertViewController on SEPA since user log in is not required
+        webAuthenticationSession.prefersEphemeralWebBrowserSession = true
     }
     
     /// Internal for testing.
-    init(apiClient: BTAPIClient, webAuthenticationSession: WebAuthenticationSession, sepaDirectDebitAPI: SEPADirectDebitAPI) {
+    init(apiClient: BTAPIClient, webAuthenticationSession: BTWebAuthenticationSession, sepaDirectDebitAPI: SEPADirectDebitAPI) {
         self.apiClient = apiClient
         self.webAuthenticationSession = webAuthenticationSession
         self.sepaDirectDebitAPI = sepaDirectDebitAPI
     }
 
-    @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = true
-    }
     // MARK: - Public Methods
     
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
@@ -153,22 +142,21 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        returnedToAppAfterPermissionAlert = false
-        
-        self.webAuthenticationSession.start(
-            url: url,
-            context: context,
-            sessionDidDisplay: { [weak self] didDisplay in
-                if didDisplay {
-                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
-                } else {
-                    self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
-                }
-            },
-            sessionDidComplete: { url, error in
-                self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+        self.webAuthenticationSession.start(url: url, context: context) { url, error in
+            self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
+            } else {
+                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
             }
-        )
+        } sessionDidCancel: {
+            // User canceled by breaking out of the PayPal browser switch flow
+            // (e.g. Cancel button on the WebAuthenticationSession)
+            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
+            completion(false, BTSEPADirectDebitError.webFlowCanceled)
+            return
+        }
     }
     
     /// Handles the result from the web authentication flow when returning to the app. Returns a success result or an error.
@@ -177,24 +165,7 @@ import BraintreeCore
         error: Error?,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        if let error = error {
-            switch error {
-            case ASWebAuthenticationSessionError.canceledLogin:
-                // User canceled by breaking out of the PayPal browser switch flow
-                // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                if !returnedToAppAfterPermissionAlert {
-                    // User tapped system cancel button on permission alert
-                    self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeAlertCanceled)
-                }
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
-                completion(false, BTSEPADirectDebitError.webFlowCanceled)
-                return
-            default:
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-                completion(false, BTSEPADirectDebitError.presentationContextInvalid)
-                return
-            }
-        } else if let url = url {
+        if let url {
             guard url.absoluteString.contains("sepa/success"),
                   let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
                   queryParameter.contains("true") else {
@@ -208,7 +179,8 @@ import BraintreeCore
         } else {
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
             self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
-            completion(false, BTSEPADirectDebitError.authenticationResultNil)
+            completion(false, error)
+            return
         }
     }
 
@@ -240,21 +212,5 @@ import BraintreeCore
     private func notifyCancel(completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
         completion(nil, BTSEPADirectDebitError.webFlowCanceled)
-    }
-}
-
-// MARK: - ASWebAuthenticationPresentationContextProviding conformance
-
-extension BTSEPADirectDebitClient: ASWebAuthenticationPresentationContextProviding {
-
-    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
     }
 }

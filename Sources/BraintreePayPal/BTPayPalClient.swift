@@ -9,7 +9,7 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-@objc public class BTPayPalClient: NSObject {
+@objc public class BTPayPalClient: BTWebAuthenticationSessionClient {
     
     // MARK: - Internal Properties
 
@@ -26,14 +26,13 @@ import BraintreeDataCollector
     var payPalRequest: BTPayPalRequest? = nil
 
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
-    var authenticationSession: ASWebAuthenticationSession? = nil
-    
-    /// Exposed for testing, for determining if ASWebAuthenticationSession was started
-    var isAuthenticationSessionStarted: Bool = false
+    var webAuthenticationSession: BTWebAuthenticationSession
 
     // MARK: - Private Properties
 
-    private var returnedToAppAfterPermissionAlert: Bool = false
+    /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
+    /// Will only be `true` if the user proceed through the `UIAlertController`
+    private var webSessionReturned: Bool = false
 
     // MARK: - Initializer
 
@@ -42,6 +41,8 @@ import BraintreeDataCollector
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+        self.webAuthenticationSession = BTWebAuthenticationSession()
+
         super.init()
         NotificationCenter.default.addObserver(
             self,
@@ -202,7 +203,7 @@ import BraintreeDataCollector
     }
     
     @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = isAuthenticationSessionStarted
+        webSessionReturned = true
     }
     
     func handlePayPalRequest(
@@ -279,41 +280,33 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         approvalURL = appSwitchURL
-        authenticationSession = ASWebAuthenticationSession(
-            url: appSwitchURL,
-            callbackURLScheme: BTCoreConstants.callbackURLScheme
-        ) { callbackURL, error in
-            // Required to avoid memory leak for BTPayPalClient
-            self.authenticationSession = nil
-            if let error = error as? NSError {
-                switch error {
-                case ASWebAuthenticationSessionError.canceledLogin:
-                    // User canceled by breaking out of the PayPal browser switch flow
-                    // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                    if self.returnedToAppAfterPermissionAlert == false {
-                        // User tapped system cancel button on permission alert
-                        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
-                    }
-                    // general login cancel message for both user cancel
-                    self.notifyCancel(completion: completion)
-                    return
-                default:
-                    self.notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
-                    return
-                }
+        webSessionReturned = false
+        
+        webAuthenticationSession.start(url: appSwitchURL, context: self) { url, error in
+            if let error {
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
+                self.notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
+                return
             }
-            
-            self.handleBrowserSwitchReturn(callbackURL, paymentType: paymentType, completion: completion)
-        }
-        
-        authenticationSession?.presentationContextProvider = self
-        returnedToAppAfterPermissionAlert = false
-        isAuthenticationSessionStarted = authenticationSession?.start() ?? false
-        
-        if isAuthenticationSessionStarted {
-            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
-        } else {
-            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+
+            self.handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
+            } else {
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+            }
+        } sessionDidCancel: {
+            if !self.webSessionReturned {
+                // User tapped system cancel button on permission alert
+                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
+            }
+
+            // User canceled by breaking out of the PayPal browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+            self.notifyCancel(completion: completion)
+            return
         }
     }
     
@@ -440,21 +433,5 @@ import BraintreeDataCollector
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
         completion(nil, BTPayPalError.canceled)
-    }
-}
-
-// MARK: - ASWebAuthenticationPresentationContextProviding conformance
-
-extension BTPayPalClient: ASWebAuthenticationPresentationContextProviding {
-
-    @objc public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
     }
 }
