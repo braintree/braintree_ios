@@ -30,10 +30,7 @@ class BTThreeDSecureAuthenticateJWT {
             "v1/payment_methods/\(urlSafeNonce)/three_d_secure/authenticate_from_jwt",
             parameters: requestParameters
         ) { body, _, error in
-            if let error = error as NSError? {
-                if error.code == BTCoreConstants.networkConnectionLostCode {
-                    apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.networkConnectionLost)
-                }
+            if let error {
                 apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
                 completion(nil, error)
                 return

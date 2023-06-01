@@ -16,11 +16,7 @@ class BTLocalPaymentAnalytics {
     
     // MARK: - Browser Login Events
 
-    // specific cancel from permisison alert
+    // specific cancel from permission alert
     static let browserLoginAlertCanceled = "local-payment:start-payment:browser-login:alert-canceled"
     static let browserLoginFailed = "local-payment:start-payment:browser-login:failed"
-    
-    // MARK: - Network Connection Event
-    
-    static let paymentNetworkConnectionLost = "local-payment:start-payment:network-connection:failed"
 }

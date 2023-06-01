@@ -57,11 +57,12 @@ import BraintreeCore
     ///   an instance of `BTVenmoAccountNonce`; on failure, an error; on user cancellation, you will receive `nil` for both parameters.
     @objc(tokenizeWithVenmoRequest:completion:)
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
         if returnURLScheme == "" {
             NSLog("%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]", BTLogLevelDescription.string(for: .critical))
-            completion(nil, BTVenmoError.appNotAvailable)
+            notifyFailure(with: BTVenmoError.appNotAvailable, completion: completion)
             return
         } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) {
             NSLog("%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)", BTLogLevelDescription.string(for: .critical), bundleIdentifier, returnURLScheme)
@@ -69,22 +70,19 @@ import BraintreeCore
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                completion(nil, error)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
             guard let configuration else {
-                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                completion(nil, BTVenmoError.fetchConfigurationFailed)
+                self.notifyFailure(with: BTVenmoError.fetchConfigurationFailed, completion: completion)
                 return
             }
 
             do {
                 let _ = try self.verifyAppSwitch(with: configuration)
             } catch {
-                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                completion(nil, error)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
@@ -112,25 +110,24 @@ import BraintreeCore
             ]
 
             self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
-                if let error = error as? NSError {
-                    if error.code == BTCoreConstants.networkConnectionLostCode {
-                        self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeNetworkConnectionLost)
-                    }
-
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                    completion(nil, BTVenmoError.invalidRedirectURL("Failed to fetch a Venmo paymentContextID while constructing the requestURL."))
+                if error != nil {
+                    self.notifyFailure(
+                        with: BTVenmoError.invalidRedirectURL("Failed to fetch a Venmo paymentContextID while constructing the requestURL."),
+                        completion: completion
+                    )
                     return
                 }
 
                 guard let body else {
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                    completion(nil, BTVenmoError.invalidBodyReturned)
+                    self.notifyFailure(with: BTVenmoError.invalidBodyReturned, completion: completion)
                     return
                 }
 
                 guard let paymentContextID = body["data"]["createVenmoPaymentContext"]["venmoPaymentContext"]["id"].asString() else {
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                    completion(nil, BTVenmoError.invalidRedirectURL("Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."))
+                    self.notifyFailure(
+                        with: BTVenmoError.invalidRedirectURL("Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."),
+                        completion: completion
+                    )
                     return
                 }
 
@@ -143,8 +140,10 @@ import BraintreeCore
                     paymentContextID: paymentContextID,
                     metadata: metadata
                 ) else {
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                    completion(nil, BTVenmoError.invalidRedirectURL("The request URL could not be constructed or was nil."))
+                    self.notifyFailure(
+                        with: BTVenmoError.invalidRedirectURL("The request URL could not be constructed or was nil."),
+                        completion: completion
+                    )
                     return
                 }
 
@@ -198,8 +197,7 @@ import BraintreeCore
 
     func handleOpen(_ url: URL) {
         guard let returnURL = BTVenmoAppSwitchReturnURL(url: url) else {          
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-            appSwitchCompletion(nil, BTVenmoError.invalidReturnURL(""))
+            notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString), completion: appSwitchCompletion)
             return
         }
 
@@ -212,19 +210,13 @@ import BraintreeCore
             ]
 
             apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
-                if let error = error as? NSError {
-                    if error.code == BTCoreConstants.networkConnectionLostCode {
-                        self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeNetworkConnectionLost)
-                    }
-
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                    self.appSwitchCompletion(nil, error)
+                if let error {
+                    self.notifyFailure(with: error, completion: self.appSwitchCompletion)
                     return
                 }
 
                 guard let body else {
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                    self.appSwitchCompletion(nil, BTVenmoError.invalidBodyReturned)
+                    self.notifyFailure(with: BTVenmoError.invalidBodyReturned, completion: self.appSwitchCompletion)
                     return
                 }
 
@@ -233,22 +225,19 @@ import BraintreeCore
                 if self.shouldVault && self.apiClient.clientToken != nil {
                     self.vault(venmoAccountNonce.nonce)
                 } else {
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
-                    self.appSwitchCompletion(venmoAccountNonce, nil)
+                    self.notifySuccess(with: venmoAccountNonce, completion: self.appSwitchCompletion)
                     return
                 }
             }
 
         case .succeeded:
             guard let nonce = returnURL.nonce else {
-                apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                appSwitchCompletion(nil, BTVenmoError.invalidReturnURL("nonce"))
+                notifyFailure(with: BTVenmoError.invalidReturnURL("nonce"), completion: appSwitchCompletion)
                 return
             }
 
             guard let username = returnURL.username else {
-                apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                appSwitchCompletion(nil, BTVenmoError.invalidReturnURL("username"))
+                notifyFailure(with: BTVenmoError.invalidReturnURL("username"), completion: appSwitchCompletion)
                 return
             }
 
@@ -265,19 +254,16 @@ import BraintreeCore
                 )
 
                 let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: json)
-                apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
-                appSwitchCompletion(venmoAccountNonce, nil)
+                notifySuccess(with: venmoAccountNonce, completion: appSwitchCompletion)
                 return
             }
 
         case .failed:
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-            appSwitchCompletion(nil, returnURL.error)
+            notifyFailure(with: returnURL.error ?? BTVenmoError.unknown, completion: appSwitchCompletion)
             return
             
         case .canceled:
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled)
-            appSwitchCompletion(nil, nil)
+            notifyCancel(completion: appSwitchCompletion)
             return
             
         default:
@@ -307,8 +293,7 @@ import BraintreeCore
             self.appSwitchCompletion = completion
         } else {            
             apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed)
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-            completion(nil, BTVenmoError.appSwitchFailed)
+            notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
     }
 
@@ -319,33 +304,25 @@ import BraintreeCore
         let parameters: [String: Any] = ["venmoAccount": venmoAccount]
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
-            if let error = error as? NSError {
-                if error.code == BTCoreConstants.networkConnectionLostCode {
-                    self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeNetworkConnectionLost)
-                }
-                
-                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                self.appSwitchCompletion(nil, error)
+            if let error {
+                self.notifyFailure(with: error, completion: self.appSwitchCompletion)
                 return
             }
             
             guard let body else {
-                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-                self.appSwitchCompletion(nil, BTVenmoError.invalidBodyReturned)
+                self.notifyFailure(with: BTVenmoError.invalidBodyReturned, completion: self.appSwitchCompletion)
                 return
             }
             
             let venmoAccountJSON: BTJSON = body["venmoAccounts"][0]
-            let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
-            
-            guard let venmoJSONError = venmoAccountJSON.asError() else {
-                self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
-                self.appSwitchCompletion(venmoAccountNonce, nil)
+
+            if let venmoJSONError = venmoAccountJSON.asError() {
+                self.notifyFailure(with: venmoJSONError, completion: self.appSwitchCompletion)
                 return
             }
-            
-            self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeFailed)
-            self.appSwitchCompletion(nil, venmoJSONError)
+
+            let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
+            self.notifySuccess(with: venmoAccountNonce, completion: self.appSwitchCompletion)
             return
         }
     }
@@ -366,6 +343,29 @@ import BraintreeCore
         }
 
         return true
+    }
+
+    // MARK: - Analytics Helper Methods
+
+    private func notifySuccess(
+        with result: BTVenmoAccountNonce,
+        completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
+        completion(result, nil)
+    }
+
+    private func notifyFailure(with error: Error, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(
+            BTVenmoAnalytics.tokenizeFailed,
+            errorDescription: error.localizedDescription
+        )
+        completion(nil, error)
+    }
+
+    private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled)
+        completion(nil, nil)
     }
 }
 

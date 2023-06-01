@@ -9,15 +9,18 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-@objcMembers public class BTLocalPaymentClient: NSObject {
+@objcMembers public class BTLocalPaymentClient: BTWebAuthenticationSessionClient {
     
     // MARK: - Internal Properties
     
-    var webAuthenticationSession: WebAuthenticationSession
-    var returnedToAppAfterPermissionAlert: Bool = false
+    var webAuthenticationSession: BTWebAuthenticationSession
+
+    /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
+    /// Will only be `true` if the user proceed through the `UIAlertController`
+    var webSessionReturned: Bool = false
 
     /// exposed for testing
-    var merchantCompletion: ((BTLocalPaymentResult?, Error?) -> Void)? = nil
+    var merchantCompletion: ((BTLocalPaymentResult?, Error?) -> Void) = { _, _ in }
     
     // MARK: - Private Properties
     
@@ -31,7 +34,7 @@ import BraintreeDataCollector
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.webAuthenticationSession = WebAuthenticationSession()
+        self.webAuthenticationSession = BTWebAuthenticationSession()
         super.init()
         NotificationCenter.default.addObserver(
             self,
@@ -55,8 +58,7 @@ import BraintreeDataCollector
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                completion(nil, error)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
@@ -64,25 +66,21 @@ import BraintreeDataCollector
             request.correlationID = dataCollector.clientMetadataID(nil)
 
             guard let configuration else {
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                completion(nil, BTLocalPaymentError.fetchConfigurationFailed)
+                self.notifyFailure(with: BTLocalPaymentError.fetchConfigurationFailed, completion: completion)
                 return
             }
 
             if !configuration.isLocalPaymentEnabled {
                 NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                completion(nil, BTLocalPaymentError.disabled)
+                self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
                 return
             } else if request.localPaymentFlowDelegate == nil {
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                completion(nil, BTLocalPaymentError.integration)
+                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
                 return
             } else if request.amount == nil || request.paymentType == nil {
                 NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                completion(nil, BTLocalPaymentError.integration)
+                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
                 return
             }
 
@@ -109,14 +107,14 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
 
     @objc func applicationDidBecomeActive(notification: Notification) {
-        returnedToAppAfterPermissionAlert = true
+        webSessionReturned = true
     }
 
     func handleOpen(_ url: URL) {
         // canceled case
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
-            apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-            merchantCompletion?(nil, BTLocalPaymentError.canceled(request?.paymentType ?? "unknown"))
+            let canceledError = BTLocalPaymentError.canceled(request?.paymentType ?? "unknown")
+            notifyFailure(with: canceledError, completion: merchantCompletion)
             return
         }
 
@@ -153,30 +151,22 @@ import BraintreeDataCollector
                 return
             }
 
-            if let error = error as? NSError {
-                if error.code == BTCoreConstants.networkConnectionLostCode {
-                    apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentNetworkConnectionLost)
-                }
-
-                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                merchantCompletion?(nil, error)
+            if let error {
+                notifyFailure(with: error, completion: merchantCompletion)
                 return
             }
 
             guard let body else {
-                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                merchantCompletion?(nil, BTLocalPaymentError.noAccountData)
+                notifyFailure(with: BTLocalPaymentError.noAccountData, completion: merchantCompletion)
                 return
             }
 
             guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
-                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                merchantCompletion?(nil, BTLocalPaymentError.failedToCreateNonce)
+                notifyFailure(with: BTLocalPaymentError.failedToCreateNonce, completion: merchantCompletion)
                 return
             }
 
-            apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentSucceeded)
-            merchantCompletion?(tokenizedLocalPayment, nil)
+            notifySuccess(with: tokenizedLocalPayment, completion: merchantCompletion)
         }
     }
 
@@ -241,13 +231,8 @@ import BraintreeDataCollector
         requestParameters["experience_profile"] = experienceProfile
 
         apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, response, error in
-            if let error = error as? NSError {
-                if error.code == BTCoreConstants.networkConnectionLostCode {
-                    self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentNetworkConnectionLost)
-                }
-
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                self.merchantCompletion?(nil, error)
+            if let error {
+                self.notifyFailure(with: error, completion: self.merchantCompletion)
                 return
             }
 
@@ -260,8 +245,7 @@ import BraintreeDataCollector
                 }
             } else {
                 NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                self.merchantCompletion?(nil, BTLocalPaymentError.appSwitchFailed)
+                self.notifyFailure(with: BTLocalPaymentError.appSwitchFailed, completion: self.merchantCompletion)
                 return
             }
         }
@@ -269,39 +253,18 @@ import BraintreeDataCollector
 
     private func onPayment(with url: URL?, error: Error?) {
         if let error {
-            apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-            merchantCompletion?(nil, error)
+            notifyFailure(with: error, completion: merchantCompletion)
             return
         }
 
         guard let url else {
-            apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-            merchantCompletion?(nil, BTLocalPaymentError.missingRedirectURL)
+            notifyFailure(with: BTLocalPaymentError.missingRedirectURL, completion: merchantCompletion)
             return
         }
 
-        returnedToAppAfterPermissionAlert = false
-        webAuthenticationSession.start(url: url, context: self) { [weak self] didDisplay in
-            if didDisplay {
-                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
-            } else {
-                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
-            }
-        } sessionDidComplete: { url, error in
-            if let error = error as? NSError {
-                if error.domain == ASWebAuthenticationSessionError.errorDomain,
-                   error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    // User canceled by breaking out of the LocalPayment browser switch flow
-                    // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-                    if !self.returnedToAppAfterPermissionAlert {
-                        // User tapped system cancel button on permission alert
-                        self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
-                    }
-                    self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
-                    self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
-                    return
-                }
-
+        webSessionReturned = false
+        webAuthenticationSession.start(url: url, context: self) { url, error in
+            if let error {
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.webSessionError(error))
                 return
@@ -314,22 +277,41 @@ import BraintreeDataCollector
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
             }
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
+            } else {
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
+            }
+        } sessionDidCancel: {
+            if !self.webSessionReturned {
+                // User tapped system cancel button on permission alert
+                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
+            }
+
+            // User canceled by breaking out of the LocalPayment browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+            self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
+            self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
+            return
         }
     }
-}
 
-// MARK: - ASWebAuthenticationPresentationContextProviding conformance
+    // MARK: - Analytics Helper Methods
 
-extension BTLocalPaymentClient: ASWebAuthenticationPresentationContextProviding {
-    
-    @objc public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        if #available(iOS 15, *) {
-            let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            let window = firstScene?.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        } else {
-            let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-            return window ?? ASPresentationAnchor()
-        }
+    private func notifySuccess(
+        with result: BTLocalPaymentResult,
+        completion: @escaping (BTLocalPaymentResult?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentSucceeded)
+        completion(result, nil)
+    }
+
+    private func notifyFailure(with error: Error, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(
+            BTLocalPaymentAnalytics.paymentFailed,
+            errorDescription: error.localizedDescription
+        )
+        completion(nil, error)
     }
 }

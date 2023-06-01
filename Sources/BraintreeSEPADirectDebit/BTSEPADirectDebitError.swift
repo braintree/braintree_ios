@@ -1,16 +1,13 @@
 import Foundation
 
 ///  Error details associated with SEPA Direct Debit.
-enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
+enum BTSEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
 
     /// Unknown error
     case unknown
 
     /// SEPA Direct Debit flow was canceled by the user.
     case webFlowCanceled
-
-    /// SEPA Direct Debit presentation context misconfiguration.
-    case presentationContextInvalid
 
     /// The URL returned from the web flow was invalid.
     case resultURLInvalid
@@ -27,6 +24,9 @@ enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
     /// A body was not returned from the API during the request.
     case noBodyReturned
 
+    /// Unable to create BTSEPADirectDebitNonce
+    case failedToCreateNonce
+
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
     }
@@ -42,10 +42,7 @@ enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
             
         case .webFlowCanceled:
             return "SEPA Direct Debit flow was canceled by the user."
-            
-        case .presentationContextInvalid:
-            return "The presentation context provided to the tokenize method was invalid or not provided."
-            
+
         case .resultURLInvalid:
             return "The URL returned from the web flow result was invalid."
 
@@ -60,6 +57,9 @@ enum SEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
             
         case .noBodyReturned:
             return "A body was not returned from the API during the request."
+
+        case .failedToCreateNonce:
+            return "Unable to create BTSEPADirectDebitNonce. Nonce was not returned from the tokenize method."
         }
     }
 }

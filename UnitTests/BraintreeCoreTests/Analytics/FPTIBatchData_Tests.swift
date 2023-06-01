@@ -15,9 +15,19 @@ final class FPTIBatchData_Tests: XCTestCase {
         tokenizationKey: "fake-auth"
     )
     
-    let eventParams = [FPTIBatchData.Event(eventName: "fake-event-1", timestamp: "fake-time-1"),
-                       FPTIBatchData.Event(eventName: "fake-event-2", timestamp: "fake-time-2")]
-        
+    let eventParams = [
+        FPTIBatchData.Event(
+            errorDescription: "fake-error-description-1",
+            eventName: "fake-event-1",
+            timestamp: "fake-time-1"
+        ),
+        FPTIBatchData.Event(
+            errorDescription: nil,
+            eventName: "fake-event-2",
+            timestamp: "fake-time-2"
+        )
+    ]
+    
     override func setUp() {
         super.setUp()
         
@@ -68,5 +78,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[1]["t"] as? String, "fake-time-2")
         XCTAssertEqual(eventParams[0]["event_name"] as? String, "fake-event-1")
         XCTAssertEqual(eventParams[1]["event_name"] as? String, "fake-event-2")
+        XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
+        XCTAssertNil(eventParams[1]["error_desc"])
     }
 }

@@ -13,6 +13,5 @@ class BTApplePayAnalytics {
 
     static let tokenizeStarted = "apple-pay:tokenize:started"
     static let tokenizeFailed = "apple-pay:tokenize:failed"
-    static let tokenizeNetworkConnectionLost = "apple-pay:tokenize:network-connection:failed"
     static let tokenizeSucceeded = "apple-pay:tokenize:succeeded"
 }

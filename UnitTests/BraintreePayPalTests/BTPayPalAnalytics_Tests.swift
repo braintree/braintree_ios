@@ -7,7 +7,6 @@ final class BTPayPalAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTPayPalAnalytics.tokenizeFailed, "paypal:tokenize:failed")
         XCTAssertEqual(BTPayPalAnalytics.tokenizeSucceeded, "paypal:tokenize:succeeded")
         XCTAssertEqual(BTPayPalAnalytics.browserLoginCanceled, "paypal:tokenize:browser-login:canceled")
-        XCTAssertEqual(BTPayPalAnalytics.tokenizeNetworkConnectionFailed, "paypal:tokenize:network-connection:failed")
         XCTAssertEqual(BTPayPalAnalytics.browserPresentationSucceeded, "paypal:tokenize:browser-presentation:succeeded")
         XCTAssertEqual(BTPayPalAnalytics.browserPresentationFailed, "paypal:tokenize:browser-presentation:failed")
         XCTAssertEqual(BTPayPalAnalytics.browserLoginAlertCanceled, "paypal:tokenize:browser-login:alert-canceled")

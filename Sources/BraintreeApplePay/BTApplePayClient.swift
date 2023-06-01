@@ -33,14 +33,12 @@ import BraintreeCore
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestFailed)
-                completion(nil, error)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
             guard let configuration, configuration.isApplePayEnabled else {
-                self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestFailed)
-                completion(nil, BTApplePayError.unsupported)
+                self.notifyFailure(with: BTApplePayError.unsupported, completion: completion)
                 return
             }
 
@@ -50,8 +48,8 @@ import BraintreeCore
             paymentRequest.merchantIdentifier = configuration.applePayMerchantIdentifier ?? ""
             paymentRequest.supportedNetworks = configuration.applePaySupportedNetworks ?? []
 
-            self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestSucceeded)
-            completion(paymentRequest, nil)
+            self.notifySuccess(with: paymentRequest, completion: completion)
+            return
         }
     }
 
@@ -82,14 +80,12 @@ import BraintreeCore
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeFailed)
-                completion(nil, error)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
             guard let configuration, configuration.isApplePayEnabled else {
-                self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeFailed)
-                completion(nil, BTApplePayError.unsupported)
+                self.notifyFailure(with: BTApplePayError.unsupported, completion: completion)
                 return
             }
 
@@ -105,30 +101,23 @@ import BraintreeCore
             ]
 
             self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
-                if let error = error as NSError? {
-                    if error.code == BTCoreConstants.networkConnectionLostCode {
-                        self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeNetworkConnectionLost)
-                    }
-
-                    self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeFailed)
-                    completion(nil, error)
+                if let error {
+                    self.notifyFailure(with: error, completion: completion)
                     return
                 }
 
                 guard let body else {
-                    self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeFailed)
-                    completion(nil, BTApplePayError.noApplePayCardsReturned)
+                    self.notifyFailure(with: BTApplePayError.noApplePayCardsReturned, completion: completion)
                     return
                 }
 
                 guard let applePayNonce: BTApplePayCardNonce = BTApplePayCardNonce(json: body["applePayCards"][0]) else {
-                    self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeFailed)
-                    completion(nil, BTApplePayError.failedToCreateNonce)
+                    self.notifyFailure(with: BTApplePayError.failedToCreateNonce, completion: completion)
                     return
                 }
 
-                self.apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeSucceeded)
-                completion(applePayNonce, nil)
+                self.notifySuccess(with: applePayNonce, completion: completion)
+                return
             }
         }
     }
@@ -158,5 +147,39 @@ import BraintreeCore
             "paymentInstrumentName": token.paymentMethod.displayName,
             "paymentNetwork": token.paymentMethod.network
         ]
+    }
+    
+    // MARK: - Analytics Helper Methods
+    
+    private func notifySuccess(
+        with result: BTApplePayCardNonce,
+        completion: @escaping (BTApplePayCardNonce?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeSucceeded)
+        completion(result, nil)
+    }
+    
+    private func notifyFailure(
+        with error: Error,
+        completion: @escaping (BTApplePayCardNonce?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeFailed, errorDescription: error.localizedDescription)
+        completion(nil, error)
+    }
+    
+    private func notifySuccess(
+        with result: PKPaymentRequest,
+        completion: @escaping (PKPaymentRequest?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestSucceeded)
+        completion(result, nil)
+    }
+    
+    private func notifyFailure(
+        with error: Error,
+        completion: @escaping (PKPaymentRequest?, Error?) -> Void
+    ) {
+        apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestFailed, errorDescription: error.localizedDescription)
+        completion(nil, error)
     }
 }

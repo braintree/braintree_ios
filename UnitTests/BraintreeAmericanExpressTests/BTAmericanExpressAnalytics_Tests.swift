@@ -4,8 +4,8 @@ import XCTest
 final class BTAmericanExpress_Tests: XCTestCase {
     
     func test_getRewardsBalanceAnalyticsEvents_sendsExpectedEventNames() {
-        XCTAssertEqual(BTAmericanExpressAnalytics.rewardsBalanceStarted, "amex:rewards-balance:started")
-        XCTAssertEqual(BTAmericanExpressAnalytics.rewardsBalanceFailed, "amex:rewards-balance:failed")
-        XCTAssertEqual(BTAmericanExpressAnalytics.rewardsBalanceSucceeded, "amex:rewards-balance:succeeded")
+        XCTAssertEqual(BTAmericanExpressAnalytics.started, "amex:rewards-balance:started")
+        XCTAssertEqual(BTAmericanExpressAnalytics.failed, "amex:rewards-balance:failed")
+        XCTAssertEqual(BTAmericanExpressAnalytics.succeeded, "amex:rewards-balance:succeeded")
     }
 }
