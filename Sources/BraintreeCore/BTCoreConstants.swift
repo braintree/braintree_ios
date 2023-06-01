@@ -4,7 +4,7 @@ import Foundation
 @_documentation(visibility: private)
 @objcMembers public class BTCoreConstants: NSObject {
 
-    public static var braintreeSDKVersion: String = "6.0.0-beta3"
+    public static var braintreeSDKVersion: String = "6.0.0-beta4"
 
     public static var apiVersion: String = "2016-10-07"
     
