@@ -2,6 +2,7 @@
 
 ## unreleased
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
+* Deprecate 3DS v1. Any attempt to use 3DS v1 will now throw an error. See [Migrating to 3D Secure 2](https://developer.paypal.com/braintree/docs/guides/3d-secure/migration) for more information.
 
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties

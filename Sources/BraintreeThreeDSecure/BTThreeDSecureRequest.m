@@ -3,7 +3,6 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 #import "BTThreeDSecureV2Provider.h"
-#import "BTThreeDSecureV1BrowserSwitchHelper.h"
 #import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
@@ -119,6 +118,15 @@
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
+    if (self.versionRequested == BTThreeDSecureVersion1) {
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                               code:BTThreeDSecureFlowErrorTypeConfiguration
+                                           userInfo:@{NSLocalizedDescriptionKey: @"3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."}];
+        
+        [delegate onPaymentComplete:nil error:error];
+        return;
+    }
+    
     self.paymentFlowDriverDelegate = delegate;
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.initialized"];
@@ -227,19 +235,21 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 }
 
 - (void)processLookupResult:(BTThreeDSecureResult *)lookupResult configuration:(BTConfiguration *)configuration {
-    if (!lookupResult.lookup.requiresUserAuthentication) {
+    if (!lookupResult.lookup.requiresUserAuthentication || lookupResult.lookup == nil) {
         [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult error:nil];
         return;
     }
     
     if (lookupResult.lookup.isThreeDSecureVersion2) {
         [self performV2Authentication:lookupResult];
+        return;
     } else {
-        NSURL *browserSwitchURL = [BTThreeDSecureV1BrowserSwitchHelper urlWithScheme:self.paymentFlowDriverDelegate.returnURLScheme
-                                                                           assetsURL:[configuration.json[@"assetsUrl"] asString]
-                                                                 threeDSecureRequest:self
-                                                                  threeDSecureLookup:lookupResult.lookup];
-        [self.paymentFlowDriverDelegate onPaymentWithURL:browserSwitchURL error:nil];
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                               code:BTThreeDSecureFlowErrorTypeConfiguration
+                                           userInfo:@{NSLocalizedDescriptionKey: @"3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."}];
+        
+        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+        return;
     }
 }
 
