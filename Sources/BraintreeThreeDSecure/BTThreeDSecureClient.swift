@@ -281,7 +281,6 @@ import BraintreeCore
                 with: BTThreeDSecureError.configuration("3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."),
                 completion: merchantCompletion
             )
-
         }
     }
     
