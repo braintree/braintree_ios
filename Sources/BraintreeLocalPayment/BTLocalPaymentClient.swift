@@ -147,7 +147,7 @@ import BraintreeDataCollector
 
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, response, error in
             guard let self else {
-                // TODO: return error
+                self?.notifyFailure(with: BTLocalPaymentError.deallocatedBTLocalPaymentClient, completion: self?.merchantCompletion ?? { _, _ in })
                 return
             }
 
