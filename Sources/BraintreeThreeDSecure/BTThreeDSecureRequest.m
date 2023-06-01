@@ -235,20 +235,20 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 }
 
 - (void)processLookupResult:(BTThreeDSecureResult *)lookupResult configuration:(BTConfiguration *)configuration {
-    if (!lookupResult.lookup.isThreeDSecureVersion2) {
+    if (!lookupResult.lookup.requiresUserAuthentication || lookupResult.lookup == nil) {
+        [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult error:nil];
+        return;
+    }
+    
+    if (lookupResult.lookup.isThreeDSecureVersion2) {
+        [self performV2Authentication:lookupResult];
+        return;
+    } else {
         NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                code:BTThreeDSecureFlowErrorTypeConfiguration
                                            userInfo:@{NSLocalizedDescriptionKey: @"3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."}];
         
         [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
-        return;
-    }
-    
-    if (!lookupResult.lookup.requiresUserAuthentication) {
-        [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult error:nil];
-        return;
-    } else {
-        [self performV2Authentication:lookupResult];
         return;
     }
 }
