@@ -1,5 +1,4 @@
 PODS:
-  - Expecta (1.0.6)
   - InAppSettingsKit (3.1.4)
   - OCMock (3.7.1)
   - OHHTTPStubs/Core (9.1.0)
@@ -18,7 +17,6 @@ PODS:
   - xcbeautify (0.8.1)
 
 DEPENDENCIES:
-  - Expecta
   - InAppSettingsKit
   - OCMock
   - OHHTTPStubs/Swift
@@ -26,19 +24,17 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Expecta
     - InAppSettingsKit
     - OCMock
     - OHHTTPStubs
     - xcbeautify
 
 SPEC CHECKSUMS:
-  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   InAppSettingsKit: 01fb9774c74a11fefc521f29cb2338909e1c2b61
   OCMock: 75fbeaa46a9b11f8c182bbb1d1f7e9a35ccc9955
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   xcbeautify: a3b03e4a38eb1a5766a83a7a3c53915a233572e3
 
-PODFILE CHECKSUM: 7bd765c4960dac904d148f1363e5621aafe82cce
+PODFILE CHECKSUM: 224cc2d6666b79d3d6adb45cccd6dfbc6fe74d18
 
 COCOAPODS: 1.12.1
