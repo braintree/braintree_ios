@@ -11,7 +11,6 @@ target 'Demo' do
 end
 
 abstract_target 'Tests' do
-  pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
   pod 'OHHTTPStubs/Swift'
