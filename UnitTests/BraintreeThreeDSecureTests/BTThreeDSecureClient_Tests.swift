@@ -553,6 +553,52 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
+    func testStartPaymentFlow_whenV1ReturnedInLookup_callsBackWithResult() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
+            "assetsUrl": "http://assets.example.com"
+        ] as [String: Any])
+
+        let responseBody =
+            """
+            {
+                "lookup": {
+                    "acsUrl": "www.someAcsUrl.com",
+                    "md": "someMd",
+                    "pareq": "somePareq",
+                    "termUrl": "www.someTermUrl.com",
+                    "threeDSecureVersion": "1.1.0",
+                    "transactionId": "someTransactionId"
+                },
+                "paymentMethod": {
+                    "nonce": "someLookupNonce",
+                    "threeDSecureInfo": {
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": false
+                    }
+                }
+            }
+            """
+
+        mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: String.Encoding.utf8)!)
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else {return}
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.configuration("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
+    }
+
     // MARK: - prepareLookup
 
     func testPrepareLookup_getsJsonString() {

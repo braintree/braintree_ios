@@ -270,12 +270,17 @@ import BraintreeCore
     
     private func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
         if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
-            self.notifySuccess(with: lookupResult, completion: merchantCompletion)
+            notifySuccess(with: lookupResult, completion: merchantCompletion)
             return
         }
 
         if lookupResult.lookup?.isThreeDSecureVersion2 == true {
             performV2Authentication(with: lookupResult)
+        } else {
+            notifyFailure(
+                with: BTThreeDSecureError.configuration("3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."),
+                completion: merchantCompletion
+            )
         }
     }
     
