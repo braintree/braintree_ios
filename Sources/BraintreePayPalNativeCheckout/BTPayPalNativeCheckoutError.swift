@@ -1,9 +1,8 @@
 import Foundation
 
 /// Error returned from the native PayPal flow
-// TODO: rename to BTPayPalNativeCheckoutError
-enum BTPayPalNativeError: Error, CustomNSError, LocalizedError, Equatable  {
-    static func == (lhs: BTPayPalNativeError, rhs: BTPayPalNativeError) -> Bool {
+enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatable  {
+    static func == (lhs: BTPayPalNativeCheckoutError, rhs: BTPayPalNativeCheckoutError) -> Bool {
         lhs.errorCode == rhs.errorCode
     }
 
