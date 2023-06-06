@@ -36,7 +36,7 @@ import BraintreeCore
         
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
-                notifyFailure(with: BTThreeDSecureError.deallocatedBTThreeDSecureClient, completion: completion)
+                self?.notifyFailure(with: BTThreeDSecureError.deallocatedBTThreeDSecureClient, completion: completion)
                 return
             }
 
@@ -220,7 +220,7 @@ import BraintreeCore
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
-                notifyFailure(with: BTThreeDSecureError.deallocatedBTThreeDSecureClient, completion: completion)
+                completion(BTThreeDSecureError.deallocatedBTThreeDSecureClient)
                 return
             }
 
