@@ -110,7 +110,7 @@ import PayPalCheckout
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
             guard let self else {
-                self?.notifyFailure(with: BTPayPalNativeCheckoutError.deallocatedBTPayPalNativeCheckoutClient, completion: completion)
+                self?.notifyFailure(with: BTPayPalNativeCheckoutError.deallocated, completion: completion)
                 return
             }
 
@@ -120,7 +120,7 @@ import PayPalCheckout
                     clientID: order.payPalClientID,
                     createOrder: { [weak self] action in
                         guard let self else {
-                            self?.notifyFailure(with: BTPayPalNativeCheckoutError.deallocatedBTPayPalNativeCheckoutClient, completion: completion)
+                            self?.notifyFailure(with: BTPayPalNativeCheckoutError.deallocated, completion: completion)
                             return
                         }
 
@@ -136,7 +136,7 @@ import PayPalCheckout
                     },
                     onApprove: { [weak self] approval in
                         guard let self else {
-                            self?.notifyFailure(with: BTPayPalNativeCheckoutError.deallocatedBTPayPalNativeCheckoutClient, completion: completion)
+                            self?.notifyFailure(with: BTPayPalNativeCheckoutError.deallocated, completion: completion)
                             return
                         }
 

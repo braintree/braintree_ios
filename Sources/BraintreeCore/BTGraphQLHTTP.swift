@@ -97,7 +97,7 @@ class BTGraphQLHTTP: BTHTTP {
             // Perform the actual request
             session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocatedHTTPClient("BTGraphQLHTTP"))
+                    completion(nil, nil, BTHTTPError.deallocated("BTGraphQLHTTP"))
                     return
                 }
 

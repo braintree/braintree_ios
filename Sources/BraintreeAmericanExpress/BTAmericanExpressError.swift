@@ -10,7 +10,7 @@ enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
     case noRewardsData
 
     /// 2. Deallocated BTAmericanExpressClient
-    case deallocatedBTAmericanExpressClient
+    case deallocated
 
     static var errorDomain: String {
         "com.braintreepayments.BTAmericanExpressErrorDomain"
@@ -28,7 +28,7 @@ enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
         case .noRewardsData:
             return "No American Express Rewards data was returned. Please contact support."
 
-        case .deallocatedBTAmericanExpressClient:
+        case .deallocated:
             return "BTAmericanExpressClient has been deallocated."
         }
     }

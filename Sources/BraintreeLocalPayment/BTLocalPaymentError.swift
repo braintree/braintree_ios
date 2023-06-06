@@ -36,8 +36,8 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
     /// 10. ASWebAuthentication error
     case webSessionError(Error)
 
-    /// 11. Deallocated 
-    case deallocatedBTLocalPaymentClient
+    /// 11. Deallocated BTLocalPaymentClient
+    case deallocated
 
     static var errorDomain = "com.braintreepayments.BTLocalPaymentErrorDomain"
 
@@ -65,7 +65,7 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
             return 9
         case .webSessionError:
             return 10
-        case .deallocatedBTLocalPaymentClient:
+        case .deallocated:
             return 11
         }
     }
@@ -94,7 +94,7 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
             return "An error occured completing the payment authorization flow. The ASWebAuthenticationSession returned a nil URL."
         case .webSessionError(let error):
             return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
-        case .deallocatedBTLocalPaymentClient:
+        case .deallocated:
             return "BTLocalPaymentClient has been deallocated."
         }
     }

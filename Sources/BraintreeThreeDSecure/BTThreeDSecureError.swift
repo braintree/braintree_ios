@@ -27,7 +27,7 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
     case jsonSerializationFailure
 
     /// 8. Deallocated BTThreeDSecureClient
-    case deallocatedBTThreeDSecureClient
+    case deallocated
 
     static var errorDomain: String {
         "com.braintreepayments.BTThreeDSecureFlowErrorDomain"
@@ -51,7 +51,7 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return 6
         case .jsonSerializationFailure:
             return 7
-        case .deallocatedBTThreeDSecureClient:
+        case .deallocated:
             return 8
         }
     }
@@ -74,7 +74,7 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: "The BTAPIClient was invalid or missing."]
         case .jsonSerializationFailure:
             return [NSLocalizedDescriptionKey: "The request could not be serialized."]
-        case .deallocatedBTThreeDSecureClient:
+        case .deallocated:
             return [NSLocalizedDescriptionKey: "BTThreeDSecureClient has been deallocated."]
         }
     }

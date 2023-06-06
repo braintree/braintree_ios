@@ -148,7 +148,7 @@ import Foundation
 
         configurationHTTP?.get(configPath, parameters: parameters, shouldCache: true) { [weak self] body, response, error in
             guard let self else {
-                completion(nil, BTAPIClientError.deallocatedBTAPIClient)
+                completion(nil, BTAPIClientError.deallocated)
                 return
             }
 
@@ -276,7 +276,7 @@ import Foundation
     public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocatedBTAPIClient)
+                completion(nil, nil, BTAPIClientError.deallocated)
                 return
             }
 
@@ -295,7 +295,7 @@ import Foundation
     public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocatedBTAPIClient)
+                completion(nil, nil, BTAPIClientError.deallocated)
 
                 return
             }

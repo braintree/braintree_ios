@@ -282,7 +282,12 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         webSessionReturned = false
         
-        webAuthenticationSession.start(url: appSwitchURL, context: self) { url, error in
+        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
+            guard let self else {
+                self?.notifyFailure(with: BTPayPalError.deallocated, completion: completion)
+                return
+            }
+
             if let error {
                 self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
                 self.notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)

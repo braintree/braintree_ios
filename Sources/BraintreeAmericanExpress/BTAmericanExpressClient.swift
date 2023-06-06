@@ -31,7 +31,7 @@ import BraintreeCore
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
             guard let self else {
-                completion(nil, BTAmericanExpressError.deallocatedBTAmericanExpressClient)
+                completion(nil, BTAmericanExpressError.deallocated)
                 return
             }
 

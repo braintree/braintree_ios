@@ -40,7 +40,7 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
     case serializationError(String)
 
     /// 12. Deallocated HTTPClient
-    case deallocatedHTTPClient(String)
+    case deallocated(String)
 
     static var errorDomain: String {
         BTCoreConstants.httpErrorDomain
@@ -72,7 +72,7 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
             return 10
         case .serializationError:
             return 11
-        case .deallocatedHTTPClient:
+        case .deallocated:
             return 12
         }
     }
@@ -103,7 +103,7 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: "BTClientToken contained a nil or empty authorizationFingerprint."]
         case .serializationError(let errorDescription):
             return [NSLocalizedDescriptionKey: errorDescription]
-        case .deallocatedHTTPClient(let httpType):
+        case .deallocated(let httpType):
             return [NSLocalizedDescriptionKey: "\(httpType) has been deallocated."]
         }
     }

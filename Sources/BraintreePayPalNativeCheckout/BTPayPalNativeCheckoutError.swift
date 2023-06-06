@@ -40,7 +40,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
     case invalidJSONResponse
 
     /// 11. Deallocated BTPayPalNativeCheckoutClient
-    case deallocatedBTPayPalNativeCheckoutClient
+    case deallocated
 
     static var errorDomain: String {
         "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain"
@@ -70,7 +70,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
             return 9
         case .invalidJSONResponse:
             return 10
-        case .deallocatedBTPayPalNativeCheckoutClient:
+        case .deallocated:
             return 11
         }
     }
@@ -99,7 +99,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
             return "Failed to parse tokenization result."
         case .invalidJSONResponse:
             return "Invalid JSON response."
-        case .deallocatedBTPayPalNativeCheckoutClient:
+        case .deallocated:
             return "BTPayPalNativeCheckoutClient has been deallocated."
         }
     }
