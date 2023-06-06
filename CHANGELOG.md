@@ -1,5 +1,21 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalNativeCheckout
+  * Rename `BTPayPalNativeError` to `BTPayPalNativeCheckoutError`
+  * Add `BTPayPalNativeCheckoutError.deallocated` = 11
+* BraintreeAmericanExpress
+  * Add `BTAmericanExpressError.deallocated` = 2
+* BraintreeCore
+  * Add `BTAPIClientError.deallocated` = 2
+  * Add `BTHTTPError.deallocated` = 12
+* BraintreeLocalPayment
+  * Add `BTLocalPaymentError.deallocated` = 11
+* BraintreePayPal
+  * Add `BTPayPalError.deallocated` = 9
+* BraintreeThreeDSecure
+  * Add `BTThreeDSecureError.deallocated` = 8
+
 ## 6.0.0-beta4 (2023-06-01)
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
 * Move from Braintree to PayPal analytics service
