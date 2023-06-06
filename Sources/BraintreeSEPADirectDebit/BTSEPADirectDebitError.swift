@@ -3,29 +3,32 @@ import Foundation
 ///  Error details associated with SEPA Direct Debit.
 enum BTSEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
 
-    /// Unknown error
+    /// 0. Unknown error
     case unknown
 
-    /// SEPA Direct Debit flow was canceled by the user.
+    /// 1. SEPA Direct Debit flow was canceled by the user.
     case webFlowCanceled
 
-    /// The URL returned from the web flow was invalid.
+    /// 2. The URL returned from the web flow was invalid.
     case resultURLInvalid
 
-    /// The result of the create mandate request was nil and no error was returned.
+    /// 3. The result of the create mandate request was nil and no error was returned.
     case resultReturnedNil
 
-    /// The approval URL is invalid.
+    /// 4. The approval URL is invalid.
     case approvalURLInvalid
 
-    /// The web authentication session result was nil and no error was returned.
+    /// 5. The web authentication session result was nil and no error was returned.
     case authenticationResultNil
     
-    /// A body was not returned from the API during the request.
+    /// 6. A body was not returned from the API during the request.
     case noBodyReturned
 
-    /// Unable to create BTSEPADirectDebitNonce
+    /// 7. Unable to create BTSEPADirectDebitNonce
     case failedToCreateNonce
+
+    /// 8. Deallocated BTSEPADirectDebitClient
+    case deallocated
 
     static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
@@ -60,6 +63,9 @@ enum BTSEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
 
         case .failedToCreateNonce:
             return "Unable to create BTSEPADirectDebitNonce. Nonce was not returned from the tokenize method."
+
+        case .deallocated:
+            return "BTSEPADirectDebitClient has been deallocated."
         }
     }
 }

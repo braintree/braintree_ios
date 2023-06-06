@@ -289,7 +289,6 @@ import BraintreeDataCollector
             }
 
             if let error {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
                 self.notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
                 return
             }

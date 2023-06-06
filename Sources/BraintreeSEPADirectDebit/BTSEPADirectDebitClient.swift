@@ -142,7 +142,13 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        self.webAuthenticationSession.start(url: url, context: context) { url, error in
+        self.webAuthenticationSession.start(url: url, context: context) { [weak self] url, error in
+            guard let self else {
+                self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
+                completion(false, BTSEPADirectDebitError.deallocated)
+                return
+            }
+
             self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
         } sessionDidAppear: { didAppear in
             if didAppear {

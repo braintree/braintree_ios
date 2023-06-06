@@ -263,7 +263,13 @@ import BraintreeDataCollector
         }
 
         webSessionReturned = false
-        webAuthenticationSession.start(url: url, context: self) { url, error in
+        webAuthenticationSession.start(url: url, context: self) { [weak self] url, error in
+            guard let self else {
+                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
+                self?.onPayment(with: nil, error: BTLocalPaymentError.deallocated)
+                return
+            }
+
             if let error {
                 self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 self.onPayment(with: nil, error: BTLocalPaymentError.webSessionError(error))
