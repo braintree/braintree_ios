@@ -109,13 +109,21 @@ import PayPalCheckout
         self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeStarted)
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
-            guard let self else { return }
+            guard let self else {
+                self?.notifyFailure(with: BTPayPalNativeError.deallocatedBTPayPalNativeCheckoutClient, completion: completion)
+                return
+            }
 
             switch result {
             case .success(let order):
                 let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
                     clientID: order.payPalClientID,
-                    createOrder: { action in
+                    createOrder: { [weak self] action in
+                        guard let self else {
+                            self?.notifyFailure(with: BTPayPalNativeError.deallocatedBTPayPalNativeCheckoutClient, completion: completion)
+                            return
+                        }
+
                         switch request.paymentType {
                         case .checkout:
                             action.set(orderId: order.orderID)
@@ -127,7 +135,10 @@ import PayPalCheckout
                         }
                     },
                     onApprove: { [weak self] approval in
-                        guard let self else { return }
+                        guard let self else {
+                            self?.notifyFailure(with: BTPayPalNativeError.deallocatedBTPayPalNativeCheckoutClient, completion: completion)
+                            return
+                        }
 
                         tokenize(approval: approval, request: request, completion: completion)
                     },

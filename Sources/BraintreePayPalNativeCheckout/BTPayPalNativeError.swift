@@ -1,42 +1,47 @@
 import Foundation
 
 /// Error returned from the native PayPal flow
+// TODO: rename to BTPayPalNativeCheckoutError
 enum BTPayPalNativeError: Error, CustomNSError, LocalizedError, Equatable  {
     static func == (lhs: BTPayPalNativeError, rhs: BTPayPalNativeError) -> Bool {
         lhs.errorCode == rhs.errorCode
     }
 
-    /// Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest
+    /// 0. Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest
     case invalidRequest
 
-    /// Failed to fetch Braintree configuration
+    /// 1. Failed to fetch Braintree configuration
     case fetchConfigurationFailed
 
-    /// PayPal is not enabled for this merchant in the Braintree Control Panel
+    /// 2. PayPal is not enabled for this merchant in the Braintree Control Panel
     case payPalNotEnabled
 
-    /// Could not find PayPal client ID in the Braintree configuration
+    /// 3. Could not find PayPal client ID in the Braintree configuration
     case payPalClientIDNotFound
 
-    /// Invalid environment identifier found in the Braintree configuration
+    /// 4. Invalid environment identifier found in the Braintree configuration
     case invalidEnvironment
 
-    /// Failed to create PayPal order
+    /// 5. Failed to create PayPal order
     case orderCreationFailed(Error)
 
-    /// PayPal flow was canceled by the user
+    /// 6. PayPal flow was canceled by the user
     case canceled
 
-    /// PayPalCheckout SDK returned an error
+    /// 7. PayPalCheckout SDK returned an error
     case checkoutSDKFailed
 
-    /// Tokenization with the Braintree Gateway failed
+    /// 8. Tokenization with the Braintree Gateway failed
     case tokenizationFailed(Error)
 
-    /// Failed to parse tokenization result
+    /// 9. Failed to parse tokenization result
     case parsingTokenizationResultFailed
 
+    /// 10. Invalid JSON response
     case invalidJSONResponse
+
+    /// 11. Deallocated BTPayPalNativeCheckoutClient
+    case deallocatedBTPayPalNativeCheckoutClient
 
     static var errorDomain: String {
         "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain"
@@ -66,6 +71,8 @@ enum BTPayPalNativeError: Error, CustomNSError, LocalizedError, Equatable  {
             return 9
         case .invalidJSONResponse:
             return 10
+        case .deallocatedBTPayPalNativeCheckoutClient:
+            return 11
         }
     }
 
@@ -93,6 +100,8 @@ enum BTPayPalNativeError: Error, CustomNSError, LocalizedError, Equatable  {
             return "Failed to parse tokenization result."
         case .invalidJSONResponse:
             return "Invalid JSON response."
+        case .deallocatedBTPayPalNativeCheckoutClient:
+            return "BTPayPalNativeCheckoutClient has been deallocated."
         }
     }
 }
