@@ -15,6 +15,8 @@
   * Add `BTPayPalError.deallocated` = 9
 * BraintreeThreeDSecure
   * Add `BTThreeDSecureError.deallocated` = 8
+* BraintreeSEPADirectDebit
+  * Add `BTSEPADirectDebitError.deallocated` = 8
 
 ## 6.0.0-beta4 (2023-06-01)
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
