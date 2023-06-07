@@ -15,7 +15,6 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.1.0)
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
-  - Specta (1.0.7)
   - xcbeautify (0.8.1)
 
 DEPENDENCIES:
@@ -23,7 +22,6 @@ DEPENDENCIES:
   - InAppSettingsKit
   - OCMock
   - OHHTTPStubs/Swift
-  - Specta
   - xcbeautify
 
 SPEC REPOS:
@@ -32,7 +30,6 @@ SPEC REPOS:
     - InAppSettingsKit
     - OCMock
     - OHHTTPStubs
-    - Specta
     - xcbeautify
 
 SPEC CHECKSUMS:
@@ -40,9 +37,8 @@ SPEC CHECKSUMS:
   InAppSettingsKit: 01fb9774c74a11fefc521f29cb2338909e1c2b61
   OCMock: 75fbeaa46a9b11f8c182bbb1d1f7e9a35ccc9955
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
-  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   xcbeautify: a3b03e4a38eb1a5766a83a7a3c53915a233572e3
 
-PODFILE CHECKSUM: d13bb859974d75763866520e0313eec1e5f76228
+PODFILE CHECKSUM: 7bd765c4960dac904d148f1363e5621aafe82cce
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

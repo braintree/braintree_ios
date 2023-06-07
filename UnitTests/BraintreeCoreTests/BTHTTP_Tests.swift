@@ -1,5 +1,4 @@
 import XCTest
-import Specta
 import OHHTTPStubs
 @testable import BraintreeCore
 
@@ -1017,7 +1016,6 @@ final class BTHTTP_Tests: XCTestCase {
     func testNoopsForANilCompletionBlock() {
         http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
 
-        setAsyncSpecTimeout(2)
         http?.get("200.json") { body, response, error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                 // no-op

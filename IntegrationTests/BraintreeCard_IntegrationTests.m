@@ -1,7 +1,7 @@
 #import "BTNonceValidationHelper.h"
 #import "IntegrationTests-Swift.h"
 #import <Expecta/Expecta.h>
-#import <Specta/Specta.h>
+#import <XCTest/XCTest.h>
 
 @import BraintreeCore;
 @import BraintreeCard;
@@ -18,9 +18,9 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
-        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
-        expect(error).to.beNil();
+        XCTAssertTrue(tokenizedCard.nonce.isANonce);
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.wasVerified);
+        XCTAssertNil(error);
         [expectation fulfill];
     }];
     
@@ -57,23 +57,23 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
-        expect(tokenizedCard.expirationMonth).toNot.beNil();
-        expect(tokenizedCard.expirationYear).toNot.beNil();
-        expect(tokenizedCard.cardholderName).toNot.beNil();
-        expect(tokenizedCard.binData.prepaid).toNot.beNil();
-        expect(tokenizedCard.binData.healthcare).toNot.beNil();
-        expect(tokenizedCard.binData.debit).toNot.beNil();
-        expect(tokenizedCard.binData.durbinRegulated).toNot.beNil();
-        expect(tokenizedCard.binData.commercial).toNot.beNil();
-        expect(tokenizedCard.binData.payroll).toNot.beNil();
-        expect(tokenizedCard.binData.issuingBank).toNot.beNil();
-        expect(tokenizedCard.binData.countryOfIssuance).toNot.beNil();
-        expect(tokenizedCard.binData.productID).toNot.beNil();
-        expect(tokenizedCard.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
-        expect(tokenizedCard.threeDSecureInfo.liabilityShifted).to.beFalsy();
-        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
-        expect(error).to.beNil();
+        XCTAssertTrue(tokenizedCard.nonce.isANonce);
+        XCTAssertNotNil(tokenizedCard.expirationMonth);
+        XCTAssertNotNil(tokenizedCard.expirationYear);
+        XCTAssertNotNil(tokenizedCard.cardholderName);
+        XCTAssertNotNil(tokenizedCard.binData.prepaid);
+        XCTAssertNotNil(tokenizedCard.binData.healthcare);
+        XCTAssertNotNil(tokenizedCard.binData.debit);
+        XCTAssertNotNil(tokenizedCard.binData.durbinRegulated);
+        XCTAssertNotNil(tokenizedCard.binData.commercial);
+        XCTAssertNotNil(tokenizedCard.binData.payroll);
+        XCTAssertNotNil(tokenizedCard.binData.issuingBank);
+        XCTAssertNotNil(tokenizedCard.binData.countryOfIssuance);
+        XCTAssertNotNil(tokenizedCard.binData.productID);
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShiftPossible);
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShifted);
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.wasVerified);
+        XCTAssertNil(error);
         [expectation fulfill];
     }];
     
@@ -90,10 +90,10 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         XCTAssertNil(tokenizedCard);
-        expect(error.domain).to.equal(BTCoreConstants.httpErrorDomain);
-        expect(error.code).to.equal(2);
+        XCTAssertEqualObjects(error.domain, BTCoreConstants.httpErrorDomain);
+        XCTAssertEqual(error.code, 2);
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTCoreConstants.urlResponseKey];
-        expect(httpResponse.statusCode).to.equal(403);
+        XCTAssertEqual(httpResponse.statusCode, 403);
         [expectation fulfill];
     }];
     
@@ -108,9 +108,9 @@
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
-        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
-        expect(error).to.beNil();
+        XCTAssertTrue(tokenizedCard.nonce.isANonce);
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.wasVerified);
+        XCTAssertNil(error);
         [expectation fulfill];
     }];
     
@@ -125,9 +125,9 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
-        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
-        expect(error).to.beNil();
+        XCTAssertTrue(tokenizedCard.nonce.isANonce);
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.wasVerified);
+        XCTAssertNil(error);
         [expectation fulfill];
     }];
     
@@ -142,8 +142,8 @@
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
-        expect(error).to.beNil();
+        XCTAssertTrue(tokenizedCard.nonce.isANonce);
+        XCTAssertNil(error);
         [expectation fulfill];
     }];
 
