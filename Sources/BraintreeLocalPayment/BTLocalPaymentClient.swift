@@ -147,7 +147,6 @@ import BraintreeDataCollector
 
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, response, error in
             guard let self else {
-                self?.notifyFailure(with: BTLocalPaymentError.deallocated, completion: self?.merchantCompletion ?? { _, _ in })
                 return
             }
 
@@ -265,8 +264,6 @@ import BraintreeDataCollector
         webSessionReturned = false
         webAuthenticationSession.start(url: url, context: self) { [weak self] url, error in
             guard let self else {
-                self?.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                self?.onPayment(with: nil, error: BTLocalPaymentError.deallocated)
                 return
             }
 

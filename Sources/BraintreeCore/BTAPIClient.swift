@@ -296,7 +296,6 @@ import Foundation
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
-
                 return
             }
 

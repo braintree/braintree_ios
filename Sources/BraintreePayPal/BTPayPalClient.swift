@@ -284,7 +284,7 @@ import BraintreeDataCollector
         
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
             guard let self else {
-                self?.notifyFailure(with: BTPayPalError.deallocated, completion: completion)
+                completion(nil, BTPayPalError.deallocated)
                 return
             }
 

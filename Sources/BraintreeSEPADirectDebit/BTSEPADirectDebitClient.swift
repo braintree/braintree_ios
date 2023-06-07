@@ -144,7 +144,6 @@ import BraintreeCore
     ) {
         self.webAuthenticationSession.start(url: url, context: context) { [weak self] url, error in
             guard let self else {
-                self?.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(false, BTSEPADirectDebitError.deallocated)
                 return
             }
