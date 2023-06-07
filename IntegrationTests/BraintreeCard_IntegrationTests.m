@@ -1,6 +1,5 @@
 #import "BTNonceValidationHelper.h"
 #import "IntegrationTests-Swift.h"
-#import <Expecta/Expecta.h>
 #import <XCTest/XCTest.h>
 
 @import BraintreeCore;
