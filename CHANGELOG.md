@@ -9,8 +9,6 @@
 * BraintreeCore
   * Add `BTAPIClientError.deallocated` = 2
   * Add `BTHTTPError.deallocated` = 12
-* BraintreeLocalPayment
-  * Add `BTLocalPaymentError.deallocated` = 11
 * BraintreePayPal
   * Add `BTPayPalError.deallocated` = 9
 * BraintreeThreeDSecure
