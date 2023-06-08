@@ -51,7 +51,7 @@ class BTGraphQLHTTP: BTHTTP {
     ) {
         var errorUserInfo: [String: Any] = [:]
 
-        if self.baseURL.absoluteString.isEmpty || self.baseURL.absoluteString == "" {
+        if baseURL.absoluteString.isEmpty || baseURL.absoluteString == "" {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
             completion(nil, nil, BTHTTPError.missingBaseURL(errorUserInfo))
@@ -96,8 +96,12 @@ class BTGraphQLHTTP: BTHTTP {
 
             // Perform the actual request
             session.dataTask(with: request) { [weak self] data, response, error in
-                guard let self = self else { return }
-                self.handleRequestCompletion(data: data, response: response, error: error, completion: completion)
+                guard let self else {
+                    completion(nil, nil, BTHTTPError.deallocated("BTGraphQLHTTP"))
+                    return
+                }
+
+                handleRequestCompletion(data: data, response: response, error: error, completion: completion)
             }.resume()
         } catch {
             completion(nil, nil, error)

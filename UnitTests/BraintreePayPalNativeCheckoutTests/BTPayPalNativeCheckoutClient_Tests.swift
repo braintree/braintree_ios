@@ -24,7 +24,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         let checkoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
         checkoutClient.tokenize(nativeCheckoutRequest) { nonce, error in
             XCTAssertNil(nonce)
-            XCTAssertEqual(error as? BTPayPalNativeError, .payPalClientIDNotFound)
+            XCTAssertEqual(error as? BTPayPalNativeCheckoutError, .payPalClientIDNotFound)
             XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
         }
     }

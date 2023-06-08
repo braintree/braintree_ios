@@ -109,25 +109,36 @@ import PayPalCheckout
         self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeStarted)
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
-            guard let self else { return }
+            guard let self else {
+                completion(nil, BTPayPalNativeCheckoutError.deallocated)
+                return
+            }
 
             switch result {
             case .success(let order):
                 let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
                     clientID: order.payPalClientID,
-                    createOrder: { action in
+                    createOrder: { [weak self] action in
+                        guard let self else {
+                            completion(nil, BTPayPalNativeCheckoutError.deallocated)
+                            return
+                        }
+
                         switch request.paymentType {
                         case .checkout:
                             action.set(orderId: order.orderID)
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
                         @unknown default:
-                            self.notifyFailure(with: BTPayPalNativeError.invalidRequest, completion: completion)
+                            notifyFailure(with: BTPayPalNativeCheckoutError.invalidRequest, completion: completion)
 
                         }
                     },
                     onApprove: { [weak self] approval in
-                        guard let self else { return }
+                        guard let self else {
+                            completion(nil, BTPayPalNativeCheckoutError.deallocated)
+                            return
+                        }
 
                         tokenize(approval: approval, request: request, completion: completion)
                     },
@@ -135,7 +146,7 @@ import PayPalCheckout
                         self.notifyCancel(completion: completion)
                     },
                     onError: { error in
-                        self.notifyFailure(with: BTPayPalNativeError.checkoutSDKFailed, completion: completion)
+                        self.notifyFailure(with: BTPayPalNativeCheckoutError.checkoutSDKFailed, completion: completion)
                     },
                     environment: order.environment
                 )
@@ -189,6 +200,6 @@ import PayPalCheckout
 
     private func notifyCancel(completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeCanceled)
-        completion(nil, BTPayPalNativeError.canceled)
+        completion(nil, BTPayPalNativeCheckoutError.canceled)
     }
 }

@@ -2,29 +2,32 @@ import Foundation
 
 enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
 
-    /// Unknown error
+    /// 0. Unknown error
     case unknown
 
-    /// 3D Secure failed during the backend card lookup phase; please retry
+    /// 1. 3D Secure failed during the backend card lookup phase; please retry
     case failedLookup([String: Any])
 
-    /// 3D Secure failed during the user-facing authentication phase; please retry
+    /// 2. 3D Secure failed during the user-facing authentication phase; please retry
     case failedAuthentication(String)
 
-    /// 3D Secure was not configured correctly
+    /// 3. 3D Secure was not configured correctly
     case configuration(String)
     
-    /// A body was not returned from the API during the request.
+    /// 4. A body was not returned from the API during the request.
     case noBodyReturned
 
-    /// User canceled the 3DS 2 flow.
+    /// 5. User canceled the 3DS 2 flow.
     case canceled
 
-    /// The BTAPIClient was invalid or missing
+    /// 6. The BTAPIClient was invalid or missing
     case invalidAPIClient
 
-    /// The request could not be serialized.
+    /// 7. The request could not be serialized.
     case jsonSerializationFailure
+
+    /// 8. Deallocated BTThreeDSecureClient
+    case deallocated
 
     static var errorDomain: String {
         "com.braintreepayments.BTThreeDSecureFlowErrorDomain"
@@ -47,6 +50,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
         case .invalidAPIClient:
             return 6
         case .jsonSerializationFailure:
+            return 7
+        case .deallocated:
             return 8
         }
     }
@@ -69,6 +74,8 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: "The BTAPIClient was invalid or missing."]
         case .jsonSerializationFailure:
             return [NSLocalizedDescriptionKey: "The request could not be serialized."]
+        case .deallocated:
+            return [NSLocalizedDescriptionKey: "BTThreeDSecureClient has been deallocated."]
         }
     }
 }

@@ -19,7 +19,7 @@ class BTPayPalNativeTokenizationClient {
     func tokenize(
         request: BTPayPalRequest,
         returnURL: String,
-        completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeError>) -> Void)
+        completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeCheckoutError>) -> Void)
     {
 
         let tokenizationRequest = BTPayPalNativeTokenizationRequest(
@@ -32,7 +32,7 @@ class BTPayPalNativeTokenizationClient {
             parameters: tokenizationRequest.parameters(returnURL: returnURL)
         ) { body, _, error in
             guard let json = body, error == nil else {
-                let underlyingError = error ?? BTPayPalNativeError.invalidJSONResponse
+                let underlyingError = error ?? BTPayPalNativeCheckoutError.invalidJSONResponse
                 completion(.failure(.tokenizationFailed(underlyingError)))
                 return
             }

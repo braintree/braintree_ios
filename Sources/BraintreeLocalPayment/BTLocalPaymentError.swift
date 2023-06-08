@@ -3,37 +3,37 @@ import Foundation
 /// Error codes associated with Payment Flow
 enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
     
-    /// Unknown error
+    /// 0. Unknown error
     case unknown
 
-    /// Local Payments are disabled in configuration
+    /// 1. Local Payments are disabled in configuration
     case disabled
     
-    /// UIApplication failed to switch to browser
+    /// 2. UIApplication failed to switch to browser
     case appSwitchFailed
     
-    /// Braintree SDK is integrated incorrectly
+    /// 3. Braintree SDK is integrated incorrectly
     case integration
     
-    /// No payment flow account data returned
+    /// 4. No payment flow account data returned
     case noAccountData
     
-    /// Payment flow was canceled, typically initiated by the user when exiting early from the flow
+    /// 5. Payment flow was canceled, typically initiated by the user when exiting early from the flow
     case canceled(String)
 
-    /// Missing nonce value in account response
+    /// 6. Missing nonce value in account response
     case failedToCreateNonce
     
-    /// Failed to fetch Braintree configuration
+    /// 7. Failed to fetch Braintree configuration
     case fetchConfigurationFailed
     
-    /// No URL found to display for payment authorization
+    /// 8. No URL found to display for payment authorization
     case missingRedirectURL
     
-    /// No URL was returned via the ASWebAuthenticationSession completion callback
+    /// 9. No URL was returned via the ASWebAuthenticationSession completion callback
     case missingReturnURL
 
-    /// ASWebAuthentication error
+    /// 10. ASWebAuthentication error
     case webSessionError(Error)
 
     static var errorDomain = "com.braintreepayments.BTLocalPaymentErrorDomain"

@@ -142,18 +142,23 @@ import BraintreeCore
         context: ASWebAuthenticationPresentationContextProviding,
         completion: @escaping (Bool, Error?) -> Void
     ) {
-        self.webAuthenticationSession.start(url: url, context: context) { url, error in
-            self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
-        } sessionDidAppear: { didAppear in
-            if didAppear {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
-            } else {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+        self.webAuthenticationSession.start(url: url, context: context) { [weak self] url, error in
+            guard let self else {
+                completion(false, BTSEPADirectDebitError.deallocated)
+                return
             }
-        } sessionDidCancel: {
+
+            self.handleWebAuthenticationSessionResult(url: url, error: error, completion: completion)
+        } sessionDidAppear: { [self] didAppear in
+            if didAppear {
+                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationSucceeded)
+            } else {
+                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengePresentationFailed)
+            }
+        } sessionDidCancel: { [self] in
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. Cancel button on the WebAuthenticationSession)
-            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
+            apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
             completion(false, BTSEPADirectDebitError.webFlowCanceled)
             return
         }

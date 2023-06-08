@@ -146,7 +146,10 @@ import BraintreeDataCollector
         requestParameters["_meta"] = metadataParameters
 
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, response, error in
-            guard let self else { return }
+            guard let self else {
+                NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
+                return
+            }
 
             if let error {
                 notifyFailure(with: error, completion: merchantCompletion)
@@ -260,36 +263,41 @@ import BraintreeDataCollector
         }
 
         webSessionReturned = false
-        webAuthenticationSession.start(url: url, context: self) { url, error in
+        webAuthenticationSession.start(url: url, context: self) { [weak self] url, error in
+            guard let self else {
+                NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
+                return
+            }
+
             if let error {
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                self.onPayment(with: nil, error: BTLocalPaymentError.webSessionError(error))
+                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
+                onPayment(with: nil, error: BTLocalPaymentError.webSessionError(error))
                 return
             }
 
             if let url {
-                self.handleOpen(url)
+                handleOpen(url)
             } else {
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginFailed)
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
-                self.onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
+                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginFailed)
+                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
+                onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
             }
-        } sessionDidAppear: { didAppear in
+        } sessionDidAppear: { [self] didAppear in
             if didAppear {
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
+                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
             } else {
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
+                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
             }
-        } sessionDidCancel: {
-            if !self.webSessionReturned {
+        } sessionDidCancel: { [self] in
+            if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
+                apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
             }
 
             // User canceled by breaking out of the LocalPayment browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            self.apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
-            self.onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
+            apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
+            onPayment(with: nil, error: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
             return
         }
     }
