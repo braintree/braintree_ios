@@ -54,11 +54,11 @@ import Foundation
         self.kind = kind
     }
     
-    // MARK: - Public Methods
+    // MARK: - Internal Methods
 
     /// Returns the line item in a dictionary.
     /// - Returns: A dictionary with the line item information formatted for a request.
-    public func requestParameters() -> [String: String] {
+    func requestParameters() -> [String: String] {
         var requestParameters = [
             "quantity": quantity,
             "unit_amount": unitAmount,
