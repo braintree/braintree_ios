@@ -98,7 +98,7 @@ import BraintreeCore
             let metadata = self.apiClient.metadata
             metadata.source = .venmoApp
             
-            var inputParameters: [String: String?] = [
+            var inputParameters: [String: Any?] = [
                 "paymentMethodUsage": request.paymentMethodUsage.stringValue,
                 "merchantProfileId": merchantProfileID,
                 "customerClient": "MOBILE_APP",
@@ -109,28 +109,28 @@ import BraintreeCore
                 inputParameters["displayName"] = displayName
             }
 
-            var paysheetDetails: [String: String] = [
+            var paysheetDetails: [String: Any] = [
                 "collectCustomerBillingAddress": "\(request.collectCustomerBillingAddress)",
                 "collectCustomerShippingAddress": "\(request.collectCustomerShippingAddress)"
             ]
             
-            var transactionDetails: [String: String] = [:]
+            var transactionDetails: [String: Any] = [:]
             if let subTotalAmount = request.subTotalAmount {
                 transactionDetails["subTotalAmount"] = subTotalAmount
             }
-            
+
             if let discountAmount = request.discountAmount {
                 transactionDetails["discountAmount"] = discountAmount
             }
-            
+
             if let taxAmount = request.taxAmount {
                 transactionDetails["taxAmount"] = taxAmount
             }
-            
+
             if let shippingAmount = request.shippingAmount {
                 transactionDetails["shippingAmount"] = shippingAmount
             }
-            
+
             if let totalAmount = request.totalAmount {
                 transactionDetails["totalAmount"] = totalAmount
             }
@@ -142,25 +142,11 @@ import BraintreeCore
                     }
                 }
                 let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-                if let jsonLineItemData = try? JSONSerialization.data(withJSONObject: lineItemsArray),
-                   let jsonLineItemString = String(data: jsonLineItemData, encoding: .utf8) {
-                    transactionDetails["lineItems"] = jsonLineItemString
-                }
+                transactionDetails["lineItems"] = lineItemsArray
             }
+            paysheetDetails["transactionDetails"] = transactionDetails
 
-            if !transactionDetails.isEmpty {
-                if let jsonAmountData = try? JSONSerialization.data(withJSONObject: transactionDetails),
-                   let transactionDetailsString = String(data: jsonAmountData, encoding: .utf8) {
-                    paysheetDetails["transactionDetails"] = transactionDetailsString
-                }
-            }
-            
-            if !paysheetDetails.isEmpty {
-                if let paysheetDetailsData = try? JSONSerialization.data(withJSONObject: paysheetDetails),
-                   let paysheetDetailsString = String(data: paysheetDetailsData, encoding: .utf8) {
-                    inputParameters["paysheetDetails"] = paysheetDetailsString
-                }
-            }
+            inputParameters["paysheetDetails"] = paysheetDetails
 
             let inputDictionary: [String: Any] = ["input": inputParameters]
             let graphQLParameters: [String: Any] = [

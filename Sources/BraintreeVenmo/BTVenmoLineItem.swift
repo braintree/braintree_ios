@@ -61,13 +61,13 @@ import Foundation
     func requestParameters() -> [String: Any] {
         var requestParameters: [String: Any] = [
             "quantity": quantity,
-            "unit_amount": unitAmount,
+            "unitAmount": unitAmount,
             "name": name,
-            "kind": kind == .debit ? "debit" : "credit"
+            "type": kind == .debit ? "DEBIT" : "CREDIT"
         ]
 
         if let unitTaxAmount, unitTaxAmount != "" {
-            requestParameters["unit_tax_amount"] = unitTaxAmount
+            requestParameters["unitTaxAmount"] = unitTaxAmount
         }
 
         if let itemDescription, itemDescription != "" {
@@ -75,7 +75,7 @@ import Foundation
         }
 
         if let productCode, productCode != "" {
-            requestParameters["product_code"] = productCode
+            requestParameters["productCode"] = productCode
         }
 
         if let url, url != URL(string: "") {
