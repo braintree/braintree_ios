@@ -4,6 +4,8 @@ import Foundation
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject {
 
+    ///  :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    @_documentation(visibility: private)
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Public Properties
@@ -121,6 +123,8 @@ import Foundation
 
     // MARK: - Public Methods
 
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
     ///  Provides configuration data as a `BTJSON` object.
     ///
     ///  The configuration data can be used by supported payment options to configure themselves
@@ -129,6 +133,7 @@ import Foundation
     /// - Note: This method is asynchronous because it requires a network call to fetch the
     /// configuration for a merchant account from Braintree servers. This configuration is
     /// cached on subsequent calls for better performance.
+    @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
         // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
         //
@@ -237,7 +242,8 @@ import Foundation
         }
     }
 
-    /// :nodoc:
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///  
     /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
     /// - Parameters:
     ///   - path: The endpoint URI path.
@@ -252,7 +258,8 @@ import Foundation
         get(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
-    /// :nodoc:
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
     /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
     /// - Parameters:
     ///   - path: The endpoint URI path.
@@ -267,7 +274,7 @@ import Foundation
         post(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
-    /// :nodoc:
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     @objc(GET:parameters:httpType:completion:)
     public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
@@ -283,7 +290,7 @@ import Foundation
         }
     }
 
-    /// :nodoc:
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     @objc(POST:parameters:httpType:completion:)
     public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {

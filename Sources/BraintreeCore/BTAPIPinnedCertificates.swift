@@ -8,9 +8,9 @@ import Foundation
 ///
 /// Do not update this file directly. If new certificates are needed, update the `certificates` directory
 /// in `braintree-ios-certificate-generation` and re-run the certificate generation script.
-@objcMembers public class BTAPIPinnedCertificates: NSObject {
+class BTAPIPinnedCertificates {
 
-    public static func trustedCertificates() -> [NSData] {
+    static func trustedCertificates() -> [NSData] {
         var result: [NSData] = []
 
         // SecureTrust CA.crt
