@@ -282,30 +282,34 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         webSessionReturned = false
         
-        webAuthenticationSession.start(url: appSwitchURL, context: self) { url, error in
-            if let error {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
-                self.notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
+        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
+            guard let self else {
+                completion(nil, BTPayPalError.deallocated)
                 return
             }
 
-            self.handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
-        } sessionDidAppear: { didAppear in
-            if didAppear {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
-            } else {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+            if let error {
+                notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
+                return
             }
-        } sessionDidCancel: {
-            if !self.webSessionReturned {
+
+            handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
+        } sessionDidAppear: { [self] didAppear in
+            if didAppear {
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
+            } else {
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+            }
+        } sessionDidCancel: { [self] in
+            if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
             }
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
-            self.notifyCancel(completion: completion)
+            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+            notifyCancel(completion: completion)
             return
         }
     }

@@ -9,6 +9,9 @@ enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError {
     /// 1. Not authorized
     case notAuthorized
 
+    /// 2. Deallocated BTAPIClient
+    case deallocated
+
     static var errorDomain: String {
         "com.braintreepayments.BTAPIClientErrorDomain"
     }
@@ -24,6 +27,9 @@ enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError {
 
         case .notAuthorized:
             return "Cannot fetch payment method nonces with a tokenization key. This endpoint requires a client token for authorization."
+
+        case .deallocated:
+            return "BTAPIClient has been deallocated."
         }
     }
 }

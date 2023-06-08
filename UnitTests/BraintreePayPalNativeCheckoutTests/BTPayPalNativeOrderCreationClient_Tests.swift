@@ -126,7 +126,7 @@ class BTPayPalNativeOrderCreationClient_Tests: XCTestCase {
                 XCTFail("No hermes response should result in a thrown error")
 
             case .failure(let error):
-                XCTAssertEqual(error, .orderCreationFailed(BTPayPalNativeError.invalidJSONResponse))
+                XCTAssertEqual(error, .orderCreationFailed(BTPayPalNativeCheckoutError.invalidJSONResponse))
             }
         }
     }

@@ -3,41 +3,44 @@ import Foundation
 /// Error codes associated with BTHTTP
 enum BTHTTPError: Error, CustomNSError, LocalizedError {
 
-    /// Unknown error (reserved)
+    /// 0. Unknown error (reserved)
     case unknown
 
-    /// The response had a Content-Type header that is not supported
+    /// 1. The response had a Content-Type header that is not supported
     case responseContentTypeNotAcceptable([String: Any])
 
-    /// The response was a 4xx error, e.g. 422, indicating a problem with the client's request
+    /// 2. The response was a 4xx error, e.g. 422, indicating a problem with the client's request
     case clientError([String: Any])
 
-    /// The response was a 5xx server error
+    /// 3. The response was a 5xx server error
     case serverError([String: Any])
 
-    /// The BTHTTP instance was missing a base URL
+    /// 4. The BTHTTP instance was missing a base URL
     case missingBaseURL([String: Any])
 
-    /// The response was a 429, indicating a rate limiting error
+    /// 5. The response was a 429, indicating a rate limiting error
     case rateLimitError([String: Any])
 
-    /// The data object was unexpectedly nil
+    /// 6. The data object was unexpectedly nil
     case dataNotFound
 
-    /// The HTTP response could not be created or is invalid
+    /// 7. The HTTP response could not be created or is invalid
     case httpResponseInvalid
 
-    /// The URL string is either malformed or invalid
+    /// 8. The URL string is either malformed or invalid
     case urlStringInvalid
 
-    /// The client API URL is either malformed or invalid
+    /// 9. The client API URL is either malformed or invalid
     case clientApiURLInvalid
 
-    /// The authorization fingerprint is invalid
+    /// 10. The authorization fingerprint is invalid
     case invalidAuthorizationFingerprint
     
-    /// Failed to convert `Encodable` type to `[String: Any]` dictionary
+    /// 11. Failed to convert `Encodable` type to `[String: Any]` dictionary
     case serializationError(String)
+
+    /// 12. Deallocated HTTPClient
+    case deallocated(String)
 
     static var errorDomain: String {
         BTCoreConstants.httpErrorDomain
@@ -69,6 +72,8 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
             return 10
         case .serializationError:
             return 11
+        case .deallocated:
+            return 12
         }
     }
 
@@ -98,6 +103,8 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
             return [NSLocalizedDescriptionKey: "BTClientToken contained a nil or empty authorizationFingerprint."]
         case .serializationError(let errorDescription):
             return [NSLocalizedDescriptionKey: errorDescription]
+        case .deallocated(let httpType):
+            return [NSLocalizedDescriptionKey: "\(httpType) has been deallocated."]
         }
     }
 }

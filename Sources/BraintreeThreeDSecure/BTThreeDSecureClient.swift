@@ -35,7 +35,10 @@ import BraintreeCore
         self.merchantCompletion = completion
         
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                completion(nil, BTThreeDSecureError.deallocated)
+                return
+            }
 
             if let error {
                 notifyFailure(with: error, completion: completion)
@@ -49,20 +52,20 @@ import BraintreeCore
                 return
             }
 
-            if self.request?.amount?.decimalValue.isNaN == true || self.request?.amount == nil {
+            if request.amount?.decimalValue.isNaN == true || request.amount == nil {
                 NSLog("%@ BTThreeDSecureRequest amount can not be nil or NaN.", BTLogLevelDescription.string(for: .critical))
                 let error = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
                 notifyFailure(with: error, completion: completion)
                 return
             }
 
-            if self.request?.threeDSecureRequestDelegate == nil {
+            if request.threeDSecureRequestDelegate == nil {
                 let error = BTThreeDSecureError.configuration("Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2.")
                 notifyFailure(with: error, completion: completion)
                 return
             }
 
-            self.prepareLookup(request: request) { error in
+            prepareLookup(request: request) { error in
                 if let error {
                     self.notifyFailure(with: error, completion: completion)
                     return
@@ -216,7 +219,10 @@ import BraintreeCore
         completion: @escaping (Error?) -> Void
     ) {
         apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                completion(BTThreeDSecureError.deallocated)
+                return
+            }
 
             guard let configuration, error == nil else {
                 completion(error)
@@ -224,9 +230,9 @@ import BraintreeCore
             }
 
             if configuration.cardinalAuthenticationJWT != nil {
-                self.threeDSecureV2Provider = BTThreeDSecureV2Provider(
+                threeDSecureV2Provider = BTThreeDSecureV2Provider(
                     configuration: configuration,
-                    apiClient: self.apiClient,
+                    apiClient: apiClient,
                     request: request
                 ) { lookupParameters in
                     if let dfReferenceID = lookupParameters?["dfReferenceId"] {
