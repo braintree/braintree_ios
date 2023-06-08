@@ -412,8 +412,8 @@ class BTAPIClient_Tests: XCTestCase {
         let expectation = expectation(description: "POST callback")
         apiClient?.post("/", parameters: [:], httpType: .gateway) { _, _, _ in
             let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
-            XCTAssertEqual(metaParameters?["integration"] as? String, metadata?.integrationString)
-            XCTAssertEqual(metaParameters?["source"] as? String, metadata?.sourceString)
+            XCTAssertEqual(metaParameters?["integration"] as? String, metadata?.integration.stringValue)
+            XCTAssertEqual(metaParameters?["source"] as? String, metadata?.source.stringValue)
             XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata?.sessionID)
             expectation.fulfill()
         }
@@ -457,8 +457,8 @@ class BTAPIClient_Tests: XCTestCase {
         let expectation = expectation(description: "POST callback")
         apiClient?.post("/", parameters: [:], httpType: .graphQLAPI) { _, _, _ in
             let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
-            XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata?.integrationString)
-            XCTAssertEqual(clientSdkMetadata?["source"] as? String, metadata?.sourceString)
+            XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata?.integration.stringValue)
+            XCTAssertEqual(clientSdkMetadata?["source"] as? String, metadata?.source.stringValue)
             XCTAssertEqual(clientSdkMetadata?["sessionId"] as? String, metadata?.sessionID)
             expectation.fulfill()
         }

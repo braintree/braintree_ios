@@ -15,7 +15,7 @@ final class BTClientMetadata_Tests: XCTestCase {
 
         for (sourceNumber, _) in sources {
             metadata.source = BTClientMetadataSource(rawValue: sourceNumber.rawValue)!
-            XCTAssertEqual(metadata.sourceString, sources[sourceNumber])
+            XCTAssertEqual(metadata.source.stringValue, sources[sourceNumber])
         }
     }
 
@@ -64,8 +64,8 @@ final class BTClientMetadata_Tests: XCTestCase {
         let metadata = BTClientMetadata()
         let parameters = metadata.parameters as? [String: String]
         let expectedParameters: [String: String] = [
-            "integration": metadata.integrationString,
-            "source": metadata.sourceString,
+            "integration": metadata.integration.stringValue,
+            "source": metadata.source.stringValue,
             "sessionId": metadata.sessionID,
             "platform": "iOS",
             "version": BTCoreConstants.braintreeSDKVersion

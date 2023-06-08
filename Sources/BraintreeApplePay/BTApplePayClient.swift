@@ -90,8 +90,8 @@ import BraintreeCore
             }
 
             let metaParameters: [String: String] = [
-                "source": self.apiClient.metadata.sourceString,
-                "integration": self.apiClient.metadata.integrationString,
+                "source": self.apiClient.metadata.source.stringValue,
+                "integration": self.apiClient.metadata.integration.stringValue,
                 "sessionId": self.apiClient.metadata.sessionID
             ]
 

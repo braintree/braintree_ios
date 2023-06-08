@@ -1,5 +1,7 @@
 import Foundation
 
+///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+///
 /// Represents the metadata associated with a session for posting along with payment data during tokenization.
 ///
 /// When a payment method is tokenized, the client api accepts parameters under
@@ -11,56 +13,45 @@ import Foundation
 /// the sessionID should remain constant. To achieve this, users of this class
 /// should use `mutableCopy` to create a new copy based on the existing session
 /// and then update the object as needed.
-@objcMembers public class BTClientMetadata: NSObject, NSMutableCopying {
-    
+@_documentation(visibility: private)
+@objcMembers public class BTClientMetadata: NSObject, NSCopying {
+
+    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Integration type
+    @_documentation(visibility: private)
     public var integration: BTClientMetadataIntegration
-    
+
+    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Integration source
+    @_documentation(visibility: private)
     public var source: BTClientMetadataSource
-    
+
+    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Auto-generated UUID
+    @_documentation(visibility: private)
     public var sessionID: String
     
-    /// String representation of the integration
-    public var integrationString: String {
-        integration.stringValue
-    }
-    
-    /// String representation of the source
-    public var sourceString: String {
-        source.stringValue
-    }
-    
     /// Additional metadata parameters
-    public var parameters: [String: Any] {
+    var parameters: [String: Any] {
         [
-            "integration": self.integrationString,
-            "source": self.sourceString,
-            "sessionId": self.sessionID,
+            "integration": integration.stringValue,
+            "source": source.stringValue,
+            "sessionId": sessionID,
             "platform": "iOS",
             "version": BTCoreConstants.braintreeSDKVersion
         ]
     }
     
-    public override init() {
+    override init() {
         self.integration = .custom
         self.source = .unknown
         self.sessionID = UUID().uuidString.replacingOccurrences(of: "-", with: "")
         super.init()
     }
-    
-    /// Create a copy as `BTMutableClientMetadata`
-    public func mutableCopy(with zone: NSZone? = nil) -> Any {
-        let result = BTMutableClientMetadata()
-        result.integration = self.integration
-        result.source = self.source
-        result.sessionID = self.sessionID
-        return result
-    }
-    
+
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Creates a copy of `BTClientMetadata`
-    @objc(copyWithZone:)
+    @_documentation(visibility: private)
     public func copy(with zone: NSZone? = nil) -> Any {
         let result = BTClientMetadata()
         result.integration = self.integration
