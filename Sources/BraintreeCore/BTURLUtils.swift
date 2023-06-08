@@ -37,12 +37,14 @@ import Foundation
         
         return String(queryString.dropLast())
     }
-    
+
+    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Extract query parameters from a URL
     /// - Parameters:
     ///   - url: URL to parse query parameters from
     /// - Returns: Query parameters from the URL in a key/value dictionary
-    static func queryParameters(for url: URL) -> [String: String] {
+    @_documentation(visibility: private)
+    public static func queryParameters(for url: URL) -> [String: String] {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         var parameters: [String: String] = [:]
         
