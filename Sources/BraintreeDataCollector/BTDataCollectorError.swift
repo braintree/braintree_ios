@@ -3,13 +3,13 @@ import Foundation
 ///  Error details associated with Braintree Data Collector.
 enum BTDataCollectorError: Int, Error, CustomNSError, LocalizedError {
 
-    /// Unknown error
+    /// 0. Unknown error
     case unknown
     
-    /// The request could not be serialized.
+    /// 1. The request could not be serialized.
     case jsonSerializationFailure
     
-    /// The device data could not be encoded.
+    /// 2. The device data could not be encoded.
     case encodingFailure
 
     static var errorDomain: String {

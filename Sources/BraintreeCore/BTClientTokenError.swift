@@ -12,10 +12,10 @@ enum BTClientTokenError: Error, CustomNSError, LocalizedError {
     /// 2. Invalid client token format
     case invalidFormat(String)
 
-    /// 4. Unsupported client token version
+    /// 3. Unsupported client token version
     case unsupportedVersion
     
-    /// 5. Failed decoding from Base64 or UTF8
+    /// 4. Failed decoding from Base64 or UTF8
     case failedDecoding(String)
 
     static var errorDomain: String {

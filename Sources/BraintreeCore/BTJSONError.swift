@@ -2,13 +2,13 @@ import Foundation
 
 enum BTJSONError: Error, CustomNSError, LocalizedError {
 
-    /// JSONSerialization failure
+    /// 0. JSONSerialization failure
     case jsonSerializationFailure
     
-    /// Invalid index
+    /// 1. Invalid index
     case indexInvalid(Int)
     
-    /// Invalid key
+    /// 2. Invalid key
     case keyInvalid(String)
     
     static var errorDomain: String {
