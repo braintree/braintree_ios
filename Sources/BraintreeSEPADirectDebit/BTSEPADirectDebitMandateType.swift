@@ -1,12 +1,12 @@
 import Foundation
 
 /// Mandate type for the SEPA Direct Debit request.
-@objc public enum BTSEPADirectDebitMandateType: Int, CustomStringConvertible {
+@objc public enum BTSEPADirectDebitMandateType: Int {
 
     case oneOff
     case recurrent
 
-    public var description: String {
+    var description: String {
         switch self {
         case .oneOff:
             return "ONE_OFF"
