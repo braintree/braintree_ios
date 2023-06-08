@@ -1598,9 +1598,9 @@
 				3B1C529529D637F400B68A58 /* BTVenmoAnalytics_Tests.swift */,
 				428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift */,
 				4245D668256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift */,
+				A71F7DE61B6180A3005DA1B0 /* BTVenmoClient_Tests.swift */,
 				4228D8682624E5C3001D2564 /* BTVenmoRequest_Tests.swift */,
 				09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */,
-				A71F7DE61B6180A3005DA1B0 /* BTVenmoClient_Tests.swift */,
 				A948D6F424FAC8F900F4F178 /* Info.plist */,
 			);
 			path = BraintreeVenmoTests;
