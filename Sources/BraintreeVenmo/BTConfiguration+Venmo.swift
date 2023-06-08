@@ -6,7 +6,7 @@ import BraintreeCore
 
 extension BTConfiguration {
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Indicates whether Venmo is enabled for the merchant account.
     @_documentation(visibility: private)
     @objc public var isVenmoEnabled: Bool {

@@ -4,7 +4,7 @@ import Foundation
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject {
 
-    ///  :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -123,7 +123,7 @@ import Foundation
 
     // MARK: - Public Methods
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///
     ///  Provides configuration data as a `BTJSON` object.
     ///
@@ -245,7 +245,7 @@ import Foundation
         }
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///  
     /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
     /// - Parameters:
@@ -261,7 +261,7 @@ import Foundation
         get(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///
     /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
     /// - Parameters:
@@ -277,7 +277,7 @@ import Foundation
         post(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     @objc(GET:parameters:httpType:completion:)
     public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
@@ -296,7 +296,7 @@ import Foundation
         }
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     @objc(POST:parameters:httpType:completion:)
     public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
@@ -316,7 +316,7 @@ import Foundation
         }
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil) {
         analyticsService?.sendAnalyticsEvent(

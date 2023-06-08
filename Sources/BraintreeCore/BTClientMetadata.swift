@@ -1,6 +1,6 @@
 import Foundation
 
-///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+/// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
 ///
 /// Represents the metadata associated with a session for posting along with payment data during tokenization.
 ///
@@ -16,17 +16,17 @@ import Foundation
 @_documentation(visibility: private)
 @objcMembers public class BTClientMetadata: NSObject, NSCopying {
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Integration type
     @_documentation(visibility: private)
     public var integration: BTClientMetadataIntegration
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Integration source
     @_documentation(visibility: private)
     public var source: BTClientMetadataSource
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Auto-generated UUID
     @_documentation(visibility: private)
     public var sessionID: String
@@ -49,7 +49,7 @@ import Foundation
         super.init()
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Creates a copy of `BTClientMetadata`
     @_documentation(visibility: private)
     public func copy(with zone: NSZone? = nil) -> Any {

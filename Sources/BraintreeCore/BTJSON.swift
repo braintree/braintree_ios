@@ -1,6 +1,6 @@
 import Foundation
 
-///  :nodoc: This class is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+/// :nodoc: This class is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
 ///
 /// A type-safe wrapper around JSON
 /// @see http://www.json.org/
@@ -46,7 +46,7 @@ import Foundation
 
     // MARK: Initializers
 
-    ///  :nodoc: This initializer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This initializer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///  Initialize with a value.
     /// - Parameter value: The value to initialize with.
     @_documentation(visibility: private)
@@ -55,7 +55,7 @@ import Foundation
         self.value = value
     }
 
-    ///  :nodoc: This initializer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This initializer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Initialize with data.
     /// - Parameter data: The `Data` to initialize with.
     @_documentation(visibility: private)
@@ -70,7 +70,7 @@ import Foundation
 
     // MARK: JSON Type Checks
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `String`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `String`
     @_documentation(visibility: private)
@@ -78,7 +78,7 @@ import Foundation
         value is String
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `Bool`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `Bool`
     @_documentation(visibility: private)
@@ -86,7 +86,7 @@ import Foundation
         value is Bool
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `NSNumber`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `NSNumber`
     @_documentation(visibility: private)
@@ -94,7 +94,7 @@ import Foundation
         value is NSNumber
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `[Any]`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `[Any]`
     @_documentation(visibility: private)
@@ -102,7 +102,7 @@ import Foundation
         value is [Any]
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `[String: Any]`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `[String: Any]`
     @_documentation(visibility: private)
@@ -110,7 +110,7 @@ import Foundation
         value is [String: Any]
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is an error.
     /// - Returns: `true` if this instance of `BTJSON` is not valid.
     @_documentation(visibility: private)
@@ -118,7 +118,7 @@ import Foundation
         value is NSError
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a value representing `true`
     /// - Returns: `true` if this instance of `BTJSON` is `true`
     @_documentation(visibility: private)
@@ -126,7 +126,7 @@ import Foundation
         value as? Bool == true
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a value representing `false`
     /// - Returns: `true` if this instance of `BTJSON` is `false`
     @_documentation(visibility: private)
@@ -134,7 +134,7 @@ import Foundation
         value as? Bool == false
     }
 
-    ///  :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a value representing `nil`
     /// - Returns: `true` if this instance of `BTJSON` is `nil`
     @_documentation(visibility: private)
@@ -144,7 +144,7 @@ import Foundation
 
     // MARK: Subscripting
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///  Indexes into the JSON as if the current value is an object
     ///
     /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
@@ -160,7 +160,7 @@ import Foundation
         return BTJSON(value: value[index])
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Indexes into the JSON as if the current value is an array
     ///
     /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
@@ -179,7 +179,7 @@ import Foundation
 
     // MARK: Validity Checks
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `NSError`.
     /// - Returns: A `NSError` representing the `BTJSON` instance.
     @_documentation(visibility: private)
@@ -189,7 +189,7 @@ import Foundation
 
     // MARK: JSON Type Casts
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `String`
     /// - Returns: A `String` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -197,7 +197,7 @@ import Foundation
         value as? String
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `Bool`
     /// - Returns: A `Bool` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -205,7 +205,7 @@ import Foundation
         value as? Bool
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `[BTJSON]`
     /// - Returns: A `[BTJSON]` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -223,7 +223,7 @@ import Foundation
         return array as? [BTJSON]
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `NSNumber`
     /// - Returns: A `NSNumber` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -233,7 +233,7 @@ import Foundation
 
     // MARK: JSON Extension Type Casts
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `URL`
     /// - Returns: A `URL` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -244,7 +244,7 @@ import Foundation
         return URL(string: urlString)
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `[String]`
     /// - Returns: A `[String]` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -252,7 +252,7 @@ import Foundation
         value as? [String]
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `NSDictionary`
     /// - Returns: A `NSDictionary` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -260,7 +260,7 @@ import Foundation
         value as? NSDictionary
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `Int`
     /// - Returns: A `Int` representing the `BTJSON` instance
     @_documentation(visibility: private)
@@ -269,7 +269,7 @@ import Foundation
         return number.intValue
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as an `Enum`
     /// - Parameters:
     ///   - mapping: The mapping dictionary used to convert the value
@@ -285,7 +285,7 @@ import Foundation
         return result
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `BTPostalAddress`
     /// - Returns: A `BTPostalAddress` parsed from the key/value pairs inside the `BTJSON`
     @_documentation(visibility: private)
