@@ -3,19 +3,19 @@ import Foundation
 // Error codes associated with cards
 enum BTCardError: Error, CustomNSError, LocalizedError {
 
-    /// Unknown error
+    /// 0. Unknown error
     case unknown
 
-    /// Braintree SDK is integrated incorrectly
+    /// 1. Braintree SDK is integrated incorrectly
     case integration
 
-    /// Customer provided invalid input
+    /// 2. Customer provided invalid input
     case customerInputInvalid([String: Any])
 
-    /// Card already exists as a saved payment method
+    /// 3. Card already exists as a saved payment method
     case cardAlreadyExists([String: Any])
     
-    /// Failed to fetch Braintree configuration
+    /// 4. Failed to fetch Braintree configuration
     case fetchConfigurationFailed
 
     static var errorDomain: String {

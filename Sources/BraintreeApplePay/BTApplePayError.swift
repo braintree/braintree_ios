@@ -3,16 +3,16 @@ import Foundation
 /// Error codes associated with Apple Pay.
 enum BTApplePayError: Int, Error, CustomNSError, LocalizedError {
 
-    /// Unknown error
+    /// 0. Unknown error
     case unknown
 
-    /// Apple Pay is disabled in the Braintree Control Panel
+    /// 1. Apple Pay is disabled in the Braintree Control Panel
     case unsupported
 
-    /// No Apple Pay Card data was returned
+    /// 2. No Apple Pay Card data was returned
     case noApplePayCardsReturned
 
-    /// Unable to create BTApplePayCardNonce
+    /// 3. Unable to create BTApplePayCardNonce
     case failedToCreateNonce
 
     static var errorDomain: String {

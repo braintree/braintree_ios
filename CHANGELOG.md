@@ -1,20 +1,33 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* BraintreePayPalNativeCheckout
-  * Rename `BTPayPalNativeError` to `BTPayPalNativeCheckoutError`
-  * Add `BTPayPalNativeCheckoutError.deallocated` = 11
-* BraintreeAmericanExpress
-  * Add `BTAmericanExpressError.deallocated` = 2
-* BraintreeCore
-  * Add `BTAPIClientError.deallocated` = 2
-  * Add `BTHTTPError.deallocated` = 12
-* BraintreePayPal
-  * Add `BTPayPalError.deallocated` = 9
-* BraintreeThreeDSecure
-  * Add `BTThreeDSecureError.deallocated` = 8
-* BraintreeSEPADirectDebit
-  * Add `BTSEPADirectDebitError.deallocated` = 8
+* Breaking Changes    
+    * All SDK error enums are now internal
+    * BraintreeAmericanExpress
+      * | Error Type | Error Code |
+        |------------|------------|
+        | BTAmericanExpressError.unknown | 0 |
+        | BTAmericanExpressError.noRewardsData | 1 |
+        | BTAmericanExpressError.deallocated | 2 |
+    * BraintreeApplePay
+      * | Error Type | Error Code |
+        |------------|------------|
+        | BTApplePayError.unknown | 0 |
+        | BTApplePayError.unsupported | 1 |
+        | BTApplePayError.noApplePayCardsReturned | 2 |
+        | BTApplePayError.failedToCreateNonce | 3 |
+    * BraintreeCard
+      * | Error Type | Error Code |
+        |------------|------------|
+        | BTCardError.unknown | 0 |
+        | BTCardError.integration | 1 |
+        | BTCardError.customerInputInvalid | 2 |
+        | BTCardError.cardAlreadyExists | 3 |
+        | BTCardError.fetchConfigurationFailed | 4 |
+    * BraintreeCore
+      * | Error Type | Error Code |
+        |------------|------------|
+        | BTAPIClientError.configurationUnavailable | 0 |
 
 ## 6.0.0-beta4 (2023-06-01)
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
