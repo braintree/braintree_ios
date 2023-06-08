@@ -88,7 +88,7 @@ import BraintreeCore
             
             // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
             if ((request.collectCustomerShippingAddress || request.collectCustomerBillingAddress) && !configuration.isVenmoEnrichedCustomerDataEnabled) {
-                completion(nil, BTVenmoError.enrichedCustomerDataDisabled)
+                self.notifyFailure(with: BTVenmoError.enrichedCustomerDataDisabled, completion: completion)
                 return
             }
             
@@ -155,9 +155,11 @@ import BraintreeCore
             ]
 
             self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
-                if error != nil {
+                if let error = error as? NSError {
+                    let jsonResponse: BTJSON? = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+                    let errorMessage = jsonResponse?["error"]["message"].asString()
                     self.notifyFailure(
-                        with: BTVenmoError.invalidRedirectURL("Failed to fetch a Venmo paymentContextID while constructing the requestURL."),
+                        with: BTVenmoError.invalidRedirectURL(errorMessage ?? "Failed to fetch a Venmo paymentContextID while constructing the requestURL."),
                         completion: completion
                     )
                     return
