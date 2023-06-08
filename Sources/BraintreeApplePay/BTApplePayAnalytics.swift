@@ -1,6 +1,5 @@
 import Foundation
 
-// NEXT_MAJOR_VERSION: Move this class to an enum once the entire SDK is in Swift
 class BTApplePayAnalytics {
 
     // MARK: - Payment Request Events
