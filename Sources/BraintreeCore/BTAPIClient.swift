@@ -161,32 +161,32 @@ import Foundation
             } else {
                 configuration = BTConfiguration(json: body)
 
-                if self.apiHTTP == nil {
+                if apiHTTP == nil {
                     let apiURL: URL? = configuration?.json?["clientApiUrl"].asURL()
                     let accessToken: String? = configuration?.json?["braintreeApi"]["accessToken"].asString()
 
                     if let apiURL, let accessToken {
-                        self.apiHTTP = BTAPIHTTP(url: apiURL, accessToken: accessToken)
+                        apiHTTP = BTAPIHTTP(url: apiURL, accessToken: accessToken)
                     }
                 }
 
-                if self.http == nil {
+                if http == nil {
                     let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
 
-                    if let clientToken = self.clientToken, let baseURL {
-                        self.http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey = self.tokenizationKey, let baseURL {
-                        self.http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
+                    if let clientToken, let baseURL {
+                        http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    } else if let tokenizationKey, let baseURL {
+                        http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
                     }
                 }
 
-                if self.graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = self.graphQLURL(forEnvironment: configuration?.environment ?? "")
+                if graphQLHTTP == nil {
+                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
 
-                    if let clientToken = self.clientToken, let graphQLBaseURL {
-                        self.graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey = self.tokenizationKey, let graphQLBaseURL {
-                        self.graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
+                    if let clientToken, let graphQLBaseURL {
+                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    } else if let tokenizationKey, let graphQLBaseURL {
+                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
                     }
                 }
             }
@@ -285,7 +285,7 @@ import Foundation
                 return
             }
 
-            self.http(for: httpType)?.get(path, parameters: parameters, completion: completion)
+            http(for: httpType)?.get(path, parameters: parameters, completion: completion)
         }
     }
 
@@ -304,8 +304,8 @@ import Foundation
                 return
             }
 
-            let postParameters = self.metadataParametersWith(parameters, for: httpType)
-            self.http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
+            let postParameters = metadataParametersWith(parameters, for: httpType)
+            http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
 

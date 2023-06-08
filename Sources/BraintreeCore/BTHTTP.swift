@@ -182,7 +182,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                             return
                         }
 
-                        self.handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
+                        handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
                     }.resume()
                 }
             }
@@ -207,7 +207,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                     return
                 }
 
-                self.handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+                handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
             }.resume()
         }
     }
@@ -360,7 +360,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                     return
                 }
 
-                self.callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
+                callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
             }
             return
         }
@@ -374,7 +374,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                     return
                 }
 
-                self.callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+                callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             }
             return
         }

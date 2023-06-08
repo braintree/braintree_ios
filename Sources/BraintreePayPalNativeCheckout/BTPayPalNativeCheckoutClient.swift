@@ -130,7 +130,7 @@ import PayPalCheckout
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
                         @unknown default:
-                            self.notifyFailure(with: BTPayPalNativeCheckoutError.invalidRequest, completion: completion)
+                            notifyFailure(with: BTPayPalNativeCheckoutError.invalidRequest, completion: completion)
 
                         }
                     },

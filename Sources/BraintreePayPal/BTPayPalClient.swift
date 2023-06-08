@@ -289,27 +289,27 @@ import BraintreeDataCollector
             }
 
             if let error {
-                self.notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
+                notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
                 return
             }
 
-            self.handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
-        } sessionDidAppear: { didAppear in
+            handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
+        } sessionDidAppear: { [self] didAppear in
             if didAppear {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
             } else {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
             }
-        } sessionDidCancel: {
-            if !self.webSessionReturned {
+        } sessionDidCancel: { [self] in
+            if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
             }
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
-            self.notifyCancel(completion: completion)
+            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+            notifyCancel(completion: completion)
             return
         }
     }
