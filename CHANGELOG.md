@@ -3,130 +3,7 @@
 ## unreleased
 * Breaking Changes    
   * All SDK error enums are now internal
-  * BraintreeAmericanExpress
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTAmericanExpressError.unknown | 0 |
-      | BTAmericanExpressError.noRewardsData | 1 |
-      | BTAmericanExpressError.deallocated | 2 |
-  * BraintreeApplePay
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTApplePayError.unknown | 0 |
-      | BTApplePayError.unsupported | 1 |
-      | BTApplePayError.noApplePayCardsReturned | 2 |
-      | BTApplePayError.failedToCreateNonce | 3 |
-  * BraintreeCard
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTCardError.unknown | 0 |
-      | BTCardError.integration | 1 |
-      | BTCardError.customerInputInvalid | 2 |
-      | BTCardError.cardAlreadyExists | 3 |
-      | BTCardError.fetchConfigurationFailed | 4 |
-  * BraintreeCore
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTAPIClientError.configurationUnavailable | 0 |
-      | BTAPIClientError.notAuthorized | 1 |
-      | BTAPIClientError.deallocated | 2 |
-      | BTClientTokenError.invalidAuthorizationFingerprint | 0 |
-      | BTClientTokenError.invalidConfigURL | 1 |
-      | BTClientTokenError.invalidFormat | 2 |
-      | BTClientTokenError.unsupportedVersion | 3 |
-      | BTClientTokenError.failedDecoding | 4 |
-      | BTHTTPError.unknown | 0 |
-      | BTHTTPError.responseContentTypeNotAcceptable | 1 |
-      | BTHTTPError.clientError | 2 |
-      | BTHTTPError.serverError | 3 |
-      | BTHTTPError.missingBaseURL | 4 |
-      | BTHTTPError.rateLimitError | 5 |
-      | BTHTTPError.dataNotFound | 6 |
-      | BTHTTPError.httpResponseInvalid | 7 |
-      | BTHTTPError.urlStringInvalid | 8 |
-      | BTHTTPError.clientApiURLInvalid | 9 |
-      | BTHTTPError.invalidAuthorizationFingerprint | 10 |
-      | BTHTTPError.serializationError | 11 |
-      | BTHTTPError.deallocated | 12 |
-      | BTJSONError.jsonSerializationFailure | 0 |
-      | BTJSONError.indexInvalid | 1 |
-      | BTJSONError.keyInvalid | 2 |
-  * BraintreeDataCollector
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTDataCollectorError.unknown | 0 |
-      | BTDataCollectorError.jsonSerializationFailure | 1 |
-      | BTDataCollectorError.encodingFailure | 2 |
-  * BraintreeLocalPayment
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTLocalPaymentError.unknown | 0 |
-      | BTLocalPaymentError.disabled | 1 |
-      | BTLocalPaymentError.appSwitchFailed | 2 |
-      | BTLocalPaymentError.integration | 3 |
-      | BTLocalPaymentError.noAccountData | 4 |
-      | BTLocalPaymentError.canceled | 5 |
-      | BTLocalPaymentError.failedToCreateNonce | 6 |
-      | BTLocalPaymentError.fetchConfigurationFailed | 7 |
-      | BTLocalPaymentError.missingRedirectURL | 8 |
-      | BTLocalPaymentError.missingReturnURL | 9 |
-      | BTLocalPaymentError.webSessionError | 10 |
-  * BraintreePayPal
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTPayPalError.disabled | 0 |
-      | BTPayPalError.canceled | 1 |
-      | BTPayPalError.fetchConfigurationFailed | 2 |
-      | BTPayPalError.httpPostRequestError | 3 |
-      | BTPayPalError.invalidURL | 4 |
-      | BTPayPalError.asWebAuthenticationSessionURLInvalid | 5 |
-      | BTPayPalError.invalidURLAction | 6 |
-      | BTPayPalError.failedToCreateNonce | 7 |
-      | BTPayPalError.webSessionError | 8 |
-      | BTPayPalError.deallocated | 9 |
-  * BraintreePayPalNativeCheckout
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTPayPalNativeCheckoutError.invalidRequest | 0 |
-      | BTPayPalNativeCheckoutError.fetchConfigurationFailed | 1 |
-      | BTPayPalNativeCheckoutError.payPalNotEnabled | 2 |
-      | BTPayPalNativeCheckoutError.payPalClientIDNotFound | 3 |
-      | BTPayPalNativeCheckoutError.invalidEnvironment | 4 |
-      | BTPayPalNativeCheckoutError.orderCreationFailed | 5 |
-      | BTPayPalNativeCheckoutError.canceled | 6 |
-      | BTPayPalNativeCheckoutError.checkoutSDKFailed | 7 |
-      | BTPayPalNativeCheckoutError.tokenizationFailed | 8 |
-      | BTPayPalNativeCheckoutError.parsingTokenizationResultFailed | 9 |
-      | BTPayPalNativeCheckoutError.invalidJSONResponse | 10 |
-      | BTPayPalNativeCheckoutError.deallocated | 11 |
-  * BraintreeSEPADirectDebit
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTSEPADirectDebitError.unknown | 0 |
-      | BTSEPADirectDebitError.webFlowCanceled | 1 |
-      | BTSEPADirectDebitError.resultURLInvalid | 2 |
-      | BTSEPADirectDebitError.resultReturnedNil | 3 |
-      | BTSEPADirectDebitError.approvalURLInvalid | 4 |
-      | BTSEPADirectDebitError.authenticationResultNil | 5 |
-      | BTSEPADirectDebitError.noBodyReturned | 6 |
-      | BTSEPADirectDebitError.failedToCreateNonce | 7 |
-      | BTSEPADirectDebitError.deallocated | 8 |
-  * BraintreeThreeDSecure
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTThreeDSecureError.unknown | 0 |
-      | BTThreeDSecureError.failedLookup | 1 |
-      | BTThreeDSecureError.failedAuthentication | 2 |
-      | BTThreeDSecureError.configuration | 3 |
-      | BTThreeDSecureError.noBodyReturned | 4 |
-      | BTThreeDSecureError.canceled | 5 |
-      | BTThreeDSecureError.invalidAPIClient | 6 |
-      | BTThreeDSecureError.jsonSerializationFailure | 7 |
-      | BTThreeDSecureError.deallocated | 8 |
-  * BraintreeVenmo
-    * | Error Type | Error Code |
-      |------------|------------|
-      | BTVenmoAppSwitchError.returnURLError | 0 |
+  * See [list of new / updated error cases and codes](SDK_ERROR_CODES.md)
 
 ## 6.0.0-beta4 (2023-06-01)
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
@@ -146,18 +23,6 @@
     * Rename `BTPaymentFlowError` to `BTLocalPaymentError`
       * Rename `BTLocalPaymentError.errorDomain` from `BTPaymentFlowErrorDomain` to `BTLocalPaymentErrorDomain`
     * Move `BTLocalPaymentRequest` methods to `BTLocalPaymentClient`
-    * Add `BTLocalPaymentError` case
-      * `.webSessionError` = 10
-  * BraintreePayPal
-    * Add `BTPayPalError` case
-      * Add error `.webSessionError` = 8
-  * BraintreeCard
-    * Add `BTCardError` case 
-      * Add error `.fetchConfigurationFailed` = 4
-  * BraintreeSEPADirectDebit
-    * Add `BTSEPADirectDebitError` case
-      * Add error `.failedToCreateNonce` = 7
-    * Remove `BTSEPADirectDebitError.presentationContextInvalid`
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
@@ -173,14 +38,6 @@
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
     * Rename `BTLocalPaymentRequest.shippingAddressRequired` to `isShippingAddressRequired`
     * Remove `BTPaymentFlowErrorDomain` global constant & `BTPaymentFlowErrorType`
-    * Add `BTPaymentFlowError` cases
-      * `.noAccountData` = 4
-      * `.failedToCreateNonce` = 6
-      * `.fetchConfigurationFailed` = 7
-      * `.missingRedirectURL` = 8
-      * `.missingReturnURL` = 9
-    * Update `BTPaymentFlowError` values
-      * `.integration` = 3
   * BraintreeApplePay
     * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
     * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
@@ -195,10 +52,6 @@
     * Renamed `BTVenmoClient.tokenizeVenmoAccount(with:completion:)` to `BTVenmoClient.tokenize(_:completion:)`
     * Renamed `BTVenmoClient.isiOSAppAvailableForAppSwitch()` to `BTVenmoClient.isVenmoAppInstalled()`
     * Add new `BTVenmoError`
-      * `.invalidBodyReturned`
-      * `.invalidRedirectURL`
-      * `.fetchConfigurationFailed`
-    * Removed `BTVenmoError.integration` and `BTVenmoError.requestURL`
   * BraintreeAmericanExpress
     * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
   * BraintreeSEPADirectDebit
@@ -208,12 +61,6 @@
     * Remove `BTCardClientErrorDomain` global constant
     * Rename `BTCardClient.tokenizeCard(_:completion)` to `BTCardClient.tokenize(_:completion:)`
     * Rename `BTCardClientErrorType` to `BTCardError`
-      * Remove unused `BTCardClientErrorType.paymentOptionNotEnabled`
-      * Update enum values:
-        * `.unknown` = 0
-        * `.integration` = 1
-        * `.customerInputInvalid` = 2
-        * `.cardAlreadyExists` = 3
   * BraintreeThreeDSecure
     * 3D Secure version 1 is no longer supported
       * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion` enum
@@ -221,11 +68,6 @@
       * Rename `BTThreeDSecureV2ButtonType` enum cases to: `.verify`, `.continue`, `.next`, `.cancel`, and `.resend`
       * Remove `BTThreeDSecureFlowErrorDomain` global constant
       * Add new `BTThreeDSecureError` 
-        * Add error `.noBodyReturned` = 4
-        * Add error `.canceled` = 5
-        * Add error `.invalidAPIClient` = 6
-        * Add error `.cannotCastRequest`= 7
-        * Add error `.jsonSerializationFailure` = 8
 
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
@@ -269,14 +111,6 @@
     * Removed `BTPayPalErrorType`
     * Replaced `BTPayPalErrorDomain` global constant with `BTPayPalError.errorDomain`
     * Added `BTPayPalError`
-        * `.disabled`
-        * `.canceled`
-        * `.fetchConfigurationFailed`
-        * `.httpPostRequestError`
-        * `.invalidURL`
-        * `.asWebAuthenticationSessionURLInvalid`
-        * `.invalidURLAction`
-        * `.failedToCreateNonce`
     * Make `BTPayPalNonce` initializer internal
   * BraintreePayPalNativeCheckout (BETA)
     * Renamed and replaced `BTPayPalNativeCheckoutClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`
@@ -322,17 +156,7 @@
     * Remove `BTJSONErrorDomain` global constant
     * Remove `BTJSONErrorCode`
     * Remove `BTAPIClientErrorDomain` global constant
-    * Add `BTClientTokenError`s
-        * `.invalidAuthorizationFingerprint`
-        * `.invalidConfigURL`
-        * `.invalidFormat`
-        * `.unsupportedVersion`
-        * `.failedDecoding`
-    * Add `BTHTTPErrorCode`s
-        * `.httpResponseInvalid`
-        * `.urlStringInvalid`
-        * `.clientApiUrlInvalid`
-        * `.invalidAuthorizationFingerprint`
+    * Add `BTClientTokenError`
     * Renamed `BTCardNetworkUKMaestro` to `BTCardNetworkUkMaestro` in `BTCardNetwork` enum
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
