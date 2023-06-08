@@ -6,7 +6,6 @@
   * See [list of new / updated error cases and codes](SDK_ERROR_CODES.md)
 
 ## 6.0.0-beta4 (2023-06-01)
-* Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
 * Move from Braintree to PayPal analytics service
 * Make `BTConfiguration` extensions internal
 * Breaking Changes    
@@ -20,8 +19,6 @@
     * Remove dependency on `BraintreePaymentFlow` module
   * BraintreeLocalPayment (formerly named BraintreePaymentFlow)
     * Rename `BTPaymentFlowClient` to `BTLocalPaymentClient`
-    * Rename `BTPaymentFlowError` to `BTLocalPaymentError`
-      * Rename `BTLocalPaymentError.errorDomain` from `BTPaymentFlowErrorDomain` to `BTLocalPaymentErrorDomain`
     * Move `BTLocalPaymentRequest` methods to `BTLocalPaymentClient`
     
 ## 6.0.0-beta3 (2023-04-18)
@@ -37,37 +34,28 @@
     * Replaced `SFSafariViewController` with `ASWebAuthenticationSession`
     * Removed `BTViewControllerPresentingDelegate` protocol and correlating methods
     * Rename `BTLocalPaymentRequest.shippingAddressRequired` to `isShippingAddressRequired`
-    * Remove `BTPaymentFlowErrorDomain` global constant & `BTPaymentFlowErrorType`
   * BraintreeApplePay
     * Rename `BTApplePayClient.tokenizeApplePay(_:completion:)` to `BTApplePayClient.tokenize(_:completion:)`
     * Rename `BTApplePayClient.paymentRequest()` to `BTApplePayClient.makePaymentRequest()`
-    * Remove `BTApplePayErrorDomain` global constant
-    * Remove `BTApplePayErrorType`
     * Make `BTApplePayCardNonce` initializer internal
   * BraintreeDataCollector
     * Update PPRiskMagnes to static XCFramework
   * BraintreeVenmo
     * Rename `BTVenmoAccountNonce.externalId` to `BTVenmoAccountNonce.externalID`
-    * Remove `BTVenmoErrorDomain` global constant
     * Renamed `BTVenmoClient.tokenizeVenmoAccount(with:completion:)` to `BTVenmoClient.tokenize(_:completion:)`
     * Renamed `BTVenmoClient.isiOSAppAvailableForAppSwitch()` to `BTVenmoClient.isVenmoAppInstalled()`
-    * Add new `BTVenmoError`
   * BraintreeAmericanExpress
     * Rename `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyIsoCode:completion:)` to `BTAmericanExpressClient.getRewardsBalance(forNonce:currencyISOCode:completion:)`
   * BraintreeSEPADirectDebit
     * Rename `BTSEPADirectDebitClient.tokenize(request:completion:)` to `BTSEPADirectDebitClient.tokenize(_:completion:)`
   * BraintreeCard
     * Make `BTAuthenticationInsight` initializer internal
-    * Remove `BTCardClientErrorDomain` global constant
     * Rename `BTCardClient.tokenizeCard(_:completion)` to `BTCardClient.tokenize(_:completion:)`
-    * Rename `BTCardClientErrorType` to `BTCardError`
   * BraintreeThreeDSecure
     * 3D Secure version 1 is no longer supported
       * Removed the following: `BTThreeDSecureV1UICustomization` class, `BTThreeDSecureRequest.v1UICustomization` property, and `BTThreeDSecureVersion` enum
         * All 3D Secure requests will use version 2
       * Rename `BTThreeDSecureV2ButtonType` enum cases to: `.verify`, `.continue`, `.next`, `.cancel`, and `.resend`
-      * Remove `BTThreeDSecureFlowErrorDomain` global constant
-      * Add new `BTThreeDSecureError` 
 
 ## 5.21.0 (2023-03-14)
 * Add missed deprecation warnings to `BTCardRequest` Union Pay properties
@@ -108,9 +96,6 @@
     * Create `BTPayPalLocaleCode` enum
     * `BTPayPalRequest.localeCode` now uses the `BTPayPalLocaleCode` enum instead of a `String`
     * Renamed and replaced `BTPayPalClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalCheckoutRequest` or `BTPayPalVaultRequest`
-    * Removed `BTPayPalErrorType`
-    * Replaced `BTPayPalErrorDomain` global constant with `BTPayPalError.errorDomain`
-    * Added `BTPayPalError`
     * Make `BTPayPalNonce` initializer internal
   * BraintreePayPalNativeCheckout (BETA)
     * Renamed and replaced `BTPayPalNativeCheckoutClient.tokenizePayPalAccount` with two methods called `tokenize()` taking in requests of either `BTPayPalNativeCheckoutRequest` or `BTPayPalNativeVaultRequest`
@@ -120,7 +105,6 @@
     * Remove `BraintreeUnionPay` module
       * UnionPay cards can now be processed as regular cards (through the BraintreeCard module) due to their partnership with Discover
   * BraintreeCore
-    * Remove `BTConfiguration+Extensions.isUnionPayEnabled` property
     * Remove `BTPreferredPaymentMethods` and `BTPreferredPaymentMethodResult`
   * BraintreeSEPADirectDebit
     * The `tokenize` method no longer takes in a `context` parameter
@@ -153,36 +137,21 @@
     * Renamed `BTClientMetadataIntegrationType` to `BTClientMetadataIntegration`
     * Removed static wrapper methods from `BTAppContextSwitcher`
     * Replaced `BTLogger` with `BTLogLevel` and `BTLogLevelDescription`
-    * Remove `BTJSONErrorDomain` global constant
-    * Remove `BTJSONErrorCode`
-    * Remove `BTAPIClientErrorDomain` global constant
-    * Add `BTClientTokenError`
     * Renamed `BTCardNetworkUKMaestro` to `BTCardNetworkUkMaestro` in `BTCardNetwork` enum
   * BraintreeVenmo
     * Renamed `BTVenmoDriver` to `BTVenmoClient`
-    * Renamed `BTVenmoDriverErrorDomain` to `BTVenmoErrorDomain`
-    * Renamed `BTVenmoDriverErrorType` to `BTVenmoErrorType`
-    * All errors are now prefixed with `BTVenmoError` instead of `BTVenmoDriverError`
     * Remove `.unspecified` case from `BTVenmoPaymentMethodUsage` enum
     * Require `paymentMethodUsage` param in `BTVenmoRequest` initializer
     * Move category extension of `BTConfiguration` into `BraintreeCore`
   * BraintreePayPal
     * Renamed `BTPayPalDriver` to `BTPayPalClient`
-    * Renamed `BTPayPalDriverErrorDomain` to `BTPayPalErrorDomain`
-    * Renamed `BTPayPalDriverErrorType` to `BTPayPalErrorType`
-    * All errors are now prefixed with `BTPayPalError` instead of `BTPayPalDriverError`
     * Remove `BTPayPalDriver.requestOneTimePayment` in favor of `BTPayPalClient.tokenizePayPalAccount`
     * Remove `BTPayPalDriver.requestBillingAgreement` in favor of `BTPayPalClient.tokenizePayPalAccount`
     * Move category extension of `BTConfiguration` into `BraintreeCore`
   * BraintreeAmericanExpress
-    * Remove `BTAmericanExpressErrorDomain` global constant
-    * Remove `BTAmericanExpressErrorType`
     * Make `BTAmericanExpressRewardsBalance` initializer private
   * BraintreePaymentFlow
     * Renamed `BTPaymentFlowDriver` to `BTPaymentFlowClient`
-    * Renamed `BTPaymentFlowDriverErrorDomain` to `BTPaymentFlowErrorDomain`
-    * Renamed `BTPaymentFlowDriverErrorType` to `BTPaymentFlowErrorType`
-    * All errors are now prefixed with `BTPaymentFlowError` instead of `BTPaymentFlowDriverError`
     * Renamed `BTPaymentFlowDriverDelegate` protocol to `BTPaymentFlowClientDelegate`
     * `handleRequest` in delegate protocol now takes in `paymentClientDelegate` parameter instead of `paymentDriverDelegate`
     * Move category extension of `BTConfiguration` into `BraintreeCore`
