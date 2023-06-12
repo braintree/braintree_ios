@@ -52,7 +52,7 @@ struct BTVenmoAppSwitchRedirectURL {
         let venmoMetadata: [String: String] = [
             "version": BTCoreConstants.braintreeSDKVersion,
             "sessionId": metadata.sessionID,
-            "integration": metadata.integrationString,
+            "integration": metadata.integration.stringValue,
             "platform": "ios"
         ]
 

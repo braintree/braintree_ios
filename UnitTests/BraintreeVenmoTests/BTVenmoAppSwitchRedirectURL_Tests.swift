@@ -1,5 +1,5 @@
 import XCTest
-import BraintreeCore
+@testable import BraintreeCore
 @testable import BraintreeVenmo
 
 class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {

@@ -181,8 +181,8 @@ import BraintreeDataCollector
         metadata.source = .payPalBrowser
         
         parameters["_meta"] = [
-            "source": metadata.sourceString,
-            "integration": metadata.integrationString,
+            "source": metadata.source.stringValue,
+            "integration": metadata.integration.stringValue,
             "sessionId": metadata.sessionID
         ]
         

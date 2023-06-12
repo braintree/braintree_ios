@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Generic postal address
-@objcMembers public class BTPostalAddress: NSObject, NSCopying {
+@objcMembers public class BTPostalAddress: NSObject {
     // Property names follow the `Braintree_Address` convention as documented at:
     // https://developer.paypal.com/braintree/docs/reference/request/address/create
 
@@ -26,17 +26,4 @@ import Foundation
 
     /// Either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
     public var region: String? = nil
-
-    @objc(copyWithZone:)
-    public func copy(with zone: NSZone? = nil) -> Any {
-        let result = BTPostalAddress()
-        result.recipientName = self.recipientName
-        result.streetAddress = self.streetAddress
-        result.extendedAddress = self.extendedAddress
-        result.locality = self.locality
-        result.countryCodeAlpha2 = self.countryCodeAlpha2
-        result.postalCode = self.postalCode
-        result.region = self.region
-        return result
-    }
 }

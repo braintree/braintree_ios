@@ -138,8 +138,8 @@ import BraintreeDataCollector
         requestParameters["paypal_account"] = paypalAccount
 
         let metadataParameters: [String: String] = [
-            "source": apiClient.metadata.sourceString,
-            "integration": apiClient.metadata.integrationString,
+            "source": apiClient.metadata.source.stringValue,
+            "integration": apiClient.metadata.integration.stringValue,
             "sessionId": apiClient.metadata.sessionID
         ]
 

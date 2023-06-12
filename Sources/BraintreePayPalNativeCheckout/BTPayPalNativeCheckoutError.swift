@@ -75,7 +75,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
         }
     }
 
-    public var errorDescription: String? {
+    var errorDescription: String? {
         switch self {
         case .invalidRequest:
             return "Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest."

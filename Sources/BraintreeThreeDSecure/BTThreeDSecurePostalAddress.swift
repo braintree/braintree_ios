@@ -80,23 +80,3 @@ import Foundation
         }
     }
 }
-
-// MARK: - NSCopying Protocol Conformance
-
-extension BTThreeDSecurePostalAddress: NSCopying {
-
-    public func copy(with zone: NSZone? = nil) -> Any {
-        let postalAddress = BTThreeDSecurePostalAddress()
-        postalAddress.givenName = givenName
-        postalAddress.surname = surname
-        postalAddress.streetAddress = streetAddress
-        postalAddress.extendedAddress = extendedAddress
-        postalAddress.line3 = line3
-        postalAddress.locality = locality
-        postalAddress.region = region
-        postalAddress.postalCode = postalCode
-        postalAddress.countryCodeAlpha2 = countryCodeAlpha2
-        postalAddress.phoneNumber = phoneNumber
-        return postalAddress
-    }
-}

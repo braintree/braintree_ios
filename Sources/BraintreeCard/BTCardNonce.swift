@@ -75,7 +75,7 @@ import BraintreeCore
         }
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Create a `BTCardNonce` object from JSON.
     @_documentation(visibility: private)
     @objc(initWithJSON:)
