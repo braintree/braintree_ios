@@ -1,9 +1,12 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Breaking Changes    
+* The Braintree SDK is now written in Swift
+* Breaking Changes
   * All SDK error enums are now internal
   * See [list of new / updated error cases and codes](SDK_ERROR_CODES.md)
+  
+**Note:** Includes all changes in [6.0.0-beta4](#600-beta4-2023-06-01), [6.0.0-beta3](#600-beta4-2023-04-18), [6.0.0-beta2](#600-beta3-2023-01-30), and [6.0.0-beta1](#600-beta1-2022-12-13)
 
 ## 6.0.0-beta4 (2023-06-01)
 * Move from Braintree to PayPal analytics service
