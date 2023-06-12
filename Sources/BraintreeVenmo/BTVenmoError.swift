@@ -3,7 +3,7 @@ import Foundation
 /// Error codes associated with Venmo App Switch
 enum BTVenmoAppSwitchError: Error, CustomNSError, LocalizedError {
 
-    /// The error returned from the Venmo return URL
+    /// 0. The error returned from the Venmo return URL
     case returnURLError(Int, String?)
 
     static var errorDomain: String {
