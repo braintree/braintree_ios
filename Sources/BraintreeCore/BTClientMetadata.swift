@@ -10,9 +10,7 @@ import Foundation
 /// In general, this data may evolve and be used in different ways by different
 /// integrations in a single app. For example, if both Apple Pay and drop in are
 /// used. In this case, the source and integration may change over time, while
-/// the sessionID should remain constant. To achieve this, users of this class
-/// should use `mutableCopy` to create a new copy based on the existing session
-/// and then update the object as needed.
+/// the sessionID should remain constant.
 @_documentation(visibility: private)
 @objcMembers public class BTClientMetadata: NSObject {
 
