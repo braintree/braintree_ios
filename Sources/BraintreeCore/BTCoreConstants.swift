@@ -10,9 +10,9 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public static let callbackURLScheme: String = "sdk.ios.braintree"
 
-    static var apiVersion: String = "2016-10-07"
+    static let apiVersion: String = "2016-10-07"
     
-    static var graphQLVersion: String = "2018-03-06"
+    static let graphQLVersion: String = "2018-03-06"
 
     // MARK: - BTHTTPError Constants
     // NEXT_MAJOR_VERSION (v7): When the entire SDK is in Swift we will likely want to move these properties into the BTHTTPError enum
