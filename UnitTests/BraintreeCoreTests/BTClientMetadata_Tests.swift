@@ -36,15 +36,6 @@ final class BTClientMetadata_Tests: XCTestCase {
         XCTAssertNotEqual(metdataOne.sessionID, metdataTwo.sessionID)
     }
 
-    func testMetadata_whenCopied_containsTheSameValue() {
-        let metadata = BTClientMetadata()
-        let copied = metadata.copy() as! BTClientMetadata
-
-        XCTAssertEqual(metadata.integration, copied.integration)
-        XCTAssertEqual(metadata.source, copied.source)
-        XCTAssertEqual(metadata.sessionID, copied.sessionID)
-    }
-
     func testMetadata_init_containsExpectedDefaultValues() {
         let metadata = BTClientMetadata()
         XCTAssertEqual(metadata.integration, BTClientMetadataIntegration.custom)

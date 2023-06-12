@@ -14,7 +14,7 @@ import Foundation
 /// should use `mutableCopy` to create a new copy based on the existing session
 /// and then update the object as needed.
 @_documentation(visibility: private)
-@objcMembers public class BTClientMetadata: NSObject, NSCopying {
+@objcMembers public class BTClientMetadata: NSObject {
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Integration type
@@ -47,16 +47,5 @@ import Foundation
         self.source = .unknown
         self.sessionID = UUID().uuidString.replacingOccurrences(of: "-", with: "")
         super.init()
-    }
-
-    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    /// Creates a copy of `BTClientMetadata`
-    @_documentation(visibility: private)
-    public func copy(with zone: NSZone? = nil) -> Any {
-        let result = BTClientMetadata()
-        result.integration = self.integration
-        result.source = self.source
-        result.sessionID = self.sessionID
-        return result
     }
 }
