@@ -49,7 +49,6 @@ import Foundation
     /// :nodoc: This initializer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///  Initialize with a value.
     /// - Parameter value: The value to initialize with.
-    @_documentation(visibility: private)
     public convenience init(value: Any?) {
         self.init()
         self.value = value
@@ -58,7 +57,6 @@ import Foundation
     /// :nodoc: This initializer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Initialize with data.
     /// - Parameter data: The `Data` to initialize with.
-    @_documentation(visibility: private)
     public convenience init(data: Data) {
         do {
             let value = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
@@ -73,7 +71,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `String`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `String`
-    @_documentation(visibility: private)
     public var isString: Bool {
         value is String
     }
@@ -81,7 +78,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `Bool`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `Bool`
-    @_documentation(visibility: private)
     public var isBool: Bool {
         value is Bool
     }
@@ -89,7 +85,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `NSNumber`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `NSNumber`
-    @_documentation(visibility: private)
     public var isNumber: Bool {
         value is NSNumber
     }
@@ -97,7 +92,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `[Any]`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `[Any]`
-    @_documentation(visibility: private)
     public var isArray: Bool {
         value is [Any]
     }
@@ -105,7 +99,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a `[String: Any]`
     /// - Returns: `true` if this instance of `BTJSON` is a valid `[String: Any]`
-    @_documentation(visibility: private)
     public var isObject: Bool {
         value is [String: Any]
     }
@@ -113,7 +106,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is an error.
     /// - Returns: `true` if this instance of `BTJSON` is not valid.
-    @_documentation(visibility: private)
     public var isError: Bool {
         value is NSError
     }
@@ -121,7 +113,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a value representing `true`
     /// - Returns: `true` if this instance of `BTJSON` is `true`
-    @_documentation(visibility: private)
     public var isTrue: Bool {
         value as? Bool == true
     }
@@ -129,7 +120,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a value representing `false`
     /// - Returns: `true` if this instance of `BTJSON` is `false`
-    @_documentation(visibility: private)
     public var isFalse: Bool {
         value as? Bool == false
     }
@@ -137,7 +127,6 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Checks if the `BTJSON` is a value representing `nil`
     /// - Returns: `true` if this instance of `BTJSON` is `nil`
-    @_documentation(visibility: private)
     public var isNull: Bool {
         value is NSNull
     }
@@ -148,7 +137,6 @@ import Foundation
     ///  Indexes into the JSON as if the current value is an object
     ///
     /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
-    @_documentation(visibility: private)
     public subscript(index: Int) -> BTJSON {
         if value is NSError {
             return self
@@ -164,7 +152,6 @@ import Foundation
     /// Indexes into the JSON as if the current value is an array
     ///
     /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
-    @_documentation(visibility: private)
     public subscript(key: String) -> BTJSON {
         if value is NSError {
             return self
@@ -182,7 +169,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `NSError`.
     /// - Returns: A `NSError` representing the `BTJSON` instance.
-    @_documentation(visibility: private)
     public func asError() -> NSError? {
         value as? NSError
     }
@@ -192,7 +178,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `String`
     /// - Returns: A `String` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asString() -> String? {
         value as? String
     }
@@ -200,7 +185,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `Bool`
     /// - Returns: A `Bool` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asBool() -> Bool? {
         value as? Bool
     }
@@ -208,7 +192,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `[BTJSON]`
     /// - Returns: A `[BTJSON]` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asArray() -> [BTJSON]? {
         var array: NSMutableArray? = []
 
@@ -226,7 +209,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `NSNumber`
     /// - Returns: A `NSNumber` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asNumber() -> NSNumber? {
         value as? NSNumber
     }
@@ -236,7 +218,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `URL`
     /// - Returns: A `URL` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asURL() -> URL? {
         guard let urlString = value as? String else {
             return nil
@@ -247,7 +228,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `[String]`
     /// - Returns: A `[String]` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asStringArray() -> [String]? {
         value as? [String]
     }
@@ -255,7 +235,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `NSDictionary`
     /// - Returns: A `NSDictionary` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asDictionary() -> NSDictionary? {
         value as? NSDictionary
     }
@@ -263,7 +242,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `Int`
     /// - Returns: A `Int` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asIntegerOrZero() -> Int {
         let number = value as? NSNumber ?? 0
         return number.intValue
@@ -275,7 +253,6 @@ import Foundation
     ///   - mapping: The mapping dictionary used to convert the value
     ///   - orDefault: The default value if conversion fails
     /// - Returns: An `Enum` representing the `BTJSON` instance
-    @_documentation(visibility: private)
     public func asEnum(_ mapping: [String: Any], orDefault: Int) -> Int {
         guard let key = value as? String,
               let result: Int = mapping[key] as? Int else {
@@ -288,7 +265,6 @@ import Foundation
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The `BTJSON` as a `BTPostalAddress`
     /// - Returns: A `BTPostalAddress` parsed from the key/value pairs inside the `BTJSON`
-    @_documentation(visibility: private)
     public func asAddress() -> BTPostalAddress? {
         guard self.isObject else { return nil }
         

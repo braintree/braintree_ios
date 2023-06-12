@@ -10,7 +10,6 @@ import Foundation
     /// - Parameters:
     ///  - dict: Dictionary of key/value pairs to be encoded into a query string
     /// - Returns: A URL encoded query string
-    @_documentation(visibility: private)
     public static func queryString(from dict: NSDictionary) -> String {
         var queryString: String = ""
         for (rawKey, value) in dict {
@@ -43,7 +42,6 @@ import Foundation
     /// - Parameters:
     ///   - url: URL to parse query parameters from
     /// - Returns: Query parameters from the URL in a key/value dictionary
-    @_documentation(visibility: private)
     public static func queryParameters(for url: URL) -> [String: String] {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         var parameters: [String: String] = [:]
