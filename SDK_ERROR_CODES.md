@@ -126,3 +126,12 @@ See below for a comprehensive list of error types and codes thrown by each featu
     | Error Type | Error Code |
     |------------|------------|
     | BTVenmoAppSwitchError.returnURLError | 0 |
+    | BTVenmoError.unknown | 0 |
+    | BTVenmoError.disabled | 1 |
+    | BTVenmoError.appNotAvailable | 2 |
+    | BTVenmoError.bundleDisplayNameMissing | 3 |
+    | BTVenmoError.appSwitchFailed | 4 |
+    | BTVenmoError.invalidReturnURL | 5 |
+    | BTVenmoError.invalidBodyReturned | 6 |
+    | BTVenmoError.invalidRedirectURL | 7 |
+    | BTVenmoError.fetchConfigurationFailed | 8 |

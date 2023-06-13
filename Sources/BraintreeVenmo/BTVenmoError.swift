@@ -28,31 +28,31 @@ enum BTVenmoAppSwitchError: Error, CustomNSError, LocalizedError {
 /// Error codes associated with Venmo
 enum BTVenmoError: Error, CustomNSError, LocalizedError {
 
-    /// Unknown error
+    /// 0. Unknown error
     case unknown
 
-    /// Venmo is not enabled
+    /// 1. Venmo is not enabled
     case disabled
 
-    /// The Venmo app is not installed or configured for app Switch
+    /// 2. The Venmo app is not installed or configured for app Switch
     case appNotAvailable
 
-    /// Bundle display name is nil
+    /// 3. Bundle display name is nil
     case bundleDisplayNameMissing
 
-    /// App Switch could not complete
+    /// 4. App Switch could not complete
     case appSwitchFailed
 
-    /// Return URL is invalid
+    /// 5. Return URL is invalid
     case invalidReturnURL(String)
 
-    /// No body was returned from the request
+    /// 6. No body was returned from the request
     case invalidBodyReturned
 
-    /// Invalid request URL
+    /// 7. Invalid request URL
     case invalidRedirectURL(String)
 
-    /// Failed to fetch Braintree configuration
+    /// 8. Failed to fetch Braintree configuration
     case fetchConfigurationFailed
 
     static var errorDomain: String {
@@ -68,17 +68,17 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
         case .appNotAvailable:
             return 2
         case .bundleDisplayNameMissing:
-            return 4
+            return 3
         case .appSwitchFailed:
-            return 5
+            return 4
         case .invalidReturnURL:
-            return 6
+            return 5
         case .invalidBodyReturned:
-            return 7
+            return 6
         case .invalidRedirectURL:
-            return 8
+            return 7
         case .fetchConfigurationFailed:
-            return 9
+            return 8
         }
     }
 
