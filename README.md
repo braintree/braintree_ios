@@ -8,7 +8,7 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
-v6 is the latest major version of Braintree iOS and is currently in Beta. For stable releases, please point to v5 of the SDK. While preparing for general availability, we expect to make breaking changes in the beta releases. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/master/V6_MIGRATION.md).
+v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/master/V6_MIGRATION.md).
 
 **The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14.3+ and Swift 5.8+.
 
@@ -72,8 +72,8 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |
-| 6.x.x | Beta | TBA | TBA | TBA |
-| 5.x.x | Active | February 2021 | TBA | TBA |
+| 6.x.x | Active | June 2023 | TBA | TBA |
+| 5.x.x | Inactive | February 2021 | June 2024 | June 2025 |
 | 4.x.x | Unsupported | November 2015 | February 2022 | February 2023 |
 
 Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
