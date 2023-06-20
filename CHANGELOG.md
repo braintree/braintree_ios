@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.0.0 (2023-06-20)
 * The Braintree SDK is now written in Swift
 * Breaking Changes
   * All SDK error enums are now internal
