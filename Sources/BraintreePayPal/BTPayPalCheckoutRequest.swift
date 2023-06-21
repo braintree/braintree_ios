@@ -45,10 +45,15 @@ import BraintreeCore
     /// Pay Now
     case payNow
 
+    /// Continue
+    case `continue`
+
     var stringValue: String {
         switch self {
         case .payNow:
             return "commit"
+        case .continue:
+            return "continue"
         default:
             return ""
         }
@@ -117,8 +122,8 @@ import BraintreeCore
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
     @_documentation(visibility: private)
-    public override func parameters(with configuration: BTConfiguration) -> [String: Any] {
-        let baseParameters = super.parameters(with: configuration)
+    public override func parameters(with configuration: BTConfiguration, userAction: String? = nil) -> [String: Any] {
+        let baseParameters = super.parameters(with: configuration, userAction: self.userAction.stringValue)
         var checkoutParameters: [String: Any] = [
             "intent": intent.stringValue,
             "amount": amount,
