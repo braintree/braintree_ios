@@ -45,15 +45,10 @@ import BraintreeCore
     /// Pay Now
     case payNow
 
-    /// Continue
-    case `continue`
-
     var stringValue: String {
         switch self {
         case .payNow:
             return "commit"
-        case .continue:
-            return "continue"
         default:
             return ""
         }
