@@ -2,4 +2,4 @@ version: 1
 builder:
   configs:
     - platform: ios
-      documentation_targets: [Braintree]
+      documentation_targets: [BraintreeAmericanExpress, BraintreeApplePay, BraintreeCard, BraintreeCore, BraintreeDataCollector, BraintreeLocalPayment, BraintreePayPal, BraintreePayPalNativeCheckout, BraintreeSEPADirectDebit, BraintreeThreeDSecure, BraintreeVenmo]
