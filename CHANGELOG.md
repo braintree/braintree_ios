@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix bug where setting `userAction` does not update button as expected
+
 ## 6.0.0 (2023-06-20)
 * The Braintree SDK is now written in Swift
 * Breaking Changes
