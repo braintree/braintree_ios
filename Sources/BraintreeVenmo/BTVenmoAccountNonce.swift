@@ -26,6 +26,12 @@ import BraintreeCore
 
     /// The username associated with the Venmo account
     public var username: String?
+    
+    /// The primary billing address associated with the Venmo account
+    public var billingAddress: BTPostalAddress?
+    
+    /// The primary shipping address associated with the Venmo account
+    public var shippingAddress: BTPostalAddress?
 
     // MARK: - Initializers
 
@@ -47,6 +53,8 @@ import BraintreeCore
         firstName = payerInfo["firstName"].asString()
         lastName = payerInfo["lastName"].asString()
         phoneNumber = payerInfo["phoneNumber"].asString()
+        billingAddress = payerInfo["billingAddress"].asAddress()
+        shippingAddress = payerInfo["shippingAddress"].asAddress()
     }
 
     // MARK: - Internal Methods

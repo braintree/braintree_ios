@@ -1,5 +1,18 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeVenmo
+  * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
+  * Add the following properties to `BTVenmoRequest`
+    * `collectCustomerBillingAddress`
+    * `collectCustomerShippingAddress`
+    * `totalAmount`
+    * `subTotalAmount`
+    * `discountAmount`
+    * `taxAmount`
+    * `shippingAmount`
+    * `lineItems`
+
 ## 6.0.0 (2023-06-20)
 * The Braintree SDK is now written in Swift
 * Breaking Changes
