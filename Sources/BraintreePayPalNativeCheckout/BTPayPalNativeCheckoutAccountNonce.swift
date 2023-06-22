@@ -42,7 +42,7 @@ import PayPalCheckout
 
     // MARK: - Initializer
 
-  init?(json: BTJSON, approvalData: ApprovalData) {
+    init?(json: BTJSON, approvalData: ApprovalData? = nil) {
         let paypalAccounts = json["paypalAccounts"][0]
         guard let nonce = paypalAccounts["nonce"].asString() else {
             return nil
@@ -53,11 +53,11 @@ import PayPalCheckout
         let payerInfo = details["payerInfo"]
 
         clientMetadataID = details["correlationId"].asString()
-        email = payerInfo["email"].asString() ?? details["email"].asString() ?? approvalData.buyer?.email
-        firstName = payerInfo["firstName"].asString() ?? approvalData.buyer?.givenName
-        lastName = payerInfo["lastName"].asString() ?? approvalData.buyer?.familyName
+        email = payerInfo["email"].asString() ?? details["email"].asString() ?? approvalData?.buyer?.email
+        firstName = payerInfo["firstName"].asString() ?? approvalData?.buyer?.givenName
+        lastName = payerInfo["lastName"].asString() ?? approvalData?.buyer?.familyName
         phone = payerInfo["phone"].asString()
-        payerID = payerInfo["payerId"].asString() ?? approvalData.buyer?.userId
+        payerID = payerInfo["payerId"].asString() ?? approvalData?.buyer?.userId
 
         let shippingAddressJSON = details["payerInfo"]["shippingAddress"].asAddress()
         let accountAddressJSON =  details["payerInfo"]["accountAddress"].asAddress()
