@@ -117,8 +117,8 @@ import BraintreeCore
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
     @_documentation(visibility: private)
-    public override func parameters(with configuration: BTConfiguration, userAction: String? = nil) -> [String: Any] {
-        let baseParameters = super.parameters(with: configuration, userAction: self.userAction.stringValue)
+    public override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+        var baseParameters = super.parameters(with: configuration)
         var checkoutParameters: [String: Any] = [
             "intent": intent.stringValue,
             "amount": amount,
@@ -129,6 +129,11 @@ import BraintreeCore
 
         if currencyCode != nil {
             checkoutParameters["currency_iso_code"] = currencyCode
+        }
+
+        if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
+            experienceProfile["user_action"] = userAction.stringValue
+            baseParameters["experience_profile"] = experienceProfile
         }
 
         if requestBillingAgreement != false {
