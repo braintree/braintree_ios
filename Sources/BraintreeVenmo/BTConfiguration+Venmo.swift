@@ -27,4 +27,9 @@ extension BTConfiguration {
     var venmoEnvironment: String? {
         json?["payWithVenmo"]["environment"].asString()
     }
+
+    /// Indicates whether Enriched Customer Data (ECD) is enabled for the Venmo merchant.
+    var isVenmoEnrichedCustomerDataEnabled: Bool {
+        json?["payWithVenmo"]["enrichedCustomerDataEnabled"].isTrue ?? false
+    }
 }

@@ -135,3 +135,4 @@ See below for a comprehensive list of error types and codes thrown by each featu
     | BTVenmoError.invalidBodyReturned | 6 |
     | BTVenmoError.invalidRedirectURL | 7 |
     | BTVenmoError.fetchConfigurationFailed | 8 |
+    | BTVenmoError.enrichedCustomerDataDisabled | 9 |
