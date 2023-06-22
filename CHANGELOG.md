@@ -1,7 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 6.0.0 (2023-06-20)
-* The Braintree SDK is now written in Swift
+## unreleased
 * BraintreeVenmo
   * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
   * Add the following properties to `BTVenmoRequest`
@@ -13,6 +12,9 @@
     * `taxAmount`
     * `shippingAmount`
     * `lineItems`
+
+## 6.0.0 (2023-06-20)
+* The Braintree SDK is now written in Swift
 * Breaking Changes
   * All SDK error enums are now internal
   * See [list of new / updated error cases and codes](SDK_ERROR_CODES.md)
