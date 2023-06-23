@@ -167,36 +167,6 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalClient.approvalURL?.absoluteString)
     }
 
-    func testTokenizePayPalAccount_whenUserActionIsSetToCommit_approvalUrlIsModified() {
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "https://www.paypal.com/checkout?EC-Token=EC-Random-Value"
-            ]
-        ])
-
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = BTPayPalRequestUserAction.payNow
-
-        payPalClient.tokenize(request) { _, _ in }
-
-        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value&useraction=commit", payPalClient.approvalURL?.absoluteString)
-    }
-
-    func testTokenizePayPalAccount_whenUserActionIsSetToCommit_andNoQueryParamsArePresent_approvalUrlIsModified() {
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "https://www.paypal.com/checkout"
-            ]
-        ])
-
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = BTPayPalRequestUserAction.payNow
-
-        payPalClient.tokenize(request) { _, _ in }
-
-        XCTAssertEqual("https://www.paypal.com/checkout?useraction=commit", payPalClient.approvalURL?.absoluteString)
-    }
-
     func testTokenizePayPalAccount_whenApprovalUrlIsNotHTTP_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [

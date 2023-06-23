@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix bug where setting `userAction` does not update button as expected
+
 ## 6.1.0 (2023-06-22)
 * BraintreeVenmo
   * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
