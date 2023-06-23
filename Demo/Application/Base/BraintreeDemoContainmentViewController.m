@@ -21,7 +21,7 @@
     self.title = NSLocalizedString(@"Braintree", nil);
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action: @selector(tappedRefresh)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil) style:UIBarButtonItemStylePlain target:self action: @selector(tappedSettings)];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor systemBackgroundColor];
     [self.navigationController setToolbarHidden:NO];
     if (@available(iOS 15.0, *)) {
         self.navigationController.navigationBar.scrollEdgeAppearance = self.navigationController.navigationBar.standardAppearance;
@@ -40,7 +40,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.titleLabel.numberOfLines = 0;
     [button setTitle:NSLocalizedString(@"Ready", nil) forState:UIControlStateNormal];
-    [button.titleLabel setTextColor:[UIColor whiteColor]];
+    [button.titleLabel setTextColor:[UIColor labelColor]];
     [button addTarget:self action:@selector(tappedStatus) forControlEvents:UIControlEventTouchUpInside];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -77,7 +77,7 @@
 - (void)updateStatus:(NSString *)status {
     dispatch_async(dispatch_get_main_queue(), ^{
         [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
-        [(UIButton *)self.statusItem.customView setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+        [(UIButton *)self.statusItem.customView setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
         NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
     });
 }
