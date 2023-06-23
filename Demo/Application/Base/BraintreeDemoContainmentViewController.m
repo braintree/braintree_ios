@@ -50,7 +50,7 @@
     self.statusItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.statusItem.enabled = NO;
     self.toolbarItems = @[flexSpaceLeft, self.statusItem, flexSpaceRight];
-    
+
     if (@available(iOS 15.0, *)) {
         self.navigationController.toolbar.scrollEdgeAppearance = self.navigationController.toolbar.standardAppearance;
     }
@@ -195,7 +195,6 @@
     [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([_currentDemoViewController class])]];
     _currentDemoViewController.progressBlock = [self progressBlock];
     _currentDemoViewController.completionBlock = [self completionBlock];
-    _currentDemoViewController.nonceStringCompletionBlock = [self nonceStringCompletionBlock];
     _currentDemoViewController.transactionBlock = [self transactionBlock];
     
     [self containIntegrationViewController:_currentDemoViewController];
@@ -256,18 +255,6 @@
     dispatch_once(&onceToken, ^{
         block = ^(id tokenized){
             self.latestTokenizedPayment = tokenized;
-            [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
-        };
-    });
-    return block;
-}
-
-- (void (^)(NSString *paymentMethodNonceString))nonceStringCompletionBlock {
-    static id block;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        block = ^(id paymentMethodNonceString){
-            self.latestTokenizedPaymentString = paymentMethodNonceString;
             [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
         };
     });
