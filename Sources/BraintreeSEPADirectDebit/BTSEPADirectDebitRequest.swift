@@ -26,6 +26,8 @@ import BraintreeCore
     public var merchantAccountID: String?
 
     /// Optional. A locale code to use for creating a mandate.
+    /// See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
+    /// Locale code should be supplied as a BCP-47 formatted locale code.
     public var locale: String?
 
     /// Initialize a new SEPA Direct Debit request.
@@ -37,6 +39,8 @@ import BraintreeCore
     ///   - billingAddress: Required. The user's billing address.
     ///   - merchantAccountID: Optional. A non-default merchant account to use for tokenization.
     ///   - locale: Optional. A locale code to use for creating a mandate.
+    ///   See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
+    ///   Locale code should be supplied as a BCP-47 formatted locale code.
     public init(
         accountHolderName: String? = nil,
         iban: String? = nil,
