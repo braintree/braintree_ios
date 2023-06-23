@@ -258,13 +258,11 @@ import BraintreeDataCollector
                 }
 
                 guard let body,
-                      var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                         body["agreementSetup"]["approvalUrl"].asURL() else {
                     self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
                     return
                 }
-
-                approvalURL = self.decorate(approvalURL: approvalURL, for: request)
 
                 let pairingID = self.token(from: approvalURL)
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
@@ -312,25 +310,6 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
-    }
-    
-    private func decorate(approvalURL: URL, for request: BTPayPalRequest) -> URL {
-        guard let request = payPalRequest as? BTPayPalCheckoutRequest,
-              var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
-            return approvalURL
-        }
-
-        let userActionValue = request.userAction.stringValue
-        guard userActionValue.count > 0 else {
-            return approvalURL
-        }
-        
-        let userActionQueryItem = URLQueryItem(name: "useraction", value: userActionValue)
-        var queryItems = approvalURLComponents.queryItems ?? []
-        queryItems.append(userActionQueryItem)
-        approvalURLComponents.queryItems = queryItems
-        
-        return approvalURLComponents.url ?? approvalURL
     }
     
     private func token(from approvalURL: URL) -> String {

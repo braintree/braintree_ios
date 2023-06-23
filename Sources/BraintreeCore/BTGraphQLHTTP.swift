@@ -207,7 +207,14 @@ class BTGraphQLHTTP: BTHTTP {
         let errorTree = BTGraphQLErrorTree(message: "Input is invalid")
 
         for errorJSON in body["errors"].asArray() ?? [] {
-            guard let inputPath = errorJSON["extensions"]["inputPath"].asStringArray() else { continue }
+            guard let inputPath = errorJSON["extensions"]["inputPath"].asStringArray() else {
+                if errorJSON["extensions"]["errorClass"].asString() == "VALIDATION" {
+                    if let message = errorJSON["message"].asString() {
+                        return BTGraphQLErrorTree(message: message).toDictionary()
+                    }
+                }
+                continue
+            }
             guard let field = inputPath.last else { continue }
             guard let message = errorJSON["message"].asString() else { continue }
             

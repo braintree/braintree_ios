@@ -85,6 +85,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.currencyCode = "currency-code"
         request.requestBillingAgreement = true
         request.billingAgreementDescription = "description"
+        request.userAction = .payNow
 
         let shippingAddress = BTPostalAddress()
         shippingAddress.streetAddress = "123 Main"
@@ -118,6 +119,9 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         }
 
         XCTAssertEqual(billingAgreementDetails["description"], "description")
+
+        guard let experienceProfile = parameters["experience_profile"] as? [String: Any] else { XCTFail(); return }
+        XCTAssertEqual(experienceProfile["user_action"] as? String, "commit")
     }
 
     func testParametersWithConfiguration_returnsMinimumParams() {
