@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-#import "BraintreeDemoBaseViewController.h"
+#import "BraintreeDemoPaymentButtonBaseViewController.h"
 
-@interface BraintreeDemoCardTokenizationViewController : BraintreeDemoBaseViewController
+@interface BraintreeDemoCardTokenizationViewController : BraintreeDemoPaymentButtonBaseViewController
 @end
