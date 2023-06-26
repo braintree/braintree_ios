@@ -40,7 +40,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.titleLabel.numberOfLines = 0;
     [button setTitle:NSLocalizedString(@"Ready", nil) forState:UIControlStateNormal];
-    [button.titleLabel setTextColor:[UIColor labelColor]];
+    [button setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
     [button addTarget:self action:@selector(tappedStatus) forControlEvents:UIControlEventTouchUpInside];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.font = [UIFont systemFontOfSize:14];

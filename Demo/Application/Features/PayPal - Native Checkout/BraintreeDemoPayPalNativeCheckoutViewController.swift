@@ -31,10 +31,10 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         NSLayoutConstraint.activate(
             [
                 payPalCheckoutButton.topAnchor.constraint(equalTo: stackView.topAnchor),
-                payPalCheckoutButton.heightAnchor.constraint(equalToConstant: 20),
+                payPalCheckoutButton.heightAnchor.constraint(equalToConstant: 19.5),
 
                 payPalVaultButton.topAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: 5),
-                payPalVaultButton.heightAnchor.constraint(equalToConstant: 20)
+                payPalVaultButton.heightAnchor.constraint(equalToConstant: 19.5)
             ]
         )
 
