@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
   * Fix bug where setting `userAction` does not update button as expected
+* BraintreeSEPADirectDebit
+  * Add `BTSEPADirectDebitRequest.locale`
 
 ## 6.1.0 (2023-06-22)
 * BraintreeVenmo
