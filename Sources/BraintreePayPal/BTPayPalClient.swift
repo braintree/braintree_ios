@@ -167,13 +167,13 @@ import BraintreeDataCollector
         if let clientMetadataID {
             account["correlation_id"] = clientMetadataID
         }
-        
-        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
-            account["merchant_account_id"] = merchantAccountID
-        }
 
         var parameters: [String: Any] = ["paypal_account": account]
         
+        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
+            parameters["merchant_account_id"] = merchantAccountID
+        }
+
         let metadata = apiClient.metadata
         metadata.source = .payPalBrowser
         
