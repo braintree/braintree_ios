@@ -48,7 +48,7 @@ import BraintreeCore
         self.phone = payerInfo["phone"].asString()
         self.billingAddress = payerInfo["billingAddress"].asAddress()
         self.shippingAddress = payerInfo["shippingAddress"].asAddress() ?? payerInfo["accountAddress"].asAddress()
-        self.clientMetadataID = payerInfo["correlationId"].asString()
+        self.clientMetadataID = details["correlationId"].asString()
         self.payerID = payerInfo["payerId"].asString()
         self.creditFinancing = details["creditFinancingOffered"].asPayPalCreditFinancing()
         super.init(nonce: nonce, type: "PayPal", isDefault: json["default"].isTrue)

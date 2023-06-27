@@ -155,9 +155,8 @@ import BraintreeDataCollector
             return
         }
         
-        var parameters: [String: Any] = ["paypal_account": response]
-        var account: [String: Any] = [:]
-        
+        var account: [String: Any] = response
+
         if paymentType == .checkout {
             account["options"] = ["validate": false]
             if let request  = payPalRequest as? BTPayPalCheckoutRequest {
@@ -170,12 +169,10 @@ import BraintreeDataCollector
         }
         
         if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
-            parameters["merchant_account_id"] = merchantAccountID
+            account["merchant_account_id"] = merchantAccountID
         }
-        
-        if !account.isEmpty {
-            parameters["paypal_account"] = account
-        }
+
+        var parameters: [String: Any] = ["paypal_account": account]
         
         let metadata = apiClient.metadata
         metadata.source = .payPalBrowser
