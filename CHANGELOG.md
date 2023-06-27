@@ -5,6 +5,8 @@
   * Fix bug where setting `userAction` does not update button as expected
 * BraintreeSEPADirectDebit
   * Add `BTSEPADirectDebitRequest.locale`
+* BraintreePayPal
+  * Fix bug where `BTPayPalAccountNonce` values were not being returned as expected
 
 ## 6.1.0 (2023-06-22)
 * BraintreeVenmo
