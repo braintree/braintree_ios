@@ -14,7 +14,6 @@ class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewControlle
         super.init(authorization: authorization)
         
         title = "SEPA Direct Debit"
-        view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
         sepaDirectDebitButton.setTitle("SEPA Direct Debit", for: .normal)
         sepaDirectDebitButton.translatesAutoresizingMaskIntoConstraints = false

@@ -78,7 +78,7 @@ NSInteger const BTLocalPaymentCancelCode = 5;
             }
         } else if (result) {
             BTPaymentMethodNonce *nonce = [[BTPaymentMethodNonce alloc] initWithNonce:result.nonce];
-            self.nonceStringCompletionBlock(nonce.nonce);
+            self.completionBlock(nonce);
         }
     };
 

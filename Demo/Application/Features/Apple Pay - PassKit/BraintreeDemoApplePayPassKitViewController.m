@@ -41,7 +41,7 @@
         return nil;
     }
 
-    UIButton *button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
+    UIButton *button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleAutomatic];
     [button addTarget:self action:@selector(tappedApplePayButton) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
@@ -106,7 +106,7 @@
             completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusFailure errors:nil]);
         } else {
             self.label.text = tokenizedApplePayPayment.nonce;
-            self.nonceStringCompletionBlock(tokenizedApplePayPayment.nonce);
+            self.completionBlock(tokenizedApplePayPayment);
             completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusSuccess errors:nil]);
         }
     }];
