@@ -6,7 +6,7 @@
 * BraintreeSEPADirectDebit
   * Add `BTSEPADirectDebitRequest.locale`
 * BraintreePayPal
-  * Fix bug where `BTPayPalAccountNonce` values were not being returned as expected
+  * Fix bug where `BTPayPalAccountNonce` values were not being returned as expected (fixes #1063)
 
 ## 6.1.0 (2023-06-22)
 * BraintreeVenmo
