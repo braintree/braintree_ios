@@ -16,7 +16,7 @@
         [expectation fulfill];
     }];
 
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 - (void)testFetchConfiguration_withClientToken_returnsTheConfiguration {
@@ -46,7 +46,7 @@
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 @end
