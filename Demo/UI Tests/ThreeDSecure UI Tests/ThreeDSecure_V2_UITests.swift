@@ -13,12 +13,13 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         app.launchArguments.append("-Integration:BraintreeDemoThreeDSecurePaymentFlowViewController")
         app.launch()
 
-        _ = app.cardNumberTextField.waitForExistence(timeout: 10)
+        waitForElementToAppear(app.cardNumberTextField)
     }
 
     func testThreeDSecurePaymentFlowV2_frictionlessFlow_andTransacts() {
         app.enterCardDetailsWith(cardNumber: "4000000000001000", expirationDate: expirationDate)
         app.tokenizeButton.tap()
+        sleep(2)
 
         waitForElementToAppear(app.liabilityShiftedMessage)
     }
@@ -26,6 +27,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
     func testThreeDSecurePaymentFlowV2_challengeFlow_andTransacts() {
         app.enterCardDetailsWith(cardNumber: "4000000000001091", expirationDate: expirationDate)
         app.tokenizeButton.tap()
+        sleep(2)
 
         waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
 
@@ -43,6 +45,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
     func testThreeDSecurePaymentFlowV2_noChallenge_andFails() {
         app.enterCardDetailsWith(cardNumber: "5200000000001013", expirationDate: expirationDate)
         app.tokenizeButton.tap()
+        sleep(2)
 
         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
     }
@@ -50,6 +53,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
     func testThreeDSecurePaymentFlowV2_challengeFlow_andFails() {
         app.enterCardDetailsWith(cardNumber: "4000000000001109", expirationDate: expirationDate)
         app.tokenizeButton.tap()
+        sleep(2)
 
         waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
 
@@ -67,6 +71,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
      func testThreeDSecurePaymentFlowV2_acceptsPassword_failsToAuthenticateNonce_dueToCardinalError() {
          app.enterCardDetailsWith(cardNumber: "4000000000001125")
          app.tokenizeButton.tap()
+         sleep(2)
 
          waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
 
@@ -84,6 +89,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
      func testThreeDSecurePaymentFlowV2_returnsToApp_whenCancelTapped() {
          app.enterCardDetailsWith(cardNumber: "4000000000001091")
          app.tokenizeButton.tap()
+         sleep(2)
 
          waitForElementToAppear(app.buttons["Close"])
 
@@ -103,6 +109,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
      func testThreeDSecurePaymentFlowV2_lookupError() {
          app.enterCardDetailsWith(cardNumber: "4000000000001034")
          app.tokenizeButton.tap()
+         sleep(2)
 
          waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
      }
@@ -110,6 +117,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
      func testThreeDSecurePaymentFlowV2_timeout() {
          app.enterCardDetailsWith(cardNumber: "4000000000001075")
          app.tokenizeButton.tap()
+         sleep(2)
 
          waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout:30)
      }

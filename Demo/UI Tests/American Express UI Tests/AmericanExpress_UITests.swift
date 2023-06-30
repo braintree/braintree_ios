@@ -15,11 +15,15 @@ class AmericanExpress_UITests: XCTestCase {
     }
 
     func testValidCard_receivesRewardsBalance() {
+        waitForElementToBeHittable(app.buttons["Valid card"])
         app.buttons["Valid card"].tap()
+        sleep(2)
+
         XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].waitForExistence(timeout: 10))
     }
 
     func testInsufficientPointsCard_receivesErrorMessage() {
+        waitForElementToBeHittable(app.buttons["Insufficient points card"])
         app.buttons["Insufficient points card"].tap()
         sleep(2)
 
@@ -27,7 +31,9 @@ class AmericanExpress_UITests: XCTestCase {
     }
 
     func testIneligibleCard_receivesErrorMessage() {
+        waitForElementToBeHittable(app.buttons["Ineligible card"])
         app.buttons["Ineligible card"].tap()
+        sleep(2)
 
         XCTAssertTrue(app.buttons["INQ2002: Card is not eligible for the Program"].waitForExistence(timeout: 10))
     }
