@@ -239,7 +239,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             "assetsUrl": "http://assets.example.com"
         ] as [String: Any])
         
-        let request =  BTThreeDSecureRequest()
+        let request = BTThreeDSecureRequest()
         request.amount = NSDecimalNumber.notANumber
         
         let expectation = self.expectation(description: "Callback envoked")
@@ -253,8 +253,29 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
+
+    func testStartPaymentFlow_whenAmountIsNil_throwsError() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
+            "assetsUrl": "http://assets.example.com"
+        ] as [String: Any])
+
+        let request = BTThreeDSecureRequest()
+        request.amount = nil
+
+        let expectation = expectation(description: "Callback envoked")
+
+        client.startPaymentFlow(request) { result, error in
+            XCTAssertNil(result)
+            XCTAssertEqual(error?.localizedDescription, "BTThreeDSecureRequest amount can not be nil or NaN.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
+    }
     
-    func testStartPayment_returnsError_whenAmountIsMissing() {
+    func testStartPayment_whenNoBodyReturned_returnsAnError() {
         threeDSecureRequest = BTThreeDSecureRequest()
         threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
@@ -651,7 +672,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             }
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 15)
     }
     
     func testPrepareLookup_withTokenizationKey_throwsError() {

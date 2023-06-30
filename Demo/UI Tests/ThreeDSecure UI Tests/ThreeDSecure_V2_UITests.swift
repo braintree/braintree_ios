@@ -64,6 +64,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         textField.typeText("1234")
 
         app.cardinalSubmitButton.forceTapElement()
+        sleep(2)
 
         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout: 30)
     }
