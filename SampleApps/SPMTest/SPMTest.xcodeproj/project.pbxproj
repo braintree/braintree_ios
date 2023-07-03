@@ -423,7 +423,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braintree/braintree_ios";
 			requirement = {
-				branch = master;
+				branch = main;
 				kind = branch;
 			};
 		};
