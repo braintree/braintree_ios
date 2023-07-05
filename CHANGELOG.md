@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalNativeCheckout (BETA)
+  * Fixed a bug where post vaulting FirstName, LastName and email are null but a nonce is generated.
+
 ## 6.0.0 (2023-06-20)
 * The Braintree SDK is now written in Swift
 * Breaking Changes
