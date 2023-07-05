@@ -66,6 +66,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         sepaDirectDebitRequest.customerID = "fake-customer-id"
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "fake-account-id"
+        sepaDirectDebitRequest.locale = "fr-FR"
         
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
@@ -74,6 +75,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         XCTAssertEqual(lastPOSTParameters["merchant_account_id"] as! String, "fake-account-id")
         XCTAssertEqual(lastPOSTParameters["cancel_url"] as! String, "sdk.ios.braintree://sepa/cancel")
         XCTAssertEqual(lastPOSTParameters["return_url"] as! String, "sdk.ios.braintree://sepa/success")
+        XCTAssertEqual(lastPOSTParameters["locale"] as! String, "fr-FR")
         
         let sepaDebit = lastPOSTParameters["sepa_debit"] as! [String: Any]
         XCTAssertEqual(sepaDebit["merchant_or_partner_customer_id"] as! String, "fake-customer-id")

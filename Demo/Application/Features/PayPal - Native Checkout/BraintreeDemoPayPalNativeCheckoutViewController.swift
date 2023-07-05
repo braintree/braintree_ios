@@ -12,7 +12,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         payPalCheckoutButton.setTitleColor(.lightGray, for: .highlighted)
         payPalCheckoutButton.setTitleColor(.lightGray, for: .disabled)
         payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalCheckout), for: .touchUpInside)
-        payPalCheckoutButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        payPalCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
 
         let payPalVaultButton = UIButton(type: .system)
         payPalVaultButton.setTitle("Vault Checkout", for: .normal)
@@ -20,11 +20,23 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         payPalVaultButton.setTitleColor(.lightGray, for: .highlighted)
         payPalVaultButton.setTitleColor(.lightGray, for: .disabled)
         payPalVaultButton.addTarget(self, action: #selector(tappedPayPalVault), for: .touchUpInside)
-        payPalVaultButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        payPalVaultButton.translatesAutoresizingMaskIntoConstraints = false
 
         let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, payPalVaultButton])
         stackView.axis = .vertical
         stackView.spacing = 5
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate(
+            [
+                payPalCheckoutButton.topAnchor.constraint(equalTo: stackView.topAnchor),
+                payPalCheckoutButton.heightAnchor.constraint(equalToConstant: 19.5),
+
+                payPalVaultButton.topAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: 5),
+                payPalVaultButton.heightAnchor.constraint(equalToConstant: 19.5)
+            ]
+        )
 
         return stackView
     }

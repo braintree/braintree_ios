@@ -205,7 +205,7 @@ NSInteger const BTThreeDSecureCancelCode = 5;
                 }
             } else if (result) {
                 BTThreeDSecureResult *threeDSecureResult = (BTThreeDSecureResult *)result;
-                self.nonceStringCompletionBlock(threeDSecureResult.tokenizedCard.nonce);
+                self.completionBlock(threeDSecureResult.tokenizedCard);
 
                 if (threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible && threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted) {
                     self.progressBlock(@"Liability shift possible and liability shifted");

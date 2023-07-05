@@ -1,8 +1,30 @@
 # Braintree iOS SDK Release Notes
 
+
 ## unreleased
 * BraintreePayPalNativeCheckout (BETA)
   * Fixed a bug where post vaulting FirstName, LastName and email are null but a nonce is generated.
+
+## 6.2.0 (2023-06-27)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix bug where setting `userAction` does not update button as expected
+* BraintreeSEPADirectDebit
+  * Add `BTSEPADirectDebitRequest.locale`
+* BraintreePayPal
+  * Fix bug where `BTPayPalAccountNonce` values were not being returned as expected (fixes #1063)
+
+## 6.1.0 (2023-06-22)
+* BraintreeVenmo
+  * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
+  * Add the following properties to `BTVenmoRequest`
+    * `collectCustomerBillingAddress`
+    * `collectCustomerShippingAddress`
+    * `totalAmount`
+    * `subTotalAmount`
+    * `discountAmount`
+    * `taxAmount`
+    * `shippingAmount`
+    * `lineItems`
 
 ## 6.0.0 (2023-06-20)
 * The Braintree SDK is now written in Swift

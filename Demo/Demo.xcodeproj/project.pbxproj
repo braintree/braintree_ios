@@ -56,7 +56,6 @@
 		A0988FE624DB44B20095EEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5824DB44B10095EEEE /* main.m */; };
 		A0988FE824DB44B20095EEEE /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5D24DB44B10095EEEE /* BraintreeDemoBTDataCollectorViewController.m */; };
 		A0988FEA24DB44B20095EEEE /* BraintreeDemoIdealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */; };
-		A0988FED24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */; };
 		A0988FEE24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */; };
 		A0988FF024DB44B20095EEEE /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */; };
 		A0988FF224DB44B20095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */; };
@@ -182,7 +181,6 @@
 		A0988F6324DB44B10095EEEE /* BraintreeDemoIdealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIdealViewController.h; sourceTree = "<group>"; };
 		A0988F6424DB44B10095EEEE /* BraintreeDemoIdealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoIdealViewController.m; sourceTree = "<group>"; };
 		A0988F6C24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCardTokenizationViewController.h; sourceTree = "<group>"; };
-		A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BraintreeDemoCardTokenizationViewController.xib; sourceTree = "<group>"; };
 		A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCardTokenizationViewController.m; sourceTree = "<group>"; };
 		A0988F7324DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoApplePayPassKitViewController.h; sourceTree = "<group>"; };
 		A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoApplePayPassKitViewController.m; sourceTree = "<group>"; };
@@ -441,7 +439,6 @@
 			children = (
 				A0988F6C24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.h */,
 				A0988F6E24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.m */,
-				A0988F6D24DB44B10095EEEE /* BraintreeDemoCardTokenizationViewController.xib */,
 			);
 			path = "Credit Card Tokenization";
 			sourceTree = "<group>";
@@ -730,7 +727,6 @@
 			files = (
 				A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */,
 				A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */,
-				A0988FED24DB44B20095EEEE /* BraintreeDemoCardTokenizationViewController.xib in Resources */,
 				A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */,
 				A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */,
 				A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */,

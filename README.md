@@ -8,7 +8,7 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
-v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/master/V6_MIGRATION.md). If you have not yet migrated to v5, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/5.x/V5_MIGRATION.md)
+v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/main/V6_MIGRATION.md). If you have not yet migrated to v5, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/5.x/V5_MIGRATION.md)
 
 **The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 14.3+ and Swift 5.8+.
 
@@ -90,7 +90,7 @@ Xcode 14+ is required to run the demo app.
 
 ## Contributing
 
-We welcome PRs to this repo. See our [development doc](https://github.com/braintree/braintree_ios/blob/master/DEVELOPMENT.md).
+We welcome PRs to this repo. See our [development doc](https://github.com/braintree/braintree_ios/blob/main/DEVELOPMENT.md).
 
 ## Feedback
 
@@ -107,8 +107,8 @@ Here are a few ways to get in touch:
 * [Read the Braintree docs](https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v5)
 * [Check out the reference docs](https://braintree.github.io/braintree_ios/)
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios/issues)
-* Want to contribute? [Check out contributing guidelines](https://github.com/braintree/braintree_ios/blob/master/CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
+* Want to contribute? [Check out contributing guidelines](https://github.com/braintree/braintree_ios/blob/main/CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
 
 ### License
 
-The Braintree iOS SDK is open source and available under the MIT license. See the [LICENSE](https://github.com/braintree/braintree_ios/blob/master/LICENSE) file for more info.
+The Braintree iOS SDK is open source and available under the MIT license. See the [LICENSE](https://github.com/braintree/braintree_ios/blob/main/LICENSE) file for more info.

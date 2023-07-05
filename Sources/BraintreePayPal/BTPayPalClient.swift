@@ -155,9 +155,8 @@ import BraintreeDataCollector
             return
         }
         
-        var parameters: [String: Any] = ["paypal_account": response]
-        var account: [String: Any] = [:]
-        
+        var account: [String: Any] = response
+
         if paymentType == .checkout {
             account["options"] = ["validate": false]
             if let request  = payPalRequest as? BTPayPalCheckoutRequest {
@@ -168,15 +167,13 @@ import BraintreeDataCollector
         if let clientMetadataID {
             account["correlation_id"] = clientMetadataID
         }
+
+        var parameters: [String: Any] = ["paypal_account": account]
         
         if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
             parameters["merchant_account_id"] = merchantAccountID
         }
-        
-        if !account.isEmpty {
-            parameters["paypal_account"] = account
-        }
-        
+
         let metadata = apiClient.metadata
         metadata.source = .payPalBrowser
         
@@ -258,13 +255,11 @@ import BraintreeDataCollector
                 }
 
                 guard let body,
-                      var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                         body["agreementSetup"]["approvalUrl"].asURL() else {
                     self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
                     return
                 }
-
-                approvalURL = self.decorate(approvalURL: approvalURL, for: request)
 
                 let pairingID = self.token(from: approvalURL)
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
@@ -312,25 +307,6 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
-    }
-    
-    private func decorate(approvalURL: URL, for request: BTPayPalRequest) -> URL {
-        guard let request = payPalRequest as? BTPayPalCheckoutRequest,
-              var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
-            return approvalURL
-        }
-
-        let userActionValue = request.userAction.stringValue
-        guard userActionValue.count > 0 else {
-            return approvalURL
-        }
-        
-        let userActionQueryItem = URLQueryItem(name: "useraction", value: userActionValue)
-        var queryItems = approvalURLComponents.queryItems ?? []
-        queryItems.append(userActionQueryItem)
-        approvalURLComponents.queryItems = queryItems
-        
-        return approvalURLComponents.url ?? approvalURL
     }
     
     private func token(from approvalURL: URL) -> String {

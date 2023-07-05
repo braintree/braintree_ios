@@ -167,36 +167,6 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalClient.approvalURL?.absoluteString)
     }
 
-    func testTokenizePayPalAccount_whenUserActionIsSetToCommit_approvalUrlIsModified() {
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "https://www.paypal.com/checkout?EC-Token=EC-Random-Value"
-            ]
-        ])
-
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = BTPayPalRequestUserAction.payNow
-
-        payPalClient.tokenize(request) { _, _ in }
-
-        XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value&useraction=commit", payPalClient.approvalURL?.absoluteString)
-    }
-
-    func testTokenizePayPalAccount_whenUserActionIsSetToCommit_andNoQueryParamsArePresent_approvalUrlIsModified() {
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "https://www.paypal.com/checkout"
-            ]
-        ])
-
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.userAction = BTPayPalRequestUserAction.payNow
-
-        payPalClient.tokenize(request) { _, _ in }
-
-        XCTAssertEqual("https://www.paypal.com/checkout?useraction=commit", payPalClient.approvalURL?.absoluteString)
-    }
-
     func testTokenizePayPalAccount_whenApprovalUrlIsNotHTTP_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
@@ -416,6 +386,33 @@ class BTPayPalClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
+    }
+
+    func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_parametersAreConstructedAsExpected() {
+        let merchantAccountID = "alternate-merchant-account-id"
+        payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
+        payPalClient.payPalRequest?.merchantAccountID = merchantAccountID
+        payPalClient.clientMetadataID = "a-fake-cmid"
+
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { _, _ in }
+
+        let lastPostParameters = mockAPIClient.lastPOSTParameters!
+        XCTAssertEqual(lastPostParameters["merchant_account_id"] as? String, merchantAccountID)
+
+        let account = lastPostParameters["paypal_account"] as? [String: Any]
+        XCTAssertEqual(account?["response_type"] as? String, "web")
+        XCTAssertEqual(account?["correlation_id"] as? String, "a-fake-cmid")
+        XCTAssertEqual(account?["options"] as? [String: Bool], ["validate": false])
+        XCTAssertEqual(account?["intent"] as? String, (payPalClient.payPalRequest as? BTPayPalCheckoutRequest)?.intent.stringValue)
+
+        let client = account?["client"] as? [String: String]
+        XCTAssertEqual(client?["platform"], "iOS")
+        XCTAssertEqual(client?["product_name"], "PayPal")
+        XCTAssertEqual(client?["paypal_sdk_version"], "version")
+
+        let response = account?["response"] as? [String: String]
+        XCTAssertEqual(response?["webURL"], "bar://onetouch/v1/success?token=hermes_token")
     }
 
     // MARK: - Tokenization

@@ -25,6 +25,11 @@ import BraintreeCore
     /// Optional. A non-default merchant account to use for tokenization.
     public var merchantAccountID: String?
 
+    /// Optional. A locale code to use for creating a mandate.
+    /// See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
+    /// Locale code should be supplied as a BCP-47 formatted locale code.
+    public var locale: String?
+
     /// Initialize a new SEPA Direct Debit request.
     /// - Parameters:
     ///   - accountHolderName:Required. The account holder name.
@@ -33,13 +38,17 @@ import BraintreeCore
     ///   - mandateType: Optional. The `BTSEPADebitMandateType`. If not set, defaults to `.oneOff`
     ///   - billingAddress: Required. The user's billing address.
     ///   - merchantAccountID: Optional. A non-default merchant account to use for tokenization.
+    ///   - locale: Optional. A locale code to use for creating a mandate.
+    ///   See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
+    ///   Locale code should be supplied as a BCP-47 formatted locale code.
     public init(
         accountHolderName: String? = nil,
         iban: String? = nil,
         customerID: String? = nil,
         mandateType: BTSEPADirectDebitMandateType? = .oneOff,
         billingAddress: BTPostalAddress? = nil,
-        merchantAccountID: String? = nil
+        merchantAccountID: String? = nil,
+        locale: String? = nil
     ) {
         self.accountHolderName = accountHolderName
         self.iban = iban
@@ -47,5 +56,6 @@ import BraintreeCore
         self.mandateType = mandateType
         self.billingAddress = billingAddress
         self.merchantAccountID = merchantAccountID
+        self.locale = locale
     }
 }

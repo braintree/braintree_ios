@@ -31,7 +31,25 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
                         "externalId": "venmo-external-id",
                         "firstName": "venmo-first-name",
                         "lastName": "venmo-last-name",
-                        "phoneNumber": "venmo-phone-number"
+                        "phoneNumber": "venmo-phone-number",
+                        "billingAddress": [
+                            "fullName": "Bar Foo",
+                            "addressLine1": "1 Foo Ct",
+                            "addressLine2": "Apt Foo",
+                            "adminArea2": "Barfoo",
+                            "adminArea1": "BF",
+                            "postalCode": "20",
+                            "countryCode": "AU"
+                        ],
+                        "shippingAddress": [
+                            "fullName": "Some Dude",
+                            "addressLine1": "2 Foo Ct",
+                            "addressLine2": "Apt 5",
+                            "adminArea2": "Dudeville",
+                            "adminArea1": "CA",
+                            "postalCode": "30",
+                            "countryCode": "US"
+                        ]
                     ]
                 ] as [String: Any]
             ]
@@ -46,6 +64,26 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
         XCTAssertEqual(venmoAccountNonce.firstName, "venmo-first-name")
         XCTAssertEqual(venmoAccountNonce.lastName, "venmo-last-name")
         XCTAssertEqual(venmoAccountNonce.phoneNumber, "venmo-phone-number")
+        
+        let billingAddress = venmoAccountNonce.billingAddress
+        XCTAssertNotNil(billingAddress)
+        XCTAssertEqual(billingAddress?.recipientName, "Bar Foo")
+        XCTAssertEqual(billingAddress?.streetAddress, "1 Foo Ct")
+        XCTAssertEqual(billingAddress?.extendedAddress, "Apt Foo")
+        XCTAssertEqual(billingAddress?.locality, "Barfoo")
+        XCTAssertEqual(billingAddress?.region, "BF")
+        XCTAssertEqual(billingAddress?.postalCode, "20")
+        XCTAssertEqual(billingAddress?.countryCodeAlpha2, "AU")
+        
+        let shippingAddress = venmoAccountNonce.shippingAddress
+        XCTAssertNotNil(shippingAddress)
+        XCTAssertEqual(shippingAddress?.recipientName, "Some Dude")
+        XCTAssertEqual(shippingAddress?.streetAddress, "2 Foo Ct")
+        XCTAssertEqual(shippingAddress?.extendedAddress, "Apt 5")
+        XCTAssertEqual(shippingAddress?.locality, "Dudeville")
+        XCTAssertEqual(shippingAddress?.region, "CA")
+        XCTAssertEqual(shippingAddress?.postalCode, "30")
+        XCTAssertEqual(shippingAddress?.countryCodeAlpha2, "US")
     }
 
     func testBTVenmoAccountNonceWithJSON_createsBTVenmoAccountNonceWithExpectedValues() {
