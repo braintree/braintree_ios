@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Expose reference documentation for `BTAppContextSwitcher.handleOpen(_:)` and `BTAppContextSwitcher.handleOpenURL(context:)`
+
 ## 6.2.0 (2023-06-27)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix bug where setting `userAction` does not update button as expected
