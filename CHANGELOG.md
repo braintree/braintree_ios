@@ -2,7 +2,7 @@
 
 
 ## unreleased
-* BraintreePayPalNativeCheckout (BETA)
+* BraintreePayPalNativeCheckout
   * Fixed a bug where post vaulting FirstName, LastName and email are null but a nonce is generated.
 
 ## 6.2.0 (2023-06-27)
