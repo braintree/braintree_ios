@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+* BraintreePayPalNativeCheckout (GA)!
+  * Update PayPalCheckout from 0.110.0 to 1.0.0. This is our newly released GA version
+
 ## 6.2.0 (2023-06-27)
 * BraintreePayPalNativeCheckout (BETA)
   * Fix bug where setting `userAction` does not update button as expected
