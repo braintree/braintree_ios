@@ -3,6 +3,7 @@
 ## Unreleased
 * BraintreePayPalNativeCheckout (GA)!
   * Update PayPalCheckout from 0.110.0 to 1.0.0. This is our newly released GA version
+     * _Note: This module will now be subject to semantic versioning_
 
 ## 6.2.0 (2023-06-27)
 * BraintreePayPalNativeCheckout (BETA)
