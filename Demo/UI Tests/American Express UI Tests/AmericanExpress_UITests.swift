@@ -9,7 +9,7 @@ class AmericanExpress_UITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
-        app.launchArguments.append("-ClientToken")
+        app.launchArguments.append("-UITestHardcodedClientToken")
         app.launchArguments.append("-Integration:BraintreeDemoAmexViewController")
         app.launch()
     }
