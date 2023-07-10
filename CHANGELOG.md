@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## unreleased
 * BraintreePayPalNativeCheckout (GA)!
   * Update PayPalCheckout from 0.110.0 to 1.0.0. This is our newly released GA version
      * _Note: This module will now be subject to semantic versioning_
