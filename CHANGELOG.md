@@ -1,8 +1,9 @@
 # Braintree iOS SDK Release Notes
 
-
 ## unreleased
-* BraintreePayPalNativeCheckout
+* BraintreePayPalNativeCheckout (General Availability release)
+  * Update PayPalCheckout from 0.110.0 to 1.0.0. This is our newly released General Availability version
+     * _Note: This module will now be subject to semantic versioning_
   * Fixed a bug where post vaulting FirstName, LastName and email are null but a nonce is generated.
 
 ## 6.2.0 (2023-06-27)
