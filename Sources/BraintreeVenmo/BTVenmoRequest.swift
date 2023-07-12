@@ -42,11 +42,11 @@ import Foundation
     /// Optional. The business name that will be displayed in the Venmo app payment approval screen. Only used by merchants onboarded as PayFast channel partners.
     public var displayName: String?
     
-    /// Whether the customer's billing address should be collected and displayed on the Venmo paysheel.
+    /// Whether the customer's billing address should be collected and displayed on the Venmo paysheet.
     /// Defaults to `false`
     public var collectCustomerBillingAddress: Bool = false
     
-    /// Whether the customer's shipping address should be collected and displayed on the Venmo paysheel.
+    /// Whether the customer's shipping address should be collected and displayed on the Venmo paysheet.
     /// Defaults to `false`
     public var collectCustomerShippingAddress: Bool = false
     
