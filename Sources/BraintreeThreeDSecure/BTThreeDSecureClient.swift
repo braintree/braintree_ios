@@ -5,12 +5,16 @@ import BraintreeCore
 #endif
 
 @objcMembers public class BTThreeDSecureClient: NSObject {
+
+    // MARK: - Internal Properties
+
+    /// Exposed for mocking Cardinal setup step
+    var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
     private var request: BTThreeDSecureRequest?
-    private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void) = { _, _ in }
 
     // MARK: - Initializer
