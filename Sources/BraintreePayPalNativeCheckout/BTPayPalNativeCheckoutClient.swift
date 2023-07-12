@@ -170,7 +170,9 @@ import PayPalCheckout
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: apiClient)
-        tokenizationClient.tokenize(request: request, approvalData: approval.data) { result in
+        tokenizationClient.tokenize(request: request,
+                                    returnURL: approval.data.returnURL?.absoluteString,
+                                    buyerData: approval.data.buyer) { result in
             switch result {
             case .success(let nonce):
                 self.notifySuccess(with: nonce, completion: completion)
