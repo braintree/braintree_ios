@@ -10,7 +10,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     var threeDSecureRequest = BTThreeDSecureRequest()
     var client: BTThreeDSecureClient!
     var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
-    var mockCompletion: ([String: String]?) -> Void = { _ in }
 
     let mockConfiguration = BTJSON(value: [
         "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
@@ -288,17 +287,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         let expectation = expectation(description: "willCallCompletion")
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
 
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
-
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         client.startPaymentFlow(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
@@ -341,16 +331,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = expectation(description: "startPaymentFlow completed successfully")
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
-
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
 
         let responseBody = [
             "paymentMethod": [
@@ -377,6 +357,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ] as [String : Any]
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         client.startPaymentFlow(threeDSecureRequest) { result, error in
             guard let result = result else { XCTFail(); return }
             guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
@@ -429,16 +410,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
 
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 4)
@@ -538,16 +511,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
-
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 4)
@@ -592,16 +556,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
-
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 4)
@@ -617,18 +572,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
-
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
-
         let expectation = expectation(description: "Start payment expectation")
+
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         client.startPaymentFlow(threeDSecureRequest) { result, error in
             expectation.fulfill()
         }
@@ -667,17 +613,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
-
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
-
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         client.startPaymentFlow(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
@@ -697,16 +633,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testPrepareLookup_getsJsonString() {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
-        mockCompletion(["dfReferenceId": "fake-df-reference-id"])
-        let mockThreeDSecureV2Provider = MockThreeDSecureV2Provider(
-            configuration: BTConfiguration(json: mockConfiguration),
-            apiClient: mockAPIClient,
-            request: threeDSecureRequest,
-            completion: mockCompletion
-        )
-
-        client.threeDSecureV2Provider = mockThreeDSecureV2Provider
-
+        let client = MockThreeDSecureClient(apiClient: mockAPIClient)
         let expectation = expectation(description: "willCallCompletion")
 
         threeDSecureRequest.nonce = "fake-card-nonce"
