@@ -1,10 +1,16 @@
 import Foundation
+import CardinalMobile
 
 #if canImport(BraintreeCore)
 import BraintreeCore
 #endif
 
 @objcMembers public class BTThreeDSecureClient: NSObject {
+
+    // MARK: - Internal Properties
+
+    /// Exposed for mocking Cardinal
+    var cardinalSession: CardinalSessionTestable = CardinalSession()
     
     // MARK: - Private Properties
     
@@ -208,14 +214,13 @@ import BraintreeCore
         }
     }
     
-    // MARK: - Internal Methods
+    // MARK: - Private Methods
     
-    /// Exposed for testing
     /// Prepare for a 3DS 2.0 flow.
     /// - Parameters:
     ///   - apiClient: The API client.
     ///   - completion: This completion will be invoked exactly once. If the error is nil then the preparation was successful.
-    func prepareLookup(
+    private func prepareLookup(
         request: BTThreeDSecureRequest,
         completion: @escaping (Error?) -> Void
     ) {
@@ -234,7 +239,8 @@ import BraintreeCore
                 threeDSecureV2Provider = BTThreeDSecureV2Provider(
                     configuration: configuration,
                     apiClient: apiClient,
-                    request: request
+                    request: request,
+                    cardinalSession: cardinalSession
                 ) { lookupParameters in
                     if let dfReferenceID = lookupParameters?["dfReferenceId"] {
                         request.dfReferenceID = dfReferenceID
@@ -247,8 +253,6 @@ import BraintreeCore
             }
         }
     }
-
-    // MARK: - Private Methods
         
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) {
         performThreeDSecureLookup(request) { lookupResult, error in
