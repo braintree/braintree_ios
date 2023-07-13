@@ -80,7 +80,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testPerformThreeDSecureLookup_whenCardAddChallengeNotRequested_sendsCardAddFalse() {
@@ -98,7 +98,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testPerformThreeDSecureLookup_whenCardAddChallengeRequestedNotSet_doesNotSendCardAddParameter() {
@@ -114,7 +114,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testPerformThreeDSecureLookup_whenSuccessful_callsBackWithResult() {
@@ -178,7 +178,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.lookupFailed))
     }
 
@@ -227,7 +227,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 1)
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.lookupFailed))
     }
@@ -251,7 +251,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
@@ -272,7 +272,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
     
@@ -297,7 +297,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
     
@@ -321,7 +321,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 4)
+        waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
@@ -369,7 +369,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             XCTAssertNil(error)
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifySucceeded))
     }
 
@@ -414,7 +414,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 1)
     }
 
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() {
@@ -516,7 +516,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.challengeRequired))
     }
@@ -563,7 +563,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         client.startPaymentFlow(threeDSecureRequest) { _, _ in }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 1)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.lookupSucceeded))
@@ -584,7 +584,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 1)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
@@ -632,7 +632,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
@@ -664,7 +664,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             }
         }
 
-        waitForExpectations(timeout: 15)
+        waitForExpectations(timeout: 1)
     }
     
     func testPrepareLookup_withTokenizationKey_throwsError() {
