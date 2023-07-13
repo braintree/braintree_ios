@@ -237,6 +237,26 @@ class BTVenmoClient_Tests: XCTestCase {
             }
         }
     }
+    
+    func testTokenize_withoutLineItems_createsPaymentContextWithoutTransactionDetails() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+
+        venmoClient.tokenize(venmoRequest) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        
+        let params = mockAPIClient.lastPOSTParameters as! [String: Any]
+        let queryParams = params["query"] as! String
+        XCTAssertTrue(queryParams.contains("mutation CreateVenmoPaymentContext"))
+        
+        let inputParams = (params["variables"] as! [String: [String: Any]])["input"]
+        let paysheetDetails = inputParams?["paysheetDetails"] as! [String: Any]
+        XCTAssertNil(paysheetDetails["transactionDetails"])
+    }
 
     func testTokenizeVenmoAccount_opensVenmoURLWithPaymentContextID() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
