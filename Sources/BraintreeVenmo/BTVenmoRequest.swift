@@ -43,29 +43,43 @@ import Foundation
     public var displayName: String?
     
     /// Whether the customer's billing address should be collected and displayed on the Venmo paysheet.
-    /// Defaults to `false`
+    /// Defaults to `false`.
+    ///
+    /// If this value is set, `totalAmount` must also be set.
     public var collectCustomerBillingAddress: Bool = false
     
     /// Whether the customer's shipping address should be collected and displayed on the Venmo paysheet.
-    /// Defaults to `false`
+    /// Defaults to `false`.
+    ///
+    /// If this value is set, `totalAmount` must also be set.
     public var collectCustomerShippingAddress: Bool = false
     
     /// Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
+    ///
+    /// If this value is set, `totalAmount` must also be set.
     public var subTotalAmount: String?
     
     /// Optional. The total discount amount applied on the transaction to be displayed on the paysheet.
+    ///
+    /// If this value is set, `totalAmount` must also be set.
     public var discountAmount: String?
     
     /// Optional. The total tax amount for the transaction to be displayed on the paysheet.
+    ///
+    /// If this value is set, `totalAmount` must also be set.
     public var taxAmount: String?
     
     /// Optional. The shipping amount for the transaction to be displayed on the paysheet.
+    ///
+    /// If this value is set, `totalAmount` must also be set.
     public var shippingAmount: String?
     
     /// Optional. The grand total amount on the transaction that should be displayed on the paysheet.
     public var totalAmount: String?
     
     /// Optional. The line items for this transaction. It can include up to 249 line items.
+    ///
+    /// If this value is set, `totalAmount` must also be set.
     public var lineItems: [BTVenmoLineItem]?
 
     // MARK: - Initializer
