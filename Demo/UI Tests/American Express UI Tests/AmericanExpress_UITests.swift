@@ -9,17 +9,21 @@ class AmericanExpress_UITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
-        app.launchArguments.append("-ClientToken")
+        app.launchArguments.append("-UITestHardcodedClientToken")
         app.launchArguments.append("-Integration:BraintreeDemoAmexViewController")
         app.launch()
     }
 
     func testValidCard_receivesRewardsBalance() {
+        waitForElementToBeHittable(app.buttons["Valid card"])
         app.buttons["Valid card"].tap()
+        sleep(2)
+
         XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].waitForExistence(timeout: 10))
     }
 
     func testInsufficientPointsCard_receivesErrorMessage() {
+        waitForElementToBeHittable(app.buttons["Insufficient points card"])
         app.buttons["Insufficient points card"].tap()
         sleep(2)
 
@@ -27,7 +31,9 @@ class AmericanExpress_UITests: XCTestCase {
     }
 
     func testIneligibleCard_receivesErrorMessage() {
+        waitForElementToBeHittable(app.buttons["Ineligible card"])
         app.buttons["Ineligible card"].tap()
+        sleep(2)
 
         XCTAssertTrue(app.buttons["INQ2002: Card is not eligible for the Program"].waitForExistence(timeout: 10))
     }

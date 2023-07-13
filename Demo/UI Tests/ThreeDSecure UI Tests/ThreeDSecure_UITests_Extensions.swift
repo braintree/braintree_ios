@@ -68,5 +68,5 @@ internal extension XCUIApplication {
 }
 
 internal extension TimeInterval {
-    static let threeDSecureTimeout = 20.0
+    static let threeDSecureTimeout = 30.0
 }

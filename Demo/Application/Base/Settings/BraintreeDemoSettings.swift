@@ -12,6 +12,7 @@ enum BraintreeDemoAuthType: Int {
     case clientToken
     case tokenizationKey
     case mockedPayPalTokenizationKey
+    case uiTestHardcodedClientToken
 }
 
 @objc

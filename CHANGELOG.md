@@ -2,7 +2,9 @@
 
 ## unreleased
 * Expose reference documentation for `BTAppContextSwitcher.handleOpen(_:)` and `BTAppContextSwitcher.handleOpenURL(context:)`
-* Fixed a bug where post vaulting FirstName, LastName and email are null but a nonce is generated.
+* Fixed a bug to return `firstName`, `lastName`, `email`, and `payerID` in `BTPayPalNativeCheckoutAccountNonce` as expected.
+* BraintreeVenmo
+  * Fix bug where tokenizations failed when sending an empty dictionary for `transactionDetails` in the `CreateVenmoPaymentContext` call (fixes #1074)
 
 ## 6.3.0 (2023-07-10)
 * BraintreePayPalNativeCheckout (General Availability release)
