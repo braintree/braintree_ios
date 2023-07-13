@@ -18,7 +18,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         localPaymentRequest.paymentType = "ideal"
         mockAPIClient = MockAPIClient(authorization: tempClientToken)!
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.my-return-url-scheme"
+        BTAppContextSwitcher.setReturnURLScheme("com.my-return-url-scheme")
     }
     
     func testStartPayment_returnsErrorWhenConfigurationNil() {

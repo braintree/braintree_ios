@@ -42,6 +42,14 @@ import UIKit
         return false
     }
     
+    ///  Sets the return URL scheme for your app.
+    ///
+    ///  This must be configured if your app integrates a payment option that may switch to either ASWebAuthenticationSession or to another app to finish the payment authorization workflow.
+    /// - Parameter scheme: The return URL scheme
+    public static func setReturnURLScheme(_ scheme: String) {
+        sharedInstance.returnURLScheme = scheme
+    }
+    
     /// Registers a class `Type` that can handle a return from app context switch with a static method.
     /// - Parameter client: A class `Type` that implements `BTAppContextSwitchClient`, the methods of which will be invoked statically on the class.
     @objc(registerAppContextSwitchClient:)

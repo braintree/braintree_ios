@@ -4,11 +4,6 @@ import XCTest
 class BTAppContextSwitcher_Tests: XCTestCase {
     var appSwitch = BTAppContextSwitcher.sharedInstance
 
-    override func setUp() {
-        super.setUp()
-        appSwitch = BTAppContextSwitcher.sharedInstance
-    }
-
     override func tearDown() {
         MockAppContextSwitchClient.cannedCanHandle = false
         MockAppContextSwitchClient.lastCanHandleURL = nil
@@ -17,7 +12,7 @@ class BTAppContextSwitcher_Tests: XCTestCase {
     }
 
     func testSetReturnURLScheme() {
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.some.scheme"
+        BTAppContextSwitcher.setReturnURLScheme("com.some.scheme")
         XCTAssertEqual(appSwitch.returnURLScheme, "com.some.scheme")
     }
 
