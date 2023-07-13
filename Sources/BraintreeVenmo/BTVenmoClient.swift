@@ -144,7 +144,10 @@ import BraintreeCore
                 let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
                 transactionDetails["lineItems"] = lineItemsArray
             }
-            paysheetDetails["transactionDetails"] = transactionDetails
+
+            if !transactionDetails.isEmpty {
+                paysheetDetails["transactionDetails"] = transactionDetails
+            }
 
             inputParameters["paysheetDetails"] = paysheetDetails
 
