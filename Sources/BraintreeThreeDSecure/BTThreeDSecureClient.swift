@@ -1,4 +1,5 @@
 import Foundation
+import CardinalMobile
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -12,7 +13,12 @@ import BraintreeCore
     private var request: BTThreeDSecureRequest?
     private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void) = { _, _ in }
-
+    
+    // MARK: - Internal Properties
+    
+    /// Exposed for mocking Cardinal
+    var cardinalSession: CardinalSessionTestable = CardinalSession()
+    
     // MARK: - Initializer
     
     /// Initialize a new BTThreeDSecureClient instance.
@@ -233,7 +239,8 @@ import BraintreeCore
                 threeDSecureV2Provider = BTThreeDSecureV2Provider(
                     configuration: configuration,
                     apiClient: apiClient,
-                    request: request
+                    request: request,
+                    cardinalSession: cardinalSession
                 ) { lookupParameters in
                     if let dfReferenceID = lookupParameters?["dfReferenceId"] {
                         request.dfReferenceID = dfReferenceID
