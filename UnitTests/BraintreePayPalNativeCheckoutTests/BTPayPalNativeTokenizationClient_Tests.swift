@@ -77,8 +77,7 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
     func testTokenizationRequestFailureResponseForNilReturnUrl() throws {
         let mockClient = try XCTUnwrap(MockAPIClient(authorization: "development_client_key"))
         let mockCorrelationId = "mock-corrID"
-
-        /// Same response data as the successful response, but the nonce is absent
+        let mockNonce = "mock-nonce"
         let responseData = try XCTUnwrap("""
         {
             "paypalAccounts": [{
@@ -87,6 +86,7 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
                 "details": {
                     "correlationId": "\(mockCorrelationId)",
                 },
+                "nonce": "\(mockNonce)",
                 "type": "PayPalAccount",
             }]
         }
@@ -98,7 +98,7 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
             case .success:
                 XCTFail("A response without a nonce string should be a failure")
             case .failure(let error):
-                XCTAssertEqual(error, .missingReturnUrl)
+                XCTAssertEqual(error, .missingReturnURL)
             }
         }
     }

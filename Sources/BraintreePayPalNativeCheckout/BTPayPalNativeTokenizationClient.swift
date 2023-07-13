@@ -24,7 +24,7 @@ class BTPayPalNativeTokenizationClient {
     {
 
         guard let returnUrlString = returnURL else {
-          completion(.failure(.missingReturnUrl))
+          completion(.failure(.missingReturnURL))
           return
         }
         

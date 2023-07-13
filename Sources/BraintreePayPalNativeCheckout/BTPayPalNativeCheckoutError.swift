@@ -43,7 +43,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
     case deallocated
   
     /// 12. Missing return url in approval data
-    case missingReturnUrl
+    case missingReturnURL
 
     static var errorDomain: String {
         "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain"
@@ -75,7 +75,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
             return 10
         case .deallocated:
             return 11
-        case .missingReturnUrl:
+        case .missingReturnURL:
             return 12
         }
     }
@@ -106,7 +106,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
             return "Invalid JSON response."
         case .deallocated:
             return "BTPayPalNativeCheckoutClient has been deallocated."
-        case .missingReturnUrl:
+        case .missingReturnURL:
             return "Return URL is missing from the approval data."
         }
     }
