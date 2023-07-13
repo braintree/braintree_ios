@@ -20,7 +20,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalCheckout), for: .touchUpInside)
 
         let payPalBAWithoutPurchase = checkoutPaymentButton(title: "Billing Agreements Without Purchase Checkout")
-        payPalBAWithoutPurchase.addTarget(self, action: #selector(tappedPayPalVault), for: .touchUpInside)
+        payPalBAWithoutPurchase.addTarget(self, action: #selector(tappedBAWithoutPurchase), for: .touchUpInside)
 
         let payPalBAWithPurchase = checkoutPaymentButton(title: "Billing Agreements With Purchase Checkout")
         payPalBAWithPurchase.addTarget(self, action: #selector(tappedBAWithPurchase), for: .touchUpInside)
@@ -28,7 +28,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, payPalBAWithoutPurchase, payPalBAWithPurchase])
         stackView.axis = .vertical
         stackView.alignment = .center
-      stackView.distribution = .fillEqually
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate(
@@ -64,8 +64,8 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         }
     }
 
-        @objc func tappedPayPalVault(_ sender: UIButton) {
-            progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
+        @objc func tappedBAWithoutPurchase(_ sender: UIButton) {
+            progressBlock("Tapped PayPal - BA Without Purchase using BTPayPalNativeCheckout")
             sender.setTitle("Processing...", for: .disabled)
             sender.isEnabled = false
             
