@@ -35,7 +35,6 @@ class BTVenmoClient_Tests: XCTestCase {
     func testTokenize_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
 
         let expectation = expectation(description: "Tokenize fails with error")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
@@ -49,7 +48,6 @@ class BTVenmoClient_Tests: XCTestCase {
     func testTokenizeVenmoAccount_whenVenmoConfigurationDisabled_callsBackWithError() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String: Any?])
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
 
         let expectation = expectation(description: "tokenization callback")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
@@ -64,7 +62,6 @@ class BTVenmoClient_Tests: XCTestCase {
     func testTokenizeVenmoAccount_whenVenmoConfigurationMissing_callsBackWithError() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String: Any?])
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
 
         let expectation = expectation(description: "tokenization callback")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
@@ -94,7 +91,6 @@ class BTVenmoClient_Tests: XCTestCase {
     func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_createsPaymentContext() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoRequest.displayName = "app-display-name"
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -115,7 +111,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_whenDisplayNameNotSet_createsPaymentContextWithoutDisplayName() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -146,7 +141,6 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoRequest.collectCustomerBillingAddress = true
         venmoRequest.collectCustomerShippingAddress = true
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -173,7 +167,6 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoRequest.collectCustomerBillingAddress = true
         venmoRequest.collectCustomerShippingAddress = true
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -200,7 +193,6 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoRequest.subTotalAmount = "9"
         venmoRequest.totalAmount = "9"
         venmoRequest.lineItems = [BTVenmoLineItem(quantity: 1, unitAmount: "9", name: "name", kind: .debit)]
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -242,7 +234,6 @@ class BTVenmoClient_Tests: XCTestCase {
     
     func testTokenize_withoutLineItems_createsPaymentContextWithoutTransactionDetails() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -262,7 +253,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_opensVenmoURLWithPaymentContextID() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -289,7 +279,6 @@ class BTVenmoClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: ["random":["lady_gaga":"poker_face"]])
 
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -311,7 +300,6 @@ class BTVenmoClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: "Venmo Error", code: 100, userInfo: nil)
 
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -331,7 +319,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURLWithParams() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -354,7 +341,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_getsResultFromPaymentContext() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
@@ -382,7 +368,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_andFetchPaymentContextFails_returnsError() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
@@ -404,7 +389,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
@@ -430,7 +414,6 @@ class BTVenmoClient_Tests: XCTestCase {
         mockAPIClient.tokenizationKey = nil
         mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 2))
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
@@ -453,7 +436,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_whenAppSwitchFails_callsBackWithError() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
@@ -471,7 +453,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_vaultTrue_setsShouldVaultProperty() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
@@ -490,7 +471,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testTokenizeVenmoAccount_vaultFalse_setsVaultToFalse() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
@@ -511,7 +491,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
@@ -554,7 +533,6 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
 
         let expectation = expectation(description: "Callback invoked")
 
@@ -596,7 +574,6 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
 
         let expectation = expectation(description: "Callback invoked")
 
@@ -619,7 +596,6 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
 
         let expectation = expectation(description: "Callback invoked")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
@@ -634,7 +610,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testAuthorizeAccountWithProfileID_withNilProfileID_usesDefaultProfileIDAndAccessTokenFromConfiguration() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -649,7 +624,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testAuthorizeAccountWithProfileID_withProfileID_usesProfileIDToAppSwitch() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -680,7 +654,6 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
 
         mockAPIClient.cannedConfigurationResponseBody = nil
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
 
         do {
             let _ = try await venmoClient.tokenize(venmoRequest)
@@ -695,7 +668,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_returnsTrue() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         fakeApplication.cannedCanOpenURL = false
         fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
@@ -706,7 +678,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testIsiOSAppSwitchAvailable_whenApplicationCantOpenVenmoURL_returnsFalse() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         fakeApplication.cannedCanOpenURL = false
         venmoClient.application = fakeApplication
@@ -739,8 +710,6 @@ class BTVenmoClient_Tests: XCTestCase {
     func testAuthorizeAccountWithTokenizationKey_vaultTrue_willNotAttemptToVault() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
 
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
-
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
@@ -770,7 +739,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
     func testGotoVenmoInAppStore_opensVenmoAppStoreURL_andSendsAnalyticsEvent() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.setReturnURLScheme("scheme")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
