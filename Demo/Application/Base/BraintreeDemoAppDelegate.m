@@ -61,6 +61,8 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
         [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoAuthTypeTokenizationKey forKey:BraintreeDemoSettings.AuthorizationTypeDefaultsKey];
     } else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-MockedPayPalTokenizationKey"]) {
         [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoAuthTypeMockedPayPalTokenizationKey forKey:BraintreeDemoSettings.AuthorizationTypeDefaultsKey];
+    } else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-UITestHardcodedClientToken"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoAuthTypeUiTestHardcodedClientToken forKey:BraintreeDemoSettings.AuthorizationTypeDefaultsKey];
     }
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"BraintreeDemoSettingsAuthorizationOverride"];

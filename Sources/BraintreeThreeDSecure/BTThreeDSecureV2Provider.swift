@@ -9,7 +9,7 @@ class BTThreeDSecureV2Provider {
 
     // MARK: - Internal Properties
 
-    let cardinalSession: CardinalSession
+    let cardinalSession: CardinalSessionTestable
     let apiClient: BTAPIClient
 
     var lookupResult: BTThreeDSecureResult? = nil
@@ -21,10 +21,11 @@ class BTThreeDSecureV2Provider {
         configuration: BTConfiguration,
         apiClient: BTAPIClient,
         request: BTThreeDSecureRequest,
+        cardinalSession: CardinalSessionTestable = CardinalSession(),
         completion: @escaping ([String: String]?) -> Void
     ) {
         self.apiClient = apiClient
-        self.cardinalSession = CardinalSession()
+        self.cardinalSession = cardinalSession
 
         let cardinalConfiguration: CardinalSessionConfiguration = CardinalSessionConfiguration()
 
