@@ -5,12 +5,16 @@ import BraintreeCore
 #endif
 
 @objcMembers public class BTThreeDSecureClient: NSObject {
+
+    // MARK: - Internal Properties
+
+    /// Exposed for mocking Cardinal setup step
+    var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
     private var request: BTThreeDSecureRequest?
-    private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void) = { _, _ in }
 
     // MARK: - Initializer
@@ -208,14 +212,13 @@ import BraintreeCore
         }
     }
     
-    // MARK: - Internal Methods
+    // MARK: - Private Methods
     
-    /// Exposed for testing
     /// Prepare for a 3DS 2.0 flow.
     /// - Parameters:
     ///   - apiClient: The API client.
     ///   - completion: This completion will be invoked exactly once. If the error is nil then the preparation was successful.
-    func prepareLookup(
+    private func prepareLookup(
         request: BTThreeDSecureRequest,
         completion: @escaping (Error?) -> Void
     ) {
@@ -247,8 +250,6 @@ import BraintreeCore
             }
         }
     }
-
-    // MARK: - Private Methods
         
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) {
         performThreeDSecureLookup(request) { lookupResult, error in
