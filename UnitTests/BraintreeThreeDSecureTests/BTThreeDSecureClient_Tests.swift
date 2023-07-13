@@ -11,6 +11,11 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     var client: BTThreeDSecureClient!
     var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
     
+    let mockConfiguration = BTJSON(value: [
+        "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
+        "assetsUrl": "http://assets.example.com"
+    ] as [String: Any])
+    
     override func setUp() {
         super.setUp()
         threeDSecureRequest.amount = 10.0
@@ -235,10 +240,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     // MARK: - startPaymentFlow
     
     func testStartPaymentFlow_whenAmountIsNotANumber_throwsError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         
         let request = BTThreeDSecureRequest()
         request.amount = NSDecimalNumber.notANumber
@@ -256,10 +258,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testStartPaymentFlow_whenAmountIsNil_throwsError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         let request = BTThreeDSecureRequest()
         request.amount = nil
@@ -283,10 +282,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         let expectation = expectation(description: "willCallCompletion")
 
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         client.startPaymentFlow(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
@@ -328,10 +324,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testStartPayment_whenAuthenticationNotRequired_returnsResult() {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = expectation(description: "startPaymentFlow completed successfully")
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         let responseBody = [
             "paymentMethod": [
                 "consumed": false,
@@ -376,10 +369,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = expectation(description: "Lookup completed successfully")
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         let responseBody = [
             "paymentMethod": [
@@ -420,10 +410,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() {
         let expectation = expectation(description: "willCallCompletion")
 
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         client.startPaymentFlow(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
@@ -476,10 +463,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testStartPayment_success_sendsAnalyticsEvents() {
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = expectation(description: "Lookup completed successfully")
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         let responseBody = [
             "paymentMethod": [
@@ -524,10 +508,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testStartPayment_success_whenAuthenticationNotRequired_sendsAnalyticsEvents() {
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = expectation(description: "Lookup completed successfully")
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         let responseBody = [
             "paymentMethod": [
@@ -572,10 +553,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
     
     func testStartPayment_failure_sendsAnalyticsEvents() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 500, userInfo: nil)
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
@@ -591,11 +569,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testStartPaymentFlow_whenV1ReturnedInLookup_callsBackWithResult() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
-
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         let responseBody =
             """
             {
@@ -639,10 +613,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     // MARK: - prepareLookup
 
     func testPrepareLookup_getsJsonString() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         let expectation = expectation(description: "willCallCompletion")
 
         threeDSecureRequest.nonce = "fake-card-nonce"
@@ -668,10 +639,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
     
     func testPrepareLookup_withTokenizationKey_throwsError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
-            "assetsUrl": "http://assets.example.com"
-        ] as [String: Any])
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         
         let client = BTThreeDSecureClient(apiClient: MockAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!)
         let expectation = expectation(description: "willCallCompletion")
