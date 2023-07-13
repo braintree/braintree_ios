@@ -43,15 +43,11 @@ import Foundation
     public var displayName: String?
     
     /// Whether the customer's billing address should be collected and displayed on the Venmo paysheet.
-    /// Defaults to `false`.
-    ///
-    /// If this value is set, `totalAmount` must also be set.
+    /// Defaults to `false`
     public var collectCustomerBillingAddress: Bool = false
     
     /// Whether the customer's shipping address should be collected and displayed on the Venmo paysheet.
-    /// Defaults to `false`.
-    ///
-    /// If this value is set, `totalAmount` must also be set.
+    /// Defaults to `false`
     public var collectCustomerShippingAddress: Bool = false
     
     /// Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
