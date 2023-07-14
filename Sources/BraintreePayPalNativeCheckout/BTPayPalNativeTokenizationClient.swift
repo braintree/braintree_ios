@@ -23,7 +23,7 @@ class BTPayPalNativeTokenizationClient {
         completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeCheckoutError>) -> Void)
     {
 
-        guard let returnUrlString = returnURL else {
+        guard let returnURL else {
           completion(.failure(.missingReturnURL))
           return
         }
