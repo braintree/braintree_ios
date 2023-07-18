@@ -19,13 +19,17 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         let payPalCheckoutButton = checkoutPaymentButton(title: "One Time Checkout")
         payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalCheckout), for: .touchUpInside)
 
-        let payPalBAWithoutPurchase = checkoutPaymentButton(title: "Billing Agreements Without Purchase Checkout")
-        payPalBAWithoutPurchase.addTarget(self, action: #selector(tappedBAWithoutPurchase), for: .touchUpInside)
+        // Buyers are shown a billing agreement without purchase
+        // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/vault/javascript/v3/
+        let vaultCheckoutButton = checkoutPaymentButton(title: "Vault Checkout")
+        vaultCheckoutButton.addTarget(self, action: #selector(tappedVaultCheckout), for: .touchUpInside)
 
-        let payPalBAWithPurchase = checkoutPaymentButton(title: "Billing Agreements With Purchase Checkout")
-        payPalBAWithPurchase.addTarget(self, action: #selector(tappedBAWithPurchase), for: .touchUpInside)
+        // Buyers are shown a billing agreement with purchase
+        // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/checkout-with-vault/javascript/v3/
+        let checkoutWithVaultButton = checkoutPaymentButton(title: "Checkout With Vault")
+        checkoutWithVaultButton.addTarget(self, action: #selector(tappedCheckoutWithVault), for: .touchUpInside)
 
-        let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, payPalBAWithoutPurchase, payPalBAWithPurchase])
+        let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, vaultCheckoutButton, checkoutWithVaultButton])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fillEqually
@@ -36,11 +40,11 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
                 payPalCheckoutButton.topAnchor.constraint(equalTo: stackView.topAnchor),
                 payPalCheckoutButton.heightAnchor.constraint(equalToConstant: 19.5),
 
-                payPalBAWithoutPurchase.topAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: 20),
-                payPalBAWithoutPurchase.heightAnchor.constraint(equalToConstant: 19.5),
+                vaultCheckoutButton.topAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: 20),
+                vaultCheckoutButton.heightAnchor.constraint(equalToConstant: 19.5),
 
-                payPalBAWithPurchase.topAnchor.constraint(equalTo: payPalBAWithoutPurchase.bottomAnchor, constant: 20),
-                payPalBAWithPurchase.heightAnchor.constraint(equalToConstant: 19.5)
+                checkoutWithVaultButton.topAnchor.constraint(equalTo: vaultCheckoutButton.bottomAnchor, constant: 20),
+                checkoutWithVaultButton.heightAnchor.constraint(equalToConstant: 19.5)
             ]
         )
 
@@ -64,8 +68,8 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         }
     }
 
-        @objc func tappedBAWithoutPurchase(_ sender: UIButton) {
-            progressBlock("Tapped PayPal - BA Without Purchase using BTPayPalNativeCheckout")
+        @objc func tappedVaultCheckout(_ sender: UIButton) {
+            progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
             sender.setTitle("Processing...", for: .disabled)
             sender.isEnabled = false
             
@@ -82,8 +86,8 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
           }
       }
 
-        @objc func tappedBAWithPurchase(_ sender: UIButton) {
-            progressBlock("Tapped PayPal - BA With Purchase using BTPayPalNativeCheckout")
+        @objc func tappedCheckoutWithVault(_ sender: UIButton) {
+            progressBlock("Tapped PayPal - Checkout With Vault using BTPayPalNativeCheckout")
             sender.setTitle("Processing...", for: .disabled)
             sender.isEnabled = false
             
