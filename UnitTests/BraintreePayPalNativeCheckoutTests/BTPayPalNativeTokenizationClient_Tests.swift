@@ -64,13 +64,41 @@ class BTPayPalNativeTokenizationClient_Tests: XCTestCase {
         """.data(using: .utf8))
         mockClient.cannedResponseBody = BTJSON(data: responseData)
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: mockClient)
-
         tokenizationClient.tokenize(request: BTPayPalNativeVaultRequest(), returnURL: "a-fake-return-url") { result in
             switch result {
             case .success:
                 XCTFail("A response without a nonce string should be a failure")
             case .failure(let error):
                 XCTAssertEqual(error, .parsingTokenizationResultFailed)
+            }
+        }
+    }
+  
+    func testTokenizationRequestFailureResponseForNilReturnUrl() throws {
+        let mockClient = try XCTUnwrap(MockAPIClient(authorization: "development_client_key"))
+        let mockCorrelationId = "mock-corrID"
+        let mockNonce = "mock-nonce"
+        let responseData = try XCTUnwrap("""
+        {
+            "paypalAccounts": [{
+                "consumed": 0,
+                "description": "PayPal",
+                "details": {
+                    "correlationId": "\(mockCorrelationId)",
+                },
+                "nonce": "\(mockNonce)",
+                "type": "PayPalAccount",
+            }]
+        }
+        """.data(using: .utf8))
+        mockClient.cannedResponseBody = BTJSON(data: responseData)
+        let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: mockClient)
+        tokenizationClient.tokenize(request: BTPayPalNativeVaultRequest(), returnURL: nil) { result in
+            switch result {
+            case .success:
+                XCTFail("A response without a nonce string should be a failure")
+            case .failure(let error):
+                XCTAssertEqual(error, .missingReturnURL)
             }
         }
     }

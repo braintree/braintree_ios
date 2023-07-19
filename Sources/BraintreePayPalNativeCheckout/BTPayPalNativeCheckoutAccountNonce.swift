@@ -8,6 +8,8 @@ import BraintreeCore
 import BraintreePayPal
 #endif
 
+import PayPalCheckout
+
 /// Contains information about a PayPal payment method.
 @objcMembers public class BTPayPalNativeCheckoutAccountNonce: BTPaymentMethodNonce {
 
@@ -40,7 +42,7 @@ import BraintreePayPal
 
     // MARK: - Initializer
 
-    init?(json: BTJSON) {
+    init?(json: BTJSON, buyerData: User? = nil) {
         let paypalAccounts = json["paypalAccounts"][0]
         guard let nonce = paypalAccounts["nonce"].asString() else {
             return nil
@@ -51,11 +53,11 @@ import BraintreePayPal
         let payerInfo = details["payerInfo"]
 
         clientMetadataID = details["correlationId"].asString()
-        email = payerInfo["email"].asString() ?? details["email"].asString()
-        firstName = payerInfo["firstName"].asString()
-        lastName = payerInfo["lastName"].asString()
+        email = payerInfo["email"].asString() ?? details["email"].asString() ?? buyerData?.email
+        firstName = payerInfo["firstName"].asString() ?? buyerData?.givenName
+        lastName = payerInfo["lastName"].asString() ?? buyerData?.familyName
         phone = payerInfo["phone"].asString()
-        payerID = payerInfo["payerId"].asString()
+        payerID = payerInfo["payerId"].asString() ?? buyerData?.userId
 
         let shippingAddressJSON = details["payerInfo"]["shippingAddress"].asAddress()
         let accountAddressJSON =  details["payerInfo"]["accountAddress"].asAddress()
