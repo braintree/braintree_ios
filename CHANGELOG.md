@@ -2,7 +2,7 @@
 
 ## unreleased
 * Expose reference documentation for `BTAppContextSwitcher.handleOpen(_:)` and `BTAppContextSwitcher.handleOpenURL(context:)`
-* Fixed a bug to return `firstName`, `lastName`, `email`, and `payerID` in `BTPayPalNativeCheckoutAccountNonce` when available.
+* Fixed a bug to return `firstName`, `lastName`, `email`, and `payerID` on `BTPayPalNativeCheckoutAccountNonce` when available.
 * BraintreeVenmo
   * Fix bug where tokenizations failed when sending an empty dictionary for `transactionDetails` in the `CreateVenmoPaymentContext` call (fixes #1074)
 
