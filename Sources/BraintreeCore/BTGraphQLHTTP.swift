@@ -159,12 +159,11 @@ class BTGraphQLHTTP: BTHTTP {
         var error: BTHTTPError = .unknown
         var errorBody: [String: Any] = [:]
 
-        if let errorType = errorType, errorType == "user_error" {
+        if let errorType, errorType == "user_error" {
             statusCode = 422
             errorBody = parseGraphQLError(fromJSON: body)
             error = .clientError(errorBody)
-
-        } else if let errorType = errorType, errorType == "developer_error" {
+        } else if let errorType, errorType == "developer_error" {
             statusCode = 403
 
             if let message = errorJSON["message"].asString() {
@@ -172,8 +171,9 @@ class BTGraphQLHTTP: BTHTTP {
             }
             error = .clientError(errorBody)
         } else {
-            statusCode = 500
-            errorBody["error"] = ["message": "An unexpected error occurred"]
+            statusCode = body["extensions"].asDictionary() != nil ? 403 : 500
+            let errorMessage = body["extensions"].asDictionary() != nil ? errorJSON["message"].asString() : "An unexpected error occurred"
+            errorBody["error"] = ["message": errorMessage]
             error = .serverError(errorBody)
         }
         
