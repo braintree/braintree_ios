@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeVenmo
+  * Add additional error parsing for Venmo errors
+
 ## 6.4.0 (2023-07-18)
 * Expose reference documentation for `BTAppContextSwitcher.handleOpen(_:)` and `BTAppContextSwitcher.handleOpenURL(context:)`
 * Fixed a bug to return `firstName`, `lastName`, `email`, and `payerID` on `BTPayPalNativeCheckoutAccountNonce` when available.
