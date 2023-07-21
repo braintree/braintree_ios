@@ -170,10 +170,13 @@ class BTGraphQLHTTP: BTHTTP {
                 errorBody["error"] = ["message": message]
             }
             error = .clientError(errorBody)
-        } else {
-            statusCode = body["extensions"].asDictionary() != nil ? 403 : 500
-            let errorMessage = body["extensions"].asDictionary() != nil ? errorJSON["message"].asString() : "An unexpected error occurred"
+        } else if body["extensions"].asDictionary() != nil, let errorMessage = errorJSON["message"].asString() {
+            statusCode = 403
             errorBody["error"] = ["message": errorMessage]
+            error = .clientError(errorBody)
+        } else {
+            statusCode = 500
+            errorBody["error"] = ["message": "An unexpected error occurred"]
             error = .serverError(errorBody)
         }
         

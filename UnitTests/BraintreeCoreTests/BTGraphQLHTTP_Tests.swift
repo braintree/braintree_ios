@@ -507,6 +507,37 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
+    func testErrorResponse_withNoErrorTypeAndContainsExtension_sendsErrorMessage() {
+        let expectation = expectation(description: "POST callback")
+        let stubGraphQLErrorResponse: [String: Any?] = [
+            "errors": [["message": "Error message that is helpful"]],
+            "extensions": ["requestId": "a-fake-request-id"]
+        ]
+
+        let expectedErrorBody = ["error": ["message": "Error message that is helpful"]]
+
+        HTTPStubs.stubRequests { request in
+          return true
+        } withStubResponse: { request in
+            return HTTPStubsResponse(
+                data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
+        }
+
+        http?.post("") { body, _, error in
+            XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
+
+            let error = error as NSError?
+            let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as AnyObject
+            XCTAssertEqual(errorDictionary.asDictionary(), expectedErrorBody as NSDictionary)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
     func testNetworkError_returnsError() {
         let expectation = expectation(description: "POST callback")
 
