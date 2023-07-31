@@ -25,7 +25,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         vaultCheckoutButton.addTarget(self, action: #selector(tappedVaultCheckout), for: .touchUpInside)
 
         // Buyers are shown a billing agreement with purchase
-        // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/checkout-with-vault/javascript/v3/
+        // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/checkout-with-vault/ios/v5
         let checkoutWithVaultButton = checkoutPaymentButton(title: "Checkout With Vault")
         checkoutWithVaultButton.addTarget(self, action: #selector(tappedCheckoutWithVault), for: .touchUpInside)
 
@@ -78,7 +78,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
             payPalNativeCheckoutClient.tokenize(request) { nonce, error in
                 sender.isEnabled = true
               
-                guard let nonce = nonce else {
+                guard let nonce else {
                   self.progressBlock(error?.localizedDescription)
                   return
                 }
