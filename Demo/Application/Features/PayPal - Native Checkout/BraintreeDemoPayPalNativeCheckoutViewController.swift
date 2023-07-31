@@ -20,7 +20,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
         payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalCheckout), for: .touchUpInside)
 
         // Buyers are shown a billing agreement without purchase
-        // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/vault/javascript/v3/
+        // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/vault/ios/v5
         let vaultCheckoutButton = checkoutPaymentButton(title: "Vault Checkout")
         vaultCheckoutButton.addTarget(self, action: #selector(tappedVaultCheckout), for: .touchUpInside)
 
