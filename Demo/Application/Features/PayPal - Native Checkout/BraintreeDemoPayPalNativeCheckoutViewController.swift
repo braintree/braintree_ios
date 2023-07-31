@@ -6,13 +6,13 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
     lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 
     func checkoutPaymentButton(title: String) -> UIButton {
-      let button = UIButton(type: .system)
-      button.setTitle(title, for: .normal)
-      button.setTitleColor(.blue, for: .normal)
-      button.setTitleColor(.lightGray, for: .highlighted)
-      button.setTitleColor(.lightGray, for: .disabled)
-      button.translatesAutoresizingMaskIntoConstraints = false
-      return button
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.setTitleColor(.lightGray, for: .disabled)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }
 
     override func createPaymentButton() -> UIView! {
