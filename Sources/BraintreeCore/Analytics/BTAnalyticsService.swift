@@ -154,7 +154,7 @@ class BTAnalyticsService: Equatable {
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
-            environment: config.environment,
+            environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
             sessionID: sessionID,
