@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeVenmo
   * Add additional error parsing for Venmo errors
+* BraintreeCore
+  * Send `live` instead of `production` for the `merchant_sdk_env` tag to PayPal's analytics service (FPTI)
 
 ## 6.4.0 (2023-07-18)
 * Expose reference documentation for `BTAppContextSwitcher.handleOpen(_:)` and `BTAppContextSwitcher.handleOpenURL(context:)`
