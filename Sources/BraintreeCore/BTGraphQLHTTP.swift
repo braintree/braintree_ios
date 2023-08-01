@@ -159,17 +159,20 @@ class BTGraphQLHTTP: BTHTTP {
         var error: BTHTTPError = .unknown
         var errorBody: [String: Any] = [:]
 
-        if let errorType = errorType, errorType == "user_error" {
+        if let errorType, errorType == "user_error" {
             statusCode = 422
             errorBody = parseGraphQLError(fromJSON: body)
             error = .clientError(errorBody)
-
-        } else if let errorType = errorType, errorType == "developer_error" {
+        } else if let errorType, errorType == "developer_error" {
             statusCode = 403
 
             if let message = errorJSON["message"].asString() {
                 errorBody["error"] = ["message": message]
             }
+            error = .clientError(errorBody)
+        } else if body["extensions"].asDictionary() != nil, let errorMessage = errorJSON["message"].asString() {
+            statusCode = 403
+            errorBody["error"] = ["message": errorMessage]
             error = .clientError(errorBody)
         } else {
             statusCode = 500

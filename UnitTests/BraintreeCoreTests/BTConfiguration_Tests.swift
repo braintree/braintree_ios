@@ -36,9 +36,17 @@ class BTConfiguration_Tests: XCTestCase {
 
     func testEnvironment_returnsEnvironment() {
         let configurationJSON = BTJSON(value: [
-            "environment": "sandbox"
+            "environment": "fake-env"
         ])
         let configuration = BTConfiguration(json: configurationJSON)
-        XCTAssertEqual(configuration.environment, "sandbox")
+        XCTAssertEqual(configuration.environment, "fake-env")
+    }
+    
+    func testFPTIEnvironment_whenProduction_returnsLive() {
+        let configurationJSON = BTJSON(value: [
+            "environment": "production"
+        ])
+        let configuration = BTConfiguration(json: configurationJSON)
+        XCTAssertEqual(configuration.fptiEnvironment, "live")
     }
 }

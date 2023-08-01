@@ -1,7 +1,14 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeVenmo
+  * Add additional error parsing for Venmo errors
+* BraintreeCore
+  * Send `live` instead of `production` for the `merchant_sdk_env` tag to PayPal's analytics service (FPTI)
+
+## 6.4.0 (2023-07-18)
 * Expose reference documentation for `BTAppContextSwitcher.handleOpen(_:)` and `BTAppContextSwitcher.handleOpenURL(context:)`
+* Fixed a bug to return `firstName`, `lastName`, `email`, and `payerID` on `BTPayPalNativeCheckoutAccountNonce` when available.
 * BraintreeVenmo
   * Fix bug where tokenizations failed when sending an empty dictionary for `transactionDetails` in the `CreateVenmoPaymentContext` call (fixes #1074)
 
@@ -38,6 +45,12 @@
   * See [list of new / updated error cases and codes](SDK_ERROR_CODES.md)
   
 **Note:** Includes all changes in [6.0.0-beta4](#600-beta4-2023-06-01), [6.0.0-beta3](#600-beta3-2023-04-18), [6.0.0-beta2](#600-beta2-2023-01-30), and [6.0.0-beta1](#600-beta1-2022-12-13)
+
+## 5.22.0 (2023-06-08)
+* Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
+* Deprecate 3DS v1. Any attempt to use 3DS v1 will now throw an error. See [Migrating to 3D Secure 2](https://developer.paypal.com/braintree/docs/guides/3d-secure/migration) for more information.
+* Carthage `.framework`s are no longer supported in Xcode 14.1, please replace all Frameworks with XCFrameworks and use `--use-xcframeworks` for all Carthage steps
+  * Multi-architecture platforms are not supported when building framework bundles in Xcode 12+. [Prefer building with XCFrameworks](https://github.com/Carthage/Carthage#building-platform-independent-xcframeworks-xcode-12-and-above)).
 
 ## 6.0.0-beta4 (2023-06-01)
 * Move from Braintree to PayPal analytics service
