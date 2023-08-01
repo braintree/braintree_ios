@@ -17,15 +17,15 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
     }
 
     override func createPaymentButton() -> UIView! {
-        let payPalCheckoutButton = checkoutPaymentButton(title: "One Time Checkout", action: #selector(tappedPayPalCheckout)
+        let payPalCheckoutButton = checkoutPaymentButton(title: "One Time Checkout", action: #selector(tappedPayPalCheckout))
 
         // Buyers are shown a billing agreement without purchase
         // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/vault/ios/v5
-        let vaultCheckoutButton = checkoutPaymentButton(title: "Vault Checkout", action: #selector(tappedVaultCheckout)
+        let vaultCheckoutButton = checkoutPaymentButton(title: "Vault Checkout", action: #selector(tappedVaultCheckout))
 
         // Buyers are shown a billing agreement with purchase
         // For more information: https://developer.paypal.com/braintree/docs/guides/paypal/checkout-with-vault/ios/v5
-        let checkoutWithVaultButton = checkoutPaymentButton(title: "Checkout With Vault", action: #selector(tappedCheckoutWithVault)
+        let checkoutWithVaultButton = checkoutPaymentButton(title: "Checkout With Vault", action: #selector(tappedCheckoutWithVault))
 
         let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, vaultCheckoutButton, checkoutWithVaultButton])
         stackView.axis = .vertical
