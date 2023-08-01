@@ -58,13 +58,12 @@ class Venmo_UITests: XCTestCase {
         XCTAssertTrue(demoApp.buttons["An error occurred during the Venmo flow"].waitForExistence(timeout: 15))
     }
 
-    // TODO: - Uncomment test once cancel case is handled as an error
-//    func testTokenizeVenmo_whenUserCancels_returnsCancel() {
-//        demoApp.buttons["Venmo"].tap()
-//        
-//        waitForElementToBeHittable(mockVenmo.buttons["Cancel"])
-//        mockVenmo.buttons["Cancel"].tap()
-//
-//        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].waitForExistence(timeout: 15))
-//    }
+    func testTokenizeVenmo_whenUserCancels_returnsCancel() {
+        demoApp.buttons["Venmo"].tap()
+        
+        waitForElementToBeHittable(mockVenmo.buttons["Cancel"])
+        mockVenmo.buttons["Cancel"].tap()
+
+        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].waitForExistence(timeout: 15))
+    }
 }

@@ -613,7 +613,7 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
     }
 
-    func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithNoError() {
+    func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
@@ -622,7 +622,12 @@ class BTVenmoClient_Tests: XCTestCase {
         let expectation = expectation(description: "Callback invoked")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
             XCTAssertNil(venmoAccount)
-            XCTAssertNil(error)
+            XCTAssertNotNil(error)
+            
+            let error = error! as NSError
+            XCTAssertEqual(error.localizedDescription, BTVenmoError.canceled.localizedDescription)
+            XCTAssertEqual(error.code, 10)
+            
             expectation.fulfill()
         }
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)

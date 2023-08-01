@@ -80,7 +80,11 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)
             } catch {
-                progressBlock(error.localizedDescription)
+                if (error as NSError).code == 10 {
+                    progressBlock("Canceled 🔰")
+                } else {
+                    progressBlock(error.localizedDescription)
+                }
             }
         }
     }
