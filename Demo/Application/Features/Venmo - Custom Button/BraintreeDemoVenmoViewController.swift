@@ -7,14 +7,14 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.venmoClient = BTVenmoClient(apiClient: self.apiClient)
-        self.title = "Custom Venmo Button"
+        venmoClient = BTVenmoClient(apiClient: self.apiClient)
+        title = "Custom Venmo Button"
     }
     
     override func createPaymentButton() -> UIView! {
         let button = UIButton(type: .custom)
         button.setTitle("Venmo (custom button)", for: .normal)
-        button.setTitleColor(.systemRed, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.addTarget(self, action: #selector(tappedCustomVenmo), for: .touchUpInside)
         return button
     }
@@ -35,7 +35,7 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
         lineItem.unitTaxAmount = "1.00"
         venmoRequest.lineItems = [lineItem]
         
-        self.venmoClient.tokenize(venmoRequest) { venmoAccount, error in
+        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
             if let venmoAccount {
                 self.progressBlock("Got a nonce 💎!")
                 self.completionBlock(venmoAccount)
@@ -46,5 +46,4 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
             }
         }
     }
-    
 }
