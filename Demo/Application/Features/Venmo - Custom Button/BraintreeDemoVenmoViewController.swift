@@ -7,7 +7,7 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        venmoClient = BTVenmoClient(apiClient: self.apiClient)
+        venmoClient = BTVenmoClient(apiClient: apiClient)
         title = "Custom Venmo Button"
     }
     
