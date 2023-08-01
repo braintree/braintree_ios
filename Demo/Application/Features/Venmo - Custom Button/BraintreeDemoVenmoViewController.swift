@@ -21,7 +21,7 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
         venmoButton.translatesAutoresizingMaskIntoConstraints = false
         
         let venmoECDButton = UIButton(type: .system)
-        venmoECDButton.setTitle("Venmo (with ECD enabled)", for: .normal)
+        venmoECDButton.setTitle("Venmo (with ECD options)", for: .normal)
         venmoECDButton.setTitleColor(.blue, for: .normal)
         venmoECDButton.setTitleColor(.lightGray, for: .highlighted)
         venmoECDButton.setTitleColor(.lightGray, for: .disabled)
