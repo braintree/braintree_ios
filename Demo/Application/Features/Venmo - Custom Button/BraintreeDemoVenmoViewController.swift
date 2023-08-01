@@ -12,15 +12,50 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
     }
     
     override func createPaymentButton() -> UIView! {
-        let button = UIButton(type: .custom)
-        button.setTitle("Venmo (custom button)", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.addTarget(self, action: #selector(tappedCustomVenmo), for: .touchUpInside)
-        return button
+        let venmoButton = UIButton(type: .system)
+        venmoButton.setTitle("Venmo", for: .normal)
+        venmoButton.setTitleColor(.blue, for: .normal)
+        venmoButton.setTitleColor(.lightGray, for: .highlighted)
+        venmoButton.setTitleColor(.lightGray, for: .disabled)
+        venmoButton.addTarget(self, action: #selector(tappedVenmo), for: .touchUpInside)
+        venmoButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let venmoECDButton = UIButton(type: .system)
+        venmoECDButton.setTitle("Venmo (with ECD enabled)", for: .normal)
+        venmoECDButton.setTitleColor(.blue, for: .normal)
+        venmoECDButton.setTitleColor(.lightGray, for: .highlighted)
+        venmoECDButton.setTitleColor(.lightGray, for: .disabled)
+        venmoECDButton.addTarget(self, action: #selector(tappedVenmoWithECD), for: .touchUpInside)
+        venmoECDButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let stackView = UIStackView(arrangedSubviews: [venmoButton, venmoECDButton])
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            venmoButton.topAnchor.constraint(equalTo: stackView.topAnchor),
+            venmoButton.heightAnchor.constraint(equalToConstant: 19.5),
+            
+            venmoECDButton.topAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: 5),
+            venmoECDButton.heightAnchor.constraint(equalToConstant: 19.5)
+        ])
+        
+        return stackView
     }
     
-    @objc func tappedCustomVenmo() {
+    @objc func tappedVenmo() {
         self.progressBlock("Tapped Venmo - initiating Venmo auth")
+        
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
+        venmoRequest.vault = true
+        
+        checkout(request: venmoRequest)
+    }
+    
+    @objc func tappedVenmoWithECD() {
+        self.progressBlock("Tapped Venmo ECD - initiating Venmo auth")
         
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
         venmoRequest.vault = true
@@ -35,14 +70,17 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
         lineItem.unitTaxAmount = "1.00"
         venmoRequest.lineItems = [lineItem]
         
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            if let venmoAccount {
-                self.progressBlock("Got a nonce 💎!")
-                self.completionBlock(venmoAccount)
-            } else if let error {
-                self.progressBlock(error.localizedDescription)
-            } else {
-                self.progressBlock("Canceled 🔰")
+        checkout(request: venmoRequest)
+    }
+    
+    func checkout(request: BTVenmoRequest)  {
+        Task {
+            do {
+                let venmoAccount = try await venmoClient.tokenize(request)
+                progressBlock("Got a nonce 💎!")
+                completionBlock(venmoAccount)
+            } catch {
+                progressBlock(error.localizedDescription)
             }
         }
     }
