@@ -1,5 +1,18 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeVenmo
+  * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
+  * Add the following properties to `BTVenmoRequest`
+    * `collectCustomerBillingAddress`
+    * `collectCustomerShippingAddress`
+    * `totalAmount`
+    * `subTotalAmount`
+    * `discountAmount`
+    * `taxAmount`
+    * `shippingAmount`
+    * `lineItems`
+
 ## 5.22.0 (2023-06-08)
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
 * Deprecate 3DS v1. Any attempt to use 3DS v1 will now throw an error. See [Migrating to 3D Secure 2](https://developer.paypal.com/braintree/docs/guides/3d-secure/migration) for more information.
