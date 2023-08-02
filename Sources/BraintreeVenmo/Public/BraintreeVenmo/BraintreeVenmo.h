@@ -12,10 +12,12 @@ FOUNDATION_EXPORT const unsigned char BraintreeVenmoVersionString[];
 #import <Braintree/BTVenmoDriver.h>
 #import <Braintree/BTVenmoAccountNonce.h>
 #import <Braintree/BTVenmoRequest.h>
+#import <Braintree/BTVenmoLineItem.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import <BraintreeVenmo/BTVenmoDriver.h>
 #import <BraintreeVenmo/BTVenmoAccountNonce.h>
 #import <BraintreeVenmo/BTVenmoRequest.h>
+#import <BraintreeVenmo/BTVenmoLineItem.h>
 #endif
