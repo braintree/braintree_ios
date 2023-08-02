@@ -59,11 +59,11 @@
     }
 
     BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.recipientName = [addressJSON[@"recipientName"] asString]; // Likely to be nil
-    address.streetAddress = [addressJSON[@"line1"] asString];
-    address.extendedAddress = [addressJSON[@"line2"] asString];
-    address.locality = [addressJSON[@"city"] asString];
-    address.region = [addressJSON[@"state"] asString];
+    address.recipientName = [addressJSON[@"recipientName"] asString] ?: [addressJSON[@"fullName"] asString]; // Likely to be nil
+    address.streetAddress = [addressJSON[@"line1"] asString] ?: [addressJSON[@"addressLine1"] asString];
+    address.extendedAddress = [addressJSON[@"line2"] asString] ?: [addressJSON[@"addressLine2"] asString];
+    address.locality = [addressJSON[@"city"] asString] ?: [addressJSON[@"adminArea2"] asString];
+    address.region = [addressJSON[@"state"] asString] ?: [addressJSON[@"adminArea1"] asString];
     address.postalCode = [addressJSON[@"postalCode"] asString];
     address.countryCodeAlpha2 = [addressJSON[@"countryCode"] asString];
 
