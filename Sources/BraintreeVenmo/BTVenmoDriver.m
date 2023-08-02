@@ -132,6 +132,15 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
 
+        // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
+        if ((venmoRequest.collectCustomerShippingAddress || venmoRequest.collectCustomerBillingAddress) && !configuration.isVenmoEnrichedCustomerDataEnabled) {
+            NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                                 code:BTVenmoDriverErrorTypeEnrichedCustomerDataDisabled
+                                             userInfo:@{NSLocalizedDescriptionKey: @"Cannot collect customer data when ECD is disabled. Enable this feature in the Control Panel to collect this data."}];
+            completionBlock(nil, error);
+            return;
+        }
+
         NSString *merchantProfileID = venmoRequest.profileID ?: configuration.venmoMerchantID;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
@@ -149,6 +158,8 @@ static BTVenmoDriver *appSwitchedDriver;
             if (venmoRequest.displayName) {
                 inputParams[@"displayName"] = venmoRequest.displayName;
             }
+
+            // TODO: dictionary construction
 
             NSDictionary *params = @{
                 @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",

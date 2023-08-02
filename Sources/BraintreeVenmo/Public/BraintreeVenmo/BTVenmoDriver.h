@@ -42,6 +42,9 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
     
     /// Request URL was invalid, configuration may be missing required values
     BTVenmoDriverErrorTypeInvalidRequestURL,
+
+    /// Enriched Customer Data is disabled
+    BTVenmoDriverErrorTypeEnrichedCustomerDataDisabled
 };
 
 /**
