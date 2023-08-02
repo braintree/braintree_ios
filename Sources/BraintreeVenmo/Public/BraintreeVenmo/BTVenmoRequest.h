@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
 *
 * Defaults to false.
 */
-@property (nonatomic) BOOL collectBillingAddress;
+@property (nonatomic) BOOL collectCustomerBillingAddress;
 
 /**
 *
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
 *
 * Defaults to false.
 */
-@property (nonatomic) BOOL collectShippingAddress;
+@property (nonatomic) BOOL collectCustomerShippingAddress;
 
 /**
  * Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
