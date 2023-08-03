@@ -19,4 +19,11 @@ class BTVenmoRequest_Tests: XCTestCase {
         let request = BTVenmoRequest()
         XCTAssertEqual(request.paymentMethodUsageAsString, nil)
     }
+
+    func testCollectAddressFlags_setsDefaultValues() {
+        let request = BTVenmoRequest()
+        request.paymentMethodUsage = .singleUse
+        XCTAssertEqual(request.collectCustomerShippingAddress, false)
+        XCTAssertEqual(request.collectCustomerBillingAddress, false)
+    }
 }
