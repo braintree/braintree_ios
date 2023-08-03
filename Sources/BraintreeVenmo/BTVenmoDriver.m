@@ -6,6 +6,7 @@
 
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BTConfiguration+Venmo.h>
+#import <Braintree/BTVenmoLineItem.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
@@ -13,6 +14,7 @@
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeVenmo/BTVenmoLineItem.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTPaymentMethodNonceParser.h"
@@ -20,6 +22,7 @@
 
 #else // Carthage
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeVenmo/BTVenmoLineItem.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
@@ -159,7 +162,51 @@ static BTVenmoDriver *appSwitchedDriver;
                 inputParams[@"displayName"] = venmoRequest.displayName;
             }
 
-            // TODO: dictionary construction
+            NSMutableDictionary *paysheetDetails = [NSMutableDictionary dictionary];
+            paysheetDetails[@"collectCustomerBillingAddress"] = @(venmoRequest.collectCustomerBillingAddress);
+            paysheetDetails[@"collectCustomerShippingAddress"] = @(venmoRequest.collectCustomerShippingAddress);
+
+            NSMutableDictionary *transactionDetails = [NSMutableDictionary dictionary];
+
+            if (venmoRequest.subTotalAmount) {
+                transactionDetails[@"subTotalAmount"] = venmoRequest.subTotalAmount;
+            }
+
+            if (venmoRequest.discountAmount) {
+                transactionDetails[@"discountAmount"] = venmoRequest.discountAmount;
+            }
+
+            if (venmoRequest.taxAmount) {
+                transactionDetails[@"taxAmount"] = venmoRequest.taxAmount;
+            }
+
+            if (venmoRequest.shippingAmount) {
+                transactionDetails[@"shippingAmount"] = venmoRequest.shippingAmount;
+            }
+
+            if (venmoRequest.totalAmount) {
+                transactionDetails[@"totalAmount"] = venmoRequest.totalAmount;
+            }
+
+            if (venmoRequest.lineItems.count > 0) {
+                NSMutableArray *lineItemsArray = [NSMutableArray arrayWithCapacity:venmoRequest.lineItems.count];
+
+                for (BTVenmoLineItem *lineItem in venmoRequest.lineItems) {
+                    if (lineItem.unitTaxAmount == nil || [lineItem.unitTaxAmount isEqual: @""]) {
+                        lineItem.unitAmount = @"0";
+                    }
+
+                    [lineItemsArray addObject:[lineItem requestParameters]];
+                }
+
+                transactionDetails[@"lineItems"] = lineItemsArray;
+            }
+
+            if (transactionDetails) {
+                paysheetDetails[@"transactionDetails"] = transactionDetails;
+            }
+
+            inputParams[@"paysheetDetails"] = paysheetDetails;
 
             NSDictionary *params = @{
                 @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
