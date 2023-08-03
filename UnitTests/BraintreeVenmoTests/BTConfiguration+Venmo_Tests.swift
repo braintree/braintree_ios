@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeVenmo
 
 class BTConfiguration_Venmo_Tests: XCTestCase {
     func testVenmoIsEnabled_whenAccessTokenIsPresent_returnsTrue() {
