@@ -100,14 +100,13 @@ static NSString *BraintreeVersion = @"2018-03-06";
             BTJSON *error = body[@"errors"][i];
             NSArray *inputPath = [error[@"extensions"][@"inputPath"] asStringArray];
 
-            // TODO: is this right?
-            if ([[errorJSON[@"extensions"][@"errorClass"] asString] isEqual: @"VALIDATION"]) {
-                [self addErrorForInputPath:[inputPath subarrayWithRange:NSMakeRange(1, inputPath.count - 1)]
-                          withGraphQLError:[errorJSON[@"message"] asDictionary]
-                                   toArray:errors];
-            } else { // Defensive programming
-                continue;
+            if (!inputPath) {
+                if ([[errorJSON[@"extensions"][@"errorClass"] asString] isEqual: @"VALIDATION"]) {
+                    errorBody[@"error"] = @{@"message": [errorJSON[@"message"] asString]};
+                }
+                continue; // Defensive programming
             }
+
             [self addErrorForInputPath:[inputPath subarrayWithRange:NSMakeRange(1, inputPath.count - 1)]
                       withGraphQLError:[error asDictionary]
                                toArray:errors];
