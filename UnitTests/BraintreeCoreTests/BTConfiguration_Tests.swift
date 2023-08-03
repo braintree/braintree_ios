@@ -1,5 +1,6 @@
 import XCTest
 import PassKit
+import BraintreeVenmo
 
 class BTConfiguration_Tests: XCTestCase {
     func testInitWithJSON_setsJSON() {
@@ -38,5 +39,26 @@ class BTConfiguration_Tests: XCTestCase {
         ])
         let configuration = BTConfiguration(json: configurationJSON)
         XCTAssertEqual(configuration.environment, "sandbox")
+    }
+
+    func testVenmoEnrichedCustomerDataEnabled_returnsEcd() {
+        var configurationJSON = BTJSON(value: [
+            "payWithVenmo": ["enrichedCustomerDataEnabled": true]
+        ])
+        var configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertTrue(configuration.isVenmoEnrichedCustomerDataEnabled)
+
+        configurationJSON = BTJSON(value: [
+            "payWithVenmo": ["enrichedCustomerDataEnabled": false]
+        ])
+        configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertFalse(configuration.isVenmoEnrichedCustomerDataEnabled)
+
+        configurationJSON = BTJSON(value: ["payWithVenmo": [:]])
+        configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertFalse(configuration.isVenmoEnrichedCustomerDataEnabled)
     }
 }

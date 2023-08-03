@@ -23,7 +23,7 @@
 }
 
 - (BOOL)isVenmoEnrichedCustomerDataEnabled {
-    return [self.json[@"payWithVenmo"][@"enrichedCustomerDataEnabled"] isTrue];
+    return [self.json[@"payWithVenmo"][@"enrichedCustomerDataEnabled"] isTrue] ?: FALSE;
 }
 
 @end

@@ -6,7 +6,7 @@
 
 @implementation BTVenmoLineItem
 
-- (instancetype)initWithQuantity:(NSInteger *)quantity
+- (instancetype)initWithQuantity:(NSNumber *)quantity
                       unitAmount:(NSString *)unitAmount
                             name:(NSString *)name
                             kind:(BTVenmoLineItemKind)kind {
@@ -23,31 +23,33 @@
 
 - (NSDictionary *)requestParameters {
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionary];
-    requestParameters[@"quantity"] = [NSNumber numberWithInteger:*(self.quantity)];
-    requestParameters[@"unit_amount"] = self.unitAmount;
+    requestParameters[@"quantity"] = self.quantity;
+    requestParameters[@"unitAmount"] = self.unitAmount;
     requestParameters[@"name"] = self.name;
 
     NSString *kindString;
+
     switch (self.kind) {
         case BTVenmoLineItemKindDebit:
-            kindString = @"debit";
+            kindString = @"DEBIT";
             break;
         case BTVenmoLineItemKindCredit:
-            kindString = @"credit";
+            kindString = @"CREDIT";
             break;
     }
 
-    requestParameters[@"kind"] = kindString;
+    requestParameters[@"type"] = kindString;
+
     if (self.unitTaxAmount) {
-        requestParameters[@"unit_tax_amount"] = self.unitTaxAmount;
+        requestParameters[@"unitTaxAmount"] = self.unitTaxAmount;
     }
     if (self.itemDescription) {
         requestParameters[@"description"] = self.itemDescription;
     }
     if (self.productCode) {
-        requestParameters[@"product_code"] = self.productCode;
+        requestParameters[@"productCode"] = self.productCode;
     }
-    if (self.url) {
+    if (self.url && self.url != [NSURL URLWithString:@""]) {
         requestParameters[@"url"] = self.url.absoluteString;
     }
 
