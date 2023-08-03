@@ -183,6 +183,28 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertEqual(initialPOSTS, resultingPOSTS)
     }
 
+    func testTokenize_withoutLineItems_createsPaymentContextWithoutTransactionDetails() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoRequest.paymentMethodUsage = .multiUse
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+
+        let params = mockAPIClient.lastPOSTParameters as! [String: Any]
+        let queryParams = params["query"] as! String
+        XCTAssertTrue(queryParams.contains("mutation CreateVenmoPaymentContext"))
+
+        let inputParams = (params["variables"] as! [String: [String: Any]])["input"]
+        let paysheetDetails = inputParams?["paysheetDetails"] as! [String: Any]
+        XCTAssertNil(paysheetDetails["transactionDetails"])
+    }
+
     func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_opensVenmoURLWithPaymentContextID() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         venmoRequest.paymentMethodUsage = .singleUse

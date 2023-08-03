@@ -370,7 +370,7 @@
 		BC4850E32385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4850E12385FB3C005DD925 /* BTPreferredPaymentMethodsResult.m */; };
 		BE0B163D27E0CC7400868C77 /* CreateMandateResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */; };
 		BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */; };
-		BE2E9E192A7AF0470042A240 /* BTVenmoLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E9E172A7AF0470042A240 /* BTVenmoLineItem.h */; };
+		BE2E9E192A7AF0470042A240 /* BTVenmoLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E9E172A7AF0470042A240 /* BTVenmoLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE2E9E1A2A7AF0470042A240 /* BTVenmoLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E9E182A7AF0470042A240 /* BTVenmoLineItem.m */; };
 		BE4F788527ECE2BD00FF4C0E /* WebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DAB27E28DFF002BE9C8 /* WebAuthenticationSession.swift */; };
 		BE642D7727CEB8C600694A5B /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };

@@ -202,7 +202,7 @@ static BTVenmoDriver *appSwitchedDriver;
                 transactionDetails[@"lineItems"] = lineItemsArray;
             }
 
-            if (transactionDetails) {
+            if (transactionDetails.count > 0) {
                 paysheetDetails[@"transactionDetails"] = transactionDetails;
             }
 
@@ -220,9 +220,13 @@ static BTVenmoDriver *appSwitchedDriver;
                     if (err.code == NETWORK_CONNECTION_LOST_CODE) {
                         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                     }
+
+                    BTJSON *jsonResponse = err.userInfo[BTHTTPJSONResponseBodyKey];
+                    NSString *errorMessage = [jsonResponse[@"error"][@"message"] asString];
+
                     NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                                          code:BTVenmoDriverErrorTypeInvalidRequestURL
-                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
+                                                     userInfo:@{NSLocalizedDescriptionKey: errorMessage ?: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
                     completionBlock(nil, error);
                     return;
                 }
@@ -338,7 +342,7 @@ static BTVenmoDriver *appSwitchedDriver;
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceededWithPaymentContext: {
             NSDictionary *params = @{
-                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName } } } }",
+                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName shippingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } billingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } } } } }",
                 @"variables": @{ @"id": returnURL.paymentContextID }
             };
 
