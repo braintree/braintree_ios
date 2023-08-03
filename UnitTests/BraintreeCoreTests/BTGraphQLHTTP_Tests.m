@@ -500,9 +500,9 @@
                                     @"errors": @[
                                             @{
                                                 @"message": @"Error message that is helpful",
-                                                @"extensions": @{@"requestId": @"a-fake-request-id"}
                                                 }
                                             ],
+                                    @"extensions": @{@"requestId": @"a-fake-request-id"}
                                     };
 
     id expectedErrorBody = @{@"error": @{@"message": @"Error message that is helpful"}};
