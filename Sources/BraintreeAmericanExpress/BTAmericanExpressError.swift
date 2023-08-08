@@ -17,9 +17,16 @@ enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
     }
     
     var errorCode: Int {
-        rawValue
+        switch self {
+        case .unknown:
+            return BTAmericanExpressErrorCode.unknown.rawValue
+        case .noRewardsData:
+            return BTAmericanExpressErrorCode.noRewardsData.rawValue
+        case .deallocated:
+            return BTAmericanExpressErrorCode.deallocated.rawValue
+        }
     }
-
+    
     var errorDescription: String? {
         switch self {
         case .unknown:
@@ -32,4 +39,13 @@ enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
             return "BTAmericanExpressClient has been deallocated."
         }
     }
+}
+
+
+/// Public for merchants to reference (accessible in both Swift & ObjC)
+@objc public enum BTAmericanExpressErrorCode: Int {
+    
+    case unknown = 0
+    case noRewardsData = 1
+    case deallocated = 2
 }

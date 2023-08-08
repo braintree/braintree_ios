@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "paypalcheckout-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paypal/paypalcheckout-ios/",
+      "state" : {
+        "revision" : "773568fbbffd54f900d6d78be7793ae1871d3b35",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}
