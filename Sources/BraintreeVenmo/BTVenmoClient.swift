@@ -206,7 +206,7 @@ import BraintreeCore
     /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
     /// - Parameter request: A `BTVenmoRequest`
     /// - Returns: On success, you will receive an instance of `BTVenmoAccountNonce`
-    /// - Throws: An `Error` describing the failure
+    /// - Throws: An `Error` describing the failure. If the user cancels out of the flow, the error code will be `.canceled`.
     public func tokenize(_ request: BTVenmoRequest) async throws -> BTVenmoAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in

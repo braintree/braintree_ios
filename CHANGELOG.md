@@ -4,6 +4,7 @@
 * BraintreeVenmo
   * Add additional error parsing for Venmo errors
   * Throw cancelation specific error for `BTVenmoClient.tokenize()` (fixes #1085) 
+    * _The callback style version of this function previously returned `(nil, nil)` for the cancel scenario, but will now return `(nil, error)` instead._
 * BraintreeCore
   * Send `live` instead of `production` for the `merchant_sdk_env` tag to PayPal's analytics service (FPTI)
 
