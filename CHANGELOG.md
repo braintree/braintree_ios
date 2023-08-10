@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.5.0 (2023-08-10)
 * BraintreeVenmo
   * Add additional error parsing for Venmo errors
   * Throw cancelation specific error for `BTVenmoClient.tokenize()` (fixes #1085) 
