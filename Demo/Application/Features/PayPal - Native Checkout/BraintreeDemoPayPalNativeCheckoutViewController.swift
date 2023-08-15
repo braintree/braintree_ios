@@ -81,8 +81,8 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
                   return
                 }
                 self.completionBlock(nonce)
-          }
-      }
+            }
+        }
 
         @objc func tappedCheckoutWithVault(_ sender: UIButton) {
             progressBlock("Tapped PayPal - Checkout With Vault using BTPayPalNativeCheckout")
