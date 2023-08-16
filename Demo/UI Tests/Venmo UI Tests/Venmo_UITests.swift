@@ -15,14 +15,25 @@ class Venmo_UITests: XCTestCase {
         demoApp = XCUIApplication(bundleIdentifier: "com.braintreepayments.Demo")
         demoApp.launchArguments.append("-EnvironmentSandbox")
         demoApp.launchArguments.append("-ClientToken")
-        demoApp.launchArguments.append("-Integration:BraintreeDemoCustomVenmoButtonViewController")
+        demoApp.launchArguments.append("-Integration:BraintreeDemoVenmoViewController")
         demoApp.launch()
-
-        waitForElementToBeHittable(demoApp.buttons["Venmo (custom button)"])
-        demoApp.buttons["Venmo (custom button)"].tap()
+        
+        waitForElementToBeHittable(demoApp.buttons["Venmo"])
+        waitForElementToBeHittable(demoApp.buttons["Venmo (with ECD options)"])
     }
     
     func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
+        demoApp.buttons["Venmo"].tap()
+        
+        waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
+        mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
+
+        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 15))
+    }
+    
+    func testTokenizeVenmo_withECDOptions_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
+        demoApp.buttons["Venmo (with ECD options)"].tap()
+        
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
 
@@ -30,6 +41,8 @@ class Venmo_UITests: XCTestCase {
     }
     
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
+        demoApp.buttons["Venmo"].tap()
+        
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITHOUT PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITHOUT PAYMENT CONTEXT"].tap()
 
@@ -37,6 +50,8 @@ class Venmo_UITests: XCTestCase {
     }
 
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
+        demoApp.buttons["Venmo"].tap()
+        
         waitForElementToBeHittable(mockVenmo.buttons["ERROR"])
         mockVenmo.buttons["ERROR"].tap()
 
@@ -44,6 +59,8 @@ class Venmo_UITests: XCTestCase {
     }
 
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
+        demoApp.buttons["Venmo"].tap()
+        
         waitForElementToBeHittable(mockVenmo.buttons["Cancel"])
         mockVenmo.buttons["Cancel"].tap()
 
