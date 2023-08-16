@@ -66,10 +66,23 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 		}
 	}
 
-	@objc func tappedVaultCheckout(_ sender: UIButton) {
-		progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
-		sender.setTitle("Processing...", for: .disabled)
-		sender.isEnabled = false
+        @objc func tappedVaultCheckout(_ sender: UIButton) {
+            progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
+            sender.setTitle("Processing...", for: .disabled)
+            sender.isEnabled = false
+            
+            let request = BTPayPalNativeVaultRequest()
+            
+            payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+                sender.isEnabled = true
+              
+                guard let nonce else {
+                  self.progressBlock(error?.localizedDescription)
+                  return
+                }
+                self.completionBlock(nonce)
+            }
+        }
 
 		let request = BTPayPalNativeVaultRequest()
 
