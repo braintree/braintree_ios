@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+@class BTVenmoLineItem;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -46,6 +48,52 @@ typedef NS_ENUM(NSInteger, BTVenmoPaymentMethodUsage) {
  * Optional. The business name that will be displayed in the Venmo app payment approval screen. Only used by merchants onboarded as PayFast channel partners.
  */
 @property (nonatomic, nullable, copy) NSString *displayName;
+
+/**
+*
+* Whether the customer's billing address should be collected and displayed on the Venmo paysheet.
+*
+* Defaults to false.
+*/
+@property (nonatomic) BOOL collectCustomerBillingAddress;
+
+/**
+*
+* Whether the customer's shipping address should be collected and displayed on the Venmo paysheet.
+*
+* Defaults to false.
+*/
+@property (nonatomic) BOOL collectCustomerShippingAddress;
+
+/**
+ * Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
+ */
+@property (nonatomic, nullable, copy) NSString *subTotalAmount;
+
+/**
+ * Optional. The grand total amount on the transaction that should be displayed on the paysheet.
+ */
+@property (nonatomic, nullable, copy) NSString *totalAmount;
+
+/**
+ * Optional. The total discount amount applied on the transaction to be displayed on the paysheet.
+ */
+@property (nonatomic, nullable, copy) NSString *discountAmount;
+
+/**
+ * Optional. The shipping amount for the transaction to be displayed on the paysheet.
+ */
+@property (nonatomic, nullable, copy) NSString *shippingAmount;
+
+/**
+ * Optional. The total tax amount for the transaction to be displayed on the paysheet.
+ */
+@property (nonatomic, nullable, copy) NSString *taxAmount;
+
+/**
+ * Optional. The line items for this transaction. It can include up to 249 line items.
+ */
+@property (nonatomic, nullable) NSArray<BTVenmoLineItem *> *lineItems;
 
 @end
 

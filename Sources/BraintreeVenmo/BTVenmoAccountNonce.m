@@ -13,6 +13,8 @@
 @property (nonatomic, readwrite, copy) NSString *lastName;
 @property (nonatomic, readwrite, copy) NSString *phoneNumber;
 @property (nonatomic, readwrite, copy) NSString *username;
+@property (nonatomic, readwrite, copy) BTPostalAddress *billingAddress;
+@property (nonatomic, readwrite, copy) BTPostalAddress *shippingAddress;
 @end
 
 @implementation BTVenmoAccountNonce
@@ -37,6 +39,9 @@
         accountNonce.firstName = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"firstName"] asString];
         accountNonce.lastName = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"lastName"] asString];
         accountNonce.phoneNumber = [paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"phoneNumber"] asString];
+        accountNonce.shippingAddress = [self.class shippingOrBillingAddressFromJSON:paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"shippingAddress"]];
+        accountNonce.billingAddress = [self.class shippingOrBillingAddressFromJSON:paymentContextJSON[@"data"][@"node"][@"payerInfo"][@"billingAddress"]];
+
     }
 
     return accountNonce;
@@ -46,6 +51,23 @@
     return [[[self class] alloc] initWithPaymentMethodNonce:[venmoAccountJSON[@"nonce"] asString]
                                                    username:[venmoAccountJSON[@"details"][@"username"] asString]
                                                   isDefault:[venmoAccountJSON[@"default"] isTrue]];
+}
+
++ (BTPostalAddress *)shippingOrBillingAddressFromJSON:(BTJSON *)addressJSON {
+    if (!addressJSON.isObject) {
+        return nil;
+    }
+
+    BTPostalAddress *address = [[BTPostalAddress alloc] init];
+    address.recipientName = [addressJSON[@"recipientName"] asString] ?: [addressJSON[@"fullName"] asString]; // Likely to be nil
+    address.streetAddress = [addressJSON[@"line1"] asString] ?: [addressJSON[@"addressLine1"] asString];
+    address.extendedAddress = [addressJSON[@"line2"] asString] ?: [addressJSON[@"addressLine2"] asString];
+    address.locality = [addressJSON[@"city"] asString] ?: [addressJSON[@"adminArea2"] asString];
+    address.region = [addressJSON[@"state"] asString] ?: [addressJSON[@"adminArea1"] asString];
+    address.postalCode = [addressJSON[@"postalCode"] asString];
+    address.countryCodeAlpha2 = [addressJSON[@"countryCode"] asString];
+
+    return address;
 }
 
 @end

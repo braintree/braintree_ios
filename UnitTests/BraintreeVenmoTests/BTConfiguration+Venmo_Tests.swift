@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeVenmo
 
 class BTConfiguration_Venmo_Tests: XCTestCase {
     func testVenmoIsEnabled_whenAccessTokenIsPresent_returnsTrue() {
@@ -35,5 +36,26 @@ class BTConfiguration_Venmo_Tests: XCTestCase {
         let configuration = BTConfiguration(json: configurationJSON)
 
         XCTAssertEqual(configuration.venmoEnvironment, "rockbox")
+    }
+
+    func testVenmoEnrichedCustomerDataEnabled_returnsEcd() {
+        var configurationJSON = BTJSON(value: [
+            "payWithVenmo": ["enrichedCustomerDataEnabled": true]
+        ])
+        var configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertTrue(configuration.isVenmoEnrichedCustomerDataEnabled)
+
+        configurationJSON = BTJSON(value: [
+            "payWithVenmo": ["enrichedCustomerDataEnabled": false]
+        ])
+        configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertFalse(configuration.isVenmoEnrichedCustomerDataEnabled)
+
+        configurationJSON = BTJSON(value: ["payWithVenmo": [:]])
+        configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertFalse(configuration.isVenmoEnrichedCustomerDataEnabled)
     }
 }

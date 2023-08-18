@@ -130,18 +130,16 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters as NSObject?, [
-            "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
-            "variables": [
-                "input" : [
-                    "customerClient": "MOBILE_APP",
-                    "intent": "CONTINUE",
-                    "merchantProfileId": "venmo_merchant_id",
-                    "paymentMethodUsage": "MULTI_USE",
-                    "displayName": "app-display-name"
-                ]
-            ]
-        ] as NSObject)
+
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+        if let inputDict = params?["variables"] as? NSDictionary,
+           let input = inputDict["input"] as? [String:Any] {
+            XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
+            XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
+            XCTAssertEqual("MULTI_USE", input["paymentMethodUsage"] as? String)
+            XCTAssertEqual("CONTINUE",input["intent"] as? String)
+            XCTAssertEqual("app-display-name",input["displayName"] as? String)
+        }
     }
 
     func testTokenizeVenmoAccount_whenDisplayNameNotSet_createsPaymentContextWithoutDisplayName() {
@@ -155,17 +153,123 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters as NSObject?, [
-            "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
-            "variables": [
-                "input" : [
-                    "customerClient": "MOBILE_APP",
-                    "intent": "CONTINUE",
-                    "merchantProfileId": "venmo_merchant_id",
-                    "paymentMethodUsage": "MULTI_USE"
-                ]
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+         if let inputDict = params?["variables"] as? NSDictionary,
+            let input = inputDict["input"] as? [String: Any] {
+             XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
+             XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
+             XCTAssertEqual("MULTI_USE", input["paymentMethodUsage"] as? String)
+             XCTAssertEqual("CONTINUE",input["intent"] as? String)
+         }
+     }
+
+    func testTokenizeVenmoAccount_whenEnrichedCustomerDataDisabled_doesNotAllowCollectingAddresses() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "payWithVenmo" : [
+                "environment": "sandbox",
+                "merchantId": "venmo_merchant_id",
+                "accessToken": "venmo-access-token",
+                "enrichedCustomerDataEnabled": false
             ]
-        ] as NSObject)
+        ])
+
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        venmoRequest.collectCustomerBillingAddress = true
+        venmoRequest.collectCustomerShippingAddress = true
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+        let expectation = expectation(description: "Tokenize fails with error")
+
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { venmoAccount, error in
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.code, BTVenmoDriverErrorType.enrichedCustomerDataDisabled.rawValue)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testTokenizeVenmoAccount_whenCollectAddressFlagsSet_createsPaymentContextWithTheRightFlags() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "payWithVenmo" : [
+                "environment": "sandbox",
+                "merchantId": "venmo_merchant_id",
+                "accessToken": "venmo-access-token",
+                "enrichedCustomerDataEnabled": true
+            ]
+        ])
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        venmoRequest.paymentMethodUsage = .multiUse
+        venmoRequest.collectCustomerBillingAddress = true
+        venmoRequest.collectCustomerShippingAddress = true
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+        if let inputDict = params?["variables"] as? NSDictionary,
+           let input = inputDict["input"] as? [String: Any] {
+            if let paysheetDetails = input["paysheetDetails"] as? String {
+                if let jsonData = paysheetDetails.data(using: .utf8),
+                   let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                    XCTAssertEqual("true",json["collectCustomerShippingAddress"] as? String)
+                    XCTAssertEqual("true",json["collectCustomerBillingAddress"] as? String)
+                }
+            }
+        }
+    }
+
+    func testTokenizeVenmoAccount_withAmountsAndLineItemsSet_createsPaymentContext() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        venmoRequest.paymentMethodUsage = .multiUse
+        venmoRequest.subTotalAmount = "9"
+        venmoRequest.totalAmount = "9"
+        venmoRequest.lineItems = [BTVenmoLineItem(quantity: 1, unitAmount: "9", name: "name", kind: .debit)]
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+        if let inputDict = params?["variables"] as? NSDictionary,
+           let input = inputDict["input"] as? [String: Any] {
+            XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
+            XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
+
+            if let paysheetDetails = input["paysheetDetails"] as? String {
+                if let jsonData = paysheetDetails.data(using: .utf8),
+                   let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                    XCTAssertEqual("false",json["collectCustomerShippingAddress"] as? String)
+                    XCTAssertEqual("false",json["collectCustomerBillingAddress"] as? String)
+
+                    if let transactionDetailsString = json["transactionDetails"] as? String {
+                        if let jsonData = transactionDetailsString.data(using: .utf8),
+                           let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                            XCTAssertEqual(json["totalAmount"] as? String, "9")
+                            XCTAssertEqual(json["subTotalAmount"] as? String, "9")
+                            if let lineItems = json["lineItems"] as? String {
+                                XCTAssertTrue(lineItems.contains("\"quantity\":1"))
+                                XCTAssertTrue(lineItems.contains("\"name\":\"name"))
+                                XCTAssertTrue(lineItems.contains("\"unit_amount\":\"9\""))
+                                XCTAssertTrue(lineItems.contains("\"kind\":\"debit\""))
+                                XCTAssertTrue(lineItems.contains("\"unit_tax_amount\":\"0\""))
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     func testTokenizeVenmoAccount_whenPaymentMethodUsageNotSet_doesNotCreatePaymentContext() {
@@ -181,6 +285,28 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         let resultingPOSTS = mockAPIClient.lastPOSTParameters?.count
         XCTAssertEqual(initialPOSTS, resultingPOSTS)
+    }
+
+    func testTokenize_withoutLineItems_createsPaymentContextWithoutTransactionDetails() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance().returnURLScheme = "scheme"
+
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoRequest.paymentMethodUsage = .multiUse
+        venmoDriver.tokenizeVenmoAccount(with: venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+
+        let params = mockAPIClient.lastPOSTParameters as! [String: Any]
+        let queryParams = params["query"] as! String
+        XCTAssertTrue(queryParams.contains("mutation CreateVenmoPaymentContext"))
+
+        let inputParams = (params["variables"] as! [String: [String: Any]])["input"]
+        let paysheetDetails = inputParams?["paysheetDetails"] as! [String: Any]
+        XCTAssertNil(paysheetDetails["transactionDetails"])
     }
 
     func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_opensVenmoURLWithPaymentContextID() {

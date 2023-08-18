@@ -6,6 +6,7 @@
 
 #if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BTConfiguration+Venmo.h>
+#import <Braintree/BTVenmoLineItem.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>
@@ -13,6 +14,7 @@
 
 #elif SWIFT_PACKAGE // SPM
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeVenmo/BTVenmoLineItem.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import "../BraintreeCore/BTAPIClient_Internal.h"
 #import "../BraintreeCore/BTPaymentMethodNonceParser.h"
@@ -20,6 +22,7 @@
 
 #else // Carthage
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeVenmo/BTVenmoLineItem.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonceParser.h>
@@ -132,6 +135,15 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
 
+        // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
+        if ((venmoRequest.collectCustomerShippingAddress || venmoRequest.collectCustomerBillingAddress) && !configuration.isVenmoEnrichedCustomerDataEnabled) {
+            NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                                 code:BTVenmoDriverErrorTypeEnrichedCustomerDataDisabled
+                                             userInfo:@{NSLocalizedDescriptionKey: @"Cannot collect customer data when ECD is disabled. Enable this feature in the Control Panel to collect this data."}];
+            completionBlock(nil, error);
+            return;
+        }
+
         NSString *merchantProfileID = venmoRequest.profileID ?: configuration.venmoMerchantID;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
@@ -150,6 +162,52 @@ static BTVenmoDriver *appSwitchedDriver;
                 inputParams[@"displayName"] = venmoRequest.displayName;
             }
 
+            NSMutableDictionary *paysheetDetails = [NSMutableDictionary dictionary];
+            paysheetDetails[@"collectCustomerBillingAddress"] = @(venmoRequest.collectCustomerBillingAddress);
+            paysheetDetails[@"collectCustomerShippingAddress"] = @(venmoRequest.collectCustomerShippingAddress);
+
+            NSMutableDictionary *transactionDetails = [NSMutableDictionary dictionary];
+
+            if (venmoRequest.subTotalAmount) {
+                transactionDetails[@"subTotalAmount"] = venmoRequest.subTotalAmount;
+            }
+
+            if (venmoRequest.discountAmount) {
+                transactionDetails[@"discountAmount"] = venmoRequest.discountAmount;
+            }
+
+            if (venmoRequest.taxAmount) {
+                transactionDetails[@"taxAmount"] = venmoRequest.taxAmount;
+            }
+
+            if (venmoRequest.shippingAmount) {
+                transactionDetails[@"shippingAmount"] = venmoRequest.shippingAmount;
+            }
+
+            if (venmoRequest.totalAmount) {
+                transactionDetails[@"totalAmount"] = venmoRequest.totalAmount;
+            }
+
+            if (venmoRequest.lineItems.count > 0) {
+                NSMutableArray *lineItemsArray = [NSMutableArray arrayWithCapacity:venmoRequest.lineItems.count];
+
+                for (BTVenmoLineItem *lineItem in venmoRequest.lineItems) {
+                    if (lineItem.unitTaxAmount == nil || [lineItem.unitTaxAmount isEqual: @""]) {
+                        lineItem.unitAmount = @"0";
+                    }
+
+                    [lineItemsArray addObject:[lineItem requestParameters]];
+                }
+
+                transactionDetails[@"lineItems"] = lineItemsArray;
+            }
+
+            if (transactionDetails.count > 0) {
+                paysheetDetails[@"transactionDetails"] = transactionDetails;
+            }
+
+            inputParams[@"paysheetDetails"] = paysheetDetails;
+
             NSDictionary *params = @{
                 @"query": @"mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
                 @"variables": @{
@@ -162,9 +220,13 @@ static BTVenmoDriver *appSwitchedDriver;
                     if (err.code == NETWORK_CONNECTION_LOST_CODE) {
                         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.network-connection.failure"];
                     }
+
+                    BTJSON *jsonResponse = err.userInfo[BTHTTPJSONResponseBodyKey];
+                    NSString *errorMessage = [jsonResponse[@"error"][@"message"] asString];
+
                     NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                                          code:BTVenmoDriverErrorTypeInvalidRequestURL
-                                                     userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
+                                                     userInfo:@{NSLocalizedDescriptionKey: errorMessage ?: @"Failed to fetch a Venmo paymentContextID while constructing the requestURL."}];
                     completionBlock(nil, error);
                     return;
                 }
@@ -280,7 +342,7 @@ static BTVenmoDriver *appSwitchedDriver;
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceededWithPaymentContext: {
             NSDictionary *params = @{
-                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName } } } }",
+                @"query": @"query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName shippingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } billingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } } } } }",
                 @"variables": @{ @"id": returnURL.paymentContextID }
             };
 

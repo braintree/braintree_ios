@@ -44,4 +44,14 @@
 */
 @property (nonatomic, nullable, readonly, copy) NSString *username;
 
+/**
+ TThe primary billing address associated with the Venmo account
+*/
+@property (nonatomic, nullable, readonly, copy) BTPostalAddress *billingAddress;
+
+/**
+ The primary shipping address associated with the Venmo account
+*/
+@property (nonatomic, nullable, readonly, copy) BTPostalAddress *shippingAddress;
+
 @end

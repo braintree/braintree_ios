@@ -495,6 +495,33 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
+- (void)testErrorResponse_withNoErrorTypeAndContainsExtension_sendsErrorMessage {
+    id stubGraphQLErrorResponse = @{
+                                    @"errors": @[
+                                            @{
+                                                @"message": @"Error message that is helpful",
+                                                }
+                                            ],
+                                    @"extensions": @{@"requestId": @"a-fake-request-id"}
+                                    };
+
+    id expectedErrorBody = @{@"error": @{@"message": @"Error message that is helpful"}};
+
+    [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        return YES;
+    } withStubResponse:^HTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:stubGraphQLErrorResponse options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+    }];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"callback invoked"];
+    [http POST:@"" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+        XCTAssertEqualObjects(body.asDictionary, expectedErrorBody);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
 - (void)testNetworkError_returnsError {
     [HTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
         return YES;

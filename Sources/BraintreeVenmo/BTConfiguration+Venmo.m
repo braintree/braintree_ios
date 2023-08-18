@@ -22,4 +22,8 @@
     return [self.json[@"payWithVenmo"][@"environment"] asString];
 }
 
+- (BOOL)isVenmoEnrichedCustomerDataEnabled {
+    return [self.json[@"payWithVenmo"][@"enrichedCustomerDataEnabled"] isTrue] ?: NO;
+}
+
 @end

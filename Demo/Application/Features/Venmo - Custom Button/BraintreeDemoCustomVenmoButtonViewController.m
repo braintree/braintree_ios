@@ -29,6 +29,17 @@
     BTVenmoRequest *venmoRequest = [[BTVenmoRequest alloc] init];
     [venmoRequest setVault:YES];
     [venmoRequest setPaymentMethodUsage:BTVenmoPaymentMethodUsageMultiUse];
+
+    [venmoRequest setCollectCustomerShippingAddress:YES];
+    [venmoRequest setCollectCustomerBillingAddress:YES];
+    [venmoRequest setTotalAmount:@"30"];
+    [venmoRequest setTaxAmount:@"1.1"];
+    [venmoRequest setDiscountAmount:@"1.1"];
+    [venmoRequest setShippingAmount:@"0"];
+    BTVenmoLineItem *lineItem = [[BTVenmoLineItem alloc] initWithQuantity:@1 unitAmount:@"30" name:@"item-1" kind: BTVenmoLineItemKindDebit];
+    [lineItem setUnitTaxAmount:@"1"];
+    [venmoRequest setLineItems:[NSArray arrayWithObject: lineItem]];
+
     [self.venmoDriver tokenizeVenmoAccountWithVenmoRequest:venmoRequest completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
         if (venmoAccount) {
             self.progressBlock(@"Got a nonce 💎!");

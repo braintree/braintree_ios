@@ -29,4 +29,9 @@
  */
 @property (nonatomic, readonly, strong) NSString *venmoEnvironment;
 
+/**
+ Indicates whether Enriched Customer Data (ECD) is enabled for the Venmo merchant.
+*/
+@property (nonatomic, readonly, assign) BOOL isVenmoEnrichedCustomerDataEnabled;
+
 @end

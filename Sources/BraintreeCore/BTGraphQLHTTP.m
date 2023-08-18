@@ -69,8 +69,8 @@ static NSString *BraintreeVersion = @"2018-03-06";
 
     if (data == nil) {
         NSError *error = [[NSError alloc] initWithDomain:BTHTTPErrorDomain
-                                                            code:BTHTTPErrorCodeUnknown
-                            userInfo:@{NSLocalizedDescriptionKey: @"An unexpected error occurred with the HTTP request."}];
+                                                    code:BTHTTPErrorCodeUnknown
+                                                userInfo:@{NSLocalizedDescriptionKey: @"An unexpected error occurred with the HTTP request."}];
         [self callCompletionBlock:completionBlock body:nil response:(NSHTTPURLResponse *)response error:error];
         return;
     }
@@ -99,10 +99,14 @@ static NSString *BraintreeVersion = @"2018-03-06";
         for (NSUInteger i = 0; i < errorCount; i++) {
             BTJSON *error = body[@"errors"][i];
             NSArray *inputPath = [error[@"extensions"][@"inputPath"] asStringArray];
-            // Defensive programming
+
             if (!inputPath) {
-                continue;
+                if ([[errorJSON[@"extensions"][@"errorClass"] asString] isEqual: @"VALIDATION"]) {
+                    errorBody[@"error"] = @{@"message": [errorJSON[@"message"] asString]};
+                }
+                continue; // Defensive programming
             }
+
             [self addErrorForInputPath:[inputPath subarrayWithRange:NSMakeRange(1, inputPath.count - 1)]
                       withGraphQLError:[error asDictionary]
                                toArray:errors];
@@ -118,6 +122,10 @@ static NSString *BraintreeVersion = @"2018-03-06";
         if ([errorJSON[@"message"] asString]) {
             errorBody[@"error"] = @{@"message": [errorJSON[@"message"] asString]};
         }
+    } else if ([body[@"extensions"] asDictionary]) {
+        statusCode = 403;
+        errorCode = BTHTTPErrorCodeClientError;
+        errorBody[@"error"] = @{@"message": [errorJSON[@"message"] asString]};
     } else {
         statusCode = 500;
         errorCode = BTHTTPErrorCodeServerError;
