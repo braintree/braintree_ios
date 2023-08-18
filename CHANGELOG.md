@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.23.0 (2023-08-18)
 * BraintreeVenmo
   * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
   * Add the following properties to `BTVenmoRequest`
