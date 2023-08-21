@@ -32,20 +32,6 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 		stackView.alignment = .center
 		stackView.distribution = .fillEqually
 		stackView.translatesAutoresizingMaskIntoConstraints = false
-
-		NSLayoutConstraint.activate(
-			[
-				payPalCheckoutButton.topAnchor.constraint(equalTo: stackView.topAnchor),
-				payPalCheckoutButton.heightAnchor.constraint(equalToConstant: 19.5),
-				
-				vaultCheckoutButton.topAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: 20),
-				vaultCheckoutButton.heightAnchor.constraint(equalToConstant: 19.5),
-				
-				checkoutWithVaultButton.topAnchor.constraint(equalTo: vaultCheckoutButton.bottomAnchor, constant: 20),
-				checkoutWithVaultButton.heightAnchor.constraint(equalToConstant: 19.5)
-			]
-		)
-
 		return stackView
 	}
 
@@ -66,25 +52,22 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 		}
 	}
 
-        @objc func tappedVaultCheckout(_ sender: UIButton) {
-            progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
-            sender.setTitle("Processing...", for: .disabled)
-            sender.isEnabled = false
-            
-            let request = BTPayPalNativeVaultRequest()
-            
-            payPalNativeCheckoutClient.tokenize(request) { nonce, error in
-                sender.isEnabled = true
-              
-                guard let nonce else {
-                  self.progressBlock(error?.localizedDescription)
-                  return
-                }
-                self.completionBlock(nonce)
-            }
-        }
+	@objc func tappedVaultCheckout(_ sender: UIButton) {
+		progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
+		sender.setTitle("Processing...", for: .disabled)
+		sender.isEnabled = false
 
 		let request = BTPayPalNativeVaultRequest()
+
+		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+			sender.isEnabled = true
+
+			guard let nonce else {
+				self.progressBlock(error?.localizedDescription)
+				return
+			}
+			self.completionBlock(nonce)
+		}
 
 		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
 			sender.isEnabled = true
