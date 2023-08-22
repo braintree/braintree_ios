@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.6.0 (2023-08-22)
 * BraintreePayPalNativeCheckout
   * Update PayPalCheckout from 1.0.0 to 1.1.0.
   * This is our newly released General Availability version for EU.
