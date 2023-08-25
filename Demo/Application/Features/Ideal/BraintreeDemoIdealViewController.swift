@@ -5,27 +5,47 @@ import BraintreeCore
 class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     var localPaymentClient: BTLocalPaymentClient!
-    var paymentIDLabel: UILabel!
+    var paymentIDLabel: UILabel = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         progressBlock("Loading iDEAL Merchant Account...")
         paymentButton.isHidden = false
-        setUpPaymentIDField()
         progressBlock("Ready!")
         title = "iDEAL"
     }
 
     override func createPaymentButton() -> UIView! {
-        var button = UIButton(type: .custom)
-        button.setTitle("Pay with iDEAL", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.setTitleColor(.lightGray, for: .highlighted)
-        button.setTitleColor(.lightGray, for: .disabled)
-        button.addTarget(self, action: #selector(iDEALButtonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+        let iDEALButton = UIButton(type: .custom)
+        iDEALButton.setTitle("Pay with iDEAL", for: .normal)
+        iDEALButton.setTitleColor(.blue, for: .normal)
+        iDEALButton.setTitleColor(.lightGray, for: .highlighted)
+        iDEALButton.setTitleColor(.lightGray, for: .disabled)
+        iDEALButton.addTarget(self, action: #selector(iDEALButtonTapped), for: .touchUpInside)
+        iDEALButton.translatesAutoresizingMaskIntoConstraints = false
+
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        self.paymentIDLabel = label
+
+        let stackView = UIStackView(arrangedSubviews: [iDEALButton, label])
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            iDEALButton.topAnchor.constraint(equalTo: stackView.topAnchor),
+            iDEALButton.heightAnchor.constraint(equalToConstant: 19.5),
+
+            label.topAnchor.constraint(equalTo: iDEALButton.bottomAnchor, constant: 5),
+            label.heightAnchor.constraint(equalToConstant: 19.5)
+        ])
+
+        return stackView
     }
 
     @objc func iDEALButtonTapped() {
@@ -33,28 +53,11 @@ class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewContro
         startPaymentWithBank()
     }
 
-    private func setUpPaymentIDField() {
-        var paymentIDLabel = UILabel()
-        paymentIDLabel.numberOfLines = 0
-        paymentIDLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(paymentIDLabel)
-
-        NSLayoutConstraint.activate([
-            paymentIDLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 8),
-            paymentIDLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 8),
-            paymentIDLabel.topAnchor.constraint(equalTo: paymentButton.bottomAnchor, constant: 8),
-            paymentIDLabel.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: 8)
-        ])
-
-        self.paymentIDLabel = paymentIDLabel
-    }
-
     private func startPaymentWithBank() {
         let apiClient = BTAPIClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg")!
         localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
 
-        var request = BTLocalPaymentRequest()
+        let request = BTLocalPaymentRequest()
         request.paymentType = "ideal"
         request.paymentTypeCountryCode = "NL"
         request.currencyCode = "EUR"
@@ -65,7 +68,7 @@ class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewContro
         request.email = "lingo-buyer@paypal.com"
         request.isShippingAddressRequired = false
 
-        var postalAddress = BTPostalAddress()
+        let postalAddress = BTPostalAddress()
         postalAddress.countryCodeAlpha2 = "NL"
         postalAddress.postalCode = "2585 GJ"
         postalAddress.streetAddress = "836486 of 22321 Park Lake"
@@ -94,7 +97,11 @@ class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewContro
 
 extension BraintreeDemoIdealViewController: BTLocalPaymentRequestDelegate {
 
-    func localPaymentStarted(_ request: BraintreeLocalPayment.BTLocalPaymentRequest, paymentID: String, start: @escaping () -> Void) {
+    func localPaymentStarted(
+        _ request: BraintreeLocalPayment.BTLocalPaymentRequest,
+        paymentID: String,
+        start: @escaping () -> Void
+    ) {
         paymentIDLabel.text = "LocalPayment ID: \(paymentID)"
         start()
     }
