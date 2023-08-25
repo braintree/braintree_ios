@@ -22,7 +22,7 @@ class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewContro
         iDEALButton.setTitleColor(.blue, for: .normal)
         iDEALButton.setTitleColor(.lightGray, for: .highlighted)
         iDEALButton.setTitleColor(.lightGray, for: .disabled)
-        iDEALButton.addTarget(self, action: #selector(iDEALButtonTapped), for: .touchUpInside)
+        iDEALButton.addTarget(self, action: #selector(tappedIDEAL), for: .touchUpInside)
         iDEALButton.translatesAutoresizingMaskIntoConstraints = false
 
         let label = UILabel()
@@ -48,7 +48,7 @@ class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewContro
         return stackView
     }
 
-    @objc func iDEALButtonTapped() {
+    @objc func tappedIDEAL() {
         paymentIDLabel.text = nil
         startPaymentWithBank()
     }
