@@ -54,7 +54,8 @@ import BraintreeCore
     /// - Parameters:
     ///   - request: A Venmo request.
     ///   - completion: This completion will be invoked when app switch is complete or an error occurs. On success, you will receive
-    ///   an instance of `BTVenmoAccountNonce`; on failure, an error; on user cancellation, you will receive `nil` for both parameters.
+    ///   an instance of `BTVenmoAccountNonce`; on failure or user cancelation you will receive an error.
+    ///   If the user cancels out of the flow, the error code will be `.canceled`.
     @objc(tokenizeWithVenmoRequest:completion:)
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted)
@@ -205,7 +206,7 @@ import BraintreeCore
     /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
     /// - Parameter request: A `BTVenmoRequest`
     /// - Returns: On success, you will receive an instance of `BTVenmoAccountNonce`
-    /// - Throws: An `Error` describing the failure
+    /// - Throws: An `Error` describing the failure. If the user cancels out of the flow, the error code will be `.canceled`.
     public func tokenize(_ request: BTVenmoRequest) async throws -> BTVenmoAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
             tokenize(request) { nonce, error in
@@ -415,7 +416,7 @@ import BraintreeCore
 
     private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled)
-        completion(nil, nil)
+        completion(nil, BTVenmoError.canceled)
     }
 }
 

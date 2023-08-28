@@ -37,7 +37,7 @@
 				<string>BraintreeDemoPayPalCheckoutViewController</string>
 				<string>BraintreeDemoPayPalPayLaterViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
-				<string>BraintreeDemoCustomVenmoButtonViewController</string>
+				<string>BraintreeDemoVenmoViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
 				<string>BraintreeDemoThreeDSecurePaymentFlowViewController</string>
 				<string>BraintreeDemoBTDataCollectorViewController</string>

@@ -1,8 +1,27 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.6.0 (2023-08-22)
+* BraintreePayPalNativeCheckout
+  * Update PayPalCheckout from 1.0.0 to 1.1.0.
+
+## 5.23.0 (2023-08-18)
+* BraintreeVenmo
+  * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
+  * Add the following properties to `BTVenmoRequest`
+    * `collectCustomerBillingAddress`
+    * `collectCustomerShippingAddress`
+    * `totalAmount`
+    * `subTotalAmount`
+    * `discountAmount`
+    * `taxAmount`
+    * `shippingAmount`
+    * `lineItems`
+
+## 6.5.0 (2023-08-10)
 * BraintreeVenmo
   * Add additional error parsing for Venmo errors
+  * Throw cancelation specific error for `BTVenmoClient.tokenize()` (fixes #1085) 
+    * _The callback style version of this function previously returned `(nil, nil)` for the cancel scenario, but will now return `(nil, error)` instead._
 * BraintreeCore
   * Send `live` instead of `production` for the `merchant_sdk_env` tag to PayPal's analytics service (FPTI)
 
