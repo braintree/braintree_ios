@@ -90,7 +90,7 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
 			sender.isEnabled = true
 
-			guard let nonce = nonce else {
+			guard let nonce else {
 				self.progressBlock(error?.localizedDescription)
 				return
 			}
