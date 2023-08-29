@@ -3,76 +3,98 @@ import UIKit
 import BraintreePayPalNativeCheckout
 
 class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
-    lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+	lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 
-    override func createPaymentButton() -> UIView! {
-        let payPalCheckoutButton = UIButton(type: .system)
-        payPalCheckoutButton.setTitle("One Time Checkout", for: .normal)
-        payPalCheckoutButton.setTitleColor(.blue, for: .normal)
-        payPalCheckoutButton.setTitleColor(.lightGray, for: .highlighted)
-        payPalCheckoutButton.setTitleColor(.lightGray, for: .disabled)
-        payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalCheckout), for: .touchUpInside)
-        payPalCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
+	func checkoutPaymentButton(title: String, action: Selector) -> UIButton {
+		let button = UIButton(type: .system)
+		button.setTitle(title, for: .normal)
+		button.setTitleColor(.blue, for: .normal)
+		button.setTitleColor(.lightGray, for: .highlighted)
+		button.setTitleColor(.lightGray, for: .disabled)
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: action, for: .touchUpInside)
+		return button
+	}
 
-        let payPalVaultButton = UIButton(type: .system)
-        payPalVaultButton.setTitle("Vault Checkout", for: .normal)
-        payPalVaultButton.setTitleColor(.blue, for: .normal)
-        payPalVaultButton.setTitleColor(.lightGray, for: .highlighted)
-        payPalVaultButton.setTitleColor(.lightGray, for: .disabled)
-        payPalVaultButton.addTarget(self, action: #selector(tappedPayPalVault), for: .touchUpInside)
-        payPalVaultButton.translatesAutoresizingMaskIntoConstraints = false
+	override func createPaymentButton() -> UIView! {
+		let payPalCheckoutButton = checkoutPaymentButton(title: "One Time Checkout", action: #selector(tappedPayPalCheckout))
 
-        let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, payPalVaultButton])
-        stackView.axis = .vertical
-        stackView.spacing = 5
-        stackView.alignment = .center
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+		// Buyers are shown a billing agreement without purchase
+		// For more information: https://developer.paypal.com/braintree/docs/guides/paypal/vault/ios/v5
+		let vaultCheckoutButton = checkoutPaymentButton(title: "Vault Checkout", action: #selector(tappedVaultCheckout))
 
-        NSLayoutConstraint.activate(
-            [
-                payPalCheckoutButton.topAnchor.constraint(equalTo: stackView.topAnchor),
-                payPalCheckoutButton.heightAnchor.constraint(equalToConstant: 19.5),
+		// Buyers are shown a billing agreement with purchase
+		// For more information: https://developer.paypal.com/braintree/docs/guides/paypal/checkout-with-vault/ios/v5
+		let checkoutWithVaultButton = checkoutPaymentButton(title: "Checkout With Vault", action: #selector(tappedCheckoutWithVault))
 
-                payPalVaultButton.topAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: 5),
-                payPalVaultButton.heightAnchor.constraint(equalToConstant: 19.5)
-            ]
-        )
+		let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, vaultCheckoutButton, checkoutWithVaultButton])
+		stackView.axis = .vertical
+		stackView.alignment = .center
+		stackView.distribution = .fillEqually
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+		return stackView
+	}
 
-        return stackView
-    }
-    
-    @objc func tappedPayPalCheckout(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - Native Checkout using BTPayPalNativeCheckout")
-        sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
-                
-        let request = BTPayPalNativeCheckoutRequest(amount: "4.30")
-        payPalNativeCheckoutClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-            
-            guard let nonce = nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-            self.completionBlock(nonce)
-        }
-    }
+	@objc func tappedPayPalCheckout(_ sender: UIButton) {
+		progressBlock("Tapped PayPal - Native Checkout using BTPayPalNativeCheckout")
+		sender.setTitle("Processing...", for: .disabled)
+		sender.isEnabled = false
 
-    @objc func tappedPayPalVault(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
-        sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
+		let request = BTPayPalNativeCheckoutRequest(amount: "4.30")
+		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+			sender.isEnabled = true
 
-        let request = BTPayPalNativeVaultRequest()
+			guard let nonce else {
+				self.progressBlock(error?.localizedDescription)
+				return
+			}
+			self.completionBlock(nonce)
+		}
+	}
 
-        payPalNativeCheckoutClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
+	@objc func tappedVaultCheckout(_ sender: UIButton) {
+		progressBlock("Tapped PayPal - Vault using BTPayPalNativeCheckout")
+		sender.setTitle("Processing...", for: .disabled)
+		sender.isEnabled = false
 
-            guard let nonce = nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-            self.completionBlock(nonce)
-        }
-    }
+		let request = BTPayPalNativeVaultRequest()
+
+		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+			sender.isEnabled = true
+
+			guard let nonce else {
+				self.progressBlock(error?.localizedDescription)
+				return
+			}
+			self.completionBlock(nonce)
+		}
+
+		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+			sender.isEnabled = true
+
+			guard let nonce else {
+				self.progressBlock(error?.localizedDescription)
+				return
+			}
+			self.completionBlock(nonce)
+		}
+	}
+
+	@objc func tappedCheckoutWithVault(_ sender: UIButton) {
+		progressBlock("Tapped PayPal - Checkout With Vault using BTPayPalNativeCheckout")
+		sender.setTitle("Processing...", for: .disabled)
+		sender.isEnabled = false
+
+		let request =  BTPayPalNativeCheckoutRequest(amount: "4.30", requestBillingAgreement: true)
+
+		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+			sender.isEnabled = true
+
+			guard let nonce else {
+				self.progressBlock(error?.localizedDescription)
+				return
+			}
+			self.completionBlock(nonce)
+		}
+	}
 }
