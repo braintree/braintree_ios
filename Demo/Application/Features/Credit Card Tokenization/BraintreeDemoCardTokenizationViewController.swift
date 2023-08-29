@@ -3,8 +3,8 @@ import BraintreeCard
 
 class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBaseViewController {
 
-    let cardFormView = BTCardFormView()
-    let autofillButton = UIButton(type: .system)
+    private let cardFormView = BTCardFormView()
+    private let autofillButton = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
