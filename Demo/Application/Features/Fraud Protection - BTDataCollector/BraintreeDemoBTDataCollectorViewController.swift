@@ -1,17 +1,14 @@
 import UIKit
-import CoreLocation
 import BraintreeDataCollector
 import BraintreeCore
 
 class BraintreeDemoBTDataCollectorViewController: BraintreeDemoPaymentButtonBaseViewController {
 
-    let locationManager = CLLocationManager()
     var dataLabel = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Braintree Data Collector"
-        createLocationPermissionButton()
     }
 
     override func createPaymentButton() -> UIView! {
@@ -57,32 +54,5 @@ class BraintreeDemoBTDataCollectorViewController: BraintreeDemoPaymentButtonBase
             self.dataLabel.text = deviceData
             self.progressBlock("Collected all device data!")
         }
-    }
-
-    @objc func tappedRequestLocationAuthorization() {
-        let locationStatus = locationManager.authorizationStatus
-
-        switch locationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-
-        default:
-            progressBlock("Location authorization requested previously. Update authorization in Settings app.")
-        }
-    }
-
-    private func createLocationPermissionButton() {
-        let obtainLocationPermissionButton = UIButton(type: .system)
-        obtainLocationPermissionButton.setTitle("Obtain Location Permission", for: .normal)
-        obtainLocationPermissionButton.setTitleColor(.blue, for: .normal)
-        obtainLocationPermissionButton.addTarget(self, action: #selector(tappedRequestLocationAuthorization), for: .touchUpInside)
-        obtainLocationPermissionButton.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(obtainLocationPermissionButton)
-
-        NSLayoutConstraint.activate([
-            obtainLocationPermissionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-            obtainLocationPermissionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
     }
 }
