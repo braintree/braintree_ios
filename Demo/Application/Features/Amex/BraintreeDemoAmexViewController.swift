@@ -9,7 +9,6 @@ class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewControl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         title = "Amex"
     }
 
@@ -23,6 +22,7 @@ class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewControl
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
+
         return stackView
     }
 
