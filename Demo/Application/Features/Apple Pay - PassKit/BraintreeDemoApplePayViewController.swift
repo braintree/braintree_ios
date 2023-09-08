@@ -18,12 +18,9 @@ class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBase
             return nil
         }
 
-        let applePayButton = PKPaymentButton(
-            paymentButtonType: .plain,
-            paymentButtonStyle: .automatic
-        )
-
+        let applePayButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
         applePayButton.addTarget(self, action: #selector(tappedApplePayButton), for: .touchUpInside)
+
         return applePayButton
     }
 
@@ -37,10 +34,6 @@ class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBase
             }
 
             let paymentRequest = self.constructPaymentRequest(with: request)
-            if paymentRequest.responds(to: Selector(("setShippingType"))) {
-                paymentRequest.shippingType = .delivery
-            }
-
             let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)!
             paymentAuthorizationViewController.delegate = self
 
@@ -113,14 +106,11 @@ extension BraintreeDemoApplePayPassKitViewController: PKPaymentAuthorizationView
         let testItem = PKPaymentSummaryItem(label: "SOME ITEM", amount: 10)
         let shippingMethodUpdate = PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: [testItem])
 
-        if shippingMethod.identifier == "fast" {
-            completion(shippingMethodUpdate)
-        } else if shippingMethod.identifier == "fail" {
+        if shippingMethod.identifier == "fail" {
             shippingMethodUpdate.status = .failure
-            completion(shippingMethodUpdate)
-        } else {
-            completion(shippingMethodUpdate)
         }
+
+        completion(shippingMethodUpdate)
     }
 
     func paymentAuthorizationViewControllerWillAuthorizePayment(_ controller: PKPaymentAuthorizationViewController) {
