@@ -26,7 +26,7 @@
         [self.paymentButton.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [self.paymentButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.paymentButton.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor constant:self.centerYConstant],
-        [self.paymentButton.heightAnchor constraintEqualToConstant:44.0]
+        [self.paymentButton.heightAnchor constraintEqualToConstant:100.0]
     ]];
 }
 
