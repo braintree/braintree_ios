@@ -60,7 +60,7 @@ import Foundation
         if json?["nonce"].isString != false {
             return BTPaymentMethodNonce(
                 nonce: json?["nonce"].asString() ?? "",
-                type: "Unknown",
+                type: json?["type"].asString() ?? "Unknown",
                 isDefault: json?["default"].isTrue ?? false
             )
         }
