@@ -56,7 +56,6 @@
 		A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5424DB44B10095EEEE /* InfoPlist.strings */; };
 		A0988FE624DB44B20095EEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5824DB44B10095EEEE /* main.m */; };
 		A0988FF024DB44B20095EEEE /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */; };
-		A0988FF224DB44B20095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */; };
 		A0988FF424DB44B20095EEEE /* BraintreeDemoAmexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */; };
 		A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0988F8D24DB44B10095EEEE /* Images.xcassets */; };
 		A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */; };
@@ -74,6 +73,7 @@
 		BE9BD75A28872E4D00022983 /* BraintreeSEPADirectDebit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BEAAAA342A98E5E6001ECA63 /* BraintreeDemoIdealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAAAA332A98E5E6001ECA63 /* BraintreeDemoIdealViewController.swift */; };
 		BEAAAD052970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAAAD042970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift */; };
+		BEBD52872AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD52862AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift */; };
 		BEE930492A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE930482A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift */; };
 		BEE9304B2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9304A2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift */; };
 /* End PBXBuildFile section */
@@ -178,8 +178,6 @@
 		A0988F5824DB44B10095EEEE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A0988F7324DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoApplePayPassKitViewController.h; sourceTree = "<group>"; };
 		A0988F7424DB44B10095EEEE /* BraintreeDemoApplePayPassKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoApplePayPassKitViewController.m; sourceTree = "<group>"; };
-		A0988F7924DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoThreeDSecurePaymentFlowViewController.h; sourceTree = "<group>"; };
-		A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoThreeDSecurePaymentFlowViewController.m; sourceTree = "<group>"; };
 		A0988F7F24DB44B10095EEEE /* BraintreeDemoAmexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoAmexViewController.m; sourceTree = "<group>"; };
 		A0988F8024DB44B10095EEEE /* BraintreeDemoAmexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoAmexViewController.h; sourceTree = "<group>"; };
 		A0988F8D24DB44B10095EEEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -200,6 +198,7 @@
 		BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeSEPADirectDebit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEAAAA332A98E5E6001ECA63 /* BraintreeDemoIdealViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoIdealViewController.swift; sourceTree = "<group>"; };
 		BEAAAD042970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitTestHelper.swift; sourceTree = "<group>"; };
+		BEBD52862AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoThreeDSecurePaymentFlowViewController.swift; sourceTree = "<group>"; };
 		BEE930482A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoBTDataCollectorViewController.swift; sourceTree = "<group>"; };
 		BEE9304A2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoCardTokenizationViewController.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
@@ -446,8 +445,7 @@
 		A0988F7824DB44B10095EEEE /* 3D Secure */ = {
 			isa = PBXGroup;
 			children = (
-				A0988F7924DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.h */,
-				A0988F7A24DB44B10095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */,
+				BEBD52862AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift */,
 			);
 			path = "3D Secure";
 			sourceTree = "<group>";
@@ -792,6 +790,7 @@
 				A0988F9524DB44B20095EEEE /* BraintreeDemoBaseViewController.m in Sources */,
 				BE4F789027EE3C1D00FF4C0E /* BraintreeDemoPayPalPayLaterViewController.swift in Sources */,
 				BEAAAA342A98E5E6001ECA63 /* BraintreeDemoIdealViewController.swift in Sources */,
+				BEBD52872AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift in Sources */,
 				803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */,
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
 				BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */,
@@ -801,7 +800,6 @@
 				BEE9304B2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift in Sources */,
 				BE4F788927EE2B6D00FF4C0E /* BraintreeDemoPayPalVaultViewController.swift in Sources */,
 				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
-				A0988FF224DB44B20095EEEE /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */,
 				A0988F9424DB44B20095EEEE /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				80D36DEE2A7967F20035380E /* BraintreeDemoVenmoViewController.swift in Sources */,
 				BEE930492A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift in Sources */,
