@@ -8,12 +8,11 @@ class BraintreeDemoPayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBa
 
     override func createPaymentButton() -> UIView! {
         let payPalCheckoutButton = paymentButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
-
         let payPalVaultButton = paymentButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
-
         let payPalPayLaterButton = paymentButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
 
-        let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton])
+        let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton]
+        let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fillEqually
@@ -27,16 +26,16 @@ class BraintreeDemoPayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBa
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalCheckoutRequest(amount: "4.30")
 
-        client.tokenize(request) { nonce, error in
+        payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
 
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
+
             self.completionBlock(nonce)
         }
     }
@@ -46,16 +45,16 @@ class BraintreeDemoPayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBa
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalVaultRequest()
 
-        client.tokenize(request) { nonce, error in
+        payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
 
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
+
             self.completionBlock(nonce)
         }
     }
@@ -65,17 +64,17 @@ class BraintreeDemoPayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBa
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let client = BTPayPalClient(apiClient: apiClient)
         let request = BTPayPalCheckoutRequest(amount: "4.30")
         request.offerPayLater = true
 
-        client.tokenize(request) { nonce, error in
+        payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
 
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
+
             self.completionBlock(nonce)
         }
     }
