@@ -76,14 +76,13 @@ class BraintreeDemoThreeDSecurePaymentFlowViewController: BraintreeDemoPaymentBu
 
                 self.completionBlock(threeDSecureResult.tokenizedCard)
 
-                guard let liabilityShiftPossible = threeDSecureResult.tokenizedCard?.threeDSecureInfo.liabilityShiftPossible,
-                      let liabilityShifted = threeDSecureResult.tokenizedCard?.threeDSecureInfo.liabilityShifted else {
+                let threeDSecureInfo = threeDSecureResult.tokenizedCard?.threeDSecureInfo
+                if threeDSecureInfo?.liabilityShiftPossible == true && threeDSecureInfo?.liabilityShifted == true {
+                    self.progressBlock("Liability shift possible and liability shifted")
+                    return
+                } else {
                     self.progressBlock("3D Secure authentication was attempted but liability shift is not possible")
                     return
-                }
-
-                if liabilityShiftPossible && liabilityShifted {
-                    self.progressBlock("Liability shift possible and liability shifted")
                 }
             }
         }
