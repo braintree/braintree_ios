@@ -207,6 +207,9 @@ import Foundation
         fetchPaymentMethodNonces(false, completion: completion)
     }
 
+    // NEXT_MAJOR_VERSION: this should move into the Drop-in for parity with Android
+    // This will also allow us to return the types directly which we were doing in the +load method
+    // previously in Obj-C - this is not available in Swift
     /// Fetches a customer's vaulted payment method nonces.
     /// Must be using client token with a customer ID specified.
     ///  - Parameters:
