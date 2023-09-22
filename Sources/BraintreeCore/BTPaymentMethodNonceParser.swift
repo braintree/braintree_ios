@@ -61,16 +61,36 @@ import Foundation
             return nil
         }
 
-        if let cardType = json?["details"]["cardType"].asString() {
+        let type = json?["type"].asString()
+
+        if type == "CreditCard", let cardType = json?["details"]["cardType"].asString() {
             return BTPaymentMethodNonce(
                 nonce: json?["nonce"].asString() ?? "",
                 type: self.cardType(from: cardType),
                 isDefault: json?["default"].isTrue ?? false
             )
+        } else if type == "ApplePayCard" {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: json?["details"]["cardType"].asString() ?? "ApplePayCard",
+                isDefault: json?["default"].isTrue ?? false
+            )
+        } else if type == "PayPalAccount" {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: "PayPal",
+                isDefault: json?["default"].isTrue ?? false
+            )
+        } else if type == "VenmoAccount" {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: "Venmo",
+                isDefault: json?["default"].isTrue ?? false
+            )
         } else {
             return BTPaymentMethodNonce(
                 nonce: json?["nonce"].asString() ?? "",
-                type: json?["type"].asString() ?? "Unknown",
+                type: "Unknown",
                 isDefault: json?["default"].isTrue ?? false
             )
         }

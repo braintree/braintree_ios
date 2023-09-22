@@ -21,6 +21,5 @@ class BTPaymentMethodNonceParser_Venmo_Tests: XCTestCase {
 
         XCTAssertEqual(venmoAccountNonce.nonce, "a-nonce")
         XCTAssertEqual(venmoAccountNonce.type, "Venmo")
-        XCTAssertEqual(venmoAccountNonce.username, "jane.doe.username@example.com")
     }
 }

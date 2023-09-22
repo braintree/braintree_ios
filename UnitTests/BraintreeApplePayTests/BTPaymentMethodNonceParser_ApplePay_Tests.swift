@@ -16,7 +16,7 @@ class BTPaymentMethodNonceParser_ApplePay_Tests: XCTestCase {
             "type": "ApplePayCard",
         ] as [String: Any])
 
-        let applePayCardNonce = sharedParser.parseJSON(applePayCard, withParsingBlockForType: "ApplePayCard") as? BTApplePayCardNonce
+        let applePayCardNonce = sharedParser.parseJSON(applePayCard, withParsingBlockForType: "ApplePayCard")
 
         XCTAssertEqual(applePayCardNonce?.nonce, "a-nonce")
         XCTAssertEqual(applePayCardNonce?.type, "American Express")
