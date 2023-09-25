@@ -248,11 +248,11 @@ class BTAPIClient_Tests: XCTestCase {
 
             let firstNonce = paymentMethodNonces[0];
             XCTAssertEqual(firstNonce.nonce, "fake-nonce1")
-            XCTAssertEqual(firstNonce.type, "CreditCard")
+            XCTAssertEqual(firstNonce.type, "AMEX")
 
             let secondNonce = paymentMethodNonces[1]
             XCTAssertEqual(secondNonce.nonce, "fake-nonce2")
-            XCTAssertEqual(secondNonce.type, "PayPalAccount")
+            XCTAssertEqual(secondNonce.type, "PayPal")
 
             expectation.fulfill()
         }
