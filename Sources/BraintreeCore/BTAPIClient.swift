@@ -203,6 +203,7 @@ import Foundation
     /// Fetches a customer's vaulted payment method nonces.
     /// Must be using client token with a customer ID specified.
     ///  - Parameter completion: Callback that returns either an array of payment method nonces or an error
+    ///  - Note: Only the top level `BTPaymentMethodNonce` type is returned, fetching any additional details will need to be done on the server
     public func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         fetchPaymentMethodNonces(false, completion: completion)
     }
@@ -215,6 +216,7 @@ import Foundation
     ///  - Parameters:
     ///   - defaultFirst: Specifies whether to sort the fetched payment method nonces with the default payment method or the most recently used payment method first
     ///   - completion: Callback that returns either an array of payment method nonces or an error
+    ///   - Note: Only the top level `BTPaymentMethodNonce` type is returned, fetching any additional details will need to be done on the server
     public func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         if clientToken == nil {
             completion(nil, BTAPIClientError.notAuthorized)
