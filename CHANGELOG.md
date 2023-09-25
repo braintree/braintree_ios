@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Send `tenant_name` in `event_params` to PayPal's analytics service (FPTI)
+
 ## 6.6.0 (2023-08-22)
 * BraintreePayPalNativeCheckout
   * Update PayPalCheckout from 1.0.0 to 1.1.0.
