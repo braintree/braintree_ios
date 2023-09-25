@@ -30,7 +30,7 @@ struct FPTIBatchData: Codable {
         let errorDescription: String?
         let eventName: String
         let timestamp: String
-        let tenantName = "Braintree"
+        let tenantName: String = "Braintree"
 
         enum CodingKeys: String, CodingKey {
             case errorDescription = "error_desc"
