@@ -21,6 +21,8 @@ class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBase
         let applePayButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
         applePayButton.addTarget(self, action: #selector(tappedApplePayButton), for: .touchUpInside)
 
+        NSLayoutConstraint.activate([applePayButton.heightAnchor.constraint(equalToConstant: 50)])
+
         return applePayButton
     }
 
