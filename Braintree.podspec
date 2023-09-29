@@ -45,7 +45,8 @@ Pod::Spec.new do |s|
   s.subspec "DataCollector" do |s|
     s.source_files = "Sources/BraintreeDataCollector/*.swift"
     s.dependency "Braintree/Core"
-    s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+    s.source = { :http => "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.5.4.0-static.xcframework.zip" }
+    s.ios.vendored_frameworks = "**/iOS/PPRiskMagnes.xcframework"
   end
 
   s.subspec "LocalPayment" do |s|
