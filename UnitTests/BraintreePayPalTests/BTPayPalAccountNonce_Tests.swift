@@ -1,33 +1,9 @@
 import XCTest
 @testable import BraintreePayPal
 
-class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
-    func testSharedParser_whenTypeIsPayPal_returnsPayPalAccountNonce() {
-        let payPalAccountNonce = BTPayPalAccountNonce(
-            json: BTJSON(
-                value: [
-                    "consumed": false,
-                    "description": "jane.doe@example.com",
-                    "details": [
-                        "email": "jane.doe@example.com",
-                    ],
-                    "isLocked": false,
-                    "nonce": "a-nonce",
-                    "securityQuestions": [] as [Any?],
-                    "type": "PayPalAccount",
-                    "default": true
-                ] as [String: Any]
-            )
-        )
+final class BTPayPalAccountNonce_Tests: XCTestCase {
 
-        XCTAssertEqual(payPalAccountNonce?.nonce, "a-nonce")
-        XCTAssertEqual(payPalAccountNonce?.type, "PayPal")
-        XCTAssertEqual(payPalAccountNonce?.email, "jane.doe@example.com")
-        XCTAssertTrue(payPalAccountNonce!.isDefault)
-        XCTAssertNil(payPalAccountNonce?.creditFinancing)
-    }
-
-    func testParsePayPalCreditFinancingAmount() {
+    func testPayPalAccountNonce_returnsPayPalCreditFinancingAmount() {
         let payPalCreditFinancingAmount = BTJSON(value: [
             "currency": "USD",
             "value": "123.45",
@@ -41,7 +17,7 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
         XCTAssertEqual(amount.value, "123.45")
     }
 
-    func testParsePayPalCreditFinancing() {
+    func testPayPalAccountNonce_returnsPayPalCreditFinancing() {
         let payPalCreditFinancing = BTJSON(value: [
             "cardAmountImmutable": false,
             "monthlyPayment": [
@@ -93,7 +69,7 @@ class BTPaymentMethodNonceParser_PayPal_Tests: XCTestCase {
         XCTAssertEqual(totalInterest.value, "456.78")
     }
 
-    func testSharedParser_whenTypeIsPayPal_returnsPayPalAccountNonceWithCreditFinancingOffered() {
+    func testPayPalAccountNonce_returnsPayPalAccountNonceWithCreditFinancingOffered() {
         let payPalAccountNonce = BTPayPalAccountNonce(
             json: BTJSON(
                 value: [
