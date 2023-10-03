@@ -53,18 +53,80 @@ import Foundation
             return nil
         }
 
-        if let completionHandler = completionHandler {
+        if let completionHandler {
             return completionHandler(json)
         }
 
-        if json?["nonce"].isString != false {
+        if json?["nonce"].isString == false {
+            return nil
+        }
+
+        let type = json?["type"].asString()
+
+        if type == "CreditCard", let cardType = json?["details"]["cardType"].asString() {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: self.cardType(from: cardType),
+                isDefault: json?["default"].isTrue ?? false
+            )
+        } else if type == "ApplePayCard" {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: json?["details"]["cardType"].asString() ?? "ApplePayCard",
+                isDefault: json?["default"].isTrue ?? false
+            )
+        } else if type == "PayPalAccount" {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: "PayPal",
+                isDefault: json?["default"].isTrue ?? false
+            )
+        } else if type == "VenmoAccount" {
+            return BTPaymentMethodNonce(
+                nonce: json?["nonce"].asString() ?? "",
+                type: "Venmo",
+                isDefault: json?["default"].isTrue ?? false
+            )
+        } else {
             return BTPaymentMethodNonce(
                 nonce: json?["nonce"].asString() ?? "",
                 type: "Unknown",
                 isDefault: json?["default"].isTrue ?? false
             )
         }
+    }
 
-        return nil
+    private func cardType(from cardType: String) -> String {
+        let cardType = cardType.lowercased()
+
+        if cardType == "american express" {
+            return "AMEX"
+        } else if cardType == "diners club" {
+            return "DinersClub"
+        } else if cardType == "unionpay" {
+            return "UnionPay"
+        } else if cardType == "discover" {
+            return "Discover"
+        } else if cardType == "mastercard" {
+            return "MasterCard"
+        } else if cardType == "jcb" {
+            return "JCB"
+        } else if cardType == "hiper" {
+            return "Hiper"
+        } else if cardType == "hipercard" {
+            return "Hipercard"
+        } else if cardType == "laser" {
+            return "Laser"
+        } else if cardType == "solo" {
+            return "Solo"
+        } else if cardType == "switch" {
+            return "Switch"
+        } else if cardType == "uk maestro" {
+            return "UKMaestro"
+        } else if cardType == "visa" {
+            return "Visa"
+        }
+
+        return "Unknown"
     }
 }
