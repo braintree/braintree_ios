@@ -58,7 +58,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["auth_fingerprint"] as! String, "fake-auth")
         XCTAssertTrue((batchParams["c_sdk_ver"] as! String).matches("^\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$"))
         XCTAssertTrue((batchParams["client_os"] as! String).matches("iOS \\d+\\.\\d+|iPadOS \\d+\\.\\d+"))
-        XCTAssertEqual(batchParams["comp"] as? String, "btmobilesdk")
+        XCTAssertEqual(batchParams["comp"] as? String, "braintreeclientsdk")
         XCTAssertEqual(batchParams["device_manufacturer"] as? String, "Apple")
         XCTAssertEqual(batchParams["merchant_sdk_env"] as? String, "fake-env")
         XCTAssertEqual(batchParams["event_source"] as? String, "mobile-native")
