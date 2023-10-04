@@ -120,6 +120,7 @@ import PayPalCheckout
 
             switch result {
             case .success(let order):
+                // TODO: - Refactor NXO setup to use custom protocol for mocking
                 let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
                     clientID: order.payPalClientID,
                     createOrder: { [weak self] action in
