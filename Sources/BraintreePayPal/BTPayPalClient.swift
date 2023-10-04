@@ -398,7 +398,7 @@ import BraintreeDataCollector
         with result: BTPayPalAccountNonce,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded)
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded, correlationID: clientMetadataID)
         completion(result, nil)
     }
 
@@ -411,7 +411,7 @@ import BraintreeDataCollector
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, correlationID: clientMetadataID)
         completion(nil, BTPayPalError.canceled)
     }
 }
