@@ -14,6 +14,9 @@ import PayPalCheckout
 @objc public class BTPayPalNativeCheckoutClient: NSObject {
 
     private let apiClient: BTAPIClient
+    
+    /// Exposed for testing the clientMetadataID associated with this request
+    var clientMetadataID: String? = nil
 
     ///  Initializes a PayPal Native client.
     /// - Parameter apiClient: The Braintree API client
@@ -38,6 +41,7 @@ import PayPalCheckout
         _ request: BTPayPalNativeCheckoutRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
+        clientMetadataID = request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID
         tokenize(request: request, completion: completion)
     }
 
@@ -130,12 +134,7 @@ import PayPalCheckout
                         case .vault:
                             action.set(billingAgreementToken: order.orderID)
                         @unknown default:
-                            notifyFailure(
-                                with: BTPayPalNativeCheckoutError.invalidRequest,
-                                // TODO: - Re-use riskCorrelationID determination logic
-                                correlationID: request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID,
-                                completion: completion
-                            )
+                            notifyFailure(with: BTPayPalNativeCheckoutError.invalidRequest, completion: completion)
                         }
                     },
                     onApprove: { [weak self] approval in
@@ -150,11 +149,8 @@ import PayPalCheckout
                         self.notifyCancel(completion: completion)
                     },
                     onError: { error in
-                        self.notifyFailure(
-                            with: BTPayPalNativeCheckoutError.checkoutSDKFailed,
-                            correlationID: error.correlationIDs.riskCorrelationID,
-                            completion: completion
-                        )
+                        self.clientMetadataID = error.correlationIDs.riskCorrelationID
+                        self.notifyFailure(with: BTPayPalNativeCheckoutError.checkoutSDKFailed, completion: completion)
                     },
                     environment: order.environment
                 )
@@ -167,11 +163,7 @@ import PayPalCheckout
                 PayPalCheckout.Checkout.start()
             case .failure(let error):
                 apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
-                notifyFailure(
-                    with: error,
-                    correlationID: request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID,
-                    completion: completion
-                )
+                notifyFailure(with: error, completion: completion)
             }
         }
     }
@@ -189,9 +181,11 @@ import PayPalCheckout
         ) { result in
             switch result {
             case .success(let nonce):
-                self.notifySuccess(with: nonce, correlationID: nonce.clientMetadataID, completion: completion)
+                self.clientMetadataID = nonce.clientMetadataID
+                self.notifySuccess(with: nonce, completion: completion)
             case .failure(let error):
-                self.notifyFailure(with: error, correlationID: approval.data.correlationIDs.riskCorrelationID, completion: completion)
+                self.clientMetadataID = approval.data.correlationIDs.riskCorrelationID
+                self.notifyFailure(with: error, completion: completion)
             }
         }
     }
@@ -200,22 +194,17 @@ import PayPalCheckout
 
     private func notifySuccess(
         with result: BTPayPalNativeCheckoutAccountNonce,
-        correlationID: String? = nil,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeSucceeded, correlationID: correlationID)
+        apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeSucceeded, correlationID: clientMetadataID)
         completion(result, nil)
     }
 
-    private func notifyFailure(
-        with error: Error,
-        correlationID: String? = nil,
-        completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
-    ) {
+    private func notifyFailure(with error: Error, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalNativeCheckoutAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
-            correlationID: correlationID
+            correlationID: clientMetadataID
         )
         completion(nil, error)
     }
