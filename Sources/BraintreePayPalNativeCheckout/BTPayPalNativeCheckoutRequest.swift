@@ -1,4 +1,5 @@
 import Foundation
+import PayPalCheckout
 
 #if canImport(BraintreeCore)
 import BraintreeCore
