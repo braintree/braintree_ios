@@ -210,7 +210,7 @@ import PayPalCheckout
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeCanceled)
+        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeCanceled, correlationID: clientMetadataID)
         completion(nil, BTPayPalNativeCheckoutError.canceled)
     }
 }
