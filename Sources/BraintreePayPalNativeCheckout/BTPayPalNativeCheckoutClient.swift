@@ -41,7 +41,6 @@ import PayPalCheckout
         _ request: BTPayPalNativeCheckoutRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        clientMetadataID = request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID
         tokenize(request: request, completion: completion)
     }
 
@@ -110,7 +109,9 @@ import PayPalCheckout
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
+        clientMetadataID = request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID
         self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeStarted)
+        
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
         orderCreationClient.createOrder(with: request) { [weak self] result in
             guard let self else {
