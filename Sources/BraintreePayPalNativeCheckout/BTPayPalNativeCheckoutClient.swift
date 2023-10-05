@@ -142,6 +142,7 @@ import PayPalCheckout
                             completion(nil, BTPayPalNativeCheckoutError.deallocated)
                             return
                         }
+                        self.clientMetadataID = approval.data.correlationIDs.riskCorrelationID
 
                         tokenize(approval: approval, request: request, completion: completion)
                     },
@@ -181,10 +182,8 @@ import PayPalCheckout
         ) { result in
             switch result {
             case .success(let nonce):
-                self.clientMetadataID = nonce.clientMetadataID
                 self.notifySuccess(with: nonce, completion: completion)
             case .failure(let error):
-                self.clientMetadataID = approval.data.correlationIDs.riskCorrelationID
                 self.notifyFailure(with: error, completion: completion)
             }
         }
