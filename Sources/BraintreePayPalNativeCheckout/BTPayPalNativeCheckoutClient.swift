@@ -15,8 +15,8 @@ import PayPalCheckout
 
     private let apiClient: BTAPIClient
     
-    /// Exposed for testing the clientMetadataID associated with this request
-    var clientMetadataID: String? = nil
+    /// Used in POST body for FPTI analytics.
+    private var clientMetadataID: String? = nil
 
     ///  Initializes a PayPal Native client.
     /// - Parameter apiClient: The Braintree API client
@@ -120,7 +120,6 @@ import PayPalCheckout
 
             switch result {
             case .success(let order):
-                // TODO: - Refactor NXO setup to use custom protocol for mocking
                 let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
                     clientID: order.payPalClientID,
                     createOrder: { [weak self] action in

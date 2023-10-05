@@ -19,7 +19,8 @@ import BraintreeDataCollector
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL? = nil
 
-    /// Exposed for testing the clientMetadataID associated with this request
+    /// Exposed for testing the clientMetadataID associated with this request.
+    /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
     var clientMetadataID: String? = nil
     
     /// Exposed for testing the intent associated with this request
