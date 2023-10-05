@@ -10,7 +10,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-UITestHardcodedClientToken")
-        app.launchArguments.append("-Integration:BraintreeDemoThreeDSecurePaymentFlowViewController")
+        app.launchArguments.append("-Integration:ThreeDSecureViewController")
         app.launch()
 
         waitForElementToAppear(app.cardNumberTextField)

@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import BraintreePayPalNativeCheckout
 
-class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
+class PayPalNativeCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
 	lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 
 	func checkoutPaymentButton(title: String, action: Selector) -> UIButton {

@@ -2,7 +2,7 @@ import UIKit
 import AuthenticationServices
 import BraintreeSEPADirectDebit
 
-class BraintreeDemoSEPADirectDebitViewController: BraintreeDemoBaseViewController {
+class SEPADirectDebitViewController: BraintreeDemoBaseViewController {
     private let sepaDirectDebitClient: BTSEPADirectDebitClient
     private let sepaDirectDebitButton = UIButton(type: .system)
     

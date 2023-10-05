@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import BraintreePayPal
 
-class BraintreeDemoPayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
+class PayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
 

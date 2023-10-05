@@ -2,7 +2,7 @@ import Foundation
 import BraintreeApplePay
 import PassKit
 
-class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBaseViewController {
+class ApplePayViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
 

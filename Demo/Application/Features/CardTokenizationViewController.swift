@@ -1,7 +1,7 @@
 import UIKit
 import BraintreeCard
 
-class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBaseViewController {
+class CardTokenizationViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     private let cardFormView = BTCardFormView()
     private let autofillButton = UIButton(type: .system)

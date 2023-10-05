@@ -1,7 +1,7 @@
 import UIKit
 import BraintreeVenmo
 
-class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewController {
+class VenmoViewController: BraintreeDemoPaymentButtonBaseViewController {
     
     var venmoClient: BTVenmoClient!
     

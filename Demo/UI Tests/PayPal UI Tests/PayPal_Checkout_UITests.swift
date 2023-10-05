@@ -15,7 +15,7 @@ class PayPal_Checkout_UITests: XCTestCase {
         continueAfterFailure = false
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-MockedPayPalTokenizationKey")
-        app.launchArguments.append("-Integration:BraintreeDemoPayPalWebCheckoutViewController")
+        app.launchArguments.append("-Integration:PayPalWebCheckoutViewController")
         app.launch()
 
         app.buttons["PayPal Checkout"].tap()
