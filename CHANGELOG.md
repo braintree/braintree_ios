@@ -5,6 +5,7 @@
 * Update `component` from `btmobilesdk` to `braintreeclientsdk` for PayPal's analytics service (FPTI)
 * BraintreeCore
   * Fix bug where `type` was always returned as `Unknown` in `fetchPaymentMethodNonces` (fixes #1099)
+* Send `correlation_id`, when possible, in PayPal analytic events
 
 ## 6.6.0 (2023-08-22)
 * BraintreePayPalNativeCheckout
