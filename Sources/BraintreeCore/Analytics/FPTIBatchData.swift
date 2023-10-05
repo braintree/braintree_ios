@@ -27,12 +27,14 @@ struct FPTIBatchData: Codable {
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
         
+        let correlationID: String?
         let errorDescription: String?
         let eventName: String
         let timestamp: String
         let tenantName: String = "Braintree"
 
         enum CodingKeys: String, CodingKey {
+            case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
             case timestamp = "t"

@@ -19,7 +19,8 @@ import BraintreeDataCollector
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL? = nil
 
-    /// Exposed for testing the clientMetadataID associated with this request
+    /// Exposed for testing the clientMetadataID associated with this request.
+    /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
     var clientMetadataID: String? = nil
     
     /// Exposed for testing the intent associated with this request
@@ -398,20 +399,21 @@ import BraintreeDataCollector
         with result: BTPayPalAccountNonce,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded)
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded, correlationID: clientMetadataID)
         completion(result, nil)
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
-            errorDescription: error.localizedDescription
+            errorDescription: error.localizedDescription,
+            correlationID: clientMetadataID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, correlationID: clientMetadataID)
         completion(nil, BTPayPalError.canceled)
     }
 }
