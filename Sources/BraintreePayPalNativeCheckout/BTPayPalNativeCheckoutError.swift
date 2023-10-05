@@ -1,4 +1,5 @@
 import Foundation
+import PayPalCheckout
 
 /// Error returned from the native PayPal flow
 enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatable  {
@@ -28,7 +29,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
     case canceled
 
     /// 7. PayPalCheckout SDK returned an error
-    case checkoutSDKFailed
+    case checkoutSDKFailed(PayPalCheckout.ErrorInfo)
 
     /// 8. Tokenization with the Braintree Gateway failed
     case tokenizationFailed(Error)
@@ -96,8 +97,8 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
             return "Failed to create PayPal order: \(error.localizedDescription)"
         case .canceled:
             return "PayPal flow was canceled by the user."
-        case .checkoutSDKFailed:
-            return "PayPalCheckout SDK returned an error."
+        case .checkoutSDKFailed(let error):
+            return "PayPalCheckout SDK returned an error: \(error.description)"
         case .tokenizationFailed(let error):
             return "Tokenization with the Braintree Gateway failed: \(error.localizedDescription)"
         case .parsingTokenizationResultFailed:

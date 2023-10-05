@@ -152,7 +152,7 @@ import PayPalCheckout
                     },
                     onError: { error in
                         self.clientMetadataID = error.correlationIDs.riskCorrelationID
-                        self.notifyFailure(with: BTPayPalNativeCheckoutError.checkoutSDKFailed, completion: completion)
+                        self.notifyFailure(with: BTPayPalNativeCheckoutError.checkoutSDKFailed(error), completion: completion)
                     },
                     environment: order.environment
                 )
