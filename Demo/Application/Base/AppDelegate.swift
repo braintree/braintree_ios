@@ -49,25 +49,5 @@ import UIKit
         } else if ProcessInfo.processInfo.arguments.contains("-ClientTokenVersion3") {
             UserDefaults.standard.set("3", forKey: "BraintreeDemoSettingsClientTokenVersionDefaultsKey")
         }
-        // End checking for testing arguments
-        
-        guard let settingsBundle = Bundle.main.path(forResource: "Settings", ofType: "bundle") else {
-            print("Could not find Settings.bundle")
-            return
-        }
-        
-        let settings = NSDictionary(contentsOfFile: settingsBundle.appending("/Root.plist"))
-        let preferences: NSArray = settings?.object(forKey: "PreferenceSpecifiers") as! NSArray
-        
-        var defaultsToRegister: [String: String] = [:]
-        preferences.forEach { prefSpecification in
-            let prefSpecification = prefSpecification as! NSDictionary
-            let key = prefSpecification.object(forKey: "Key")
-            if ((key != nil) && prefSpecification.allKeys.contains(where: { value in
-                value as! String == "DefaultValue"
-            })) {
-                defaultsToRegister[key as! String] = "DefaultValue"
-            }
-        }
     }
 }
