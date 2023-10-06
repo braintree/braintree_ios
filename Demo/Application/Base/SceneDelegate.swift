@@ -11,9 +11,7 @@ import Foundation
         
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
-            let rootViewController = BraintreeDemoContainmentViewController()
-            let navigationController = UINavigationController(rootViewController: rootViewController)
-            window?.rootViewController = navigationController
+            window?.rootViewController = UINavigationController(rootViewController: BraintreeDemoContainmentViewController())
             window?.makeKeyAndVisible()
         }
     }
