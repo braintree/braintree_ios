@@ -24,20 +24,24 @@ import BraintreePayPal
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
     ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also
     ///   set `requestBillingAgreement` to `true` on your `BTPayPalNativeVaultRequest`.
+    ///   - userAuthenticationEmail: Optional: Optional: User email that we want to pass through to PayPal Checkout to initiate a quicker authentication flow in
+    ///   case the merchant's user has a PayPal Account with the same email.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        billingAgreementDescription: String? = nil
+        billingAgreementDescription: String? = nil,
+        userAuthenticationEmail: String? = nil
     ) {
         super.init(
             amount: amount,
             intent: intent,
             offerPayLater: offerPayLater,
             currencyCode: currencyCode,
-            requestBillingAgreement: requestBillingAgreement
+            requestBillingAgreement: requestBillingAgreement,
+            userAuthenticationEmail: userAuthenticationEmail
         )
 
         self.amount = amount
@@ -46,5 +50,6 @@ import BraintreePayPal
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.billingAgreementDescription = billingAgreementDescription
+        self.userAuthenticationEmail = userAuthenticationEmail
     }
 }

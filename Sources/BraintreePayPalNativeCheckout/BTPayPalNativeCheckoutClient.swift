@@ -38,7 +38,7 @@ import PayPalCheckout
         _ request: BTPayPalNativeCheckoutRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        tokenize(request: request, completion: completion)
+        tokenize(request: request, userAuthenticationEmail: request.userAuthenticationEmail, completion: completion)
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Native Checkout flow.
@@ -104,6 +104,7 @@ import PayPalCheckout
 
     private func tokenize(
         request: BTPayPalRequest,
+        userAuthenticationEmail: String? = nil,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeStarted)

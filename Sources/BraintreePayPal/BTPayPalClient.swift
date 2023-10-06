@@ -220,6 +220,7 @@ import BraintreeDataCollector
 
     private func tokenize(
         request: BTPayPalRequest,
+        userAuthenticationEmail: String? = nil, 
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
