@@ -3,11 +3,9 @@ on: [pull_request]
 concurrency:
   group: build-${{ github.event.number }} 
   cancel-in-progress: true
-env:
-  XCODE_VERSION: "15.0"
 jobs:
   cocoapods:
-    name: "CocoaPods (Xcode ${{env.XCODE_VERSION}})"
+    name: CocoaPods (Xcode 14.3)
     runs-on: macOS-13-arm64
     steps:
       - name: Check out repository
@@ -15,14 +13,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode ${{env.XCODE_VERSION}}
-        run: sudo xcode-select -switch /Applications/Xcode_${{env.XCODE_VERSION}}.app
+      - name: Use Xcode 14.3
+        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
         run: pod lib lint
   carthage:
-    name: "Carthage (Xcode ${{env.XCODE_VERSION}})"
+    name: Carthage (Xcode 14.3)
     runs-on: macOS-13-arm64
     steps:
       - name: Check out repository
@@ -31,8 +29,8 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: "Use Xcode ${{env.XCODE_VERSION}}"
-        run: sudo xcode-select -switch /Applications/Xcode_${{env.XCODE_VERSION}}.app
+      - name: Use Xcode 14.3
+        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
       - name: Remove SPMTest
         run: |
           git checkout $GITHUB_HEAD_REF
@@ -49,7 +47,7 @@ jobs:
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
   spm:
-    name: "SPM (Xcode ${{env.XCODE_VERSION}})"
+    name: SPM (Xcode 14.3)
     runs-on: macOS-13-arm64
     steps:
       - name: Check out repository
@@ -57,8 +55,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode ${{env.XCODE_VERSION}}
-        run: sudo xcode-select -switch /Applications/Xcode_${{env.XCODE_VERSION}}.app
+      - name: Use Xcode 14.3
+        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
       - name: Use current branch
         run: sed -i '' 's/branch = .*/branch = \"'"${GITHUB_HEAD_REF//\//\/}"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
       - name: Run swift package resolve
