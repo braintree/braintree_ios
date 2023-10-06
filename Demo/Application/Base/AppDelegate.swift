@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 @objcMembers class AppDelegate: UIResponder, UIApplicationDelegate {
         
