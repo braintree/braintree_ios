@@ -68,16 +68,6 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 			}
 			self.completionBlock(nonce)
 		}
-
-		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
-			sender.isEnabled = true
-
-			guard let nonce else {
-				self.progressBlock(error?.localizedDescription)
-				return
-			}
-			self.completionBlock(nonce)
-		}
 	}
 
 	@objc func tappedCheckoutWithVault(_ sender: UIButton) {
