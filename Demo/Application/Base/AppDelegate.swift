@@ -2,9 +2,7 @@ import Foundation
 import UIKit
 
 @objcMembers class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    var window: UIWindow?
-    
+        
     let BraintreeDemoAppDelegatePaymentsURLScheme = "com.braintreepayments.Demo.payments"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
