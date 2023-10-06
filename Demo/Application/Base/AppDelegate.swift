@@ -35,10 +35,10 @@ import UIKit
         
         UserDefaults.standard.removeObject(forKey: "BraintreeDemoSettingsAuthorizationOverride")
         ProcessInfo.processInfo.arguments.forEach { arg in
-            if !arg.contains("-Integration") {
+            if arg.contains("-Integration:") {
                 let testIntegration = arg.replacingOccurrences(of: "-Integration:", with: "")
                 UserDefaults.standard.setValue(testIntegration, forKey: "BraintreeDemoSettingsIntegration")
-            } else if !arg.contains("-Authorization:") {
+            } else if arg.contains("-Authorization:") {
                 let testIntegration = arg.replacingOccurrences(of: "-Authorization:", with: "")
                 UserDefaults.standard.setValue(testIntegration, forKey: "BraintreeDemoSettingsAuthorizationOverride")
             }
@@ -68,5 +68,17 @@ import UIKit
             
             UserDefaults.standard.register(defaults: defaultsToRegister)
         }
+    }
+    
+    // MARK: - UISceneSession lifecycle
+    
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        // Called when a new scene session is being created.
+        // Use this method to select a configuration to create the new scene with.
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 }
