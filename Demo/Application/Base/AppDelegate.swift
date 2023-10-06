@@ -24,13 +24,13 @@ import UIKit
         }
         
         if ProcessInfo.processInfo.arguments.contains("-ClientToken") {
-            UserDefaults.standard.set(BraintreeDemoEnvironment.sandbox, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            UserDefaults.standard.set(BraintreeDemoAuthType.clientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if ProcessInfo.processInfo.arguments.contains("-TokenizationKey") {
-            UserDefaults.standard.set(BraintreeDemoEnvironment.production, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            UserDefaults.standard.set(BraintreeDemoAuthType.tokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if ProcessInfo.processInfo.arguments.contains("-MockedPayPalTokenizationKey") {
-            UserDefaults.standard.set(BraintreeDemoEnvironment.production, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            UserDefaults.standard.set(BraintreeDemoAuthType.mockedPayPalTokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if ProcessInfo.processInfo.arguments.contains("-UITestHardcodedClientToken") {
-            UserDefaults.standard.set(BraintreeDemoEnvironment.production, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            UserDefaults.standard.set(BraintreeDemoAuthType.uiTestHardcodedClientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         }
         
         UserDefaults.standard.removeObject(forKey: "BraintreeDemoSettingsAuthorizationOverride")
