@@ -1,53 +1,57 @@
 import Foundation
 
-@objcMembers class AppDelegate: UIResponder, UIApplicationDelegate {
+@objc class AppDelegate: UIResponder, UIApplicationDelegate {
         
-    let BraintreeDemoAppDelegatePaymentsURLScheme = "com.braintreepayments.Demo.payments"
+    private let returnURLScheme = "com.braintreepayments.Demo.payments"
+    private let processInfoArgs = ProcessInfo.processInfo.arguments
+    private let userDefaults = UserDefaults.standard
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         registerDefaultsFromSettings()
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = BraintreeDemoAppDelegatePaymentsURLScheme
+        persistDemoSettings()
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = returnURLScheme
         
-        UserDefaults.standard.setValue(true, forKey: "magnes.debug.mode")
+        userDefaults.setValue(true, forKey: "magnes.debug.mode")
         
         return true
     }
     
     func registerDefaultsFromSettings() {
-        if ProcessInfo.processInfo.arguments.contains("-EnvironmentSandbox") {
-            UserDefaults.standard.set(BraintreeDemoEnvironment.sandbox, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
-        } else if ProcessInfo.processInfo.arguments.contains("-EnvironmentProduction") {
-            UserDefaults.standard.set(BraintreeDemoEnvironment.production, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
+        if processInfoArgs.contains("-EnvironmentSandbox") {
+            userDefaults.set(BraintreeDemoEnvironment.sandbox, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
+        } else if processInfoArgs.contains("-EnvironmentProduction") {
+            userDefaults.set(BraintreeDemoEnvironment.production, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
         }
         
-        if ProcessInfo.processInfo.arguments.contains("-ClientToken") {
-            UserDefaults.standard.set(BraintreeDemoAuthType.clientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
-        } else if ProcessInfo.processInfo.arguments.contains("-TokenizationKey") {
-            UserDefaults.standard.set(BraintreeDemoAuthType.tokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
-        } else if ProcessInfo.processInfo.arguments.contains("-MockedPayPalTokenizationKey") {
-            UserDefaults.standard.set(BraintreeDemoAuthType.mockedPayPalTokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
-        } else if ProcessInfo.processInfo.arguments.contains("-UITestHardcodedClientToken") {
-            UserDefaults.standard.set(BraintreeDemoAuthType.uiTestHardcodedClientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+        if processInfoArgs.contains("-ClientToken") {
+            userDefaults.set(BraintreeDemoAuthType.clientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+        } else if processInfoArgs.contains("-TokenizationKey") {
+            userDefaults.set(BraintreeDemoAuthType.tokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+        } else if processInfoArgs.contains("-MockedPayPalTokenizationKey") {
+            userDefaults.set(BraintreeDemoAuthType.mockedPayPalTokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+        } else if processInfoArgs.contains("-UITestHardcodedClientToken") {
+            userDefaults.set(BraintreeDemoAuthType.uiTestHardcodedClientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         }
         
-        UserDefaults.standard.removeObject(forKey: "BraintreeDemoSettingsAuthorizationOverride")
-        ProcessInfo.processInfo.arguments.forEach { arg in
+        userDefaults.removeObject(forKey: "BraintreeDemoSettingsAuthorizationOverride")
+        processInfoArgs.forEach { arg in
             if arg.contains("-Integration:") {
                 let testIntegration = arg.replacingOccurrences(of: "-Integration:", with: "")
-                UserDefaults.standard.setValue(testIntegration, forKey: "BraintreeDemoSettingsIntegration")
+                userDefaults.setValue(testIntegration, forKey: "BraintreeDemoSettingsIntegration")
             } else if arg.contains("-Authorization:") {
                 let testIntegration = arg.replacingOccurrences(of: "-Authorization:", with: "")
-                UserDefaults.standard.setValue(testIntegration, forKey: "BraintreeDemoSettingsAuthorizationOverride")
+                userDefaults.setValue(testIntegration, forKey: "BraintreeDemoSettingsAuthorizationOverride")
             }
         }
         
-        if ProcessInfo.processInfo.arguments.contains("-ClientTokenVersion2") {
-            UserDefaults.standard.set("2", forKey: "BraintreeDemoSettingsClientTokenVersionDefaultsKey")
-        } else if ProcessInfo.processInfo.arguments.contains("-ClientTokenVersion3") {
-            UserDefaults.standard.set("3", forKey: "BraintreeDemoSettingsClientTokenVersionDefaultsKey")
+        if processInfoArgs.contains("-ClientTokenVersion2") {
+            userDefaults.set("2", forKey: "BraintreeDemoSettingsClientTokenVersionDefaultsKey")
+        } else if processInfoArgs.contains("-ClientTokenVersion3") {
+            userDefaults.set("3", forKey: "BraintreeDemoSettingsClientTokenVersionDefaultsKey")
         }
-        // End checking for testing arguments
-        
+    }
+    
+    func persistDemoSettings() {
         guard let settingsBundle = Bundle.main.path(forResource: "Settings", ofType: "bundle"),
               let settings = NSDictionary(contentsOfFile: settingsBundle.appending("/Root.plist")) else {
             print("Could not find Settings.bundle")
@@ -63,7 +67,7 @@ import Foundation
                 }
             }
             
-            UserDefaults.standard.register(defaults: defaultsToRegister)
+            userDefaults.register(defaults: defaultsToRegister)
         }
     }
     
@@ -76,6 +80,6 @@ import Foundation
     ) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 }
