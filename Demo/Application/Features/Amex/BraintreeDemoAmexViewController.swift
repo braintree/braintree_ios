@@ -42,7 +42,7 @@ class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewControl
         let card = BTCard()
         card.number = cardNumber
         card.expirationMonth = "12"
-        card.expirationYear = generateFutureYear()
+        card.expirationYear = CardHelpers.generateFuture(.year)
         card.cvv = "1234"
 
         progressBlock("Tokenizing Card")
@@ -71,14 +71,6 @@ class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewControl
                 }
             }
         }
-    }
-
-    private func generateFutureYear() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yy"
-
-        let futureYear = Calendar.current.date(byAdding: .year, value: 3, to: Date())!
-        return dateFormatter.string(from: futureYear)
     }
 
     // TODO: move this helper into BraintreeDemoPaymentButtonBaseViewController once converted so all buttons share the same characteristics

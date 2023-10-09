@@ -28,7 +28,7 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
         progressBlock("Tokenizing card details!")
 
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = newCard()
+        let card = CardHelpers.newCard(from: cardFormView)
 
         setFieldsEnabled(false)
         cardClient.tokenize(card) { nonce, error in
@@ -46,29 +46,7 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
     @objc func tappedAutofill() {
         cardFormView.cardNumberTextField.text = "4111111111111111"
         cardFormView.cvvTextField.text = "123"
-        cardFormView.expirationTextField.text = generateFutureDate()
-    }
-
-    private func newCard() -> BTCard {
-        let card = BTCard()
-
-        if let cardNumber = cardFormView.cardNumber {
-            card.number = cardNumber
-        }
-
-        if let expirationYear = cardFormView.expirationYear {
-            card.expirationYear = expirationYear
-        }
-
-        if let expirationMonth = cardFormView.expirationMonth {
-            card.expirationMonth = expirationMonth
-        }
-
-        if let cvv = cardFormView.cvv {
-            card.cvv = cvv
-        }
-
-        return card
+        cardFormView.expirationTextField.text = CardHelpers.generateFuture(.date)
     }
 
     private func setFieldsEnabled(_ isEnabled: Bool) {
@@ -76,18 +54,6 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
         cardFormView.expirationTextField.isEnabled = isEnabled
         cardFormView.cvvTextField.isEnabled = isEnabled
         autofillButton.isEnabled = isEnabled
-    }
-
-    private func generateFutureDate() -> String {
-        let monthString = "12"
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yy"
-
-        let futureYear = Calendar.current.date(byAdding: .year, value: 3, to: Date())!
-        let yearString = dateFormatter.string(from: futureYear)
-
-        return "\(monthString)/\(yearString)"
     }
 
     private func createSubviews() {
