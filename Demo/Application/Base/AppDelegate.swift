@@ -18,19 +18,19 @@ import Foundation
     
     func registerDefaultsFromSettings() {
         if processInfoArgs.contains("-EnvironmentSandbox") {
-            userDefaults.set(BraintreeDemoEnvironment.sandbox, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
+            userDefaults.set(BraintreeDemoEnvironment.sandbox.rawValue, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
         } else if processInfoArgs.contains("-EnvironmentProduction") {
-            userDefaults.set(BraintreeDemoEnvironment.production, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
+            userDefaults.set(BraintreeDemoEnvironment.production.rawValue, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
         }
         
         if processInfoArgs.contains("-ClientToken") {
-            userDefaults.set(BraintreeDemoAuthType.clientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            userDefaults.set(BraintreeDemoAuthType.clientToken.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if processInfoArgs.contains("-TokenizationKey") {
-            userDefaults.set(BraintreeDemoAuthType.tokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            userDefaults.set(BraintreeDemoAuthType.tokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if processInfoArgs.contains("-MockedPayPalTokenizationKey") {
-            userDefaults.set(BraintreeDemoAuthType.mockedPayPalTokenizationKey, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            userDefaults.set(BraintreeDemoAuthType.mockedPayPalTokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if processInfoArgs.contains("-UITestHardcodedClientToken") {
-            userDefaults.set(BraintreeDemoAuthType.uiTestHardcodedClientToken, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            userDefaults.set(BraintreeDemoAuthType.uiTestHardcodedClientToken.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         }
         
         userDefaults.removeObject(forKey: "BraintreeDemoSettingsAuthorizationOverride")
