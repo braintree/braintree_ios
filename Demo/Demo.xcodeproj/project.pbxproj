@@ -54,7 +54,6 @@
 		A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */; };
 		A0988FE324DB44B20095EEEE /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5224DB44B10095EEEE /* Main.strings */; };
 		A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5424DB44B10095EEEE /* InfoPlist.strings */; };
-		A0988FE624DB44B20095EEEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988F5824DB44B10095EEEE /* main.m */; };
 		A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0988F8D24DB44B10095EEEE /* Images.xcassets */; };
 		A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */; };
 		A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */; };
@@ -172,7 +171,6 @@
 		A0988F5524DB44B10095EEEE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A0988F5624DB44B10095EEEE /* Braintree-Demo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Demo-Prefix.pch"; sourceTree = "<group>"; };
 		A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Demo-Info.plist"; sourceTree = "<group>"; };
-		A0988F5824DB44B10095EEEE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A0988F8D24DB44B10095EEEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A0988F8E24DB44B10095EEEE /* Braintree-Demo.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "Braintree-Demo.entitlements"; sourceTree = "<group>"; };
 		A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoMerchantAPIClient.swift; sourceTree = "<group>"; };
@@ -360,7 +358,6 @@
 				A0988F5424DB44B10095EEEE /* InfoPlist.strings */,
 				A0988F5624DB44B10095EEEE /* Braintree-Demo-Prefix.pch */,
 				A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */,
-				A0988F5824DB44B10095EEEE /* main.m */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -769,11 +766,9 @@
 				BE777AC427D9370400487D23 /* BraintreeDemoSEPADirectDebitViewController.swift in Sources */,
 				BEBD52852AAB9649005D6687 /* BraintreeDemoAmexViewController.swift in Sources */,
 				809E86A82AD01FE7004998B0 /* SceneDelegate.swift in Sources */,
-				A0988FE624DB44B20095EEEE /* main.m in Sources */,
 				A0988F9724DB44B20095EEEE /* BraintreeDemoContainmentViewController.m in Sources */,
 				BEE9304B2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
-				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
 				A0988F9424DB44B20095EEEE /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				80D36DEE2A7967F20035380E /* BraintreeDemoVenmoViewController.swift in Sources */,
 				BEE930492A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift in Sources */,

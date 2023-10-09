@@ -1,6 +1,6 @@
 import Foundation
 
-@objc class AppDelegate: UIResponder, UIApplicationDelegate {
+@UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
         
     private let returnURLScheme = "com.braintreepayments.Demo.payments"
     private let processInfoArgs = ProcessInfo.processInfo.arguments
