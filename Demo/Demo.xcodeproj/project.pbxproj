@@ -71,6 +71,7 @@
 		BEBD52832AAB62FB005D6687 /* ApplePayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */; };
 		BEBD52852AAB9649005D6687 /* AmexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD52842AAB9649005D6687 /* AmexViewController.swift */; };
 		BEBD52872AABA513005D6687 /* ThreeDSecureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD52862AABA513005D6687 /* ThreeDSecureViewController.swift */; };
+		BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED461822AD072D9001B0DDF /* CardHelpers.swift */; };
 		BED7C4CA2ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */; };
 		BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */; };
 		BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */; };
@@ -192,6 +193,7 @@
 		BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayViewController.swift; sourceTree = "<group>"; };
 		BEBD52842AAB9649005D6687 /* AmexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmexViewController.swift; sourceTree = "<group>"; };
 		BEBD52862AABA513005D6687 /* ThreeDSecureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecureViewController.swift; sourceTree = "<group>"; };
+		BED461822AD072D9001B0DDF /* CardHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardHelpers.swift; sourceTree = "<group>"; };
 		BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalWebCheckoutViewController.swift; sourceTree = "<group>"; };
 		BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollectorViewController.swift; sourceTree = "<group>"; };
 		BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationViewController.swift; sourceTree = "<group>"; };
@@ -280,8 +282,9 @@
 		809E86A42ACF6607004998B0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				BEAAAD042970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift */,
 				803FB9DD26D93146002BF92D /* BTCardFormView.swift */,
+				BEAAAD042970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift */,
+				BED461822AD072D9001B0DDF /* CardHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -692,6 +695,7 @@
 				A0988FE624DB44B20095EEEE /* main.m in Sources */,
 				A0988F9724DB44B20095EEEE /* BraintreeDemoContainmentViewController.m in Sources */,
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
+				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
 				A0988F9424DB44B20095EEEE /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				80D36DEE2A7967F20035380E /* VenmoViewController.swift in Sources */,
