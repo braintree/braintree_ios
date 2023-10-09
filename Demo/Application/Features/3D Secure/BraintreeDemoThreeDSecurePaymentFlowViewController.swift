@@ -49,7 +49,7 @@ class BraintreeDemoThreeDSecurePaymentFlowViewController: BraintreeDemoPaymentBu
         callbackCount = 0
         updateCallbackCount()
 
-        let card = newCard()
+        let card = CardHelpers.newCard(from: cardFormView)
         let cardClient = BTCardClient(apiClient: apiClient)
 
         cardClient.tokenize(card) { tokenizedCard, error in
@@ -90,31 +90,9 @@ class BraintreeDemoThreeDSecurePaymentFlowViewController: BraintreeDemoPaymentBu
 
     @objc func tappedToAutofill3DSCard() {
         cardFormView.cardNumberTextField.text = "4000000000001091"
-        cardFormView.expirationTextField.text = generateFutureDate()
+        cardFormView.expirationTextField.text = CardHelpers.generateFuture(.date)
         cardFormView.cvvTextField.text = "123"
         cardFormView.postalCodeTextField.text = "12345"
-    }
-
-    private func newCard() -> BTCard {
-        let card = BTCard()
-
-        if let cardNumber = cardFormView.cardNumber {
-            card.number = cardNumber
-        }
-
-        if let expirationYear = cardFormView.expirationYear {
-            card.expirationYear = expirationYear
-        }
-
-        if let expirationMonth = cardFormView.expirationMonth {
-            card.expirationMonth = expirationMonth
-        }
-
-        if let cvv = cardFormView.cvv {
-            card.cvv = cvv
-        }
-
-        return card
     }
 
     private func createThreeDSecureRequest(with nonce: String) -> BTThreeDSecureRequest {
@@ -204,19 +182,6 @@ class BraintreeDemoThreeDSecurePaymentFlowViewController: BraintreeDemoPaymentBu
             autofillButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             autofillButton.heightAnchor.constraint(equalToConstant: 30)
         ])
-    }
-
-    // TODO: consider moving into a helper class
-    private func generateFutureDate() -> String {
-        let monthString = "12"
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yy"
-
-        let futureYear = Calendar.current.date(byAdding: .year, value: 3, to: Date())!
-        let yearString = dateFormatter.string(from: futureYear)
-
-        return "\(monthString)/\(yearString)"
     }
 }
 

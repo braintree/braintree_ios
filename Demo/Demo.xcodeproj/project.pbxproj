@@ -71,6 +71,7 @@
 		BEBD52832AAB62FB005D6687 /* BraintreeDemoApplePayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD52822AAB62FB005D6687 /* BraintreeDemoApplePayViewController.swift */; };
 		BEBD52852AAB9649005D6687 /* BraintreeDemoAmexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD52842AAB9649005D6687 /* BraintreeDemoAmexViewController.swift */; };
 		BEBD52872AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD52862AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift */; };
+		BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED461822AD072D9001B0DDF /* CardHelpers.swift */; };
 		BED7C4CA2ABDD35700EF8550 /* BraintreeDemoPayPalWebCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7C4C92ABDD35700EF8550 /* BraintreeDemoPayPalWebCheckoutViewController.swift */; };
 		BEE930492A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE930482A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift */; };
 		BEE9304B2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9304A2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift */; };
@@ -190,6 +191,7 @@
 		BEBD52822AAB62FB005D6687 /* BraintreeDemoApplePayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoApplePayViewController.swift; sourceTree = "<group>"; };
 		BEBD52842AAB9649005D6687 /* BraintreeDemoAmexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoAmexViewController.swift; sourceTree = "<group>"; };
 		BEBD52862AABA513005D6687 /* BraintreeDemoThreeDSecurePaymentFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoThreeDSecurePaymentFlowViewController.swift; sourceTree = "<group>"; };
+		BED461822AD072D9001B0DDF /* CardHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardHelpers.swift; sourceTree = "<group>"; };
 		BED7C4C92ABDD35700EF8550 /* BraintreeDemoPayPalWebCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPayPalWebCheckoutViewController.swift; sourceTree = "<group>"; };
 		BEE930482A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoBTDataCollectorViewController.swift; sourceTree = "<group>"; };
 		BEE9304A2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeDemoCardTokenizationViewController.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				BE777AC227D936E700487D23 /* SEPA Direct Debit */,
 				A0988F8124DB44B10095EEEE /* Venmo - Custom Button */,
 				8017E951268FB7C100AE796C /* Views */,
+				BED461822AD072D9001B0DDF /* CardHelpers.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -769,6 +772,8 @@
 				A0988FE624DB44B20095EEEE /* main.m in Sources */,
 				A0988F9724DB44B20095EEEE /* BraintreeDemoContainmentViewController.m in Sources */,
 				BEE9304B2A992F6200C85779 /* BraintreeDemoCardTokenizationViewController.swift in Sources */,
+				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
+				42D47A152554679D0012BAF1 /* BraintreeDemoSceneDelegate.m in Sources */,
 				A0988F9424DB44B20095EEEE /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				80D36DEE2A7967F20035380E /* BraintreeDemoVenmoViewController.swift in Sources */,
 				BEE930492A98FE9200C85779 /* BraintreeDemoBTDataCollectorViewController.swift in Sources */,
