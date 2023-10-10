@@ -2,7 +2,7 @@ import Foundation
 import BraintreeAmericanExpress
 import BraintreeCard
 
-class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewController {
+class AmexViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     lazy var amexClient = BTAmericanExpressClient(apiClient: apiClient)
     lazy var cardClient = BTCardClient(apiClient: apiClient)

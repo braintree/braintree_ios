@@ -30,16 +30,16 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>BraintreeDemoPayPalNativeCheckoutViewController</string>
-				<string>BraintreeDemoPayPalWebCheckoutViewController</string>
-				<string>BraintreeDemoCardTokenizationViewController</string>
-				<string>BraintreeDemoVenmoViewController</string>
-				<string>BraintreeDemoApplePayPassKitViewController</string>
-				<string>BraintreeDemoThreeDSecurePaymentFlowViewController</string>
-				<string>BraintreeDemoBTDataCollectorViewController</string>
-				<string>BraintreeDemoIdealViewController</string>
-				<string>BraintreeDemoAmexViewController</string>
-				<string>BraintreeDemoSEPADirectDebitViewController</string>
+				<string>PayPalNativeCheckoutViewController</string>
+				<string>PayPalWebCheckoutViewController</string>
+				<string>CardTokenizationViewController</string>
+				<string>VenmoViewController</string>
+				<string>ApplePayViewController</string>
+				<string>ThreeDSecureViewController</string>
+				<string>DataCollectorViewController</string>
+				<string>IdealViewController</string>
+				<string>AmexViewController</string>
+				<string>SEPADirectDebitViewController</string>
 			</array>
 		</dict>
 		<dict>

@@ -2,7 +2,7 @@ import Foundation
 import BraintreeLocalPayment
 import BraintreeCore
 
-class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewController {
+class IdealViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     var localPaymentClient: BTLocalPaymentClient!
     var paymentIDLabel: UILabel = UILabel()
@@ -95,7 +95,7 @@ class BraintreeDemoIdealViewController: BraintreeDemoPaymentButtonBaseViewContro
 
 // MARK: - BTLocalPaymentRequestDelegate Conformance
 
-extension BraintreeDemoIdealViewController: BTLocalPaymentRequestDelegate {
+extension IdealViewController: BTLocalPaymentRequestDelegate {
 
     func localPaymentStarted(
         _ request: BraintreeLocalPayment.BTLocalPaymentRequest,

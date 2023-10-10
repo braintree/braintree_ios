@@ -2,7 +2,7 @@ import UIKit
 import BraintreeDataCollector
 import BraintreeCore
 
-class BraintreeDemoBTDataCollectorViewController: BraintreeDemoPaymentButtonBaseViewController {
+class DataCollectorViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     var dataLabel = UILabel()
 

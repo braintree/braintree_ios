@@ -2,7 +2,7 @@ import Foundation
 import BraintreeApplePay
 import PassKit
 
-class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBaseViewController {
+class ApplePayViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
 
@@ -75,7 +75,7 @@ class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBase
 
 // MARK: - PKPaymentAuthorizationViewControllerDelegate Conformance
 
-extension BraintreeDemoApplePayPassKitViewController: PKPaymentAuthorizationViewControllerDelegate {
+extension ApplePayViewController: PKPaymentAuthorizationViewControllerDelegate {
 
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true)

@@ -2,7 +2,7 @@ import Foundation
 import BraintreeCard
 import BraintreeThreeDSecure
 
-class BraintreeDemoThreeDSecurePaymentFlowViewController: BraintreeDemoPaymentButtonBaseViewController {
+class ThreeDSecureViewController: BraintreeDemoPaymentButtonBaseViewController {
 
     private let cardFormView = BTCardFormView()
     private let autofillButton = UIButton(type: .system)
@@ -187,7 +187,7 @@ class BraintreeDemoThreeDSecurePaymentFlowViewController: BraintreeDemoPaymentBu
 
 // MARK: - BTThreeDSecureRequestDelegate Conformance
 
-extension BraintreeDemoThreeDSecurePaymentFlowViewController: BTThreeDSecureRequestDelegate {
+extension ThreeDSecureViewController: BTThreeDSecureRequestDelegate {
 
     func onLookupComplete(
         _ request: BTThreeDSecureRequest,
