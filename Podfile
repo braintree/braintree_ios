@@ -13,7 +13,6 @@ end
 abstract_target 'Tests' do
   pod 'OCMock'
   pod 'OHHTTPStubs/Swift'
-  pod 'xcbeautify'
 
   target 'IntegrationTests'
   target 'BraintreeCoreTests'
