@@ -6,7 +6,7 @@ concurrency:
 jobs:
   cocoapods:
     name: CocoaPods (Xcode 14.3)
-    runs-on: macOS-13
+    runs-on: macOS-13-xlarge
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -21,7 +21,7 @@ jobs:
         run: pod lib lint
   carthage:
     name: Carthage (Xcode 14.3)
-    runs-on: macOS-13
+    runs-on: macOS-13-xlarge
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -48,7 +48,7 @@ jobs:
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
   spm:
     name: SPM (Xcode 14.3)
-    runs-on: macOS-13
+    runs-on: macOS-13-xlarge
     steps:
       - name: Check out repository
         uses: actions/checkout@v3

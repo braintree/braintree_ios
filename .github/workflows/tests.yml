@@ -6,7 +6,7 @@ concurrency:
 jobs:
   unit_test_job:
     name: Unit
-    runs-on: macOS-13
+    runs-on: macOS-13-xlarge
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 14,OS=16.4,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
-    runs-on: macOS-13
+    runs-on: macOS-13-xlarge
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,7 +38,7 @@ jobs:
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 14,OS=16.4,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   integration_test_job:
     name: Integration
-    runs-on: macOS-13
+    runs-on: macOS-13-xlarge
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
