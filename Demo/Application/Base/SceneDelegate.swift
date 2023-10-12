@@ -1,4 +1,5 @@
 import Foundation
+import BraintreeCore
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     

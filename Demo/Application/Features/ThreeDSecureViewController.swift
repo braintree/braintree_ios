@@ -2,7 +2,7 @@ import Foundation
 import BraintreeCard
 import BraintreeThreeDSecure
 
-class ThreeDSecureViewController: BraintreeDemoPaymentButtonBaseViewController {
+class ThreeDSecureViewController: PaymentButtonBaseViewController {
 
     private let cardFormView = BTCardFormView()
     private let autofillButton = UIButton(type: .system)
@@ -20,14 +20,8 @@ class ThreeDSecureViewController: BraintreeDemoPaymentButtonBaseViewController {
         layoutConstraints()
     }
 
-    override func createPaymentButton() -> UIView! {
-        let verifyNewCardButton = UIButton(type: .system)
-        verifyNewCardButton.setTitle("Tokenize and Verify New Card", for: .normal)
-        verifyNewCardButton.setTitleColor(.blue, for: .normal)
-        verifyNewCardButton.setTitleColor(.lightGray, for: .highlighted)
-        verifyNewCardButton.setTitleColor(.lightGray, for: .disabled)
-        verifyNewCardButton.addTarget(self, action: #selector(tappedToVerifyNewCard), for: .touchUpInside)
-        verifyNewCardButton.translatesAutoresizingMaskIntoConstraints = false
+    override func createPaymentButton() -> UIView {
+        let verifyNewCardButton = createButton(title: "Tokenize and Verify New Card", action: #selector(tappedToVerifyNewCard))
 
         callbackCountLabel.translatesAutoresizingMaskIntoConstraints = false
         callbackCountLabel.textAlignment = .center

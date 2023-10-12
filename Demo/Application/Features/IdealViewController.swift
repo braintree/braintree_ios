@@ -2,7 +2,7 @@ import Foundation
 import BraintreeLocalPayment
 import BraintreeCore
 
-class IdealViewController: BraintreeDemoPaymentButtonBaseViewController {
+class IdealViewController: PaymentButtonBaseViewController {
 
     var localPaymentClient: BTLocalPaymentClient!
     var paymentIDLabel: UILabel = UILabel()
@@ -11,20 +11,12 @@ class IdealViewController: BraintreeDemoPaymentButtonBaseViewController {
         super.viewDidLoad()
 
         progressBlock("Loading iDEAL Merchant Account...")
-        paymentButton.isHidden = false
         progressBlock("Ready!")
         title = "iDEAL"
     }
 
-    override func createPaymentButton() -> UIView! {
-        let iDEALButton = UIButton(type: .custom)
-        iDEALButton.setTitle("Pay with iDEAL", for: .normal)
-        iDEALButton.setTitleColor(.blue, for: .normal)
-        iDEALButton.setTitleColor(.lightGray, for: .highlighted)
-        iDEALButton.setTitleColor(.lightGray, for: .disabled)
-        iDEALButton.addTarget(self, action: #selector(tappedIDEAL), for: .touchUpInside)
-        iDEALButton.translatesAutoresizingMaskIntoConstraints = false
-
+    override func createPaymentButton() -> UIView {
+        let iDEALButton = createButton(title: "Pay with iDEAL", action: #selector(tappedIDEAL))
         let label = UILabel()
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false

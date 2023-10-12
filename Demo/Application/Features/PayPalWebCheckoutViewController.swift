@@ -2,14 +2,14 @@ import Foundation
 import UIKit
 import BraintreePayPal
 
-class PayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
+class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
 
-    override func createPaymentButton() -> UIView! {
-        let payPalCheckoutButton = paymentButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
-        let payPalVaultButton = paymentButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
-        let payPalPayLaterButton = paymentButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
+    override func createPaymentButton() -> UIView {
+        let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
+        let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
+        let payPalPayLaterButton = createButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
 
         let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton]
         let stackView = UIStackView(arrangedSubviews: buttons)
@@ -77,17 +77,5 @@ class PayPalWebCheckoutViewController: BraintreeDemoPaymentButtonBaseViewControl
 
             self.completionBlock(nonce)
         }
-    }
-
-    // TODO: move into a shared class once the base ViewControllers are converted to Swift
-    func paymentButton(title: String, action: Selector) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.setTitleColor(.lightGray, for: .highlighted)
-        button.setTitleColor(.lightGray, for: .disabled)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: action, for: .touchUpInside)
-        return button
     }
 }

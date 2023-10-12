@@ -1,35 +1,20 @@
 import UIKit
 import AuthenticationServices
+import BraintreeCore
 import BraintreeSEPADirectDebit
 
-class SEPADirectDebitViewController: BraintreeDemoBaseViewController {
-    private let sepaDirectDebitClient: BTSEPADirectDebitClient
-    private let sepaDirectDebitButton = UIButton(type: .system)
-    
-    override init?(authorization: String!) {
-        guard let apiClient = BTAPIClient(authorization: authorization) else { return nil }
-        
-        sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
+class SEPADirectDebitViewController: PaymentButtonBaseViewController {
 
-        super.init(authorization: authorization)
-        
+    lazy var sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         title = "SEPA Direct Debit"
-        
-        sepaDirectDebitButton.setTitle("SEPA Direct Debit", for: .normal)
-        sepaDirectDebitButton.translatesAutoresizingMaskIntoConstraints = false
-        sepaDirectDebitButton.addTarget(self, action: #selector(sepaDirectDebitButtonTapped), for: .touchUpInside)
-        view.addSubview(sepaDirectDebitButton)
-        
-        NSLayoutConstraint.activate(
-            [
-                sepaDirectDebitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                sepaDirectDebitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ]
-        )
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+
+    override func createPaymentButton() -> UIView {
+        let sepaDirectDebitButton = createButton(title: "SEPA Direct Debit", action: #selector(sepaDirectDebitButtonTapped))
+        return sepaDirectDebitButton
     }
 
     // MARK: - SEPA Direct Debit implementation

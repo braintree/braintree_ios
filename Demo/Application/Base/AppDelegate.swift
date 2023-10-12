@@ -1,4 +1,5 @@
 import Foundation
+import BraintreeCore
 
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
         
