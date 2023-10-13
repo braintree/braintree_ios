@@ -45,13 +45,9 @@
 		9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */; };
 		9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; };
 		9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
 		A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */; };
 		A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7F24DB44B10095EEEE /* Settings.bundle */; };
-		A0988F9724DB44B20095EEEE /* BraintreeDemoContainmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0988E8624DB44B10095EEEE /* BraintreeDemoContainmentViewController.m */; };
 		A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */; };
-		A0988FE324DB44B20095EEEE /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5224DB44B10095EEEE /* Main.strings */; };
-		A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5424DB44B10095EEEE /* InfoPlist.strings */; };
 		A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0988F8D24DB44B10095EEEE /* Images.xcassets */; };
 		A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */; };
 		A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07824EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift */; };
@@ -60,6 +56,7 @@
 		A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */; };
 		BE35FCD82A1BD162008F0326 /* BraintreeLocalPayment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; };
 		BE35FCD92A1BD162008F0326 /* BraintreeLocalPayment.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */; };
 		BE777AC427D9370400487D23 /* SEPADirectDebitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */; };
 		BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE994B0A2AD8377D00470773 /* BaseViewController.swift */; };
 		BE994B0D2AD838A500470773 /* PaymentButtonBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE994B0C2AD838A500470773 /* PaymentButtonBaseViewController.swift */; };
@@ -156,16 +153,9 @@
 		9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		A0988E4924DB43DC0095EEEE /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0988E7B24DB44B10095EEEE /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSettings.swift; sourceTree = "<group>"; };
 		A0988E7F24DB44B10095EEEE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		A0988E8624DB44B10095EEEE /* BraintreeDemoContainmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoContainmentViewController.m; sourceTree = "<group>"; };
 		A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		A0988E8924DB44B10095EEEE /* BraintreeDemoContainmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoContainmentViewController.h; sourceTree = "<group>"; };
-		A0988F5124DB44B10095EEEE /* Demo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Demo-Bridging-Header.h"; sourceTree = "<group>"; };
-		A0988F5324DB44B10095EEEE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
-		A0988F5524DB44B10095EEEE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A0988F5624DB44B10095EEEE /* Braintree-Demo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Demo-Prefix.pch"; sourceTree = "<group>"; };
 		A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Demo-Info.plist"; sourceTree = "<group>"; };
 		A0988F8D24DB44B10095EEEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A0988F8E24DB44B10095EEEE /* Braintree-Demo.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "Braintree-Demo.entitlements"; sourceTree = "<group>"; };
@@ -178,6 +168,7 @@
 		A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
 		BE24C66A28E490F30067B11A /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = ../Frameworks/XCFrameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeLocalPayment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainmentViewController.swift; sourceTree = "<group>"; };
 		BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitViewController.swift; sourceTree = "<group>"; };
 		BE994B0A2AD8377D00470773 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		BE994B0C2AD838A500470773 /* PaymentButtonBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonBaseViewController.swift; sourceTree = "<group>"; };
@@ -310,11 +301,11 @@
 		A0988E7C24DB44B10095EEEE /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				A0988E8024DB44B10095EEEE /* Base View Controllers */,
 				809E86A52AD00AF4004998B0 /* AppDelegate.swift */,
+				BE994B0A2AD8377D00470773 /* BaseViewController.swift */,
+				BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */,
+				BE994B0C2AD838A500470773 /* PaymentButtonBaseViewController.swift */,
 				809E86A72AD01FE7004998B0 /* SceneDelegate.swift */,
-				A0988E8924DB44B10095EEEE /* BraintreeDemoContainmentViewController.h */,
-				A0988E8624DB44B10095EEEE /* BraintreeDemoContainmentViewController.m */,
 				A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */,
 				A0988E7D24DB44B10095EEEE /* Settings */,
 			);
@@ -330,23 +321,10 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		A0988E8024DB44B10095EEEE /* Base View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				BE994B0A2AD8377D00470773 /* BaseViewController.swift */,
-				BE994B0C2AD838A500470773 /* PaymentButtonBaseViewController.swift */,
-			);
-			path = "Base View Controllers";
-			sourceTree = "<group>";
-		};
 		A0988F5024DB44B10095EEEE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				A0988F8E24DB44B10095EEEE /* Braintree-Demo.entitlements */,
-				A0988F5124DB44B10095EEEE /* Demo-Bridging-Header.h */,
-				A0988F5224DB44B10095EEEE /* Main.strings */,
-				A0988F5424DB44B10095EEEE /* InfoPlist.strings */,
-				A0988F5624DB44B10095EEEE /* Braintree-Demo-Prefix.pch */,
 				A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */,
 			);
 			path = "Supporting Files";
@@ -440,7 +418,6 @@
 				A0988E7C24DB44B10095EEEE /* Base */,
 				A0988F5924DB44B10095EEEE /* Features */,
 				A0988F8D24DB44B10095EEEE /* Images.xcassets */,
-				A0988E7B24DB44B10095EEEE /* Localizable.strings */,
 				A0988F8F24DB44B20095EEEE /* Merchant API Client */,
 				A0988F5024DB44B10095EEEE /* Supporting Files */,
 			);
@@ -599,10 +576,7 @@
 			files = (
 				A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */,
 				A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */,
-				A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */,
-				A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */,
 				A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */,
-				A0988FE324DB44B20095EEEE /* Main.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,11 +652,11 @@
 				BED7C4CA2ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift in Sources */,
 				BEBD52872AABA513005D6687 /* ThreeDSecureViewController.swift in Sources */,
 				803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */,
+				BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */,
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
 				BE777AC427D9370400487D23 /* SEPADirectDebitViewController.swift in Sources */,
 				BEBD52852AAB9649005D6687 /* AmexViewController.swift in Sources */,
 				809E86A82AD01FE7004998B0 /* SceneDelegate.swift in Sources */,
-				A0988F9724DB44B20095EEEE /* BraintreeDemoContainmentViewController.m in Sources */,
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
@@ -742,22 +716,6 @@
 				42C574B925FA66FB008B3681 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		A0988F5224DB44B10095EEEE /* Main.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A0988F5324DB44B10095EEEE /* en */,
-			);
-			name = Main.strings;
-			sourceTree = "<group>";
-		};
-		A0988F5424DB44B10095EEEE /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A0988F5524DB44B10095EEEE /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -945,7 +903,6 @@
 				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Application/Supporting Files/Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;
@@ -975,7 +932,6 @@
 				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Application/Supporting Files/Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;
