@@ -1,10 +1,10 @@
 import UIKit
 import BraintreeCard
 
-class CardTokenizationViewController: BraintreeDemoPaymentButtonBaseViewController {
+class CardTokenizationViewController: PaymentButtonBaseViewController {
 
     private let cardFormView = BTCardFormView()
-    private let autofillButton = UIButton(type: .system)
+    private var autofillButton = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -12,15 +12,8 @@ class CardTokenizationViewController: BraintreeDemoPaymentButtonBaseViewControll
         layoutConstraints()
     }
 
-    override func createPaymentButton() -> UIView! {
-        let submitButton = UIButton(type: .system)
-        submitButton.setTitle("Submit", for: .normal)
-        submitButton.setTitleColor(.blue, for: .normal)
-        submitButton.setTitleColor(.lightGray, for: .highlighted)
-        submitButton.setTitleColor(.lightGray, for: .disabled)
-        submitButton.addTarget(self, action: #selector(tappedSubmit), for: .touchUpInside)
-        submitButton.translatesAutoresizingMaskIntoConstraints = false
-
+    override func createPaymentButton() -> UIView {
+        let submitButton = createButton(title: "Submit", action: #selector(tappedSubmit))
         return submitButton
     }
 
@@ -62,10 +55,7 @@ class CardTokenizationViewController: BraintreeDemoPaymentButtonBaseViewControll
         cardFormView.hidePostalCodeField = true
         setFieldsEnabled(true)
 
-        autofillButton.setTitle("Autofill", for: .normal)
-        autofillButton.setTitleColor(.blue, for: .normal)
-        autofillButton.addTarget(self, action: #selector(tappedAutofill), for: .touchUpInside)
-        autofillButton.translatesAutoresizingMaskIntoConstraints = false
+        autofillButton = createButton(title: "Autofill", action: #selector(tappedAutofill))
 
         view.addSubview(cardFormView)
         view.addSubview(autofillButton)
