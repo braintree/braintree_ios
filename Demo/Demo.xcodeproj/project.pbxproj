@@ -308,10 +308,11 @@
 		A0988E7C24DB44B10095EEEE /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				A0988E8024DB44B10095EEEE /* Base View Controllers */,
 				809E86A52AD00AF4004998B0 /* AppDelegate.swift */,
-				809E86A72AD01FE7004998B0 /* SceneDelegate.swift */,
+				BE994B0A2AD8377D00470773 /* BaseViewController.swift */,
 				BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */,
+				BE994B0C2AD838A500470773 /* PaymentButtonBaseViewController.swift */,
+				809E86A72AD01FE7004998B0 /* SceneDelegate.swift */,
 				A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */,
 				A0988E7D24DB44B10095EEEE /* Settings */,
 			);
@@ -325,15 +326,6 @@
 				A0988E7F24DB44B10095EEEE /* Settings.bundle */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		A0988E8024DB44B10095EEEE /* Base View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				BE994B0A2AD8377D00470773 /* BaseViewController.swift */,
-				BE994B0C2AD838A500470773 /* PaymentButtonBaseViewController.swift */,
-			);
-			path = "Base View Controllers";
 			sourceTree = "<group>";
 		};
 		A0988F5024DB44B10095EEEE /* Supporting Files */ = {
