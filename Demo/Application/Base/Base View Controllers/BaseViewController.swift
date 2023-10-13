@@ -6,7 +6,6 @@ import BraintreeCore
 
     var progressBlock: ((String?) -> Void) = { _ in }
     var completionBlock: ((BTPaymentMethodNonce?) -> Void) = { _ in }
-    var transactionBlock: (() -> Void) = { }
 
     // TODO: remove @objc when final VC is Swift
     @objc(initWithAuthorization:)

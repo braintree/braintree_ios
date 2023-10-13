@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import BraintreeCore
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -12,7 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = UINavigationController(rootViewController: BraintreeDemoContainmentViewController())
+            window?.rootViewController = UINavigationController(rootViewController: ContainmentViewController())
             window?.makeKeyAndVisible()
         }
     }
