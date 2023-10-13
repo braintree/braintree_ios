@@ -45,7 +45,6 @@
 		9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */; };
 		9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; };
 		9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7B24DB44B10095EEEE /* Localizable.strings */; };
 		A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */; };
 		A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7F24DB44B10095EEEE /* Settings.bundle */; };
 		A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */; };
@@ -154,7 +153,6 @@
 		9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		9C36BD4826B3102B00F0A559 /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		A0988E4924DB43DC0095EEEE /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0988E7B24DB44B10095EEEE /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSettings.swift; sourceTree = "<group>"; };
 		A0988E7F24DB44B10095EEEE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -420,7 +418,6 @@
 				A0988E7C24DB44B10095EEEE /* Base */,
 				A0988F5924DB44B10095EEEE /* Features */,
 				A0988F8D24DB44B10095EEEE /* Images.xcassets */,
-				A0988E7B24DB44B10095EEEE /* Localizable.strings */,
 				A0988F8F24DB44B20095EEEE /* Merchant API Client */,
 				A0988F5024DB44B10095EEEE /* Supporting Files */,
 			);
@@ -579,7 +576,6 @@
 			files = (
 				A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */,
 				A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */,
-				A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */,
 				A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
