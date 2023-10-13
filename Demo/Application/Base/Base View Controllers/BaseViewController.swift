@@ -1,14 +1,11 @@
 import UIKit
 import BraintreeCore
 
-// TODO: remove @objcMembers when final VC is Swift
-@objcMembers class BaseViewController: UIViewController {
+class BaseViewController: UIViewController {
 
     var progressBlock: ((String?) -> Void) = { _ in }
     var completionBlock: ((BTPaymentMethodNonce?) -> Void) = { _ in }
 
-    // TODO: remove @objc when final VC is Swift
-    @objc(initWithAuthorization:)
     init(authorization: String) {
         super.init(nibName: nil, bundle: nil)
     }
