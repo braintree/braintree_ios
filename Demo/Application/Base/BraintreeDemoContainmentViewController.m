@@ -1,5 +1,4 @@
 #import "BraintreeDemoContainmentViewController.h"
-#import "BraintreeDemoBaseViewController.h"
 #import "Demo-Swift.h"
 @import InAppSettingsKit;
 @import BraintreeCore;
@@ -9,7 +8,7 @@
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
 @property (nonatomic, strong) BTPaymentMethodNonce *latestTokenizedPayment;
 @property (nonatomic, strong) NSString *latestTokenizedPaymentString;
-@property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
+@property (nonatomic, strong) BaseViewController *currentDemoViewController;
 
 @end
 
@@ -190,7 +189,7 @@
     }
 }
 
-- (void)setCurrentDemoViewController:(BraintreeDemoBaseViewController *)currentDemoViewController {
+- (void)setCurrentDemoViewController:(BaseViewController *)currentDemoViewController {
     _currentDemoViewController = currentDemoViewController;
     
     if (!_currentDemoViewController) {
@@ -208,18 +207,18 @@
     self.title = _currentDemoViewController.title;
 }
 
-- (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithAuthorization:(NSString *)authorization {
+- (BaseViewController *)instantiateCurrentIntegrationViewControllerWithAuthorization:(NSString *)authorization {
     NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
     NSLog(@"Loading integration: %@", integrationName);
     
     // The prefix "Demo." is required for integration view controllers written in Swift
     Class integrationClass = NSClassFromString(integrationName) ?: NSClassFromString([NSString stringWithFormat:@"Demo.%@", integrationName]);
-    if (![integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]]) {
+    if (![integrationClass isSubclassOfClass:[BaseViewController class]]) {
         NSLog(@"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
         return nil;
     }
 
-    return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithAuthorization:authorization];
+    return [(BaseViewController *)[integrationClass alloc] initWithAuthorization:authorization];
 }
 
 - (void)containIntegrationViewController:(UIViewController *)viewController {

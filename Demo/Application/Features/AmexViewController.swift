@@ -1,8 +1,8 @@
-import Foundation
+import UIKit
 import BraintreeAmericanExpress
 import BraintreeCard
 
-class AmexViewController: BraintreeDemoPaymentButtonBaseViewController {
+class AmexViewController: PaymentButtonBaseViewController {
 
     lazy var amexClient = BTAmericanExpressClient(apiClient: apiClient)
     lazy var cardClient = BTCardClient(apiClient: apiClient)
@@ -12,7 +12,7 @@ class AmexViewController: BraintreeDemoPaymentButtonBaseViewController {
         title = "Amex"
     }
 
-    override func createPaymentButton() -> UIView! {
+    override func createPaymentButton() -> UIView {
         let validCardButton = createButton(title: "Valid card", action: #selector(tappedValidCard))
         let insufficientPointsCardButton = createButton(title: "Insufficient points card", action: #selector(tappedInsufficientPointsCard))
         let ineligibleCardButton = createButton(title: "Ineligible card", action: #selector(tappedIneligibleCard))
@@ -71,17 +71,5 @@ class AmexViewController: BraintreeDemoPaymentButtonBaseViewController {
                 }
             }
         }
-    }
-
-    // TODO: move this helper into BraintreeDemoPaymentButtonBaseViewController once converted so all buttons share the same characteristics
-    private func createButton(title: String, action: Selector) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.setTitleColor(.lightGray, for: .highlighted)
-        button.setTitleColor(.lightGray, for: .disabled)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: action, for: .touchUpInside)
-        return button
     }
 }
