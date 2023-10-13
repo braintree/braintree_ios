@@ -45,12 +45,12 @@ class ContainmentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Braintree", comment: "")
+        title = "Braintree"
+        view.backgroundColor = .systemBackground
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(tappedRefresh))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Settings", comment: ""), style: .plain, target: self, action: #selector(tappedSettings))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(tappedSettings))
 
-        view.backgroundColor = .systemBackground
         navigationController?.setToolbarHidden(false, animated: true)
         navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
 
@@ -63,7 +63,7 @@ class ContainmentViewController: UIViewController {
 
         let button = UIButton(type: .custom)
         button.titleLabel?.numberOfLines = 0
-        button.setTitle(NSLocalizedString("Ready", comment: ""), for: .normal)
+        button.setTitle("Ready", for: .normal)
         button.setTitleColor(.label, for: .normal)
         button.addTarget(self, action: #selector(tappedStatus), for: .touchUpInside)
         button.titleLabel?.textAlignment = .center
@@ -83,7 +83,7 @@ class ContainmentViewController: UIViewController {
 
     private func updateStatus(_ status: String) {
         DispatchQueue.main.async {
-            (self.statusItem?.customView as? UIButton)?.setTitle(NSLocalizedString(status, comment: ""), for: .normal)
+            (self.statusItem?.customView as? UIButton)?.setTitle(status, for: .normal)
             (self.statusItem?.customView as? UIButton)?.setTitleColor(.label, for: .normal)
             print((self.statusItem?.customView as? UIButton)?.titleLabel?.text ?? "no status returned")
         }
@@ -111,9 +111,12 @@ class ContainmentViewController: UIViewController {
             let nonce = currentPaymentMethodNonce.nonce
             updateStatus("Creating Transaction…")
 
-            let merchantAccountID: String? = currentPaymentMethodNonce.type == "UnionPay" ? "fake_switch_usd" : nil
+            let merchantAccountID = currentPaymentMethodNonce.type == "UnionPay" ? "fake_switch_usd" : nil
 
-            BraintreeDemoMerchantAPIClient.shared.makeTransaction(paymentMethodNonce: nonce, merchantAccountID: merchantAccountID) { transactionID, error in
+            BraintreeDemoMerchantAPIClient.shared.makeTransaction(
+                paymentMethodNonce: nonce,
+                merchantAccountID: merchantAccountID
+            ) { transactionID, error in
                 self.currentPaymentMethodNonce = nil
 
                 if let error {
@@ -121,7 +124,7 @@ class ContainmentViewController: UIViewController {
                 } else if let transactionID {
                     self.updateStatus(transactionID)
                 } else {
-                    print("No nonce or error was returned from the server side request")
+                    self.updateStatus("No nonce or error was returned from the server side request")
                 }
             }
         }
@@ -136,7 +139,7 @@ class ContainmentViewController: UIViewController {
             currentViewController.view.removeFromSuperview()
         }
 
-        title = NSLocalizedString("Braintree", comment: "")
+        title = "Braintree"
 
         if let authorizationOverride = BraintreeDemoSettings.authorizationOverride {
             currentViewController = instantiateViewController(with: authorizationOverride)
@@ -169,7 +172,7 @@ class ContainmentViewController: UIViewController {
                     self.updateStatus("Using Client Token")
                     self.currentViewController = self.instantiateViewController(with: clientToken)
                 } else {
-                    print("No client token or error was returned from the server side request")
+                    self.updateStatus("No client token or error was returned from the server side request")
                 }
             }
 
