@@ -49,7 +49,6 @@
 		A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */; };
 		A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A0988E7F24DB44B10095EEEE /* Settings.bundle */; };
 		A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */; };
-		A0988FE324DB44B20095EEEE /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5224DB44B10095EEEE /* Main.strings */; };
 		A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0988F5424DB44B10095EEEE /* InfoPlist.strings */; };
 		A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0988F8D24DB44B10095EEEE /* Images.xcassets */; };
 		A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0988F9024DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift */; };
@@ -160,7 +159,6 @@
 		A0988E7E24DB44B10095EEEE /* BraintreeDemoSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoSettings.swift; sourceTree = "<group>"; };
 		A0988E7F24DB44B10095EEEE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A0988E8824DB44B10095EEEE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		A0988F5324DB44B10095EEEE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		A0988F5524DB44B10095EEEE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Demo-Info.plist"; sourceTree = "<group>"; };
 		A0988F8D24DB44B10095EEEE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -331,7 +329,6 @@
 			isa = PBXGroup;
 			children = (
 				A0988F8E24DB44B10095EEEE /* Braintree-Demo.entitlements */,
-				A0988F5224DB44B10095EEEE /* Main.strings */,
 				A0988F5424DB44B10095EEEE /* InfoPlist.strings */,
 				A0988F5724DB44B10095EEEE /* Braintree-Demo-Info.plist */,
 			);
@@ -588,7 +585,6 @@
 				A0988F9124DB44B20095EEEE /* Localizable.strings in Resources */,
 				A0988FE424DB44B20095EEEE /* InfoPlist.strings in Resources */,
 				A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */,
-				A0988FE324DB44B20095EEEE /* Main.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,14 +724,6 @@
 				42C574B925FA66FB008B3681 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		A0988F5224DB44B10095EEEE /* Main.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A0988F5324DB44B10095EEEE /* en */,
-			);
-			name = Main.strings;
 			sourceTree = "<group>";
 		};
 		A0988F5424DB44B10095EEEE /* InfoPlist.strings */ = {
