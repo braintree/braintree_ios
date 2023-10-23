@@ -157,7 +157,7 @@ import PayPalCheckout
                     },
                     environment: order.environment
                 )
-
+                payPalNativeConfig.authConfig.userEmail = userAuthenticationEmail
                 PayPalCheckout.Checkout.showsExitAlert = false
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
                 
