@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 6.7.0 (2023-10-09)
+* BraintreeCore
+  * Fix bug where `type` was always returned as `Unknown` in `fetchPaymentMethodNonces` (fixes #1099)
+  * Analytics
+    * Send `tenant_name` in `event_params` to PayPal's analytics service (FPTI)
+    * Update `component` from `btmobilesdk` to `braintreeclientsdk` for PayPal's analytics service (FPTI)
+    * Send `correlation_id`, when possible, in PayPal analytic events
+
 ## 6.6.0 (2023-08-22)
 * BraintreePayPalNativeCheckout
   * Update PayPalCheckout from 1.0.0 to 1.1.0.

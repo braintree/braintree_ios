@@ -48,9 +48,9 @@ class BTAnalyticsService: Equatable {
     ///  Events are queued and sent in batches to the analytics service, based on the status of the app and
     ///  the number of queued events. After exiting this method, there is no guarantee that the event has been sent.
     /// - Parameter eventName: String representing the event name
-    func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil) {
+    func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil, correlationID: String? = nil) {
         DispatchQueue.main.async {
-            self.enqueueEvent(eventName, errorDescription: errorDescription)
+            self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
             self.flushIfAtThreshold()
         }
     }
@@ -59,10 +59,11 @@ class BTAnalyticsService: Equatable {
     func sendAnalyticsEvent(
         _ eventName: String,
         errorDescription: String? = nil,
+        correlationID: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         DispatchQueue.main.async {
-            self.enqueueEvent(eventName, errorDescription: errorDescription)
+            self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
             self.flush(completion)
         }
     }
@@ -117,9 +118,10 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     /// Adds an event to the queue
-    func enqueueEvent(_ eventName: String, errorDescription: String?) {
+    func enqueueEvent(_ eventName: String, errorDescription: String?, correlationID: String?) {
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
         let event = FPTIBatchData.Event(
+            correlationID: correlationID,
             errorDescription: errorDescription,
             eventName: eventName,
             timestamp: String(timestampInMilliseconds)

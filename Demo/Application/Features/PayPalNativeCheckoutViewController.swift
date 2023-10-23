@@ -2,30 +2,19 @@ import Foundation
 import UIKit
 import BraintreePayPalNativeCheckout
 
-class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
+class PayPalNativeCheckoutViewController: PaymentButtonBaseViewController {
 	lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 
-	func checkoutPaymentButton(title: String, action: Selector) -> UIButton {
-		let button = UIButton(type: .system)
-		button.setTitle(title, for: .normal)
-		button.setTitleColor(.blue, for: .normal)
-		button.setTitleColor(.lightGray, for: .highlighted)
-		button.setTitleColor(.lightGray, for: .disabled)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		button.addTarget(self, action: action, for: .touchUpInside)
-		return button
-	}
-
-	override func createPaymentButton() -> UIView! {
-		let payPalCheckoutButton = checkoutPaymentButton(title: "One Time Checkout", action: #selector(tappedPayPalCheckout))
+	override func createPaymentButton() -> UIView {
+		let payPalCheckoutButton = createButton(title: "One Time Checkout", action: #selector(tappedPayPalCheckout))
 
 		// Buyers are shown a billing agreement without purchase
-		// For more information: https://developer.paypal.com/braintree/docs/guides/paypal/vault/ios/v5
-		let vaultCheckoutButton = checkoutPaymentButton(title: "Vault Checkout", action: #selector(tappedVaultCheckout))
+		// For more information: https://developer.paypal.com/braintree/docs/guides/paypal/vault/ios/v6
+		let vaultCheckoutButton = createButton(title: "Vault Checkout", action: #selector(tappedVaultCheckout))
 
 		// Buyers are shown a billing agreement with purchase
-		// For more information: https://developer.paypal.com/braintree/docs/guides/paypal/checkout-with-vault/ios/v5
-		let checkoutWithVaultButton = checkoutPaymentButton(title: "Checkout With Vault", action: #selector(tappedCheckoutWithVault))
+		// For more information: https://developer.paypal.com/braintree/docs/guides/paypal/checkout-with-vault/ios/v6
+		let checkoutWithVaultButton = createButton(title: "Checkout With Vault", action: #selector(tappedCheckoutWithVault))
 
 		let stackView = UIStackView(arrangedSubviews: [payPalCheckoutButton, vaultCheckoutButton, checkoutWithVaultButton])
 		stackView.axis = .vertical
@@ -58,16 +47,6 @@ class BraintreeDemoPayPalNativeCheckoutViewController: BraintreeDemoPaymentButto
 		sender.isEnabled = false
 
 		let request = BTPayPalNativeVaultRequest()
-
-		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
-			sender.isEnabled = true
-
-			guard let nonce else {
-				self.progressBlock(error?.localizedDescription)
-				return
-			}
-			self.completionBlock(nonce)
-		}
 
 		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
 			sender.isEnabled = true

@@ -15,7 +15,7 @@ class Venmo_UITests: XCTestCase {
         demoApp = XCUIApplication(bundleIdentifier: "com.braintreepayments.Demo")
         demoApp.launchArguments.append("-EnvironmentSandbox")
         demoApp.launchArguments.append("-ClientToken")
-        demoApp.launchArguments.append("-Integration:BraintreeDemoVenmoViewController")
+        demoApp.launchArguments.append("-Integration:VenmoViewController")
         demoApp.launch()
         
         waitForElementToBeHittable(demoApp.buttons["Venmo"])

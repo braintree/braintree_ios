@@ -2,7 +2,7 @@ import Foundation
 import BraintreeApplePay
 import PassKit
 
-class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBaseViewController {
+class ApplePayViewController: PaymentButtonBaseViewController {
 
     lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
 
@@ -12,14 +12,16 @@ class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBase
         title = "Apple Pay"
     }
 
-    override func createPaymentButton() -> UIView! {
+    override func createPaymentButton() -> UIView {
         if !PKPaymentAuthorizationViewController.canMakePayments() {
             progressBlock("canMakePayments returned false, hiding Apple Pay button")
-            return nil
         }
 
         let applePayButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
+        applePayButton.translatesAutoresizingMaskIntoConstraints = false
         applePayButton.addTarget(self, action: #selector(tappedApplePayButton), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([applePayButton.heightAnchor.constraint(equalToConstant: 50)])
 
         return applePayButton
     }
@@ -73,7 +75,7 @@ class BraintreeDemoApplePayPassKitViewController: BraintreeDemoPaymentButtonBase
 
 // MARK: - PKPaymentAuthorizationViewControllerDelegate Conformance
 
-extension BraintreeDemoApplePayPassKitViewController: PKPaymentAuthorizationViewControllerDelegate {
+extension ApplePayViewController: PKPaymentAuthorizationViewControllerDelegate {
 
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true)

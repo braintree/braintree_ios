@@ -1,7 +1,7 @@
 import UIKit
 import BraintreeVenmo
 
-class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewController {
+class VenmoViewController: PaymentButtonBaseViewController {
     
     var venmoClient: BTVenmoClient!
     
@@ -11,16 +11,9 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
         title = "Custom Venmo Button"
     }
     
-    override func createPaymentButton() -> UIView! {
-        let venmoButton = UIButton(type: .system)
-        venmoButton.setTitle("Venmo", for: .normal)
-        venmoButton.setTitleColor(.blue, for: .normal)
-        venmoButton.setTitleColor(.lightGray, for: .highlighted)
-        venmoButton.setTitleColor(.lightGray, for: .disabled)
-        venmoButton.addTarget(self, action: #selector(tappedVenmo), for: .touchUpInside)
-        venmoButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let venmoECDButton = UIButton(type: .system)
+    override func createPaymentButton() -> UIView {
+        let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
+        let venmoECDButton = createButton(title: "Venmo (with ECD options)", action: #selector(tappedVenmoWithECD))
         venmoECDButton.setTitle("Venmo (with ECD options)", for: .normal)
         venmoECDButton.setTitleColor(.blue, for: .normal)
         venmoECDButton.setTitleColor(.lightGray, for: .highlighted)
@@ -32,16 +25,9 @@ class BraintreeDemoVenmoViewController: BraintreeDemoPaymentButtonBaseViewContro
         stackView.axis = .vertical
         stackView.spacing = 5
         stackView.alignment = .center
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            venmoButton.topAnchor.constraint(equalTo: stackView.topAnchor),
-            venmoButton.heightAnchor.constraint(equalToConstant: 19.5),
-            
-            venmoECDButton.topAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: 5),
-            venmoECDButton.heightAnchor.constraint(equalToConstant: 19.5)
-        ])
-        
+
         return stackView
     }
     

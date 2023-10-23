@@ -18,9 +18,7 @@
 			<key>Titles</key>
 			<array>
 				<string>PayPal - Native Checkout</string>
-				<string>PayPal - Vault</string>
-				<string>PayPal - Checkout</string>
-				<string>PayPal - Pay Later</string>
+				<string>PayPal - Web Checkout</string>
 				<string>Credit Card Tokenization</string>
 				<string>Venmo - Custom Button</string>
 				<string>Apple Pay - PassKit</string>
@@ -32,18 +30,16 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>BraintreeDemoPayPalNativeCheckoutViewController</string>
-				<string>BraintreeDemoPayPalVaultViewController</string>
-				<string>BraintreeDemoPayPalCheckoutViewController</string>
-				<string>BraintreeDemoPayPalPayLaterViewController</string>
-				<string>BraintreeDemoCardTokenizationViewController</string>
-				<string>BraintreeDemoVenmoViewController</string>
-				<string>BraintreeDemoApplePayPassKitViewController</string>
-				<string>BraintreeDemoThreeDSecurePaymentFlowViewController</string>
-				<string>BraintreeDemoBTDataCollectorViewController</string>
-				<string>BraintreeDemoIdealViewController</string>
-				<string>BraintreeDemoAmexViewController</string>
-				<string>BraintreeDemoSEPADirectDebitViewController</string>
+				<string>PayPalNativeCheckoutViewController</string>
+				<string>PayPalWebCheckoutViewController</string>
+				<string>CardTokenizationViewController</string>
+				<string>VenmoViewController</string>
+				<string>ApplePayViewController</string>
+				<string>ThreeDSecureViewController</string>
+				<string>DataCollectorViewController</string>
+				<string>IdealViewController</string>
+				<string>AmexViewController</string>
+				<string>SEPADirectDebitViewController</string>
 			</array>
 		</dict>
 		<dict>
@@ -107,7 +103,6 @@
 			<array>
 				<integer>0</integer>
 				<integer>1</integer>
-				<integer>2</integer>
 			</array>
 		</dict>
 		<dict>

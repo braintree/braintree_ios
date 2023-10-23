@@ -1,10 +1,10 @@
 import UIKit
 import BraintreeCard
 
-class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBaseViewController {
+class CardTokenizationViewController: PaymentButtonBaseViewController {
 
     private let cardFormView = BTCardFormView()
-    private let autofillButton = UIButton(type: .system)
+    private var autofillButton = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -12,15 +12,8 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
         layoutConstraints()
     }
 
-    override func createPaymentButton() -> UIView! {
-        let submitButton = UIButton(type: .system)
-        submitButton.setTitle("Submit", for: .normal)
-        submitButton.setTitleColor(.blue, for: .normal)
-        submitButton.setTitleColor(.lightGray, for: .highlighted)
-        submitButton.setTitleColor(.lightGray, for: .disabled)
-        submitButton.addTarget(self, action: #selector(tappedSubmit), for: .touchUpInside)
-        submitButton.translatesAutoresizingMaskIntoConstraints = false
-
+    override func createPaymentButton() -> UIView {
+        let submitButton = createButton(title: "Submit", action: #selector(tappedSubmit))
         return submitButton
     }
 
@@ -28,7 +21,7 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
         progressBlock("Tokenizing card details!")
 
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = newCard()
+        let card = CardHelpers.newCard(from: cardFormView)
 
         setFieldsEnabled(false)
         cardClient.tokenize(card) { nonce, error in
@@ -46,29 +39,7 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
     @objc func tappedAutofill() {
         cardFormView.cardNumberTextField.text = "4111111111111111"
         cardFormView.cvvTextField.text = "123"
-        cardFormView.expirationTextField.text = generateFutureDate()
-    }
-
-    private func newCard() -> BTCard {
-        let card = BTCard()
-
-        if let cardNumber = cardFormView.cardNumber {
-            card.number = cardNumber
-        }
-
-        if let expirationYear = cardFormView.expirationYear {
-            card.expirationYear = expirationYear
-        }
-
-        if let expirationMonth = cardFormView.expirationMonth {
-            card.expirationMonth = expirationMonth
-        }
-
-        if let cvv = cardFormView.cvv {
-            card.cvv = cvv
-        }
-
-        return card
+        cardFormView.expirationTextField.text = CardHelpers.generateFuture(.date)
     }
 
     private func setFieldsEnabled(_ isEnabled: Bool) {
@@ -78,28 +49,13 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
         autofillButton.isEnabled = isEnabled
     }
 
-    private func generateFutureDate() -> String {
-        let monthString = "12"
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yy"
-
-        let futureYear = Calendar.current.date(byAdding: .year, value: 3, to: Date())!
-        let yearString = dateFormatter.string(from: futureYear)
-
-        return "\(monthString)/\(yearString)"
-    }
-
     private func createSubviews() {
         cardFormView.translatesAutoresizingMaskIntoConstraints = false
         cardFormView.hidePhoneNumberField = true
         cardFormView.hidePostalCodeField = true
         setFieldsEnabled(true)
 
-        autofillButton.setTitle("Autofill", for: .normal)
-        autofillButton.setTitleColor(.blue, for: .normal)
-        autofillButton.addTarget(self, action: #selector(tappedAutofill), for: .touchUpInside)
-        autofillButton.translatesAutoresizingMaskIntoConstraints = false
+        autofillButton = createButton(title: "Autofill", action: #selector(tappedAutofill))
 
         view.addSubview(cardFormView)
         view.addSubview(autofillButton)

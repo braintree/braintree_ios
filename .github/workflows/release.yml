@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: macOS-13
+    runs-on: macOS-13-xlarge
     steps:
       - name: Check out repository
         uses: actions/checkout@v2

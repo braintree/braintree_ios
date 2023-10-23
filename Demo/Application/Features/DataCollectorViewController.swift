@@ -2,7 +2,7 @@ import UIKit
 import BraintreeDataCollector
 import BraintreeCore
 
-class BraintreeDemoBTDataCollectorViewController: BraintreeDemoPaymentButtonBaseViewController {
+class DataCollectorViewController: PaymentButtonBaseViewController {
 
     var dataLabel = UILabel()
 
@@ -11,15 +11,8 @@ class BraintreeDemoBTDataCollectorViewController: BraintreeDemoPaymentButtonBase
         title = "Braintree Data Collector"
     }
 
-    override func createPaymentButton() -> UIView! {
-        let dataCollectorButton = UIButton(type: .system)
-        dataCollectorButton.setTitle("Collect Device Data", for: .normal)
-        dataCollectorButton.setTitleColor(.blue, for: .normal)
-        dataCollectorButton.setTitleColor(.lightGray, for: .highlighted)
-        dataCollectorButton.setTitleColor(.lightGray, for: .disabled)
-        dataCollectorButton.addTarget(self, action: #selector(tappedCollect), for: .touchUpInside)
-        dataCollectorButton.translatesAutoresizingMaskIntoConstraints = false
-
+    override func createPaymentButton() -> UIView {
+        let dataCollectorButton = createButton(title: "Collect Device Data", action: #selector(tappedCollect))
         let label = UILabel()
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
@@ -31,12 +24,8 @@ class BraintreeDemoBTDataCollectorViewController: BraintreeDemoPaymentButtonBase
         stackView.axis = .vertical
         stackView.spacing = 5
         stackView.alignment = .center
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            dataCollectorButton.heightAnchor.constraint(equalToConstant: 19.5),
-            label.heightAnchor.constraint(equalToConstant: 19.5)
-        ])
 
         return stackView
     }

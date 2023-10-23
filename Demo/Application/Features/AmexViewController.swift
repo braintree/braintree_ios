@@ -1,8 +1,8 @@
-import Foundation
+import UIKit
 import BraintreeAmericanExpress
 import BraintreeCard
 
-class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewController {
+class AmexViewController: PaymentButtonBaseViewController {
 
     lazy var amexClient = BTAmericanExpressClient(apiClient: apiClient)
     lazy var cardClient = BTCardClient(apiClient: apiClient)
@@ -12,7 +12,7 @@ class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewControl
         title = "Amex"
     }
 
-    override func createPaymentButton() -> UIView! {
+    override func createPaymentButton() -> UIView {
         let validCardButton = createButton(title: "Valid card", action: #selector(tappedValidCard))
         let insufficientPointsCardButton = createButton(title: "Insufficient points card", action: #selector(tappedInsufficientPointsCard))
         let ineligibleCardButton = createButton(title: "Ineligible card", action: #selector(tappedIneligibleCard))
@@ -42,7 +42,7 @@ class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewControl
         let card = BTCard()
         card.number = cardNumber
         card.expirationMonth = "12"
-        card.expirationYear = generateFutureYear()
+        card.expirationYear = CardHelpers.generateFuture(.year)
         card.cvv = "1234"
 
         progressBlock("Tokenizing Card")
@@ -71,25 +71,5 @@ class BraintreeDemoAmexViewController: BraintreeDemoPaymentButtonBaseViewControl
                 }
             }
         }
-    }
-
-    private func generateFutureYear() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yy"
-
-        let futureYear = Calendar.current.date(byAdding: .year, value: 3, to: Date())!
-        return dateFormatter.string(from: futureYear)
-    }
-
-    // TODO: move this helper into BraintreeDemoPaymentButtonBaseViewController once converted so all buttons share the same characteristics
-    private func createButton(title: String, action: Selector) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.setTitleColor(.lightGray, for: .highlighted)
-        button.setTitleColor(.lightGray, for: .disabled)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: action, for: .touchUpInside)
-        return button
     }
 }
