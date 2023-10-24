@@ -29,6 +29,18 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(request.paymentType, .vault)
     }
 
+    // MARK: - userAuthenticationEmail
+
+    func testUserAuthenticationEmail_returnsNil() {
+        let request = BTPayPalVaultRequest()
+        XCTAssertNil(request.userAuthenticationEmail)
+    }
+
+    func testUserAuthenticationEmail_returnsEmail() {
+        let request = BTPayPalVaultRequest(userAuthenticationEmail: "user@example.com")
+        XCTAssertEqual(request.userAuthenticationEmail, "user@example.com")
+    }
+
     // MARK: - parametersWithConfiguration
 
     func testParametersWithConfiguration_returnsAllParams() {

@@ -82,7 +82,7 @@ import BraintreeCore
     /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
 
-    /// Optional: User email that we want to pass through to PayPal Checkout to initiate a quicker authentication flow in case the merchant's user has a PayPal Account with the same email.
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public var userAuthenticationEmail: String?
 
     // MARK: - Initializer

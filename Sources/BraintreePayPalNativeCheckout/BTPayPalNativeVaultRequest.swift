@@ -16,8 +16,7 @@ import BraintreePayPal
     /// Initializes a PayPal Native Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    ///   - userAuthenticationEmail: User email that we want to pass through to PayPal Checkout to initiate a quicker
-    ///    authentication flow in case the merchant's user has a PayPal Account with the same email.
+    ///   - userAuthenticationEmail: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
     ///   `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
     public init(
