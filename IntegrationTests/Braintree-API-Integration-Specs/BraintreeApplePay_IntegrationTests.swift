@@ -13,9 +13,10 @@ class BraintreeApplePay_IntegrationTests: XCTestCase {
         applePayClient.tokenize(PKPayment()) { nonce, error in
             guard let nonce = nonce?.nonce else {
                 XCTFail("Nonce expected to be returned in this tests")
+                return
             }
 
-            XCTAssertTrue(nonce.isANonce)
+            XCTAssertTrue(nonce.isValidNonce)
             XCTAssertNil(error)
             expectation.fulfill()
         }
