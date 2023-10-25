@@ -1,6 +1,7 @@
 #import "BTNonceValidationHelper.h"
 #import <PassKit/PassKit.h>
 #import <XCTest/XCTest.h>
+#import <IntegrationTests-Swift.h>
 
 @import BraintreeCore;
 @import BraintreeApplePay;
@@ -12,7 +13,7 @@
 @implementation BraintreeApplePay_IntegrationTests
 
 - (void)testTokenizeApplePayPayment_whenApplePayEnabledInControlPanel_returnsANonce {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:BTIntegrationTestsConstants.sandboxTokenizationKey];
     BTApplePayClient *client = [[BTApplePayClient alloc] initWithAPIClient:apiClient];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Apple Pay payment"];
