@@ -2,7 +2,7 @@ import Foundation
 
 class Helpers: NSObject {
 
-    private static let shared = Helpers()
+    static let shared = Helpers()
 
     func futureYear() -> String {
         let dateFormatter = DateFormatter()

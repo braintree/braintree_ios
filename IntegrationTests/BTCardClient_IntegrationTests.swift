@@ -30,7 +30,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
         let card = BTCard()
         card.number = "123"
         card.expirationMonth = "12"
-        card.expirationYear = Helpers.sharedInstance().futureYear()
+        card.expirationYear = Helpers.shared.futureYear()
         card.shouldValidate = true
 
         let expectation = expectation(description: "Tokenize card")
@@ -193,7 +193,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
         let card = BTCard()
         card.number = "4111111111111111"
         card.expirationMonth = "12"
-        card.expirationYear = Helpers.sharedInstance().futureYear()
+        card.expirationYear = Helpers.shared.futureYear()
         card.cardholderName = "Cookie Monster"
         return card
     }
