@@ -10,8 +10,8 @@ class BraintreeApplePay_IntegrationTests: XCTestCase {
         let applePayClient = BTApplePayClient(apiClient: apiClient)
         let expectation = expectation(description: "Tokenize Apple Pay payment")
 
-        applePayClient.tokenize(PKPayment()) { nonce, error in
-            guard let nonce = nonce?.nonce else {
+        applePayClient.tokenize(PKPayment()) { tokenizedApplePayAccount, error in
+            guard let nonce = tokenizedApplePayAccount?.nonce else {
                 XCTFail("Nonce expected to be returned in this tests")
                 return
             }
@@ -32,11 +32,12 @@ class BraintreeApplePay_IntegrationTests: XCTestCase {
         applePayClient.tokenize(PKPayment()) { nonce, error in
             guard let error = error as? NSError else {
                 XCTFail("Error expected to be returned in this tests")
+                return
             }
 
             XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, "com.braintreepayments.BTApplePayErrorDomain")
-            XCTAssertEqual(error.code, 1)
+            XCTAssertEqual(error.domain, BTApplePayError.errorDomain)
+            XCTAssertEqual(error.code, BTApplePayError.unsupported.errorCode)
             expectation.fulfill()
         }
 
