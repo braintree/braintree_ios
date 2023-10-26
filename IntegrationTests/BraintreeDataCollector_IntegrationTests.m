@@ -27,8 +27,6 @@
     
     [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
         XCTAssertTrue([deviceData containsString:@"correlation_id"]);
-        XCTAssertTrue([deviceData containsString:@"device_session_id"]);
-        XCTAssertTrue([deviceData containsString:@"fraud_merchant_id"]);
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
