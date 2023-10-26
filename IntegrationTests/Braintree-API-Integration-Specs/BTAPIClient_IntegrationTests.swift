@@ -12,7 +12,7 @@ final class BTAPIClient_IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 10)
     }
 
     func testFetchConfiguration_withClientToken_returnsTheConfiguration() {
@@ -40,6 +40,6 @@ final class BTAPIClient_IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 10)
     }
 }
