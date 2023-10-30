@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeThreeDSecure
+  * Add `cardAddChallengeRequested` to `BTThreeDSecureRequest`
+
 ## 6.8.0 (2023-10-24)
 * BraintreeDataCollector
   * Update PPRiskMagnes with 5.4.1 - staging removed (fixes #1107)
