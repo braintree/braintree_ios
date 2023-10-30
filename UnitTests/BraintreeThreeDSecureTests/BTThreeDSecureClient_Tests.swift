@@ -123,17 +123,15 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testPerformThreeDSecureLookup_whenCardAddChallengeRequested_sendsCardAddTrue() {
-        let expectation = self.expectation(description: "willCallCompletion")
-
         threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.dfReferenceID = "df-reference-id"
-
         threeDSecureRequest.cardAddChallengeRequested = true
+
+        let expectation = expectation(description: "willCallCompletion")
 
         client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
-
             expectation.fulfill()
         }
 
