@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalDataCollector
+  * Update PPRiskMagnes with 5.4.1 - staging removed (fixes #1107)
+
 ## 5.23.0 (2023-08-18)
 * BraintreeVenmo
   * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
