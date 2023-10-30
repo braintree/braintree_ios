@@ -351,7 +351,7 @@ import BraintreeCore
                 "dataOnlyRequested": request.dataOnlyRequested
             ]
 
-            if request.cardAddChallenge == .requested {
+            if request.cardAddChallenge == .requested || request.cardAddChallengeRequested == true {
                 requestParameters["cardAdd"] = true
             } else if request.cardAddChallenge == .notRequested {
                 requestParameters["cardAdd"] = false

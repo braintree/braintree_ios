@@ -1,5 +1,6 @@
 import Foundation
 
+// NEXT_MAJOR_VERSION remove BTThreeDSecureCardAddChallenge
 /// The card add challenge request
 @objc public enum BTThreeDSecureCardAddChallenge: Int {
 
