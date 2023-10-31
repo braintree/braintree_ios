@@ -42,6 +42,11 @@ The possible values for `BTVenmoPaymentMethodUsage` include:
 
 `BTVenmoClient.isiOSAppAvailableForAppSwitch()` has been renamed to `BTVenmoClient.isVenmoAppInstalled()`
 
+The following `BTAppContextSwitcher` methods have been renamed:
+* `BTAppContextSwitcher.setReturnURLScheme()` has been renamed to setting the `BTAppContextSwitcher.sharedInstance.returnURLScheme` property
+* `BTAppContextSwitcher.handleOpenURL(context:)` has been renamed to `BTAppContextSwitcher.sharedInstance.handleOpenURL(context:)`
+* `BTAppContextSwitcher.handleOpenURL(_)` has been renamed to `BTAppContextSwitcher.sharedInstance.handleOpen(_)`
+
 ```
 let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
 let venmoClient = BTVenmoClient(apiClient: apiClient)
