@@ -1,0 +1,591 @@
+[{
+  "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift" : {
+    "key.diagnostic_stage" : "source.diagnostic.stage.swift.parse",
+    "key.length" : 5798,
+    "key.offset" : 0,
+    "key.substructure" : [
+      {
+        "key.accessibility" : "source.lang.swift.accessibility.public",
+        "key.annotated_decl" : "<Declaration>@objc public class PPDataCollector : <Type usr=\"c:objc(cs)NSObject\">NSObject<\/Type><\/Declaration>",
+        "key.attributes" : [
+          {
+            "key.attribute" : "source.decl.attribute.public",
+            "key.length" : 6,
+            "key.offset" : 165
+          },
+          {
+            "key.attribute" : "source.decl.attribute.objc",
+            "key.length" : 5,
+            "key.offset" : 159
+          }
+        ],
+        "key.bodylength" : 5591,
+        "key.bodyoffset" : 205,
+        "key.column" : 20,
+        "key.decl_lang" : "source.lang.swift",
+        "key.doc.column" : 20,
+        "key.doc.comment" : "Enables you to collect data about a customer's device and correlate it with a session identifier on your server.",
+        "key.doc.declaration" : "@objc public class PPDataCollector : NSObject",
+        "key.doc.file" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+        "key.doc.full_as_xml" : "<Class file=\"\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift\" line=\"7\" column=\"20\"><Name>PPDataCollector<\/Name><USR>c:@M@PayPalDataCollector@objc(cs)PPDataCollector<\/USR><Declaration>@objc public class PPDataCollector : NSObject<\/Declaration><CommentParts><Abstract><Para>Enables you to collect data about a customer’s device and correlate it with a session identifier on your server.<\/Para><\/Abstract><\/CommentParts><\/Class>",
+        "key.doc.line" : 7,
+        "key.doc.name" : "PPDataCollector",
+        "key.doc.type" : "Class",
+        "key.doclength" : 121,
+        "key.docoffset" : 37,
+        "key.elements" : [
+          {
+            "key.kind" : "source.lang.swift.structure.elem.typeref",
+            "key.length" : 8,
+            "key.offset" : 195
+          }
+        ],
+        "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+        "key.fully_annotated_decl" : "<decl.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>public<\/syntaxtype.keyword> <syntaxtype.keyword>class<\/syntaxtype.keyword> <decl.name>PPDataCollector<\/decl.name> : <ref.class usr=\"c:objc(cs)NSObject\">NSObject<\/ref.class><\/decl.class>",
+        "key.inheritedtypes" : [
+          {
+            "key.name" : "NSObject"
+          }
+        ],
+        "key.kind" : "source.lang.swift.decl.class",
+        "key.length" : 5625,
+        "key.line" : 7,
+        "key.modulename" : "PayPalDataCollector",
+        "key.name" : "PPDataCollector",
+        "key.namelength" : 15,
+        "key.nameoffset" : 178,
+        "key.offset" : 172,
+        "key.parsed_declaration" : "@objc public class PPDataCollector: NSObject",
+        "key.parsed_scope.end" : 109,
+        "key.parsed_scope.start" : 7,
+        "key.reusingastcontext" : false,
+        "key.substructure" : [
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.internal",
+            "key.annotated_decl" : "<Declaration>static var mangnesEnvironment: <Type usr=\"c:@M@PPRiskMagnes@objc(cs)MagnesSDK\">MagnesSDK<\/Type>.<Type usr=\"s:12PPRiskMagnes0B3SDKC11EnvironmentO\">Environment<\/Type><\/Declaration>",
+            "key.column" : 16,
+            "key.decl_lang" : "source.lang.swift",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.var.static><syntaxtype.keyword>static<\/syntaxtype.keyword> <syntaxtype.keyword>var<\/syntaxtype.keyword> <decl.name>mangnesEnvironment<\/decl.name>: <decl.var.type><ref.class usr=\"c:@M@PPRiskMagnes@objc(cs)MagnesSDK\">MagnesSDK<\/ref.class>.<ref.enum usr=\"s:12PPRiskMagnes0B3SDKC11EnvironmentO\">Environment<\/ref.enum><\/decl.var.type><\/decl.var.static>",
+            "key.kind" : "source.lang.swift.decl.var.static",
+            "key.length" : 60,
+            "key.line" : 9,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "mangnesEnvironment",
+            "key.namelength" : 18,
+            "key.nameoffset" : 226,
+            "key.offset" : 215,
+            "key.parsed_declaration" : "static var mangnesEnvironment: MagnesSDK.Environment = .LIVE",
+            "key.parsed_scope.end" : 9,
+            "key.parsed_scope.start" : 9,
+            "key.reusingastcontext" : false,
+            "key.setter_accessibility" : "source.lang.swift.accessibility.internal",
+            "key.typename" : "MagnesSDK.Environment",
+            "key.typeusr" : "$s12PPRiskMagnes0B3SDKC11EnvironmentOD",
+            "key.usr" : "s:19PayPalDataCollector06PPDataD0C18mangnesEnvironment12PPRiskMagnes0I3SDKC0G0OvpZ"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.public",
+            "key.annotated_decl" : "<Declaration>@objc public class func clientMetadataID(_ pairingID: <Type usr=\"s:SS\">String<\/Type>?) -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.public",
+                "key.length" : 6,
+                "key.offset" : 763
+              },
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 757
+              }
+            ],
+            "key.bodylength" : 59,
+            "key.bodyoffset" : 831,
+            "key.column" : 29,
+            "key.decl_lang" : "source.lang.swift",
+            "key.doc.comment" : "Returns a client metadata ID.\n\n- Note This returns a raw client metadata ID, which is not the correct format for device data\nwhen creating a transaction. Instead, it is recommended to use `collectPayPalDeviceData`.\n\n- Parameter pairingID: A pairing ID to associate with this clientMetadataID must be 10-32 chars long or null\n- Returns: A client metadata ID to send as a header",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>public<\/syntaxtype.keyword> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>clientMetadataID<\/decl.name>(<decl.var.parameter><decl.var.parameter.argument_label>_<\/decl.var.parameter.argument_label> <decl.var.parameter.name>pairingID<\/decl.var.parameter.name>: <decl.var.parameter.type><ref.struct usr=\"s:SS\">String<\/ref.struct>?<\/decl.var.parameter.type><\/decl.var.parameter>) -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 121,
+            "key.line" : 21,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "clientMetadataID(_:)",
+            "key.namelength" : 38,
+            "key.nameoffset" : 781,
+            "key.offset" : 770,
+            "key.parsed_declaration" : "@objc public class func clientMetadataID(_ pairingID: String?) -> String",
+            "key.parsed_scope.end" : 23,
+            "key.parsed_scope.start" : 21,
+            "key.related_decls" : [
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)clientMetadataID:isSandbox:\">clientMetadataID(_:isSandbox:)<\/RelatedName>"
+              }
+            ],
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> (String?) -> String",
+            "key.typeusr" : "$syS2SSgcD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)clientMetadataID:"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.public",
+            "key.annotated_decl" : "<Declaration>@objc public class func clientMetadataID(_ pairingID: <Type usr=\"s:SS\">String<\/Type>?, isSandbox: <Type usr=\"s:Sb\">Bool<\/Type>) -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.public",
+                "key.length" : 6,
+                "key.offset" : 1614
+              },
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 1608
+              }
+            ],
+            "key.bodylength" : 120,
+            "key.bodyoffset" : 1699,
+            "key.column" : 29,
+            "key.decl_lang" : "source.lang.swift",
+            "key.doc.comment" : "Returns a client metadata ID.\n- Parameters:\n  - pairingID: A pairing ID to associate with this clientMetadataID must be 10-32 chars long or null.\n  - isSandbox: If true, the request will be sent to the sandbox environment. If false the request will be sent to the production environment.\n- Returns: A client metadata ID to send as a header\n- Note: This returns a raw client metadata ID, which is not the correct format for device data when creating a transaction. Instead, it is recommended to use `collectPayPalDeviceData`.",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>public<\/syntaxtype.keyword> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>clientMetadataID<\/decl.name>(<decl.var.parameter><decl.var.parameter.argument_label>_<\/decl.var.parameter.argument_label> <decl.var.parameter.name>pairingID<\/decl.var.parameter.name>: <decl.var.parameter.type><ref.struct usr=\"s:SS\">String<\/ref.struct>?<\/decl.var.parameter.type><\/decl.var.parameter>, <decl.var.parameter><decl.var.parameter.argument_label>isSandbox<\/decl.var.parameter.argument_label>: <decl.var.parameter.type><ref.struct usr=\"s:Sb\">Bool<\/ref.struct><\/decl.var.parameter.type><\/decl.var.parameter>) -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 199,
+            "key.line" : 32,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "clientMetadataID(_:isSandbox:)",
+            "key.namelength" : 55,
+            "key.nameoffset" : 1632,
+            "key.offset" : 1621,
+            "key.parsed_declaration" : "@objc public class func clientMetadataID(_ pairingID: String?, isSandbox: Bool) -> String",
+            "key.parsed_scope.end" : 34,
+            "key.parsed_scope.start" : 32,
+            "key.related_decls" : [
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)clientMetadataID:\">clientMetadataID(_:)<\/RelatedName>"
+              }
+            ],
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> (String?, Bool) -> String",
+            "key.typeusr" : "$s_9isSandboxS2SSg_SbtcD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)clientMetadataID:isSandbox:"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.public",
+            "key.annotated_decl" : "<Declaration>@objc public class func collectPayPalDeviceData() -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.public",
+                "key.length" : 6,
+                "key.offset" : 2073
+              },
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 2067
+              }
+            ],
+            "key.bodylength" : 55,
+            "key.bodyoffset" : 2128,
+            "key.column" : 29,
+            "key.decl_lang" : "source.lang.swift",
+            "key.doc.comment" : "Collects device data.\n\n- Returns: A JSON string containing a device data identifier that should be passed into server-side calls, such as `Transaction.sale`.",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>public<\/syntaxtype.keyword> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>collectPayPalDeviceData<\/decl.name>() -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 104,
+            "key.line" : 42,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "collectPayPalDeviceData()",
+            "key.namelength" : 25,
+            "key.nameoffset" : 2091,
+            "key.offset" : 2080,
+            "key.parsed_declaration" : "@objc public class func collectPayPalDeviceData() -> String",
+            "key.parsed_scope.end" : 44,
+            "key.parsed_scope.start" : 42,
+            "key.related_decls" : [
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)collectPayPalDeviceDataWithIsSandbox:\">collectPayPalDeviceData(isSandbox:)<\/RelatedName>"
+              }
+            ],
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> () -> String",
+            "key.typeusr" : "$sSSycD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)collectPayPalDeviceData"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.public",
+            "key.annotated_decl" : "<Declaration>@objc public class func collectPayPalDeviceData(isSandbox: <Type usr=\"s:Sb\">Bool<\/Type>) -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.public",
+                "key.length" : 6,
+                "key.offset" : 2665
+              },
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 2659
+              }
+            ],
+            "key.bodylength" : 106,
+            "key.bodyoffset" : 2735,
+            "key.column" : 29,
+            "key.decl_lang" : "source.lang.swift",
+            "key.doc.comment" : "Collects device data.\n- Parameter isSandbox: If true, the request will be sent to the sandbox environment. If false the request will be sent to the production environment.\n- Returns: A JSON string containing a device data identifier that should be passed into server-side calls, such as `Transaction.sale`.",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>public<\/syntaxtype.keyword> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>collectPayPalDeviceData<\/decl.name>(<decl.var.parameter><decl.var.parameter.argument_label>isSandbox<\/decl.var.parameter.argument_label>: <decl.var.parameter.type><ref.struct usr=\"s:Sb\">Bool<\/ref.struct><\/decl.var.parameter.type><\/decl.var.parameter>) -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 170,
+            "key.line" : 50,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "collectPayPalDeviceData(isSandbox:)",
+            "key.namelength" : 40,
+            "key.nameoffset" : 2683,
+            "key.offset" : 2672,
+            "key.parsed_declaration" : "@objc public class func collectPayPalDeviceData(isSandbox: Bool) -> String",
+            "key.parsed_scope.end" : 52,
+            "key.parsed_scope.start" : 50,
+            "key.related_decls" : [
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)collectPayPalDeviceData\">collectPayPalDeviceData()<\/RelatedName>"
+              }
+            ],
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> (Bool) -> String",
+            "key.typeusr" : "$s9isSandboxSSSb_tcD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)collectPayPalDeviceDataWithIsSandbox:"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.internal",
+            "key.annotated_decl" : "<Declaration>@objc class func generateClientMetadataID(_ clientMetadataID: <Type usr=\"s:SS\">String<\/Type>?, disableBeacon: <Type usr=\"s:Sb\">Bool<\/Type>, isSandbox: <Type usr=\"s:Sb\">Bool<\/Type>, data: [<Type usr=\"s:SS\">String<\/Type> : <Type usr=\"s:SS\">String<\/Type>]?) -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 3058
+              }
+            ],
+            "key.bodylength" : 704,
+            "key.bodyoffset" : 3204,
+            "key.column" : 22,
+            "key.decl_lang" : "source.lang.swift",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>generateClientMetadataID<\/decl.name>(<decl.var.parameter><decl.var.parameter.argument_label>_<\/decl.var.parameter.argument_label> <decl.var.parameter.name>clientMetadataID<\/decl.var.parameter.name>: <decl.var.parameter.type><ref.struct usr=\"s:SS\">String<\/ref.struct>?<\/decl.var.parameter.type><\/decl.var.parameter>, <decl.var.parameter><decl.var.parameter.argument_label>disableBeacon<\/decl.var.parameter.argument_label>: <decl.var.parameter.type><ref.struct usr=\"s:Sb\">Bool<\/ref.struct><\/decl.var.parameter.type><\/decl.var.parameter>, <decl.var.parameter><decl.var.parameter.argument_label>isSandbox<\/decl.var.parameter.argument_label>: <decl.var.parameter.type><ref.struct usr=\"s:Sb\">Bool<\/ref.struct><\/decl.var.parameter.type><\/decl.var.parameter>, <decl.var.parameter><decl.var.parameter.argument_label>data<\/decl.var.parameter.argument_label>: <decl.var.parameter.type>[<ref.struct usr=\"s:SS\">String<\/ref.struct> : <ref.struct usr=\"s:SS\">String<\/ref.struct>]?<\/decl.var.parameter.type><\/decl.var.parameter>) -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 845,
+            "key.line" : 55,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "generateClientMetadataID(_:disableBeacon:isSandbox:data:)",
+            "key.namelength" : 117,
+            "key.nameoffset" : 3075,
+            "key.offset" : 3064,
+            "key.parsed_declaration" : "@objc class func generateClientMetadataID(_ clientMetadataID: String?, disableBeacon: Bool, isSandbox: Bool, data: [String : String]?) -> String",
+            "key.parsed_scope.end" : 68,
+            "key.parsed_scope.start" : 55,
+            "key.related_decls" : [
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataIDWithIsSandbox:\">generateClientMetadataID(isSandbox:)<\/RelatedName>"
+              },
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataID\">generateClientMetadataID()<\/RelatedName>"
+              }
+            ],
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+              {
+                "key.annotated_decl" : "<Declaration>let result: <Type usr=\"c:@M@PPRiskMagnes@objc(cs)MagnesResult\">MagnesResult<\/Type>?<\/Declaration>",
+                "key.column" : 13,
+                "key.decl_lang" : "source.lang.swift",
+                "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+                "key.fully_annotated_decl" : "<decl.var.local><syntaxtype.keyword>let<\/syntaxtype.keyword> <decl.name>result<\/decl.name>: <decl.var.type><ref.class usr=\"c:@M@PPRiskMagnes@objc(cs)MagnesResult\">MagnesResult<\/ref.class>?<\/decl.var.type><\/decl.var.local>",
+                "key.kind" : "source.lang.swift.decl.var.local",
+                "key.length" : 200,
+                "key.line" : 64,
+                "key.modulename" : "PayPalDataCollector",
+                "key.name" : "result",
+                "key.namelength" : 6,
+                "key.nameoffset" : 3649,
+                "key.offset" : 3645,
+                "key.parsed_declaration" : "let result = try? MagnesSDK.shared().collectAndSubmit(withPayPalClientMetadataId: clientMetadataID ?? \"\",\n                                                      withAdditionalData: data ?? [:])",
+                "key.parsed_scope.end" : 64,
+                "key.parsed_scope.start" : 64,
+                "key.reusingastcontext" : false,
+                "key.typename" : "MagnesResult?",
+                "key.typeusr" : "$s12PPRiskMagnes0B6ResultCSgD",
+                "key.usr" : "s:19PayPalDataCollector06PPDataD0C24generateClientMetadataID_13disableBeacon9isSandbox4dataS2SSg_S2bSDyS2SGSgtFZ6resultL_12PPRiskMagnes0Q6ResultCSgvp"
+              }
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> (String?, Bool, Bool, [String : String]?) -> String",
+            "key.typeusr" : "$s_13disableBeacon9isSandbox4dataS2SSg_S2bSDyS2SGSgtcD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataID:disableBeacon:isSandbox:data:"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.internal",
+            "key.annotated_decl" : "<Declaration>@objc class func generateClientMetadataID(isSandbox: <Type usr=\"s:Sb\">Bool<\/Type>) -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 3973
+              }
+            ],
+            "key.bodylength" : 113,
+            "key.bodyoffset" : 4043,
+            "key.column" : 22,
+            "key.decl_lang" : "source.lang.swift",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>generateClientMetadataID<\/decl.name>(<decl.var.parameter><decl.var.parameter.argument_label>isSandbox<\/decl.var.parameter.argument_label>: <decl.var.parameter.type><ref.struct usr=\"s:Sb\">Bool<\/ref.struct><\/decl.var.parameter.type><\/decl.var.parameter>) -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 178,
+            "key.line" : 71,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "generateClientMetadataID(isSandbox:)",
+            "key.namelength" : 41,
+            "key.nameoffset" : 3990,
+            "key.offset" : 3979,
+            "key.parsed_declaration" : "@objc class func generateClientMetadataID(isSandbox: Bool) -> String",
+            "key.parsed_scope.end" : 73,
+            "key.parsed_scope.start" : 71,
+            "key.related_decls" : [
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataID:disableBeacon:isSandbox:data:\">generateClientMetadataID(_:disableBeacon:isSandbox:data:)<\/RelatedName>"
+              },
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataID\">generateClientMetadataID()<\/RelatedName>"
+              }
+            ],
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> (Bool) -> String",
+            "key.typeusr" : "$s9isSandboxSSSb_tcD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataIDWithIsSandbox:"
+          },
+          {
+            "key.kind" : "source.lang.swift.syntaxtype.comment.mark",
+            "key.length" : 42,
+            "key.name" : "MARK: - Helper methods for BTDataCollector",
+            "key.offset" : 4166
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.internal",
+            "key.annotated_decl" : "<Declaration>@objc class func generateClientMetadataID() -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 4214
+              }
+            ],
+            "key.bodylength" : 109,
+            "key.bodyoffset" : 4269,
+            "key.column" : 22,
+            "key.decl_lang" : "source.lang.swift",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>generateClientMetadataID<\/decl.name>() -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 159,
+            "key.line" : 77,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "generateClientMetadataID()",
+            "key.namelength" : 26,
+            "key.nameoffset" : 4231,
+            "key.offset" : 4220,
+            "key.parsed_declaration" : "@objc class func generateClientMetadataID() -> String",
+            "key.parsed_scope.end" : 79,
+            "key.parsed_scope.start" : 77,
+            "key.related_decls" : [
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataID:disableBeacon:isSandbox:data:\">generateClientMetadataID(_:disableBeacon:isSandbox:data:)<\/RelatedName>"
+              },
+              {
+                "key.annotated_decl" : "<RelatedName usr=\"c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataIDWithIsSandbox:\">generateClientMetadataID(isSandbox:)<\/RelatedName>"
+              }
+            ],
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> () -> String",
+            "key.typeusr" : "$sSSycD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)generateClientMetadataID"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.internal",
+            "key.annotated_decl" : "<Declaration>@objc class func sandboxGenerateClientMetadataID() -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.objc",
+                "key.length" : 5,
+                "key.offset" : 4385
+              }
+            ],
+            "key.bodylength" : 108,
+            "key.bodyoffset" : 4447,
+            "key.column" : 22,
+            "key.decl_lang" : "source.lang.swift",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.class><syntaxtype.attribute.builtin><syntaxtype.attribute.name>@objc<\/syntaxtype.attribute.name><\/syntaxtype.attribute.builtin> <syntaxtype.keyword>class<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>sandboxGenerateClientMetadataID<\/decl.name>() -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.class>",
+            "key.kind" : "source.lang.swift.decl.function.method.class",
+            "key.length" : 165,
+            "key.line" : 81,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "sandboxGenerateClientMetadataID()",
+            "key.namelength" : 33,
+            "key.nameoffset" : 4402,
+            "key.offset" : 4391,
+            "key.parsed_declaration" : "@objc class func sandboxGenerateClientMetadataID() -> String",
+            "key.parsed_scope.end" : 83,
+            "key.parsed_scope.start" : 81,
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> () -> String",
+            "key.typeusr" : "$sSSycD",
+            "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector(cm)sandboxGenerateClientMetadataID"
+          },
+          {
+            "key.accessibility" : "source.lang.swift.accessibility.private",
+            "key.annotated_decl" : "<Declaration>private static func deviceIdentifier() -&gt; <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+            "key.attributes" : [
+              {
+                "key.attribute" : "source.decl.attribute.private",
+                "key.length" : 7,
+                "key.offset" : 4621
+              }
+            ],
+            "key.bodylength" : 1123,
+            "key.bodyoffset" : 4671,
+            "key.column" : 25,
+            "key.decl_lang" : "source.lang.swift",
+            "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+            "key.fully_annotated_decl" : "<decl.function.method.static><syntaxtype.keyword>private<\/syntaxtype.keyword> <syntaxtype.keyword>static<\/syntaxtype.keyword> <syntaxtype.keyword>func<\/syntaxtype.keyword> <decl.name>deviceIdentifier<\/decl.name>() -&gt; <decl.function.returntype><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.function.returntype><\/decl.function.method.static>",
+            "key.kind" : "source.lang.swift.decl.function.method.static",
+            "key.length" : 1166,
+            "key.line" : 86,
+            "key.modulename" : "PayPalDataCollector",
+            "key.name" : "deviceIdentifier()",
+            "key.namelength" : 18,
+            "key.nameoffset" : 4641,
+            "key.offset" : 4629,
+            "key.parsed_declaration" : "private static func deviceIdentifier() -> String",
+            "key.parsed_scope.end" : 108,
+            "key.parsed_scope.start" : 86,
+            "key.reusingastcontext" : false,
+            "key.substructure" : [
+              {
+                "key.annotated_decl" : "<Declaration>var query: [<Type usr=\"s:SS\">String<\/Type> : Any]<\/Declaration>",
+                "key.column" : 13,
+                "key.decl_lang" : "source.lang.swift",
+                "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+                "key.fully_annotated_decl" : "<decl.var.local><syntaxtype.keyword>var<\/syntaxtype.keyword> <decl.name>query<\/decl.name>: <decl.var.type>[<ref.struct usr=\"s:SS\">String<\/ref.struct> : <syntaxtype.keyword>Any<\/syntaxtype.keyword>]<\/decl.var.type><\/decl.var.local>",
+                "key.kind" : "source.lang.swift.decl.var.local",
+                "key.length" : 340,
+                "key.line" : 88,
+                "key.modulename" : "PayPalDataCollector",
+                "key.name" : "query",
+                "key.namelength" : 5,
+                "key.nameoffset" : 4748,
+                "key.offset" : 4744,
+                "key.parsed_declaration" : "var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,\n                            kSecAttrService as String: \"Service\",\n                            kSecAttrAccount as String: \"com.braintreepayments.Braintree-API.PayPal_MPL_DeviceGUID\",\n                            kSecReturnData as String: true]",
+                "key.parsed_scope.end" : 88,
+                "key.parsed_scope.start" : 88,
+                "key.reusingastcontext" : false,
+                "key.typename" : "[String : Any]",
+                "key.typeusr" : "$sSDySSypGD",
+                "key.usr" : "s:19PayPalDataCollector06PPDataD0C16deviceIdentifier33_F83C686C7418E06EDC7C5B3CB1795F55LLSSyFZ5queryL_SDySSypGvp"
+              },
+              {
+                "key.annotated_decl" : "<Declaration>var item: <Type usr=\"c:@T@CFTypeRef\">CFTypeRef<\/Type>?<\/Declaration>",
+                "key.column" : 13,
+                "key.decl_lang" : "source.lang.swift",
+                "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+                "key.fully_annotated_decl" : "<decl.var.local><syntaxtype.keyword>var<\/syntaxtype.keyword> <decl.name>item<\/decl.name>: <decl.var.type><ref.typealias usr=\"c:@T@CFTypeRef\">CFTypeRef<\/ref.typealias>?<\/decl.var.type><\/decl.var.local>",
+                "key.kind" : "source.lang.swift.decl.var.local",
+                "key.length" : 20,
+                "key.line" : 93,
+                "key.modulename" : "PayPalDataCollector",
+                "key.name" : "item",
+                "key.namelength" : 4,
+                "key.nameoffset" : 5098,
+                "key.offset" : 5094,
+                "key.parsed_declaration" : "var item: CFTypeRef?",
+                "key.parsed_scope.end" : 93,
+                "key.parsed_scope.start" : 93,
+                "key.reusingastcontext" : false,
+                "key.typename" : "AnyObject?",
+                "key.typeusr" : "$syXlSgD",
+                "key.usr" : "s:19PayPalDataCollector06PPDataD0C16deviceIdentifier33_F83C686C7418E06EDC7C5B3CB1795F55LLSSyFZ4itemL_yXlSgvp"
+              },
+              {
+                "key.annotated_decl" : "<Declaration>let status: <Type usr=\"c:@T@OSStatus\">OSStatus<\/Type><\/Declaration>",
+                "key.column" : 13,
+                "key.decl_lang" : "source.lang.swift",
+                "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+                "key.fully_annotated_decl" : "<decl.var.local><syntaxtype.keyword>let<\/syntaxtype.keyword> <decl.name>status<\/decl.name>: <decl.var.type><ref.typealias usr=\"c:@T@OSStatus\">OSStatus<\/ref.typealias><\/decl.var.type><\/decl.var.local>",
+                "key.kind" : "source.lang.swift.decl.var.local",
+                "key.length" : 62,
+                "key.line" : 94,
+                "key.modulename" : "PayPalDataCollector",
+                "key.name" : "status",
+                "key.namelength" : 6,
+                "key.nameoffset" : 5127,
+                "key.offset" : 5123,
+                "key.parsed_declaration" : "let status = SecItemCopyMatching(query as CFDictionary, &item)",
+                "key.parsed_scope.end" : 94,
+                "key.parsed_scope.start" : 94,
+                "key.reusingastcontext" : false,
+                "key.typename" : "Int32",
+                "key.typeusr" : "$ss5Int32VD",
+                "key.usr" : "s:19PayPalDataCollector06PPDataD0C16deviceIdentifier33_F83C686C7418E06EDC7C5B3CB1795F55LLSSyFZ6statusL_s5Int32Vvp"
+              },
+              {
+                "key.annotated_decl" : "<Declaration>let newIdentifier: <Type usr=\"s:SS\">String<\/Type><\/Declaration>",
+                "key.column" : 13,
+                "key.decl_lang" : "source.lang.swift",
+                "key.filepath" : "\/Users\/scannillo\/bt\/braintree_ios\/Sources\/PayPalDataCollector\/Public\/PayPalDataCollector\/PPDataCollector.swift",
+                "key.fully_annotated_decl" : "<decl.var.local><syntaxtype.keyword>let<\/syntaxtype.keyword> <decl.name>newIdentifier<\/decl.name>: <decl.var.type><ref.struct usr=\"s:SS\">String<\/ref.struct><\/decl.var.type><\/decl.var.local>",
+                "key.kind" : "source.lang.swift.decl.var.local",
+                "key.length" : 37,
+                "key.line" : 103,
+                "key.modulename" : "PayPalDataCollector",
+                "key.name" : "newIdentifier",
+                "key.namelength" : 13,
+                "key.nameoffset" : 5534,
+                "key.offset" : 5530,
+                "key.parsed_declaration" : "let newIdentifier = UUID().uuidString",
+                "key.parsed_scope.end" : 103,
+                "key.parsed_scope.start" : 103,
+                "key.reusingastcontext" : false,
+                "key.typename" : "String",
+                "key.typeusr" : "$sSSD",
+                "key.usr" : "s:19PayPalDataCollector06PPDataD0C16deviceIdentifier33_F83C686C7418E06EDC7C5B3CB1795F55LLSSyFZ03newG0L_SSvp"
+              }
+            ],
+            "key.typename" : "(PPDataCollector.Type) -> () -> String",
+            "key.typeusr" : "$sSSycD",
+            "key.usr" : "s:19PayPalDataCollector06PPDataD0C16deviceIdentifier33_F83C686C7418E06EDC7C5B3CB1795F55LLSSyFZ"
+          }
+        ],
+        "key.typename" : "PPDataCollector.Type",
+        "key.typeusr" : "$s19PayPalDataCollector06PPDataD0CmD",
+        "key.usr" : "c:@M@PayPalDataCollector@objc(cs)PPDataCollector"
+      }
+    ]
+  }
+}]
