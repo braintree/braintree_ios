@@ -64,6 +64,8 @@ import BraintreeCore
         set { _cardAddChallenge = newValue }
     }
 
+    /// Internal property for `cardAddChallenge`. Created to avoid deprecation warnings upon accessing
+    /// `cardAddChallenge` directly within our SDK. Use this value internally instead.
     var _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
     
     /// Optional.  An authentication created using this flag should only be used for vaulting operations (creation of customers' credit cards or payment methods) and not for creating transactions.
