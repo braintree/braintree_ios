@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeThreeDSecure
   * Add `cardAddChallengeRequested` to `BTThreeDSecureRequest`
+* BraintreeDataCollector
+  * Update previously incorrect version of PPRiskMagnes with 5.4.1 for Carthage users
 
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector
