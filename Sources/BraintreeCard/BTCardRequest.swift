@@ -1,6 +1,7 @@
 import Foundation
 
 /// Contains information about a card to tokenize
+// TODO: - NEXT_MAJOR_VERSION remove this class
 @objcMembers public class BTCardRequest: NSObject {
 
     /// The `BTCard` associated with this instance.
