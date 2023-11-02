@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalDataCollector
+  * Update previously incorrect version of PPRiskMagnes 5.4.1 with staging removed
+
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes with 5.4.1 - staging removed (fixes #1107)
