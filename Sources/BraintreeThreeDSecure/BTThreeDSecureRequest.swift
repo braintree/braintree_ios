@@ -58,9 +58,9 @@ import BraintreeCore
     /// If set to `.notRequested` the authentication challenge will not be requested from the issuer.
     /// If set to `.unspecified`, when the amount is 0, the authentication challenge will be requested from the issuer.
     /// If set to `.unspecified`, when the amount is greater than 0, the authentication challenge will not be requested from the issuer.
-    @available(*, deprecated, message: "Use `cardAddChallengeRequested` instead")
+    @available(*, deprecated, renamed: "cardAddChallengeRequested", message: "Use the `cardAddChallengeRequested` boolean property instead")
     public var cardAddChallenge: BTThreeDSecureCardAddChallenge {
-        get { return _cardAddChallenge }
+        get { _cardAddChallenge }
         set { _cardAddChallenge = newValue }
     }
 
