@@ -4,6 +4,8 @@
 * BraintreeThreeDSecure
   * Add `cardAddChallengeRequested` to `BTThreeDSecureRequest`
   * Deprecate `BTThreeDSecureRequest.cardAddChallenge`
+* BraintreeCard
+  * Deprecate unused `BTCardRequest` class
 
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector
