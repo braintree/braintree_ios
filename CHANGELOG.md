@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreeThreeDSecure
   * Add `cardAddChallengeRequested` to `BTThreeDSecureRequest`
+  * Deprecate `BTThreeDSecureRequest.cardAddChallenge`
 * BraintreeCard
   * Deprecate unused `BTCardRequest` class
 
