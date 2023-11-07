@@ -10,7 +10,6 @@
 		429925AB266189010085F77D /* BraintreeAmericanExpress.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259D266189010085F77D /* BraintreeAmericanExpress.xcframework */; };
 		429925AD266189010085F77D /* BraintreeDataCollector.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259E266189010085F77D /* BraintreeDataCollector.xcframework */; };
 		429925AF266189010085F77D /* BraintreeApplePay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4299259F266189010085F77D /* BraintreeApplePay.xcframework */; };
-		429925B1266189020085F77D /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429925A0266189010085F77D /* PPRiskMagnes.xcframework */; };
 		429925B5266189020085F77D /* BraintreeCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429925A2266189010085F77D /* BraintreeCore.xcframework */; };
 		429925B9266189020085F77D /* BraintreeVenmo.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429925A4266189010085F77D /* BraintreeVenmo.xcframework */; };
 		429925BB266189020085F77D /* BraintreeCard.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429925A5266189010085F77D /* BraintreeCard.xcframework */; };
@@ -26,6 +25,7 @@
 		A74D4AFC1BFBB3FB00BF36CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFB1BFBB3FB00BF36CD /* Assets.xcassets */; };
 		A74D4AFF1BFBB3FB00BF36CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFD1BFBB3FB00BF36CD /* LaunchScreen.storyboard */; };
 		BE57E0E32846A4FF002CFBAC /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */; };
+		BEEA37AD2AFACB540028EF60 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429925A0266189010085F77D /* PPRiskMagnes.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,8 +65,8 @@
 				BE57E0E32846A4FF002CFBAC /* CardinalMobile.xcframework in Frameworks */,
 				8056565B2A38C7CB00686579 /* BraintreePayPalNativeCheckout.xcframework in Frameworks */,
 				429925B5266189020085F77D /* BraintreeCore.xcframework in Frameworks */,
+				BEEA37AD2AFACB540028EF60 /* PPRiskMagnes.xcframework in Frameworks */,
 				8056565F2A38C7D200686579 /* BraintreeLocalPayment.xcframework in Frameworks */,
-				429925B1266189020085F77D /* PPRiskMagnes.xcframework in Frameworks */,
 				429925AF266189010085F77D /* BraintreeApplePay.xcframework in Frameworks */,
 				805656572A38C7BF00686579 /* BraintreeSEPADirectDebit.xcframework in Frameworks */,
 				429925BF266189020085F77D /* BraintreePayPal.xcframework in Frameworks */,
