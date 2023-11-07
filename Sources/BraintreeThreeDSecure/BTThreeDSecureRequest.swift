@@ -58,8 +58,16 @@ import BraintreeCore
     /// If set to `.notRequested` the authentication challenge will not be requested from the issuer.
     /// If set to `.unspecified`, when the amount is 0, the authentication challenge will be requested from the issuer.
     /// If set to `.unspecified`, when the amount is greater than 0, the authentication challenge will not be requested from the issuer.
-    public var cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
+    @available(*, deprecated, renamed: "cardAddChallengeRequested", message: "Use the `cardAddChallengeRequested` boolean property instead")
+    public var cardAddChallenge: BTThreeDSecureCardAddChallenge {
+        get { _cardAddChallenge }
+        set { _cardAddChallenge = newValue }
+    }
 
+    /// Internal property for `cardAddChallenge`. Created to avoid deprecation warnings upon accessing
+    /// `cardAddChallenge` directly within our SDK. Use this value internally instead.
+    var _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
+    
     /// Optional.  An authentication created using this flag should only be used for vaulting operations (creation of customers' credit cards or payment methods) and not for creating transactions.
     /// If set to `true`, a card-add challenge will be requested from the issuer.
     /// If set to `false`, a card-add challenge will not be requested. 

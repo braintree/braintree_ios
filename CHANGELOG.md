@@ -3,6 +3,9 @@
 ## unreleased
 * BraintreeThreeDSecure
   * Add `cardAddChallengeRequested` to `BTThreeDSecureRequest`
+  * Deprecate `BTThreeDSecureRequest.cardAddChallenge`
+* BraintreeCard
+  * Deprecate unused `BTCardRequest` class
 * BraintreeDataCollector
   * Update previously incorrect version of PPRiskMagnes with 5.4.1 for Carthage users
 

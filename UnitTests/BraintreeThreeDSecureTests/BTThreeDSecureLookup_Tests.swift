@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCore
 @testable import BraintreeThreeDSecure
 
 class BTThreeDSecureLookup_Tests: XCTestCase {
