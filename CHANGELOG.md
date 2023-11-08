@@ -4,6 +4,7 @@
 * BraintreeThreeDSecure
   * Add `cardAddChallengeRequested` to `BTThreeDSecureRequest`
   * Deprecate `BTThreeDSecureRequest.cardAddChallenge`
+  * Fix bug where defaults for `BTThreeDSecureRequest.accountType`, `BTThreeDSecureRequest.requestedExemptionType`, and `BTThreeDSecureRequest.dfReferenceID` were improperly returning an error if not passed into the request
 * BraintreeCard
   * Deprecate unused `BTCardRequest` class
 
