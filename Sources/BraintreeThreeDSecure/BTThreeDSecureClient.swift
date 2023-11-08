@@ -339,15 +339,15 @@ import BraintreeCore
 
             let customer: [String: String] = [:]
 
-            var requestParameters: [String: Any] = [
-                "amount": request.amount ?? 0,
+            var requestParameters: [String: Any?] = [
+                "amount": request.amount,
                 "customer": customer,
                 "requestedThreeDSecureVersion": "2",
-                "dfReferenceId": request.dfReferenceID ?? "",
-                "accountType": request.accountType.stringValue ?? "",
+                "dfReferenceId": request.dfReferenceID,
+                "accountType": request.accountType.stringValue,
                 "challengeRequested": request.challengeRequested,
                 "exemptionRequested": request.exemptionRequested,
-                "requestedExemptionType": request.requestedExemptionType.stringValue ?? "",
+                "requestedExemptionType": request.requestedExemptionType.stringValue,
                 "dataOnlyRequested": request.dataOnlyRequested
             ]
 
