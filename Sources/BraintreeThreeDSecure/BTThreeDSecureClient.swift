@@ -380,7 +380,7 @@ import BraintreeCore
 
             self.apiClient.post(
                 "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
-                parameters: requestParameters
+                parameters: requestParameters as [String: Any] 
             ) { body, _, error in
                 if let error = error as NSError? {
                     // Provide more context for card validation error when status code 422
