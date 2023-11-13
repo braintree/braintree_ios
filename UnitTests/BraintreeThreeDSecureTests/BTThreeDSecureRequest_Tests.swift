@@ -1,4 +1,5 @@
 import XCTest
+import CardinalMobile
 @testable import BraintreeTestShared
 @testable import BraintreeThreeDSecure
 
@@ -113,5 +114,49 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     func testRequestedExemptionTypeAsString_whenAccountTypeIsNotSet_returnsNil() {
         let request = BTThreeDSecureRequest()
         XCTAssertEqual(request.requestedExemptionType.stringValue, nil)
+    }
+
+    // MARK: - UIType
+
+    func testUIType_whenUITypeNative_setsCardinalUITypeNative() {
+        let request = BTThreeDSecureRequest()
+        request.uiType = .native
+        XCTAssertEqual(request.uiType.cardinalValue, CardinalSessionUIType.native)
+    }
+
+    func testUIType_whenUITypeHTML_setsCardinalUITypeHTML() {
+        let request = BTThreeDSecureRequest()
+        request.uiType = .html
+        XCTAssertEqual(request.uiType.cardinalValue, CardinalSessionUIType.HTML)
+    }
+
+    func testUIType_whenUITypeBoth_setsCardinalUITypeBoth() {
+        let request = BTThreeDSecureRequest()
+        request.uiType = .native
+        XCTAssertEqual(request.uiType.cardinalValue, CardinalSessionUIType.both)
+    }
+
+    // MARK: RenderTypes
+
+    func testRenderTypes_whenAllRenderTypesAreSet_setsAllCardinalRenderTypes() {
+        let request = BTThreeDSecureRequest()
+        request.renderTypes = [
+            BTThreeDSecureRenderType.otp,
+            BTThreeDSecureRenderType.singleSelect,
+            BTThreeDSecureRenderType.multiSelect,
+            BTThreeDSecureRenderType.oob,
+            BTThreeDSecureRenderType.html
+        ]
+
+        XCTAssertEqual(
+            request.renderTypes,
+            [
+                "CardinalSessionRenderTypeOTP",
+                "CardinalSessionRenderTypeSingleSelect",
+                "CardinalSessionRenderTypeMultiSelect",
+                "CardinalSessionRenderTypeOOB",
+                "CardinalSessionRenderTypeHTML"
+            ]
+        )
     }
 }

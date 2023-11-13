@@ -86,7 +86,7 @@ import BraintreeCore
     ///
     /// - Note: When using `BTThreeDSecureUIType.both` or `BTThreeDSecureUIType.html`, all `BTThreeDSecureRenderType` options must be set.
     /// When using `BTThreeDSecureUIType.native`, all `BTThreeDSecureRenderType` options except `BTThreeDSecureRenderType.html` must be set.
-    public var renderTypes: [BTThreeDSecureRenderTypes.StringValue]?
+    public var renderTypes: [BTThreeDSecureRenderType.StringValue]?
 
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?

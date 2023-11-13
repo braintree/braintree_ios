@@ -1,7 +1,7 @@
 import Foundation
 
 /// Render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
-@objcMembers public class BTThreeDSecureRenderTypes: NSObject {
+@objcMembers public class BTThreeDSecureRenderType: NSObject {
 
     public typealias StringValue = String
 

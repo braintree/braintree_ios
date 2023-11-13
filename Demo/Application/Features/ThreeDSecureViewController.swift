@@ -100,11 +100,11 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         request.shippingMethod = .sameDay
         request.uiType = .both
         request.renderTypes = [
-            BTThreeDSecureRenderTypes.otp,
-            BTThreeDSecureRenderTypes.singleSelect,
-            BTThreeDSecureRenderTypes.multiSelect,
-            BTThreeDSecureRenderTypes.oob,
-            BTThreeDSecureRenderTypes.html
+            BTThreeDSecureRenderType.otp,
+            BTThreeDSecureRenderType.singleSelect,
+            BTThreeDSecureRenderType.multiSelect,
+            BTThreeDSecureRenderType.oob,
+            BTThreeDSecureRenderType.html
         ]
 
         let billingAddress = BTThreeDSecurePostalAddress()
