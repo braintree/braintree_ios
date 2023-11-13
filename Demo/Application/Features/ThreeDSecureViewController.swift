@@ -98,6 +98,14 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         request.requestedExemptionType = .lowValue
         request.email = "test@example.com"
         request.shippingMethod = .sameDay
+        request.uiType = .both
+        request.renderTypes = [
+            BTThreeDSecureRenderTypes.otp,
+            BTThreeDSecureRenderTypes.singleSelect,
+            BTThreeDSecureRenderTypes.multiSelect,
+            BTThreeDSecureRenderTypes.oob,
+            BTThreeDSecureRenderTypes.html
+        ]
 
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.givenName = "Jill"
