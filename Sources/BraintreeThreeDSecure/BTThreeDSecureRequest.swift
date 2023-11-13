@@ -77,6 +77,17 @@ import BraintreeCore
     /// Optional. UI Customization for 3DS2 challenge views.
     public var v2UICustomization: BTThreeDSecureV2UICustomization?
 
+    /// Optional. Sets all UI types that the device supports for displaying specific challenge user interfaces in the 3D Secure challenge.
+    ///
+    /// Defaults to `.both`
+    public var uiType: BTThreeDSecureUIType = .both
+
+    /// Optional. List of all the render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
+    ///
+    /// - Note: When using `BTThreeDSecureUIType.both` or `BTThreeDSecureUIType.html`, all `BTThreeDSecureRenderType` options must be set.
+    /// When using `BTThreeDSecureUIType.native`, all `BTThreeDSecureRenderType` options except `BTThreeDSecureRenderType.html` must be set.
+    public var renderTypes: [BTThreeDSecureRenderTypes.StringValue]?
+
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
     
