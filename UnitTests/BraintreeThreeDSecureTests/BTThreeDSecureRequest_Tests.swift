@@ -132,7 +132,7 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
 
     func testUIType_whenUITypeBoth_setsCardinalUITypeBoth() {
         let request = BTThreeDSecureRequest()
-        request.uiType = .native
+        request.uiType = .both
         XCTAssertEqual(request.uiType.cardinalValue, CardinalSessionUIType.both)
     }
 
