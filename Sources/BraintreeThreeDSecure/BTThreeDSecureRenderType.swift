@@ -1,4 +1,5 @@
 import Foundation
+import CardinalMobile
 
 /// Render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
 @objcMembers public class BTThreeDSecureRenderType: NSObject, OptionSet {
@@ -27,15 +28,15 @@ import Foundation
     var stringValue: String {
         switch self {
         case .otp:
-            return "CardinalSessionRenderTypeOTP"
+            return CardinalSessionRenderTypeOTP
         case .html:
-            return "CardinalSessionRenderTypeHTML"
+            return CardinalSessionRenderTypeHTML
         case .singleSelect:
-            return "CardinalSessionRenderTypeSingleSelect"
+            return CardinalSessionRenderTypeSingleSelect
         case .multiSelect:
-            return "CardinalSessionRenderTypeMultiSelect"
+            return CardinalSessionRenderTypeMultiSelect
         case .oob:
-            return "CardinalSessionRenderTypeOOB"
+            return CardinalSessionRenderTypeOOB
         default:
             return ""
         }
