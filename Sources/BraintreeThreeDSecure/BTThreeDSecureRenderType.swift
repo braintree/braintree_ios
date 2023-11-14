@@ -4,7 +4,10 @@ import Foundation
 @objcMembers public class BTThreeDSecureRenderType: NSObject, OptionSet {
 
     public let rawValue: Int
-    required public init(rawValue: Int) { self.rawValue = rawValue }
+
+    required public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
 
     /// OTP
     public static let otp = BTThreeDSecureRenderType(rawValue: 1)
