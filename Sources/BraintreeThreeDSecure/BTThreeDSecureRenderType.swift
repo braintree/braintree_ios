@@ -25,7 +25,7 @@ import CardinalMobile
     /// OOB
     public static let oob = BTThreeDSecureRenderType(rawValue: 5)
 
-    var stringValue: String {
+    var cardinalValue: String {
         switch self {
         case .otp:
             return CardinalSessionRenderTypeOTP

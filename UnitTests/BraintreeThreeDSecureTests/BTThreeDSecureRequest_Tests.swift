@@ -143,7 +143,7 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         request.renderTypes = [.otp, .singleSelect, .multiSelect, .oob, .html]
 
         XCTAssertEqual(
-            request.renderTypes?.compactMap { $0.stringValue },
+            request.renderTypes?.compactMap { $0.cardinalValue },
             [
                 "CardinalSessionRenderTypeOTP",
                 "CardinalSessionRenderTypeSingleSelect",
