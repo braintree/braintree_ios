@@ -85,8 +85,8 @@ import BraintreeCore
     /// Optional. List of all the render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
     ///
     /// - Note: When using `BTThreeDSecureUIType.both` or `BTThreeDSecureUIType.html`, all `BTThreeDSecureRenderType` options must be set.
-    /// When using `BTThreeDSecureUIType.native`, all `BTThreeDSecureRenderType` options except `BTThreeDSecureRenderType.html` must be set.
-    public var renderTypes: [BTThreeDSecureRenderType.StringValue]?
+    /// When using `BTThreeDSecureUIType.native`, all `BTThreeDSecureRenderType` options except `.html` must be set.
+    public var renderTypes: [BTThreeDSecureRenderType]?
 
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?

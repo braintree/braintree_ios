@@ -140,16 +140,10 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
 
     func testRenderTypes_whenAllRenderTypesAreSet_setsAllCardinalRenderTypes() {
         let request = BTThreeDSecureRequest()
-        request.renderTypes = [
-            BTThreeDSecureRenderType.otp,
-            BTThreeDSecureRenderType.singleSelect,
-            BTThreeDSecureRenderType.multiSelect,
-            BTThreeDSecureRenderType.oob,
-            BTThreeDSecureRenderType.html
-        ]
+        request.renderTypes = [.otp, .singleSelect, .multiSelect, .oob, .html]
 
         XCTAssertEqual(
-            request.renderTypes,
+            request.renderTypes?.compactMap { $0.stringValue },
             [
                 "CardinalSessionRenderTypeOTP",
                 "CardinalSessionRenderTypeSingleSelect",
