@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCore
 @testable import BraintreePayPal
 
 final class BTPayPalAccountNonce_Tests: XCTestCase {

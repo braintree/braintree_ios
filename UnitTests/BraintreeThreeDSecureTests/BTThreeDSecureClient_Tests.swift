@@ -88,6 +88,25 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
+    func testPerformThreeDSecureLookup_whenDefaultsArePassed_buildsRequestWithNilValues() {
+        let expectation = expectation(description: "willCallCompletion")
+
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.amount = 9.99
+
+        client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.99)
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["requestedThreeDSecureVersion"] as! String, "2")
+            XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as? String)
+            XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["accountType"] as? String)
+            XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["requestedExemptionType"] as? String)
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
     func testPerformThreeDSecureLookup_whenCardAddChallengeNotRequested_sendsCardAddFalse() {
         let expectation = self.expectation(description: "willCallCompletion")
 
@@ -120,6 +139,22 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testPerformThreeDSecureLookup_whenCardAddChallengeRequested_sendsCardAddTrue() {
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.amount = 9.97
+        threeDSecureRequest.dfReferenceID = "df-reference-id"
+        threeDSecureRequest.cardAddChallengeRequested = true
+
+        let expectation = expectation(description: "willCallCompletion")
+
+        client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
 
     func testPerformThreeDSecureLookup_whenSuccessful_callsBackWithResult() {

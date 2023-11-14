@@ -339,21 +339,21 @@ import BraintreeCore
 
             let customer: [String: String] = [:]
 
-            var requestParameters: [String: Any] = [
-                "amount": request.amount ?? 0,
+            var requestParameters: [String: Any?] = [
+                "amount": request.amount,
                 "customer": customer,
                 "requestedThreeDSecureVersion": "2",
-                "dfReferenceId": request.dfReferenceID ?? "",
-                "accountType": request.accountType.stringValue ?? "",
+                "dfReferenceId": request.dfReferenceID,
+                "accountType": request.accountType.stringValue,
                 "challengeRequested": request.challengeRequested,
                 "exemptionRequested": request.exemptionRequested,
-                "requestedExemptionType": request.requestedExemptionType.stringValue ?? "",
+                "requestedExemptionType": request.requestedExemptionType.stringValue,
                 "dataOnlyRequested": request.dataOnlyRequested
             ]
 
-            if request.cardAddChallenge == .requested {
+            if request._cardAddChallenge == .requested || request.cardAddChallengeRequested == true {
                 requestParameters["cardAdd"] = true
-            } else if request.cardAddChallenge == .notRequested {
+            } else if request._cardAddChallenge == .notRequested {
                 requestParameters["cardAdd"] = false
             }
 
@@ -380,7 +380,7 @@ import BraintreeCore
 
             self.apiClient.post(
                 "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
-                parameters: requestParameters
+                parameters: requestParameters as [String: Any] 
             ) { body, _, error in
                 if let error = error as NSError? {
                     // Provide more context for card validation error when status code 422

@@ -1,5 +1,6 @@
 import UIKit
 import XCTest
+@testable import BraintreeCore
 @testable import BraintreeTestShared
 @testable import BraintreeThreeDSecure
 

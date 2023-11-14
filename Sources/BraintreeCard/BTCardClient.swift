@@ -33,7 +33,6 @@ import BraintreeCore
     @objc(tokenizeCard:completion:)
     public func tokenize(_ card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeStarted)
-        let request = BTCardRequest(card: card)
 
         apiClient.fetchOrReturnRemoteConfiguration() { configuration, error in
             if let error {
@@ -47,12 +46,12 @@ import BraintreeCore
             }
 
             if self.isGraphQLEnabled(for: configuration) {
-                if request.card.authenticationInsightRequested && request.card.merchantAccountID == nil {
+                if card.authenticationInsightRequested && card.merchantAccountID == nil {
                     self.notifyFailure(with: BTCardError.integration, completion: completion)
                     return
                 }
 
-                let parameters = request.card.graphQLParameters()
+                let parameters = card.graphQLParameters()
 
                 self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
                     if let error = error as NSError? {
@@ -80,7 +79,7 @@ import BraintreeCore
                     return
                 }
             } else {
-                let parameters = self.clientAPIParameters(for: request)
+                let parameters = self.clientAPIParameters(for: card)
 
                 self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
                     if let error = error as NSError? {
@@ -137,9 +136,9 @@ import BraintreeCore
         return false
     }
 
-    private func clientAPIParameters(for request: BTCardRequest) -> [String: Any] {
+    private func clientAPIParameters(for card: BTCard) -> [String: Any] {
         var parameters: [String: Any] = [:]
-        parameters["credit_card"] = request.card.parameters()
+        parameters["credit_card"] = card.parameters()
 
         let metadata: [String: String] = [
             "source": apiClient.metadata.source.stringValue,
@@ -149,9 +148,9 @@ import BraintreeCore
 
         parameters["_meta"] = metadata
 
-        if request.card.authenticationInsightRequested {
+        if card.authenticationInsightRequested {
             parameters["authenticationInsight"] = true
-            parameters["merchantAccountId"] = request.card.merchantAccountID
+            parameters["merchantAccountId"] = card.merchantAccountID
         }
 
         return parameters
