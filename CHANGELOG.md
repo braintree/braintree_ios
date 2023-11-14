@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalNativeCheckout
+  * Update PayPalCheckout from 1.1.0 to 1.2.0.
+
 ## 6.7.0 (2023-10-09)
 * BraintreeCore
   * Fix bug where `type` was always returned as `Unknown` in `fetchPaymentMethodNonces` (fixes #1099)
