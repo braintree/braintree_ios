@@ -253,6 +253,8 @@
 		BEBC6F3329380B82004E25A0 /* BTExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBC6F3129380B82004E25A0 /* BTExceptionCatcher.m */; };
 		BEBD05222A1FE8BE0003C15C /* BTWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD05212A1FE8BE0003C15C /* BTWebAuthenticationSession.swift */; };
 		BEBD05242A1FEE150003C15C /* MockWebAuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBD05232A1FEE150003C15C /* MockWebAuthenticationSession.swift */; };
+		BEBF0C202B02793B0079DA74 /* BTThreeDSecureUIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBF0C1F2B02793B0079DA74 /* BTThreeDSecureUIType.swift */; };
+		BEBF0C222B0279F10079DA74 /* BTThreeDSecureRenderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBF0C212B0279F10079DA74 /* BTThreeDSecureRenderType.swift */; };
 		BEC3F11328A4401E0074DF0F /* BTHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC3F11228A4401E0074DF0F /* BTHTTPError.swift */; };
 		BEC66DBE2901CC9E0030B6B2 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BECBA0E62AEABC99002518AC /* BTCardClient_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECBA0E52AEABC99002518AC /* BTCardClient_IntegrationTests.swift */; };
@@ -858,6 +860,8 @@
 		BEBC6F3429380BA6004E25A0 /* BTExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTExceptionCatcher.h; sourceTree = "<group>"; };
 		BEBD05212A1FE8BE0003C15C /* BTWebAuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTWebAuthenticationSession.swift; sourceTree = "<group>"; };
 		BEBD05232A1FEE150003C15C /* MockWebAuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWebAuthenticationSession.swift; sourceTree = "<group>"; };
+		BEBF0C1F2B02793B0079DA74 /* BTThreeDSecureUIType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureUIType.swift; sourceTree = "<group>"; };
+		BEBF0C212B0279F10079DA74 /* BTThreeDSecureRenderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRenderType.swift; sourceTree = "<group>"; };
 		BEC3F11228A4401E0074DF0F /* BTHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTPError.swift; sourceTree = "<group>"; };
 		BECA56C929C3F0A80098EC3C /* BTThreeDSecureV2UICustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2UICustomization.swift; sourceTree = "<group>"; };
 		BECBA0E52AEABC99002518AC /* BTCardClient_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardClient_IntegrationTests.swift; sourceTree = "<group>"; };
@@ -1527,11 +1531,13 @@
 				BE01A84229D32EA9000DFA24 /* BTThreeDSecureError.swift */,
 				BE01A82C29CCCDE9000DFA24 /* BTThreeDSecureLookup.swift */,
 				BE01A83429D1F7B9000DFA24 /* BTThreeDSecurePostalAddress.swift */,
+				BEBF0C212B0279F10079DA74 /* BTThreeDSecureRenderType.swift */,
 				80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */,
 				80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */,
 				80482F8729D3A571007E5F50 /* BTThreeDSecureRequestedExemptionType.swift */,
 				BE80C00229C549BE00793A6C /* BTThreeDSecureResult.swift */,
 				80482F8529D3A498007E5F50 /* BTThreeDSecureShippingMethod.swift */,
+				BEBF0C1F2B02793B0079DA74 /* BTThreeDSecureUIType.swift */,
 				BE01A83E29D32CA0000DFA24 /* BTThreeDSecureV2Provider.swift */,
 				80CD33FF2A6042FC009545F5 /* CardinalSessionTestable.swift */,
 				801A0A1725890DF200DAF851 /* V2UICustomization */,
@@ -2884,11 +2890,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE48CE4829D5DDA600F0825C /* BTThreeDSecureV2TextBoxCustomization.swift in Sources */,
+				BEBF0C222B0279F10079DA74 /* BTThreeDSecureRenderType.swift in Sources */,
 				80D1638729E75CF1001D880E /* BTThreeDSecureClient.swift in Sources */,
 				BEEBC3C129D5DD68009C7F77 /* BTThreeDSecureV2LabelCustomization.swift in Sources */,
 				BEEBC3C029D5DD16009C7F77 /* BTThreeDSecureV2UICustomization.swift in Sources */,
 				80482F8029D39A1D007E5F50 /* BTThreeDSecureRequest.swift in Sources */,
 				BE01A83D29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift in Sources */,
+				BEBF0C202B02793B0079DA74 /* BTThreeDSecureUIType.swift in Sources */,
 				BE01A83F29D32CA0000DFA24 /* BTThreeDSecureV2Provider.swift in Sources */,
 				BE82E73F29C4A06B0059FE97 /* BTThreeDSecureV2ToolbarCustomization.swift in Sources */,
 				BE01A84129D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift in Sources */,
