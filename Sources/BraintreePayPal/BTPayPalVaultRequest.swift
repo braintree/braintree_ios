@@ -16,7 +16,6 @@ import BraintreeCore
 
     /// Initializes a PayPal Native Vault request
     /// - Parameter offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    /// - Parameter userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public init(offerCredit: Bool = false) {
         self.offerCredit = offerCredit
 

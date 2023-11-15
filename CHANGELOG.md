@@ -9,7 +9,7 @@
   * Deprecate unused `BTCardRequest` class
 * BraintreePayPalNativeCheckout
   * Update PayPalCheckout from 1.1.0 to 1.2.0.
-  * Update `BTPayPalNativeCheckoutRequest` initializer to accept optional param `userAuthenticationEmail`
+  * Add `userAuthenticationEmail` to `BTPayPalNativeCheckoutRequest`
 
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector
