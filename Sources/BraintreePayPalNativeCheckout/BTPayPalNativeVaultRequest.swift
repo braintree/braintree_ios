@@ -21,10 +21,9 @@ import BraintreePayPal
     ///   `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
     public init(
         offerCredit: Bool = false,
-        userAuthenticationEmail: String? = nil,
         billingAgreementDescription: String? = nil
     ) {
-        super.init(offerCredit: offerCredit, userAuthenticationEmail: userAuthenticationEmail)
+        super.init(offerCredit: offerCredit)
         self.billingAgreementDescription = billingAgreementDescription
     }
 }

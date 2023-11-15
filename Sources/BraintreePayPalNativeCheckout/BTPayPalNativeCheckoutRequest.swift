@@ -10,6 +10,11 @@ import BraintreePayPal
 
 /// Options for the PayPal Checkout flow.
 @objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalCheckoutRequest {
+
+    // MARK: - Public Properties
+
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    public var userAuthenticationEmail: String?
     
     // MARK: - Initializer
 
@@ -39,8 +44,7 @@ import BraintreePayPal
             intent: intent,
             offerPayLater: offerPayLater,
             currencyCode: currencyCode,
-            requestBillingAgreement: requestBillingAgreement,
-            userAuthenticationEmail: userAuthenticationEmail
+            requestBillingAgreement: requestBillingAgreement
         )
 
         self.amount = amount

@@ -82,9 +82,6 @@ import BraintreeCore
     /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
 
-    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    public var userAuthenticationEmail: String?
-
     // MARK: - Initializer
 
     /// Initializes a PayPal Native Checkout request
@@ -104,8 +101,7 @@ import BraintreeCore
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
-        requestBillingAgreement: Bool = false,
-        userAuthenticationEmail: String? = nil
+        requestBillingAgreement: Bool = false
     ) {
         self.amount = amount
         self.intent = intent
@@ -113,7 +109,6 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
-        self.userAuthenticationEmail = userAuthenticationEmail
 
         super.init(hermesPath: "v1/paypal_hermes/create_payment_resource", paymentType: .checkout)
     }
