@@ -7,6 +7,9 @@
   * Fix bug where defaults for `BTThreeDSecureRequest.accountType`, `BTThreeDSecureRequest.requestedExemptionType`, and `BTThreeDSecureRequest.dfReferenceID` were improperly returning an error if not passed into the request
 * BraintreeCard
   * Deprecate unused `BTCardRequest` class
+* BraintreePayPalNativeCheckout
+  * Update PayPalCheckout from 1.1.0 to 1.2.0.
+  * Add `userAuthenticationEmail` to `BTPayPalNativeCheckoutRequest`
 
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector

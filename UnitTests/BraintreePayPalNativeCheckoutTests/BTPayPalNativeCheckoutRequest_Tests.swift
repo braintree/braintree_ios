@@ -28,6 +28,16 @@ class BTPayPalNativeCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(checkoutRequest.hermesPath, "v1/paypal_hermes/create_payment_resource")
     }
 
+    func testUserAuthenticationEmailReturnsNil() {
+      let request = BTPayPalNativeCheckoutRequest(amount: "10.00")
+        XCTAssertNil(request.userAuthenticationEmail)
+    }
+
+    func testUserAuthenticationEmailReturnsEmail() {
+        let request = BTPayPalNativeCheckoutRequest(amount: "10.00", userAuthenticationEmail: "user@example.com")
+        XCTAssertEqual(request.userAuthenticationEmail, "user@example.com")
+    }
+
     func testIntentStringReturnsCorrectValue() {
         let checkoutRequest = BTPayPalNativeCheckoutRequest(amount: "10.00")
         checkoutRequest.intent = .authorize

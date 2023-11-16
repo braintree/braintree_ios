@@ -10,6 +10,11 @@ import BraintreePayPal
 
 /// Options for the PayPal Checkout flow.
 @objcMembers public class BTPayPalNativeCheckoutRequest: BTPayPalCheckoutRequest {
+
+    // MARK: - Public Properties
+
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    public var userAuthenticationEmail: String?
     
     // MARK: - Initializer
 
@@ -24,13 +29,15 @@ import BraintreePayPal
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout.
     ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also
     ///   set `requestBillingAgreement` to `true` on your `BTPayPalNativeVaultRequest`.
+    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        billingAgreementDescription: String? = nil
+        billingAgreementDescription: String? = nil,
+        userAuthenticationEmail: String? = nil
     ) {
         super.init(
             amount: amount,
@@ -46,5 +53,6 @@ import BraintreePayPal
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.billingAgreementDescription = billingAgreementDescription
+        self.userAuthenticationEmail = userAuthenticationEmail
     }
 }
