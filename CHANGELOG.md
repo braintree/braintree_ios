@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.9.0 (2023-11-16)
 * BraintreeThreeDSecure
   * Add `cardAddChallengeRequested`, `uiType`, and `renderTypes` to `BTThreeDSecureRequest`
   * Deprecate `BTThreeDSecureRequest.cardAddChallenge`
