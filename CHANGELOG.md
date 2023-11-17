@@ -1,14 +1,19 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreePayPalNativeCheckout
+  * Update PayPalCheckout from 1.1.0 to 1.2.0.
+  * Add `userAuthenticationEmail` to `BTPayPalNativeCheckoutRequest`
+* BraintreeDataCollector
+  * Update previously incorrect version of PPRiskMagnes with 5.4.1 for Carthage users
+
+## 6.9.0 (2023-11-16)
 * BraintreeThreeDSecure
-  * Add `cardAddChallengeRequested` to `BTThreeDSecureRequest`
+  * Add `cardAddChallengeRequested`, `uiType`, and `renderTypes` to `BTThreeDSecureRequest`
   * Deprecate `BTThreeDSecureRequest.cardAddChallenge`
   * Fix bug where defaults for `BTThreeDSecureRequest.accountType`, `BTThreeDSecureRequest.requestedExemptionType`, and `BTThreeDSecureRequest.dfReferenceID` were improperly returning an error if not passed into the request
 * BraintreeCard
   * Deprecate unused `BTCardRequest` class
-* BraintreeDataCollector
-  * Update previously incorrect version of PPRiskMagnes with 5.4.1 for Carthage users
 
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector

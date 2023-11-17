@@ -41,7 +41,7 @@ import PayPalCheckout
         _ request: BTPayPalNativeCheckoutRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        tokenize(request: request, completion: completion)
+        tokenize(request: request, userAuthenticationEmail: request.userAuthenticationEmail, completion: completion)
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Native Checkout flow.
@@ -107,6 +107,7 @@ import PayPalCheckout
 
     private func tokenize(
         request: BTPayPalRequest,
+        userAuthenticationEmail: String? = nil,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         clientMetadataID = request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID
@@ -156,7 +157,7 @@ import PayPalCheckout
                     },
                     environment: order.environment
                 )
-
+                payPalNativeConfig.authConfig.userEmail = userAuthenticationEmail
                 PayPalCheckout.Checkout.showsExitAlert = false
                 PayPalCheckout.Checkout.set(config: payPalNativeConfig)
                 

@@ -39,6 +39,12 @@ class BTThreeDSecureV2Provider {
             cardinalEnvironment = .production
         }
 
+        cardinalConfiguration.uiType = request.uiType.cardinalValue
+
+        if let renderTypes = request.renderTypes {
+            cardinalConfiguration.renderType = renderTypes.compactMap { $0.cardinalValue }
+        }
+
         guard let cardinalAuthenticationJWT = configuration.cardinalAuthenticationJWT else {
             completion(nil)
             return
