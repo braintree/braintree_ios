@@ -642,47 +642,6 @@
                 "fixedbinaryorder": 1
               },
               {
-                "kind": "Var",
-                "name": "STAGE",
-                "printedName": "STAGE",
-                "children": [
-                  {
-                    "kind": "TypeFunc",
-                    "name": "Function",
-                    "printedName": "(PPRiskMagnes.MagnesSDK.Environment.Type) -> PPRiskMagnes.MagnesSDK.Environment",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "Environment",
-                        "printedName": "PPRiskMagnes.MagnesSDK.Environment",
-                        "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
-                      },
-                      {
-                        "kind": "TypeNominal",
-                        "name": "Metatype",
-                        "printedName": "PPRiskMagnes.MagnesSDK.Environment.Type",
-                        "children": [
-                          {
-                            "kind": "TypeNominal",
-                            "name": "Environment",
-                            "printedName": "PPRiskMagnes.MagnesSDK.Environment",
-                            "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ],
-                "declKind": "EnumElement",
-                "usr": "s:12PPRiskMagnes0B3SDKC11EnvironmentO5STAGEyA2EmF",
-                "mangledName": "$s12PPRiskMagnes0B3SDKC11EnvironmentO5STAGEyA2EmF",
-                "moduleName": "PPRiskMagnes",
-                "declAttributes": [
-                  "ObjC"
-                ],
-                "fixedbinaryorder": 2
-              },
-              {
                 "kind": "Constructor",
                 "name": "init",
                 "printedName": "init(rawValue:)",
@@ -2347,3073 +2306,3045 @@
   },
   "ConstValues": [
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 209,
       "length": 25,
       "value": "\"PPRiskMagnes.MagnesSensorDataCollector\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "BooleanLiteral",
       "offset": 416,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "Dictionary",
       "offset": 464,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "Array",
       "offset": 516,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "Array",
       "offset": 569,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "IntegerLiteral",
       "offset": 606,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "BooleanLiteral",
       "offset": 897,
       "length": 4,
       "value": "true"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "Dictionary",
       "offset": 949,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TouchDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 1513,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
       "kind": "Array",
       "offset": 407,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
       "kind": "Array",
       "offset": 480,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/AuditDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 594,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
       "offset": 314,
       "length": 56,
       "value": "\"https:\/\/api-m.paypal.com\/AccessControl\/LogRiskMetadata\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
       "offset": 425,
       "length": 37,
       "value": "\"https:\/\/c.paypal.com\/r\/v1\/device\/mg\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
       "offset": 518,
       "length": 43,
       "value": "\"https:\/\/c.paypal.com\/r\/v1\/device\/mg-audit\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 622,
-      "length": 62,
-      "value": "\"https:\/\/www.stage2du13.stage.paypal.com\/r\/v1\/device\/mg-audit\""
-    },
-    {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
-      "kind": "StringLiteral",
-      "offset": 734,
-      "length": 69,
-      "value": "\"https:\/\/www.stage2du13.stage.paypal.com\/r\/v1\/device\/client-metadata\""
-    },
-    {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
-      "kind": "StringLiteral",
-      "offset": 857,
+      "offset": 615,
       "length": 58,
       "value": "\"https:\/\/c.sandbox.paypal.com\/r\/v1\/device\/client-metadata\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 965,
+      "offset": 723,
       "length": 68,
       "value": "\"https:\/\/www.paypalobjects.com\/rdaAssets\/magnes\/magnes_ios_rac.json\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1085,
+      "offset": 843,
       "length": 68,
       "value": "\"https:\/\/www.paypalobjects.com\/rdaAssets\/magnes\/magnes_ios_rec.json\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1203,
+      "offset": 961,
       "length": 40,
       "value": "\"https:\/\/b.stats.paypal.com\/counter.cgi\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1338,
+      "offset": 1096,
       "length": 6,
       "value": "\"POST\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1379,
+      "offset": 1137,
       "length": 5,
       "value": "\"GET\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1424,
+      "offset": 1182,
       "length": 10,
       "value": "\"cellular\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1470,
+      "offset": 1228,
       "length": 6,
       "value": "\"wifi\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1515,
+      "offset": 1273,
       "length": 9,
       "value": "\"unknown\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1568,
+      "offset": 1326,
       "length": 16,
       "value": "\"CORRELATION-ID\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1665,
+      "offset": 1423,
       "length": 24,
       "value": "\"PayPalClientMetaDataId\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1730,
+      "offset": 1488,
       "length": 12,
       "value": "\"pairing_id\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1787,
+      "offset": 1545,
       "length": 27,
       "value": "\"Failed to convert to JSON\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1859,
+      "offset": 1617,
       "length": 9,
       "value": "\"169.254\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 1913,
+      "offset": 1671,
       "length": 6,
       "value": "\"fe80\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2048,
+      "offset": 1806,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2074,
+      "offset": 1832,
       "length": 1,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2103,
+      "offset": 1861,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2137,
+      "offset": 1895,
       "length": 1,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2167,
+      "offset": 1925,
       "length": 1,
       "value": "5"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2193,
+      "offset": 1951,
       "length": 1,
       "value": "6"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2223,
+      "offset": 1981,
       "length": 1,
       "value": "7"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2253,
+      "offset": 2011,
       "length": 1,
       "value": "8"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2282,
+      "offset": 2040,
       "length": 1,
       "value": "9"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2316,
+      "offset": 2074,
       "length": 2,
       "value": "10"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2344,
+      "offset": 2102,
       "length": 2,
       "value": "11"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2379,
+      "offset": 2137,
       "length": 2,
       "value": "12"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2409,
+      "offset": 2167,
       "length": 2,
       "value": "13"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2437,
+      "offset": 2195,
       "length": 2,
       "value": "14"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2469,
+      "offset": 2227,
       "length": 2,
       "value": "15"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2508,
+      "offset": 2266,
       "length": 2,
       "value": "16"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2545,
+      "offset": 2303,
       "length": 2,
       "value": "17"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2571,
+      "offset": 2329,
       "length": 2,
       "value": "18"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2600,
+      "offset": 2358,
       "length": 2,
       "value": "19"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2630,
+      "offset": 2388,
       "length": 2,
       "value": "20"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2666,
+      "offset": 2424,
       "length": 2,
       "value": "21"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2703,
+      "offset": 2461,
       "length": 2,
       "value": "22"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2737,
+      "offset": 2495,
       "length": 2,
       "value": "23"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2760,
+      "offset": 2518,
       "length": 2,
       "value": "24"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2784,
+      "offset": 2542,
       "length": 2,
       "value": "25"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2810,
+      "offset": 2568,
       "length": 2,
       "value": "26"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2836,
+      "offset": 2594,
       "length": 2,
       "value": "27"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2862,
+      "offset": 2620,
       "length": 2,
       "value": "28"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2893,
+      "offset": 2651,
       "length": 2,
       "value": "29"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2929,
+      "offset": 2687,
       "length": 2,
       "value": "30"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2966,
+      "offset": 2724,
       "length": 2,
       "value": "31"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2996,
+      "offset": 2754,
       "length": 2,
       "value": "32"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 3027,
+      "offset": 2785,
       "length": 2,
       "value": "62"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2048,
+      "offset": 1806,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2074,
+      "offset": 1832,
       "length": 1,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2103,
+      "offset": 1861,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2137,
+      "offset": 1895,
       "length": 1,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2167,
+      "offset": 1925,
       "length": 1,
       "value": "5"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2193,
+      "offset": 1951,
       "length": 1,
       "value": "6"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2223,
+      "offset": 1981,
       "length": 1,
       "value": "7"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2253,
+      "offset": 2011,
       "length": 1,
       "value": "8"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2282,
+      "offset": 2040,
       "length": 1,
       "value": "9"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2316,
+      "offset": 2074,
       "length": 2,
       "value": "10"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2344,
+      "offset": 2102,
       "length": 2,
       "value": "11"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2379,
+      "offset": 2137,
       "length": 2,
       "value": "12"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2409,
+      "offset": 2167,
       "length": 2,
       "value": "13"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2437,
+      "offset": 2195,
       "length": 2,
       "value": "14"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2469,
+      "offset": 2227,
       "length": 2,
       "value": "15"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2508,
+      "offset": 2266,
       "length": 2,
       "value": "16"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2545,
+      "offset": 2303,
       "length": 2,
       "value": "17"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2571,
+      "offset": 2329,
       "length": 2,
       "value": "18"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2600,
+      "offset": 2358,
       "length": 2,
       "value": "19"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2630,
+      "offset": 2388,
       "length": 2,
       "value": "20"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2666,
+      "offset": 2424,
       "length": 2,
       "value": "21"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2703,
+      "offset": 2461,
       "length": 2,
       "value": "22"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2737,
+      "offset": 2495,
       "length": 2,
       "value": "23"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2760,
+      "offset": 2518,
       "length": 2,
       "value": "24"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2784,
+      "offset": 2542,
       "length": 2,
       "value": "25"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2810,
+      "offset": 2568,
       "length": 2,
       "value": "26"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2836,
+      "offset": 2594,
       "length": 2,
       "value": "27"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2862,
+      "offset": 2620,
       "length": 2,
       "value": "28"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2893,
+      "offset": 2651,
       "length": 2,
       "value": "29"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2929,
+      "offset": 2687,
       "length": 2,
       "value": "30"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2966,
+      "offset": 2724,
       "length": 2,
       "value": "31"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2996,
+      "offset": 2754,
       "length": 2,
       "value": "32"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 3027,
+      "offset": 2785,
       "length": 2,
       "value": "62"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2048,
+      "offset": 1806,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2074,
+      "offset": 1832,
       "length": 1,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2103,
+      "offset": 1861,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2137,
+      "offset": 1895,
       "length": 1,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2167,
+      "offset": 1925,
       "length": 1,
       "value": "5"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2193,
+      "offset": 1951,
       "length": 1,
       "value": "6"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2223,
+      "offset": 1981,
       "length": 1,
       "value": "7"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2253,
+      "offset": 2011,
       "length": 1,
       "value": "8"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2282,
+      "offset": 2040,
       "length": 1,
       "value": "9"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2316,
+      "offset": 2074,
       "length": 2,
       "value": "10"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2344,
+      "offset": 2102,
       "length": 2,
       "value": "11"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2379,
+      "offset": 2137,
       "length": 2,
       "value": "12"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2409,
+      "offset": 2167,
       "length": 2,
       "value": "13"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2437,
+      "offset": 2195,
       "length": 2,
       "value": "14"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2469,
+      "offset": 2227,
       "length": 2,
       "value": "15"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2508,
+      "offset": 2266,
       "length": 2,
       "value": "16"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2545,
+      "offset": 2303,
       "length": 2,
       "value": "17"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2571,
+      "offset": 2329,
       "length": 2,
       "value": "18"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2600,
+      "offset": 2358,
       "length": 2,
       "value": "19"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2630,
+      "offset": 2388,
       "length": 2,
       "value": "20"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2666,
+      "offset": 2424,
       "length": 2,
       "value": "21"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2703,
+      "offset": 2461,
       "length": 2,
       "value": "22"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2737,
+      "offset": 2495,
       "length": 2,
       "value": "23"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2760,
+      "offset": 2518,
       "length": 2,
       "value": "24"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2784,
+      "offset": 2542,
       "length": 2,
       "value": "25"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2810,
+      "offset": 2568,
       "length": 2,
       "value": "26"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2836,
+      "offset": 2594,
       "length": 2,
       "value": "27"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2862,
+      "offset": 2620,
       "length": 2,
       "value": "28"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2893,
+      "offset": 2651,
       "length": 2,
       "value": "29"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2929,
+      "offset": 2687,
       "length": 2,
       "value": "30"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2966,
+      "offset": 2724,
       "length": 2,
       "value": "31"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 2996,
+      "offset": 2754,
       "length": 2,
       "value": "32"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 3027,
+      "offset": 2785,
       "length": 2,
       "value": "62"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 5380,
+      "offset": 5138,
       "length": 5,
       "value": "\"iOS\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 5433,
+      "offset": 5191,
       "length": 6,
       "value": "\"full\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5534,
+      "offset": 5292,
       "length": 2,
       "value": "33"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5561,
+      "offset": 5319,
       "length": 2,
       "value": "34"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5589,
+      "offset": 5347,
       "length": 2,
       "value": "35"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5613,
+      "offset": 5371,
       "length": 2,
       "value": "36"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5635,
+      "offset": 5393,
       "length": 2,
       "value": "37"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5662,
+      "offset": 5420,
       "length": 2,
       "value": "38"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5693,
+      "offset": 5451,
       "length": 2,
       "value": "39"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5721,
+      "offset": 5479,
       "length": 2,
       "value": "40"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5759,
+      "offset": 5517,
       "length": 2,
       "value": "41"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5792,
+      "offset": 5550,
       "length": 2,
       "value": "42"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5822,
+      "offset": 5580,
       "length": 2,
       "value": "43"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5846,
+      "offset": 5604,
       "length": 2,
       "value": "44"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5875,
+      "offset": 5633,
       "length": 2,
       "value": "45"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5915,
+      "offset": 5673,
       "length": 2,
       "value": "46"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5947,
+      "offset": 5705,
       "length": 2,
       "value": "47"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5984,
+      "offset": 5742,
       "length": 2,
       "value": "48"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6008,
+      "offset": 5766,
       "length": 2,
       "value": "49"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6037,
+      "offset": 5795,
       "length": 2,
       "value": "50"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6059,
+      "offset": 5817,
       "length": 2,
       "value": "51"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6085,
+      "offset": 5843,
       "length": 2,
       "value": "52"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6115,
+      "offset": 5873,
       "length": 2,
       "value": "53"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6142,
+      "offset": 5900,
       "length": 2,
       "value": "54"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6165,
+      "offset": 5923,
       "length": 2,
       "value": "55"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6189,
+      "offset": 5947,
       "length": 2,
       "value": "56"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6215,
+      "offset": 5973,
       "length": 2,
       "value": "57"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6244,
+      "offset": 6002,
       "length": 2,
       "value": "58"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6274,
+      "offset": 6032,
       "length": 2,
       "value": "32"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6310,
+      "offset": 6068,
       "length": 2,
       "value": "61"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6342,
+      "offset": 6100,
       "length": 2,
       "value": "63"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5534,
+      "offset": 5292,
       "length": 2,
       "value": "33"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5561,
+      "offset": 5319,
       "length": 2,
       "value": "34"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5589,
+      "offset": 5347,
       "length": 2,
       "value": "35"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5613,
+      "offset": 5371,
       "length": 2,
       "value": "36"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5635,
+      "offset": 5393,
       "length": 2,
       "value": "37"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5662,
+      "offset": 5420,
       "length": 2,
       "value": "38"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5693,
+      "offset": 5451,
       "length": 2,
       "value": "39"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5721,
+      "offset": 5479,
       "length": 2,
       "value": "40"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5759,
+      "offset": 5517,
       "length": 2,
       "value": "41"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5792,
+      "offset": 5550,
       "length": 2,
       "value": "42"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5822,
+      "offset": 5580,
       "length": 2,
       "value": "43"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5846,
+      "offset": 5604,
       "length": 2,
       "value": "44"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5875,
+      "offset": 5633,
       "length": 2,
       "value": "45"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5915,
+      "offset": 5673,
       "length": 2,
       "value": "46"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5947,
+      "offset": 5705,
       "length": 2,
       "value": "47"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5984,
+      "offset": 5742,
       "length": 2,
       "value": "48"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6008,
+      "offset": 5766,
       "length": 2,
       "value": "49"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6037,
+      "offset": 5795,
       "length": 2,
       "value": "50"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6059,
+      "offset": 5817,
       "length": 2,
       "value": "51"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6085,
+      "offset": 5843,
       "length": 2,
       "value": "52"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6115,
+      "offset": 5873,
       "length": 2,
       "value": "53"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6142,
+      "offset": 5900,
       "length": 2,
       "value": "54"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6165,
+      "offset": 5923,
       "length": 2,
       "value": "55"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6189,
+      "offset": 5947,
       "length": 2,
       "value": "56"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6215,
+      "offset": 5973,
       "length": 2,
       "value": "57"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6244,
+      "offset": 6002,
       "length": 2,
       "value": "58"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6274,
+      "offset": 6032,
       "length": 2,
       "value": "32"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6310,
+      "offset": 6068,
       "length": 2,
       "value": "61"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6342,
+      "offset": 6100,
       "length": 2,
       "value": "63"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5534,
+      "offset": 5292,
       "length": 2,
       "value": "33"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5561,
+      "offset": 5319,
       "length": 2,
       "value": "34"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5589,
+      "offset": 5347,
       "length": 2,
       "value": "35"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5613,
+      "offset": 5371,
       "length": 2,
       "value": "36"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5635,
+      "offset": 5393,
       "length": 2,
       "value": "37"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5662,
+      "offset": 5420,
       "length": 2,
       "value": "38"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5693,
+      "offset": 5451,
       "length": 2,
       "value": "39"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5721,
+      "offset": 5479,
       "length": 2,
       "value": "40"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5759,
+      "offset": 5517,
       "length": 2,
       "value": "41"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5792,
+      "offset": 5550,
       "length": 2,
       "value": "42"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5822,
+      "offset": 5580,
       "length": 2,
       "value": "43"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5846,
+      "offset": 5604,
       "length": 2,
       "value": "44"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5875,
+      "offset": 5633,
       "length": 2,
       "value": "45"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5915,
+      "offset": 5673,
       "length": 2,
       "value": "46"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5947,
+      "offset": 5705,
       "length": 2,
       "value": "47"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 5984,
+      "offset": 5742,
       "length": 2,
       "value": "48"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6008,
+      "offset": 5766,
       "length": 2,
       "value": "49"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6037,
+      "offset": 5795,
       "length": 2,
       "value": "50"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6059,
+      "offset": 5817,
       "length": 2,
       "value": "51"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6085,
+      "offset": 5843,
       "length": 2,
       "value": "52"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6115,
+      "offset": 5873,
       "length": 2,
       "value": "53"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6142,
+      "offset": 5900,
       "length": 2,
       "value": "54"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6165,
+      "offset": 5923,
       "length": 2,
       "value": "55"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6189,
+      "offset": 5947,
       "length": 2,
       "value": "56"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6215,
+      "offset": 5973,
       "length": 2,
       "value": "57"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6244,
+      "offset": 6002,
       "length": 2,
       "value": "58"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6274,
+      "offset": 6032,
       "length": 2,
       "value": "32"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6310,
+      "offset": 6068,
       "length": 2,
       "value": "61"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 6342,
+      "offset": 6100,
       "length": 2,
       "value": "63"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8360,
+      "offset": 8118,
       "length": 2,
       "value": "65"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8360,
+      "offset": 8118,
       "length": 2,
       "value": "65"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8360,
+      "offset": 8118,
       "length": 2,
       "value": "65"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8601,
+      "offset": 8359,
       "length": 2,
       "value": "59"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8631,
+      "offset": 8389,
       "length": 2,
       "value": "60"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8663,
+      "offset": 8421,
       "length": 2,
       "value": "64"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8601,
+      "offset": 8359,
       "length": 2,
       "value": "59"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8631,
+      "offset": 8389,
       "length": 2,
       "value": "60"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8663,
+      "offset": 8421,
       "length": 2,
       "value": "64"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8601,
+      "offset": 8359,
       "length": 2,
       "value": "59"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8631,
+      "offset": 8389,
       "length": 2,
       "value": "60"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 8663,
+      "offset": 8421,
       "length": 2,
       "value": "64"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9010,
+      "offset": 8768,
       "length": 7,
       "value": "\"BSSID\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9053,
+      "offset": 8811,
       "length": 6,
       "value": "\"SSID\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9010,
+      "offset": 8768,
       "length": 7,
       "value": "\"BSSID\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9053,
+      "offset": 8811,
       "length": 6,
       "value": "\"SSID\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9192,
+      "offset": 8950,
       "length": 5,
       "value": "\"lng\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9237,
+      "offset": 8995,
       "length": 5,
       "value": "\"lat\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9283,
+      "offset": 9041,
       "length": 11,
       "value": "\"timestamp\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9334,
+      "offset": 9092,
       "length": 5,
       "value": "\"acc\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9381,
+      "offset": 9139,
       "length": 12,
       "value": "\"authorized\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9431,
+      "offset": 9189,
       "length": 8,
       "value": "\"denied\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9481,
+      "offset": 9239,
       "length": 12,
       "value": "\"restricted\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9544,
+      "offset": 9302,
       "length": 21,
       "value": "\"authorizedWhenInUse\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9604,
+      "offset": 9362,
       "length": 9,
       "value": "\"unknown\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9689,
+      "offset": 9447,
       "length": 7,
       "value": "\"level\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9742,
+      "offset": 9500,
       "length": 13,
       "value": "\"activecores\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9795,
+      "offset": 9553,
       "length": 7,
       "value": "\"cores\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9841,
+      "offset": 9599,
       "length": 6,
       "value": "\"name\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9886,
+      "offset": 9644,
       "length": 13,
       "value": "\"system_type\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9939,
+      "offset": 9697,
       "length": 6,
       "value": "\"free\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 9986,
+      "offset": 9744,
       "length": 5,
       "value": "\"dua\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10030,
+      "offset": 9788,
       "length": 10,
       "value": "\"hardware\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10083,
+      "offset": 9841,
       "length": 9,
       "value": "\"version\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10136,
+      "offset": 9894,
       "length": 11,
       "value": "\"low_power\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10191,
+      "offset": 9949,
       "length": 8,
       "value": "\"height\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10242,
+      "offset": 10000,
       "length": 7,
       "value": "\"width\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10297,
+      "offset": 10055,
       "length": 12,
       "value": "\"brightness\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10354,
+      "offset": 10112,
       "length": 9,
       "value": "\"capture\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10410,
+      "offset": 10168,
       "length": 12,
       "value": "\"max_frames\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10466,
+      "offset": 10224,
       "length": 8,
       "value": "\"mirror\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10517,
+      "offset": 10275,
       "length": 7,
       "value": "\"scale\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10561,
+      "offset": 10319,
       "length": 7,
       "value": "\"state\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10609,
+      "offset": 10367,
       "length": 15,
       "value": "\"device_uptime\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10661,
+      "offset": 10419,
       "length": 7,
       "value": "\"total\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10764,
+      "offset": 10522,
       "length": 37,
       "value": "\"MagnesRemoteConfigurationDictionary\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10859,
+      "offset": 10617,
       "length": 51,
       "value": "\"MagnesRemoteConfigurationDictionaryLastUpdateTime\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 10952,
+      "offset": 10710,
       "length": 35,
       "value": "\"MagnesRampConfigurationDictionary\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11043,
+      "offset": 10801,
       "length": 49,
       "value": "\"MagnesRampConfigurationDictionaryLastUpdateTime\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11142,
+      "offset": 10900,
       "length": 19,
       "value": "\"PPRiskComponentAG\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11214,
+      "offset": 10972,
       "length": 27,
       "value": "\"PPRiskComponentMagnesGuid\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11303,
+      "offset": 11061,
       "length": 36,
       "value": "\"PPRiskComponentMagnesGuidTimestamp\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11397,
+      "offset": 11155,
       "length": 17,
       "value": "\"PPRiskComponent\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11468,
+      "offset": 11226,
       "length": 28,
       "value": "\"com.paypal.dyson.linker_id\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11654,
+      "offset": 11412,
       "length": 24,
       "value": "\"public.utf8-plain-text\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 11756,
+      "offset": 11514,
       "length": 2,
       "value": "60"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 11759,
+      "offset": 11517,
       "length": 2,
       "value": "60"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 11762,
+      "offset": 11520,
       "length": 2,
       "value": "24"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 11765,
+      "offset": 11523,
       "length": 3,
       "value": "365"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 11769,
+      "offset": 11527,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11825,
+      "offset": 11583,
       "length": 28,
       "value": "\"com.paypal.dyson.linker_id\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 11908,
+      "offset": 11666,
       "length": 41,
       "value": "\"PPRiskComponentDoNotBackupAndSync.plist\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12003,
+      "offset": 11761,
       "length": 17,
       "value": "\"localIdentifier\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12078,
+      "offset": 11836,
       "length": 15,
       "value": "\"RiskManagerCT\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12160,
+      "offset": 11918,
       "length": 33,
       "value": "\"RiskManagerLastPINLockTimestamp\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12232,
+      "offset": 11990,
       "length": 19,
       "value": "\"magnes.debug.mode\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12296,
+      "offset": 12054,
       "length": 18,
       "value": "\"userAgentWebView\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12360,
+      "offset": 12118,
       "length": 18,
       "value": "\"currentOsVersion\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12451,
+      "offset": 12209,
       "length": 4,
       "value": "\"id\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12506,
+      "offset": 12264,
       "length": 12,
       "value": "\"created_at\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12699,
+      "offset": 12457,
       "length": 7,
-      "value": "\"5.4.0\""
+      "value": "\"5.4.1\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12757,
+      "offset": 12515,
       "length": 5,
       "value": "\"1.0\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12848,
+      "offset": 12606,
       "length": 14,
       "value": "\"aU9TTWFnbmVz\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 12906,
+      "offset": 12664,
       "length": 22,
       "value": "\"aW52YWxpZF9pbnB1dA==\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13002,
+      "offset": 12760,
       "length": 2,
       "value": "36"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13049,
+      "offset": 12807,
       "length": 2,
       "value": "30"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13094,
+      "offset": 12852,
       "length": 2,
       "value": "32"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13141,
+      "offset": 12899,
       "length": 2,
       "value": "99"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13186,
+      "offset": 12944,
       "length": 1,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13226,
+      "offset": 12984,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13305,
+      "offset": 13063,
       "length": 4,
       "value": "403"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13357,
+      "offset": 13115,
       "length": 4,
       "value": "401"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13402,
+      "offset": 13160,
       "length": 4,
       "value": "400"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 13453,
+      "offset": 13211,
       "length": 4,
       "value": "405"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "FloatLiteral",
-      "offset": 13507,
+      "offset": 13265,
       "length": 4,
       "value": "1.0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14118,
+      "offset": 13876,
       "length": 3,
       "value": "\"p\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14157,
+      "offset": 13915,
       "length": 3,
       "value": "\"t\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 14206,
+      "offset": 13964,
       "length": 3,
       "value": "150"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14276,
+      "offset": 14034,
       "length": 8,
       "value": "\"viewId\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14327,
+      "offset": 14085,
       "length": 4,
       "value": "\"ts\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14372,
+      "offset": 14130,
       "length": 12,
       "value": "\"flightTime\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14431,
+      "offset": 14189,
       "length": 8,
       "value": "\"Events\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14474,
+      "offset": 14232,
       "length": 6,
       "value": "\"wsrt\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14529,
+      "offset": 14287,
       "length": 6,
       "value": "\"wsac\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14575,
+      "offset": 14333,
       "length": 6,
       "value": "\"wsct\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14627,
+      "offset": 14385,
       "length": 6,
       "value": "\"wspf\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14679,
+      "offset": 14437,
       "length": 6,
       "value": "\"wsbs\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 14760,
+      "offset": 14518,
       "length": 1,
       "value": "5"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 14807,
+      "offset": 14565,
       "length": 3,
       "value": "400"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 14857,
+      "offset": 14615,
       "length": 1,
       "value": "5"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14896,
+      "offset": 14654,
       "length": 3,
       "value": "\"f\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14937,
+      "offset": 14695,
       "length": 3,
       "value": "\"r\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 14986,
+      "offset": 14744,
       "length": 3,
       "value": "\"x\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15035,
+      "offset": 14793,
       "length": 3,
       "value": "\"y\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15078,
+      "offset": 14836,
       "length": 3,
       "value": "\"d\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15122,
+      "offset": 14880,
       "length": 4,
       "value": "\"st\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15165,
+      "offset": 14923,
       "length": 4,
       "value": "\"et\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15211,
+      "offset": 14969,
       "length": 4,
       "value": "\"tc\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15257,
+      "offset": 15015,
       "length": 4,
       "value": "\"tt\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15302,
+      "offset": 15060,
       "length": 4,
       "value": "\"td\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15349,
+      "offset": 15107,
       "length": 4,
       "value": "\"te\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 15405,
+      "offset": 15163,
       "length": 8,
       "value": "10000000"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 15936,
+      "offset": 15694,
       "length": 36,
       "value": "\"protectedDataWillBecomeUnavailable\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16024,
+      "offset": 15782,
       "length": 12,
       "value": "\"snsrBgTask\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16120,
+      "offset": 15878,
       "length": 25,
       "value": "\"auditDataCollectorQueue\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16225,
+      "offset": 15983,
       "length": 12,
       "value": "\"pairing_id\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16311,
+      "offset": 16069,
       "length": 7,
       "value": "\"audit\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16357,
+      "offset": 16115,
       "length": 6,
       "value": "\"type\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16402,
+      "offset": 16160,
       "length": 9,
       "value": "\"payload\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16481,
+      "offset": 16239,
       "length": 3,
       "value": "\"o\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16524,
+      "offset": 16282,
       "length": 3,
       "value": "\"e\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16569,
+      "offset": 16327,
       "length": 3,
       "value": "\"m\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16617,
+      "offset": 16375,
       "length": 3,
       "value": "\"r\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16658,
+      "offset": 16416,
       "length": 4,
       "value": "\"ai\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16704,
+      "offset": 16462,
       "length": 4,
       "value": "\"as\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "StringLiteral",
-      "offset": 16760,
+      "offset": 16518,
       "length": 7,
       "value": "\"cr_ti\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16851,
+      "offset": 16609,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16884,
+      "offset": 16642,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16918,
+      "offset": 16676,
       "length": 1,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16951,
+      "offset": 16709,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16987,
+      "offset": 16745,
       "length": 1,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16851,
+      "offset": 16609,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16884,
+      "offset": 16642,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16918,
+      "offset": 16676,
       "length": 1,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16951,
+      "offset": 16709,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16987,
+      "offset": 16745,
       "length": 1,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16851,
+      "offset": 16609,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16884,
+      "offset": 16642,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16918,
+      "offset": 16676,
       "length": 1,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16951,
+      "offset": 16709,
       "length": 1,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConstants.swift",
       "kind": "IntegerLiteral",
-      "offset": 16987,
+      "offset": 16745,
       "length": 1,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/DynamicDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/DynamicDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 450,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/DynamicDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/DynamicDataCollector.swift",
       "kind": "BooleanLiteral",
       "offset": 489,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
       "kind": "IntegerLiteral",
       "offset": 119,
       "length": 4,
       "value": "7200"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
       "kind": "Dictionary",
       "offset": 177,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
       "kind": "IntegerLiteral",
       "offset": 223,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
       "kind": "IntegerLiteral",
       "offset": 265,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
       "kind": "IntegerLiteral",
       "offset": 310,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/RampConfig.swift",
       "kind": "IntegerLiteral",
       "offset": 355,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
       "kind": "Array",
       "offset": 629,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
       "kind": "Dictionary",
       "offset": 702,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
       "kind": "BooleanLiteral",
       "offset": 747,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/TelemetryDataCollector.swift",
       "kind": "BooleanLiteral",
       "offset": 791,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorManager.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorManager.swift",
       "kind": "IntegerLiteral",
       "offset": 307,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorManager.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSensorManager.swift",
       "kind": "StringLiteral",
       "offset": 185,
       "length": 19,
       "value": "\"PPRiskMagnes.MagnesSensorManager\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesBackgroundTaskManager.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesBackgroundTaskManager.swift",
       "kind": "BooleanLiteral",
       "offset": 378,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 338,
       "length": 2,
       "value": "10"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 361,
       "length": 2,
       "value": "11"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 389,
       "length": 2,
       "value": "12"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 416,
       "length": 2,
       "value": "17"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 440,
       "length": 2,
       "value": "18"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 466,
       "length": 2,
       "value": "19"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 338,
       "length": 2,
       "value": "10"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 361,
       "length": 2,
       "value": "11"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 389,
       "length": 2,
       "value": "12"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 416,
       "length": 2,
       "value": "17"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 440,
       "length": 2,
       "value": "18"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 466,
       "length": 2,
       "value": "19"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 573,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 598,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
-      "kind": "IntegerLiteral",
-      "offset": 621,
-      "length": 1,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 573,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
       "offset": 598,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 621,
-      "length": 1,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
-      "kind": "IntegerLiteral",
-      "offset": 743,
+      "offset": 720,
       "length": 3,
       "value": "100"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "IntegerLiteral",
-      "offset": 743,
+      "offset": 720,
       "length": 3,
       "value": "100"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 999,
+      "offset": 976,
       "length": 55,
       "value": "\" Application’s Globally Unique Identifier(AppGUID) \""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1065,
+      "offset": 1042,
       "length": 109,
       "value": "\"does not match the criteria, This is a string that identifies the merchant application that sets up Magnes \""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1185,
+      "offset": 1162,
       "length": 105,
       "value": "\"on the mobile device. If the merchant app does not pass an AppGuid, Magnes creates one to identify the \""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1301,
+      "offset": 1278,
       "length": 105,
       "value": "\"app. An AppGuid is a per-installation application identifier; that is, if a new instance of the app is \""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1417,
+      "offset": 1394,
       "length": 91,
       "value": "\"installed on the mobile device, or the app is reinstalled, it will have a new AppGuid.\n \""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1519,
+      "offset": 1496,
       "length": 27,
       "value": "\"***AppGuid Criteria*** \n\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1557,
+      "offset": 1534,
       "length": 33,
       "value": "\"   Max length: 36 characters \n\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1601,
+      "offset": 1578,
       "length": 33,
       "value": "\"   Min Length: 30 characters \n\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1645,
+      "offset": 1622,
       "length": 47,
       "value": "\"   Regex: Letters, numbers and dashes only \n\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1796,
+      "offset": 1773,
       "length": 62,
       "value": "\"PayPal-Client-Metadata-Id exceeds maximum length. This your \""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1869,
+      "offset": 1846,
       "length": 80,
       "value": "\"own unique identifier for the payload. If you do notpass in this value, a new \""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 1960,
+      "offset": 1937,
       "length": 93,
       "value": "\"PayPal-Client-Metadata-Id is generated per method call. ***Maximum length: 32 characters***\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "Dictionary",
-      "offset": 2103,
+      "offset": 2080,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "Dictionary",
-      "offset": 2159,
+      "offset": 2136,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "Dictionary",
-      "offset": 2222,
+      "offset": 2199,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "Dictionary",
-      "offset": 2275,
+      "offset": 2252,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 2434,
+      "offset": 2411,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 2478,
+      "offset": 2455,
       "length": 4,
       "value": "true"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 2525,
+      "offset": 2502,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 2572,
+      "offset": 2549,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 2617,
+      "offset": 2594,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 3958,
+      "offset": 3935,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 4029,
+      "offset": 4006,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 4119,
+      "offset": 4096,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 4193,
+      "offset": 4170,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 7538,
+      "offset": 7515,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "Dictionary",
-      "offset": 7626,
+      "offset": 7603,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 8718,
+      "offset": 8695,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "Dictionary",
-      "offset": 8801,
+      "offset": 8778,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 8874,
+      "offset": 8851,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "StringLiteral",
-      "offset": 12275,
+      "offset": 12252,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesSDK.swift",
       "kind": "Dictionary",
-      "offset": 12372,
+      "offset": 12349,
       "length": 3,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConfiguration.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConfiguration.swift",
       "kind": "BooleanLiteral",
       "offset": 388,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesConfiguration.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesConfiguration.swift",
       "kind": "BooleanLiteral",
       "offset": 695,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesUtils.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesUtils.swift",
       "kind": "BooleanLiteral",
       "offset": 313,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesUtils.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesUtils.swift",
       "kind": "BooleanLiteral",
       "offset": 363,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 400,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 453,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
       "kind": "BooleanLiteral",
       "offset": 25982,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/CoreDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 26042,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/BaseDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/BaseDataCollector.swift",
       "kind": "StringLiteral",
       "offset": 245,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/BaseDataCollector.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/BaseDataCollector.swift",
       "kind": "BooleanLiteral",
       "offset": 284,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/omahalingam\/Downloads\/Risk-Magnes-iOS-SDK-5.4.0\/PPRiskMagnes\/PPRiskMagnes\/MagnesResult.swift",
+      "filePath": "\/Users\/jraghu\/Documents\/GitHub\/5.4.1_XCode_14.1\/Risk-Magnes-iOS-SDK\/PPRiskMagnes\/PPRiskMagnes\/MagnesResult.swift",
       "kind": "StringLiteral",
       "offset": 267,
       "length": 12,
