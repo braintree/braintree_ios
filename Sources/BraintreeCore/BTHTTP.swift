@@ -99,7 +99,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - HTTP Methods
 
-    func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool = false, completion: RequestCompletion?) {
+    func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool = false, completion: @escaping RequestCompletion) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
