@@ -516,6 +516,7 @@ public struct GatewayRequestModel: Encodable {
     public func encode(to encoder: Encoder) throws {
         try actualPostDetails.encode(to: encoder)
         
+        // https://stackoverflow.com/questions/50461744/swift-codable-how-to-encode-top-level-data-into-nested-container
         var metadataContainer = encoder.container(keyedBy: MetadataKeys.self)
         let metadataEncoder = metadataContainer.superEncoder(forKey: .metadata)
         try self.metadata.encode(to: metadataEncoder)
