@@ -89,18 +89,20 @@ import BraintreeCore
                 return
             }
 
-            let metaParameters: [String: String] = [
-                "source": self.apiClient.metadata.source.stringValue,
-                "integration": self.apiClient.metadata.integration.stringValue,
-                "sessionId": self.apiClient.metadata.sessionID
-            ]
+//            let metaParameters: [String: String] = [
+//                "source": self.apiClient.metadata.source.stringValue,
+//                "integration": self.apiClient.metadata.integration.stringValue,
+//                "sessionId": self.apiClient.metadata.sessionID
+//            ]
+//
+//            let parameters: [String: Any] = [
+//                "applePaymentToken": self.parametersForPaymentToken(token: payment.token),
+//                "_meta": metaParameters
+//            ]
+            
+            let codableParams = BTApplePaymentTokensRequest(token: payment.token, metadata: self.apiClient.metadata)
 
-            let parameters: [String: Any] = [
-                "applePaymentToken": self.parametersForPaymentToken(token: payment.token),
-                "_meta": metaParameters
-            ]
-
-            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
+            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: codableParams) { body, _, error in
                 if let error {
                     self.notifyFailure(with: error, completion: completion)
                     return
