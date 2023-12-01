@@ -349,8 +349,8 @@ import Foundation
                 return
             }
 
-            // let postParameters = metadataParametersWith(parameters, for: httpType)
-            http(for: httpType)?.post(path, parameters: parameters, completion: completion)
+            let postParameters = metadataParametersWith(parameters, for: httpType)
+            http(for: httpType)?.post(path, parameters: postParameters!, completion: completion)
         }
     }
 
@@ -366,6 +366,10 @@ import Foundation
     }
 
     // MARK: Analytics Internal Methods
+    
+    func metadataParametersWith(_ parameters: Encodable, for httpType: BTAPIClientHTTPService) -> Encodable? {
+        return GatewayRequestModel(actualPostDetails: parameters, metadata: Metadata(integration: "TEST", sessionID: "TEST", source: "TEST"))
+    }
 
     func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
         switch httpType {
@@ -497,5 +501,40 @@ import Foundation
         case .graphQLAPI:
             return graphQLHTTP
         }
+    }
+}
+
+public struct GatewayRequestModel: Encodable {
+    
+    private enum MetadataKeys: String, CodingKey {
+        case metadata = "_meta"
+    }
+    
+    let actualPostDetails: Encodable
+    let metadata: Metadata
+
+    public func encode(to encoder: Encoder) throws {
+        try actualPostDetails.encode(to: encoder)
+        
+        var metadataContainer = encoder.container(keyedBy: MetadataKeys.self)
+        let metadataEncoder = metadataContainer.superEncoder(forKey: .metadata)
+        try self.metadata.encode(to: metadataEncoder)
+    }
+}
+
+struct Metadata: Encodable {
+    
+    let integration: String
+    let sessionID: String
+    let source: String
+    let platform = "iOS"
+    let version = BTCoreConstants.braintreeSDKVersion
+    
+    enum CodingKeys: String, CodingKey {
+        case integration = "integration"
+        case sessionID = "sessionId"
+        case source = "source"
+        case platform = "platform"
+        case version = "version"
     }
 }

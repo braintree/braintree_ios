@@ -100,7 +100,7 @@ import BraintreeCore
 //                "_meta": metaParameters
 //            ]
             
-            let codableParams = BTApplePaymentTokensRequest(token: payment.token, metadata: self.apiClient.metadata)
+            let codableParams = BTApplePaymentTokensRequest(token: payment.token)
 
             self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: codableParams) { body, _, error in
                 if let error {
