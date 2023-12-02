@@ -88,21 +88,10 @@ import BraintreeCore
                 self.notifyFailure(with: BTApplePayError.unsupported, completion: completion)
                 return
             }
-
-//            let metaParameters: [String: String] = [
-//                "source": self.apiClient.metadata.source.stringValue,
-//                "integration": self.apiClient.metadata.integration.stringValue,
-//                "sessionId": self.apiClient.metadata.sessionID
-//            ]
-//
-//            let parameters: [String: Any] = [
-//                "applePaymentToken": self.parametersForPaymentToken(token: payment.token),
-//                "_meta": metaParameters
-//            ]
             
-            let codableParams = BTApplePaymentTokensRequest(token: payment.token)
+            let parameters = BTApplePaymentTokensRequest(token: payment.token)
 
-            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: codableParams) { body, _, error in
+            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
                 if let error {
                     self.notifyFailure(with: error, completion: completion)
                     return
@@ -138,17 +127,6 @@ import BraintreeCore
                 }
             }
         }
-    }
-
-    // MARK: - Internal Methods
-
-    func parametersForPaymentToken(token: PKPaymentToken) -> [String: Any?] {
-        [
-            "paymentData": token.paymentData.base64EncodedString(),
-            "transactionIdentifier": token.transactionIdentifier,
-            "paymentInstrumentName": token.paymentMethod.displayName,
-            "paymentNetwork": token.paymentMethod.network
-        ]
     }
     
     // MARK: - Analytics Helper Methods

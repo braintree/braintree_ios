@@ -350,7 +350,7 @@ import Foundation
             }
 
             let postParameters = metadataParametersWith(parameters, for: httpType)
-            http(for: httpType)?.post(path, parameters: postParameters!, completion: completion)
+            http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
 
@@ -367,10 +367,11 @@ import Foundation
 
     // MARK: Analytics Internal Methods
     
-    func metadataParametersWith(_ parameters: Encodable, for httpType: BTAPIClientHTTPService) -> Encodable? {
-        return GatewayRequestModel(actualPostDetails: parameters, metadata: metadata)
+    func metadataParametersWith(_ parameters: Encodable, for httpType: BTAPIClientHTTPService) -> Encodable {
+        return BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
     }
 
+    // TODO: - Remove once all POSTs moved to Encodable
     func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
         switch httpType {
         case .gateway:
@@ -501,24 +502,5 @@ import Foundation
         case .graphQLAPI:
             return graphQLHTTP
         }
-    }
-}
-
-public struct GatewayRequestModel: Encodable {
-    
-    private enum MetadataKeys: String, CodingKey {
-        case metadata = "_meta"
-    }
-    
-    let actualPostDetails: Encodable
-    let metadata: BTClientMetadata
-
-    public func encode(to encoder: Encoder) throws {
-        try actualPostDetails.encode(to: encoder)
-        
-        // https://stackoverflow.com/questions/50461744/swift-codable-how-to-encode-top-level-data-into-nested-container
-        var metadataContainer = encoder.container(keyedBy: MetadataKeys.self)
-        let metadataEncoder = metadataContainer.superEncoder(forKey: .metadata)
-        try self.metadata.encode(to: metadataEncoder)
     }
 }
