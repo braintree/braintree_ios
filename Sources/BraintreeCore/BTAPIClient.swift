@@ -368,7 +368,7 @@ import Foundation
     // MARK: Analytics Internal Methods
     
     func metadataParametersWith(_ parameters: Encodable, for httpType: BTAPIClientHTTPService) -> Encodable? {
-        return GatewayRequestModel(actualPostDetails: parameters, metadata: Metadata(integration: "TEST", sessionID: "TEST", source: "TEST"))
+        return GatewayRequestModel(actualPostDetails: parameters, metadata: metadata)
     }
 
     func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
@@ -511,7 +511,7 @@ public struct GatewayRequestModel: Encodable {
     }
     
     let actualPostDetails: Encodable
-    let metadata: Metadata
+    let metadata: BTClientMetadata
 
     public func encode(to encoder: Encoder) throws {
         try actualPostDetails.encode(to: encoder)
@@ -520,22 +520,5 @@ public struct GatewayRequestModel: Encodable {
         var metadataContainer = encoder.container(keyedBy: MetadataKeys.self)
         let metadataEncoder = metadataContainer.superEncoder(forKey: .metadata)
         try self.metadata.encode(to: metadataEncoder)
-    }
-}
-
-struct Metadata: Encodable {
-    
-    let integration: String
-    let sessionID: String
-    let source: String
-    let platform = "iOS"
-    let version = BTCoreConstants.braintreeSDKVersion
-    
-    enum CodingKeys: String, CodingKey {
-        case integration = "integration"
-        case sessionID = "sessionId"
-        case source = "source"
-        case platform = "platform"
-        case version = "version"
     }
 }
