@@ -73,6 +73,7 @@
 		57D9436E2968A8080079EAB1 /* BTPayPalLocaleCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9436D2968A8080079EAB1 /* BTPayPalLocaleCode.swift */; };
 		57D94370296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9436F296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift */; };
 		57D94372296CCA2F0079EAB1 /* String+NonceValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */; };
+		62E3971D2A653C2379BD52C3 /* Pods_Tests_BraintreeApplePayTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC40B9037B6D2FD172C71413 /* Pods_Tests_BraintreeApplePayTests.framework */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
 		80482F8029D39A1D007E5F50 /* BTThreeDSecureRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */; };
@@ -86,6 +87,8 @@
 		8053F05929FB2F700076F988 /* URL+IsPayPal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053F05829FB2F700076F988 /* URL+IsPayPal.swift */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
+		806870E82B1B842100046183 /* BTMockPKPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 806870E72B1B842100046183 /* BTMockPKPaymentMethod.m */; };
+		806870EB2B1B84DF00046183 /* BTMockPKPaymentToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 806870EA2B1B84DF00046183 /* BTMockPKPaymentToken.m */; };
 		80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */; };
 		80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */; };
 		80BA64B429D795D000E15264 /* BTLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */; };
@@ -636,6 +639,7 @@
 		3DF38AFC28590B5600225F2A /* BTPayPalNativeCheckoutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeCheckoutRequest.swift; sourceTree = "<group>"; };
 		3DF4B4C9285A74200072DC60 /* BTPayPalNativeVaultRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeVaultRequest_Tests.swift; sourceTree = "<group>"; };
 		4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Tests.swift; sourceTree = "<group>"; };
+		41B477B9FAA310386BCF70BE /* Pods-Tests-BraintreeApplePayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeApplePayTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeApplePayTests/Pods-Tests-BraintreeApplePayTests.release.xcconfig"; sourceTree = "<group>"; };
 		4228D80C2624D8C9001D2564 /* BTVenmoAccountNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAccountNonce_Tests.swift; sourceTree = "<group>"; };
 		4228D8682624E5C3001D2564 /* BTVenmoRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoRequest_Tests.swift; sourceTree = "<group>"; };
 		423B921824D1E0BF0048B655 /* BTThreeDSecureResult_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureResult_Tests.swift; sourceTree = "<group>"; };
@@ -699,6 +703,11 @@
 		80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+ThreeDSecure_Tests.swift"; sourceTree = "<group>"; };
 		80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLHTTP_SSLPinning_IntegrationTests.swift; sourceTree = "<group>"; };
 		805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPostalAddress_Tests.swift; sourceTree = "<group>"; };
+		806870E52B1B842100046183 /* BraintreeApplePayTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeApplePayTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		806870E62B1B842100046183 /* BTMockPKPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockPKPaymentMethod.h; sourceTree = "<group>"; };
+		806870E72B1B842100046183 /* BTMockPKPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockPKPaymentMethod.m; sourceTree = "<group>"; };
+		806870E92B1B84DF00046183 /* BTMockPKPaymentToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockPKPaymentToken.h; sourceTree = "<group>"; };
+		806870EA2B1B84DF00046183 /* BTMockPKPaymentToken.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockPKPaymentToken.m; sourceTree = "<group>"; };
 		80A1EE3D2236AAC600F6218B /* BTThreeDSecureAdditionalInformation_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAdditionalInformation_Tests.swift; sourceTree = "<group>"; };
 		80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = Frameworks/XCFrameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentResult.swift; sourceTree = "<group>"; };
@@ -889,6 +898,8 @@
 		BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
 		BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardClient.swift; sourceTree = "<group>"; };
 		BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardError.swift; sourceTree = "<group>"; };
+		E4F66284711700856E0E921F /* Pods-Tests-BraintreeApplePayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeApplePayTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeApplePayTests/Pods-Tests-BraintreeApplePayTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FC40B9037B6D2FD172C71413 /* Pods_Tests_BraintreeApplePayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_BraintreeApplePayTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1037,6 +1048,7 @@
 			files = (
 				A948D6EA24FAC73B00F4F178 /* BraintreeTestShared.framework in Frameworks */,
 				A948D6E124FAC6C000F4F178 /* BraintreeApplePay.framework in Frameworks */,
+				62E3971D2A653C2379BD52C3 /* Pods_Tests_BraintreeApplePayTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1217,8 @@
 				463DED22C0F426A474E6D7E2 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */,
 				59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */,
 				BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */,
+				E4F66284711700856E0E921F /* Pods-Tests-BraintreeApplePayTests.debug.xcconfig */,
+				41B477B9FAA310386BCF70BE /* Pods-Tests-BraintreeApplePayTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1398,6 +1412,7 @@
 				A903E1B524F9D37B00C314E1 /* XCTest.framework */,
 				9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */,
 				85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */,
+				FC40B9037B6D2FD172C71413 /* Pods_Tests_BraintreeApplePayTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1584,6 +1599,11 @@
 				800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */,
 				A95229CA24FD9E41006F7D25 /* BTConfiguration+ApplePay_Tests.swift */,
 				A948D6E024FAC6C000F4F178 /* Info.plist */,
+				806870E62B1B842100046183 /* BTMockPKPaymentMethod.h */,
+				806870E72B1B842100046183 /* BTMockPKPaymentMethod.m */,
+				806870E52B1B842100046183 /* BraintreeApplePayTests-Bridging-Header.h */,
+				806870E92B1B84DF00046183 /* BTMockPKPaymentToken.h */,
+				806870EA2B1B84DF00046183 /* BTMockPKPaymentToken.m */,
 			);
 			path = BraintreeApplePayTests;
 			sourceTree = "<group>";
@@ -2118,9 +2138,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A948D6E424FAC6C000F4F178 /* Build configuration list for PBXNativeTarget "BraintreeApplePayTests" */;
 			buildPhases = (
+				06211605DBA73C3CE0584C64 /* [CP] Check Pods Manifest.lock */,
 				A948D6D824FAC6C000F4F178 /* Sources */,
 				A948D6D924FAC6C000F4F178 /* Frameworks */,
 				A948D6DA24FAC6C000F4F178 /* Resources */,
+				6FA368C7A8AF03530C210FD5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2340,6 +2362,7 @@
 					};
 					A948D6DB24FAC6C000F4F178 = {
 						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1500;
 					};
 					A948D6EF24FAC8F900F4F178 = {
 						CreatedOnToolsVersion = 12.0;
@@ -2576,6 +2599,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		06211605DBA73C3CE0584C64 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tests-BraintreeApplePayTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		356114CCDD2F8BD4A20E655A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2596,6 +2641,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6FA368C7A8AF03530C210FD5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeApplePayTests/Pods-Tests-BraintreeApplePayTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeApplePayTests/Pods-Tests-BraintreeApplePayTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7613C68129DDF0C2CFF1376D /* [CP] Embed Pods Frameworks */ = {
@@ -2959,6 +3024,8 @@
 				A95229CB24FD9E41006F7D25 /* BTConfiguration+ApplePay_Tests.swift in Sources */,
 				A948D6E724FAC71A00F4F178 /* BTApplePay_Tests.swift in Sources */,
 				800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */,
+				806870EB2B1B84DF00046183 /* BTMockPKPaymentToken.m in Sources */,
+				806870E82B1B842100046183 /* BTMockPKPaymentMethod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5207,6 +5274,7 @@
 		};
 		A948D6E524FAC6C000F4F178 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E4F66284711700856E0E921F /* Pods-Tests-BraintreeApplePayTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5246,7 +5314,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreeApplePayTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/BraintreeApplePayTests/BraintreeApplePayTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5256,6 +5324,7 @@
 		};
 		A948D6E624FAC6C000F4F178 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41B477B9FAA310386BCF70BE /* Pods-Tests-BraintreeApplePayTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5289,7 +5358,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.BraintreeApplePayTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/BraintreeApplePayTests/BraintreeApplePayTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Demo/**";
