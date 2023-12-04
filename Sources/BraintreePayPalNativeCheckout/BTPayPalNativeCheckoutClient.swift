@@ -17,12 +17,19 @@ import PayPalCheckout
     
     /// Used in POST body for FPTI analytics.
     private var clientMetadataID: String? = nil
+    private let nativeCheckoutProvider: BTPayPalNativeCheckoutStartable
+
 
     ///  Initializes a PayPal Native client.
     /// - Parameter apiClient: The Braintree API client
     @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
+    public convenience init(apiClient: BTAPIClient) {
+        self.init(apiClient: apiClient, nativeCheckoutProvider: BTPayPalNativeCheckoutProvider())
+    }
+
+    init(apiClient: BTAPIClient, nativeCheckoutProvider: BTPayPalNativeCheckoutStartable) {
         self.apiClient = apiClient
+        self.nativeCheckoutProvider = nativeCheckoutProvider
     }
 
     // MARK: - Public Methods
@@ -122,48 +129,22 @@ import PayPalCheckout
 
             switch result {
             case .success(let order):
-                let payPalNativeConfig = PayPalCheckout.CheckoutConfig(
-                    clientID: order.payPalClientID,
-                    createOrder: { [weak self] action in
-                        guard let self else {
-                            completion(nil, BTPayPalNativeCheckoutError.deallocated)
-                            return
-                        }
+                let nxoConfig = CheckoutConfig(clientID: order.payPalClientID, environment: order.environment)
+                nxoConfig.authConfig.userEmail = userAuthenticationEmail
 
-                        switch request.paymentType {
-                        case .checkout:
-                            action.set(orderId: order.orderID)
-                        case .vault:
-                            action.set(billingAgreementToken: order.orderID)
-                        @unknown default:
-                            notifyFailure(with: BTPayPalNativeCheckoutError.invalidRequest, completion: completion)
+                nativeCheckoutProvider.start(request: request, order: order, nxoConfig: nxoConfig) { result in
+                    switch result {
+                    case .success(let approval):
+                        self.tokenize(approval: approval, request: request, completion: completion)
+                    case .failure(let failure):
+                        if failure == .canceled {
+                            self.notifyCancel(completion: completion)
+                        } else {
+                            self.notifyFailure(with: failure, completion: completion)
                         }
-                    },
-                    onApprove: { [weak self] approval in
-                        guard let self else {
-                            completion(nil, BTPayPalNativeCheckoutError.deallocated)
-                            return
-                        }
-                        self.clientMetadataID = approval.data.correlationIDs.riskCorrelationID
+                    }
+                }
 
-                        tokenize(approval: approval, request: request, completion: completion)
-                    },
-                    onCancel: {
-                        self.notifyCancel(completion: completion)
-                    },
-                    onError: { error in
-                        self.clientMetadataID = error.correlationIDs.riskCorrelationID
-                        self.notifyFailure(with: BTPayPalNativeCheckoutError.checkoutSDKFailed(error), completion: completion)
-                    },
-                    environment: order.environment
-                )
-                payPalNativeConfig.authConfig.userEmail = userAuthenticationEmail
-                PayPalCheckout.Checkout.showsExitAlert = false
-                PayPalCheckout.Checkout.set(config: payPalNativeConfig)
-                
-                NotificationCenter.default.post(name: Notification.Name("brain_tree_source_event"), object: nil)
-              
-                PayPalCheckout.Checkout.start()
             case .failure(let error):
                 apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
                 notifyFailure(with: error, completion: completion)
