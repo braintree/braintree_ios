@@ -116,23 +116,3 @@ import Foundation
         completion?(self.cannedConfiguration, nil, nil)
     }
 }
-
-@objc public class FakeAPIHTTP: BTAPIHTTP {
-    var POSTRequestCount: Int = 0
-    @objc public var lastRequestParameters: [String: Any]?
-    @objc public var cannedConfiguration: BTJSON?
-
-    required override init(url: URL, accessToken: String) {
-        super.init(url: url, accessToken: accessToken)
-    }
-
-    @objc public static func fakeHTTP() -> FakeAPIHTTP {
-        self.init(url: URL(string: "http://fake.com")!, accessToken: "")
-    }
-
-    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        POSTRequestCount += 1
-        lastRequestParameters = parameters
-        completion?(self.cannedConfiguration, nil, nil)
-    }
-}
