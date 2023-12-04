@@ -14,7 +14,12 @@ class BTPaymentInsightsClient_Tests: XCTestCase {
     }
     
     func testGetRecommendedPaymentMethods_returnsDefaultRecommendations() async {
-        let result = try? await sut.getRecommendedPaymentMethods(email: "fake-email", phone: "fake-phone")
+        let request = BTPaymentInsightsRequest(
+            email: "fake-email",
+            phoneCountryCode: "fake-country-code",
+            phoneNationalNumber: "fake-national-phone"
+        )
+        let result = try? await sut.getRecommendedPaymentMethods(request: request)
         
         XCTAssertNotNil(result!.isPayPalRecommended)
         XCTAssertNotNil(result!.isPayPalRecommended)

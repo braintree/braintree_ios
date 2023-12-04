@@ -14,13 +14,13 @@ import Foundation
         self.apiClient = apiClient
     }
     
-    /// This method confirmes if the customer is a user of PayPal services using their email and phone number.
+    /// This method confirms if the customer is a user of PayPal services using their email and phone number.
     /// - Parameters:
     ///   - email: The buyer's email address
     ///   - phone: The buyer's phone number
     /// - Returns: A `BTPaymentInsightsResult` instance
     /// - Note: This feature is in beta. It's public API may change in future releases.
-    public func getRecommendedPaymentMethods(email: String, phone: String) async throws -> BTPaymentInsightsResult {
+    public func getRecommendedPaymentMethods(request: BTPaymentInsightsRequest) async throws -> BTPaymentInsightsResult {
         // TODO: - Add isAppInstalled checks for PP & Venmo. DTBTSDK-3176
         // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
         return BTPaymentInsightsResult()
