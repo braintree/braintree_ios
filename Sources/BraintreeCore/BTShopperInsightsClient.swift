@@ -16,8 +16,7 @@ import Foundation
     
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.
     /// - Parameters:
-    ///   - email: The buyer's email address
-    ///   - phone: The buyer's phone number
+    ///   - request: A `BTShopperInsightsRequest` containing the buyer's user information
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Note: This feature is in beta. It's public API may change in future releases.
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
