@@ -56,7 +56,7 @@ import Foundation
     // MARK: - Initializers
 
     /// Initialize a new API client.
-    /// - Parameter authorization: Your tokenization key, client token, or PayPal ID Token. Passing an invalid value may return `nil`.
+    /// - Parameter authorization: Your tokenization key or client token. Passing an invalid value may return `nil`.
     @objc(initWithAuthorization:)
     public convenience init?(authorization: String) {
         self.init(authorization: authorization, sendAnalyticsEvent: true)
