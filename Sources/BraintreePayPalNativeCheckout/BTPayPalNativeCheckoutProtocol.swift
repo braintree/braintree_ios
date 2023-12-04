@@ -7,11 +7,11 @@ protocol BTPayPalNativeCheckoutProtocol {
 
     static func start(
         presentingViewController: UIViewController?,
-        createOrder: PayPalCheckout.CheckoutConfig.CreateOrderCallback?,
-        onApprove: PayPalCheckout.CheckoutConfig.ApprovalCallback?,
-        onShippingChange: PayPalCheckout.CheckoutConfig.ShippingChangeCallback?,
-        onCancel: PayPalCheckout.CheckoutConfig.CancelCallback?,
-        onError: PayPalCheckout.CheckoutConfig.ErrorCallback?
+        createOrder: CheckoutConfig.CreateOrderCallback?,
+        onApprove: CheckoutConfig.ApprovalCallback?,
+        onShippingChange: CheckoutConfig.ShippingChangeCallback?,
+        onCancel: CheckoutConfig.CancelCallback?,
+        onError: CheckoutConfig.ErrorCallback?
     )
 
     static func set(config: CheckoutConfig)

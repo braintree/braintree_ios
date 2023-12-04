@@ -7,10 +7,16 @@ import BraintreePayPal
 
 protocol BTPayPalNativeCheckoutStartable {
 
+    typealias StartableApproveCallback = (String?, User?) -> Void
+    typealias StartableErrorCallback = (BTPayPalNativeCheckoutError) -> Void
+    typealias StartableCancelCallback = () -> Void
+
     func start(
         request: BTPayPalRequest,
         order: BTPayPalNativeOrder,
         nxoConfig: CheckoutConfig,
-        completion: @escaping (Result<Approval, BTPayPalNativeCheckoutError>) -> Void
+        onStartableApprove: @escaping StartableApproveCallback,
+        onStartableCancel: @escaping StartableCancelCallback,
+        onStartableError: @escaping StartableErrorCallback
     )
 }

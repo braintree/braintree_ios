@@ -20,7 +20,9 @@ class BTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
         request: BTPayPalRequest,
         order: BTPayPalNativeOrder,
         nxoConfig: CheckoutConfig,
-        completion: @escaping (Result<Approval, BTPayPalNativeCheckoutError>) -> Void
+        onStartableApprove: @escaping StartableApproveCallback,
+        onStartableCancel: @escaping StartableCancelCallback,
+        onStartableError: @escaping StartableErrorCallback
     ) {
         checkout.showsExitAlert = false
         checkout.set(config: nxoConfig)
@@ -28,8 +30,8 @@ class BTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
         checkout.start(
             presentingViewController: nil,
             createOrder: { [weak self] action in
-                guard let self else {
-                    completion(.failure(.deallocated))
+                guard self != nil else {
+                    onStartableError(.deallocated)
                     return
                 }
 
@@ -39,25 +41,25 @@ class BTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
                 case .vault:
                     action.set(billingAgreementToken: order.orderID)
                 @unknown default:
-                    completion(.failure(.invalidRequest))
+                    onStartableError(.invalidRequest)
                 }
             },
             onApprove: { [weak self] approval in
                 guard let self else {
-                    completion(.failure(.deallocated))
+                    onStartableError(.deallocated)
                     return
                 }
                 self.clientMetadataID = approval.data.correlationIDs.riskCorrelationID
-                completion(.success(approval))
-            }, 
+                onStartableApprove(approval.data.returnURL?.absoluteString, approval.data.buyer)
+            },
             onShippingChange: nil,
             onCancel: {
-                completion(.failure(.canceled))
+                onStartableCancel()
                 return
             },
             onError: { error in
                 self.clientMetadataID = error.correlationIDs.riskCorrelationID
-                completion(.failure(.checkoutSDKFailed(error)))
+                onStartableError(.checkoutSDKFailed(error))
             }
         )
 

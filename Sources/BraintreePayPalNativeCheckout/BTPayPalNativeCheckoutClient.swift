@@ -132,17 +132,12 @@ import PayPalCheckout
                 let nxoConfig = CheckoutConfig(clientID: order.payPalClientID, environment: order.environment)
                 nxoConfig.authConfig.userEmail = userAuthenticationEmail
 
-                nativeCheckoutProvider.start(request: request, order: order, nxoConfig: nxoConfig) { result in
-                    switch result {
-                    case .success(let approval):
-                        self.tokenize(approval: approval, request: request, completion: completion)
-                    case .failure(let failure):
-                        if failure == .canceled {
-                            self.notifyCancel(completion: completion)
-                        } else {
-                            self.notifyFailure(with: failure, completion: completion)
-                        }
-                    }
+                nativeCheckoutProvider.start(request: request, order: order, nxoConfig: nxoConfig) { returnURL, buyerData in
+                    self.tokenize(returnURL: returnURL, buyerData: buyerData, request: request, completion: completion)
+                } onStartableCancel: {
+                    self.notifyCancel(completion: completion)
+                } onStartableError: { error in
+                    self.notifyFailure(with: error, completion: completion)
                 }
 
             case .failure(let error):
@@ -153,15 +148,16 @@ import PayPalCheckout
     }
 
     private func tokenize(
-        approval: PayPalCheckout.Approval,
+        returnURL: String?,
+        buyerData: User? = nil,
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: apiClient)
         tokenizationClient.tokenize(
           request: request,
-          returnURL: approval.data.returnURL?.absoluteString,
-          buyerData: approval.data.buyer
+          returnURL: returnURL,
+          buyerData: buyerData
         ) { result in
             switch result {
             case .success(let nonce):
