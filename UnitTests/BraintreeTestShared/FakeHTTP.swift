@@ -34,28 +34,6 @@ import Foundation
         stubEndpoint = endpoint
         cannedError = error
     }
-
-    public override func get(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        GETRequestCount += 1
-        lastRequestEndpoint = path
-        lastRequestParameters = parameters
-        lastRequestMethod = "GET"
-
-        if cannedError != nil {
-            dispatchQueue.async {
-                completion?(nil, nil, self.cannedError)
-            }
-        } else {
-            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
-            dispatchQueue.async {
-                if path.contains("v1/configuration") {
-                    completion?(self.cannedConfiguration, httpResponse, nil)
-                } else {
-                    completion?(self.cannedResponse, httpResponse, nil)
-                }
-            }
-        }
-    }
     
     public override func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool, completion: BTHTTP.RequestCompletion?) {
         GETRequestCount += 1

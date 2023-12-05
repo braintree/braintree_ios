@@ -26,14 +26,6 @@ public class MockAPIClient: BTAPIClient {
     override init?(authorization: String, sendAnalyticsEvent: Bool = false) {
         super.init(authorization: authorization, sendAnalyticsEvent: sendAnalyticsEvent)
     }
-    
-    public override func get(_ path: String, parameters: [String: String]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        self.get(path, parameters: parameters, httpType:.gateway, completion: completionBlock)
-    }
-
-    public override func post(_ path: String, parameters: [String: Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        self.post(path, parameters: parameters, httpType:.gateway, completion: completionBlock)
-    }
 
     public override func get(_ path: String, parameters: [String: String]?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
