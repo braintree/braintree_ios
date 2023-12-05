@@ -141,7 +141,6 @@ import PayPalCheckout
                 }
 
             case .failure(let error):
-                apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.orderCreationFailed)
                 notifyFailure(with: error, completion: completion)
             }
         }
@@ -154,11 +153,7 @@ import PayPalCheckout
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
         let tokenizationClient = BTPayPalNativeTokenizationClient(apiClient: apiClient)
-        tokenizationClient.tokenize(
-          request: request,
-          returnURL: returnURL,
-          buyerData: buyerData
-        ) { result in
+        tokenizationClient.tokenize(request: request, returnURL: returnURL, buyerData: buyerData) { result in
             switch result {
             case .success(let nonce):
                 self.notifySuccess(with: nonce, completion: completion)

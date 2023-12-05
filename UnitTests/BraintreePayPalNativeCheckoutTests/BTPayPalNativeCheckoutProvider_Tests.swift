@@ -24,6 +24,10 @@ class BTPayPalNativeCheckoutProvider_Tests: XCTestCase {
 
 class MockCheckout: BTPayPalNativeCheckoutProtocol {
 
+    static var showsExitAlert = false
+    static var startInvoked = false
+    static var isConfigSet = false
+
     static func start(
         presentingViewController: UIViewController?,
         createOrder: CheckoutConfig.CreateOrderCallback?,
@@ -35,12 +39,7 @@ class MockCheckout: BTPayPalNativeCheckoutProtocol {
         startInvoked = true
     }
 
-    static var showsExitAlert = false
-
     static func set(config: PayPalCheckout.CheckoutConfig) {
         isConfigSet = true
     }
-
-    static var startInvoked = false
-    static var isConfigSet = false
 }

@@ -58,7 +58,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         XCTAssertEqual(mockNativeCheckoutProvider.userAuthenticationEmail, "fake_user_email@mock.paypal.com")
     }
 
-    func testUserAuthenticationIsNil_returnsNilForEmail() {
+    func testUserAuthenticationIsNil_returnsNilForEmail() async {
         apiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "environment": "sandbox",
@@ -87,14 +87,14 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         ])
 
         let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient, nativeCheckoutProvider: mockNativeCheckoutProvider)
-        let request = BTPayPalNativeCheckoutRequest(amount: "1.99")
+        let request = BTPayPalNativeVaultRequest()
         payPalNativeCheckoutClient.tokenize(request) { _, _ in }
         mockNativeCheckoutProvider.triggerApprove(returnURL: "https://fake-return-url")
 
         XCTAssertTrue(mockNativeCheckoutProvider.didApprove)
     }
 
-    func testTokenize_whenOnStartableCancel_returnsCancel() async {
+    func testTokenize_whenOnStartableCancel_returnsCancel() {
         apiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "environment": "sandbox",
@@ -127,5 +127,91 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         }
 
         XCTAssertTrue(mockNativeCheckoutProvider.didError)
+    }
+
+    func testTokenize_whenInvalidRedirectURL_returnsError() {
+        apiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "environment": "sandbox",
+            "paypal": ["clientId": "a-fake-client-id"] as [String: Any?]
+        ] as [String: Any])
+
+        apiClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": ["redirectUrl": "not-a-url"]
+        ])
+
+        let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+        let request = BTPayPalNativeCheckoutRequest(amount: "1.99")
+        let expectation = expectation(description: "Checkout fails with error")
+
+        payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.orderCreationFailed(BTPayPalNativeCheckoutError.invalidJSONResponse).errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.orderCreationFailed(BTPayPalNativeCheckoutError.invalidJSONResponse).errorDescription)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testTokenize_whenInvalidConfiguration_returnsError() {
+        apiClient.cannedConfigurationResponseBody = nil
+
+        let request = BTPayPalNativeCheckoutRequest(amount: "1")
+        let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+        let expectation = expectation(description: "Checkout fails with error")
+
+        payPalNativeCheckoutClient.tokenize(request) { nonce, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.fetchConfigurationFailed.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.fetchConfigurationFailed.errorDescription)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testTokenize_whenPayPalNotEnabled_returnsError() async {
+        apiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": false,
+            "environment": "sandbox",
+            "paypal": ["clientId": "a-fake-client-id"] as [String: Any?]
+        ] as [String: Any])
+
+        let request = BTPayPalNativeVaultRequest()
+        let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+
+        do {
+            let _ = try await payPalNativeCheckoutClient.tokenize(request)
+        } catch {
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.payPalNotEnabled.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.payPalNotEnabled.errorDescription)
+        }
+    }
+
+    func testTokenize_whenInvalidEnvironment_returnsError() async {
+        apiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "environment": "bogus",
+            "paypal": ["clientId": "a-fake-client-id"] as [String: Any?]
+        ] as [String: Any])
+
+        let request = BTPayPalNativeCheckoutRequest(amount: "1")
+        let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+
+        do {
+            let _ = try await payPalNativeCheckoutClient.tokenize(request)
+        } catch {
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.invalidEnvironment.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.invalidEnvironment.errorDescription)
+        }
     }
 }
