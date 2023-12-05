@@ -1,6 +1,6 @@
 import Foundation
 
-class BTThreeDSecureAnalytics {
+enum BTThreeDSecureAnalytics {
     
     // MARK: Conversion Events
     
