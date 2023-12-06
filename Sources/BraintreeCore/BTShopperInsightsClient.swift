@@ -3,7 +3,7 @@ import Foundation
 ///  Use `BTShopperInsightsClient` to optimize your checkout experience by prioritizing the customer’s preferred payment methods in your UI.
 ///  By customizing each customer’s checkout experience, you can improve conversion, increase sales/repeat buys and boost user retention/loyalty.
 /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
-@objcMembers class BTShopperInsightsClient: NSObject {
+public class BTShopperInsightsClient {
     
     private let apiClient: BTAPIClient
     

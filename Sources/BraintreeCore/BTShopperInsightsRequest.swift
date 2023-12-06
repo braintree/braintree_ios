@@ -2,7 +2,7 @@ import Foundation
 
 /// Buyer data required to use the Shopper Insights feature.
 /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
-@objcMembers public class BTShopperInsightsRequest: NSObject {
+public struct BTShopperInsightsRequest {
     
     /// The buyer's email address.
     private let email: String
