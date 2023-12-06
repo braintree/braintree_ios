@@ -1,9 +1,12 @@
-import Foundation
+import UIKit
 
 ///  Use `BTShopperInsightsClient` to optimize your checkout experience by prioritizing the customer’s preferred payment methods in your UI.
 ///  By customizing each customer’s checkout experience, you can improve conversion, increase sales/repeat buys and boost user retention/loyalty.
 /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
 public class BTShopperInsightsClient {
+    
+    /// Exposed for testing
+    var application = UIApplication.shared
     
     private let apiClient: BTAPIClient
     
@@ -20,7 +23,14 @@ public class BTShopperInsightsClient {
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
-        // TODO: - Add isAppInstalled checks for PP & Venmo. DTBTSDK-3176
+        if let venmoURLScheme = URL(string: "com.venmo.touch.v2://"),
+           let paypalURLScheme = URL(string: "paypal://") {
+            let isVenmoInstalled = await application.canOpenURL(venmoURLScheme)
+            let isPayPalInstalled = await application.canOpenURL(paypalURLScheme)
+            
+            return BTShopperInsightsResult(isPayPalRecommended: isPayPalInstalled, isVenmoRecommended: isVenmoInstalled)
+        }
+        
         // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
         return BTShopperInsightsResult()
     }
