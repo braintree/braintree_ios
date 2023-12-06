@@ -895,6 +895,7 @@
 		BECC918E2B20DE7C00A2EE42 /* BraintreeVenmoTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BraintreeVenmoTests copy-Info.plist"; path = "/Users/jdesmarais/Desktop/PayPal/braintree_ios/BraintreeVenmoTests copy-Info.plist"; sourceTree = "<absolute>"; };
 		BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingView.swift; sourceTree = "<group>"; };
 		BECC91982B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingView_Tests.swift; sourceTree = "<group>"; };
+		BECC919C2B20E87D00A2EE42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BED00CAD28A5419900D74AEC /* BTBinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTBinData.swift; sourceTree = "<group>"; };
 		BED00CAF28A579D700D74AEC /* BTClientToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken.swift; sourceTree = "<group>"; };
 		BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientTokenError.swift; sourceTree = "<group>"; };
@@ -1745,6 +1746,7 @@
 			isa = PBXGroup;
 			children = (
 				BECC91982B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift */,
+				BECC919C2B20E87D00A2EE42 /* Info.plist */,
 			);
 			path = BraintreePayPalMessagingTests;
 			sourceTree = "<group>";
@@ -6083,6 +6085,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalMessagingTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -6125,6 +6128,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalMessagingTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
