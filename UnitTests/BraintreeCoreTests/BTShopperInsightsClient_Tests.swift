@@ -22,6 +22,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         let result = try? await sut.getRecommendedPaymentMethods(request: request)
         
         XCTAssertNotNil(result!.isPayPalRecommended)
-        XCTAssertNotNil(result!.isPayPalRecommended)
+        XCTAssertNotNil(result!.isVenmoRecommended)
     }
 }
