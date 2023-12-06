@@ -31,34 +31,6 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    func testBTAPIHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let url = URL(string: "https://payments.braintree-api.com")!
-        let http = BTAPIHTTP(url: url, accessToken: "")
-        let expectation = expectation(description: "Callback invoked")
-
-        http.get("/ping") { body, _, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(body)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testBTAPIHTTP_whenUsingSandboxEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let url = URL(string: "https://payments.sandbox.braintree-api.com")!
-        let http = BTAPIHTTP(url: url, accessToken: "")
-        let expectation = expectation(description: "Callback invoked")
-
-        http.get("/ping") { body, _, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(body)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
     func testBTHTTP_whenUsingAServerWithValidCertificateChainWithARootCAThatWeDoNotExplicitlyTrust_doesNotAllowNetworkCommunication() {
         let url = URL(string: "https://www.globalsign.com")!
         let http = BTHTTP(url: url, tokenizationKey: "development_testing_integration_merchant_id")
