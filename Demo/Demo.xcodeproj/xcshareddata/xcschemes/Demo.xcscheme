@@ -32,20 +32,6 @@
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "417404481BB084D3008A5DEA"
-            BuildableName = "libBraintree.a"
-            BlueprintName = "Braintree"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D941D871B5D9E8C0016EFB4"
-            BuildableName = "Braintree3DSecure.framework"
-            BlueprintName = "Braintree3DSecure"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
             BlueprintIdentifier = "0357C47B1F96869600E63851"
             BuildableName = "BraintreeAmericanExpress.framework"
             BlueprintName = "BraintreeAmericanExpress"
@@ -95,9 +81,23 @@
          </BuildableReference>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A77344F61B7A93A10083EC8D"
-            BuildableName = "BraintreeUI.framework"
-            BlueprintName = "BraintreeUI"
+            BlueprintIdentifier = "9CE51766282D51DD0013C740"
+            BuildableName = "BraintreePayPalNativeCheckout.framework"
+            BlueprintName = "BraintreePayPalNativeCheckout"
+            ReferencedContainer = "container:../Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "BEF3F17227CE9EC600072467"
+            BuildableName = "BraintreeSEPADirectDebit.framework"
+            BlueprintName = "BraintreeSEPADirectDebit"
+            ReferencedContainer = "container:../Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A91E1EAA24FEEF21007540E5"
+            BuildableName = "BraintreeThreeDSecure.framework"
+            BlueprintName = "BraintreeThreeDSecure"
             ReferencedContainer = "container:../Braintree.xcodeproj">
          </BuildableReference>
          <BuildableReference
@@ -105,41 +105,6 @@
             BlueprintIdentifier = "A77AA29B1B618C7700217B73"
             BuildableName = "BraintreeVenmo.framework"
             BlueprintName = "BraintreeVenmo"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7B462E01C3D9C2200048423"
-            BuildableName = "PayPalDataCollector.framework"
-            BlueprintName = "PayPalDataCollector"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A50C3B041C19F55C00612D90"
-            BuildableName = "libPayPalDataCollector-StaticLibrary.a"
-            BlueprintName = "PayPalDataCollector-StaticLibrary"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A50C3B6E1C1A29C500612D90"
-            BuildableName = "PayPalOneTouch.framework"
-            BlueprintName = "PayPalOneTouch"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A50C3AD41C19F00600612D90"
-            BuildableName = "libPayPalOneTouch-StaticLibrary.a"
-            BlueprintName = "PayPalOneTouch-StaticLibrary"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7EDE474C1CD2C3D00005E22B"
-            BuildableName = "PayPalUtils.framework"
-            BlueprintName = "PayPalUtils"
             ReferencedContainer = "container:../Braintree.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
@@ -262,28 +227,6 @@
                BlueprintIdentifier = "A7ABD6521B702FD800A1223C"
                BuildableName = "IntegrationTests.xctest"
                BlueprintName = "IntegrationTests"
-               ReferencedContainer = "container:../Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9CE5179A282D54030013C740"
-               BuildableName = "BraintreePayPalNativeCheckoutTests.xctest"
-               BlueprintName = "BraintreePayPalNativeCheckoutTests"
-               ReferencedContainer = "container:../Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BE642D8E27D0132A00694A5B"
-               BuildableName = "BraintreeSEPADirectDebitTests.xctest"
-               BlueprintName = "BraintreeSEPADirectDebitTests"
                ReferencedContainer = "container:../Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
