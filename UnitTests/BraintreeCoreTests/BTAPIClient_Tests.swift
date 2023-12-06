@@ -422,23 +422,6 @@ class BTAPIClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
-    func testPOST_whenUsingBraintreeAPI_doesNotIncludeMetadata() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockAPIHTTP = FakeAPIHTTP.fakeHTTP()
-        let mockHTTP = FakeHTTP.fakeHTTP()
-
-        apiClient?.apiHTTP = mockAPIHTTP
-        apiClient?.configurationHTTP = mockHTTP
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
-
-        let expectation = expectation(description: "POST callback")
-        apiClient?.post("/", parameters: [:], httpType: .braintreeAPI) { _, _, _ in
-            XCTAssertEqual(mockAPIHTTP.lastRequestParameters as? [String: String], [:])
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
 
     func testPOST_whenUsingGraphQLAPI_includesMetadata() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")

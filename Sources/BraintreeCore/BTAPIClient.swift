@@ -25,7 +25,6 @@ import Foundation
     var configurationHTTP: BTHTTP?
 
     var http: BTHTTP?
-    var apiHTTP: BTAPIHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
     var session: URLSession {
@@ -110,10 +109,6 @@ import Foundation
             http?.session.finishTasksAndInvalidate()
         }
 
-        if apiHTTP != nil && apiHTTP?.session != nil {
-            apiHTTP?.session.finishTasksAndInvalidate()
-        }
-
         if graphQLHTTP != nil && graphQLHTTP?.session != nil {
             graphQLHTTP?.session.finishTasksAndInvalidate()
         }
@@ -165,15 +160,6 @@ import Foundation
                 return
             } else {
                 configuration = BTConfiguration(json: body)
-
-                if apiHTTP == nil {
-                    let apiURL: URL? = configuration?.json?["clientApiUrl"].asURL()
-                    let accessToken: String? = configuration?.json?["braintreeApi"]["accessToken"].asString()
-
-                    if let apiURL, let accessToken {
-                        apiHTTP = BTAPIHTTP(url: apiURL, accessToken: accessToken)
-                    }
-                }
 
                 if http == nil {
                     let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
@@ -336,8 +322,6 @@ import Foundation
         switch httpType {
         case .gateway:
             return parameters?.merging(["_meta": metadata.parameters]) { $1 }
-        case .braintreeAPI:
-            return parameters
         case .graphQLAPI:
             return parameters?.merging(["clientSdkMetadata": metadata.parameters]) { $1 }
         }
@@ -457,8 +441,6 @@ import Foundation
         switch httpType {
         case .gateway:
             return http
-        case .braintreeAPI:
-            return apiHTTP
         case .graphQLAPI:
             return graphQLHTTP
         }
