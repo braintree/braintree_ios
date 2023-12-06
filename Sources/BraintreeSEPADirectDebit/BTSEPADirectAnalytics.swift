@@ -1,6 +1,6 @@
 import Foundation
 
-class BTSEPADirectAnalytics {
+enum BTSEPADirectAnalytics {
     
     // MARK: - Conversion Events
     

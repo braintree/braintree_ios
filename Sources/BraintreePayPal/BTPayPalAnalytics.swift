@@ -1,6 +1,6 @@
 import Foundation
 
-class BTPayPalAnalytics {
+enum BTPayPalAnalytics {
     
     // MARK: - Tokenize Events
     

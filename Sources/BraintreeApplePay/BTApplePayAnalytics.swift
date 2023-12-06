@@ -1,6 +1,6 @@
 import Foundation
 
-class BTApplePayAnalytics {
+enum BTApplePayAnalytics {
 
     // MARK: - Payment Request Events
 

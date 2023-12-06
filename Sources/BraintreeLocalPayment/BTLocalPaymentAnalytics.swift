@@ -1,6 +1,6 @@
 import Foundation
 
-class BTLocalPaymentAnalytics {
+enum BTLocalPaymentAnalytics {
     
     // MARK: - Conversion Events
       
