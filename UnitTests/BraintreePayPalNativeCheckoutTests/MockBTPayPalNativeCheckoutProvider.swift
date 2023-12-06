@@ -12,7 +12,7 @@ class MockBTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
 
     var didCancel: Bool = false
     var didApprove: Bool = false
-    var didError: Bool = false
+    var error: Error?
 
     required init(nxoConfig: CheckoutConfig) { }
 
@@ -35,7 +35,7 @@ class MockBTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
     }
 
     func triggerError(error: BTPayPalNativeCheckoutError) {
-        didError = true
+        self.error = error
     }
 
     func triggerApprove(returnURL: String) {

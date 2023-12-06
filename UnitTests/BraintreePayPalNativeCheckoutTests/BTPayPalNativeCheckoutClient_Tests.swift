@@ -123,9 +123,8 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         let request = BTPayPalNativeCheckoutRequest(amount: "1.99")
         payPalNativeCheckoutClient.tokenize(request) { _, error in
             self.mockNativeCheckoutProvider.triggerError(error: error as! BTPayPalNativeCheckoutError)
+            XCTAssertEqual(error as! BTPayPalNativeCheckoutError, BTPayPalNativeCheckoutError.orderCreationFailed(BTPayPalNativeCheckoutError.invalidJSONResponse))
         }
-
-        XCTAssertTrue(mockNativeCheckoutProvider.didError)
     }
 
     func testTokenize_whenInvalidRedirectURL_returnsError() {
