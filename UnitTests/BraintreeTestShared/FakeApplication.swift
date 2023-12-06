@@ -1,20 +1,18 @@
 import UIKit
+import BraintreeCore
 
-public class FakeApplication: NSExtensionContext {
+public class FakeApplication: URLOpener {
+    
     public var lastOpenURL: URL? = nil
     public var openURLWasCalled: Bool = false
     var cannedOpenURLSuccess: Bool = true
     public var cannedCanOpenURL: Bool = true
     public var canOpenURLWhitelist: [URL] = []
 
-    public override init() {
-        // no-op
-    }
-
-    @objc public override func open(_ URL: URL, completionHandler: (@Sendable (Bool) -> Void)? = nil) {
-        lastOpenURL = URL
+    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
+        lastOpenURL = url
         openURLWasCalled = true
-        completionHandler?(cannedOpenURLSuccess)
+        completion?(cannedOpenURLSuccess)
     }
 
     @objc public func canOpenURL(_ url: URL) -> Bool {
