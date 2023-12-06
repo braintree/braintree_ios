@@ -94,7 +94,7 @@ let package = Package(
         .binaryTarget(
             name: "PayPalMessages",
             url: "https://github.com/paypal/paypal-messages-ios/releases/download/1.0.0-prerelease.3/PayPalMessages.xcframework.zip",
-            checksum: "da7dad716b567c7b39946c34ad9acd7bf15a23d8f16b554ef0f3a036b9adda29"
+            checksum: "a70eecc03aad9cb295298a2699ac7c09ea86b4e9c5b1e6ed227a60546033f4c6"
         ),
         .target(
             name: "BraintreePayPalNativeCheckout",
