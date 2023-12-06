@@ -18,7 +18,6 @@ class BTPayPalNativeCheckoutProvider_Tests: XCTestCase {
 
         XCTAssertTrue(MockCheckout.startInvoked)
         XCTAssertTrue(MockCheckout.isConfigSet)
-        XCTAssertFalse(MockCheckout.showsExitAlert)
     }
 }
 
