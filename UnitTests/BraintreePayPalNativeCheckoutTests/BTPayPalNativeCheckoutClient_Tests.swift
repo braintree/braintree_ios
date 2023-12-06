@@ -110,7 +110,6 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         payPalNativeCheckoutClient.tokenize(request) { _, _ in }
         mockNativeCheckoutProvider.triggerCancel()
         XCTAssertTrue(mockNativeCheckoutProvider.didCancel)
-
     }
 
     func testTokenize_whenOnStartableErrorCalled_returnsError() {
