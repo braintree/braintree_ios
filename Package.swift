@@ -89,7 +89,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreePayPalMessaging",
-            dependencies: ["BraintreeCore"]
+            dependencies: ["BraintreeCore", "PayPalMessages"]
         ),
         .binaryTarget(
             name: "PayPalMessages",
