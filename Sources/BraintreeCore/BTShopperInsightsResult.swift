@@ -7,6 +7,6 @@ public struct BTShopperInsightsResult {
     /// If true, display the PayPal button with high priority.
     public var isPayPalRecommended = false
     
-    /// If true dislpay the Venmo button with high priority.
+    /// If true, dislpay the Venmo button with high priority.
     public var isVenmoRecommended = false
 }
