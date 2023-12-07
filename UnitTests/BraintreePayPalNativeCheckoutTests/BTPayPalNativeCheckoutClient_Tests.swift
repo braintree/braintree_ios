@@ -123,7 +123,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         let request = BTPayPalNativeCheckoutRequest(amount: "1.99")
         payPalNativeCheckoutClient.tokenize(request) { _, error in
             self.mockNativeCheckoutProvider.triggerError(error: error as! BTPayPalNativeCheckoutError)
-            XCTAssertEqual(error as! BTPayPalNativeCheckoutError, BTPayPalNativeCheckoutError.orderCreationFailed(BTPayPalNativeCheckoutError.invalidJSONResponse))
+            XCTAssertEqual((error as! BTPayPalNativeCheckoutError).errorDescription, "Failed to create PayPal order: Invalid JSON response.")
         }
     }
 
@@ -145,9 +145,9 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         payPalNativeCheckoutClient.tokenize(request) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.orderCreationFailed(BTPayPalNativeCheckoutError.invalidJSONResponse).errorCode)
-            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.orderCreationFailed(BTPayPalNativeCheckoutError.invalidJSONResponse).errorDescription)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain")
+            XCTAssertEqual(error.code, 5)
+            XCTAssertEqual(error.localizedDescription, "Failed to create PayPal order: Invalid JSON response.")
             expectation.fulfill()
         }
 
@@ -164,9 +164,9 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         payPalNativeCheckoutClient.tokenize(request) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.fetchConfigurationFailed.errorCode)
-            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.fetchConfigurationFailed.errorDescription)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain")
+            XCTAssertEqual(error.code, 1)
+            XCTAssertEqual(error.localizedDescription, "Failed to fetch Braintree configuration.")
             expectation.fulfill()
         }
 
@@ -187,9 +187,9 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
             let _ = try await payPalNativeCheckoutClient.tokenize(request)
         } catch {
             guard let error = error as NSError? else { XCTFail(); return }
-            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.payPalNotEnabled.errorCode)
-            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.payPalNotEnabled.errorDescription)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain")
+            XCTAssertEqual(error.code, 2)
+            XCTAssertEqual(error.localizedDescription, "PayPal is not enabled for this merchant in the Braintree Control Panel.")
         }
     }
 
@@ -207,9 +207,9 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
             let _ = try await payPalNativeCheckoutClient.tokenize(request)
         } catch {
             guard let error = error as NSError? else { XCTFail(); return }
-            XCTAssertEqual(error.domain, BTPayPalNativeCheckoutError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalNativeCheckoutError.invalidEnvironment.errorCode)
-            XCTAssertEqual(error.localizedDescription, BTPayPalNativeCheckoutError.invalidEnvironment.errorDescription)
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain")
+            XCTAssertEqual(error.code, 4)
+            XCTAssertEqual(error.localizedDescription, "Invalid environment identifier found in the Braintree configuration.")
         }
     }
 }
