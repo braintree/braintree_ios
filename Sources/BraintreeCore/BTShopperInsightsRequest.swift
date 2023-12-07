@@ -36,23 +36,22 @@ public struct BTShopperInsightsRequest {
     public init(phone: Phone) {
         self.phone = phone
     }
+}
+
+/// Buyer's phone number details for use with the Shopper Insights feature.
+/// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+public struct Phone {
     
-    // MARK: - Data Types
+    private let countryCode: String
+    private let nationalNumber: String
     
-    /// Buyer's phone number details.
-    public struct Phone {
-        
-        private let phoneCountryCode: String
-        private let phoneNationalNumber: String
-        
-        /// Initialize a `BTShopperInsightsRequest.Phone`.
-        /// - Parameters:
-        ///   - phoneCountryCode: The buyer's country code prefix to the national telephone number. An identifier for a specific country. Must not contain special characters.
-        ///   - phoneNationalNumber: The buyer's national phone number. Must not contain special characters. Must not contain special characters.
-        /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
-        init(phoneCountryCode: String, phoneNationalNumber: String) {
-            self.phoneCountryCode = phoneCountryCode
-            self.phoneNationalNumber = phoneNationalNumber
-        }
+    /// Initialize a `BTShopperInsightsRequest.Phone`.
+    /// - Parameters:
+    ///   - phoneCountryCode: The buyer's country code prefix to the national telephone number. An identifier for a specific country. Must not contain special characters.
+    ///   - phoneNationalNumber: The buyer's national phone number. Must not contain special characters. Must not contain special characters.
+    /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+    init(countryCode: String, nationalNumber: String) {
+        self.countryCode = countryCode
+        self.nationalNumber = nationalNumber
     }
 }

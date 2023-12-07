@@ -16,9 +16,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testGetRecommendedPaymentMethods_returnsDefaultRecommendations() async {
         let request = BTShopperInsightsRequest(
             email: "my-email",
-            phone: BTShopperInsightsRequest.Phone(
-                phoneCountryCode: "1",
-                phoneNationalNumber: "1234567"
+            phone: Phone(
+                countryCode: "1",
+                nationalNumber: "1234567"
             )
         )
         let result = try? await sut.getRecommendedPaymentMethods(request: request)
