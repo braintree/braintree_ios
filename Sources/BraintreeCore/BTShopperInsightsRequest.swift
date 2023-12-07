@@ -7,7 +7,6 @@ public struct BTShopperInsightsRequest {
     // MARK: - Private Properties
     
     private var email: String?
-    
     private var phone: Phone?
     
     // MARK: - Initializers
@@ -44,7 +43,6 @@ public struct BTShopperInsightsRequest {
     public struct Phone {
         
         private let phoneCountryCode: String
-        
         private let phoneNationalNumber: String
         
         /// Initialize a `BTShopperInsightsRequest.Phone`.
