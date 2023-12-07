@@ -1,7 +1,7 @@
 import Foundation
 
-class BTAmericanExpressAnalytics {
-    
+enum BTAmericanExpressAnalytics {
+
     // MARK: - Get Rewards Balance Events
     
     static let started = "amex:rewards-balance:started"
