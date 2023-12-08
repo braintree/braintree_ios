@@ -35,12 +35,12 @@ public class BTPayPalMessagingView: UIView {
                 return
             }
             guard let configuration else {
-                // TODO: call delegate?.onError with custom error
+                self.delegate?.onError(self, error: BTPayPalMessagingError.fetchConfigurationFailed)
                 return
             }
 
             guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                // TODO: call delegate?.onError with custom error
+                self.delegate?.onError(self, error: BTPayPalMessagingError.payPalClientIDNotFound)
                 return
             }
 
