@@ -1,7 +1,7 @@
 import Foundation
 import PayPalMessages
 
-public protocol BTPayPalMessagingDelegate {
+public protocol BTPayPalMessagingDelegate: AnyObject {
 
     /// Function invoked when the message is tapped
     func didSelect(_ payPalMessagingView: BTPayPalMessagingView)
