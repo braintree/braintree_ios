@@ -57,9 +57,9 @@ public class BTPayPalMessagingView: UIView {
             let messageConfig = PayPalMessageConfig(
                 data: messageData,
                 style: PayPalMessageStyle(
-                    logoType: request?.logoType.logoTypeRawValue ?? .inline,
-                    color: request?.color.messageColorRawValue ?? .black,
-                    textAlignment: request?.textAlignment.textAlignmentRawValue ?? .right
+                    logoType: request?.logoType?.logoTypeRawValue ?? .inline,
+                    color: request?.color?.messageColorRawValue ?? .black,
+                    textAlignment: request?.textAlignment?.textAlignmentRawValue ?? .right
                 )
             )
 

@@ -16,15 +16,15 @@ public struct BTPayPalMessagingRequest {
 
     /// Logo type option for a PayPal Message
     /// Defaults to `.inline`
-    var logoType: BTPayPalMessagingLogoType = .inline
+    var logoType: BTPayPalMessagingLogoType?
 
     /// Text alignment option for a PayPal Message
     /// Defaults to `.right`
-    var textAlignment: BTPayPalMessagingTextAlignment = .right
+    var textAlignment: BTPayPalMessagingTextAlignment?
 
     /// Text and logo color option for a PayPal Message
     // Defaults to `.black`
-    var color: BTPayPalMessagingColor = .black
+    var color: BTPayPalMessagingColor?
 
 //    // PPCP ONLY IF NEEDED
 //    /// PayPal encrypted merchant ID. For partner integrations only.
@@ -38,9 +38,9 @@ public struct BTPayPalMessagingRequest {
         placement: BTPayPalMessagingPlacement?,
         offerType: BTPayPalMessagingOfferType?,
         buyerCountry: String? = nil,
-        logoType: BTPayPalMessagingLogoType = .inline,
-        textAlignment: BTPayPalMessagingTextAlignment = .right,
-        color: BTPayPalMessagingColor = .black
+        logoType: BTPayPalMessagingLogoType?,
+        textAlignment: BTPayPalMessagingTextAlignment?,
+        color: BTPayPalMessagingColor?
     ) {
         self.amount = amount
         self.placement = placement
