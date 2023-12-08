@@ -1,6 +1,6 @@
 import Foundation
 
-class BTPayPalNativeCheckoutAnalytics {
+enum BTPayPalNativeCheckoutAnalytics {
     
     // MARK: - Conversion Events
     

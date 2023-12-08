@@ -1,6 +1,6 @@
 import Foundation
 
-class BTCardAnalytics {
+enum BTCardAnalytics {
 
     // MARK: - Tokenize Events
 

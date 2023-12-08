@@ -1,7 +1,7 @@
 import Foundation
 
-class BTVenmoAnalytics {
-    
+enum BTVenmoAnalytics {
+
     // MARK: - Conversion Events
     
     static let tokenizeStarted = "venmo:tokenize:started"

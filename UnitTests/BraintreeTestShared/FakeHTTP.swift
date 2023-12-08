@@ -34,28 +34,6 @@ import Foundation
         stubEndpoint = endpoint
         cannedError = error
     }
-
-    public override func get(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        GETRequestCount += 1
-        lastRequestEndpoint = path
-        lastRequestParameters = parameters
-        lastRequestMethod = "GET"
-
-        if cannedError != nil {
-            dispatchQueue.async {
-                completion?(nil, nil, self.cannedError)
-            }
-        } else {
-            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
-            dispatchQueue.async {
-                if path.contains("v1/configuration") {
-                    completion?(self.cannedConfiguration, httpResponse, nil)
-                } else {
-                    completion?(self.cannedResponse, httpResponse, nil)
-                }
-            }
-        }
-    }
     
     public override func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool, completion: BTHTTP.RequestCompletion?) {
         GETRequestCount += 1
@@ -111,26 +89,6 @@ import Foundation
     }
 
     public override func post(_ path: String, parameters: [String: Any]?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        POSTRequestCount += 1
-        lastRequestParameters = parameters
-        completion?(self.cannedConfiguration, nil, nil)
-    }
-}
-
-@objc public class FakeAPIHTTP: BTAPIHTTP {
-    var POSTRequestCount: Int = 0
-    @objc public var lastRequestParameters: [String: Any]?
-    @objc public var cannedConfiguration: BTJSON?
-
-    required override init(url: URL, accessToken: String) {
-        super.init(url: url, accessToken: accessToken)
-    }
-
-    @objc public static func fakeHTTP() -> FakeAPIHTTP {
-        self.init(url: URL(string: "http://fake.com")!, accessToken: "")
-    }
-
-    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
         completion?(self.cannedConfiguration, nil, nil)

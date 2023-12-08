@@ -99,24 +99,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - HTTP Methods
 
-    func get(_ path: String, completion: @escaping RequestCompletion) {
-        get(path, parameters: nil, completion: completion)
-    }
-
-    func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool, completion: RequestCompletion?) {
+    func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool = false, completion: @escaping RequestCompletion) {
         if shouldCache {
             httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
         } else {
             httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
         }
-    }
-
-    func get(_ path: String, parameters: [String: Any]? = nil, completion: RequestCompletion?) {
-        httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
-    }
-
-    func post(_ path: String, completion: @escaping RequestCompletion) {
-        post(path, parameters: nil, completion: completion)
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
@@ -133,16 +121,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
     }
 
-    func put(_ path: String, completion: @escaping RequestCompletion) {
-        put(path, parameters: nil, completion: completion)
-    }
-
     func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
-    }
-
-    func delete(_ path: String, completion: @escaping RequestCompletion) {
-        delete(path, parameters: nil, completion: completion)
     }
 
     func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
