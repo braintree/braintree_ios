@@ -6,6 +6,8 @@ import PayPalMessages
 import BraintreeCore
 #endif
 
+/// Use `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+/// - Note: This module is in beta. It's public API may change or be removed in future releases.
 public class BTPayPalMessagingView: UIView {
 
     // MARK: - Properties
@@ -16,6 +18,8 @@ public class BTPayPalMessagingView: UIView {
 
     // MARK: - Initializers
 
+    ///  Initializes a PayPal Messaging client.
+    /// - Parameter apiClient: The Braintree API client
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
 
@@ -26,9 +30,11 @@ public class BTPayPalMessagingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Public Methods
+    // MARK: - Public Method
 
-    public func createView(_ request: BTPayPalMessagingRequest? = nil) {
+    /// Creates a `BTPayPalMessagingView` toto be displayed to promote offers such as Pay Later and PayPal Credit to customers.
+    /// - Parameter request: an optional `BTPayPalMessagingRequest`
+    public func createView(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.delegate?.onError(self, error: error)
@@ -47,19 +53,19 @@ public class BTPayPalMessagingView: UIView {
             let messageData = PayPalMessageData(
                 clientID: clientID,
                 environment: configuration.environment == "production" ? .live : .sandbox,
-                amount: request?.amount,
-                placement: request?.placement?.placementRawValue,
-                offerType: request?.offerType?.offerTypeRawValue
+                amount: request.amount,
+                placement: request.placement?.placementRawValue,
+                offerType: request.offerType?.offerTypeRawValue
             )
 
-            messageData.buyerCountry = request?.buyerCountry
+            messageData.buyerCountry = request.buyerCountry
 
             let messageConfig = PayPalMessageConfig(
                 data: messageData,
                 style: PayPalMessageStyle(
-                    logoType: request?.logoType?.logoTypeRawValue ?? .inline,
-                    color: request?.color?.messageColorRawValue ?? .black,
-                    textAlignment: request?.textAlignment?.textAlignmentRawValue ?? .right
+                    logoType: request.logoType.logoTypeRawValue,
+                    color: request.color.messageColorRawValue,
+                    textAlignment: request.textAlignment.textAlignmentRawValue
                 )
             )
 
@@ -83,17 +89,26 @@ public class BTPayPalMessagingView: UIView {
 
 public extension BTPayPalMessagingView {
 
+    /// PayPal Messaging for SwiftUI
     struct Representable: UIViewRepresentable {
 
         private let apiClient: BTAPIClient
-        private let request: BTPayPalMessagingRequest?
         private let delegate: BTPayPalMessagingDelegate?
 
-        public init(apiClient: BTAPIClient, request: BTPayPalMessagingRequest? = nil, delegate: BTPayPalMessagingDelegate? = nil) {
+        private var request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()
+        
+        ///  Initializes a PayPal Messaging client.
+        /// - Parameters:
+        ///   - apiClient: The Braintree API client
+        ///   - request: an optional `BTPayPalMessagingRequest`
+        ///   - delegate: an optional `BTPayPalMessagingDelegate`
+        public init(apiClient: BTAPIClient, request: BTPayPalMessagingRequest = BTPayPalMessagingRequest(), delegate: BTPayPalMessagingDelegate? = nil) {
             self.apiClient = apiClient
             self.request = request
             self.delegate = delegate
         }
+
+        // MARK: - UIViewRepresentable Methods
 
         public func makeUIView(context: Context) -> BTPayPalMessagingView {
             let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)

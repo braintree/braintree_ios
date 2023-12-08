@@ -1,6 +1,8 @@
 import Foundation
 import PayPalMessages
 
+/// Protocol for `BTPayPalMessagingView` events
+/// - Note: This module is in beta. It's public API may change or be removed in future releases.
 public protocol BTPayPalMessagingDelegate: AnyObject {
 
     /// Function invoked when the message is tapped

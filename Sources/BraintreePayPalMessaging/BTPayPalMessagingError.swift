@@ -1,6 +1,6 @@
 import Foundation
 
-///  Error details associated with American Express.
+///  Error details associated with PayPal Messaging.
 enum BTPayPalMessagingError: Int, Error, CustomNSError, LocalizedError {
 
     /// 0. Failed to fetch Braintree configuration
