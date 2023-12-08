@@ -328,7 +328,6 @@ class BTApplePay_Tests: XCTestCase {
         // The following are expected nil in tests since we cannot mock `PKPaymentToken.paymentMethod`
         XCTAssertNil(applePayTokenParams["paymentInstrumentName"])
         XCTAssertNil(applePayTokenParams["paymentNetwork"])
-        
     }
 
     class MockPKPaymentToken : PKPaymentToken {
