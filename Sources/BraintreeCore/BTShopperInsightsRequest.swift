@@ -47,8 +47,8 @@ public struct Phone {
     
     /// Initialize a `BTShopperInsightsRequest.Phone`.
     /// - Parameters:
-    ///   - phoneCountryCode: The buyer's country code prefix to the national telephone number. An identifier for a specific country. Must not contain special characters.
-    ///   - phoneNationalNumber: The buyer's national phone number. Must not contain special characters. Must not contain special characters.
+    ///   - countryCode: The buyer's country code prefix to the national telephone number. An identifier for a specific country. Must not contain special characters.
+    ///   - nationalNumber: The buyer's national phone number. Must not contain special characters. Must not contain special characters.
     /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
     init(countryCode: String, nationalNumber: String) {
         self.countryCode = countryCode
