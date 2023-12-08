@@ -335,7 +335,7 @@ import Foundation
                 return
             }
 
-            let postParameters = metadataParametersWith(parameters, for: httpType)
+            let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
             http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
@@ -352,10 +352,6 @@ import Foundation
     }
 
     // MARK: Analytics Internal Methods
-    
-    func metadataParametersWith(_ parameters: Encodable, for httpType: BTAPIClientHTTPService) -> Encodable {
-        return BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-    }
 
     // TODO: - Remove once all POSTs moved to Encodable
     func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {

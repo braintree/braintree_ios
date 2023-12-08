@@ -322,13 +322,6 @@ class BTApplePay_Tests: XCTestCase {
             return
         }
         
-        // TODO: - Move meta assertions out of here and into APIClient level to make sure it applies to all API requests
-        
-//        let metaParameters = lastPostParameters["_meta"] as! NSDictionary
-//        XCTAssertEqual(metaParameters["source"] as? String, "unknown")
-//        XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-//        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
-        
         let applePayTokenParams = lastPostParameters["applePaymentToken"] as! NSDictionary
         XCTAssertEqual(applePayTokenParams["paymentData"] as? String, Data().base64EncodedString())
         XCTAssertEqual(applePayTokenParams["transactionIdentifier"] as? String, "fake-transaction-id")

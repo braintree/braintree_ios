@@ -450,6 +450,63 @@ class BTAPIClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
+    
+    func testPOST_withEncodableParams_whenUsingGateway_includesMetadata() {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let mockHTTP = FakeHTTP.fakeHTTP()
+        let metadata = apiClient?.metadata
+
+        apiClient?.http = mockHTTP
+        apiClient?.configurationHTTP = mockHTTP
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
+        
+        let postParameters = FakeRequest(testValue: "fake-value")
+
+        let expectation = expectation(description: "POST callback")
+        apiClient?.post("/", parameters: postParameters, httpType: .gateway) { _, _, _ in
+            XCTAssertEqual(mockHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
+            
+            let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
+            XCTAssertEqual(metaParameters?["integration"] as? String, metadata?.integration.stringValue)
+            XCTAssertEqual(metaParameters?["source"] as? String, metadata?.source.stringValue)
+            XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata?.sessionID)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testPOST_withEncodableParams_whenUsingGraphQLAPI_includesMetadata() {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let mockGraphQLHTTP = FakeGraphQLHTTP.fakeHTTP()
+        let mockHTTP = FakeHTTP.fakeHTTP()
+        let metadata = apiClient?.metadata
+        let mockResponse = [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ] as [String: Any]
+        ]
+
+        apiClient?.graphQLHTTP = mockGraphQLHTTP
+        apiClient?.configurationHTTP = mockHTTP
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: mockResponse, statusCode: 200)
+        
+        let postParameters = FakeRequest(testValue: "fake-value")
+
+        let expectation = expectation(description: "POST callback")
+        apiClient?.post("/", parameters: postParameters, httpType: .graphQLAPI) { _, _, _ in
+            XCTAssertEqual(mockHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
+            
+            let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
+            XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata?.integration.stringValue)
+            XCTAssertEqual(clientSdkMetadata?["source"] as? String, metadata?.source.stringValue)
+            XCTAssertEqual(clientSdkMetadata?["sessionId"] as? String, metadata?.sessionID)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
 
     // MARK: - Timeouts
 

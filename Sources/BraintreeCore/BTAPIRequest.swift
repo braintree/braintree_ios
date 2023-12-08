@@ -1,6 +1,6 @@
 import Foundation
 
-/// An `Encodable` type containing POST body details & additional metadata params formatted for the BT Gateway & BT GraphQL API
+/// An `Encodable` type containing POST body details & metadata params formatted for the BT Gateway & BT GraphQL API
 struct BTAPIRequest: Encodable {
     
     private let requestBody: Encodable
@@ -12,6 +12,11 @@ struct BTAPIRequest: Encodable {
         case graphQLMetadataKey = "clientSdkMetadata"
     }
     
+    /// Initialize a `BTAPIRequest` to format a POST body with metadata params for BT APIs.
+    /// - Parameters:
+    ///   - requestBody: The actual POST body details.
+    ///   - metadata: The metadata details to append into the POST body.
+    ///   - httpType: The Braintree API type for this request.
     init(requestBody: Encodable, metadata: BTClientMetadata, httpType: BTAPIClientHTTPService) {
         self.requestBody = requestBody
         self.metadata = metadata
@@ -21,7 +26,6 @@ struct BTAPIRequest: Encodable {
     func encode(to encoder: Encoder) throws {
         try requestBody.encode(to: encoder)
         
-        // https://stackoverflow.com/questions/50461744/swift-codable-how-to-encode-top-level-data-into-nested-container
         var metadataContainer = encoder.container(keyedBy: MetadataKeys.self)
         if httpType == .gateway {
             let metadataEncoder = metadataContainer.superEncoder(forKey: .gatewayMetadataKey)
