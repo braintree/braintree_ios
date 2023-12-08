@@ -250,6 +250,7 @@
 		BEA0F91E2B23728000C21EFA /* BTPayPalMessagingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */; };
 		BEA0F9202B23731700C21EFA /* BTPayPalMessagingLogoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F91F2B23731700C21EFA /* BTPayPalMessagingLogoType.swift */; };
 		BEA0F9222B23736500C21EFA /* BTPayPalMessagingOfferType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9212B23736500C21EFA /* BTPayPalMessagingOfferType.swift */; };
+		BEA0F9242B2373A600C21EFA /* BTPayPalMessagingPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */; };
 		BEB9BF532A26872B00A3673E /* BTWebAuthenticationSessionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB9BF522A26872B00A3673E /* BTWebAuthenticationSessionClient.swift */; };
 		BEBC222728D25BB400D83186 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE69423A931A600373230 /* Helpers.swift */; };
 		BEBC6E4B29258FD4004E25A0 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
@@ -893,6 +894,7 @@
 		BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingDelegate.swift; sourceTree = "<group>"; };
 		BEA0F91F2B23731700C21EFA /* BTPayPalMessagingLogoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingLogoType.swift; sourceTree = "<group>"; };
 		BEA0F9212B23736500C21EFA /* BTPayPalMessagingOfferType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingOfferType.swift; sourceTree = "<group>"; };
+		BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingPlacement.swift; sourceTree = "<group>"; };
 		BEB9BF522A26872B00A3673E /* BTWebAuthenticationSessionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTWebAuthenticationSessionClient.swift; sourceTree = "<group>"; };
 		BEBC6E5D2927CF59004E25A0 /* Braintree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree.h; sourceTree = "<group>"; };
 		BEBC6F252937A510004E25A0 /* BTClientMetadata_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientMetadata_Tests.swift; sourceTree = "<group>"; };
@@ -1765,6 +1767,7 @@
 				BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */,
 				BEA0F91F2B23731700C21EFA /* BTPayPalMessagingLogoType.swift */,
 				BEA0F9212B23736500C21EFA /* BTPayPalMessagingOfferType.swift */,
+				BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */,
 			);
 			path = BraintreePayPalMessaging;
 			sourceTree = "<group>";
@@ -3232,6 +3235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEA0F9242B2373A600C21EFA /* BTPayPalMessagingPlacement.swift in Sources */,
 				BEA0F9222B23736500C21EFA /* BTPayPalMessagingOfferType.swift in Sources */,
 				BEA0F9202B23731700C21EFA /* BTPayPalMessagingLogoType.swift in Sources */,
 				BEA0F91E2B23728000C21EFA /* BTPayPalMessagingDelegate.swift in Sources */,
