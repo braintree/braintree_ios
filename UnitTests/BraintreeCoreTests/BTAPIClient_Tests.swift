@@ -496,7 +496,7 @@ class BTAPIClient_Tests: XCTestCase {
 
         let expectation = expectation(description: "POST callback")
         apiClient?.post("/", parameters: postParameters, httpType: .graphQLAPI) { _, _, _ in
-            XCTAssertEqual(mockHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
+            XCTAssertEqual(mockGraphQLHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
             
             let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
             XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata?.integration.stringValue)
