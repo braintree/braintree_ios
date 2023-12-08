@@ -72,6 +72,12 @@ Pod::Spec.new do |s|
     s.dependency "PayPalCheckout", '1.2.0'
   end
 
+  s.subspec "PayPalMessaging" do |s|
+    s.source_files = "Sources/BraintreePayPalMessaging/*.swift"
+    s.dependency "Braintree/Core"
+    s.dependency "PayPalMessages", '1.0.0-prerelease.3'
+  end
+
   s.subspec "ThreeDSecure" do |s|
     s.source_files = "Sources/BraintreeThreeDSecure/**/*.{swift}"
     s.dependency "Braintree/Card"
