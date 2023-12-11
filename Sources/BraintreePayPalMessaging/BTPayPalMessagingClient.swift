@@ -6,9 +6,9 @@ import PayPalMessages
 import BraintreeCore
 #endif
 
-/// Use `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+/// Use `BTPayPalMessagingClient` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
 /// - Note: This module is in beta. It's public API may change or be removed in future releases.
-public class BTPayPalMessagingView: UIView {
+public class BTPayPalMessagingClient: UIView {
 
     // MARK: - Properties
 
@@ -32,7 +32,7 @@ public class BTPayPalMessagingView: UIView {
 
     // MARK: - Public Method
 
-    /// Creates a `BTPayPalMessagingView` toto be displayed to promote offers such as Pay Later and PayPal Credit to customers.
+    /// Creates a `BTPayPalMessagingClient` toto be displayed to promote offers such as Pay Later and PayPal Credit to customers.
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
     public func createView(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -87,7 +87,7 @@ public class BTPayPalMessagingView: UIView {
 
 // MARK: - UIViewRepresentable protocol conformance
 
-public extension BTPayPalMessagingView {
+public extension BTPayPalMessagingClient {
 
     /// PayPal Messaging for SwiftUI
     struct Representable: UIViewRepresentable {
@@ -110,14 +110,14 @@ public extension BTPayPalMessagingView {
 
         // MARK: - UIViewRepresentable Methods
 
-        public func makeUIView(context: Context) -> BTPayPalMessagingView {
-            let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
+        public func makeUIView(context: Context) -> BTPayPalMessagingClient {
+            let payPalMessagingView = BTPayPalMessagingClient(apiClient: apiClient)
             payPalMessagingView.createView(request)
             payPalMessagingView.delegate = delegate
             return payPalMessagingView
         }
 
-        public func updateUIView(_ view: BTPayPalMessagingView, context: Context) {
+        public func updateUIView(_ view: BTPayPalMessagingClient, context: Context) {
             view.apiClient = apiClient
         }
     }
@@ -125,7 +125,7 @@ public extension BTPayPalMessagingView {
 
 // MARK: - PayPalMessageViewEventDelegate and PayPalMessageViewStateDelegate protocol conformance
 
-extension BTPayPalMessagingView: PayPalMessageViewEventDelegate, PayPalMessageViewStateDelegate {
+extension BTPayPalMessagingClient: PayPalMessageViewEventDelegate, PayPalMessageViewStateDelegate {
 
     public func onClick(_ paypalMessageView: PayPalMessages.PayPalMessageView) {
         delegate?.didSelect(self)
