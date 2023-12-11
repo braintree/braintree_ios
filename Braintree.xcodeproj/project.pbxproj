@@ -80,6 +80,8 @@
 		804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */; };
 		804698412B27C5530090878E /* BraintreeShopperInsightsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804698402B27C5530090878E /* BraintreeShopperInsightsTests.swift */; };
 		804698422B27C5530090878E /* BraintreeShopperInsights.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 804698302B27C5340090878E /* BraintreeShopperInsights.framework */; platformFilter = ios; };
+		804698492B27C71C0090878E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 804698482B27C71C0090878E /* Info.plist */; };
+		8046984A2B27C71C0090878E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 804698482B27C71C0090878E /* Info.plist */; };
 		80482F8029D39A1D007E5F50 /* BTThreeDSecureRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */; };
 		80482F8229D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */; };
 		80482F8429D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */; };
@@ -708,6 +710,7 @@
 		804698322B27C5340090878E /* BraintreeShopperInsights.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeShopperInsights.h; sourceTree = "<group>"; };
 		8046983E2B27C5530090878E /* BraintreeShopperInsightsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeShopperInsightsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		804698402B27C5530090878E /* BraintreeShopperInsightsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeShopperInsightsTests.swift; sourceTree = "<group>"; };
+		804698482B27C71C0090878E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequest.swift; sourceTree = "<group>"; };
 		80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequestDelegate.swift; sourceTree = "<group>"; };
 		80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAccountType.swift; sourceTree = "<group>"; };
@@ -1280,6 +1283,7 @@
 			isa = PBXGroup;
 			children = (
 				8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */,
+				804698482B27C71C0090878E /* Info.plist */,
 			);
 			path = BraintreeShopperInsightsTests;
 			sourceTree = "<group>";
@@ -2585,6 +2589,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8046984A2B27C71C0090878E /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2711,6 +2716,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				804698492B27C71C0090878E /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
