@@ -40,6 +40,7 @@ public class BTPayPalMessagingClient: UIView {
                 self.delegate?.onError(self, error: error)
                 return
             }
+
             guard let configuration else {
                 self.delegate?.onError(self, error: BTPayPalMessagingError.fetchConfigurationFailed)
                 return
