@@ -1768,6 +1768,7 @@
 		BECC91942B20DF7F00A2EE42 /* BraintreePayPalMessaging */ = {
 			isa = PBXGroup;
 			children = (
+				BECC91962B20E01F00A2EE42 /* BTPayPalMessagingClient.swift */,
 				BEA0F9162B235DDA00C21EFA /* BTPayPalMessagingColor.swift */,
 				BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */,
 				BEA0F9292B23768600C21EFA /* BTPayPalMessagingError.swift */,
@@ -1776,7 +1777,6 @@
 				BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */,
 				BEA0F9272B23741900C21EFA /* BTPayPalMessagingRequest.swift */,
 				BEA0F9252B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift */,
-				BECC91962B20E01F00A2EE42 /* BTPayPalMessagingClient.swift */,
 			);
 			path = BraintreePayPalMessaging;
 			sourceTree = "<group>";

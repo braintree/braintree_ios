@@ -3,8 +3,8 @@
 ## unreleased
 * BraintreePayPalMessaging (BETA)
   * Add `BTPayPalMessagingRequest`, `BTPayPalMessagingColor`, `BTPayPalMessagingLogoType`, `BTPayPalMessagingOfferType`, `BTPayPalMessagingPlacement`, `BTPayPalMessagingTextAlignment`, and `BTPayPalMessagingDelegate`
-  * Add `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
-    * To get started create a `BTPayPalMessagingView` and call `createView(_:) with a `BTPayPalMessagingRequest`
+  * Add `BTPayPalMessagingClient` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+    * To get started create a `BTPayPalMessagingClient` and call `createView(_:) with a `BTPayPalMessagingRequest`
 
 ## 6.10.0 (2023-11-17)
 * BraintreePayPalNativeCheckout
