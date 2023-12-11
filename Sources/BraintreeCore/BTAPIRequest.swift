@@ -27,10 +27,11 @@ struct BTAPIRequest: Encodable {
         try requestBody.encode(to: encoder)
         
         var metadataContainer = encoder.container(keyedBy: MetadataKeys.self)
-        if httpType == .gateway {
+        switch httpType {
+        case .gateway:
             let metadataEncoder = metadataContainer.superEncoder(forKey: .gatewayMetadataKey)
             try self.metadata.encode(to: metadataEncoder)
-        } else if httpType == .graphQLAPI {
+        case .graphQLAPI:
             let metadataEncoder = metadataContainer.superEncoder(forKey: .graphQLMetadataKey)
             try self.metadata.encode(to: metadataEncoder)
         }
