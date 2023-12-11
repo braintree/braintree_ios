@@ -229,7 +229,6 @@ import BraintreeCore
 
     /// Switches to the App Store to download the Venmo application.
     @objc public func openVenmoAppPageInAppStore() {
-        apiClient.sendAnalyticsEvent("ios.pay-with-venmo.app-store.invoked")
         application.open(appStoreURL, options: [:], completionHandler: nil)
     }
 
