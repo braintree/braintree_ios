@@ -78,7 +78,6 @@
 		804698372B27C5390090878E /* BTShopperInsightsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */; };
 		804698382B27C53B0090878E /* BTShopperInsightsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */; };
 		804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */; };
-		804698412B27C5530090878E /* BraintreeShopperInsightsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804698402B27C5530090878E /* BraintreeShopperInsightsTests.swift */; };
 		804698422B27C5530090878E /* BraintreeShopperInsights.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 804698302B27C5340090878E /* BraintreeShopperInsights.framework */; platformFilter = ios; };
 		80482F8029D39A1D007E5F50 /* BTThreeDSecureRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */; };
 		80482F8229D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */; };
@@ -2936,7 +2935,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				804698412B27C5530090878E /* BraintreeShopperInsightsTests.swift in Sources */,
 				80B59A132B27C7FC004C2FA3 /* BTShopperInsightsClient_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
