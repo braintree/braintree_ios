@@ -169,14 +169,17 @@ import BraintreeCore
     ///   - lookupResponse: The JSON string returned by the server side lookup.
     ///   - request: The BTThreeDSecureRequest object where prepareLookup was called.
     ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
+    /// - Note: Majority of 3DS integrations do not need to use this method. Only for server-side 3DS integrations.
     @objc(initializeChallengeWithLookupResponse:request:completion:)
     public func initializeChallenge(
         lookupResponse: String,
         request: BTThreeDSecureRequest,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
+        self.merchantCompletion = completion
+        
         guard let dataResponse = lookupResponse.data(using: .utf8) else {
-            completion(nil, BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."]))
+            merchantCompletion(nil, BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."]))
             return
         }
 
