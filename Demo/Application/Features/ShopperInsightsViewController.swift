@@ -48,14 +48,16 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         venmoButton.isEnabled = false
         view.addSubview(venmoButton)
         
-        view.addConstraints([shopperInsightsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             shopperInsightsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                             payPalVaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             payPalVaultButton.bottomAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: -40),
-                             payPalCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             payPalCheckoutButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
-                             venmoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             venmoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)])
+        view.addConstraints([
+            shopperInsightsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            shopperInsightsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            payPalVaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            payPalVaultButton.bottomAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: -40),
+            payPalCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            payPalCheckoutButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
+            venmoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            venmoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)
+        ])
     }
     
     required init?(coder: NSCoder) {
