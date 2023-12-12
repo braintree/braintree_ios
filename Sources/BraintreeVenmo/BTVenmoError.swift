@@ -1,23 +1,23 @@
 import Foundation
 
 /// Error codes associated with Venmo App Switch
-enum BTVenmoAppSwitchError: Error, CustomNSError, LocalizedError {
+public enum BTVenmoAppSwitchError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. The error returned from the Venmo return URL
     case returnURLError(Int, String?)
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .returnURLError(let errorCode, _):
             return errorCode
         }
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .returnURLError(_, let errorMessage):
             return errorMessage
@@ -26,7 +26,7 @@ enum BTVenmoAppSwitchError: Error, CustomNSError, LocalizedError {
 }
 
 /// Error codes associated with Venmo
-enum BTVenmoError: Error, CustomNSError, LocalizedError {
+public enum BTVenmoError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Unknown error
     case unknown
@@ -61,11 +61,11 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
     /// 10.  The Venmo flow was canceled by the user
     case canceled
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTVenmoErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .unknown:
             return 0
@@ -92,7 +92,7 @@ enum BTVenmoError: Error, CustomNSError, LocalizedError {
         }
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .unknown:
             return "An unknown error occurred. Please contact support."

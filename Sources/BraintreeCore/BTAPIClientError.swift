@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error codes associated with a API Client.
-enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError {
+public enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Configuration fetch failed
     case configurationUnavailable
@@ -12,15 +12,15 @@ enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError {
     /// 2. Deallocated BTAPIClient
     case deallocated
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTAPIClientErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         rawValue
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .configurationUnavailable:
             return "The operation couldn’t be completed. Unable to fetch remote configuration from Braintree API at this time."

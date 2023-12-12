@@ -1,6 +1,6 @@
 import Foundation
 
-enum BTJSONError: Error, CustomNSError, LocalizedError {
+public enum BTJSONError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. JSONSerialization failure
     case jsonSerializationFailure
@@ -11,11 +11,11 @@ enum BTJSONError: Error, CustomNSError, LocalizedError {
     /// 2. Invalid key
     case keyInvalid(String)
     
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTJSONErrorDomain"
     }
     
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .jsonSerializationFailure:
             return 0
@@ -26,7 +26,7 @@ enum BTJSONError: Error, CustomNSError, LocalizedError {
         }
     }
     
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .jsonSerializationFailure:
             return "Failed to serialize JSON data in initilizer"

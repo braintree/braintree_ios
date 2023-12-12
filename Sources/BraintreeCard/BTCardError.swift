@@ -1,7 +1,7 @@
 import Foundation
 
 // Error codes associated with cards
-enum BTCardError: Error, CustomNSError, LocalizedError {
+public enum BTCardError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Unknown error
     case unknown
@@ -18,11 +18,11 @@ enum BTCardError: Error, CustomNSError, LocalizedError {
     /// 4. Failed to fetch Braintree configuration
     case fetchConfigurationFailed
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTCardClientErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .unknown:
             return 0
@@ -37,7 +37,7 @@ enum BTCardError: Error, CustomNSError, LocalizedError {
         }
     }
 
-    var errorUserInfo: [String: Any] {
+    public var errorUserInfo: [String: Any] {
         switch self {
         case .unknown:
             return [NSLocalizedDescriptionKey: "An unknown error occurred. Please contact support."]
@@ -50,5 +50,11 @@ enum BTCardError: Error, CustomNSError, LocalizedError {
         case .fetchConfigurationFailed:
             return [NSLocalizedDescriptionKey: "Failed to fetch Braintree configuration."]
         }
+    }
+
+    // MARK: - Equatable Conformance
+
+    public static func == (lhs: BTCardError, rhs: BTCardError) -> Bool {
+        lhs.errorCode == rhs.errorCode
     }
 }
