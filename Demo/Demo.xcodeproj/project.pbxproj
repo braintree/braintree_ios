@@ -21,7 +21,7 @@
 		57108A152832E789004EB870 /* PayPalNativeCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57108A142832E789004EB870 /* PayPalNativeCheckoutViewController.swift */; };
 		57108A172832EA04004EB870 /* BraintreePayPalNativeCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57108A162832EA04004EB870 /* BraintreePayPalNativeCheckout.framework */; };
 		57108A182832EA04004EB870 /* BraintreePayPalNativeCheckout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57108A162832EA04004EB870 /* BraintreePayPalNativeCheckout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8028B9762B28C9E100C88CE8 /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8028B9752B28C9E100C88CE8 /* BraintreeDemoPreferredPaymentMethodsViewController.swift */; };
+		8028B9762B28C9E100C88CE8 /* ShopperInsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */; };
 		803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; };
 		803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803D64EB256DAF9A00ACE692 /* BraintreeApplePay.framework */; };
@@ -136,7 +136,7 @@
 		57108A162832EA04004EB870 /* BraintreePayPalNativeCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreePayPalNativeCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		8028B9752B28C9E100C88CE8 /* BraintreeDemoPreferredPaymentMethodsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDemoPreferredPaymentMethodsViewController.swift; sourceTree = "<group>"; };
+		8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopperInsightsViewController.swift; sourceTree = "<group>"; };
 		803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeAmericanExpress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64EB256DAF9A00ACE692 /* BraintreeApplePay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeApplePay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		803D64EC256DAF9A00ACE692 /* BraintreeCard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -343,7 +343,7 @@
 				57108A142832E789004EB870 /* PayPalNativeCheckoutViewController.swift */,
 				BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */,
 				BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */,
-				8028B9752B28C9E100C88CE8 /* BraintreeDemoPreferredPaymentMethodsViewController.swift */,
+				8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */,
 				BEBD52862AABA513005D6687 /* ThreeDSecureViewController.swift */,
 				80D36DED2A7967F20035380E /* VenmoViewController.swift */,
 				809E86A42ACF6607004998B0 /* Helpers */,
@@ -650,7 +650,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8028B9762B28C9E100C88CE8 /* BraintreeDemoPreferredPaymentMethodsViewController.swift in Sources */,
+				8028B9762B28C9E100C88CE8 /* ShopperInsightsViewController.swift in Sources */,
 				BEAAAA342A98E5E6001ECA63 /* IdealViewController.swift in Sources */,
 				BE994B0D2AD838A500470773 /* PaymentButtonBaseViewController.swift in Sources */,
 				BED7C4CA2ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift in Sources */,

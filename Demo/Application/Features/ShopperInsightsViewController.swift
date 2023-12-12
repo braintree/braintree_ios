@@ -1,27 +1,32 @@
 import UIKit
+import BraintreeCore
+import BraintreePayPal
+import BraintreeVenmo
+import BraintreeShopperInsights
 
-class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewController {
-    private let preferredPaymentMethods: BTPreferredPaymentMethods
+class ShopperInsightsViewController: BaseViewController {
+    
+    private let shopperInsightsClient: BTShopperInsightsClient
     private let paypalClient: BTPayPalClient
     private let venmoClient: BTVenmoClient
     private let payPalCheckoutButton = UIButton(type: .system)
     private let payPalVaultButton = UIButton(type: .system)
     private let venmoButton = UIButton(type: .system)
     
-    override init?(authorization: String!) {
-        guard let apiClient = BTAPIClient(authorization: authorization) else { return nil }
+    override init(authorization: String) {
+        let apiClient = BTAPIClient(authorization: authorization)!
         
-        preferredPaymentMethods = BTPreferredPaymentMethods(apiClient: apiClient)
+        shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
         paypalClient = BTPayPalClient(apiClient: apiClient)
         venmoClient = BTVenmoClient(apiClient: apiClient)
 
         super.init(authorization: authorization)
         
-        title = "Preferred Payment Methods"
+        title = "Shopper Insights"
         view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
         let preferredPaymentMethodsButton = UIButton(type: .system)
-        preferredPaymentMethodsButton.setTitle("Fetch Preferred Payment Methods", for: .normal)
+        preferredPaymentMethodsButton.setTitle("Fetch recommended shopper insights", for: .normal)
         preferredPaymentMethodsButton.translatesAutoresizingMaskIntoConstraints = false
         preferredPaymentMethodsButton.addTarget(self, action: #selector(preferredPaymentMethodsButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(preferredPaymentMethodsButton)
@@ -59,12 +64,25 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
     }
     
     @objc func preferredPaymentMethodsButtonTapped(_ button: UIButton) {
-        self.progressBlock("Fetching preferred payment methods...")
-        preferredPaymentMethods.fetch { (result) in
-            self.progressBlock("PayPal Preferred: \(result.isPayPalPreferred)\nVenmo Preferred: \(result.isVenmoPreferred)")
-            self.payPalCheckoutButton.isEnabled = result.isPayPalPreferred
-            self.payPalVaultButton.isEnabled = result.isPayPalPreferred
-            self.venmoButton.isEnabled = result.isVenmoPreferred
+        self.progressBlock("Fetching shopper insights...")
+        
+        let request = BTShopperInsightsRequest(
+            email: "my-email@gmail.com",
+            phone: Phone(
+                countryCode: "1",
+                nationalNumber: "1234567"
+            )
+        )
+        Task {
+            do {
+                let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
+                self.progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)")
+                self.payPalCheckoutButton.isEnabled = result.isPayPalRecommended
+                self.payPalVaultButton.isEnabled = result.isPayPalRecommended
+                self.venmoButton.isEnabled = result.isVenmoRecommended
+            } catch {
+                // TODO
+            }
         }
     }
     
@@ -75,13 +93,13 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.isEnabled = false
         
         let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
-        paypalClient.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
+        paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
 
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.nonceStringCompletionBlock(n.nonce)
+                self.completionBlock(n)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -95,14 +113,13 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.isEnabled = false
         
         let paypalRequest = BTPayPalVaultRequest()
-        paypalRequest.activeWindow = self.view.window
-        paypalClient.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
+        paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.nonceStringCompletionBlock(n.nonce)
+                self.completionBlock(n)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -116,13 +133,13 @@ class BraintreeDemoPreferredPaymentMethodsViewController: BraintreeDemoBaseViewC
         button.isEnabled = false
 
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoClient.tokenizeVenmoAccount(with: venmoRequest) { (nonce, error) in
+        venmoClient.tokenize(venmoRequest) { (nonce, error) in
             button.isEnabled = true
             
             if let e = error {
                 self.progressBlock(e.localizedDescription)
             } else if let n = nonce {
-                self.nonceStringCompletionBlock(n.nonce)
+                self.completionBlock(n)
             } else {
                 self.progressBlock("Canceled")
             }
