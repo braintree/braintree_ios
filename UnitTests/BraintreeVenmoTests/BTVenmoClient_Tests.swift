@@ -771,7 +771,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
     // MARK: - openVenmoAppPageInAppStore
 
-    func testGotoVenmoInAppStore_opensVenmoAppStoreURL_andSendsAnalyticsEvent() {
+    func testGotoVenmoInAppStore_opensVenmoAppStoreURL() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
@@ -782,6 +782,5 @@ class BTVenmoClient_Tests: XCTestCase {
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.absoluteString, "https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.app-store.invoked")
     }
 }
