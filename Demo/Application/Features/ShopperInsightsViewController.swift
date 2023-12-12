@@ -23,13 +23,12 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         super.init(authorization: authorization)
         
         title = "Shopper Insights"
-        view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
-        let preferredPaymentMethodsButton = UIButton(type: .system)
-        preferredPaymentMethodsButton.setTitle("Fetch recommended payments", for: .normal)
-        preferredPaymentMethodsButton.translatesAutoresizingMaskIntoConstraints = false
-        preferredPaymentMethodsButton.addTarget(self, action: #selector(preferredPaymentMethodsButtonTapped(_:)), for: .touchUpInside)
-        view.addSubview(preferredPaymentMethodsButton)
+        let shopperInsightsButton = UIButton(type: .system)
+        shopperInsightsButton.setTitle("Fetch recommended payments", for: .normal)
+        shopperInsightsButton.translatesAutoresizingMaskIntoConstraints = false
+        shopperInsightsButton.addTarget(self, action: #selector(shopperInsightsButtonTapped(_:)), for: .touchUpInside)
+        view.addSubview(shopperInsightsButton)
         
         payPalCheckoutButton.setTitle("PayPal Checkout", for: .normal)
         payPalCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -49,8 +48,8 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         venmoButton.isEnabled = false
         view.addSubview(venmoButton)
         
-        view.addConstraints([preferredPaymentMethodsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                             preferredPaymentMethodsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        view.addConstraints([shopperInsightsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                             shopperInsightsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                              payPalVaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                              payPalVaultButton.bottomAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: -40),
                              payPalCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -63,7 +62,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func preferredPaymentMethodsButtonTapped(_ button: UIButton) {
+    @objc func shopperInsightsButtonTapped(_ button: UIButton) {
         self.progressBlock("Fetching shopper insights...")
         
         let request = BTShopperInsightsRequest(
@@ -81,7 +80,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
                 self.payPalVaultButton.isEnabled = result.isPayPalRecommended
                 self.venmoButton.isEnabled = result.isVenmoRecommended
             } catch {
-                // TODO
+                self.progressBlock("Error: \(error.localizedDescription)")
             }
         }
     }
