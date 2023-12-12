@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Update all SDK errors to be public and Equatable (fixes #1152 and #1080)
+
 ## 6.10.0 (2023-11-17)
 * BraintreePayPalNativeCheckout
   * Update PayPalCheckout from 1.1.0 to 1.2.0.
