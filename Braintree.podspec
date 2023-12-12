@@ -66,7 +66,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "ShopperInsights" do |s|
-    s.source_files = "Sources/ShopperInsights/*.swift"
+    s.source_files = "Sources/BraintreeShopperInsights/*.swift"
     s.dependency "Braintree/Core"
   end
 
