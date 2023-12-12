@@ -1,7 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Add BraintreeShoppingInsights module (BETA)
+* Add BraintreeShopperInsights module (BETA)
 
 ## 6.10.0 (2023-11-17)
 * BraintreePayPalNativeCheckout
