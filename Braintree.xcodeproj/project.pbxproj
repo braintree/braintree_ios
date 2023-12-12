@@ -731,9 +731,7 @@
 		800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPTIBatchData.swift; sourceTree = "<group>"; };
 		800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayCardNonce_Tests.swift; sourceTree = "<group>"; };
 		804698302B27C5340090878E /* BraintreeShopperInsights.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeShopperInsights.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		804698322B27C5340090878E /* BraintreeShopperInsights.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeShopperInsights.h; sourceTree = "<group>"; };
 		8046983E2B27C5530090878E /* BraintreeShopperInsightsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeShopperInsightsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		804698402B27C5530090878E /* BraintreeShopperInsightsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeShopperInsightsTests.swift; sourceTree = "<group>"; };
 		804698482B27C71C0090878E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequest.swift; sourceTree = "<group>"; };
 		80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequestDelegate.swift; sourceTree = "<group>"; };
@@ -1314,22 +1312,6 @@
 			path = BraintreeShopperInsightsTests;
 			sourceTree = "<group>";
 		};
-		804698312B27C5340090878E /* BraintreeShopperInsights */ = {
-			isa = PBXGroup;
-			children = (
-				804698322B27C5340090878E /* BraintreeShopperInsights.h */,
-			);
-			path = BraintreeShopperInsights;
-			sourceTree = "<group>";
-		};
-		8046983F2B27C5530090878E /* BraintreeShopperInsightsTests */ = {
-			isa = PBXGroup;
-			children = (
-				804698402B27C5530090878E /* BraintreeShopperInsightsTests.swift */,
-			);
-			path = BraintreeShopperInsightsTests;
-			sourceTree = "<group>";
-		};
 		8053F05529FAB6FF0076F988 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,8 +1436,6 @@
 			isa = PBXGroup;
 			children = (
 				57108A0E2832E1DE004EB870 /* Package.swift */,
-				804698312B27C5340090878E /* BraintreeShopperInsights */,
-				8046983F2B27C5530090878E /* BraintreeShopperInsightsTests */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
 				6A50887E9E10BEB122A9F45D /* Pods */,
