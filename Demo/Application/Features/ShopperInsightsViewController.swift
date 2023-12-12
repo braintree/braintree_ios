@@ -4,7 +4,7 @@ import BraintreePayPal
 import BraintreeVenmo
 import BraintreeShopperInsights
 
-class ShopperInsightsViewController: BaseViewController {
+class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     private let shopperInsightsClient: BTShopperInsightsClient
     private let paypalClient: BTPayPalClient
@@ -26,7 +26,7 @@ class ShopperInsightsViewController: BaseViewController {
         view.backgroundColor = UIColor(red: 250.0 / 255.0, green: 253.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
         
         let preferredPaymentMethodsButton = UIButton(type: .system)
-        preferredPaymentMethodsButton.setTitle("Fetch recommended shopper insights", for: .normal)
+        preferredPaymentMethodsButton.setTitle("Fetch recommended payments", for: .normal)
         preferredPaymentMethodsButton.translatesAutoresizingMaskIntoConstraints = false
         preferredPaymentMethodsButton.addTarget(self, action: #selector(preferredPaymentMethodsButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(preferredPaymentMethodsButton)
