@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
-@testable import BraintreeCore
 @testable import BraintreeTestShared
+@testable import BraintreeShopperInsights
 
 class BTShopperInsightsClient_Tests: XCTestCase {
     
