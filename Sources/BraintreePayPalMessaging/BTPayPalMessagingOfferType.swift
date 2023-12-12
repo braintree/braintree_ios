@@ -12,7 +12,7 @@ public enum BTPayPalMessagingOfferType {
    case payLaterLongTerm
 
    /// Pay Later deferred payment
-   case payLaterPayIn1
+   case payLaterPayInOne
 
    /// PayPal Credit No Interest
    case payPalCreditNoInterest
@@ -23,7 +23,7 @@ public enum BTPayPalMessagingOfferType {
            return .payLaterShortTerm
        case .payLaterLongTerm:
            return .payLaterLongTerm
-       case .payLaterPayIn1:
+       case .payLaterPayInOne:
            return .payLaterPayIn1
        case .payPalCreditNoInterest:
            return .payPalCreditNoInterest
