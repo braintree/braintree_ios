@@ -90,6 +90,8 @@
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
 		80AB424F2B27CAC200249218 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
+		80AB42542B27DF5B00249218 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
+		80AB42552B27DF5B00249218 /* BraintreeCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80B59A132B27C7FC004C2FA3 /* BTShopperInsightsClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */; };
 		80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */; };
 		80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */; };
@@ -320,6 +322,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A903E1A524F9D34000C314E1;
 			remoteInfo = BraintreeTestShared;
+		};
+		80AB42562B27DF5B00249218 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 570B936A285397520041BAFE;
+			remoteInfo = BraintreeCore;
 		};
 		9CE517A0282D54030013C740 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -604,6 +613,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		80AB42582B27DF5B00249218 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				80AB42552B27DF5B00249218 /* BraintreeCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A9E80AA024FEF45400196BD3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -975,6 +995,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80AB42542B27DF5B00249218 /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1985,10 +2006,12 @@
 				8046982C2B27C5340090878E /* Sources */,
 				8046982D2B27C5340090878E /* Frameworks */,
 				8046982E2B27C5340090878E /* Resources */,
+				80AB42582B27DF5B00249218 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				80AB42572B27DF5B00249218 /* PBXTargetDependency */,
 			);
 			name = BraintreeShopperInsights;
 			productName = BraintreeShopperInsights;
@@ -3273,6 +3296,12 @@
 			platformFilter = ios;
 			target = A903E1A524F9D34000C314E1 /* BraintreeTestShared */;
 			targetProxy = 80AB42512B27CAC200249218 /* PBXContainerItemProxy */;
+		};
+		80AB42572B27DF5B00249218 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 570B936A285397520041BAFE /* BraintreeCore */;
+			targetProxy = 80AB42562B27DF5B00249218 /* PBXContainerItemProxy */;
 		};
 		9CE517A1282D54030013C740 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
