@@ -35,19 +35,20 @@ public class BTPayPalMessagingClient: UIView {
     /// Creates a `BTPayPalMessagingClient` to be displayed to promote offers such as Pay Later and PayPal Credit to customers.
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
     public func createView(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.delegate?.onError(self, error: error)
+                self.notifyFailure(with: error)
                 return
             }
 
             guard let configuration else {
-                self.delegate?.onError(self, error: BTPayPalMessagingError.fetchConfigurationFailed)
+                self.notifyFailure(with: BTPayPalMessagingError.fetchConfigurationFailed)
                 return
             }
 
             guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                self.delegate?.onError(self, error: BTPayPalMessagingError.payPalClientIDNotFound)
+                self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
                 return
             }
 
@@ -83,6 +84,17 @@ public class BTPayPalMessagingClient: UIView {
 
             return
         }
+    }
+
+    // MARK: - Analytics Helper Methods
+
+    private func notifySuccess() {
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.succeeded)
+    }
+
+    private func notifyFailure(with error: Error) {
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.failed, errorDescription: error.localizedDescription)
+        self.delegate?.onError(self, error: error)
     }
 }
 
@@ -141,10 +153,12 @@ extension BTPayPalMessagingClient: PayPalMessageViewEventDelegate, PayPalMessage
     }
 
     public func onSuccess(_ paypalMessageView: PayPalMessages.PayPalMessageView) {
+        notifySuccess()
         delegate?.didAppear(self)
     }
 
     public func onError(_ paypalMessageView: PayPalMessages.PayPalMessageView, error: PayPalMessages.PayPalMessageError) {
+        notifyFailure(with: error)
         delegate?.onError(self, error: error)
     }
 }
