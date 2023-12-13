@@ -14,6 +14,8 @@ class PayPalMessagingViewController: PaymentButtonBaseViewController {
     )
 
     override func viewDidLoad() {
+        title = "PayPal Messaging"
+        
         payPalMessagingClient.delegate = self
         payPalMessagingClient.createView(request)
 
@@ -29,7 +31,6 @@ class PayPalMessagingViewController: PaymentButtonBaseViewController {
     }
 }
 
-// TODO: update
 extension PayPalMessagingViewController: BTPayPalMessagingDelegate {
 
     func didSelect(_ payPalMessagingClient: BTPayPalMessagingClient) {
