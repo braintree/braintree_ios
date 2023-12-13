@@ -38,17 +38,17 @@ public class BTPayPalMessagingClient: UIView {
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                delegate?.onError(self, error: error)
+                self.delegate?.onError(self, error: error)
                 return
             }
 
             guard let configuration else {
-                delegate?.onError(self, error: BTPayPalMessagingError.fetchConfigurationFailed)
+                self.delegate?.onError(self, error: BTPayPalMessagingError.fetchConfigurationFailed)
                 return
             }
 
             guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                delegate?.onError(self, error: BTPayPalMessagingError.payPalClientIDNotFound)
+                self.delegate?.onError(self, error: BTPayPalMessagingError.payPalClientIDNotFound)
                 return
             }
 
