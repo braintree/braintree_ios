@@ -38,17 +38,17 @@ public class BTPayPalMessagingClient: UIView {
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.notifyFailure(with: error)
+                delegate?.onError(self, error: error)
                 return
             }
 
             guard let configuration else {
-                self.notifyFailure(with: BTPayPalMessagingError.fetchConfigurationFailed)
+                delegate?.onError(self, error: BTPayPalMessagingError.fetchConfigurationFailed)
                 return
             }
 
             guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
+                delegate?.onError(self, error: BTPayPalMessagingError.payPalClientIDNotFound)
                 return
             }
 
@@ -84,17 +84,6 @@ public class BTPayPalMessagingClient: UIView {
 
             return
         }
-    }
-
-    // MARK: - Analytics Helper Methods
-
-    private func notifySuccess() {
-        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.succeeded)
-    }
-
-    private func notifyFailure(with error: Error) {
-        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.failed, errorDescription: error.localizedDescription)
-        self.delegate?.onError(self, error: error)
     }
 }
 
@@ -153,12 +142,12 @@ extension BTPayPalMessagingClient: PayPalMessageViewEventDelegate, PayPalMessage
     }
 
     public func onSuccess(_ paypalMessageView: PayPalMessages.PayPalMessageView) {
-        notifySuccess()
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.succeeded)
         delegate?.didAppear(self)
     }
 
     public func onError(_ paypalMessageView: PayPalMessages.PayPalMessageView, error: PayPalMessages.PayPalMessageError) {
-        notifyFailure(with: error)
-        delegate?.onError(self, error: error)
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.failed, errorDescription: error.localizedDescription)
+        self.delegate?.onError(self, error: error)
     }
 }
