@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeThreeDSecure
+  * Fix bug where `BTThreeDSecureClient.initializeChallenge()` callback wasn't properly invoked (fixes #1154)
+
 ## 6.10.0 (2023-11-17)
 * BraintreePayPalNativeCheckout
   * Update PayPalCheckout from 1.1.0 to 1.2.0.
