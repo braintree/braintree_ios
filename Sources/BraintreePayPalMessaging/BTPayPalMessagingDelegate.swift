@@ -6,17 +6,17 @@ import PayPalMessages
 public protocol BTPayPalMessagingDelegate: AnyObject {
 
     /// Function invoked when the message is tapped
-    func didSelect(_ payPalMessagingView: BTPayPalMessagingClient)
+    func didSelect(_ payPalMessagingClient: BTPayPalMessagingClient)
 
     /// Function invoked when a user has begun the PayPal Credit application
-    func willApply(_ payPalMessagingView: BTPayPalMessagingClient)
+    func willApply(_ payPalMessagingClient: BTPayPalMessagingClient)
 
     /// Function invoked when the message first starts to fetch data
-    func willAppear(_ payPalMessagingView: BTPayPalMessagingClient)
+    func willAppear(_ payPalMessagingClient: BTPayPalMessagingClient)
 
     /// Function invoked when the message has rendered
-    func didAppear(_ payPalMessagingView: BTPayPalMessagingClient)
+    func didAppear(_ payPalMessagingClient: BTPayPalMessagingClient)
 
     /// Function invoked when the message encounters an error
-    func onError(_ payPalMessagingView: BTPayPalMessagingClient, error: Error)
+    func onError(_ payPalMessagingClient: BTPayPalMessagingClient, error: Error)
 }
