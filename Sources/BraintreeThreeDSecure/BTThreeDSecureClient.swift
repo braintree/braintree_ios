@@ -299,8 +299,8 @@ import BraintreeCore
     
     private func performV2Authentication(with lookupResult: BTThreeDSecureResult) {
         threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
-            if let error = error as NSError? {
-                if error.code == BTThreeDSecureError.canceled.errorCode {
+            if let error {
+                if error as? BTThreeDSecureError == .canceled {
                     self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyCanceled)
                 }
 
@@ -385,7 +385,7 @@ import BraintreeCore
                 if let error = error as NSError? {
                     // Provide more context for card validation error when status code 422
                     if error.domain == BTCoreConstants.httpErrorDomain,
-                        error.code == 2, // BTHTTPError.errorCode.clientError
+                       error as? BTHTTPError == .clientError([:]),
                        let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
                        urlResponseError.statusCode == 422 {
                         var userInfo: [String: Any] = error.userInfo
