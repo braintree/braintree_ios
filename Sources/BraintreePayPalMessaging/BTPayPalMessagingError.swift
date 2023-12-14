@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with PayPal Messaging.
-enum BTPayPalMessagingError: Int, Error, CustomNSError, LocalizedError {
+public enum BTPayPalMessagingError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Failed to fetch Braintree configuration
     case fetchConfigurationFailed
@@ -9,15 +9,15 @@ enum BTPayPalMessagingError: Int, Error, CustomNSError, LocalizedError {
     /// 1. Could not find PayPal client ID in the Braintree configuration
     case payPalClientIDNotFound
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTPayPalMessagingErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         rawValue
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .fetchConfigurationFailed:
             return "Failed to fetch Braintree configuration."
