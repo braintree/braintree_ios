@@ -148,6 +148,6 @@ extension BTPayPalMessagingClient: PayPalMessageViewEventDelegate, PayPalMessage
 
     public func onError(_ paypalMessageView: PayPalMessages.PayPalMessageView, error: PayPalMessages.PayPalMessageError) {
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.failed, errorDescription: error.localizedDescription)
-        self.delegate?.onError(self, error: error)
+        delegate?.onError(self, error: error)
     }
 }
