@@ -10,16 +10,12 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var paypalClient = BTPayPalClient(apiClient: apiClient)
     lazy var venmoClient = BTVenmoClient(apiClient: apiClient)
     
-    private let payPalCheckoutButton = UIButton(type: .system)
-    private let payPalVaultButton = UIButton(type: .system)
-    private let venmoButton = UIButton(type: .system)
+    lazy var shopperInsightsButton = createButton(title: "Fetch shopper insights", action: #selector(shopperInsightsButtonTapped))
+    lazy var payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(payPalCheckoutButtonTapped))
+    lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
+    lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
     
     override func createPaymentButton() -> UIView {
-        let shopperInsightsButton = createButton(title: "Fetch shopper insights", action: #selector(shopperInsightsButtonTapped))
-        let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(payPalCheckoutButtonTapped))
-        let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
-        let venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
-
         let buttons = [shopperInsightsButton, payPalCheckoutButton, payPalVaultButton, venmoButton]
         buttons[1...3].forEach { $0.isEnabled = false }
         let stackView = UIStackView(arrangedSubviews: buttons)
@@ -63,14 +59,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
         paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
-
-            if let error {
-                self.progressBlock(error.localizedDescription)
-            } else if let nonce {
-                self.completionBlock(nonce)
-            } else {
-                self.progressBlock("Canceled")
-            }
+            self.displayResultDetails(nonce: nonce, error: error)
         }
     }
     
@@ -83,14 +72,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let paypalRequest = BTPayPalVaultRequest()
         paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
-            
-            if let error {
-                self.progressBlock(error.localizedDescription)
-            } else if let nonce {
-                self.completionBlock(nonce)
-            } else {
-                self.progressBlock("Canceled")
-            }
+            self.displayResultDetails(nonce: nonce, error: error)
         }
     }
     
@@ -103,14 +85,17 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
         venmoClient.tokenize(venmoRequest) { (nonce, error) in
             button.isEnabled = true
-            
-            if let error {
-                self.progressBlock(error.localizedDescription)
-            } else if let nonce {
-                self.completionBlock(nonce)
-            } else {
-                self.progressBlock("Canceled")
-            }
+            self.displayResultDetails(nonce: nonce, error: error)
+        }
+    }
+    
+    private func displayResultDetails(nonce: BTPaymentMethodNonce?, error: Error?) {
+        if let error {
+            self.progressBlock(error.localizedDescription)
+        } else if let nonce {
+            self.completionBlock(nonce)
+        } else {
+            self.progressBlock("Canceled")
         }
     }
 }
