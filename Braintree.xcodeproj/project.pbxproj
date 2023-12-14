@@ -1770,6 +1770,7 @@
 		BECC91942B20DF7F00A2EE42 /* BraintreePayPalMessaging */ = {
 			isa = PBXGroup;
 			children = (
+				BE67CDBD2B29FC3D00BA4904 /* BTPayPalMessagingAnalytics.swift */,
 				BECC91962B20E01F00A2EE42 /* BTPayPalMessagingClient.swift */,
 				BEA0F9162B235DDA00C21EFA /* BTPayPalMessagingColor.swift */,
 				BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */,
@@ -1779,7 +1780,6 @@
 				BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */,
 				BEA0F9272B23741900C21EFA /* BTPayPalMessagingRequest.swift */,
 				BEA0F9252B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift */,
-				BE67CDBD2B29FC3D00BA4904 /* BTPayPalMessagingAnalytics.swift */,
 			);
 			path = BraintreePayPalMessaging;
 			sourceTree = "<group>";
@@ -6608,7 +6608,7 @@
 			repositoryURL = "https://github.com/paypal/paypal-messages-ios";
 			requirement = {
 				kind = exactVersion;
-				version = "1.0.0-prerelease.3";
+				version = "1.0.0-prerelease.6";
 			};
 		};
 		BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
