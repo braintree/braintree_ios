@@ -6,62 +6,29 @@ import BraintreeShopperInsights
 
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
-    private let shopperInsightsClient: BTShopperInsightsClient
-    private let paypalClient: BTPayPalClient
-    private let venmoClient: BTVenmoClient
+    lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
+    lazy var paypalClient = BTPayPalClient(apiClient: apiClient)
+    lazy var venmoClient = BTVenmoClient(apiClient: apiClient)
+    
     private let payPalCheckoutButton = UIButton(type: .system)
     private let payPalVaultButton = UIButton(type: .system)
     private let venmoButton = UIButton(type: .system)
     
-    override init(authorization: String) {
-        let apiClient = BTAPIClient(authorization: authorization)!
-        
-        shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
-        paypalClient = BTPayPalClient(apiClient: apiClient)
-        venmoClient = BTVenmoClient(apiClient: apiClient)
+    override func createPaymentButton() -> UIView {
+        let shopperInsightsButton = createButton(title: "Fetch shopper insights", action: #selector(shopperInsightsButtonTapped))
+        let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(payPalCheckoutButtonTapped))
+        let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
+        let venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
 
-        super.init(authorization: authorization)
+        let buttons = [shopperInsightsButton, payPalCheckoutButton, payPalVaultButton, venmoButton]
+        buttons[1...3].forEach { $0.isEnabled = false }
+        let stackView = UIStackView(arrangedSubviews: buttons)
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        title = "Shopper Insights"
-        
-        let shopperInsightsButton = UIButton(type: .system)
-        shopperInsightsButton.setTitle("Fetch recommended payments", for: .normal)
-        shopperInsightsButton.translatesAutoresizingMaskIntoConstraints = false
-        shopperInsightsButton.addTarget(self, action: #selector(shopperInsightsButtonTapped(_:)), for: .touchUpInside)
-        view.addSubview(shopperInsightsButton)
-        
-        payPalCheckoutButton.setTitle("PayPal Checkout", for: .normal)
-        payPalCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
-        payPalCheckoutButton.addTarget(self, action: #selector(payPalCheckoutButtonTapped(_:)), for: .touchUpInside)
-        payPalCheckoutButton.isEnabled = false
-        view.addSubview(payPalCheckoutButton)
-        
-        payPalVaultButton.setTitle("PayPal Vault", for: .normal)
-        payPalVaultButton.translatesAutoresizingMaskIntoConstraints = false
-        payPalVaultButton.addTarget(self, action: #selector(payPalVaultButtonTapped(_:)), for: .touchUpInside)
-        payPalVaultButton.isEnabled = false
-        view.addSubview(payPalVaultButton)
-        
-        venmoButton.setTitle("Venmo", for: .normal)
-        venmoButton.translatesAutoresizingMaskIntoConstraints = false
-        venmoButton.addTarget(self, action: #selector(venmoButtonTapped(_:)), for: .touchUpInside)
-        venmoButton.isEnabled = false
-        view.addSubview(venmoButton)
-        
-        view.addConstraints([
-            shopperInsightsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            shopperInsightsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            payPalVaultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            payPalVaultButton.bottomAnchor.constraint(equalTo: payPalCheckoutButton.bottomAnchor, constant: -40),
-            payPalCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            payPalCheckoutButton.bottomAnchor.constraint(equalTo: venmoButton.bottomAnchor, constant: -40),
-            venmoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            venmoButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)
-        ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        return stackView
     }
     
     @objc func shopperInsightsButtonTapped(_ button: UIButton) {
@@ -86,7 +53,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
             }
         }
     }
-    
+
     @objc func payPalCheckoutButtonTapped(_ button: UIButton) {
         self.progressBlock("Tapped PayPal Checkout")
         
@@ -97,10 +64,10 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
 
-            if let e = error {
-                self.progressBlock(e.localizedDescription)
-            } else if let n = nonce {
-                self.completionBlock(n)
+            if let error {
+                self.progressBlock(error.localizedDescription)
+            } else if let nonce {
+                self.completionBlock(nonce)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -117,10 +84,10 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
             
-            if let e = error {
-                self.progressBlock(e.localizedDescription)
-            } else if let n = nonce {
-                self.completionBlock(n)
+            if let error {
+                self.progressBlock(error.localizedDescription)
+            } else if let nonce {
+                self.completionBlock(nonce)
             } else {
                 self.progressBlock("Canceled")
             }
@@ -137,10 +104,10 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         venmoClient.tokenize(venmoRequest) { (nonce, error) in
             button.isEnabled = true
             
-            if let e = error {
-                self.progressBlock(e.localizedDescription)
-            } else if let n = nonce {
-                self.completionBlock(n)
+            if let error {
+                self.progressBlock(error.localizedDescription)
+            } else if let nonce {
+                self.completionBlock(nonce)
             } else {
                 self.progressBlock("Canceled")
             }
