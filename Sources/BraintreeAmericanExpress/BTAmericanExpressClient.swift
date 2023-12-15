@@ -26,7 +26,7 @@ import BraintreeCore
     ///  - Note: If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
     @objc(getRewardsBalanceForNonce:currencyIsoCode:completion:)
     public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
-        let parameters = ["currencyIsoCode": currencyISOCode, "paymentMethodNonce": nonce]
+        let parameters = BTAmexRewardsBalanceRequest(currencyIsoCode: currencyISOCode, paymentMethodNonce: nonce)
         apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.started)
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in

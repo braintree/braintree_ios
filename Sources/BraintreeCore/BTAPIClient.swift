@@ -143,8 +143,12 @@ import Foundation
         if let clientToken {
             configPath = clientToken.configURL.absoluteString
         }
+        
+        struct ConfigPost: Encodable {
+            let configVersion: String
+        }
 
-        let parameters: [String: Any] = ["configVersion": "3"]
+        let parameters = ConfigPost(configVersion: "3")
 
         configurationHTTP?.get(configPath, parameters: parameters, shouldCache: true) { [weak self] body, response, error in
             guard let self else {
@@ -235,9 +239,9 @@ import Foundation
             completion(paymentMethodNonces, nil)
         }
     }
-
+    
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    ///  
+    ///
     /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
     /// - Parameters:
     ///   - path: The endpoint URI path.
@@ -248,11 +252,10 @@ import Foundation
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
     @_documentation(visibility: private)
-    @objc(GET:parameters:httpType:completion:)
     public func get(
         _ path: String,
-        parameters: [String: String]? = nil,
-        httpType: BTAPIClientHTTPService = .gateway, 
+        parameters: Encodable? = nil,
+        httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
