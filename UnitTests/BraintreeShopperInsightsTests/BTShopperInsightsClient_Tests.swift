@@ -26,4 +26,26 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertNotNil(result!.isPayPalRecommended)
         XCTAssertNotNil(result!.isVenmoRecommended)
     }
+    
+    // MARK: - Analytics
+    
+    func testSendPayPalPresentedEvent_sendsAnalytic() {
+        sut.sendPayPalPresentedEvent()
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+    }
+    
+    func testSendPayPalSelectedEvent_sendsAnalytic() {
+        sut.sendPayPalSelectedEvent()
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
+    }
+    
+    func testSendVenmoPresentedEvent_sendsAnalytic() {
+        sut.sendVenmoPresentedEvent()
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
+    }
+    
+    func testSendVenmoSelectedEvent_sendsAnalytic() {
+        sut.sendVenmoSelectedEvent()
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
+    }
 }
