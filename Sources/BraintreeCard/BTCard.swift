@@ -310,3 +310,30 @@ import Foundation
         return mutation.replacingOccurrences(of: "\n", with: "")
     }
 }
+
+extension BTCard: Encodable {
+    
+    private enum TopLevelKeys: String, CodingKey {
+        case number = "number"
+        case expirationMonth = "expiration_month"
+        case expirationYear = "expiration_year"
+        case cvv = "cvv"
+        case billingAddress = "billing_address"
+    }
+    
+    private enum BillingAddressKeys: String, CodingKey {
+        case firstName = "firstName"
+        case lastName = "lastName"
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var topLevel = encoder.container(keyedBy: TopLevelKeys.self)
+        try topLevel.encode(number, forKey: .number)
+        try topLevel.encode(expirationMonth, forKey: .expirationMonth)
+        try topLevel.encode(expirationYear, forKey: .expirationYear)
+
+        var billingAddress = topLevel.nestedContainer(keyedBy: BillingAddressKeys.self, forKey: .billingAddress)
+        try billingAddress.encode(firstName, forKey: .firstName)
+        try billingAddress.encode(lastName, forKey: .lastName)
+    }
+}

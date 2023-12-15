@@ -52,6 +52,10 @@ import BraintreeCore
                 }
 
                 let parameters = card.graphQLParameters()
+                
+                let codable = try? JSONEncoder().encode(BTGraphQLCardPost(card: card))
+                
+                print(codable)
 
                 self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
                     if let error = error as NSError? {
