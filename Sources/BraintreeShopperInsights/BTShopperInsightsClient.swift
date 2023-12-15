@@ -35,7 +35,7 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalPresented)
     }
     
-    /// Call this method when the PayPal button has been selected/tapped by the buyer..
+    /// Call this method when the PayPal button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendPayPalSelectedEvent() {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalSelected)
