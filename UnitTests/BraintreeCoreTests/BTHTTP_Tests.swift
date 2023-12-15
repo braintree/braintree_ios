@@ -21,18 +21,6 @@ final class BTHTTP_Tests: XCTestCase {
         return URL(string: dataURLString)!
     }
 
-    var parameterDictionary: [String: Any] {
-        [
-            "stringParameter": "value",
-            "crazyStringParameter[]": "crazy%20and&value",
-            "numericParameter": 42,
-            "trueBooleanParameter": true,
-            "falseBooleanParameter": false,
-            "dictionaryParameter":  [ "dictionaryKey": "dictionaryValue" ],
-            "arrayParameter": ["arrayItem1", "arrayItem2"]
-        ]
-    }
-
     var testURLSession: URLSession {
         let testConfiguration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         testConfiguration.protocolClasses = [BTHTTPTestProtocol.self]
@@ -650,67 +638,87 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     // MARK: - Parameters tests
+    
+    struct SampleRequest: Encodable {
+        enum CodingKeys: String, CodingKey {
+            case stringParameter
+            case crazyStringParameter = "crazyStringParameter[]"
+            case numericParameter
+            case trueBooleanParameter
+            case falseBooleanParameter
+            case dictionaryParameter
+            case arrayParameter
+        }
+        
+        let stringParameter = "value"
+        let crazyStringParameter = "crazy%20and&value"
+        let numericParameter = 42
+        let trueBooleanParameter = true
+        let falseBooleanParameter = false
+        let dictionaryParameter = ["dictionaryKey": "dictionaryValue"]
+        let arrayParameter = ["arrayItem1", "arrayItem2"]
+    }
 
-//    func testTransmitsTheParametersAsURLEncodedQueryParameters() {
-//        let expectation = expectation(description: "GET request")
-//        let expectedQueryParameters = [
-//            "numericParameter=42",
-//            "falseBooleanParameter=0",
-//            "dictionaryParameter%5BdictionaryKey%5D=dictionaryValue",
-//            "trueBooleanParameter=1",
-//            "stringParameter=value",
-//            "crazyStringParameter%5B%5D=crazy%2520and%26value",
-//            "arrayParameter%5B%5D=arrayItem1",
-//            "arrayParameter%5B%5D=arrayItem2"
-//        ]
-//
-//        http?.get("200.json", parameters: parameterDictionary) { body, response, error in
-//            XCTAssertNotNil(body)
-//            XCTAssertNotNil(response)
-//            XCTAssertNil(error)
-//
-//            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-//            let actualQueryComponents = httpRequest.url?.query?.components(separatedBy: "&")
-//
-//            expectedQueryParameters.forEach { expectedComponent in
-//                XCTAssertTrue(actualQueryComponents!.contains(expectedComponent))
-//            }
-//
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2)
-//    }
+    func testTransmitsTheParametersAsURLEncodedQueryParameters() {
+        let expectation = expectation(description: "GET request")
+        let expectedQueryParameters = [
+            "numericParameter=42",
+            "falseBooleanParameter=0",
+            "dictionaryParameter%5BdictionaryKey%5D=dictionaryValue",
+            "trueBooleanParameter=1",
+            "stringParameter=value",
+            "crazyStringParameter%5B%5D=crazy%2520and%26value",
+            "arrayParameter%5B%5D=arrayItem1",
+            "arrayParameter%5B%5D=arrayItem2"
+        ]
 
-//    func testTransmitsTheParametersAsJSON() {
-//        let expectation = expectation(description: "POST request")
-//        let expectedParameters: [String: Any] = [
-//            "numericParameter": 42,
-//            "falseBooleanParameter": false,
-//            "dictionaryParameter": ["dictionaryKey": "dictionaryValue"],
-//            "trueBooleanParameter": true,
-//            "stringParameter": "value",
-//            "crazyStringParameter[]": "crazy%20and&value",
-//            "arrayParameter": [ "arrayItem1", "arrayItem2" ],
-//            "authorization_fingerprint": "test-authorization-fingerprint"
-//        ]
-//
-//        http?.post("200.json", parameters: parameterDictionary) { body, response, error in
-//            XCTAssertNotNil(body)
-//            XCTAssertNotNil(response)
-//            XCTAssertNil(error)
-//
-//            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-//            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-//            XCTAssertEqual(httpRequest.value(forHTTPHeaderField: "Content-Type"), "application/json; charset=utf-8")
-//
-//            let actualParameters = try? JSONSerialization.jsonObject(with: httpRequestBody.data(using: .utf8)!) as? [String: Any] ?? [:]
-//            XCTAssertTrue(actualParameters! == expectedParameters)
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2)
-//    }
+        http?.get("200.json", parameters: SampleRequest()) { body, response, error in
+            XCTAssertNotNil(body)
+            XCTAssertNotNil(response)
+            XCTAssertNil(error)
+
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            let actualQueryComponents = httpRequest.url?.query?.components(separatedBy: "&")
+
+            expectedQueryParameters.forEach { expectedComponent in
+                XCTAssertTrue(actualQueryComponents!.contains(expectedComponent))
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testTransmitsTheParametersAsJSON() {
+        let expectation = expectation(description: "POST request")
+        let expectedParameters: [String: Any] = [
+            "numericParameter": 42,
+            "falseBooleanParameter": false,
+            "dictionaryParameter": ["dictionaryKey": "dictionaryValue"],
+            "trueBooleanParameter": true,
+            "stringParameter": "value",
+            "crazyStringParameter[]": "crazy%20and&value",
+            "arrayParameter": [ "arrayItem1", "arrayItem2" ],
+            "authorization_fingerprint": "test-authorization-fingerprint"
+        ]
+
+        http?.post("200.json", parameters: SampleRequest()) { body, response, error in
+            XCTAssertNotNil(body)
+            XCTAssertNotNil(response)
+            XCTAssertNil(error)
+
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.value(forHTTPHeaderField: "Content-Type"), "application/json; charset=utf-8")
+
+            let actualParameters = try? JSONSerialization.jsonObject(with: httpRequestBody.data(using: .utf8)!) as? [String: Any] ?? [:]
+            XCTAssertTrue(actualParameters! == expectedParameters)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
 
     // MARK: - DispatchQueue tests
 

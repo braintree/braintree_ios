@@ -6,7 +6,7 @@ import Foundation
     @objc public var POSTRequestCount: Int = 0
     @objc public var lastRequestEndpoint: String?
     public var lastRequestMethod: String?
-    public var lastRequestParameters: [String: Any]?
+    @objc public var lastRequestParameters: [String: Any]?
     var stubMethod: String?
     var stubEndpoint: String?
     public var cannedResponse: BTJSON?
