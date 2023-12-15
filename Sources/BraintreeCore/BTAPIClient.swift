@@ -143,12 +143,8 @@ import Foundation
         if let clientToken {
             configPath = clientToken.configURL.absoluteString
         }
-        
-        struct ConfigPost: Encodable {
-            let configVersion: String
-        }
 
-        let parameters = ConfigPost(configVersion: "3")
+        let parameters = BTConfigurationRequest(version: "3")
 
         configurationHTTP?.get(configPath, parameters: parameters, shouldCache: true) { [weak self] body, response, error in
             guard let self else {
