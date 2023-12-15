@@ -7,7 +7,7 @@ public class MockAPIClient: BTAPIClient {
     public var lastPOSTAPIClientHTTPType: BTAPIClientHTTPService?
 
     public var lastGETPath = ""
-    public var lastGETParameters = [:] as [AnyHashable: Any]?
+    public var lastGETParameters = [:] as [String: Any]?
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
 
     public var postedAnalyticsEvents : [String] = []
