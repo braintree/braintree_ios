@@ -144,9 +144,7 @@ import Foundation
             configPath = clientToken.configURL.absoluteString
         }
 
-        let parameters = BTConfigurationRequest(version: "3")
-
-        configurationHTTP?.get(configPath, parameters: parameters, shouldCache: true) { [weak self] body, response, error in
+        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
