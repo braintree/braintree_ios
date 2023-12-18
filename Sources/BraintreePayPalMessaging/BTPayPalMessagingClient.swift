@@ -32,7 +32,7 @@ public class BTPayPalMessagingClient: UIView {
 
     // MARK: - Public Method
 
-    /// Creates a `BTPayPalMessagingClient` to be displayed to promote offers such as Pay Later and PayPal Credit to customers.
+    /// Creates a view to be displayed to promote offers such as Pay Later and PayPal Credit to customers.
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
     /// - Note: use `BTPayPalMessagingDelegate` protocol to receive notifications for events
     public func createView(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
