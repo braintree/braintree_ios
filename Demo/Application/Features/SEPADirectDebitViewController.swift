@@ -39,12 +39,14 @@ class SEPADirectDebitViewController: PaymentButtonBaseViewController {
         sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
 
         sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-            if let sepaDirectDebitNonce = sepaDirectDebitNonce {
+            if let sepaDirectDebitNonce {
                 self.completionBlock(sepaDirectDebitNonce)
-            } else if let error = error {
-                self.progressBlock(error.localizedDescription)
-            } else {
-                self.progressBlock("Canceled")
+            } else if let error {
+                if error as? BTSEPADirectDebitError == .webFlowCanceled {
+                    self.progressBlock("Canceled")
+                } else {
+                    self.progressBlock(error.localizedDescription)
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with American Express.
-enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
+public enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Unknown error
     case unknown
@@ -12,15 +12,15 @@ enum BTAmericanExpressError: Int, Error, CustomNSError, LocalizedError {
     /// 2. Deallocated BTAmericanExpressClient
     case deallocated
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTAmericanExpressErrorDomain"
     }
     
-    var errorCode: Int {
+    public var errorCode: Int {
         rawValue
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .unknown:
             return "An unknown error occurred. Please contact support."

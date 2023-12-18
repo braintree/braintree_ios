@@ -1,7 +1,7 @@
 import Foundation
 
 /// Error codes associated with BTHTTP
-enum BTHTTPError: Error, CustomNSError, LocalizedError {
+public enum BTHTTPError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Unknown error (reserved)
     case unknown
@@ -42,11 +42,11 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
     /// 12. Deallocated HTTPClient
     case deallocated(String)
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         BTCoreConstants.httpErrorDomain
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .unknown:
             return 0
@@ -77,7 +77,7 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
         }
     }
 
-    var errorUserInfo: [String : Any] {
+    public var errorUserInfo: [String: Any] {
         switch self {
         case .unknown:
             return [NSLocalizedDescriptionKey: "An unexpected error occurred with the HTTP request."]
@@ -106,5 +106,11 @@ enum BTHTTPError: Error, CustomNSError, LocalizedError {
         case .deallocated(let httpType):
             return [NSLocalizedDescriptionKey: "\(httpType) has been deallocated."]
         }
+    }
+
+    // MARK: - Equatable Conformance
+
+    public static func == (lhs: BTHTTPError, rhs: BTHTTPError) -> Bool {
+        lhs.errorCode == rhs.errorCode
     }
 }

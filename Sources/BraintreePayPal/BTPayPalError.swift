@@ -1,7 +1,7 @@
 import Foundation
 
 /// Error codes associated with PayPal.
-enum BTPayPalError: Error, CustomNSError, LocalizedError {
+public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. PayPal is disabled in configuration
     case disabled
@@ -33,11 +33,11 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
     /// 9. Deallocated BTPayPalClient
     case deallocated
     
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .disabled:
             return 0
@@ -62,7 +62,7 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
         }
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .disabled:
             return "PayPal is not enabled for this merchant. Enable PayPal for this merchant in the Braintree Control Panel."
@@ -85,5 +85,11 @@ enum BTPayPalError: Error, CustomNSError, LocalizedError {
         case .deallocated:
             return "BTPayPalClient has been deallocated."
         }
+    }
+
+    // MARK: - Equatable Conformance
+
+    public static func == (lhs: BTPayPalError, rhs: BTPayPalError) -> Bool {
+        lhs.errorCode == rhs.errorCode
     }
 }

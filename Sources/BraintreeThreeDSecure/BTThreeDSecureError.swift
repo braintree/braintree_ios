@@ -1,6 +1,6 @@
 import Foundation
 
-enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
+public enum BTThreeDSecureError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Unknown error
     case unknown
@@ -29,11 +29,11 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
     /// 8. Deallocated BTThreeDSecureClient
     case deallocated
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTThreeDSecureFlowErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .unknown:
             return 0
@@ -56,7 +56,7 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
         }
     }
 
-    var errorUserInfo: [String : Any] {
+    public var errorUserInfo: [String: Any] {
         switch self {
         case .unknown:
             return [NSLocalizedDescriptionKey: "An unknown error occurred. Please contact support."]
@@ -77,5 +77,11 @@ enum BTThreeDSecureError: Error, CustomNSError, LocalizedError {
         case .deallocated:
             return [NSLocalizedDescriptionKey: "BTThreeDSecureClient has been deallocated."]
         }
+    }
+
+    // MARK: - Equatable Conformance
+
+    public static func == (lhs: BTThreeDSecureError, rhs: BTThreeDSecureError) -> Bool {
+        lhs.errorCode == rhs.errorCode
     }
 }

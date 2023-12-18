@@ -2,10 +2,7 @@ import Foundation
 import PayPalCheckout
 
 /// Error returned from the native PayPal flow
-enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatable  {
-    static func == (lhs: BTPayPalNativeCheckoutError, rhs: BTPayPalNativeCheckoutError) -> Bool {
-        lhs.errorCode == rhs.errorCode
-    }
+public enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest
     case invalidRequest
@@ -46,11 +43,11 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
     /// 12. Missing return url in approval data
     case missingReturnURL
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTPaypalNativeCheckoutErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .invalidRequest:
             return 0
@@ -81,7 +78,7 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
         }
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalidRequest:
             return "Request is not of type BTPayPalNativeCheckoutRequest or BTPayPalNativeVaultRequest."
@@ -110,5 +107,11 @@ enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatabl
         case .missingReturnURL:
             return "Return URL is missing from the approval data."
         }
+    }
+
+    // MARK: - Equatable Conformance
+
+    public static func == (lhs: BTPayPalNativeCheckoutError, rhs: BTPayPalNativeCheckoutError) -> Bool {
+        lhs.errorCode == rhs.errorCode
     }
 }
