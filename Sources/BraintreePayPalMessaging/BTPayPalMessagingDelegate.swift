@@ -6,7 +6,6 @@ import PayPalMessages
 public protocol BTPayPalMessagingDelegate: AnyObject {
 
     /// Function invoked when the message is tapped
-
     func didSelect(_ payPalMessagingView: BTPayPalMessagingView)
 
     /// Function invoked when a user has begun the PayPal Credit application

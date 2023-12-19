@@ -3,7 +3,7 @@ import BraintreePayPalMessaging
 
 class PayPalMessagingViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalMessagingClient = BTPayPalMessagingView(apiClient: apiClient)
+    lazy var payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
 
     let request = BTPayPalMessagingRequest(
         amount: 2.00,
@@ -16,19 +16,19 @@ class PayPalMessagingViewController: PaymentButtonBaseViewController {
     override func viewDidLoad() {
         title = "PayPal Messaging"
         
-        payPalMessagingClient.delegate = self
-        payPalMessagingClient.start(request)
+        payPalMessagingView.delegate = self
+        payPalMessagingView.start(request)
     }
 
     private func setupView() {
-        payPalMessagingClient.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(payPalMessagingClient)
+        payPalMessagingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(payPalMessagingView)
 
         NSLayoutConstraint.activate([
-            payPalMessagingClient.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            payPalMessagingClient.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            payPalMessagingClient.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            payPalMessagingClient.heightAnchor.constraint(equalToConstant: 80)
+            payPalMessagingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            payPalMessagingView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            payPalMessagingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            payPalMessagingView.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
 }

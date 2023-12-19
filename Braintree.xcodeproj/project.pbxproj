@@ -275,7 +275,7 @@
 		BECC91702B20DDFF00A2EE42 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BECC91872B20DE7C00A2EE42 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		BECC918F2B20DE9900A2EE42 /* BraintreePayPalMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BECC91762B20DDFF00A2EE42 /* BraintreePayPalMessaging.framework */; platformFilter = ios; };
-		BECC91972B20E01F00A2EE42 /* BTPayPalMessagingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC91962B20E01F00A2EE42 /* BTPayPalMessagingClient.swift */; };
+        BECC91972B20E01F00A2EE42 /* BTPayPalMessagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */; };
 		BECC91992B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC91982B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift */; };
 		BED00CAC28A4504E00D74AEC /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAD28A5419900D74AEC /* BTBinData.swift */; };
