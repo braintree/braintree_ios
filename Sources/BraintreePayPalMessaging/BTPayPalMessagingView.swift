@@ -35,7 +35,7 @@ public class BTPayPalMessagingView: UIView {
     /// Creates a view to be displayed to promote offers such as Pay Later and PayPal Credit to customers.
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
     /// - Note: use `BTPayPalMessagingDelegate` protocol to receive notifications for events
-    public func createView(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
+    public func start(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.delegate?.onError(self, error: error)
@@ -81,8 +81,6 @@ public class BTPayPalMessagingView: UIView {
                 messageView.topAnchor.constraint(equalTo: self.topAnchor),
                 messageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             ])
-
-            return
         }
     }
 }
@@ -114,7 +112,7 @@ public extension BTPayPalMessagingView {
 
         public func makeUIView(context: Context) -> BTPayPalMessagingView {
             let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
-            payPalMessagingView.createView(request)
+            payPalMessagingView.start(request)
             payPalMessagingView.delegate = delegate
             return payPalMessagingView
         }
