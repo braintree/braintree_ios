@@ -6,9 +6,9 @@ import PayPalMessages
 import BraintreeCore
 #endif
 
-/// Use `BTPayPalMessagingClient` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+/// Use `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
 /// - Note: This module is in beta. It's public API may change or be removed in future releases.
-public class BTPayPalMessagingClient: UIView {
+public class BTPayPalMessagingView: UIView {
 
     // MARK: - Properties
 
@@ -89,7 +89,7 @@ public class BTPayPalMessagingClient: UIView {
 
 // MARK: - UIViewRepresentable protocol conformance
 
-public extension BTPayPalMessagingClient {
+public extension BTPayPalMessagingView {
 
     /// PayPal Messaging for SwiftUI
     struct Representable: UIViewRepresentable {
@@ -112,14 +112,14 @@ public extension BTPayPalMessagingClient {
 
         // MARK: - UIViewRepresentable Methods
 
-        public func makeUIView(context: Context) -> BTPayPalMessagingClient {
-            let payPalMessagingView = BTPayPalMessagingClient(apiClient: apiClient)
+        public func makeUIView(context: Context) -> BTPayPalMessagingView {
+            let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
             payPalMessagingView.createView(request)
             payPalMessagingView.delegate = delegate
             return payPalMessagingView
         }
 
-        public func updateUIView(_ view: BTPayPalMessagingClient, context: Context) {
+        public func updateUIView(_ view: BTPayPalMessagingView, context: Context) {
             view.apiClient = apiClient
         }
     }
@@ -127,7 +127,7 @@ public extension BTPayPalMessagingClient {
 
 // MARK: - PayPalMessageViewEventDelegate and PayPalMessageViewStateDelegate protocol conformance
 
-extension BTPayPalMessagingClient: PayPalMessageViewEventDelegate, PayPalMessageViewStateDelegate {
+extension BTPayPalMessagingView: PayPalMessageViewEventDelegate, PayPalMessageViewStateDelegate {
 
     public func onClick(_ paypalMessageView: PayPalMessages.PayPalMessageView) {
         delegate?.didSelect(self)
