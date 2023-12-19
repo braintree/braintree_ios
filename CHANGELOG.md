@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPalMessaging (BETA)
+  * Add `BTPayPalMessagingRequest`, `BTPayPalMessagingColor`, `BTPayPalMessagingLogoType`, `BTPayPalMessagingOfferType`, `BTPayPalMessagingPlacement`, `BTPayPalMessagingTextAlignment`, and `BTPayPalMessagingDelegate`
+  * Add `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+    * To get started create a `BTPayPalMessagingView` and call `start(_:)` with a `BTPayPalMessagingRequest`
+
 ## 6.10.0 (2023-11-17)
 * BraintreePayPalNativeCheckout
   * Update PayPalCheckout from 1.1.0 to 1.2.0.
