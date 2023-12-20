@@ -15,7 +15,7 @@ public enum BTPayPalMessagingLogoType {
     case alternative
 
     /// "PayPal" as bold text inline with the message
-    case none
+    case simple
 
     var logoTypeRawValue: PayPalMessageLogoType {
         switch self {
@@ -25,7 +25,7 @@ public enum BTPayPalMessagingLogoType {
             return .primary
         case .alternative:
             return .alternative
-        case .none:
+        case .simple:
             return .none
         }
     }

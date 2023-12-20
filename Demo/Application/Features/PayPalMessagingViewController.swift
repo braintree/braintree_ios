@@ -3,7 +3,7 @@ import BraintreePayPalMessaging
 
 class PayPalMessagingViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalMessagingClient = BTPayPalMessagingClient(apiClient: apiClient)
+    lazy var payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
 
     let request = BTPayPalMessagingRequest(
         amount: 2.00,
@@ -16,40 +16,43 @@ class PayPalMessagingViewController: PaymentButtonBaseViewController {
     override func viewDidLoad() {
         title = "PayPal Messaging"
         
-        payPalMessagingClient.delegate = self
-        payPalMessagingClient.createView(request)
+        payPalMessagingView.delegate = self
+        payPalMessagingView.start(request)
+    }
 
-        payPalMessagingClient.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(payPalMessagingClient)
+    private func setupView() {
+        payPalMessagingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(payPalMessagingView)
 
         NSLayoutConstraint.activate([
-            payPalMessagingClient.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            payPalMessagingClient.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            payPalMessagingClient.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            payPalMessagingClient.heightAnchor.constraint(equalToConstant: 80)
+            payPalMessagingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            payPalMessagingView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            payPalMessagingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            payPalMessagingView.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
 }
 
 extension PayPalMessagingViewController: BTPayPalMessagingDelegate {
 
-    func didSelect(_ payPalMessagingClient: BTPayPalMessagingClient) {
+    func didSelect(_ payPalMessagingView: BTPayPalMessagingView) {
         progressBlock("DELEGATE: didSelect fired")
     }
 
-    func willApply(_ payPalMessagingClient: BTPayPalMessagingClient) {
+    func willApply(_ payPalMessagingView: BTPayPalMessagingView) {
         progressBlock("DELEGATE: willApply fired")
     }
 
-    func willAppear(_ payPalMessagingClient: BTPayPalMessagingClient) {
-        progressBlock("DELEGATE: willAppear fired")
+    func willAppear(_ payPalMessagingView: BTPayPalMessagingView) {
+        progressBlock("Loading BTPayPalMessagingClient")
     }
 
-    func didAppear(_ payPalMessagingClient: BTPayPalMessagingClient) {
+    func didAppear(_ payPalMessagingView: BTPayPalMessagingView) {
         progressBlock("DELEGATE: didAppear fired")
+        setupView()
     }
 
-    func onError(_ payPalMessagingClient: BTPayPalMessagingClient, error: Error) {
+    func onError(_ payPalMessagingView: BTPayPalMessagingView, error: Error) {
         progressBlock("DELEGATE: onError fired with \(error.localizedDescription)")
     }
 }

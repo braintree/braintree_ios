@@ -276,7 +276,6 @@
 		BECC91702B20DDFF00A2EE42 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BECC91872B20DE7C00A2EE42 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		BECC918F2B20DE9900A2EE42 /* BraintreePayPalMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BECC91762B20DDFF00A2EE42 /* BraintreePayPalMessaging.framework */; platformFilter = ios; };
-		BECC91972B20E01F00A2EE42 /* BTPayPalMessagingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC91962B20E01F00A2EE42 /* BTPayPalMessagingClient.swift */; };
 		BECC91992B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC91982B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift */; };
 		BED00CAC28A4504E00D74AEC /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAD28A5419900D74AEC /* BTBinData.swift */; };
@@ -300,6 +299,7 @@
 		BEED3B8C291C56B900BA114B /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
 		BEF1089029019CAE003B2FDA /* BTAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */; };
 		BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93AF2853980C0041BAFE /* BTAPIClient.swift */; };
+		BEF137E02B33309A00B9B225 /* BTPayPalMessagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
 		BEF5D2E6294A18B300FFD56D /* BTPayPalLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D2E5294A18B300FFD56D /* BTPayPalLineItem.swift */; };
 		BEFD1AF4284F92130070076E /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
@@ -921,7 +921,7 @@
 		BECBA0E52AEABC99002518AC /* BTCardClient_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardClient_IntegrationTests.swift; sourceTree = "<group>"; };
 		BECC91762B20DDFF00A2EE42 /* BraintreePayPalMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreePayPalMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BECC918D2B20DE7C00A2EE42 /* BraintreePayPalMessagingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreePayPalMessagingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BECC91962B20E01F00A2EE42 /* BTPayPalMessagingClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingClient.swift; sourceTree = "<group>"; };
+		BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingView.swift; sourceTree = "<group>"; };
 		BECC91982B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingView_Tests.swift; sourceTree = "<group>"; };
 		BECC919C2B20E87D00A2EE42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BED00CAD28A5419900D74AEC /* BTBinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTBinData.swift; sourceTree = "<group>"; };
@@ -1771,7 +1771,6 @@
 			isa = PBXGroup;
 			children = (
 				BE67CDBD2B29FC3D00BA4904 /* BTPayPalMessagingAnalytics.swift */,
-				BECC91962B20E01F00A2EE42 /* BTPayPalMessagingClient.swift */,
 				BEA0F9162B235DDA00C21EFA /* BTPayPalMessagingColor.swift */,
 				BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */,
 				BEA0F9292B23768600C21EFA /* BTPayPalMessagingError.swift */,
@@ -1780,6 +1779,7 @@
 				BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */,
 				BEA0F9272B23741900C21EFA /* BTPayPalMessagingRequest.swift */,
 				BEA0F9252B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift */,
+				BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */,
 			);
 			path = BraintreePayPalMessaging;
 			sourceTree = "<group>";
@@ -3249,12 +3249,12 @@
 			files = (
 				BEA0F9242B2373A600C21EFA /* BTPayPalMessagingPlacement.swift in Sources */,
 				BEA0F9222B23736500C21EFA /* BTPayPalMessagingOfferType.swift in Sources */,
+				BEF137E02B33309A00B9B225 /* BTPayPalMessagingView.swift in Sources */,
 				BE67CDBE2B29FC3D00BA4904 /* BTPayPalMessagingAnalytics.swift in Sources */,
 				BEA0F9202B23731700C21EFA /* BTPayPalMessagingLogoType.swift in Sources */,
 				BEA0F9262B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift in Sources */,
 				BEA0F91E2B23728000C21EFA /* BTPayPalMessagingDelegate.swift in Sources */,
 				BEA0F9282B23741900C21EFA /* BTPayPalMessagingRequest.swift in Sources */,
-				BECC91972B20E01F00A2EE42 /* BTPayPalMessagingClient.swift in Sources */,
 				BEA0F92A2B23768600C21EFA /* BTPayPalMessagingError.swift in Sources */,
 				BEA0F9172B235DDA00C21EFA /* BTPayPalMessagingColor.swift in Sources */,
 			);
@@ -6608,7 +6608,7 @@
 			repositoryURL = "https://github.com/paypal/paypal-messages-ios";
 			requirement = {
 				kind = exactVersion;
-				version = "1.0.0-prerelease.6";
+				version = "1.0.0-prerelease.3";
 			};
 		};
 		BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
