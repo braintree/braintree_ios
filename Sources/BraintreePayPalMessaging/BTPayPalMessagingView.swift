@@ -36,6 +36,7 @@ public class BTPayPalMessagingView: UIView {
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
     /// - Note: use `BTPayPalMessagingDelegate` protocol to receive notifications for events
     public func start(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.delegate?.onError(self, error: error)
@@ -140,10 +141,12 @@ extension BTPayPalMessagingView: PayPalMessageViewEventDelegate, PayPalMessageVi
     }
 
     public func onSuccess(_ paypalMessageView: PayPalMessages.PayPalMessageView) {
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.succeeded)
         delegate?.didAppear(self)
     }
 
     public func onError(_ paypalMessageView: PayPalMessages.PayPalMessageView, error: PayPalMessages.PayPalMessageError) {
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.failed, errorDescription: error.localizedDescription)
         delegate?.onError(self, error: error)
     }
 }
