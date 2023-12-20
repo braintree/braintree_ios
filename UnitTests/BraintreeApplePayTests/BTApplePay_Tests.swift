@@ -321,10 +321,13 @@ class BTApplePay_Tests: XCTestCase {
             XCTFail()
             return
         }
-        let metaParameters = lastPostParameters["_meta"] as! NSDictionary
-        XCTAssertEqual(metaParameters["source"] as? String, "unknown")
-        XCTAssertEqual(metaParameters["integration"] as? String, "custom")
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
+        
+        let applePayTokenParams = lastPostParameters["applePaymentToken"] as! NSDictionary
+        XCTAssertEqual(applePayTokenParams["paymentData"] as? String, Data().base64EncodedString())
+        XCTAssertEqual(applePayTokenParams["transactionIdentifier"] as? String, "fake-transaction-id")
+        // The following are expected nil in tests since we cannot mock `PKPaymentToken.paymentMethod`
+        XCTAssertNil(applePayTokenParams["paymentInstrumentName"])
+        XCTAssertNil(applePayTokenParams["paymentNetwork"])
     }
 
     class MockPKPaymentToken : PKPaymentToken {
@@ -335,17 +338,7 @@ class BTApplePay_Tests: XCTestCase {
         }
         override var transactionIdentifier : String {
             get {
-                return "transaction-id"
-            }
-        }
-        override var paymentInstrumentName : String {
-            get {
-                return "payment-instrument-name"
-            }
-        }
-        override var paymentNetwork : String {
-            get {
-                return "payment-network"
+                return "fake-transaction-id"
             }
         }
     }

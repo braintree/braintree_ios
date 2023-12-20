@@ -34,5 +34,6 @@ SampleApps/CarthageTest/Cartfile.resolved
 .swiftpm
 .build
 SampleApps/SPMTest/SPMTest.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+Braintree.xcworkspace/xcshareddata/swiftpm/
 
 *.pid

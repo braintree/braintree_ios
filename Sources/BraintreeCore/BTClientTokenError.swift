@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error codes associated with a client token.
-enum BTClientTokenError: Error, CustomNSError, LocalizedError {
+public enum BTClientTokenError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Authorization fingerprint was not present or invalid
     case invalidAuthorizationFingerprint
@@ -18,11 +18,11 @@ enum BTClientTokenError: Error, CustomNSError, LocalizedError {
     /// 4. Failed decoding from Base64 or UTF8
     case failedDecoding(String)
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTClientTokenErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .invalidAuthorizationFingerprint:
             return 0
@@ -37,7 +37,7 @@ enum BTClientTokenError: Error, CustomNSError, LocalizedError {
         }
     }
     
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalidAuthorizationFingerprint:
             return "Invalid client token. Please ensure your server is generating a valid Braintree ClientToken. Authorization fingerprint was not present or invalid."

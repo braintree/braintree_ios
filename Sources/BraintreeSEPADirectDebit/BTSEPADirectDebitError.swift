@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error details associated with SEPA Direct Debit.
-enum BTSEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
+public enum BTSEPADirectDebitError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Unknown error
     case unknown
@@ -30,15 +30,15 @@ enum BTSEPADirectDebitError: Int, Error, CustomNSError, LocalizedError {
     /// 8. Deallocated BTSEPADirectDebitClient
     case deallocated
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.SEPADirectDebitErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         rawValue
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .unknown:
             return "An unknown error occurred. Please contact support."

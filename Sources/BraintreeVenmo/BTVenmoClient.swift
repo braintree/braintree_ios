@@ -15,9 +15,8 @@ import BraintreeCore
     var apiClient: BTAPIClient
 
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles
-    /// to prevent calls to openURL. Its type is `id` and not `UIApplication` because trying to subclass
-    /// UIApplication is not possible, since it enforces that only one instance can ever exist
-    var application: AnyObject = UIApplication.shared
+    /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
+    var application: URLOpener = UIApplication.shared
 
     /// Defaults to `Bundle.main`, but exposed for unit tests to inject test doubles to stub values in infoDictionary
     var bundle: Bundle = .main
@@ -221,25 +220,16 @@ import BraintreeCore
 
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
     @objc public func isVenmoAppInstalled() -> Bool {
-        if let _ = application as? UIApplication {
-            guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
-                return false
-            }
-
-            return UIApplication.shared.canOpenURL(appSwitchURL)
-        } else {
-            return application.canOpenURL(BTVenmoAppSwitchRedirectURL().baseAppSwitchURL ?? URL(string: "")!)
+        guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
+            return false
         }
+        
+        return application.canOpenURL(appSwitchURL)
     }
 
     /// Switches to the App Store to download the Venmo application.
     @objc public func openVenmoAppPageInAppStore() {
-        apiClient.sendAnalyticsEvent("ios.pay-with-venmo.app-store.invoked")
-        if let _ = application as? UIApplication {
-            UIApplication.shared.open(appStoreURL)
-        } else {
-            application.open(appStoreURL)
-        }
+        application.open(appStoreURL, options: [:], completionHandler: nil)
     }
 
     // MARK: - Internal Methods
@@ -324,14 +314,8 @@ import BraintreeCore
     }
 
     func performAppSwitch(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        if let _ = application as? UIApplication {
-            UIApplication.shared.open(appSwitchURL) { success in
-                self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
-            }
-        } else {
-            application.open(appSwitchURL) { success in
-                self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
-            }
+        application.open(appSwitchURL, options: [:]) { success in
+            self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
         }
     }
 
