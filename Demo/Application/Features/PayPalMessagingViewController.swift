@@ -44,7 +44,7 @@ extension PayPalMessagingViewController: BTPayPalMessagingDelegate {
     }
 
     func willAppear(_ payPalMessagingView: BTPayPalMessagingView) {
-        progressBlock("Loading BTPayPalMessagingClient")
+        progressBlock("Loading BTPayPalMessagingView")
     }
 
     func didAppear(_ payPalMessagingView: BTPayPalMessagingView) {
