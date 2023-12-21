@@ -18,8 +18,9 @@ final class PayPalMessaging_Success_UITests: XCTestCase {
     func testStart_withValidRequest_firesDelegates() {
         XCTAssertTrue(app.buttons["DELEGATE: didAppear fired"].waitForExistence(timeout: 10))
 
-        waitForElementToBeHittable(app.buttons["PayPal - Pay monthly for purchases of $199.00-$10,000.00. Learn more"])
-        app.buttons["PayPal - Pay monthly for purchases of $199.00-$10,000.00. Learn more"].tap()
+        let expectedButtonText = "PayPal - Pay monthly for purchases of $199.00-$10,000.00. Learn more"
+        waitForElementToBeHittable(app.buttons[expectedButtonText])
+        app.buttons[expectedButtonText].tap()
         sleep(2)
 
         app.buttons["PayPal Learn More Modal Close"].tap()
@@ -44,6 +45,7 @@ final class PayPalMessaging_Failure_UITests: XCTestCase {
     }
 
     func testStart_withInvalidTokenizationKey_firesErrorDelegate() {
-        XCTAssertTrue(app.buttons["DELEGATE: onError fired with Could not find PayPal client ID in Braintree configuration."].waitForExistence(timeout: 10))
+        let expectedErrorText = "DELEGATE: onError fired with Could not find PayPal client ID in Braintree configuration."
+        XCTAssertTrue(app.buttons[expectedErrorText].waitForExistence(timeout: 10))
     }
 }
