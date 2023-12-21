@@ -1,3 +1,4 @@
 binary "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.json" == 2.2.5-6
 binary "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.json" == 5.4.1-stage-removed-xcode14-3
 binary "https://github.com/paypal/paypalcheckout-ios/raw/main/Carthage/PayPalCheckout.json"  == 1.2.0
+binary "https://github.com/paypal/paypal-messages-ios/raw/prerelease/Carthage/PayPalMessages.json" == 1.0.0-prerelease.6
