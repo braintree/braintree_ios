@@ -19,7 +19,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         XCTAssertEqual((mockDelegate.error as? NSError)?.code, 999)
     }
 
-    func testStart_withNilConfiguration_callsDelegateWithError() {
+    func testStart_withNilConfiguration_callsDelegateWithErrorAndSendsAnalytics() {
         let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.start()
@@ -27,6 +27,8 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         XCTAssertEqual(mockDelegate.error as? BTPayPalMessagingError, BTPayPalMessagingError.fetchConfigurationFailed)
         XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorCode, 0)
         XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorDescription, "Failed to fetch Braintree configuration.")
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.failed))
     }
 
     func testStart_withNoClientID_callsDelegateWithError() {
@@ -46,7 +48,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorDescription, "Could not find PayPal client ID in Braintree configuration.")
     }
 
-    func testStart_withClientID_firesWillAppear() {
+    func testStart_withClientID_firesWillAppearAndSendsAnalytics() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(
             value: [
                 "paypal": ["clientId": "a-fake-client-id"]
@@ -58,5 +60,6 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         payPalMessageView.start()
 
         XCTAssertTrue(mockDelegate.willAppear)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
     }
 }

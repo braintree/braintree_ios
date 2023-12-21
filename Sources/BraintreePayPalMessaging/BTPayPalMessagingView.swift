@@ -39,17 +39,17 @@ public class BTPayPalMessagingView: UIView {
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                self.delegate?.onError(self, error: error)
+                self.notifyFailure(with: error)
                 return
             }
 
             guard let configuration else {
-                self.delegate?.onError(self, error: BTPayPalMessagingError.fetchConfigurationFailed)
+                self.notifyFailure(with: BTPayPalMessagingError.fetchConfigurationFailed)
                 return
             }
 
             guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                self.delegate?.onError(self, error: BTPayPalMessagingError.payPalClientIDNotFound)
+                self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
                 return
             }
 
@@ -83,6 +83,11 @@ public class BTPayPalMessagingView: UIView {
                 messageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             ])
         }
+    }
+
+    private func notifyFailure(with error: Error) {
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.failed, errorDescription: error.localizedDescription)
+        delegate?.onError(self, error: error)
     }
 }
 
