@@ -9,6 +9,30 @@ import Foundation
     case credit
 }
 
+/// Use this option to specify  the Upc type of the lien item. 
+@objc public enum BTPayPalLineItemUpcType: Int {
+    ///  Upc Type A
+    case UPC-A
+
+    /// Upc Type B
+    case UPC-B
+
+    /// Upc Type C
+    case UPC-C
+
+    /// Upc Type D
+    case UPC-D
+
+    /// Upc Type E
+    case UPC-E
+
+    /// Upc Type 2
+    case UPC-2
+
+    /// Upc Type 5
+    case UPC-5
+}
+
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
 
@@ -32,11 +56,20 @@ import Foundation
     /// Optional: Item description. Maximum 127 characters.
     public let itemDescription: String? = nil
 
-    /// Optional: Product or UPC code for the item. Maximum 127 characters.
+    /// Optional: Product code for the item. Maximum 127 characters.
     public let productCode: String? = nil
 
     /// Optional: The URL to product information.
     public let url: URL? = nil
+
+    /// Optional: The URL to product image information.
+    public let imageUrl: URL? = nil
+
+    /// Optional: UPC code for the item. 
+    public let upcCode: String? = nil
+
+    /// Optional: UPC type for the item.
+    public let upcType: BTPayPalLineItemUpcType? = nil
 
     // MARK: - Public Initializer
     
@@ -80,6 +113,18 @@ import Foundation
 
         if let url, url != URL(string: "") {
             requestParameters["url"] = url.absoluteString
+        }
+        
+        if let imageUrl, imageUrl != URL(string: "") {
+            requestParameters["image_url"] = imageUrl.absoluteString
+        }
+        
+        if let upcCode, upcCode != "" {
+            requestParameters["upc_code"] = upcCode
+        }
+        
+        if let upcType, upcType != "" {
+            requestParameters["upc_type"] = upcType.rawValue
         }
         
         return requestParameters
