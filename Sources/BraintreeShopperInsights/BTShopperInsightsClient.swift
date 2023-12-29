@@ -33,10 +33,10 @@ public class BTShopperInsightsClient {
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
         if isVenmoAppInstalled() && isPayPalAppInstalled() {
             return BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
+        } else {
+            // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
+            return BTShopperInsightsResult()
         }
-        
-        // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
-        return BTShopperInsightsResult()
     }
     
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
