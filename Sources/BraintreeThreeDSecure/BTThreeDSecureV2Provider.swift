@@ -78,18 +78,6 @@ class BTThreeDSecureV2Provider {
         )
     }
 
-    // MARK: - Private Methods
-
-    private func notifyError(
-        withDomain errorDomain: String,
-        errorCode: Int,
-        errorUserInfo: [String: Any]? = nil,
-        completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
-    ) {
-        let error = NSError(domain: errorDomain, code: errorCode, userInfo: errorUserInfo)
-        completion(nil, error)
-    }
-
     private func analyticsString(for actionCode: CardinalResponseActionCode) -> String {
         switch actionCode {
         case .success:
@@ -141,18 +129,9 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
-            notifyError(
-                withDomain: BTThreeDSecureError.errorDomain,
-                errorCode: errorCode,
-                errorUserInfo: userInfo,
-                completion: completionHandler
-            )
+            completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: userInfo))
         case .cancel:
-            notifyError(
-                withDomain: BTThreeDSecureError.errorDomain,
-                errorCode: BTThreeDSecureError.canceled.errorCode,
-                completion: completionHandler
-            )
+            completionHandler(nil, BTThreeDSecureError.canceled)
         default:
             break
         }

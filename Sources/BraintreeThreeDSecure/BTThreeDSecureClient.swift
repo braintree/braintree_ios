@@ -169,14 +169,17 @@ import BraintreeCore
     ///   - lookupResponse: The JSON string returned by the server side lookup.
     ///   - request: The BTThreeDSecureRequest object where prepareLookup was called.
     ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
+    /// - Note: Majority of 3DS integrations do not need to use this method. Only for server-side 3DS integrations.
     @objc(initializeChallengeWithLookupResponse:request:completion:)
     public func initializeChallenge(
         lookupResponse: String,
         request: BTThreeDSecureRequest,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
+        self.merchantCompletion = completion
+        
         guard let dataResponse = lookupResponse.data(using: .utf8) else {
-            completion(nil, BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."]))
+            merchantCompletion(nil, BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."]))
             return
         }
 
@@ -299,8 +302,8 @@ import BraintreeCore
     
     private func performV2Authentication(with lookupResult: BTThreeDSecureResult) {
         threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
-            if let error = error as NSError? {
-                if error.code == BTThreeDSecureError.canceled.errorCode {
+            if let error {
+                if error as? BTThreeDSecureError == .canceled {
                     self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyCanceled)
                 }
 
@@ -385,7 +388,7 @@ import BraintreeCore
                 if let error = error as NSError? {
                     // Provide more context for card validation error when status code 422
                     if error.domain == BTCoreConstants.httpErrorDomain,
-                        error.code == 2, // BTHTTPError.errorCode.clientError
+                       error as? BTHTTPError == .clientError([:]),
                        let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
                        urlResponseError.statusCode == 422 {
                         var userInfo: [String: Any] = error.userInfo

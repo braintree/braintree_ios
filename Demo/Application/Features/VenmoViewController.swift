@@ -66,7 +66,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)
             } catch {
-                if (error as NSError).code == 10 {
+                if error as? BTVenmoError == .canceled {
                     progressBlock("Canceled 🔰")
                 } else {
                     progressBlock(error.localizedDescription)

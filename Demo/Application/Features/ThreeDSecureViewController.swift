@@ -60,7 +60,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
                 self.updateCallbackCount()
 
                 guard let threeDSecureResult else {
-                    if (error as? NSError)?.code == 5 {
+                    if error as? BTThreeDSecureError == .canceled {
                         self.progressBlock("Canceled 🎲")
                     } else {
                         self.progressBlock(error?.localizedDescription)

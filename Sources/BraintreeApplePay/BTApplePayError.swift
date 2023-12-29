@@ -1,7 +1,7 @@
 import Foundation
 
 /// Error codes associated with Apple Pay.
-enum BTApplePayError: Int, Error, CustomNSError, LocalizedError {
+public enum BTApplePayError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Unknown error
     case unknown
@@ -15,15 +15,15 @@ enum BTApplePayError: Int, Error, CustomNSError, LocalizedError {
     /// 3. Unable to create BTApplePayCardNonce
     case failedToCreateNonce
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTApplePayErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         rawValue
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .unknown:
             return ""

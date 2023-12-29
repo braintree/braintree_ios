@@ -1,8 +1,8 @@
 import Foundation
 
 /// Error codes associated with Payment Flow
-enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
-    
+public enum BTLocalPaymentError: Error, CustomNSError, LocalizedError, Equatable {
+
     /// 0. Unknown error
     case unknown
 
@@ -36,9 +36,9 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
     /// 10. ASWebAuthentication error
     case webSessionError(Error)
 
-    static var errorDomain = "com.braintreepayments.BTLocalPaymentErrorDomain"
+    public static var errorDomain = "com.braintreepayments.BTLocalPaymentErrorDomain"
 
-    var errorCode: Int {
+    public var errorCode: Int {
         switch self {
         case .unknown:
             return 0
@@ -65,7 +65,7 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
         }
     }
 
-    var errorDescription: String {
+    public var errorDescription: String {
         switch self {
         case .unknown:
             return ""
@@ -90,5 +90,11 @@ enum BTLocalPaymentError: Error, CustomNSError, LocalizedError {
         case .webSessionError(let error):
             return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         }
+    }
+
+    // MARK: - Equatable Conformance
+
+    public static func == (lhs: BTLocalPaymentError, rhs: BTLocalPaymentError) -> Bool {
+        lhs.errorCode == rhs.errorCode
     }
 }
