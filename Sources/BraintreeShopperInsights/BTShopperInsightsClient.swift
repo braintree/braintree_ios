@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -8,6 +8,13 @@ import BraintreeCore
 ///  By customizing each customer’s checkout experience, you can improve conversion, increase sales/repeat buys and boost user retention/loyalty.
 /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
 public class BTShopperInsightsClient {
+    
+    // MARK: - Internal Properties
+    
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to mock calls to `canOpenURL`.
+    var application: URLOpener = UIApplication.shared
+    
+    // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
     
@@ -24,9 +31,12 @@ public class BTShopperInsightsClient {
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
-        // TODO: - Add isAppInstalled checks for PP & Venmo. DTBTSDK-3176
-        // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
-        return BTShopperInsightsResult()
+        if isVenmoAppInstalled() && isPayPalAppInstalled() {
+            return BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
+        } else {
+            // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
+            return BTShopperInsightsResult()
+        }
     }
     
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
@@ -51,5 +61,17 @@ public class BTShopperInsightsClient {
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendVenmoSelectedEvent() {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoSelected)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func isVenmoAppInstalled() -> Bool {
+        let venmoURL = URL(string: "com.venmo.touch.v2://")!
+        return application.canOpenURL(venmoURL)
+    }
+    
+    private func isPayPalAppInstalled() -> Bool {
+        let paypalURL = URL(string: "paypal://")!
+        return application.canOpenURL(paypalURL)
     }
 }
