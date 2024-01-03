@@ -1,47 +1,51 @@
 import UIKit
-import BraintreePayPal
+import BraintreeCore
 
-class BraintreeDemoPayPalCheckoutViewController: BraintreeDemoPaymentButtonBaseViewController {
+class PaymentButtonBaseViewController: BaseViewController {
+
+    let apiClient: BTAPIClient
     
-    override func createPaymentButton() -> UIView! {
-        lazy var payPalCheckoutButton: UIButton = {
-            let payPalCheckoutButton = UIButton(type: .system)
-            payPalCheckoutButton.setTitle("PayPal Checkout", for: .normal)
-            payPalCheckoutButton.setTitleColor(.blue, for: .normal)
-            payPalCheckoutButton.setTitleColor(.lightGray, for: .highlighted)
-            payPalCheckoutButton.setTitleColor(.lightGray, for: .disabled)
-            payPalCheckoutButton.addTarget(self, action: #selector(tappedPayPalCheckout), for: .touchUpInside)
-            return payPalCheckoutButton
-        }()
-        
-        return payPalCheckoutButton
+    private var paymentButton: UIView = UIView()
+
+    override init(authorization: String) {
+        apiClient = BTAPIClient(authorization: authorization)!
+        super.init(authorization: authorization)
     }
     
-    @objc func tappedPayPalCheckout(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
-        sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
-        
-        let client = BTPayPalClient(apiClient: apiClient)
-        let request = BTPayPalCheckoutRequest(amount: "4.30")
-        let lineItem = BTPayPalLineItem(
-                    quantity: "1",
-                    unitAmount: "5.00",
-                    name: "item one 1234567",
-                    kind: .credit)
-        lineItem.upcCode = "123456789"
-        lineItem.upcType = BTPayPalLineItemUpcType.UPC_A
-        lineItem.imageUrl = URL(string: "www.braintreee.com/image.xml")
-        request.lineItems = [lineItem]
-        
-        client.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-            
-            guard let nonce = nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-            self.nonceStringCompletionBlock(nonce.nonce)
-        }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        title = "Payment Button"
+        view.backgroundColor = .systemBackground
+
+        paymentButton = createPaymentButton()
+        view.addSubview(paymentButton)
+
+        NSLayoutConstraint.activate([
+            paymentButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            paymentButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            paymentButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            paymentButton.heightAnchor.constraint(equalToConstant: 100)
+        ])
+    }
+
+    /// A factory method that subclasses must implement to return a payment button view.
+    func createPaymentButton() -> UIView {
+        UIView()
+    }
+
+    func createButton(title: String, action: Selector) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.setTitleColor(.lightGray, for: .disabled)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return button
     }
 }
