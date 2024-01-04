@@ -47,7 +47,11 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
 
-        request.lineItems = [BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)]
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: BTPayPalLineItemKind.debit);
+        lineItem.imageUrl = URL(string: "http://example/image.jpg");
+        lineItem.upcCode = "upc-code";
+        lineItem.upcType = BTPayPalLineItemUpcType.UPC_A;
+        request.lineItems = [lineItem]
 
         let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
@@ -60,9 +64,12 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
         XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
-                                                                                   "unit_amount": "1",
-                                                                                   "name": "item",
-                                                                                   "kind": "credit"]])
+                                                                            "unit_amount": "1",
+                                                                            "name": "item",
+                                                                            "kind": "credit",
+                                                                            "upcCode": "upc-code",
+                                                                            "upcType": "UPC-A",
+                                                                            "imageUrl": "http://example/image.jpg"]])
 
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")

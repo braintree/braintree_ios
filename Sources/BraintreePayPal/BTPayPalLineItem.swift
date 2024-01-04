@@ -55,16 +55,16 @@ public enum BTPayPalLineItemUpcType: String {
     public let kind: BTPayPalLineItemKind
 
     /// Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
-    public let unitTaxAmount: String? = nil
+    public var unitTaxAmount: String? = nil
 
     /// Optional: Item description. Maximum 127 characters.
-    public let itemDescription: String? = nil
+    public var itemDescription: String? = nil
     
     /// Optional: The URL to product information.
-    public let url: URL? = nil
+    public var url: URL? = nil
 
     /// Optional: Product or UPC code for the item. Maximum 127 characters.
-    public let productCode: String? = nil
+    public var productCode: String? = nil
     
     /// Optional: The URL to product image information.
     public var imageUrl: URL? = nil

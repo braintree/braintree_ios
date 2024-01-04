@@ -27,6 +27,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalCheckoutRequest(amount: "4.30")
+        let lineItem = BTPayPalLineItem(
+                    quantity: "1",
+                    unitAmount: "5.00",
+                    name: "item one 1234567",
+                    kind: .credit)
+        lineItem.upcCode = "123456789"
+        lineItem.upcType = BTPayPalLineItemUpcType.UPC_A
+        lineItem.imageUrl = URL(string: "www.braintreee.com/image.xml")
+        request.lineItems = [lineItem]
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
