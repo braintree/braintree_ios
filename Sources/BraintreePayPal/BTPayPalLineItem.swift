@@ -9,7 +9,6 @@ import Foundation
     case credit
 }
 
-
 /// Use this option to specify  the Upc type of the lien item.
 public enum BTPayPalLineItemUpcType: String {
     
@@ -33,9 +32,7 @@ public enum BTPayPalLineItemUpcType: String {
     
     /// Upc Type 5
     case UPC_5 = "UPC-5"
-    
 }
-
 
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
