@@ -64,9 +64,9 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
         XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
-                                                                            "unit_amount": "1",
-                                                                            "name": "item",
-                                                                            "kind": "credit",
+                                                                            "unit_amount": "10",
+                                                                            "name": "item-name",
+                                                                            "kind": "debit",
                                                                             "upcCode": "upc-code",
                                                                             "upcType": "UPC-A",
                                                                             "imageUrl": "http://example/image.jpg"]])
