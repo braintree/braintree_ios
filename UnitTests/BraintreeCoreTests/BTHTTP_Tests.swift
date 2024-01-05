@@ -21,18 +21,6 @@ final class BTHTTP_Tests: XCTestCase {
         return URL(string: dataURLString)!
     }
 
-    var parameterDictionary: [String: Any] {
-        [
-            "stringParameter": "value",
-            "crazyStringParameter[]": "crazy%20and&value",
-            "numericParameter": 42,
-            "trueBooleanParameter": true,
-            "falseBooleanParameter": false,
-            "dictionaryParameter":  [ "dictionaryKey": "dictionaryValue" ],
-            "arrayParameter": ["arrayItem1", "arrayItem2"]
-        ]
-    }
-
     var testURLSession: URLSession {
         let testConfiguration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         testConfiguration.protocolClasses = [BTHTTPTestProtocol.self]
@@ -650,6 +638,26 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     // MARK: - Parameters tests
+    
+    struct SampleRequest: Encodable {
+        enum CodingKeys: String, CodingKey {
+            case stringParameter
+            case crazyStringParameter = "crazyStringParameter[]"
+            case numericParameter
+            case trueBooleanParameter
+            case falseBooleanParameter
+            case dictionaryParameter
+            case arrayParameter
+        }
+        
+        let stringParameter = "value"
+        let crazyStringParameter = "crazy%20and&value"
+        let numericParameter = 42
+        let trueBooleanParameter = true
+        let falseBooleanParameter = false
+        let dictionaryParameter = ["dictionaryKey": "dictionaryValue"]
+        let arrayParameter = ["arrayItem1", "arrayItem2"]
+    }
 
     func testTransmitsTheParametersAsURLEncodedQueryParameters() {
         let expectation = expectation(description: "GET request")
@@ -664,7 +672,7 @@ final class BTHTTP_Tests: XCTestCase {
             "arrayParameter%5B%5D=arrayItem2"
         ]
 
-        http?.get("200.json", parameters: parameterDictionary) { body, response, error in
+        http?.get("200.json", parameters: SampleRequest()) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -695,7 +703,7 @@ final class BTHTTP_Tests: XCTestCase {
             "authorization_fingerprint": "test-authorization-fingerprint"
         ]
 
-        http?.post("200.json", parameters: parameterDictionary) { body, response, error in
+        http?.post("200.json", parameters: SampleRequest()) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)

@@ -7,7 +7,7 @@ public class MockAPIClient: BTAPIClient {
     public var lastPOSTAPIClientHTTPType: BTAPIClientHTTPService?
 
     public var lastGETPath = ""
-    public var lastGETParameters = [:] as [String : String]?
+    public var lastGETParameters = [:] as [String: Any]?
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
 
     public var postedAnalyticsEvents : [String] = []
@@ -27,9 +27,9 @@ public class MockAPIClient: BTAPIClient {
         super.init(authorization: authorization, sendAnalyticsEvent: sendAnalyticsEvent)
     }
 
-    public override func get(_ path: String, parameters: [String: String]?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
-        lastGETParameters = parameters
+        lastGETParameters = try? parameters?.toDictionary()
         lastGETAPIClientHTTPType = httpType
         
         guard let completionBlock = completionBlock else {

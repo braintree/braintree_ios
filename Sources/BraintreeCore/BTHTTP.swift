@@ -99,11 +99,17 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - HTTP Methods
 
-    func get(_ path: String, parameters: [String: Any]? = nil, shouldCache: Bool = false, completion: @escaping RequestCompletion) {
-        if shouldCache {
-            httpRequestWithCaching(method: "GET", path: path, parameters: parameters, completion: completion)
-        } else {
-            httpRequest(method: "GET", path: path, parameters: parameters, completion: completion)
+    func get(_ path: String, parameters: Encodable? = nil, shouldCache: Bool = false, completion: @escaping RequestCompletion) {
+        do {
+            let dict = try parameters?.toDictionary()
+            
+            if shouldCache {
+                httpRequestWithCaching(method: "GET", path: path, parameters: dict, completion: completion)
+            } else {
+                httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
+            }
+        } catch let error {
+            completion(nil, nil, error)
         }
     }
 
