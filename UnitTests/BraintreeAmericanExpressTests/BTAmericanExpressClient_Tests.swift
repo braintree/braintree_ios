@@ -12,7 +12,20 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         amexClient = BTAmericanExpressClient(apiClient: mockAPIClient)
-   }
+    }
+    
+    func testGetRewardsBalance_formatsGETRequest() async {
+        let result = try? await amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "fake-code")
+        
+        XCTAssertEqual(mockAPIClient.lastGETPath, "v1/payment_methods/amex_rewards_balance")
+        
+        guard let lastGetParameters = mockAPIClient.lastGETParameters else {
+            XCTFail("Expected GET parameters")
+            return
+        }
+        XCTAssertEqual(lastGetParameters["currencyIsoCode"] as! String, "fake-code")
+        XCTAssertEqual(lastGetParameters["paymentMethodNonce"] as! String, "fake-nonce")
+    }
     
     func testGetRewardsBalance_returnsSendsAnalyticsEventOnSuccess() {
         let responseBody = [
