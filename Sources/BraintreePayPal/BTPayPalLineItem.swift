@@ -9,30 +9,55 @@ import Foundation
     case credit
 }
 
+
 /// Use this option to specify  the Upc type of the lien item.
-public enum BTPayPalLineItemUpcType: String {
+@objc public enum BTPayPalLineItemUpcType: Int {
     
     ///  Upc Type A
-    case UPC_A = "UPC-A"
+    case UPC_A
     
     /// Upc Type B
-    case UPC_B = "UPC-B"
+    case UPC_B
     
     /// Upc Type C
-    case UPC_C = "UPC-C"
+    case UPC_C
     
     /// Upc Type D
-    case UPC_D = "UPC-D"
+    case UPC_D
     
     /// Upc Type E
-    case UPC_E = "UPC-E"
+    case UPC_E
     
     /// Upc Type 2
-    case UPC_2 = "UPC-2"
+    case UPC_2
     
     /// Upc Type 5
-    case UPC_5 = "UPC-5"
+    case UPC_5
+    
+    /// String value representing the integration.
+    var stringValue: String {
+        switch self {
+        case .UPC_A:
+            return "UPC-A"
+        case .UPC_B:
+            return "UPC-B"
+        case .UPC_C:
+            return "UPC-C"
+        case .UPC_D:
+            return "UPC-D"
+        case .UPC_E:
+            return "UPC-E"
+        case .UPC_2:
+            return "UPC-2"
+        case .UPC_5:
+            return "UPC-5"
+        default:
+            return ""
+        }
+    }
+    
 }
+
 
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
@@ -52,16 +77,16 @@ public enum BTPayPalLineItemUpcType: String {
     public let kind: BTPayPalLineItemKind
 
     /// Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
-    public var unitTaxAmount: String? = nil
+    public let unitTaxAmount: String? = nil
 
     /// Optional: Item description. Maximum 127 characters.
-    public var itemDescription: String? = nil
+    public let itemDescription: String? = nil
     
     /// Optional: The URL to product information.
-    public var url: URL? = nil
+    public let url: URL? = nil
 
     /// Optional: Product or UPC code for the item. Maximum 127 characters.
-    public var productCode: String? = nil
+    public let productCode: String? = nil
     
     /// Optional: The URL to product image information.
     public var imageUrl: URL? = nil
@@ -124,8 +149,8 @@ public enum BTPayPalLineItemUpcType: String {
             requestParameters["upc_code"] = upcCode
         }
         
-        if let upcType, upcType != BTPayPalLineItemUpcType(rawValue: "") {
-            requestParameters["upc_type"] = upcType.rawValue
+        if let upcType, upcType.stringValue != "" {
+            requestParameters["upc_type"] = upcType.stringValue
         }
                 
         return requestParameters

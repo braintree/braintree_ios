@@ -1,5 +1,4 @@
 import XCTest
-@testable import BraintreeCore
 @testable import BraintreePayPal
 
 class BTPayPalRequest_Tests: XCTestCase {
@@ -46,7 +45,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.riskCorrelationID = "123-correlation-id"
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
-
+        
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: BTPayPalLineItemKind.debit);
         lineItem.imageUrl = URL(string: "http://example/image.jpg");
         lineItem.upcCode = "upc-code";
@@ -67,9 +66,9 @@ class BTPayPalRequest_Tests: XCTestCase {
                                                                             "unit_amount": "10",
                                                                             "name": "item-name",
                                                                             "kind": "debit",
-                                                                            "upcCode": "upc-code",
-                                                                            "upcType": "UPC-A",
-                                                                            "imageUrl": "http://example/image.jpg"]])
+                                                                            "upc_code": "upc-code",
+                                                                            "upc_type": "UPC-A",
+                                                                            "image_url": "http://example/image.jpg"]])
 
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
