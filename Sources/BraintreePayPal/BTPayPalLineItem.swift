@@ -55,9 +55,7 @@ import Foundation
             return ""
         }
     }
-    
 }
-
 
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
@@ -89,7 +87,7 @@ import Foundation
     public let productCode: String? = nil
     
     /// Optional: The URL to product image information.
-    public var imageUrl: URL? = nil
+    public var imageURL: URL? = nil
 
         /// Optional: UPC code for the item.
     public var upcCode: String? = nil
@@ -141,8 +139,8 @@ import Foundation
             requestParameters["url"] = url.absoluteString
         }
         
-        if let imageUrl, imageUrl != URL(string: "") {
-            requestParameters["image_url"] = imageUrl.absoluteString
+        if let imageURL, imageURL != URL(string: "") {
+            requestParameters["image_url"] = imageURL.absoluteString
         }
 
         if let upcCode, upcCode != "" {
