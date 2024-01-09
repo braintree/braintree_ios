@@ -8,8 +8,6 @@ struct BTVenmoAppSwitchRedirectURL {
 
     // MARK: - Internal Properties
 
-    let universalLinkURL = URL(string: "https://venmo.com/go/checkout")!
-
     /// The base app switch URL for Venmo. Does not include specific parameters.
     static var baseAppSwitchURL: URL? {
         appSwitchBaseURLComponents().url
@@ -33,12 +31,7 @@ struct BTVenmoAppSwitchRedirectURL {
         environment: String?,
         metadata: BTClientMetadata?
     ) throws {
-        guard let accessToken,
-              let metadata,
-              let bundleDisplayName,
-              let environment,
-              let merchantID
-        else {
+        guard let accessToken, let metadata, let bundleDisplayName, let environment, let merchantID else {
             // TODO: return explicit error?
             throw BTVenmoError.unknown
         }
@@ -56,9 +49,9 @@ struct BTVenmoAppSwitchRedirectURL {
 
         // TODO: - Confirm preservation of optional query params sent before refactor
         queryParameters = [
-            "x-success": returnURL(with: returnURLScheme, result: "success"),
-            "x-error": returnURL(with: returnURLScheme, result: "error"),
-            "x-cancel": returnURL(with: returnURLScheme, result: "cancel"),
+            "x-success": constructRedirectURL(with: returnURLScheme, result: "success"),
+            "x-error": constructRedirectURL(with: returnURLScheme, result: "error"),
+            "x-cancel": constructRedirectURL(with: returnURLScheme, result: "cancel"),
             "x-source": bundleDisplayName,
             "braintree_merchant_id": merchantID,
             "braintree_access_token": accessToken,
@@ -71,7 +64,6 @@ struct BTVenmoAppSwitchRedirectURL {
     // MARK: - Internal Methods
 
     func universalLink() -> URL {
-        // TODO: don't force unwrap
         let universalLinkURL = URL(string: "https://venmo.com/go/checkout")!
 
         var urlComponent = URLComponents(url: universalLinkURL, resolvingAgainstBaseURL: false)!
@@ -80,23 +72,23 @@ struct BTVenmoAppSwitchRedirectURL {
         return urlComponent.url!
     }
 
-    func urlSchemeLink() -> URL {
+    func appSwitchLink() -> URL {
         var components = BTVenmoAppSwitchRedirectURL.appSwitchBaseURLComponents()
         components.percentEncodedQuery = BTURLUtils.queryString(from: queryParameters as NSDictionary)
+        
         return components.url!
     }
 
     // MARK: - Private Helper Methods
 
-    // TODO: - add docstrings or rename these functions, hard to tell what they do
-    private func returnURL(with scheme: String, result: String) -> URL? {
+    private func constructRedirectURL(with scheme: String, result: String) -> URL? {
         var components = URLComponents(string: BTVenmoAppSwitchRedirectURL.xCallbackTemplate)
         components?.scheme = scheme
         components?.percentEncodedPath = "/vzero/auth/venmo/\(result)"
         return components?.url
     }
 
-    static private func appSwitchBaseURLComponents() -> URLComponents {
+    private static func appSwitchBaseURLComponents() -> URLComponents {
         var components: URLComponents = URLComponents(string: xCallbackTemplate) ?? URLComponents()
         components.scheme = venmoScheme
         components.percentEncodedPath = "/vzero/auth"
