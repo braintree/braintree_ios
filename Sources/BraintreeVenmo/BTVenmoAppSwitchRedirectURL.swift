@@ -57,7 +57,8 @@ struct BTVenmoAppSwitchRedirectURL {
             "braintree_access_token": accessToken,
             "braintree_environment": environment,
             "resource_id": paymentContextID,
-            "braintree_sdk_data": base64EncodedBraintreeData ?? ""
+            "braintree_sdk_data": base64EncodedBraintreeData ?? "",
+            "customerClient": "MOBILE_APP"
         ]
     }
 

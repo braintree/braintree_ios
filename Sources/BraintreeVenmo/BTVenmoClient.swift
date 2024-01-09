@@ -106,7 +106,7 @@ import BraintreeCore
             var inputParameters: [String: Any?] = [
                 "paymentMethodUsage": request.paymentMethodUsage.stringValue,
                 "merchantProfileId": merchantProfileID,
-                "customerClient": "MOBILE_WEB",
+                "customerClient": "MOBILE_APP",
                 "intent": "CONTINUE"
             ]
             
