@@ -1316,11 +1316,11 @@
 		804698292B27C4D70090878E /* BraintreeShopperInsights */ = {
 			isa = PBXGroup;
 			children = (
+				800ED77E2B4DFE9E007D8A30 /* BTEligiblePaymentsRequest.swift */,
 				8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */,
 				8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */,
 				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
-				800ED77E2B4DFE9E007D8A30 /* BTEligiblePaymentsRequest.swift */,
 			);
 			path = BraintreeShopperInsights;
 			sourceTree = "<group>";

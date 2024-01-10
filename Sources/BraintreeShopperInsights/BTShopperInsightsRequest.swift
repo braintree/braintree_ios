@@ -4,10 +4,10 @@ import Foundation
 /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
 public struct BTShopperInsightsRequest {
     
-    // MARK: - Private Properties
+    // MARK: - Internal Properties
     
-    private var email: String?
-    private var phone: Phone?
+    var email: String?
+    var phone: Phone?
     
     // MARK: - Initializers
 
@@ -40,10 +40,10 @@ public struct BTShopperInsightsRequest {
 
 /// Buyer's phone number details for use with the Shopper Insights feature.
 /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
-public struct Phone {
+public struct Phone: Encodable {
     
-    private let countryCode: String
-    private let nationalNumber: String
+    let countryCode: String
+    let nationalNumber: String
     
     /// Initialize a `BTShopperInsightsRequest.Phone`.
     /// - Parameters:
