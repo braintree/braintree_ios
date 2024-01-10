@@ -26,7 +26,8 @@ import Foundation
 
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
-
+    var paypalHTTP: BTHTTP?
+    
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
         configurationQueue.name = "com.braintreepayments.BTAPIClient"
@@ -176,6 +177,14 @@ import Foundation
                         graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
                     } else if let tokenizationKey, let graphQLBaseURL {
                         graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
+                    }
+                }
+                
+                if paypalHTTP == nil {
+                    let paypalBaseURL: URL? = paypalAPIURL(forEnvironment: configuration?.environment ?? "")
+                    
+                    if let clientToken, let paypalBaseURL {
+                        paypalHTTP = BTHTTP(url: paypalBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
                     }
                 }
             }
@@ -357,6 +366,8 @@ import Foundation
             return parameters?.merging(["_meta": metadata.parameters]) { $1 }
         case .graphQLAPI:
             return parameters?.merging(["clientSdkMetadata": metadata.parameters]) { $1 }
+        case .paypalAPI:
+            return parameters
         }
     }
 
@@ -469,6 +480,15 @@ import Foundation
         components.path = "/graphql"
         return components.url
     }
+    
+    func paypalAPIURL(forEnvironment environment: String) -> URL? {
+        if environment.caseInsensitiveCompare("sandbox") == .orderedSame ||
+            environment.caseInsensitiveCompare("development") == .orderedSame {
+            return URL(string: "https://api-m.sandbox.paypal.com")
+        } else {
+            return URL(string: "https://api-m.paypal.com")
+        }
+    }
 
     func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
         switch httpType {
@@ -476,6 +496,8 @@ import Foundation
             return http
         case .graphQLAPI:
             return graphQLHTTP
+        case .paypalAPI:
+            return paypalHTTP
         }
     }
 }

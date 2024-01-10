@@ -73,13 +73,14 @@
 		57D94370296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9436F296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift */; };
 		57D94372296CCA2F0079EAB1 /* String+NonceValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
+		800ED77F2B4DFE9E007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800ED77E2B4DFE9E007D8A30 /* BTEligiblePaymentsRequest.swift */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
 		8037BFB02B2CCC130017072C /* BTShopperInsightsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */; };
+		804326BF2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */; };
 		804698372B27C5390090878E /* BTShopperInsightsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */; };
 		804698382B27C53B0090878E /* BTShopperInsightsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */; };
 		804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */; };
 		804698422B27C5530090878E /* BraintreeShopperInsights.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 804698302B27C5340090878E /* BraintreeShopperInsights.framework */; platformFilter = ios; };
-		804326BF2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */; };
 		80482F8029D39A1D007E5F50 /* BTThreeDSecureRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */; };
 		80482F8229D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */; };
 		80482F8429D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */; };
@@ -93,12 +94,12 @@
 		8053F05929FB2F700076F988 /* URL+IsPayPal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053F05829FB2F700076F988 /* URL+IsPayPal.swift */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
+		8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */; };
+		80A6C6192B21205900416D50 /* UIApplication+URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */; };
 		80AB424F2B27CAC200249218 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
 		80AB42542B27DF5B00249218 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
 		80AB42552B27DF5B00249218 /* BraintreeCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80B59A132B27C7FC004C2FA3 /* BTShopperInsightsClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */; };
-		8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */; };
-		80A6C6192B21205900416D50 /* UIApplication+URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */; };
 		80BA3C292B23892700900BBB /* FakeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA3C282B23892700900BBB /* FakeRequest.swift */; };
 		80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */; };
 		80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */; };
@@ -736,12 +737,13 @@
 		59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAuthenticateJWT_Tests.swift; sourceTree = "<group>"; };
 		800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPTIBatchData.swift; sourceTree = "<group>"; };
+		800ED77E2B4DFE9E007D8A30 /* BTEligiblePaymentsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTEligiblePaymentsRequest.swift; sourceTree = "<group>"; };
 		800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayCardNonce_Tests.swift; sourceTree = "<group>"; };
 		8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsAnalytics.swift; sourceTree = "<group>"; };
+		804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePaymentTokensRequest.swift; sourceTree = "<group>"; };
 		804698302B27C5340090878E /* BraintreeShopperInsights.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeShopperInsights.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8046983E2B27C5530090878E /* BraintreeShopperInsightsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeShopperInsightsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		804698482B27C71C0090878E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePaymentTokensRequest.swift; sourceTree = "<group>"; };
 		80482F7F29D39A1D007E5F50 /* BTThreeDSecureRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequest.swift; sourceTree = "<group>"; };
 		80482F8129D39BF5007E5F50 /* BTThreeDSecureRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequestDelegate.swift; sourceTree = "<group>"; };
 		80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAccountType.swift; sourceTree = "<group>"; };
@@ -1318,6 +1320,7 @@
 				8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */,
 				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
+				800ED77E2B4DFE9E007D8A30 /* BTEligiblePaymentsRequest.swift */,
 			);
 			path = BraintreeShopperInsights;
 			sourceTree = "<group>";
@@ -2953,6 +2956,7 @@
 			files = (
 				804698382B27C53B0090878E /* BTShopperInsightsRequest.swift in Sources */,
 				804698372B27C5390090878E /* BTShopperInsightsClient.swift in Sources */,
+				800ED77F2B4DFE9E007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */,
 				8037BFB02B2CCC130017072C /* BTShopperInsightsAnalytics.swift in Sources */,
 				804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */,
 			);

@@ -35,6 +35,10 @@ public class BTShopperInsightsClient {
             return BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
         } else {
             // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
+            apiClient.post("/v2/payments/find-eligible-methods", parameters: BTEligiblePaymentsRequest(), httpType: .paypalAPI) { json, response, error in
+                print("HELLO")
+            }
+            
             return BTShopperInsightsResult()
         }
     }

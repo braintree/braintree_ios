@@ -269,8 +269,20 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             return
         }
 
-        var headers: [String: String] = defaultHeaders
+        var headers: [String: String]
         var request: URLRequest
+        
+        if url.isPayPalURL {
+            headers = [:]
+            if case .authorizationFingerprint(let key) = clientAuthorization {
+                headers["Authorization"] = "Bearer \(key)"
+            }
+        } else {
+            headers = defaultHeaders
+            if case .tokenizationKey(let key) = clientAuthorization {
+                headers["Client-Key"] = key
+            }
+        }
 
         if method == "GET" || method == "DELETE" {
             if !isDataURL {
@@ -301,10 +313,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
             request.httpBody = bodyData
             headers["Content-Type"] = "application/json; charset=utf-8"
-        }
-        
-        if case .tokenizationKey(let key) = clientAuthorization {
-            headers["Client-Key"] = key
         }
 
         request.allHTTPHeaderFields = headers
