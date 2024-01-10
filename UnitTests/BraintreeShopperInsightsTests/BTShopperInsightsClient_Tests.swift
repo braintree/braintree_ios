@@ -67,10 +67,10 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(paymentSourceConstraint["constraint_type"] as! String, "INCLUDE")
         XCTAssertEqual(paymentSourceConstraint["payment_sources"] as! [String], ["PAYPAL", "VENMO"])
         
-        let purchaseUnits = lastPostParameters["purchase_units"] as! [String: Any]
-        let payee = purchaseUnits["payee"] as! [String: String]
+        let purchaseUnits = lastPostParameters["purchase_units"] as! [[String: Any]]
+        let payee = purchaseUnits.first?["payee"] as! [String: String]
         XCTAssertEqual(payee["merchant_id"], "TODO-merchant-id-type")
-        let amount = purchaseUnits["payee"] as! [String: String]
+        let amount = purchaseUnits.first?["amount"] as! [String: String]
         XCTAssertEqual(amount["currency_code"], "USD")
     }
     

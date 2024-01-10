@@ -8,6 +8,12 @@ struct BTEligiblePaymentsRequest: Encodable {
     private let purchaseUnits: [PurchaseUnit]
     private let preferences = Preferences()
     
+    enum CodingKeys: String, CodingKey {
+        case customer = "customer"
+        case purchaseUnits = "purchase_units"
+        case preferences = "preferences"
+    }
+    
     struct Customer: Encodable {
         let countryCode: String = "US"
         let email: String?
