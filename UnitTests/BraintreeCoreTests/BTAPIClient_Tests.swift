@@ -585,4 +585,20 @@ class BTAPIClient_Tests: XCTestCase {
         let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "unknown")
         XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.braintree-api.com/graphql")
     }
+    
+    func testPayPalBaseURLForEnvironment_returnsSandbox() {
+        let apiClientSand = BTAPIClient(authorization: "development_tokenization_key")
+        let baseURLSand: URL? = apiClientSand?.paypalAPIURL(forEnvironment: "sandbox")
+        XCTAssertEqual(baseURLSand?.absoluteString, "https://api-m.sandbox.paypal.com")
+        
+        let apiClientDev = BTAPIClient(authorization: "development_tokenization_key")
+        let baseURLDev: URL? = apiClientDev?.paypalAPIURL(forEnvironment: "development")
+        XCTAssertEqual(baseURLDev?.absoluteString, "https://api-m.sandbox.paypal.com")
+    }
+    
+    func testPayPalBaseURLForEnvironment_returnsProductionURL_asDefault() {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let baseURL: URL? = apiClient?.paypalAPIURL(forEnvironment: "unknown")
+        XCTAssertEqual(baseURL?.absoluteString, "https://api-m.paypal.com")
+    }
 }

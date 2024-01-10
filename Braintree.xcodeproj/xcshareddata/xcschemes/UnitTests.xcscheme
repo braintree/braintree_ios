@@ -5,22 +5,6 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <BuildActionEntries>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8046983D2B27C5530090878E"
-               BuildableName = "BraintreeShopperInsightsTests.xctest"
-               BlueprintName = "BraintreeShopperInsightsTests"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -146,16 +130,6 @@
                BlueprintIdentifier = "BE642D8E27D0132A00694A5B"
                BuildableName = "BraintreeSEPADirectDebitTests.xctest"
                BlueprintName = "BraintreeSEPADirectDebitTests"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8046983D2B27C5530090878E"
-               BuildableName = "BraintreeShopperInsightsTests.xctest"
-               BlueprintName = "BraintreeShopperInsightsTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
