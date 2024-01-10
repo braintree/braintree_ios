@@ -42,8 +42,13 @@ public struct BTShopperInsightsRequest {
 /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
 public struct Phone: Encodable {
     
-    let countryCode: String
-    let nationalNumber: String
+    private let countryCode: String
+    private let nationalNumber: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case countryCode = "country_code"
+        case nationalNumber = "national_number"
+    }
     
     /// Initialize a `BTShopperInsightsRequest.Phone`.
     /// - Parameters:

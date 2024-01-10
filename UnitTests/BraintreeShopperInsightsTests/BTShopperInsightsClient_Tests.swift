@@ -21,6 +21,8 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         sut = BTShopperInsightsClient(apiClient: mockAPIClient)
     }
     
+    // MARK: - getRecommendedPaymentMethods()
+    
     func testGetRecommendedPaymentMethods_returnsDefaultRecommendations() async {
         let result = try? await sut.getRecommendedPaymentMethods(request: request)
         
@@ -39,6 +41,31 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         
         XCTAssertTrue(result!.isPayPalRecommended)
         XCTAssertTrue(result!.isVenmoRecommended)
+    }
+    
+    func testGetRecommendedPaymentMethods_whenAppsNotInstalled_callsEligiblePaymentsAPI() async {
+        _ = try? await sut.getRecommendedPaymentMethods(request: request)
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v2/payments/find-eligible-methods")
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .paypalAPI)
+        
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        
+        let customer = lastPostParameters["customer"] as! [String: Any]
+        XCTAssertEqual((customer["country_code"] as! String), "US")
+        XCTAssertEqual((customer["email"] as! String), "my-email")
+        XCTAssertEqual((customer["phone"] as! [String: String])["country_code"], "1")
+        XCTAssertEqual((customer["phone"] as! [String: String])["national_number"], "1234567")
+
+        let preferences = lastPostParameters["preferences"] as! [String: Any]
+        XCTAssertTrue(preferences["include_account_details"] as! Bool)
+        XCTAssertTrue(preferences["include_vault_tokens"] as! Bool)
+        let paymentSourceConstraint = preferences["payment_source_constraint"] as! [String: Any]
+        XCTAssertEqual(paymentSourceConstraint["constraint_type"] as! String, "INCLUDE")
+        XCTAssertEqual(paymentSourceConstraint["payment_sources"] as! [String], ["PAYPAL", "VENMO"])
     }
     
     // MARK: - Analytics
