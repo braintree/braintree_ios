@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-  * Add imageUrl, upcCode, upcType to BTPayPalLineItem
+  * Add imageURL, upcCode, upcType to BTPayPalLineItem
 
 ## 6.11.0 (2023-12-20)
 * Update all SDK errors to be public and [Equatable](https://developer.apple.com/documentation/swift/equatable) (fixes #1152 and #1080)

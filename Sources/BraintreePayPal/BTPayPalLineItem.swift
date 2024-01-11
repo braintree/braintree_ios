@@ -10,8 +10,8 @@ import Foundation
 }
 
 
-/// Use this option to specify  the Upc type of the lien item.
-@objc public enum BTPayPalLineItemUpcType: Int {
+/// Use this option to specify  the UPC type of the line item.
+@objc public enum BTPayPalLineItemUPCType: Int {
     
     ///  Upc Type A
     case UPC_A
@@ -37,6 +37,8 @@ import Foundation
     /// String value representing the integration.
     var stringValue: String {
         switch self {
+        case .none:
+            return nil
         case .UPC_A:
             return "UPC-A"
         case .UPC_B:
@@ -93,7 +95,7 @@ import Foundation
     public var upcCode: String? = nil
 
         /// Optional: UPC type for the item.
-    public var upcType: BTPayPalLineItemUpcType? = nil
+    public var upcType: BTPayPalLineItemUPCType = nil
 
     // MARK: - Public Initializer
     
