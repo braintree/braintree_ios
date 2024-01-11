@@ -12,6 +12,7 @@ import Foundation
 
 /// Use this option to specify  the UPC type of the line item.
 @objc public enum BTPayPalLineItemUPCType: Int {
+    case none
     
     ///  Upc Type A
     case UPC_A
@@ -35,7 +36,7 @@ import Foundation
     case UPC_5
     
     /// String value representing the integration.
-    var stringValue: String {
+    var stringValue: String? {
         switch self {
         case .none:
             return nil
@@ -56,6 +57,7 @@ import Foundation
         }
     }
 }
+
 
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
@@ -93,7 +95,7 @@ import Foundation
     public var upcCode: String? = nil
 
         /// Optional: UPC type for the item.
-    public var upcType: BTPayPalLineItemUPCType = nil
+    public var upcType: BTPayPalLineItemUPCType = .none
 
     // MARK: - Public Initializer
     
@@ -147,7 +149,7 @@ import Foundation
             requestParameters["upc_code"] = upcCode
         }
         
-        if let upcType, upcType.stringValue != nil {
+        if upcType.stringValue != nil {
             requestParameters["upc_type"] = upcType.stringValue
         }
                 
