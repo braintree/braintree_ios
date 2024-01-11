@@ -62,7 +62,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
 
         let preferences = lastPostParameters["preferences"] as! [String: Any]
         XCTAssertTrue(preferences["include_account_details"] as! Bool)
-        XCTAssertTrue(preferences["include_vault_tokens"] as! Bool)
         let paymentSourceConstraint = preferences["payment_source_constraint"] as! [String: Any]
         XCTAssertEqual(paymentSourceConstraint["constraint_type"] as! String, "INCLUDE")
         XCTAssertEqual(paymentSourceConstraint["payment_sources"] as! [String], ["PAYPAL", "VENMO"])

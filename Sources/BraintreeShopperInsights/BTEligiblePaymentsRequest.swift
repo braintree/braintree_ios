@@ -49,12 +49,10 @@ struct BTEligiblePaymentsRequest: Encodable {
     
     struct Preferences: Encodable {
         let includeAccountDetails = true
-        let includeVaultTokens = true
         let paymentSourceConstraint = PaymentSourceConstraint()
         
         enum CodingKeys: String, CodingKey {
             case includeAccountDetails = "include_account_details"
-            case includeVaultTokens = "include_vault_tokens"
             case paymentSourceConstraint = "payment_source_constraint"
         }
         
