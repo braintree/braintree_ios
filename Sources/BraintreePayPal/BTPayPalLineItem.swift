@@ -53,8 +53,6 @@ import Foundation
             return "UPC-2"
         case .UPC_5:
             return "UPC-5"
-        default:
-            return ""
         }
     }
 }
@@ -149,7 +147,7 @@ import Foundation
             requestParameters["upc_code"] = upcCode
         }
         
-        if let upcType, upcType.stringValue != "" {
+        if let upcType, upcType.stringValue != nil {
             requestParameters["upc_type"] = upcType.stringValue
         }
                 
