@@ -34,7 +34,6 @@ import Foundation
     /// Upc Type 5
     case UPC_5
     
-    /// String value representing the integration.
     var stringValue: String? {
         switch self {
         case .none:
