@@ -9,7 +9,6 @@ import Foundation
     case credit
 }
 
-
 /// Use this option to specify  the UPC type of the line item.
 @objc public enum BTPayPalLineItemUPCType: Int {
     case none
@@ -58,7 +57,6 @@ import Foundation
     }
 }
 
-
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
 
@@ -91,10 +89,10 @@ import Foundation
     /// Optional: The URL to product image information.
     public var imageURL: URL? = nil
 
-        /// Optional: UPC code for the item.
+    /// Optional: UPC code for the item.
     public var upcCode: String? = nil
 
-        /// Optional: UPC type for the item.
+    /// Optional: UPC type for the item.
     public var upcType: BTPayPalLineItemUPCType = .none
 
     // MARK: - Public Initializer
