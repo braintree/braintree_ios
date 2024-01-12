@@ -18,33 +18,8 @@ class SEPADirectDebitAPI {
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
         let billingAddress = sepaDirectDebitRequest.billingAddress
-
-        let billingAddressDictionary: [String: String?] = [
-            "address_line_1": billingAddress?.streetAddress,
-            "address_line_2": billingAddress?.extendedAddress,
-            "admin_area_1": billingAddress?.locality,
-            "admin_area_2": billingAddress?.region,
-            "postal_code": billingAddress?.postalCode,
-            "country_code": billingAddress?.countryCodeAlpha2
-        ]
-
-        let sepaDebitDictionary: [String: Any] = [
-            "merchant_or_partner_customer_id": sepaDirectDebitRequest.customerID ?? "",
-            "mandate_type": sepaDirectDebitRequest.mandateType?.description ?? "",
-            "account_holder_name": sepaDirectDebitRequest.accountHolderName ?? "",
-            "iban": sepaDirectDebitRequest.iban ?? "",
-            "billing_address": billingAddressDictionary
-        ]
-
-        let json: [String: Any] = [
-            "sepa_debit": sepaDebitDictionary,
-            "merchant_account_id": sepaDirectDebitRequest.merchantAccountID ?? "",
-            "cancel_url": BTCoreConstants.callbackURLScheme + "://sepa/cancel",
-            "return_url": BTCoreConstants.callbackURLScheme + "://sepa/success",
-            "locale": sepaDirectDebitRequest.locale ?? ""
-        ]
-
-        apiClient.post("v1/sepa_debit", parameters: json) { body, response, error in
+        let createMandateRequest = BTCreateMandateRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
+        apiClient.post("v1/sepa_debit", parameters: createMandateRequest) { body, response, error in
             if let error = error {
                 completion(nil, error)
                 return
