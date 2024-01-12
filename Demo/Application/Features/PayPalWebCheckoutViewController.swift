@@ -29,7 +29,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let request = BTPayPalCheckoutRequest(amount: "5.00")
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
-        lineItem.upcType = BTPayPalLineItemUPCType.UPC_A
+        lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
         request.lineItems = [lineItem]
 

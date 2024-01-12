@@ -1,4 +1,5 @@
 import XCTest
+@testable import BraintreeCore
 @testable import BraintreePayPal
 
 class BTPayPalRequest_Tests: XCTestCase {
@@ -46,10 +47,10 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
         
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: BTPayPalLineItemKind.debit);
-        lineItem.imageURL = URL(string: "http://example/image.jpg");
-        lineItem.upcCode = "upc-code";
-        lineItem.upcType = BTPayPalLineItemUPCType.UPC_A;
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: BTPayPalLineItemKind.debit)
+        lineItem.imageURL = URL(string: "http://example/image.jpg")
+        lineItem.upcCode = "upc-code"
+        lineItem.upcType = .UPC_A
         request.lineItems = [lineItem]
 
         let parameters = request.parameters(with: configuration)
