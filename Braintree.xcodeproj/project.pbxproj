@@ -1726,6 +1726,7 @@
 		BEF3F17027CE9E2600072467 /* BraintreeSEPADirectDebit */ = {
 			isa = PBXGroup;
 			children = (
+				BEF177A72B51D6A7004F0F35 /* BTCreateMandateRequest.swift */,
 				BEF177A52B51C7ED004F0F35 /* BTSEPADebitAccountsRequest.swift */,
 				3BC0E09129E4673C009217D6 /* BTSEPADirectAnalytics.swift */,
 				BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */,
@@ -1735,7 +1736,6 @@
 				BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */,
 				BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */,
 				BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */,
-				BEF177A72B51D6A7004F0F35 /* BTCreateMandateRequest.swift */,
 			);
 			path = BraintreeSEPADirectDebit;
 			sourceTree = "<group>";
