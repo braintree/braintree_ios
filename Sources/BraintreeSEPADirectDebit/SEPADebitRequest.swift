@@ -5,17 +5,17 @@ import BraintreeCore
 #endif
 
 /// The POST body for `v1/sepa_debit`
-struct BTCreateMandateRequest: Encodable {
+struct SEPADebitRequest: Encodable {
 
     let merchantAccountID: String?
     let cancelURL: String?
     let returnURL: String?
     let locale: String?
 
-    private let sepaDebit: SEPAAccountRequest
+    private let sepaAccountRequest: SEPAAccountRequest
 
     enum CodingKeys: String, CodingKey {
-        case sepaDebit = "sepa_debit"
+        case sepaAccountRequest = "sepa_debit"
         case merchantAccountID = "merchant_account_id"
         case cancelURL = "cancel_url"
         case returnURL = "return_url"
@@ -23,7 +23,7 @@ struct BTCreateMandateRequest: Encodable {
     }
 
     init(sepaDirectDebitRequest: BTSEPADirectDebitRequest) {
-        self.sepaDebit = SEPAAccountRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
+        self.sepaAccountRequest = SEPAAccountRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
         self.merchantAccountID = sepaDirectDebitRequest.merchantAccountID
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://sepa/cancel"
         self.returnURL = BTCoreConstants.callbackURLScheme + "://sepa/success"

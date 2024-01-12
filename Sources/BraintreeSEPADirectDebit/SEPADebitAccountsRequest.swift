@@ -1,16 +1,16 @@
 import Foundation
 
 /// The POST body for `v1/payment_methods/sepa_debit_accounts`
-struct BTSEPADebitAccountsRequest: Encodable {
+struct SEPADebitAccountsRequest: Encodable {
 
-    private let createMandateResult: BTCreateMandateResult
+    private let createMandateResult: SEPADebitAccountRequest
 
     enum CodingKeys: String, CodingKey {
         case createMandateResult = "sepa_debit_account"
     }
 
     init(createMandateResult: CreateMandateResult) {
-        self.createMandateResult = BTCreateMandateResult(
+        self.createMandateResult = SEPADebitAccountRequest(
             last4: createMandateResult.ibanLastFour,
             merchantOrPartnerCustomerID: createMandateResult.customerID,
             bankReferenceToken: createMandateResult.bankReferenceToken,
@@ -18,7 +18,7 @@ struct BTSEPADebitAccountsRequest: Encodable {
         )
     }
 
-    struct BTCreateMandateResult: Encodable {
+    struct SEPADebitAccountRequest: Encodable {
 
         let last4: String?
         let merchantOrPartnerCustomerID: String?
