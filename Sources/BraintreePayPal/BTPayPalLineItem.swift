@@ -11,6 +11,8 @@ import Foundation
 
 /// Use this option to specify  the UPC type of the line item.
 @objc public enum BTPayPalLineItemUPCType: Int {
+
+    /// Default
     case none
     
     ///  Upc Type A
