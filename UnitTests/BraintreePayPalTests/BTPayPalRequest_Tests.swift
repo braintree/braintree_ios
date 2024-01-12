@@ -47,7 +47,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
         
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: BTPayPalLineItemKind.debit)
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
         lineItem.imageURL = URL(string: "http://example/image.jpg")
         lineItem.upcCode = "upc-code"
         lineItem.upcType = .UPC_A
