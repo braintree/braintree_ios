@@ -61,16 +61,8 @@ class SEPADirectDebitAPI {
     }
 
     func tokenize(createMandateResult: CreateMandateResult, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
-        let sepaDebitAccountDictionary: [String: String?] = [
-            "last_4": createMandateResult.ibanLastFour,
-            "merchant_or_partner_customer_id": createMandateResult.customerID,
-            "bank_reference_token": createMandateResult.bankReferenceToken,
-            "mandate_type": createMandateResult.mandateType
-        ]
-
-        let json: [String: Any] = ["sepa_debit_account": sepaDebitAccountDictionary]
-
-        apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: json) { body, response, error in
+        let sepaDebitAccountsRequest = BTSEPADebitAccountsRequest(createMandateResult: createMandateResult)
+        apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: sepaDebitAccountsRequest) { body, response, error in
             if let error = error {
                 completion(nil, error)
                 return
