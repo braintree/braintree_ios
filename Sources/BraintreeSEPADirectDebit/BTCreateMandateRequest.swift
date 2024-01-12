@@ -7,11 +7,12 @@ import BraintreeCore
 /// The POST body for `v1/sepa_debit`
 struct BTCreateMandateRequest: Encodable {
 
-    let sepaDebit: SEPAAccountRequest? // private?
     let merchantAccountID: String?
     let cancelURL: String?
     let returnURL: String?
     let locale: String?
+
+    private let sepaDebit: SEPAAccountRequest
 
     enum CodingKeys: String, CodingKey {
         case sepaDebit = "sepa_debit"

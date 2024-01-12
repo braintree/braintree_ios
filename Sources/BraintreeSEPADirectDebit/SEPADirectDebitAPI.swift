@@ -17,7 +17,6 @@ class SEPADirectDebitAPI {
         sepaDirectDebitRequest: BTSEPADirectDebitRequest,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
-        let billingAddress = sepaDirectDebitRequest.billingAddress
         let createMandateRequest = BTCreateMandateRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
         apiClient.post("v1/sepa_debit", parameters: createMandateRequest) { body, response, error in
             if let error = error {
