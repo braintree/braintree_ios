@@ -667,6 +667,24 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }
 
+    func testTokenize_withFallbackToWebSetToTrue_setsShouldFallback() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.fallbackToWeb = true
+
+        venmoClient.tokenize(venmoRequest) { _, _ in
+            XCTAssertTrue(venmoClient.shouldFallback)
+        }
+    }
+
+    func testTokenize_withFallbackToWebSetToFalse_setsShouldFallback() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.fallbackToWeb = false
+
+        venmoClient.tokenize(venmoRequest) { _, _ in
+            XCTAssertFalse(venmoClient.shouldFallback)
+        }
+    }
+
     // MARK: - Analytics
     
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
