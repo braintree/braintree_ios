@@ -44,7 +44,7 @@ public class BTShopperInsightsClient {
             apiClient.post(
                 "/v2/payments/find-eligible-methods",
                 parameters: postParameters,
-                httpType: .paypalAPI
+                httpType: .payPalAPI
             ) { json, response, error in
                 // TODO: - Handle API Response. DTBTSDK-3176
             }

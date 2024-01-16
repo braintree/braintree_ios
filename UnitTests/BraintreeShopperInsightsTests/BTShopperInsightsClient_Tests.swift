@@ -47,7 +47,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         _ = try? await sut.getRecommendedPaymentMethods(request: request)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v2/payments/find-eligible-methods")
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .paypalAPI)
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .payPalAPI)
         
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
             XCTFail()

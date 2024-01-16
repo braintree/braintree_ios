@@ -10,5 +10,5 @@ import Foundation
     case graphQLAPI
     
     /// Use the PayPal API
-    case paypalAPI
+    case payPalAPI
 }

@@ -26,7 +26,7 @@ import Foundation
 
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
-    var paypalHTTP: BTHTTP?
+    var payPalHTTP: BTHTTP?
     
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
@@ -180,11 +180,11 @@ import Foundation
                     }
                 }
                 
-                if paypalHTTP == nil {
+                if payPalHTTP == nil {
                     let paypalBaseURL: URL? = paypalAPIURL(forEnvironment: configuration?.environment ?? "")
                     
                     if let clientToken, let paypalBaseURL {
-                        paypalHTTP = BTHTTP(url: paypalBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                        payPalHTTP = BTHTTP(url: paypalBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
                     }
                 }
             }
@@ -366,7 +366,7 @@ import Foundation
             return parameters?.merging(["_meta": metadata.parameters]) { $1 }
         case .graphQLAPI:
             return parameters?.merging(["clientSdkMetadata": metadata.parameters]) { $1 }
-        case .paypalAPI:
+        case .payPalAPI:
             return parameters
         }
     }
@@ -496,8 +496,8 @@ import Foundation
             return http
         case .graphQLAPI:
             return graphQLHTTP
-        case .paypalAPI:
-            return paypalHTTP
+        case .payPalAPI:
+            return payPalHTTP
         }
     }
 }
