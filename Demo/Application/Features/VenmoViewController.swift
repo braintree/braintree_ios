@@ -14,9 +14,9 @@ class VenmoViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
         let venmoECDButton = createButton(title: "Venmo (with ECD options)", action: #selector(tappedVenmoWithECD))
-        let venmoUniversalLinks = createButton(title: "Venmo Universal Links", action: #selector(tappedVenmoWithUniversalLinks))
+        let venmoUniversalLinkButton = createButton(title: "Venmo Universal Links", action: #selector(tappedVenmoWithUniversalLinks))
 
-        let stackView = UIStackView(arrangedSubviews: [venmoButton, venmoECDButton, venmoUniversalLinks])
+        let stackView = UIStackView(arrangedSubviews: [venmoButton, venmoECDButton, venmoUniversalLinkButton])
         stackView.axis = .vertical
         stackView.spacing = 5
         stackView.alignment = .center
