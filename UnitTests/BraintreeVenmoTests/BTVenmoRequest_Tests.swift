@@ -18,4 +18,21 @@ class BTVenmoRequest_Tests: XCTestCase {
         XCTAssertEqual(request.collectCustomerShippingAddress, false)
         XCTAssertEqual(request.collectCustomerBillingAddress, false)
     }
+
+    func testFallbackToWeb_whenTrue_setsValueAsTrue() {
+        let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
+        request.fallbackToWeb = true
+        XCTAssertEqual(request.fallbackToWeb, true)
+    }
+
+    func testFallbackToWeb_whenFalse_setsValueAsFalse() {
+        let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
+        request.fallbackToWeb = false
+        XCTAssertEqual(request.fallbackToWeb, false)
+    }
+
+    func testFallbackToWeb_whenNotPassed_defaultsValueAsFalse() {
+        let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
+        XCTAssertEqual(request.fallbackToWeb, false)
+    }
 }
