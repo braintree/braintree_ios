@@ -22,14 +22,6 @@ struct SEPADebitRequest: Encodable {
         case locale = "locale"
     }
 
-    init(sepaDirectDebitRequest: BTSEPADirectDebitRequest) {
-        self.sepaAccountRequest = SEPAAccountRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
-        self.merchantAccountID = sepaDirectDebitRequest.merchantAccountID
-        self.cancelURL = BTCoreConstants.callbackURLScheme + "://sepa/cancel"
-        self.returnURL = BTCoreConstants.callbackURLScheme + "://sepa/success"
-        self.locale = sepaDirectDebitRequest.locale
-    }
-
     struct SEPAAccountRequest: Encodable {
 
         let merchantOrPartnerCustomerID: String?
@@ -44,21 +36,6 @@ struct SEPADebitRequest: Encodable {
             case accountHolderName = "account_holder_name"
             case iban = "iban"
             case billingAddress = "billing_address"
-        }
-
-        init(sepaDirectDebitRequest: BTSEPADirectDebitRequest) {
-            self.merchantOrPartnerCustomerID = sepaDirectDebitRequest.customerID
-            self.mandateType = sepaDirectDebitRequest.mandateType?.description
-            self.accountHolderName = sepaDirectDebitRequest.accountHolderName
-            self.iban = sepaDirectDebitRequest.iban
-            self.billingAddress = BillingAddress(
-                streetAddress: sepaDirectDebitRequest.billingAddress?.streetAddress,
-                extendedAddress: sepaDirectDebitRequest.billingAddress?.extendedAddress,
-                locality: sepaDirectDebitRequest.billingAddress?.locality,
-                region: sepaDirectDebitRequest.billingAddress?.region,
-                postalCode: sepaDirectDebitRequest.billingAddress?.postalCode,
-                countryCodeAlpha2: sepaDirectDebitRequest.billingAddress?.countryCodeAlpha2
-            )
         }
 
         struct BillingAddress: Encodable {
@@ -79,5 +56,28 @@ struct SEPADebitRequest: Encodable {
                 case countryCodeAlpha2 = "country_code"
             }
         }
+
+        init(sepaDirectDebitRequest: BTSEPADirectDebitRequest) {
+            self.merchantOrPartnerCustomerID = sepaDirectDebitRequest.customerID
+            self.mandateType = sepaDirectDebitRequest.mandateType?.description
+            self.accountHolderName = sepaDirectDebitRequest.accountHolderName
+            self.iban = sepaDirectDebitRequest.iban
+            self.billingAddress = BillingAddress(
+                streetAddress: sepaDirectDebitRequest.billingAddress?.streetAddress,
+                extendedAddress: sepaDirectDebitRequest.billingAddress?.extendedAddress,
+                locality: sepaDirectDebitRequest.billingAddress?.locality,
+                region: sepaDirectDebitRequest.billingAddress?.region,
+                postalCode: sepaDirectDebitRequest.billingAddress?.postalCode,
+                countryCodeAlpha2: sepaDirectDebitRequest.billingAddress?.countryCodeAlpha2
+            )
+        }
+    }
+
+    init(sepaDirectDebitRequest: BTSEPADirectDebitRequest) {
+        self.sepaAccountRequest = SEPAAccountRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
+        self.merchantAccountID = sepaDirectDebitRequest.merchantAccountID
+        self.cancelURL = BTCoreConstants.callbackURLScheme + "://sepa/cancel"
+        self.returnURL = BTCoreConstants.callbackURLScheme + "://sepa/success"
+        self.locale = sepaDirectDebitRequest.locale
     }
 }

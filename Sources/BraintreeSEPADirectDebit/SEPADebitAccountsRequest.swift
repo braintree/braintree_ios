@@ -9,15 +9,6 @@ struct SEPADebitAccountsRequest: Encodable {
         case createMandateResult = "sepa_debit_account"
     }
 
-    init(createMandateResult: CreateMandateResult) {
-        self.createMandateResult = SEPADebitAccountRequest(
-            last4: createMandateResult.ibanLastFour,
-            merchantOrPartnerCustomerID: createMandateResult.customerID,
-            bankReferenceToken: createMandateResult.bankReferenceToken,
-            mandateType: createMandateResult.mandateType
-        )
-    }
-
     struct SEPADebitAccountRequest: Encodable {
 
         let last4: String?
@@ -31,5 +22,14 @@ struct SEPADebitAccountsRequest: Encodable {
             case bankReferenceToken = "bank_reference_token"
             case mandateType = "mandate_type"
         }
+    }
+
+    init(createMandateResult: CreateMandateResult) {
+        self.createMandateResult = SEPADebitAccountRequest(
+            last4: createMandateResult.ibanLastFour,
+            merchantOrPartnerCustomerID: createMandateResult.customerID,
+            bankReferenceToken: createMandateResult.bankReferenceToken,
+            mandateType: createMandateResult.mandateType
+        )
     }
 }
