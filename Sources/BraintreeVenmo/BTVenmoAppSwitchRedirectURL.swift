@@ -25,15 +25,14 @@ struct BTVenmoAppSwitchRedirectURL {
     init(
         returnURLScheme: String,
         paymentContextID: String,
+        metadata: BTClientMetadata,
         forMerchantID merchantID: String?,
         accessToken: String?,
         bundleDisplayName: String?,
-        environment: String?,
-        metadata: BTClientMetadata?
+        environment: String?
     ) throws {
-        guard let accessToken, let metadata, let bundleDisplayName, let environment, let merchantID else {
-            // TODO: return explicit error?
-            throw BTVenmoError.unknown
+        guard let accessToken, let bundleDisplayName, let environment, let merchantID else {
+            throw BTVenmoError.invalidRedirectURLParameter
         }
 
         let venmoMetadata: [String: String] = [
@@ -47,7 +46,6 @@ struct BTVenmoAppSwitchRedirectURL {
         let serializedBraintreeData = try? JSONSerialization.data(withJSONObject: braintreeData)
         let base64EncodedBraintreeData = serializedBraintreeData?.base64EncodedString()
 
-        // TODO: - Confirm preservation of optional query params sent before refactor
         queryParameters = [
             "x-success": constructRedirectURL(with: returnURLScheme, result: "success"),
             "x-error": constructRedirectURL(with: returnURLScheme, result: "error"),

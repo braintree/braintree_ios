@@ -190,11 +190,11 @@ import BraintreeCore
                     let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
                         returnURLScheme: returnURLScheme,
                         paymentContextID: paymentContextID,
+                        metadata: metadata,
                         forMerchantID: merchantProfileID,
                         accessToken: configuration.venmoAccessToken,
                         bundleDisplayName: bundleDisplayName,
-                        environment: configuration.venmoEnvironment,
-                        metadata: metadata
+                        environment: configuration.venmoEnvironment
                     )
 
                     if request.fallbackToWeb {
@@ -248,11 +248,13 @@ import BraintreeCore
     // MARK: - App Switch Methods
 
     func handleOpen(_ url: URL) {
-        // TODO: don't force unwrap
-        let fixedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?"))!
+        guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
+            notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString), completion: appSwitchCompletion)
+            return
+        }
 
-        guard let returnURL = BTVenmoAppSwitchReturnURL(url: fixedURL) else {
-            notifyFailure(with: BTVenmoError.invalidReturnURL(fixedURL.absoluteString), completion: appSwitchCompletion)
+        guard let returnURL = BTVenmoAppSwitchReturnURL(url: cleanedURL) else {
+            notifyFailure(with: BTVenmoError.invalidReturnURL(cleanedURL.absoluteString), completion: appSwitchCompletion)
             return
         }
 
