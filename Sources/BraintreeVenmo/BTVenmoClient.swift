@@ -203,10 +203,7 @@ import BraintreeCore
                         self.performAppSwitch(with: appSwitchURL.appSwitchLink(), shouldVault: request.vault, completion: completion)
                     }
                 } catch {
-                    self.notifyFailure(
-                        with: BTVenmoError.invalidRedirectURL("The request URL could not be constructed or was nil."),
-                        completion: completion
-                    )
+                    self.notifyFailure(with: error, completion: completion)
                     return
                 }
             }
