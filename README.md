@@ -103,7 +103,6 @@ Here are a few ways to get in touch:
 
 ## Help
 
-* Read the headers
 * [Read the Braintree docs](https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v5)
 * [Check out the reference docs](https://braintree.github.io/braintree_ios/)
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios/issues)
