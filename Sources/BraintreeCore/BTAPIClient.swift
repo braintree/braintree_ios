@@ -484,9 +484,9 @@ import Foundation
     func paypalAPIURL(forEnvironment environment: String) -> URL? {
         if environment.caseInsensitiveCompare("sandbox") == .orderedSame ||
             environment.caseInsensitiveCompare("development") == .orderedSame {
-            return URL(string: "https://api.sandbox.paypal.com")
+            return BTCoreConstants.payPalSandboxURL
         } else {
-            return URL(string: "https://api.paypal.com")
+            return BTCoreConstants.payPalProductionURL
         }
     }
 
