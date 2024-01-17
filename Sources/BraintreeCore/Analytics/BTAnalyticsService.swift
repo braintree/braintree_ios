@@ -30,7 +30,7 @@ class BTAnalyticsService: Equatable {
     var analyticsSessions: [String: BTAnalyticsSession] = [:]
     
     /// The FPTI URL to post all analytic events.
-    static let url = URL(string: "https://api-m.paypal.com")!
+    static let url = URL(string: "https://api.paypal.com")!
 
     private let apiClient: BTAPIClient
 
