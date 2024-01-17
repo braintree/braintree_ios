@@ -47,7 +47,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
         
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)
         lineItem.imageURL = URL(string: "http://example/image.jpg")
         lineItem.upcCode = "upc-code"
         lineItem.upcType = .UPC_A
@@ -64,9 +64,9 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
         XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
-                                                                            "unit_amount": "10",
-                                                                            "name": "item-name",
-                                                                            "kind": "debit",
+                                                                            "unit_amount": "1",
+                                                                            "name": "item",
+                                                                            "kind": "credit",
                                                                             "upc_code": "upc-code",
                                                                             "upc_type": "UPC-A",
                                                                             "image_url": "http://example/image.jpg"]])
