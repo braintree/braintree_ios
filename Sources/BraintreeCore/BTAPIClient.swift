@@ -181,7 +181,7 @@ import Foundation
                 }
                 
                 if payPalHTTP == nil {
-                    let paypalBaseURL: URL? = paypalAPIURL(forEnvironment: configuration?.environment ?? "")
+                    let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
                     
                     if let clientToken, let paypalBaseURL {
                         payPalHTTP = BTHTTP(url: paypalBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -481,7 +481,7 @@ import Foundation
         return components.url
     }
     
-    func paypalAPIURL(forEnvironment environment: String) -> URL? {
+    func payPalAPIURL(forEnvironment environment: String) -> URL? {
         if environment.caseInsensitiveCompare("sandbox") == .orderedSame ||
             environment.caseInsensitiveCompare("development") == .orderedSame {
             return URL(string: "https://api-m.sandbox.paypal.com")
