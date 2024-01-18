@@ -34,7 +34,21 @@ public class BTShopperInsightsClient {
         if isVenmoAppInstalled() && isPayPalAppInstalled() {
             return BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
         } else {
-            // TODO: - Make API call to PaymentReadyAPI. DTBTSDK-3176
+            // TODO: - Fill in appropriate merchantID (or ppClientID) from config once API team decides what we need to send
+            let postParameters = BTEligiblePaymentsRequest(
+                email: request.email,
+                phone: request.phone,
+                merchantID: "TODO-merchant-id-type"
+            )
+            
+            apiClient.post(
+                "/v2/payments/find-eligible-methods",
+                parameters: postParameters,
+                httpType: .payPalAPI
+            ) { json, response, error in
+                // TODO: - Handle API Response. DTBTSDK-3388
+            }
+            
             return BTShopperInsightsResult()
         }
     }
