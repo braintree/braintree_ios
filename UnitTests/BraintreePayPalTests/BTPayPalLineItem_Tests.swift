@@ -5,11 +5,11 @@ import XCTest
 class BTPayPalLineItem_Tests: XCTestCase {
     
     func testUPCTypeStringReturnsCorrectValue() {
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
-       
+        var lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
+
         lineItem.upcType = .UPC_A 
         var requestParams = lineItem.requestParameters()
-        XCTAssertEqual(requestParams["upc_type"], "UPC-A");
+        XCTAssertEqual(requestParams["upc_type"], "UPC-A")
 
         lineItem.upcType = .UPC_B 
         requestParams = lineItem.requestParameters()
@@ -39,10 +39,10 @@ class BTPayPalLineItem_Tests: XCTestCase {
     func testKindStringReturnsCorrectValue() {
         var lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
         var requestParams = lineItem.requestParameters()
-        XCTAssertEqual(requestParams["kind"], "debit");
+        XCTAssertEqual(requestParams["kind"], "debit")
 
         lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .credit)
         requestParams = lineItem.requestParameters()
-        XCTAssertEqual(requestParams["kind"], "credit");
+        XCTAssertEqual(requestParams["kind"], "credit")
     }
 }
