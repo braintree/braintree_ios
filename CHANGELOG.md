@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.12.0 (2024-01-18)
 * BraintreePayPal
   * Add `imageURL`, `upcCode`, and `upcType` to `BTPayPalLineItem`
 
