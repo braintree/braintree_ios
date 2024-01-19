@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 @testable import BraintreeTestShared
 @testable import BraintreeShopperInsights
+@testable import BraintreeCore
 
 class BTShopperInsightsClient_Tests: XCTestCase {
     
@@ -71,6 +72,13 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(payee["merchant_id"], "TODO-merchant-id-type")
         let amount = purchaseUnits.first?["amount"] as! [String: String]
         XCTAssertEqual(amount["currency_code"], "USD")
+        
+        let fakeMetadata = BTClientMetadata(integration: .custom, source: .unknown)
+        fakeMetadata.sessionID = "fake-session-id"
+        mockAPIClient.cannedMetadata = fakeMetadata
+        
+        // TODO: - Fix failing unit test
+        XCTAssertEqual(mockAPIClient.lastPOSTAdditionalHeaders!["PayPal-Client-Metadata-Id"], "fake-session-id")
     }
     
     // MARK: - Analytics

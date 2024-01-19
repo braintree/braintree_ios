@@ -44,6 +44,7 @@ public class BTShopperInsightsClient {
             apiClient.post(
                 "/v2/payments/find-eligible-methods",
                 parameters: postParameters,
+                headers: ["PayPal-Client-Metadata-Id": apiClient.metadata.sessionID],
                 httpType: .payPalAPI
             ) { json, response, error in
                 // TODO: - Handle API Response. DTBTSDK-3388
