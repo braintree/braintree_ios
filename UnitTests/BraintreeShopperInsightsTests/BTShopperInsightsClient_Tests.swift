@@ -28,7 +28,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         
         XCTAssertNotNil(result!.isPayPalRecommended)
         XCTAssertNotNil(result!.isVenmoRecommended)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count-2], "shopper-insights:get-recommended-payments:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:get-recommended-payments:started")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:succeeded")
     }
     
@@ -43,7 +43,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         
         XCTAssertTrue(result!.isPayPalRecommended)
         XCTAssertTrue(result!.isVenmoRecommended)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count-2], "shopper-insights:get-recommended-payments:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:get-recommended-payments:started")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:succeeded")
     }
     
