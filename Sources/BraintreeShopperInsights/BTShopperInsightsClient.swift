@@ -56,6 +56,7 @@ public class BTShopperInsightsClient {
                         throw error
                     }
                 }
+                self.notifySuccess(with: BTShopperInsightsResult())
                 // TODO: - Handle API Response. DTBTSDK-3388
             }
             
