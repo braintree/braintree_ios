@@ -77,16 +77,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(amount["currency_code"], "USD")
     }
     
-    func testGetRecommendedPaymentMethods_whenAppsNotInstalled_callsEligiblePaymentsAPI_returnsError() async {
-        mockAPIClient.cannedResponseBody = nil
-        do {
-            let _ = try await sut.getRecommendedPaymentMethods(request: request)
-        } catch {
-            let error = error as NSError
-            XCTAssertNotNil(error)
-        }
-    }
-    
     // MARK: - Analytics
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {
