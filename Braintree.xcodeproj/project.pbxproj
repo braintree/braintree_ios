@@ -1330,8 +1330,8 @@
 		8046982A2B27C4E80090878E /* BraintreeShopperInsightsTests */ = {
 			isa = PBXGroup;
 			children = (
-				8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */,
 				62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */,
+				8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */,
 				804698482B27C71C0090878E /* Info.plist */,
 			);
 			path = BraintreeShopperInsightsTests;

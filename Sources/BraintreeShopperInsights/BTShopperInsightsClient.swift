@@ -35,8 +35,7 @@ public class BTShopperInsightsClient {
         
         if isVenmoAppInstalled() && isPayPalAppInstalled() {
             let result = BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
-            notifySuccess(with: result)
-            return result
+            return notifySuccess(with: result)
         } else {
             // TODO: - Fill in appropriate merchantID (or ppClientID) from config once API team decides what we need to send
             let postParameters = BTEligiblePaymentsRequest(
@@ -104,8 +103,9 @@ public class BTShopperInsightsClient {
     
     // MARK: - Analytics Helper Methods
     
-    private func notifySuccess(with result: BTShopperInsightsResult) {
+    private func notifySuccess(with result: BTShopperInsightsResult) -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsSucceeded)
+        return result
     }
     
     private func notifyFailure(with error: Error) {
