@@ -28,6 +28,8 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         
         XCTAssertNotNil(result!.isPayPalRecommended)
         XCTAssertNotNil(result!.isVenmoRecommended)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:get-recommended-payments:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:succeeded")
     }
     
     func testGetRecommendedPaymentMethods_whenBothAppsInstalled_returnsTrue() async {
@@ -41,6 +43,8 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         
         XCTAssertTrue(result!.isPayPalRecommended)
         XCTAssertTrue(result!.isVenmoRecommended)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:get-recommended-payments:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:succeeded")
     }
     
     func testGetRecommendedPaymentMethods_whenAppsNotInstalled_callsEligiblePaymentsAPI() async {

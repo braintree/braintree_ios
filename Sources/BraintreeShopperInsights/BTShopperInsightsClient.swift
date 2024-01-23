@@ -31,8 +31,11 @@ public class BTShopperInsightsClient {
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
+        
         if isVenmoAppInstalled() && isPayPalAppInstalled() {
-            return BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
+            let result = BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
+            return notifySuccess(with: result)
         } else {
             // TODO: - Fill in appropriate merchantID (or ppClientID) from config once API team decides what we need to send
             let postParameters = BTEligiblePaymentsRequest(
@@ -45,7 +48,14 @@ public class BTShopperInsightsClient {
                 "/v2/payments/find-eligible-methods",
                 parameters: postParameters,
                 httpType: .payPalAPI
-            ) { json, response, error in
+            ) { json, _, error in
+                Task {
+                    if let error {
+                        try self.notifyFailure(with: error)
+                    }
+                    let result = BTShopperInsightsResult()
+                    return self.notifySuccess(with: result)
+                }
                 // TODO: - Handle API Response. DTBTSDK-3388
             }
             
@@ -87,5 +97,17 @@ public class BTShopperInsightsClient {
     private func isPayPalAppInstalled() -> Bool {
         let paypalURL = URL(string: "paypal://")!
         return application.canOpenURL(paypalURL)
+    }
+    
+    // MARK: - Analytics Helper Methods
+    
+    private func notifySuccess(with result: BTShopperInsightsResult) -> BTShopperInsightsResult {
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsSucceeded)
+        return result
+    }
+    
+    private func notifyFailure(with error: Error) throws {
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsFailed, errorDescription: error.localizedDescription)
+        throw error
     }
 }
