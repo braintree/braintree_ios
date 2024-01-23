@@ -9,6 +9,55 @@ import Foundation
     case credit
 }
 
+/// Use this option to specify  the UPC type of the line item.
+@objc public enum BTPayPalLineItemUPCType: Int {
+
+    /// Default
+    case none
+    
+    ///  Upc Type A
+    case UPC_A
+    
+    /// Upc Type B
+    case UPC_B
+    
+    /// Upc Type C
+    case UPC_C
+    
+    /// Upc Type D
+    case UPC_D
+    
+    /// Upc Type E
+    case UPC_E
+    
+    /// Upc Type 2
+    case UPC_2
+    
+    /// Upc Type 5
+    case UPC_5
+    
+    var stringValue: String? {
+        switch self {
+        case .none:
+            return nil
+        case .UPC_A:
+            return "UPC-A"
+        case .UPC_B:
+            return "UPC-B"
+        case .UPC_C:
+            return "UPC-C"
+        case .UPC_D:
+            return "UPC-D"
+        case .UPC_E:
+            return "UPC-E"
+        case .UPC_2:
+            return "UPC-2"
+        case .UPC_5:
+            return "UPC-5"
+        }
+    }
+}
+
 /// A PayPal line item to be displayed in the PayPal checkout flow.
 @objcMembers public class BTPayPalLineItem: NSObject {
 
@@ -31,12 +80,21 @@ import Foundation
 
     /// Optional: Item description. Maximum 127 characters.
     public let itemDescription: String? = nil
+    
+    /// Optional: The URL to product information.
+    public let url: URL? = nil
 
     /// Optional: Product or UPC code for the item. Maximum 127 characters.
     public let productCode: String? = nil
+    
+    /// Optional: The URL to product image information.
+    public var imageURL: URL? = nil
 
-    /// Optional: The URL to product information.
-    public let url: URL? = nil
+    /// Optional: UPC code for the item.
+    public var upcCode: String? = nil
+
+    /// Optional: UPC type for the item.
+    public var upcType: BTPayPalLineItemUPCType = .none
 
     // MARK: - Public Initializer
     
@@ -82,6 +140,18 @@ import Foundation
             requestParameters["url"] = url.absoluteString
         }
         
+        if let imageURL, imageURL != URL(string: "") {
+            requestParameters["image_url"] = imageURL.absoluteString
+        }
+
+        if let upcCode, upcCode != "" {
+            requestParameters["upc_code"] = upcCode
+        }
+        
+        if upcType.stringValue != nil {
+            requestParameters["upc_type"] = upcType.stringValue
+        }
+                
         return requestParameters
     }
 }
