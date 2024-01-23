@@ -587,24 +587,24 @@ class BTAPIClient_Tests: XCTestCase {
     }
     
     func testPayPalBaseURLForEnvironment_returnsSandboxURL() {
-        let apiClientSand = BTAPIClient(authorization: "development_tokenization_key")
+        let apiClientSand = BTAPIClient(authorization: "sandbox_tokenization_key")
         let baseURLSand: URL? = apiClientSand?.payPalAPIURL(forEnvironment: "sandbox")
-        XCTAssertEqual(baseURLSand?.absoluteString, "https://api-m.sandbox.paypal.com")
+        XCTAssertEqual(baseURLSand?.absoluteString, "https://api.sandbox.paypal.com")
         
-        let apiClientDev = BTAPIClient(authorization: "development_tokenization_key")
+        let apiClientDev = BTAPIClient(authorization: "sandbox_tokenization_key")
         let baseURLDev: URL? = apiClientDev?.payPalAPIURL(forEnvironment: "development")
-        XCTAssertEqual(baseURLDev?.absoluteString, "https://api-m.sandbox.paypal.com")
+        XCTAssertEqual(baseURLDev?.absoluteString, "https://api.sandbox.paypal.com")
     }
     
     func testPayPalBaseURLForEnvironment_returnsProductionURL() {
-        let apiClientSand = BTAPIClient(authorization: "development_tokenization_key")
+        let apiClientSand = BTAPIClient(authorization: "production_tokenization_key")
         let baseURLSand: URL? = apiClientSand?.payPalAPIURL(forEnvironment: "production")
-        XCTAssertEqual(baseURLSand?.absoluteString, "https://api-m.paypal.com")
+        XCTAssertEqual(baseURLSand?.absoluteString, "https://api.paypal.com")
     }
     
     func testPayPalBaseURLForEnvironment_returnsProductionURL_asDefault() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let apiClient = BTAPIClient(authorization: "production_tokenization_key")
         let baseURL: URL? = apiClient?.payPalAPIURL(forEnvironment: "unknown")
-        XCTAssertEqual(baseURL?.absoluteString, "https://api-m.paypal.com")
+        XCTAssertEqual(baseURL?.absoluteString, "https://api.paypal.com")
     }
 }

@@ -20,7 +20,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let expectation = expectation(description: "Sends analytics event")
         analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
             XCTAssertNil(error)
-            XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api-m.paypal.com")
+            XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api.paypal.com")
             expectation.fulfill()
         }
 

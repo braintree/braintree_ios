@@ -488,7 +488,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_doesNotSendAuthorizationInBody() {
         let expectation = expectation(description: "POST callback")
 
-        let http = BTHTTP(url: URL(string: "https://api-m.paypal.com")!, authorizationFingerprint: "test-authorization-fingerprint")
+        let http = BTHTTP(url: URL(string: "https://api.paypal.com")!, authorizationFingerprint: "test-authorization-fingerprint")
         http.session = testURLSession
         
         http.post("200.json") { body, response, error in
@@ -507,7 +507,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_sendsAuthorizationInHeader() {
         let expectation = expectation(description: "POST callback")
 
-        let http = BTHTTP(url: URL(string: "https://api-m.paypal.com")!, authorizationFingerprint: "some-fingerprint")
+        let http = BTHTTP(url: URL(string: "https://api.paypal.com")!, authorizationFingerprint: "some-fingerprint")
         http.session = testURLSession
         
         http.post("200.json") { body, response, error in
