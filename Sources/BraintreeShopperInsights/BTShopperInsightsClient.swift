@@ -51,8 +51,7 @@ public class BTShopperInsightsClient {
             ) { json, _, error in
                 Task {
                     if let error {
-                        self.notifyFailure(with: error)
-                        throw error
+                        try self.notifyFailure(with: error)
                     }
                     let result = BTShopperInsightsResult()
                     return self.notifySuccess(with: result)
@@ -107,7 +106,8 @@ public class BTShopperInsightsClient {
         return result
     }
     
-    private func notifyFailure(with error: Error) {
+    private func notifyFailure(with error: Error) throws {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsFailed, errorDescription: error.localizedDescription)
+        throw error
     }
 }
