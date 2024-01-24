@@ -35,7 +35,7 @@ import BraintreeDataCollector
     /// Will only be `true` if the user proceed through the `UIAlertController`
     private var webSessionReturned: Bool = false
 
-    private var payPalContextID: String?
+    private var payPalContextID: String? = nil
 
     // MARK: - Initializer
 
