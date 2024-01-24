@@ -92,6 +92,16 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         }
     }
     
+    func testGetRecommendedPaymentMethods_whenAPISuccess_returnsResult() async {
+        // TODO: - Elaborate test once parsing logic added
+        do {
+            let result = try await sut.getRecommendedPaymentMethods(request: request)
+            XCTAssertNotNil(result)
+        } catch let error as NSError {
+            XCTFail("An error was not expected.")
+        }
+    }
+    
     // MARK: - Analytics
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {
