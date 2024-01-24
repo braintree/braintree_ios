@@ -77,6 +77,21 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(amount["currency_code"], "USD")
     }
     
+    func testGetRecommendedPaymentMethods_whenAPIError_throws() async {
+        mockAPIClient.cannedResponseError = NSError(domain: "fake-error-domain", code: 123, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
+        
+        do {
+            _ = try await sut.getRecommendedPaymentMethods(request: request)
+            XCTFail("Expected error to be thrown.")
+        } catch let error as NSError {
+            XCTAssertEqual(error.code, 123)
+            XCTAssertEqual(error.localizedDescription, "fake-error-description")
+            XCTAssertEqual(error.domain, "fake-error-domain")
+            
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:failed")
+        }
+    }
+    
     // MARK: - Analytics
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {
