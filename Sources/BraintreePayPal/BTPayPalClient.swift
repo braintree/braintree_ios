@@ -35,6 +35,8 @@ import BraintreeDataCollector
     /// Will only be `true` if the user proceed through the `UIAlertController`
     private var webSessionReturned: Bool = false
 
+    private var payPalContextID: String?
+
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -263,6 +265,8 @@ import BraintreeDataCollector
                 }
 
                 let pairingID = self.token(from: approvalURL)
+                self.payPalContextID = pairingID
+
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
                 self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
@@ -399,7 +403,7 @@ import BraintreeDataCollector
         with result: BTPayPalAccountNonce,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded, correlationID: clientMetadataID)
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded, correlationID: clientMetadataID, payPalContextID: payPalContextID)
         completion(result, nil)
     }
 
@@ -407,13 +411,18 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
-            correlationID: clientMetadataID
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, correlationID: clientMetadataID)
+        self.apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.browserLoginCanceled,
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
+        )
         completion(nil, BTPayPalError.canceled)
     }
 }
