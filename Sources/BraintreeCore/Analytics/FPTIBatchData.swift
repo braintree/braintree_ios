@@ -97,7 +97,9 @@ struct FPTIBatchData: Codable {
         let merchantAppVersion: String = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? "N/A"
 
         let merchantID: String?
-        
+
+        let payPalContextID: String?
+
         let platform = "iOS"
 
         let sessionID: String
@@ -120,6 +122,7 @@ struct FPTIBatchData: Codable {
             case isSimulator = "is_simulator"
             case merchantAppVersion = "mapv"
             case merchantID = "merchant_id"
+            case payPalContextID = "paypal_context_id"
             case platform = "platform"
             case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"
