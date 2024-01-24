@@ -97,6 +97,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         do {
             let result = try await sut.getRecommendedPaymentMethods(request: request)
             XCTAssertNotNil(result)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
         } catch let error as NSError {
             XCTFail("An error was not expected.")
         }

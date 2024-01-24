@@ -45,7 +45,7 @@ public class BTShopperInsightsClient {
             )
             
             do {
-                let (body, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
+                let (_, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
                 
                 // TODO: - Handle API Response. DTBTSDK-3388
                 let result = BTShopperInsightsResult()
