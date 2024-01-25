@@ -242,7 +242,10 @@ import BraintreeDataCollector
                let approvalURLString = body?["paymentResource"]["redirectUrl"].asString(),
                let url = URL(string: approvalURLString) {
 
-                self.payPalContextID = paymentID
+                if !paymentID.isEmpty {
+                    self.payPalContextID = paymentID
+                }
+
                 self.request?.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID) {
                     self.onPayment(with: url, error: error)
                 }

@@ -122,8 +122,11 @@ import PayPalCheckout
         self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeStarted)
         
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
-        payPalContextID = orderCreationClient.payPalContextID
-        
+
+        if let payPalContextID = orderCreationClient.payPalContextID, !payPalContextID.isEmpty {
+            self.payPalContextID = payPalContextID
+        }
+
         orderCreationClient.createOrder(with: request) { [weak self] result in
             guard let self else {
                 completion(nil, BTPayPalNativeCheckoutError.deallocated)

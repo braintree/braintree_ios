@@ -265,7 +265,10 @@ import BraintreeDataCollector
                 }
 
                 let pairingID = self.token(from: approvalURL)
-                self.payPalContextID = pairingID
+
+                if !pairingID.isEmpty {
+                    self.payPalContextID = pairingID
+                }
 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
@@ -296,19 +299,19 @@ import BraintreeDataCollector
             handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
             } else {
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed, payPalContextID: payPalContextID)
             }
         } sessionDidCancel: { [self] in
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled, payPalContextID: payPalContextID)
             }
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, payPalContextID: payPalContextID)
             notifyCancel(completion: completion)
             return
         }
