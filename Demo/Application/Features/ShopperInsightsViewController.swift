@@ -20,12 +20,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var countryCodeTextField = textField(placeholder: "Country Code")
     lazy var nationalNumberLabel = label("National Number")
     lazy var nationalNumberTextField = textField(placeholder: "National Number")
-    lazy var shopperInsightsButton: UIButton = {
-        let button = button(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
-        button.layer.cornerRadius = 5
-        button.backgroundColor = .systemBlue
-        return button
-    }()
+    lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
     lazy var shopperInsightsInputView: UIStackView = {
         let stackView = UIStackView(
