@@ -18,7 +18,7 @@ public class BTPayPalMessagingView: UIView {
 
     // MARK: - Initializers
 
-    ///  Initializes a PayPal Messaging client.
+    ///  Initializes a `BTPayPalMessagingView`.
     /// - Parameter apiClient: The Braintree API client
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
@@ -103,7 +103,7 @@ public extension BTPayPalMessagingView {
 
         private var request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()
         
-        ///  Initializes a PayPal Messaging client.
+        ///  Initializes a `BTPayPalMessagingView`.
         /// - Parameters:
         ///   - apiClient: The Braintree API client
         ///   - request: an optional `BTPayPalMessagingRequest`
