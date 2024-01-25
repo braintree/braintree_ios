@@ -44,25 +44,34 @@ public class BTShopperInsightsClient {
                 merchantID: "TODO-merchant-id-type"
             )
             
-            apiClient.post(
-                "/v2/payments/find-eligible-methods",
-                parameters: postParameters,
-                httpType: .payPalAPI
-            ) { json, _, error in
-                Task {
-                    if let error {
-                        try self.notifyFailure(with: error)
-                    }
-                    let result = BTShopperInsightsResult()
-                    return self.notifySuccess(with: result)
-                }
-                // TODO: - Handle API Response. DTBTSDK-3388
+            do {
+                let (json,_) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
+                let eligibleMethodsJSON: BTJSON = json?["eligible_methods"] ?? BTJSON()
+                let eligibilePaymentMethods = BTEligibilePaymentMethods(json: eligibleMethodsJSON)
+                let result = BTShopperInsightsResult(
+                    isPayPalRecommended: isPaymentRecommended(eligibilePaymentMethods.paypal) ,
+                    isVenmoRecommended: isPaymentRecommended(eligibilePaymentMethods.venmo)
+                )
+                return self.notifySuccess(with: result)
+            } catch {
+                throw self.notifyFailure(with: error)
             }
-            
-            return BTShopperInsightsResult()
         }
     }
     
+    /// This method determines whether a payment source is recommended
+    /// - Parameters:
+    ///    - paymentMethodDetail: a `BTEligiblePaymentMethodDetails` containing the payment source's information
+    /// - Returns: `true` if both `eligibleInPPNetwork` and `recommended` are enabled, otherwise returns false.
+    /// - Note: This feature is in beta. It's public API may change or be removed in future releases.        -
+    private func isPaymentRecommended(_ paymentMethodDetail: BTEligiblePaymentMethodDetails?) -> Bool {
+        if let eligibleInPPNetwork = paymentMethodDetail?.eligibleInPaypalNetwork,
+           let recommended = paymentMethodDetail?.recommended {
+            return eligibleInPPNetwork && recommended
+        }
+        return false
+    }
+
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     public func sendPayPalPresentedEvent() {
@@ -106,8 +115,8 @@ public class BTShopperInsightsClient {
         return result
     }
     
-    private func notifyFailure(with error: Error) throws {
+    private func notifyFailure(with error: Error) -> Error {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsFailed, errorDescription: error.localizedDescription)
-        throw error
+        return error
     }
 }

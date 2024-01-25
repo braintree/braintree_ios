@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 @testable import BraintreeTestShared
 @testable import BraintreeShopperInsights
+@testable import BraintreeCore
 
 class BTShopperInsightsClient_Tests: XCTestCase {
     
@@ -63,7 +64,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual((customer["email"] as! String), "my-email")
         XCTAssertEqual((customer["phone"] as! [String: String])["country_code"], "1")
         XCTAssertEqual((customer["phone"] as! [String: String])["national_number"], "1234567")
-
+        
         let preferences = lastPostParameters["preferences"] as! [String: Any]
         XCTAssertTrue(preferences["include_account_details"] as! Bool)
         let paymentSourceConstraint = preferences["payment_source_constraint"] as! [String: Any]
@@ -75,6 +76,47 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(payee["merchant_id"], "TODO-merchant-id-type")
         let amount = purchaseUnits.first?["amount"] as! [String: String]
         XCTAssertEqual(amount["currency_code"], "USD")
+    }
+    
+    func testGetRecommendedPaymentMethods_whenAPIError_throws() async {
+        mockAPIClient.cannedResponseError = NSError(domain: "fake-error-domain", code: 123, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
+        
+        do {
+            _ = try await sut.getRecommendedPaymentMethods(request: request)
+            XCTFail("Expected error to be thrown.")
+        } catch let error as NSError {
+            XCTAssertEqual(error.code, 123)
+            XCTAssertEqual(error.localizedDescription, "fake-error-description")
+            XCTAssertEqual(error.domain, "fake-error-domain")
+            
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:failed")
+        }
+    }
+    
+    func testGetRecommendedPaymentMethods_whenAPISuccess_returnsResult() async {
+        do {
+            let mockEligiblePaymentMethodResponse = BTJSON(
+                value: [
+                    "eligible_methods": [
+                        "venmo": [
+                            "can_be_vaulted": true,
+                            "eligible_in_paypal_network": true,
+                            "recommended": true,
+                            "recommended_priority": 1
+                        ]
+                    ]
+                ]
+            )
+            mockAPIClient.cannedResponseBody = mockEligiblePaymentMethodResponse
+            let result = try await sut.getRecommendedPaymentMethods(request: request)
+            XCTAssertNotNil(result)
+            XCTAssertTrue(result.isVenmoRecommended)
+            XCTAssertFalse(result.isPayPalRecommended)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            
+        } catch let error as NSError {
+            XCTFail("An error was not expected")
+        }
     }
     
     // MARK: - Analytics
