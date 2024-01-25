@@ -5,7 +5,12 @@ class FakeAnalyticsService: BTAnalyticsService {
     var lastEvent: String = ""
     var didLastFlush: Bool = false
 
-    override func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil, correlationID: String? = nil) {
+    override func sendAnalyticsEvent(
+        _ eventName: String,
+        errorDescription: String? = nil,
+        correlationID: String? = nil,
+        payPalContextID: String? = nil
+    ) {
         self.lastEvent = eventName
         self.didLastFlush = false
     }
@@ -14,6 +19,7 @@ class FakeAnalyticsService: BTAnalyticsService {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
+        payPalContextID: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         self.lastEvent = eventName
