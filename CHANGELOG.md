@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Send `paypal_context_id` in `batch_params` to PayPal's analytics service (FPTI) when available
+
 ## 6.12.0 (2024-01-18)
 * BraintreePayPal
   * Add `imageURL`, `upcCode`, and `upcType` to `BTPayPalLineItem`
