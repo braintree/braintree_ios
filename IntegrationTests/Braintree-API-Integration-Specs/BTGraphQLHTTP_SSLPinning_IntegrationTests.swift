@@ -9,7 +9,7 @@ class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
 
-        graphqlHttp.post("/ping") { body, response, error in
+        graphqlHttp.post("/ping") { body, error in
             XCTAssertNil(error)
             expectation.fulfill()
         }
@@ -22,7 +22,7 @@ class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
 
-        graphqlHttp.post("/ping") { body, response, error in
+        graphqlHttp.post("/ping") { body, error in
             XCTAssertNil(error)
             expectation.fulfill()
         }

@@ -168,7 +168,6 @@ class BTApplePay_Tests: XCTestCase {
                 "status" : "production"
             ]
         ])
-        mockClient.cannedHTTPURLResponse = HTTPURLResponse(url: URL(string: "any")!, statusCode: 503, httpVersion: nil, headerFields: nil)
         mockClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: nil)
         let client = BTApplePayClient(apiClient: mockClient)
         let payment = MockPKPayment()

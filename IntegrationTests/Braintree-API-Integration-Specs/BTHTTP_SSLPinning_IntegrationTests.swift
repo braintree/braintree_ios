@@ -8,7 +8,7 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
         let http = BTHTTP(url: url, tokenizationKey: "development_testing_integration_merchant_id")
         let expectation = expectation(description: "Callback invoked")
 
-        http.get("/heartbeat.json") { body, _, error in
+        http.get("/heartbeat.json") { body, error in
             XCTAssertNil(error)
             XCTAssertEqual(body?["heartbeat"].asString(), "d2765eaa0dad9b300b971f074-production")
             expectation.fulfill()
@@ -22,7 +22,7 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
         let http = BTHTTP(url: url, tokenizationKey: "development_testing_integration_merchant_id")
         let expectation = expectation(description: "Callback invoked")
 
-        http.get("/heartbeat.json") { body, _, error in
+        http.get("/heartbeat.json") { body, error in
             XCTAssertNil(error)
             XCTAssertEqual(body?["heartbeat"].asString(), "d2765eaa0dad9b300b971f074-sandbox")
             expectation.fulfill()
@@ -36,9 +36,8 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
         let http = BTHTTP(url: url, tokenizationKey: "development_testing_integration_merchant_id")
         let expectation = expectation(description: "Callback invoked")
 
-        http.get("/heartbeat.json") { body, response, error in
+        http.get("/heartbeat.json") { body, error in
             XCTAssertNil(body)
-            XCTAssertNil(response)
 
             let error = error as NSError?
             XCTAssertEqual(error?.domain, URLError.errorDomain)

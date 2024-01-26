@@ -43,33 +43,32 @@ import Foundation
 
         if cannedError != nil {
             dispatchQueue.async {
-                completion?(nil, nil, self.cannedError)
+                completion?(nil, self.cannedError)
             }
         } else {
             let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
                 if path.contains("v1/configuration") {
-                    completion?(self.cannedConfiguration, httpResponse, nil)
+                    completion?(self.cannedConfiguration, nil)
                 } else {
-                    completion?(self.cannedResponse, httpResponse, nil)
+                    completion?(self.cannedResponse, nil)
                 }
             }
         }
     }
 
-    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters
         lastRequestMethod = "POST"
-        if cannedError != nil {
+        if let cannedError {
             dispatchQueue.async {
-                completion?(nil, nil, self.cannedError)
+                completion?(nil, self.cannedError)
             }
         } else {
-            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
             dispatchQueue.async {
-                completion?(self.cannedResponse, httpResponse, nil)
+                completion?(self.cannedResponse, nil)
             }
         }
     }
@@ -88,9 +87,9 @@ import Foundation
         self.init(url: URL(string: "http://fake.com")!)
     }
 
-    public override func post(_ path: String, parameters: [String: Any]?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]?, completion: ((BTJSON?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
-        completion?(self.cannedConfiguration, nil, nil)
+        completion?(self.cannedConfiguration, nil)
     }
 }

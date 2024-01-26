@@ -358,16 +358,16 @@ class BTAPIClient_Tests: XCTestCase {
         }
 
         let expectation2 = expectation(description: "GET request")
-        apiClient?.get("/endpoint", parameters: nil) { _, response, error in
-            XCTAssertNotNil(response)
+        apiClient?.get("/endpoint", parameters: nil) { body, error in
+            XCTAssertNotNil(body)
             XCTAssertNil(error)
             XCTAssert(Thread.isMainThread)
             expectation2.fulfill()
         }
 
         let expectation3 = expectation(description: "POST request")
-        apiClient?.post("/endpoint", parameters: nil) { _, response, error in
-            XCTAssertNotNil(response)
+        apiClient?.post("/endpoint", parameters: nil) { body, error in
+            XCTAssertNotNil(body)
             XCTAssertNil(error)
             XCTAssert(Thread.isMainThread)
             expectation3.fulfill()
@@ -412,7 +412,7 @@ class BTAPIClient_Tests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
 
         let expectation = expectation(description: "POST callback")
-        apiClient?.post("/", parameters: [:], httpType: .gateway) { _, _, _ in
+        apiClient?.post("/", parameters: [:], httpType: .gateway) { _, _ in
             let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
             XCTAssertEqual(metaParameters?["integration"] as? String, metadata?.integration.stringValue)
             XCTAssertEqual(metaParameters?["source"] as? String, metadata?.source.stringValue)
@@ -440,7 +440,7 @@ class BTAPIClient_Tests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: mockResponse, statusCode: 200)
 
         let expectation = expectation(description: "POST callback")
-        apiClient?.post("/", parameters: [:], httpType: .graphQLAPI) { _, _, _ in
+        apiClient?.post("/", parameters: [:], httpType: .graphQLAPI) { _, _ in
             let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
             XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata?.integration.stringValue)
             XCTAssertEqual(clientSdkMetadata?["source"] as? String, metadata?.source.stringValue)
@@ -463,7 +463,7 @@ class BTAPIClient_Tests: XCTestCase {
         let postParameters = FakeRequest(testValue: "fake-value")
 
         let expectation = expectation(description: "POST callback")
-        apiClient?.post("/", parameters: postParameters, httpType: .gateway) { _, _, _ in
+        apiClient?.post("/", parameters: postParameters, httpType: .gateway) { _, _ in
             XCTAssertEqual(mockHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
             
             let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
@@ -495,7 +495,7 @@ class BTAPIClient_Tests: XCTestCase {
         let postParameters = FakeRequest(testValue: "fake-value")
 
         let expectation = expectation(description: "POST callback")
-        apiClient?.post("/", parameters: postParameters, httpType: .graphQLAPI) { _, _, _ in
+        apiClient?.post("/", parameters: postParameters, httpType: .graphQLAPI) { _, _ in
             XCTAssertEqual(mockGraphQLHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
             
             let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
@@ -520,8 +520,8 @@ class BTAPIClient_Tests: XCTestCase {
         fakeConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
 
         let expectation = expectation(description: "GET request")
-        apiClient?.get("/example", parameters: nil) { body, response, error in
-            XCTAssertNil(response)
+        apiClient?.get("/example", parameters: nil) { body, error in
+            XCTAssertNil(body)
             XCTAssertNotNil(error)
             XCTAssertEqual(mockError, error as NSError?)
             expectation.fulfill()
@@ -539,8 +539,8 @@ class BTAPIClient_Tests: XCTestCase {
         fakeConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
 
         let expectation = expectation(description: "GET request")
-        apiClient?.post("/example", parameters: nil) { body, response, error in
-            XCTAssertNil(response)
+        apiClient?.post("/example", parameters: nil) { body, error in
+            XCTAssertNil(body)
             XCTAssertNotNil(error)
             XCTAssertEqual(mockError, error as NSError?)
             expectation.fulfill()

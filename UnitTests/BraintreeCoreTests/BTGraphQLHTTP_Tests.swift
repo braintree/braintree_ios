@@ -27,7 +27,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         let expectation = expectation(description: "GET callback")
         http?.session = fakeSession
 
-        http?.post("") { body, _, _ in
+        http?.post("") { body, _ in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
 
             XCTAssertTrue(httpRequest.url!.absoluteString.contains("bt-http-test://base.example.com:1234/base/path"))
@@ -41,7 +41,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         let expectation = expectation(description: "GET callback")
         http?.session = fakeSession
 
-        http?.post("hey/go/here.html") { body, _, _ in
+        http?.post("hey/go/here.html") { body, _ in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
 
             XCTAssertEqual(httpRequest.url!.absoluteString, "bt-http-test://base.example.com:1234/base/path")
@@ -56,7 +56,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
     func testGETRequests_areUnsupported() {
         do {
             try BTExceptionCatcher.catchException {
-                self.http?.get("") { _, _, _ in
+                self.http?.get("") { _, _ in
                     // no-op
                 }
             }
@@ -68,7 +68,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
     func testPUTRequests_areUnsupported() {
         do {
             try BTExceptionCatcher.catchException {
-                self.http?.put("") { _, _, _ in
+                self.http?.put("") { _, _ in
                     // no-op
                 }
             }
@@ -80,7 +80,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
     func testDELETERequests_areUnsupported() {
         do {
             try BTExceptionCatcher.catchException {
-                self.http?.delete("") { _, _, _ in
+                self.http?.delete("") { _, _ in
                     // no-op
                 }
             }
@@ -95,7 +95,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         let expectation = expectation(description: "POST callback")
         http?.session = fakeSession
 
-        http?.post("", parameters: ["hey": "now"]) { body, _, error in
+        http?.post("", parameters: ["hey": "now"]) { body, error in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             let bodyJSONData = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!).data(using: .utf8)
 
@@ -123,7 +123,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             )
         }
 
-        http?.post("", parameters: ["hey": "now"]) { body, _, _ in
+        http?.post("", parameters: ["hey": "now"]) { body, _ in
             XCTAssertEqual(body?.asDictionary(), stubResponseData as NSDictionary)
             expectation.fulfill()
         }
@@ -137,7 +137,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         let expectation = expectation(description: "POST callback")
         http?.session = fakeSession
 
-        http?.post("", parameters: nil) { body, _, _ in
+        http?.post("", parameters: nil) { body, _ in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             let requestHeaders = httpRequest.allHTTPHeaderFields
             XCTAssertTrue((requestHeaders!["User-Agent"])!.matches("^Braintree/iOS/\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$"))
@@ -151,7 +151,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         let expectation = expectation(description: "POST callback")
         http?.session = fakeSession
 
-        http?.post("", parameters: nil) { body, _, _ in
+        http?.post("", parameters: nil) { body, _ in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             let requestHeaders = httpRequest.allHTTPHeaderFields
             XCTAssertEqual(requestHeaders!["Braintree-Version"], "2018-03-06")
@@ -166,7 +166,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         http = BTGraphQLHTTP(url: BTHTTPTestProtocol.testBaseURL(), tokenizationKey: "development_testing_key")
         http?.session = fakeSession
 
-        http?.post("", parameters: nil) { body, _, _ in
+        http?.post("", parameters: nil) { body, _ in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             let requestHeaders = httpRequest.allHTTPHeaderFields
             XCTAssertEqual(requestHeaders!["Authorization"], "Bearer development_testing_key")
@@ -180,7 +180,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         let expectation = expectation(description: "POST callback")
         http?.session = fakeSession
 
-        http?.post("", parameters: nil) { body, _, _ in
+        http?.post("", parameters: nil) { body, _ in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             let requestHeaders = httpRequest.allHTTPHeaderFields
             XCTAssertEqual(requestHeaders!["Authorization"], "Bearer test-authorization-fingerprint")
@@ -295,7 +295,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             )
         }
 
-        http?.post("") { body, _, error in
+        http?.post("") { body, error in
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
@@ -341,7 +341,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             )
         }
 
-        http?.post("") { body, _, error in
+        http?.post("") { body, error in
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
@@ -371,7 +371,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             )
         }
 
-        http?.post("") { body, _, error in
+        http?.post("") { body, error in
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
@@ -399,7 +399,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             )
         }
 
-        http?.post("") { body, _, error in
+        http?.post("") { body, error in
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
@@ -440,7 +440,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             }
 
             let expectation = expectation(description: "POST callback")
-            http?.post("") { body, _, error in
+            http?.post("") { body, error in
                 let error = error as NSError?
                 let errorDictionary = error!.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
                 XCTAssertEqual(errorDictionary.statusCode, expectedStatusCode)
@@ -495,7 +495,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             )
         }
 
-        http?.post("") { body, _, error in
+        http?.post("") { body, error in
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
@@ -526,7 +526,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             )
         }
 
-        http?.post("") { body, _, error in
+        http?.post("") { body, error in
             XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
 
             let error = error as NSError?
@@ -547,9 +547,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             return HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: -1002, userInfo: [:]))
         }
 
-        http?.post("") { body, response, error in
+        http?.post("") { body, error in
             XCTAssertNil(body)
-            XCTAssertNil(response)
 
             let error = error as NSError?
             XCTAssertEqual(error?.domain, URLError.errorDomain)
@@ -561,7 +560,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
     }
 
     func testHttpError_withEmptyDataAndNoError_returnsError() {
-        http?.handleRequestCompletion(data: nil, response: nil, error: nil) { _, _, error in
+        http?.handleRequestCompletion(data: nil, response: nil, error: nil) { _, error in
             let error = error as NSError?
             XCTAssertEqual(error?.localizedDescription, "Unable to create HTTPURLResponse from response data.")
             XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)

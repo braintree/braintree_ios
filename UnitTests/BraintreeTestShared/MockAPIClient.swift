@@ -16,7 +16,6 @@ public class MockAPIClient: BTAPIClient {
     @objc public var cannedConfigurationResponseError : NSError? = nil
 
     public var cannedResponseError : NSError? = nil
-    public var cannedHTTPURLResponse : HTTPURLResponse? = nil
     public var cannedResponseBody : BTJSON? = nil
     var cannedMetadata : BTClientMetadata? = nil
 
@@ -27,7 +26,7 @@ public class MockAPIClient: BTAPIClient {
         super.init(authorization: authorization, sendAnalyticsEvent: sendAnalyticsEvent)
     }
 
-    public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, Error?) -> Void)? = nil) {
         lastGETPath = path
         lastGETParameters = try? parameters?.toDictionary()
         lastGETAPIClientHTTPType = httpType
@@ -35,21 +34,21 @@ public class MockAPIClient: BTAPIClient {
         guard let completionBlock = completionBlock else {
             return
         }
-        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
+        completionBlock(cannedResponseBody, cannedResponseError)
     }
     
-    public override func post(_ path: String, parameters: [String: Any]?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
         lastPOSTParameters = parameters
         lastPOSTAPIClientHTTPType = httpType
         
-        guard let completionBlock = completionBlock else {
+        guard let completionBlock else {
             return
         }
-        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
+        completionBlock(cannedResponseBody, cannedResponseError)
     }
     
-    public override func post(_ path: String, parameters: Encodable, httpType: BTAPIClientHTTPService = .gateway, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: Encodable, httpType: BTAPIClientHTTPService = .gateway, completion completionBlock: ((BTJSON?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
         lastPOSTParameters = try? parameters.toDictionary()
         lastPOSTAPIClientHTTPType = httpType
@@ -57,7 +56,7 @@ public class MockAPIClient: BTAPIClient {
         guard let completionBlock = completionBlock else {
             return
         }
-        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
+        completionBlock(cannedResponseBody, cannedResponseError)
     }
     
     public override func fetchOrReturnRemoteConfiguration(_ completionBlock: @escaping (BTConfiguration?, Error?) -> Void) {
