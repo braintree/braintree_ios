@@ -347,6 +347,31 @@ import Foundation
     }
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
+    /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
+    /// - Parameters:
+    ///   - path: The endpoint URI path.
+    ///   - parameters: Optional set of query parameters to be encoded with the request.
+    ///   - httpType: The underlying `BTAPIClientHTTPService` of the HTTP request. Defaults to `.gateway`.
+    /// - Returns: On success, `(BTJSON?, HTTPURLResponse?)` will contain the JSON body response and the HTTP response.
+    @_documentation(visibility: private)
+    public func post(
+        _ path: String,
+        parameters: Encodable,
+        httpType: BTAPIClientHTTPService = .gateway
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        try await withCheckedThrowingContinuation { continuation in
+            post(path, parameters: parameters, httpType: httpType) { json, httpResonse, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: (json, httpResonse))
+                }
+            }
+        }
+    }
+
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil, correlationID: String? = nil) {
         analyticsService?.sendAnalyticsEvent(

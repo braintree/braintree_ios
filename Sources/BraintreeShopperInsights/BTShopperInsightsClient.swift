@@ -44,22 +44,15 @@ public class BTShopperInsightsClient {
                 merchantID: "TODO-merchant-id-type"
             )
             
-            apiClient.post(
-                "/v2/payments/find-eligible-methods",
-                parameters: postParameters,
-                httpType: .payPalAPI
-            ) { json, _, error in
-                Task {
-                    if let error {
-                        try self.notifyFailure(with: error)
-                    }
-                    let result = BTShopperInsightsResult()
-                    return self.notifySuccess(with: result)
-                }
+            do {
+                let (_, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
+                
                 // TODO: - Handle API Response. DTBTSDK-3388
+                let result = BTShopperInsightsResult()
+                return self.notifySuccess(with: result)
+            } catch {
+                throw self.notifyFailure(with: error)
             }
-            
-            return BTShopperInsightsResult()
         }
     }
     
@@ -106,8 +99,8 @@ public class BTShopperInsightsClient {
         return result
     }
     
-    private func notifyFailure(with error: Error) throws {
+    private func notifyFailure(with error: Error) -> Error {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsFailed, errorDescription: error.localizedDescription)
-        throw error
+        return error
     }
 }
