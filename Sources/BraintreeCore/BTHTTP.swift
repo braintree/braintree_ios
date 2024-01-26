@@ -4,7 +4,7 @@ import Security
 /// Performs HTTP methods on the Braintree Client API
 class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
-    typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+    typealias RequestCompletion = (BTJSON?, Error?) -> Void
 
     enum ClientAuthorization: Equatable {
         case authorizationFingerprint(String), tokenizationKey(String)
@@ -108,8 +108,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             } else {
                 httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
             }
-        } catch let error {
-            completion(nil, nil, error)
+        } catch {
+            completion(nil, error)
         }
     }
 
@@ -122,8 +122,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         do {
             let dict = try parameters.toDictionary()
             post(path, parameters: dict, completion: completion)
-        } catch let error {
-            completion(nil, nil, error)
+        } catch {
+            completion(nil, error)
         }
     }
 
@@ -164,7 +164,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 } else {
                     self.session.dataTask(with: request) { [weak self] data, response, error in
                         guard let self else {
-                            completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
+                            completion?(nil, BTHTTPError.deallocated("BTHTTP"))
                             return
                         }
 
@@ -189,7 +189,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
-                    completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
+                    completion?(nil, BTHTTPError.deallocated("BTHTTP"))
                     return
                 }
 
@@ -342,7 +342,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         if httpResponse.statusCode >= 400 {
             handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
                 guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
+                    completion(nil, BTHTTPError.deallocated("BTHTTP"))
                     return
                 }
 
@@ -356,7 +356,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         if json.isError {
             handleJSONResponseError(json: json, response: response) { [weak self] error in
                 guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
+                    completion(nil, BTHTTPError.deallocated("BTHTTP"))
                     return
                 }
 
@@ -379,7 +379,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     
     func callCompletionAsync(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
         self.dispatchQueue.async {
-            completion(body, response, error)
+            completion(body, error)
         }
     }
 

@@ -29,7 +29,7 @@ import BraintreeCore
         let parameters = BTAmexRewardsBalanceRequest(currencyIsoCode: currencyISOCode, paymentMethodNonce: nonce)
         apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.started)
 
-        apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, response, error in
+        apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, error in
             guard let self else {
                 completion(nil, BTAmericanExpressError.deallocated)
                 return

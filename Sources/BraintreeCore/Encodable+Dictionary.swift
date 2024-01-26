@@ -16,7 +16,7 @@ extension Encodable {
             } else {
                 throw BTHTTPError.serializationError("Serialization to dictionary failed.")
             }
-        } catch let error {
+        } catch {
             throw BTHTTPError.serializationError(error.localizedDescription)
         }
     }

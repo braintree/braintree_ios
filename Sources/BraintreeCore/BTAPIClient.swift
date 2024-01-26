@@ -6,7 +6,7 @@ import Foundation
 
     /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
-    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+    public typealias RequestCompletion = (BTJSON?, Error?) -> Void
 
     // MARK: - Public Properties
 
@@ -144,40 +144,42 @@ import Foundation
             configPath = clientToken.configURL.absoluteString
         }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
+        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
             }
 
-            if error != nil {
+            if let error {
                 completion(nil, error)
                 return
-            } else if response?.statusCode != 200 {
+            }
+
+            configuration = BTConfiguration(json: body)
+
+            if http == nil {
+                let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
+
+                if let clientToken, let baseURL {
+                    http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                } else if let tokenizationKey, let baseURL {
+                    http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
+                }
+            }
+
+            if graphQLHTTP == nil {
+                let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
+
+                if let clientToken, let graphQLBaseURL {
+                    graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                } else if let tokenizationKey, let graphQLBaseURL {
+                    graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
+                }
+            }
+
+            guard let configuration else {
                 completion(nil, BTAPIClientError.configurationUnavailable)
                 return
-            } else {
-                configuration = BTConfiguration(json: body)
-
-                if http == nil {
-                    let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
-
-                    if let clientToken, let baseURL {
-                        http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let baseURL {
-                        http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
-
-                if graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
-
-                    if let clientToken, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
             }
 
             completion(configuration, nil)
@@ -213,7 +215,7 @@ import Foundation
             "session_id": metadata.sessionID
         ]
 
-        get("v1/payment_methods", parameters: parameters) { body, response, error in
+        get("v1/payment_methods", parameters: parameters) { body, error in
             if let error {
                 completion(nil, error)
                 return
@@ -254,12 +256,12 @@ import Foundation
     ) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
+                completion(nil, BTAPIClientError.deallocated)
                 return
             }
 
             if let error {
-                completion(nil, nil, error)
+                completion(nil, error)
                 return
             }
 
@@ -289,12 +291,12 @@ import Foundation
     ) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
+                completion(nil, BTAPIClientError.deallocated)
                 return
             }
 
             if let error {
-                completion(nil, nil, error)
+                completion(nil, error)
                 return
             }
 
@@ -323,12 +325,12 @@ import Foundation
     ) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
+                completion(nil, BTAPIClientError.deallocated)
                 return
             }
 
             if let error {
-                completion(nil, nil, error)
+                completion(nil, error)
                 return
             }
 

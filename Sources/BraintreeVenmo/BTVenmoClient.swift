@@ -157,7 +157,7 @@ import BraintreeCore
                 "variables": inputDictionary
             ]
 
-            self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
+            self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, error in
                 if let error = error as? NSError {
                     let jsonResponse: BTJSON? = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
                     let errorMessage = jsonResponse?["error"]["message"].asString()
@@ -250,7 +250,7 @@ import BraintreeCore
                 "variables": variablesDictionary
             ]
 
-            apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
+            apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, error in
                 if let error {
                     self.notifyFailure(with: error, completion: self.appSwitchCompletion)
                     return
@@ -338,7 +338,7 @@ import BraintreeCore
         let venmoAccount: [String: String] = ["nonce": nonce]
         let parameters: [String: Any] = ["venmoAccount": venmoAccount]
 
-        apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
+        apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, error in
             if let error {
                 self.notifyFailure(with: error, completion: self.appSwitchCompletion)
                 return

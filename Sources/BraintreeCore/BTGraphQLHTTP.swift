@@ -2,7 +2,7 @@ import Foundation
 
 class BTGraphQLHTTP: BTHTTP {
 
-    typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
+    typealias RequestCompletion = (BTJSON?, Error?) -> Void
 
     // MARK: - Properties
 
@@ -38,7 +38,7 @@ class BTGraphQLHTTP: BTHTTP {
         if baseURL.absoluteString.isEmpty || baseURL.absoluteString == "" {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
-            completion(nil, nil, BTHTTPError.missingBaseURL(errorUserInfo))
+            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
             return
         }
         
@@ -53,12 +53,12 @@ class BTGraphQLHTTP: BTHTTP {
         }
         
         guard let components = URLComponents(string: baseURL.absoluteString) else {
-            completion(nil, nil, BTHTTPError.urlStringInvalid)
+            completion(nil, BTHTTPError.urlStringInvalid)
             return
         }
 
         guard let urlFromComponents = components.url else {
-            completion(nil, nil, BTHTTPError.urlStringInvalid)
+            completion(nil, BTHTTPError.urlStringInvalid)
             return
         }
 
@@ -81,14 +81,14 @@ class BTGraphQLHTTP: BTHTTP {
             // Perform the actual request
             session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTGraphQLHTTP"))
+                    completion(nil, BTHTTPError.deallocated("BTGraphQLHTTP"))
                     return
                 }
 
                 handleRequestCompletion(data: data, response: response, error: error, completion: completion)
             }.resume()
         } catch {
-            completion(nil, nil, error)
+            completion(nil, error)
         }
     }
 

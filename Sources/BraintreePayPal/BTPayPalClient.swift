@@ -184,7 +184,7 @@ import BraintreeDataCollector
             "sessionId": metadata.sessionID
         ]
         
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, response, error in
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -241,7 +241,7 @@ import BraintreeDataCollector
             }
 
             self.payPalRequest = request
-            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
+            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyFailure(with: error, completion: completion)

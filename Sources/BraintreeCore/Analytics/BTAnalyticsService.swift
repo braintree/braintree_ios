@@ -104,7 +104,7 @@ class BTAnalyticsService: Equatable {
 
                 self.analyticsSessions.keys.forEach { sessionID in
                     let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: sessionID)
-                    self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, response, error in
+                    self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, error in
                         if let error {
                             completion(error)
                         }

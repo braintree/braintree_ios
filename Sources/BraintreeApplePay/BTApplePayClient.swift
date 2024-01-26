@@ -91,7 +91,7 @@ import BraintreeCore
             
             let parameters = BTApplePaymentTokensRequest(token: payment.token)
 
-            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
+            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, error in
                 if let error {
                     self.notifyFailure(with: error, completion: completion)
                     return

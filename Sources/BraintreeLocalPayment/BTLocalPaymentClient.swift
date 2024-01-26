@@ -145,7 +145,7 @@ import BraintreeDataCollector
 
         requestParameters["_meta"] = metadataParameters
 
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, response, error in
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, error in
             guard let self else {
                 NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
                 return
@@ -230,7 +230,7 @@ import BraintreeDataCollector
 
         requestParameters["experience_profile"] = experienceProfile
 
-        apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, response, error in
+        apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, error in
             if let error {
                 self.notifyFailure(with: error, completion: self.merchantCompletion)
                 return

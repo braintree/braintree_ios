@@ -53,7 +53,7 @@ import BraintreeCore
 
                 let parameters = card.graphQLParameters()
 
-                self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
+                self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, error in
                     if let error = error as NSError? {
                         let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
                         var callbackError: Error? = error
@@ -81,7 +81,7 @@ import BraintreeCore
             } else {
                 let parameters = self.clientAPIParameters(for: card)
 
-                self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
+                self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, error in
                     if let error = error as NSError? {
                         let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
                         var callbackError: Error? = error
