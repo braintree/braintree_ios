@@ -155,6 +155,11 @@ import Foundation
                 return
             }
 
+            guard let body else {
+                completion(nil, BTAPIClientError.configurationUnavailable)
+                return
+            }
+
             configuration = BTConfiguration(json: body)
 
             if http == nil {
@@ -175,11 +180,6 @@ import Foundation
                 } else if let tokenizationKey, let graphQLBaseURL {
                     graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
                 }
-            }
-
-            guard let configuration else {
-                completion(nil, BTAPIClientError.configurationUnavailable)
-                return
             }
 
             completion(configuration, nil)
