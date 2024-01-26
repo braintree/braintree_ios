@@ -17,6 +17,11 @@ import PayPalCheckout
     
     /// Used in POST body for FPTI analytics.
     private var clientMetadataID: String? = nil
+
+    /// Used for linking events from the client to server side request
+    /// In the PayPal Native Checkout flow this will be an Order ID
+    private var payPalContextID: String? = nil
+
     private let nativeCheckoutProvider: BTPayPalNativeCheckoutStartable
 
 
@@ -121,10 +126,15 @@ import PayPalCheckout
         self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeStarted)
         
         let orderCreationClient = BTPayPalNativeOrderCreationClient(with: apiClient)
+
         orderCreationClient.createOrder(with: request) { [weak self] result in
             guard let self else {
                 completion(nil, BTPayPalNativeCheckoutError.deallocated)
                 return
+            }
+
+            if let payPalContextID = orderCreationClient.payPalContextID, !payPalContextID.isEmpty {
+                self.payPalContextID = payPalContextID
             }
 
             switch result {
@@ -169,7 +179,11 @@ import PayPalCheckout
         with result: BTPayPalNativeCheckoutAccountNonce,
         completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeSucceeded, correlationID: clientMetadataID)
+        apiClient.sendAnalyticsEvent(
+            BTPayPalNativeCheckoutAnalytics.tokenizeSucceeded,
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
+        )
         completion(result, nil)
     }
 
@@ -177,13 +191,18 @@ import PayPalCheckout
         apiClient.sendAnalyticsEvent(
             BTPayPalNativeCheckoutAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
-            correlationID: clientMetadataID
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalNativeCheckoutAnalytics.tokenizeCanceled, correlationID: clientMetadataID)
+        self.apiClient.sendAnalyticsEvent(
+            BTPayPalNativeCheckoutAnalytics.tokenizeCanceled,
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
+        )
         completion(nil, BTPayPalNativeCheckoutError.canceled)
     }
 }

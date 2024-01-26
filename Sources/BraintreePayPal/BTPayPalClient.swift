@@ -35,6 +35,10 @@ import BraintreeDataCollector
     /// Will only be `true` if the user proceed through the `UIAlertController`
     private var webSessionReturned: Bool = false
 
+    /// Used for linking events from the client to server side request
+    /// In the PayPal flow this will be either an EC token or a Billing Agreement token
+    private var payPalContextID: String? = nil
+
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -263,6 +267,11 @@ import BraintreeDataCollector
                 }
 
                 let pairingID = self.token(from: approvalURL)
+
+                if !pairingID.isEmpty {
+                    self.payPalContextID = pairingID
+                }
+
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
                 self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
@@ -292,19 +301,19 @@ import BraintreeDataCollector
             handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
             } else {
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed, payPalContextID: payPalContextID)
             }
         } sessionDidCancel: { [self] in
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled, payPalContextID: payPalContextID)
             }
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, payPalContextID: payPalContextID)
             notifyCancel(completion: completion)
             return
         }
@@ -399,7 +408,7 @@ import BraintreeDataCollector
         with result: BTPayPalAccountNonce,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded, correlationID: clientMetadataID)
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeSucceeded, correlationID: clientMetadataID, payPalContextID: payPalContextID)
         completion(result, nil)
     }
 
@@ -407,13 +416,18 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
-            correlationID: clientMetadataID
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, correlationID: clientMetadataID)
+        self.apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.browserLoginCanceled,
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
+        )
         completion(nil, BTPayPalError.canceled)
     }
 }

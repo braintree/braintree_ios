@@ -34,6 +34,8 @@ class BTAnalyticsService: Equatable {
 
     private let apiClient: BTAPIClient
 
+    private var payPalContextID: String?
+
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient, flushThreshold: Int = 1) {
@@ -48,8 +50,14 @@ class BTAnalyticsService: Equatable {
     ///  Events are queued and sent in batches to the analytics service, based on the status of the app and
     ///  the number of queued events. After exiting this method, there is no guarantee that the event has been sent.
     /// - Parameter eventName: String representing the event name
-    func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil, correlationID: String? = nil) {
+    func sendAnalyticsEvent(
+        _ eventName: String,
+        errorDescription: String? = nil,
+        correlationID: String? = nil,
+        payPalContextID: String? = nil
+    ) {
         DispatchQueue.main.async {
+            self.payPalContextID = payPalContextID
             self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
             self.flushIfAtThreshold()
         }
@@ -60,9 +68,11 @@ class BTAnalyticsService: Equatable {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
+        payPalContextID: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         DispatchQueue.main.async {
+            self.payPalContextID = payPalContextID
             self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
             self.flush(completion)
         }
@@ -159,6 +169,7 @@ class BTAnalyticsService: Equatable {
             environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
+            payPalContextID: payPalContextID,
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )

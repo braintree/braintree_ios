@@ -210,6 +210,35 @@ class BTPayPalClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
 
+    func testTokenize_whenApprovalURLContainsPayPalContextID_sendsPayPalContextIDInAnalytics() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.paypal.com/checkout?token=EC-Random-Value"
+            ]
+        ])
+
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        payPalClient.tokenize(request) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "EC-Random-Value")
+    }
+
+    func testTokenize_whenApprovalURLDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.paypal.com/checkout?token="
+            ]
+        ])
+
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        payPalClient.tokenize(request) { _, _ in }
+
+        XCTAssertNil(mockAPIClient.postedPayPalContextID)
+    }
 
     // MARK: - Browser switch
 
