@@ -98,6 +98,8 @@ struct FPTIBatchData: Codable {
 
         let merchantID: String?
 
+        /// Used for linking events from the client to server side request
+        /// This value will be PayPal Order ID, Payment Token, EC token or Billing Agreement depending on the flow
         let payPalContextID: String?
 
         let platform = "iOS"

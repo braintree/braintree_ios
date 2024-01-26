@@ -27,6 +27,8 @@ import BraintreeDataCollector
     private let apiClient: BTAPIClient
     private var request: BTLocalPaymentRequest?
 
+    /// Used for linking events from the client to server side request
+    /// In the Local Payment flow this will be a Payment Token/Order ID
     private var payPalContextID: String? = nil
 
     // MARK: - Initializer

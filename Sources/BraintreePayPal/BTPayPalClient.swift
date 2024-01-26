@@ -35,6 +35,8 @@ import BraintreeDataCollector
     /// Will only be `true` if the user proceed through the `UIAlertController`
     private var webSessionReturned: Bool = false
 
+    /// Used for linking events from the client to server side request
+    /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
 
     // MARK: - Initializer
