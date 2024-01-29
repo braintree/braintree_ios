@@ -14,23 +14,35 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
     
-    lazy var emailLabel = label("Email")
-    lazy var emailTextField = textField(placeholder: "Email")
-    lazy var countryCodeLabel = label("Country Code")
-    lazy var countryCodeTextField = textField(placeholder: "Country Code")
-    lazy var nationalNumberLabel = label("National Number")
-    lazy var nationalNumberTextField = textField(placeholder: "National Number")
+    lazy var emailView: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "Email"
+        view.textField.placeholder = "Email"
+        return view
+    }()
+    
+    lazy var countryCodeView: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "Country Code"
+        view.textField.placeholder = "Country Code"
+        return view
+    }()
+    
+    lazy var nationalNumberView: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "National Number"
+        view.textField.placeholder = "National Number"
+        return view
+    }()
+    
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
     lazy var shopperInsightsInputView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
-                emailLabel,
-                emailTextField,
-                countryCodeLabel,
-                countryCodeTextField,
-                nationalNumberLabel,
-                nationalNumberTextField,
+                emailView,
+                countryCodeView,
+                nationalNumberView,
             ]
         )
         stackView.axis = .vertical
@@ -86,10 +98,10 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         self.progressBlock("Fetching shopper insights...")
         
         let request = BTShopperInsightsRequest(
-            email: emailTextField.text ?? "",
+            email: emailView.textField.text ?? "",
             phone: Phone(
-                countryCode: countryCodeTextField.text ?? "",
-                nationalNumber: nationalNumberTextField.text ?? ""
+                countryCode: countryCodeView.textField.text ?? "",
+                nationalNumber: nationalNumberView.textField.text ?? ""
             )
         )
         Task {
