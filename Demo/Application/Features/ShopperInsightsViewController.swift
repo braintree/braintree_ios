@@ -31,10 +31,10 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         self.progressBlock("Fetching shopper insights...")
         
         let request = BTShopperInsightsRequest(
-            email: "my-email@gmail.com",
+            email: "PR1_merchantname@personal.example.com",
             phone: Phone(
                 countryCode: "1",
-                nationalNumber: "1234567"
+                nationalNumber: "4082321001"
             )
         )
         Task {

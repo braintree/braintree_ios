@@ -41,7 +41,7 @@ public class BTShopperInsightsClient {
             let postParameters = BTEligiblePaymentsRequest(
                 email: request.email,
                 phone: request.phone,
-                merchantID: "TODO-merchant-id-type"
+                merchantID: "MXSJ4F5BADVNS"
             )
             
             do {
