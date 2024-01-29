@@ -64,7 +64,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual((customer["email"] as! String), "my-email")
         XCTAssertEqual((customer["phone"] as! [String: String])["country_code"], "1")
         XCTAssertEqual((customer["phone"] as! [String: String])["national_number"], "1234567")
-        
+
         let preferences = lastPostParameters["preferences"] as! [String: Any]
         XCTAssertTrue(preferences["include_account_details"] as! Bool)
         let paymentSourceConstraint = preferences["payment_source_constraint"] as! [String: Any]
@@ -115,7 +115,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
             
         } catch let error as NSError {
-            XCTFail("An error was not expected")
+            XCTFail("An error was not expected.")
         }
     }
     

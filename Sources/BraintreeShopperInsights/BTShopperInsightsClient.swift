@@ -49,7 +49,7 @@ public class BTShopperInsightsClient {
                 let eligibleMethodsJSON: BTJSON = json?["eligible_methods"] ?? BTJSON()
                 let eligibilePaymentMethods = BTEligibilePaymentMethods(json: eligibleMethodsJSON)
                 let result = BTShopperInsightsResult(
-                    isPayPalRecommended: isPaymentRecommended(eligibilePaymentMethods.paypal) ,
+                    isPayPalRecommended: isPaymentRecommended(eligibilePaymentMethods.paypal),
                     isVenmoRecommended: isPaymentRecommended(eligibilePaymentMethods.venmo)
                 )
                 return self.notifySuccess(with: result)
