@@ -7,12 +7,9 @@ struct BTEligibilePaymentMethods {
     var venmo: BTEligiblePaymentMethodDetails?
     
     init(json: BTJSON?) {
-        if let paypalJSON = json?["paypal"] {
-            self.paypal = BTEligiblePaymentMethodDetails(json: paypalJSON)
-        }
-        
-        if let venmoJSON = json?["venmo"] {
-            self.venmo = BTEligiblePaymentMethodDetails(json: venmoJSON)
+        if let eligibileMethodsJSON = json?["eligible_methods"] {
+            self.paypal = BTEligiblePaymentMethodDetails(json: eligibileMethodsJSON["paypal"])
+            self.venmo = BTEligiblePaymentMethodDetails(json: eligibileMethodsJSON["venmo"])
         }
     }
 }

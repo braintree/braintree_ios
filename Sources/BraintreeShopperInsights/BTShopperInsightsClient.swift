@@ -46,8 +46,11 @@ public class BTShopperInsightsClient {
             
             do {
                 let (json,_) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
-                let eligibleMethodsJSON: BTJSON = json?["eligible_methods"] ?? BTJSON()
-                let eligibilePaymentMethods = BTEligibilePaymentMethods(json: eligibleMethodsJSON)
+                guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
+                      eligibleMethodsJSON.count != 0 else {
+                    throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
+                }
+                let eligibilePaymentMethods = BTEligibilePaymentMethods(json: json)
                 let result = BTShopperInsightsResult(
                     isPayPalRecommended: isPaymentRecommended(eligibilePaymentMethods.paypal),
                     isVenmoRecommended: isPaymentRecommended(eligibilePaymentMethods.venmo)
@@ -63,7 +66,6 @@ public class BTShopperInsightsClient {
     /// - Parameters:
     ///    - paymentMethodDetail: a `BTEligiblePaymentMethodDetails` containing the payment source's information
     /// - Returns: `true` if both `eligibleInPPNetwork` and `recommended` are enabled, otherwise returns false.
-    /// - Note: This feature is in beta. It's public API may change or be removed in future releases.        -
     private func isPaymentRecommended(_ paymentMethodDetail: BTEligiblePaymentMethodDetails?) -> Bool {
         if let eligibleInPPNetwork = paymentMethodDetail?.eligibleInPaypalNetwork,
            let recommended = paymentMethodDetail?.recommended {
