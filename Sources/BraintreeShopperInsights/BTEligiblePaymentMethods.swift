@@ -2,7 +2,7 @@
 import BraintreeCore
 #endif
 
-struct BTEligibilePaymentMethods {
+struct BTEligiblePaymentMethods {
     var paypal: BTEligiblePaymentMethodDetails?
     var venmo: BTEligiblePaymentMethodDetails?
     

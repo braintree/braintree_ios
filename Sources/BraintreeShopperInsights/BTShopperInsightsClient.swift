@@ -50,7 +50,7 @@ public class BTShopperInsightsClient {
                       eligibleMethodsJSON.count != 0 else {
                     throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
                 }
-                let eligibilePaymentMethods = BTEligibilePaymentMethods(json: json)
+                let eligibilePaymentMethods = BTEligiblePaymentMethods(json: json)
                 let result = BTShopperInsightsResult(
                     isPayPalRecommended: isPaymentRecommended(eligibilePaymentMethods.paypal),
                     isVenmoRecommended: isPaymentRecommended(eligibilePaymentMethods.venmo)
