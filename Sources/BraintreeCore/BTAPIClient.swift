@@ -345,7 +345,7 @@ import Foundation
             http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
-    
+
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///
     /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.

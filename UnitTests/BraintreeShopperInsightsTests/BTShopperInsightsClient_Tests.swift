@@ -113,7 +113,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertTrue(result.isVenmoRecommended)
             XCTAssertFalse(result.isPayPalRecommended)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
-            
         } catch let error as NSError {
             XCTFail("An error was not expected.")
         }
