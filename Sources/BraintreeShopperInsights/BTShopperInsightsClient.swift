@@ -45,7 +45,7 @@ public class BTShopperInsightsClient {
             )
             
             do {
-                let (json,_) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
+                let (json, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
                 guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
                       eligibleMethodsJSON.count != 0 else {
                     throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)

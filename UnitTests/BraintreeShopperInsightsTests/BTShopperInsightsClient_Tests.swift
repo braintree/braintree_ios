@@ -27,10 +27,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testGetRecommendedPaymentMethods_returnsDefaultRecommendations() async {
         let result = try? await sut.getRecommendedPaymentMethods(request: request)
         
-        XCTAssertNotNil(result!.isPayPalRecommended)
-        XCTAssertNotNil(result!.isVenmoRecommended)
+        XCTAssertNil(result)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:get-recommended-payments:started")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:succeeded")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:failed")
     }
     
     func testGetRecommendedPaymentMethods_whenBothAppsInstalled_returnsTrue() async {

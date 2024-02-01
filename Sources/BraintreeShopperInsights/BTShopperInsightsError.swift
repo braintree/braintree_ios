@@ -16,7 +16,7 @@ public enum BTShopperInsightsError: Int, Error, CustomNSError, LocalizedError, E
     public var errorDescription: String? {
         switch self {
         case .emptyBodyReturned:
-            "An empty body was returned from the Payments Ready API during the request."
+            "An empty body was returned from the Eligible Payments API during the request."
         }
     }
 }
