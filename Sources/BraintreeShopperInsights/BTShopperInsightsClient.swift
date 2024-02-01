@@ -41,14 +41,20 @@ public class BTShopperInsightsClient {
             let postParameters = BTEligiblePaymentsRequest(
                 email: request.email,
                 phone: request.phone,
-                merchantID: "TODO-merchant-id-type"
+                merchantID: "MXSJ4F5BADVNS"
             )
             
             do {
-                let (_, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
-                
-                // TODO: - Handle API Response. DTBTSDK-3388
-                let result = BTShopperInsightsResult()
+                let (json, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
+                guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
+                      eligibleMethodsJSON.count != 0 else {
+                    throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
+                }
+                let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
+                let result = BTShopperInsightsResult(
+                    isPayPalRecommended: isPaymentRecommended(eligiblePaymentMethods.paypal),
+                    isVenmoRecommended: isPaymentRecommended(eligiblePaymentMethods.venmo)
+                )
                 return self.notifySuccess(with: result)
             } catch {
                 throw self.notifyFailure(with: error)
@@ -56,6 +62,18 @@ public class BTShopperInsightsClient {
         }
     }
     
+    /// This method determines whether a payment source is recommended
+    /// - Parameters:
+    ///    - paymentMethodDetail: a `BTEligiblePaymentMethodDetails` containing the payment source's information
+    /// - Returns: `true` if both `eligibleInPPNetwork` and `recommended` are enabled, otherwise returns false.
+    private func isPaymentRecommended(_ paymentMethodDetail: BTEligiblePaymentMethodDetails?) -> Bool {
+        if let eligibleInPPNetwork = paymentMethodDetail?.eligibleInPaypalNetwork,
+           let recommended = paymentMethodDetail?.recommended {
+            return eligibleInPPNetwork && recommended
+        }
+        return false
+    }
+
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     public func sendPayPalPresentedEvent() {
