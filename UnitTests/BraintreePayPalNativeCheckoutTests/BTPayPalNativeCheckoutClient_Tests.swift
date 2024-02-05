@@ -212,4 +212,48 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, "Invalid environment identifier found in the Braintree configuration.")
         }
     }
+
+    func testTokenize_whenOrderIDIsReturned_sendsPayPalContextIDInAnalytics() {
+        apiClient.cannedConfigurationResponseBody = BTJSON(
+            value: [
+                "paypalEnabled": true,
+                "environment": "sandbox",
+                "paypal": ["clientId": "a-fake-client-id"] as [String: Any?]
+            ] as [String: Any]
+        )
+
+        apiClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": ["redirectUrl": "https://www.paypal.com/checkout?token=fake-ec-token"]
+        ])
+
+        let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+        let request = BTPayPalNativeVaultRequest()
+        
+        payPalNativeCheckoutClient.tokenize(request) { _, _ in }
+        mockNativeCheckoutProvider.triggerApprove(returnURL: "https://fake-return-url")
+
+        XCTAssertEqual(apiClient.postedPayPalContextID, "fake-ec-token")
+    }
+
+    func testTokenize_whenOrderIDIsNotReturned_doesNotSendPayPalContextIDInAnalytics() {
+        apiClient.cannedConfigurationResponseBody = BTJSON(
+            value: [
+                "paypalEnabled": true,
+                "environment": "sandbox",
+                "paypal": ["clientId": "a-fake-client-id"] as [String: Any?]
+            ] as [String: Any]
+        )
+
+        apiClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": ["redirectUrl": "https://www.paypal.com/checkout?token="]
+        ])
+
+        let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+        let request = BTPayPalNativeVaultRequest()
+
+        payPalNativeCheckoutClient.tokenize(request) { _, _ in }
+        mockNativeCheckoutProvider.triggerApprove(returnURL: "https://fake-return-url")
+
+        XCTAssertNil(apiClient.postedPayPalContextID)
+    }
 }

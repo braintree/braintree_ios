@@ -2,6 +2,12 @@
 
 ## unreleased
 * Add BraintreeShopperInsights module (BETA)
+* Send `paypal_context_id` in `batch_params` to PayPal's analytics service (FPTI) when available
+
+## 6.12.0 (2024-01-18)
+* BraintreePayPal
+  * Add `imageURL`, `upcCode`, and `upcType` to `BTPayPalLineItem`
+>>>>>>> main
 
 ## 6.11.0 (2023-12-20)
 * Update all SDK errors to be public and [Equatable](https://developer.apple.com/documentation/swift/equatable) (fixes #1152 and #1080)
