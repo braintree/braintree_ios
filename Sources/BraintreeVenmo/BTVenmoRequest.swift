@@ -49,7 +49,11 @@ import Foundation
     /// Whether the customer's shipping address should be collected and displayed on the Venmo paysheet.
     /// Defaults to `false`
     public var collectCustomerShippingAddress: Bool = false
-    
+
+    /// Indicates whether the purchase amount is the final amount.
+    /// Defaults to `false`
+    public var finalAmount: Bool = false
+
     /// Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
     ///
     /// If this value is set, `totalAmount` must also be set.
