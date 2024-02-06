@@ -10,7 +10,6 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var paypalClient = BTPayPalClient(apiClient: apiClient)
     lazy var venmoClient = BTVenmoClient(apiClient: apiClient)
     
-    lazy var payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(payPalCheckoutButtonTapped))
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
     
@@ -18,6 +17,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let view = TextFieldWithLabel()
         view.label.text = "Email"
         view.textField.placeholder = "Email"
+        view.textField.text = "PR1_merchantname@personal.example.com"
         return view
     }()
     
@@ -25,6 +25,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let view = TextFieldWithLabel()
         view.label.text = "Country Code"
         view.textField.placeholder = "Country Code"
+        view.textField.text = "1"
         return view
     }()
     
@@ -32,6 +33,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let view = TextFieldWithLabel()
         view.label.text = "National Number"
         view.textField.placeholder = "National Number"
+        view.textField.text = "4082321001"
         return view
     }()
     
@@ -83,7 +85,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     override func createPaymentButton() -> UIView {
-        let buttons = [payPalCheckoutButton, payPalVaultButton, venmoButton]
+        let buttons = [payPalVaultButton, venmoButton]
         buttons.forEach { $0.isEnabled = false }
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
@@ -108,25 +110,11 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
             do {
                 let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
                 self.progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)")
-                self.payPalCheckoutButton.isEnabled = result.isPayPalRecommended
                 self.payPalVaultButton.isEnabled = result.isPayPalRecommended
                 self.venmoButton.isEnabled = result.isVenmoRecommended
             } catch {
                 self.progressBlock("Error: \(error.localizedDescription)")
             }
-        }
-    }
-
-    @objc func payPalCheckoutButtonTapped(_ button: UIButton) {
-        self.progressBlock("Tapped PayPal Checkout")
-        
-        button.setTitle("Processing...", for: .disabled)
-        button.isEnabled = false
-        
-        let paypalRequest = BTPayPalCheckoutRequest(amount: "4.30")
-        paypalClient.tokenize(paypalRequest) { (nonce, error) in
-            button.isEnabled = true
-            self.displayResultDetails(nonce: nonce, error: error)
         }
     }
     
