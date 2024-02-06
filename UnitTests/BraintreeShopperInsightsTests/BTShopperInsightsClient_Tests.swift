@@ -24,30 +24,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     // MARK: - getRecommendedPaymentMethods()
     
-    func testGetRecommendedPaymentMethods_returnsDefaultRecommendations() async {
-        let result = try? await sut.getRecommendedPaymentMethods(request: request)
-        
-        XCTAssertNil(result)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:get-recommended-payments:started")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:failed")
-    }
-    
-    func testGetRecommendedPaymentMethods_whenBothAppsInstalled_returnsTrue() async {
-        let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = false
-        fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://")!)
-        fakeApplication.canOpenURLWhitelist.append(URL(string: "paypal://")!)
-        sut.application = fakeApplication
-        
-        let result = try? await sut.getRecommendedPaymentMethods(request: request)
-        
-        XCTAssertTrue(result!.isPayPalRecommended)
-        XCTAssertTrue(result!.isVenmoRecommended)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:get-recommended-payments:started")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "shopper-insights:get-recommended-payments:succeeded")
-    }
-    
-    func testGetRecommendedPaymentMethods_whenAppsNotInstalled_callsEligiblePaymentsAPI() async {
+    func testGetRecommendedPaymentMethods_callsEligiblePaymentsAPI() async {
         _ = try? await sut.getRecommendedPaymentMethods(request: request)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v2/payments/find-eligible-methods")
