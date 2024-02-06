@@ -33,7 +33,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let view = TextFieldWithLabel()
         view.label.text = "National Number"
         view.textField.placeholder = "National Number"
-        view.textField.text = "408-232-1001"
+        view.textField.text = "4082321001"
         return view
     }()
     
