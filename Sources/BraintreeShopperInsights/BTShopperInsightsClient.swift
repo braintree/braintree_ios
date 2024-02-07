@@ -33,32 +33,27 @@ public class BTShopperInsightsClient {
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
         
-        if isVenmoAppInstalled() && isPayPalAppInstalled() {
-            let result = BTShopperInsightsResult(isPayPalRecommended: true, isVenmoRecommended: true)
-            return notifySuccess(with: result)
-        } else {
-            // TODO: - Fill in appropriate merchantID (or ppClientID) from config once API team decides what we need to send
-            let postParameters = BTEligiblePaymentsRequest(
-                email: request.email,
-                phone: request.phone,
-                merchantID: "MXSJ4F5BADVNS"
-            )
-            
-            do {
-                let (json, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
-                guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
-                      eligibleMethodsJSON.count != 0 else {
-                    throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
-                }
-                let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
-                let result = BTShopperInsightsResult(
-                    isPayPalRecommended: isPaymentRecommended(eligiblePaymentMethods.paypal),
-                    isVenmoRecommended: isPaymentRecommended(eligiblePaymentMethods.venmo)
-                )
-                return self.notifySuccess(with: result)
-            } catch {
-                throw self.notifyFailure(with: error)
+        // TODO: - Fill in appropriate merchantID (or ppClientID) from config once API team decides what we need to send
+        let postParameters = BTEligiblePaymentsRequest(
+            email: request.email,
+            phone: request.phone,
+            merchantID: "MXSJ4F5BADVNS"
+        )
+        
+        do {
+            let (json, _) = try await apiClient.post("/v2/payments/find-eligible-methods", parameters: postParameters, httpType: .payPalAPI)
+            guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
+                  eligibleMethodsJSON.count != 0 else {
+                throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
             }
+            let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
+            let result = BTShopperInsightsResult(
+                isPayPalRecommended: isPaymentRecommended(eligiblePaymentMethods.paypal),
+                isVenmoRecommended: isPaymentRecommended(eligiblePaymentMethods.venmo)
+            )
+            return self.notifySuccess(with: result)
+        } catch {
+            throw self.notifyFailure(with: error)
         }
     }
     
@@ -96,18 +91,6 @@ public class BTShopperInsightsClient {
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendVenmoSelectedEvent() {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoSelected)
-    }
-    
-    // MARK: - Private Methods
-    
-    private func isVenmoAppInstalled() -> Bool {
-        let venmoURL = URL(string: "com.venmo.touch.v2://")!
-        return application.canOpenURL(venmoURL)
-    }
-    
-    private func isPayPalAppInstalled() -> Bool {
-        let paypalURL = URL(string: "paypal://")!
-        return application.canOpenURL(paypalURL)
     }
     
     // MARK: - Analytics Helper Methods
