@@ -57,7 +57,7 @@ import Foundation
         }
     }
 
-    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]? = nil, headers:[String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters
@@ -88,7 +88,7 @@ import Foundation
         self.init(url: URL(string: "http://fake.com")!)
     }
 
-    public override func post(_ path: String, parameters: [String: Any]?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: [String: Any]?, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
         completion?(self.cannedConfiguration, nil, nil)

@@ -114,14 +114,14 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    func post(_ path: String, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
     }
     
-    func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
+    func post(_ path: String, parameters: Encodable, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters.toDictionary()
-            post(path, parameters: dict, completion: completion)
+            post(path, parameters: dict, headers: headers, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -179,6 +179,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         method: String,
         path: String,
         parameters: [String: Any]? = [:],
+        headers: [String: String]? = [:],
         completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -202,6 +203,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         method: String,
         path: String,
         parameters: [String: Any]? = [:],
+        headers: [String: String]? = nil,
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         let hasHTTPPrefix: Bool = path.hasPrefix("http")
@@ -251,6 +253,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             method: method,
             url: fullPathURL,
             parameters: mutableParameters,
+            headers: headers,
             isDataURL: isDataURL
         ) { request, error in
             completion(request, error)
@@ -261,6 +264,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         method: String,
         url: URL,
         parameters: NSMutableDictionary? = [:],
+        headers additionalHeaders: [String: String]? = nil,
         isDataURL: Bool,
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
@@ -282,6 +286,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             if case .tokenizationKey(let key) = clientAuthorization {
                 headers["Client-Key"] = key
             }
+        }
+        
+        if let additionalHeaders {
+            headers = headers.merging(additionalHeaders) { (_, newHeader) in newHeader}
         }
 
         if method == "GET" || method == "DELETE" {

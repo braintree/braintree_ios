@@ -52,6 +52,11 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(payee["merchant_id"], "MXSJ4F5BADVNS")
         let amount = purchaseUnits.first?["amount"] as! [String: String]
         XCTAssertEqual(amount["currency_code"], "USD")
+        
+        let fakeClientMetadata = BTClientMetadata()
+        fakeClientMetadata.sessionID = "fake-session-id"
+        mockAPIClient.cannedMetadata = fakeClientMetadata
+        XCTAssertEqual(mockAPIClient.lastPOSTAdditionalHeaders?["PayPal-Client-Metadata-Id"], "fake-session-id")
     }
     
     func testGetRecommendedPaymentMethods_whenAPIError_throws() async {
