@@ -16,6 +16,8 @@ struct BTPayPalNativeOrder: Equatable {
 
 class BTPayPalNativeOrderCreationClient {
 
+    var payPalContextID: String? = nil
+
     private let apiClient: BTAPIClient
 
     init(with apiClient: BTAPIClient) {
@@ -72,6 +74,7 @@ class BTPayPalNativeOrderCreationClient {
                     orderID: hermesResponse.orderID
                 )
 
+                self.payPalContextID = order.orderID
                 completion(.success(order))
             }
         }

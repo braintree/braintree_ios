@@ -334,6 +334,49 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         let paypalAccount = mockAPIClient.lastPOSTParameters?["paypal_account"] as! [String:Any]
         XCTAssertNotNil(paypalAccount["correlation_id"] as? String)
+        XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "123aaa-123-543-777")
+    }
+
+    func testStartPayment_whenPaymentResourcePayPalContextID_sendsPayPalContextIDInAnalytics() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+
+        let client = BTLocalPaymentClient(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "paymentResource": [
+                    "redirectUrl": "https://www.somebankurl.com",
+                    "paymentToken": "123aaa-123-543-777"
+                ]
+            ]
+        )
+
+        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+
+        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
+
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "123aaa-123-543-777")
+    }
+
+    func testStartPayment_whenPaymentResourceDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+
+        let client = BTLocalPaymentClient(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "paymentResource": [
+                    "redirectUrl": "https://www.somebankurl.com",
+                    "paymentToken": ""
+                ]
+            ]
+        )
+
+        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+
+        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
+
+        XCTAssertNil(mockAPIClient.postedPayPalContextID)
     }
 
     func testStartPayment_cancelResult_callsCompletionBlock() {

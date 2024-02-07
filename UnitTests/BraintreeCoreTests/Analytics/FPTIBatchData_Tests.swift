@@ -11,6 +11,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         environment: "fake-env",
         integrationType: "fake-integration-type",
         merchantID: "fake-merchant-id",
+        payPalContextID: "fake-order-id",
         sessionID: "fake-session",
         tokenizationKey: "fake-auth"
     )
@@ -70,6 +71,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
         XCTAssertTrue((batchParams["mobile_device_model"] as! String).matches("iPhone\\d,\\d|x86_64|arm64"))
         XCTAssertEqual(batchParams["merchant_id"] as! String, "fake-merchant-id")
+        XCTAssertEqual(batchParams["paypal_context_id"] as! String, "fake-order-id")
         XCTAssertEqual(batchParams["platform"] as? String, "iOS")
         XCTAssertEqual(batchParams["session_id"] as? String, "fake-session")
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
