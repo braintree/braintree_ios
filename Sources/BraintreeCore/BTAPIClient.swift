@@ -343,7 +343,7 @@ import Foundation
             }
 
             let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
+            http(for: httpType)?.post(path, parameters: postParameters, headers: headers, completion: completion)
         }
     }
 

@@ -29,6 +29,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v2/payments/find-eligible-methods")
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .payPalAPI)
+        XCTAssertEqual(mockAPIClient.lastPOSTAdditionalHeaders?["PayPal-Client-Metadata-Id"], mockAPIClient.metadata.sessionID)
         
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
             XCTFail()
@@ -52,8 +53,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(payee["merchant_id"], "MXSJ4F5BADVNS")
         let amount = purchaseUnits.first?["amount"] as! [String: String]
         XCTAssertEqual(amount["currency_code"], "USD")
-        
-        XCTAssertEqual(mockAPIClient.lastPOSTAdditionalHeaders?["PayPal-Client-Metadata-Id"], mockAPIClient.metadata.sessionID)
     }
     
     func testGetRecommendedPaymentMethods_whenAPIError_throws() async {

@@ -115,7 +115,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
     func post(_ path: String, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
+        httpRequest(method: "POST", path: path, parameters: parameters, headers: headers, completion: completion)
     }
     
     func post(_ path: String, parameters: Encodable, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
@@ -179,10 +179,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         method: String,
         path: String,
         parameters: [String: Any]? = [:],
-        headers: [String: String]? = [:],
+        headers: [String: String]? = nil,
         completion: RequestCompletion?
     ) {
-        createRequest(method: method, path: path, parameters: parameters) { request, error in
+        createRequest(method: method, path: path, parameters: parameters, headers: headers) { request, error in
             guard let request = request else {
                 self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
                 return
@@ -289,7 +289,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
         
         if let additionalHeaders {
-            headers = headers.merging(additionalHeaders) { (_, newHeader) in newHeader}
+            headers = headers.merging(additionalHeaders) { $1 }
         }
 
         if method == "GET" || method == "DELETE" {
