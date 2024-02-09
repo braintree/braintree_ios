@@ -47,13 +47,13 @@ struct BTVenmoAppSwitchReturnURL {
                 paymentContextID = resourceID
             } else {
                 state = .succeeded
-                nonce = parameters["paymentMethodNonce"]
+                nonce = parameters["paymentMethodNonce"] ?? parameters["payment_method_nonce"]
                 username = parameters["username"]
             }
         } else if url.path == "/vzero/auth/venmo/error" {
             state = .failed
-            let errorMessage: String? = parameters["errorMessage"]
-            let errorCode = Int(parameters["errorCode"] ?? "0")
+            let errorMessage: String? = parameters["errorMessage"] ?? parameters["error_message"]
+            let errorCode = Int(parameters["errorCode"] ?? parameters["error_code"] ?? "0")
             error = BTVenmoAppSwitchError.returnURLError(errorCode ?? 0, errorMessage)
         } else if url.path == "/vzero/auth/venmo/cancel" {
             state = .canceled
