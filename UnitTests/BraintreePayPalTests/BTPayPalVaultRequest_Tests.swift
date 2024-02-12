@@ -47,11 +47,13 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
         request.offerCredit = true
+        request.payerEmail = "fake@email.com"
 
         let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["description"] as? String, "desc")
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
+        XCTAssertEqual(parameters["payer_email"] as? String, "fake@email.com")
 
         guard let shippingParams = parameters["shipping_address"] as? [String:String] else { XCTFail(); return }
 
