@@ -2,6 +2,7 @@
 
 ## unreleased
 * Send `paypal_context_id` in `batch_params` to PayPal's analytics service (FPTI) when available
+* Add `BTPayPalRequest.payerEmail` optional property
 
 ## 6.12.0 (2024-01-18)
 * BraintreePayPal
