@@ -93,6 +93,9 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
+        shopperInsightsClient.sendPayPalPresentedEvent()
+        shopperInsightsClient.sendVenmoPresentedEvent()
+        
         return stackView
     }
     
@@ -120,6 +123,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
         self.progressBlock("Tapped PayPal Vault")
+        shopperInsightsClient.sendPayPalSelectedEvent()
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
@@ -133,6 +137,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     @objc func venmoButtonTapped(_ button: UIButton) {
         self.progressBlock("Tapped Venmo")
+        shopperInsightsClient.sendVenmoSelectedEvent()
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
