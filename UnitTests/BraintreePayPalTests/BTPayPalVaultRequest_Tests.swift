@@ -47,7 +47,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
         request.offerCredit = true
-        request.payerEmail = "fake@email.com"
+        request.userAuthenticationEmail = "fake@email.com"
 
         let parameters = request.parameters(with: configuration)
 

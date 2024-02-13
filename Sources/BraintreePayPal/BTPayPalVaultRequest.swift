@@ -13,7 +13,7 @@ import BraintreeCore
     public var offerCredit: Bool
     
     /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    public var payerEmail: String?
+    public var userAuthenticationEmail: String?
 
     // MARK: - Initializer
 
@@ -37,8 +37,8 @@ import BraintreeCore
             vaultParameters["description"] = billingAgreementDescription
         }
         
-        if let payerEmail {
-            vaultParameters["payer_email"] = payerEmail
+        if let userAuthenticationEmail {
+            vaultParameters["payer_email"] = userAuthenticationEmail
         }
 
         if let shippingAddressOverride {

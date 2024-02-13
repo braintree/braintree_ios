@@ -51,6 +51,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalVaultRequest()
+        request.userAuthenticationEmail = "production-job+team-paypal@getbraintree.com"
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
