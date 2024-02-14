@@ -52,7 +52,7 @@ import Foundation
 
     /// Indicates whether the purchase amount is the final amount.
     /// Defaults to `false`
-    public var finalAmount: Bool = false
+    public var isFinalAmount: Bool = false
 
     /// Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
     ///
