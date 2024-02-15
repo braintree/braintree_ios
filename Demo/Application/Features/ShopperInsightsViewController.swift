@@ -129,6 +129,8 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         button.isEnabled = false
         
         let paypalRequest = BTPayPalVaultRequest()
+        paypalRequest.userAuthenticationEmail = emailView.textField.text ?? nil
+        
         paypalClient.tokenize(paypalRequest) { (nonce, error) in
             button.isEnabled = true
             self.displayResultDetails(nonce: nonce, error: error)
