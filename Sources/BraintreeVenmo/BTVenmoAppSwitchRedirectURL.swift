@@ -62,7 +62,7 @@ struct BTVenmoAppSwitchRedirectURL {
 
     // MARK: - Internal Methods
 
-    func universalLink() -> URL {
+    func universalLinksURL() -> URL {
         let universalLinkURL = URL(string: "https://venmo.com/go/checkout")!
 
         var urlComponent = URLComponents(url: universalLinkURL, resolvingAgainstBaseURL: false)!
@@ -71,7 +71,7 @@ struct BTVenmoAppSwitchRedirectURL {
         return urlComponent.url!
     }
 
-    func appSwitchLink() -> URL {
+    func appSwitchURL() -> URL {
         var components = BTVenmoAppSwitchRedirectURL.appSwitchBaseURLComponents()
         components.percentEncodedQuery = BTURLUtils.queryString(from: queryParameters as NSDictionary)
         

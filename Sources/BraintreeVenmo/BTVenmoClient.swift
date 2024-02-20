@@ -198,9 +198,9 @@ import BraintreeCore
                     )
 
                     if request.fallbackToWeb {
-                        self.performAppSwitch(with: appSwitchURL.universalLink(), shouldVault: request.vault, completion: completion)
+                        self.startVenmoFlow(with: appSwitchURL.universalLinksURL(), shouldVault: request.vault, completion: completion)
                     } else {
-                        self.performAppSwitch(with: appSwitchURL.appSwitchLink(), shouldVault: request.vault, completion: completion)
+                        self.startVenmoFlow(with: appSwitchURL.appSwitchURL(), shouldVault: request.vault, completion: completion)
                     }
                 } catch {
                     self.notifyFailure(with: error, completion: completion)
@@ -326,7 +326,7 @@ import BraintreeCore
         }
     }
 
-    func performAppSwitch(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+    func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         application.open(appSwitchURL, options: [:]) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
         }
