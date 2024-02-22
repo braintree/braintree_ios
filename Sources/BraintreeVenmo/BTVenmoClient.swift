@@ -40,6 +40,10 @@ import BraintreeCore
     /// We require a static reference of the client to call `handleReturnURL` and return to the app.
     static var venmoClient: BTVenmoClient? = nil
 
+    /// Used for linking events from the client to server side request
+    /// In the PayPal flow this will be either an EC token or a Billing Agreement token
+    private var payPalContextID: String? = nil
+
     // MARK: - Initializer
 
     /// Creates an Apple Pay client
@@ -185,6 +189,8 @@ import BraintreeCore
                     )
                     return
                 }
+
+                self.payPalContextID = paymentContextID
 
                 do {
                     let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
@@ -400,20 +406,21 @@ import BraintreeCore
         with result: BTVenmoAccountNonce,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded, payPalContextID: payPalContextID)
         completion(result, nil)
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeFailed,
-            errorDescription: error.localizedDescription
+            errorDescription: error.localizedDescription,
+            payPalContextID: payPalContextID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled, payPalContextID: payPalContextID)
         completion(nil, BTVenmoError.canceled)
     }
 }

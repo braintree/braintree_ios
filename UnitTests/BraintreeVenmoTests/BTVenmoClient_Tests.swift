@@ -586,6 +586,7 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
     }
 
     func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() {
@@ -611,6 +612,7 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {
@@ -783,6 +785,7 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
     }
 
     // Note: testing of handleReturnURL is done implicitly while testing authorizeAccountWithCompletion
