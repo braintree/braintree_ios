@@ -16,9 +16,9 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
                 environment: "sandbox"
             )
 
-            XCTAssertTrue(requestURL.appSwitchURL().absoluteString.contains("com.venmo.touch.v2://x-callback-url/vzero/auth"))
+            XCTAssertTrue(requestURL.appSwitchURL()!.absoluteString.contains("com.venmo.touch.v2://x-callback-url/vzero/auth"))
 
-            let components = URLComponents(string: requestURL.appSwitchURL().absoluteString)
+            let components = URLComponents(string: requestURL.appSwitchURL()!.absoluteString)
             guard let queryItems = components?.queryItems else { XCTFail(); return }
             XCTAssertTrue(queryItems.contains(URLQueryItem(name: "resource_id", value: "12345")))
         } catch {
@@ -56,9 +56,9 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
                 environment: "sandbox"
             )
 
-            XCTAssertTrue(requestURL.universalLinksURL().absoluteString.contains("https://venmo.com/go/checkout"))
+            XCTAssertTrue(requestURL.universalLinksURL()!.absoluteString.contains("https://venmo.com/go/checkout"))
 
-            let components = URLComponents(string: requestURL.universalLinksURL().absoluteString)
+            let components = URLComponents(string: requestURL.universalLinksURL()!.absoluteString)
             guard let queryItems = components?.queryItems else { XCTFail(); return }
             XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-success", value: "url-scheme://x-callback-url/vzero/auth/venmo/success")))
             XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-error", value: "url-scheme://x-callback-url/vzero/auth/venmo/error")))

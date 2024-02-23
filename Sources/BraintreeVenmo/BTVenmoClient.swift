@@ -204,9 +204,19 @@ import BraintreeCore
                     )
 
                     if request.fallbackToWeb {
-                        self.startVenmoFlow(with: appSwitchURL.universalLinksURL(), shouldVault: request.vault, completion: completion)
+                        guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
+                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"), completion: completion)
+                            return
+                        }
+
+                        self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
                     } else {
-                        self.startVenmoFlow(with: appSwitchURL.appSwitchURL(), shouldVault: request.vault, completion: completion)
+                        guard let appSwitchURL = appSwitchURL.appSwitchURL() else {
+                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("App switch URL cannot be nil"), completion: completion)
+                            return
+                        }
+
+                        self.startVenmoFlow(with: appSwitchURL, shouldVault: request.vault, completion: completion)
                     }
                 } catch {
                     self.notifyFailure(with: error, completion: completion)
