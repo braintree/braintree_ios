@@ -41,7 +41,7 @@ import BraintreeCore
     static var venmoClient: BTVenmoClient? = nil
 
     /// Used for linking events from the client to server side request
-    /// In the PayPal flow this will be either an EC token or a Billing Agreement token
+    /// In the Venmo flow this will be the payment context ID
     private var payPalContextID: String? = nil
 
     // MARK: - Initializer
