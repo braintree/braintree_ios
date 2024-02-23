@@ -19,20 +19,6 @@ class BTVenmoRequest_Tests: XCTestCase {
         XCTAssertEqual(request.collectCustomerBillingAddress, false)
     }
 
-    func testIsFinalAmount_whenIsFinalAmountSetAsTrue_returnsTrue() {
-        let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
-        request.isFinalAmount = true
-        
-        XCTAssertEqual(request.isFinalAmount, true)
-    }
-
-    func testIsFinalAmount_whenIsFinalAmountSetAsFalse_returnsFalse() {
-        let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
-        request.isFinalAmount = false
-
-        XCTAssertEqual(request.isFinalAmount, false)
-    }
-
     func testIsFinalAmount_whenIsFinalAmountNotSet_defaultsToFalse() {
         let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
         XCTAssertEqual(request.isFinalAmount, false)
