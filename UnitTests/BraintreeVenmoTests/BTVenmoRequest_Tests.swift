@@ -24,7 +24,6 @@ class BTVenmoRequest_Tests: XCTestCase {
         request.isFinalAmount = true
         
         XCTAssertEqual(request.isFinalAmount, true)
-
     }
 
     func testIsFinalAmount_whenIsFinalAmountSetAsFalse_returnsFalse() {
