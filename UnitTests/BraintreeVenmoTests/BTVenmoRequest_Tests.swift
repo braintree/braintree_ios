@@ -19,16 +19,9 @@ class BTVenmoRequest_Tests: XCTestCase {
         XCTAssertEqual(request.collectCustomerBillingAddress, false)
     }
 
-    func testFallbackToWeb_whenTrue_setsValueAsTrue() {
+    func testIsFinalAmount_whenIsFinalAmountNotSet_defaultsToFalse() {
         let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
-        request.fallbackToWeb = true
-        XCTAssertEqual(request.fallbackToWeb, true)
-    }
-
-    func testFallbackToWeb_whenFalse_setsValueAsFalse() {
-        let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
-        request.fallbackToWeb = false
-        XCTAssertEqual(request.fallbackToWeb, false)
+        XCTAssertEqual(request.isFinalAmount, false)
     }
 
     func testFallbackToWeb_whenNotPassed_defaultsValueAsFalse() {
