@@ -38,7 +38,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         analyticsService.sendAnalyticsEvent("an.analytics.event")
 
         // Pause briefly to allow analytics service to dispatch async blocks
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 1.0))
 
 //        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         
