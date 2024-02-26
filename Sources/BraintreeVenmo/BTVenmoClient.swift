@@ -212,12 +212,12 @@ import BraintreeCore
 
                         self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
                     } else {
-                        guard let appSwitchURL = appSwitchURL.appSwitchURL() else {
+                        guard let urlSchemeURL = appSwitchURL.urlSchemeURL() else {
                             self.notifyFailure(with: BTVenmoError.invalidReturnURL("App switch URL cannot be nil"), completion: completion)
                             return
                         }
 
-                        self.startVenmoFlow(with: appSwitchURL, shouldVault: request.vault, completion: completion)
+                        self.startVenmoFlow(with: urlSchemeURL, shouldVault: request.vault, completion: completion)
                     }
                 } catch {
                     self.notifyFailure(with: error, completion: completion)

@@ -71,7 +71,7 @@ struct BTVenmoAppSwitchRedirectURL {
         return urlComponent.url
     }
 
-    func appSwitchURL() -> URL? {
+    func urlSchemeURL() -> URL? {
         var components = BTVenmoAppSwitchRedirectURL.appSwitchBaseURLComponents()
         components.percentEncodedQuery = BTURLUtils.queryString(from: queryParameters as NSDictionary)
         

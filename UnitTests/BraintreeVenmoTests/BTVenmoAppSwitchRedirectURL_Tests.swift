@@ -4,7 +4,7 @@ import XCTest
 
 class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
 
-    func testAppSwitchURL_whenAllValuesAreInitialized_returnsURLWithPaymentContextID() {
+    func testUrlSchemeURL_whenAllValuesAreInitialized_returnsURLWithPaymentContextID() {
         do {
             let requestURL = try BTVenmoAppSwitchRedirectURL(
                 returnURLScheme: "url-scheme",
@@ -16,9 +16,9 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
                 environment: "sandbox"
             )
 
-            XCTAssertTrue(requestURL.appSwitchURL()!.absoluteString.contains("com.venmo.touch.v2://x-callback-url/vzero/auth"))
+            XCTAssertTrue(requestURL.urlSchemeURL()!.absoluteString.contains("com.venmo.touch.v2://x-callback-url/vzero/auth"))
 
-            let components = URLComponents(string: requestURL.appSwitchURL()!.absoluteString)
+            let components = URLComponents(string: requestURL.urlSchemeURL()!.absoluteString)
             guard let queryItems = components?.queryItems else { XCTFail(); return }
             XCTAssertTrue(queryItems.contains(URLQueryItem(name: "resource_id", value: "12345")))
         } catch {
