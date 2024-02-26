@@ -18,4 +18,9 @@ class BTVenmoRequest_Tests: XCTestCase {
         XCTAssertEqual(request.collectCustomerShippingAddress, false)
         XCTAssertEqual(request.collectCustomerBillingAddress, false)
     }
+
+    func testIsFinalAmount_whenIsFinalAmountNotSet_defaultsToFalse() {
+        let request = BTVenmoRequest(paymentMethodUsage: .singleUse)
+        XCTAssertEqual(request.isFinalAmount, false)
+    }
 }

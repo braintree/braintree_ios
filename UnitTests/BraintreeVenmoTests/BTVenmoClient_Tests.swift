@@ -667,6 +667,46 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }
 
+    func testTokenizeVenmoAccount_whenIsFinalAmountSetAsTrue_createsPaymentContext() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.displayName = "app-display-name"
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+
+        venmoRequest.isFinalAmount = true
+        venmoClient.tokenize(venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+        if let inputDict = params?["variables"] as? NSDictionary,
+           let input = inputDict["input"] as? [String:Any] {
+            XCTAssertEqual("true", input["isFinalAmount"] as? String)
+        }
+    }
+
+    func testTokenizeVenmoAccount_whenIsFinalAmountSetAsFalse_createsPaymentContext() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        venmoRequest.displayName = "app-display-name"
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+
+        venmoRequest.isFinalAmount = false
+        venmoClient.tokenize(venmoRequest) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+        if let inputDict = params?["variables"] as? NSDictionary,
+           let input = inputDict["input"] as? [String:Any] {
+            XCTAssertEqual("false", input["isFinalAmount"] as? String)
+        }
+    }
+
     // MARK: - Analytics
     
     func testAPIClientMetadata_hasIntegrationSetToCustom() {

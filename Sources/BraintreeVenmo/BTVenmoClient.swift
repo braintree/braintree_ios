@@ -102,7 +102,8 @@ import BraintreeCore
                 "paymentMethodUsage": request.paymentMethodUsage.stringValue,
                 "merchantProfileId": merchantProfileID,
                 "customerClient": "MOBILE_APP",
-                "intent": "CONTINUE"
+                "intent": "CONTINUE",
+                "isFinalAmount": "\(request.isFinalAmount)"
             ]
             
             if let displayName = request.displayName {
