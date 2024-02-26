@@ -51,6 +51,7 @@ import Foundation
     public var collectCustomerShippingAddress: Bool = false
 
     /// Indicates whether the purchase amount is the final amount.
+    /// Removes "subject to change" notice in Venmo app paysheet UI.
     /// Defaults to `false`
     public var isFinalAmount: Bool = false
 
