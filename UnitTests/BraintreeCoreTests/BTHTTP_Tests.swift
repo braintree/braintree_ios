@@ -401,6 +401,8 @@ final class BTHTTP_Tests: XCTestCase {
         URLCache.shared.removeAllCachedResponses()
         let expectation = expectation(description: "Fetches configuration")
 
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        
         http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: true) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
