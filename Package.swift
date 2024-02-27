@@ -60,7 +60,7 @@ let package = Package(
             dependencies: ["BraintreeCore"],
             resources: [
                 .copy("PrivacyInfo.xcprivacy")
-            ],
+            ]
         ),
         .target(
             name: "BraintreeApplePay",
