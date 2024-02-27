@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
   s.subspec "AmericanExpress" do |s|
     s.source_files  = "Sources/BraintreeAmericanExpress/*.swift"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeAmericanExpress_PrivacyInfo" => "Sources/BraintreeAmericanExpress/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "ApplePay" do |s|
