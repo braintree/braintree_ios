@@ -411,6 +411,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
+    //Run test
     func testErrorResponse_correctlyMapsErrorTypeToStatusCode() {
         let errorTypes = ["user_error": 422, "developer_error": 403, "unknown_error": 500]
         let errorCodes: [String: Int] = [
