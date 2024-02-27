@@ -5,7 +5,7 @@ import PassKit
 struct BTEligiblePaymentsRequest: Encodable {
     
     private let customer: Customer
-    private let purchaseUnits: [PurchaseUnit]
+    private let purchaseUnits = [PurchaseUnit()]
     private let preferences = Preferences()
     
     enum CodingKeys: String, CodingKey {
@@ -25,9 +25,8 @@ struct BTEligiblePaymentsRequest: Encodable {
             case phone = "phone"
         }
     }
-
+    
     struct PurchaseUnit: Encodable {
-        let payee: Payee
         let amount = Amount()
         
         struct Amount: Encodable {
@@ -35,14 +34,6 @@ struct BTEligiblePaymentsRequest: Encodable {
             
             enum CodingKeys: String, CodingKey {
                 case currencyCode = "currency_code"
-            }
-        }
-
-        struct Payee: Encodable {
-            let merchantID: String
-            
-            enum CodingKeys: String, CodingKey {
-                case merchantID = "merchant_id"
             }
         }
     }
@@ -67,8 +58,7 @@ struct BTEligiblePaymentsRequest: Encodable {
         }
     }
     
-    init(email: String?, phone: Phone?, merchantID: String) {
+    init(email: String?, phone: Phone?) {
         self.customer = Customer(email: email, phone: phone)
-        self.purchaseUnits = [PurchaseUnit(payee: PurchaseUnit.Payee(merchantID: merchantID))]
     }
 }
