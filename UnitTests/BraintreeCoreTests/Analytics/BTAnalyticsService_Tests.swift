@@ -27,7 +27,6 @@ final class BTAnalyticsService_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    
     func testSendAnalyticsEvent_whenNumberOfQueuedEventsMeetsThreshold_sendsAnalyticsEvent() {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
@@ -36,19 +35,23 @@ final class BTAnalyticsService_Tests: XCTestCase {
         analyticsService.flushThreshold = 1
         analyticsService.http = mockAnalyticsHTTP
 
-        analyticsService.sendAnalyticsEvent("an.analytics.event")
-
-        // Pause briefly to allow analytics service to dispatch async blocks
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.5))
-
-        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+        let expectation = expectation(description: "Sends analytics event")
         
-        let timestamp = parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
-        let eventName = parseEventName(mockAnalyticsHTTP.lastRequestParameters)
-        XCTAssertEqual(eventName, "an.analytics.event")
-        XCTAssertGreaterThanOrEqual(timestamp, currentTime)
-        XCTAssertLessThanOrEqual(timestamp, oneSecondLater)
-        validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
+        analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1) { error in
+            // Assertions
+            XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+
+            let timestamp = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
+            let eventName = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters)
+            XCTAssertEqual(eventName!, "any.analytics.event")
+            XCTAssertGreaterThanOrEqual(timestamp, self.currentTime)
+            XCTAssertLessThanOrEqual(timestamp, self.oneSecondLater)
+            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
+        }
     }
 
     func testSendAnalyticsEvent_whenFlushThresholdIsGreaterThanNumberOfBatchedEvents_doesNotSendAnalyticsEvent() {
@@ -59,10 +62,15 @@ final class BTAnalyticsService_Tests: XCTestCase {
         analyticsService.flushThreshold = 2
         analyticsService.http = mockAnalyticsHTTP
 
-        analyticsService.sendAnalyticsEvent("an.analytics.event")
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.5))
-
-        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 0)
+        let expectation = expectation(description: "Sends analytics event")
+        
+        analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1) { error in
+            XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
+        }
     }
 
     func testSendAnalyticsEventCompletion_whenCalled_sendsAllEvents() {
@@ -112,7 +120,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         analyticsService.sendAnalyticsEvent("another.analytics.event")
 
         // Pause briefly to allow analytics service to dispatch async blocks
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.5))
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
 
         let expectation = expectation(description: "Sends batched request")
 
