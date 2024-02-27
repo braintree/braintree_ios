@@ -25,7 +25,7 @@ struct BTEligiblePaymentsRequest: Encodable {
             case phone = "phone"
         }
     }
-    
+
     struct PurchaseUnit: Encodable {
         let amount = Amount()
         
