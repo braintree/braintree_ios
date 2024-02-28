@@ -30,6 +30,8 @@ public class BTShopperInsightsClient {
     ///   - request: A `BTShopperInsightsRequest` containing the buyer's user information
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+    ///         Shopper Insights for PayPal payment recommendation is only available in US and AU, FR, DE, ITA, NED, ESP, Switzerland and UK.
+    ///         Venmo recommendation is only available for US.
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
         
