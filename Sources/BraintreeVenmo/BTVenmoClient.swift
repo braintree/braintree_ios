@@ -27,9 +27,6 @@ import BraintreeCore
     /// Stored property used to determine whether a Venmo account nonce should be vaulted after an app switch return
     var shouldVault: Bool = false
 
-    /// Stored property used to determine if the merchant wants to fallback to web if Venmo app not installed
-    var shouldFallback: Bool = false
-
     /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
     /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
@@ -64,8 +61,6 @@ import BraintreeCore
     ///   If the user cancels out of the flow, the error code will be `.canceled`.
     @objc(tokenizeWithVenmoRequest:completion:)
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        shouldFallback = request.fallbackToWeb
-
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
@@ -89,7 +84,7 @@ import BraintreeCore
             }
             
             do {
-                let _ = try self.verifyAppSwitch(with: configuration)
+                let _ = try self.verifyAppSwitch(with: configuration, fallbackToWeb: request.fallbackToWeb)
             } catch {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -394,13 +389,13 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
+    func verifyAppSwitch(with configuration: BTConfiguration, fallbackToWeb: Bool) throws -> Bool {
         if !configuration.isVenmoEnabled {
             throw BTVenmoError.disabled
         }
 
 
-        if !shouldFallback && !isVenmoAppInstalled() {
+        if !fallbackToWeb && !isVenmoAppInstalled() {
             throw BTVenmoError.appNotAvailable
         }
 
