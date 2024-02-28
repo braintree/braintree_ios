@@ -5,8 +5,8 @@ import PassKit
 struct BTEligiblePaymentsRequest: Encodable {
     
     private let customer: Customer
-    private let purchaseUnits = [PurchaseUnit()]
-    private let preferences = Preferences()
+    private let purchaseUnits: [PurchaseUnit]
+    private let preferences: Preferences
     
     enum CodingKeys: String, CodingKey {
         case customer = "customer"
@@ -60,5 +60,7 @@ struct BTEligiblePaymentsRequest: Encodable {
     
     init(email: String?, phone: Phone?) {
         self.customer = Customer(email: email, phone: phone)
+        self.purchaseUnits = [PurchaseUnit()]
+        self.preferences = Preferences()
     }
 }
