@@ -35,11 +35,9 @@ public class BTShopperInsightsClient {
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
         
-        // TODO: - Fill in appropriate merchantID (or ppClientID) from config once API team decides what we need to send
         let postParameters = BTEligiblePaymentsRequest(
             email: request.email,
-            phone: request.phone,
-            merchantID: "MXSJ4F5BADVNS"
+            phone: request.phone
         )
         
         do {
