@@ -4,6 +4,8 @@
 * Add BraintreeShopperInsights module (BETA)
 * Send `paypal_context_id` in `batch_params` to PayPal's analytics service (FPTI) when available
 * Add `BTPayPalRequest.userAuthenticationEmail` optional property
+* ShoppperInsights
+  * Add PricyInfo file
 
 ## 6.12.0 (2024-01-18)
 * BraintreePayPal
