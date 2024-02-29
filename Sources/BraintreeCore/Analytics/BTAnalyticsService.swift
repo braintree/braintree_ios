@@ -36,6 +36,8 @@ class BTAnalyticsService: Equatable {
 
     private var payPalContextID: String?
 
+    private var linkType: String?
+
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient, flushThreshold: Int = 1) {
@@ -54,10 +56,12 @@ class BTAnalyticsService: Equatable {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        linkType: String? = nil
     ) {
         DispatchQueue.main.async {
             self.payPalContextID = payPalContextID
+            self.linkType = linkType
             self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
             self.flushIfAtThreshold()
         }
@@ -69,10 +73,12 @@ class BTAnalyticsService: Equatable {
         errorDescription: String? = nil,
         correlationID: String? = nil,
         payPalContextID: String? = nil,
+        linkType: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         DispatchQueue.main.async {
             self.payPalContextID = payPalContextID
+            self.linkType = linkType
             self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
             self.flush(completion)
         }
@@ -167,7 +173,8 @@ class BTAnalyticsService: Equatable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.fptiEnvironment,
-            integrationType: apiClient.metadata.integration.stringValue,
+            integrationType: apiClient.metadata.integration.stringValue, 
+            linkType: linkType,
             merchantID: config.merchantID,
             payPalContextID: payPalContextID,
             sessionID: sessionID,
