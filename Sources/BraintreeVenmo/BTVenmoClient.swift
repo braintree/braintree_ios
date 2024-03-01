@@ -37,6 +37,10 @@ import BraintreeCore
     /// We require a static reference of the client to call `handleReturnURL` and return to the app.
     static var venmoClient: BTVenmoClient? = nil
 
+    /// Used for linking events from the client to server side request
+    /// In the Venmo flow this will be the payment context ID
+    private var payPalContextID: String? = nil
+
     // MARK: - Initializer
 
     /// Creates an Apple Pay client
@@ -80,7 +84,7 @@ import BraintreeCore
             }
             
             do {
-                let _ = try self.verifyAppSwitch(with: configuration)
+                let _ = try self.verifyAppSwitch(with: configuration, fallbackToWeb: request.fallbackToWeb)
             } catch {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -182,23 +186,38 @@ import BraintreeCore
                     return
                 }
 
-                guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().appSwitch(
-                    returnURLScheme: returnURLScheme,
-                    forMerchantID: merchantProfileID,
-                    accessToken: configuration.venmoAccessToken,
-                    bundleDisplayName: bundleDisplayName,
-                    environment: configuration.venmoEnvironment,
-                    paymentContextID: paymentContextID,
-                    metadata: metadata
-                ) else {
-                    self.notifyFailure(
-                        with: BTVenmoError.invalidRedirectURL("The request URL could not be constructed or was nil."),
-                        completion: completion
+                self.payPalContextID = paymentContextID
+
+                do {
+                    let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
+                        returnURLScheme: returnURLScheme,
+                        paymentContextID: paymentContextID,
+                        metadata: metadata,
+                        forMerchantID: merchantProfileID,
+                        accessToken: configuration.venmoAccessToken,
+                        bundleDisplayName: bundleDisplayName,
+                        environment: configuration.venmoEnvironment
                     )
+
+                    if request.fallbackToWeb {
+                        guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
+                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"), completion: completion)
+                            return
+                        }
+
+                        self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
+                    } else {
+                        guard let urlSchemeURL = appSwitchURL.urlSchemeURL() else {
+                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("App switch URL cannot be nil"), completion: completion)
+                            return
+                        }
+
+                        self.startVenmoFlow(with: urlSchemeURL, shouldVault: request.vault, completion: completion)
+                    }
+                } catch {
+                    self.notifyFailure(with: error, completion: completion)
                     return
                 }
-
-                self.performAppSwitch(with: appSwitchURL, shouldVault: request.vault, completion: completion)
             }
         }
     }
@@ -221,7 +240,7 @@ import BraintreeCore
 
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
     @objc public func isVenmoAppInstalled() -> Bool {
-        guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
+        guard let appSwitchURL = BTVenmoAppSwitchRedirectURL.baseAppSwitchURL else {
             return false
         }
         
@@ -238,8 +257,13 @@ import BraintreeCore
     // MARK: - App Switch Methods
 
     func handleOpen(_ url: URL) {
-        guard let returnURL = BTVenmoAppSwitchReturnURL(url: url) else {          
+        guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
             notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString), completion: appSwitchCompletion)
+            return
+        }
+
+        guard let returnURL = BTVenmoAppSwitchReturnURL(url: cleanedURL) else {
+            notifyFailure(with: BTVenmoError.invalidReturnURL(cleanedURL.absoluteString), completion: appSwitchCompletion)
             return
         }
 
@@ -314,7 +338,7 @@ import BraintreeCore
         }
     }
 
-    func performAppSwitch(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+    func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         application.open(appSwitchURL, options: [:]) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
         }
@@ -365,12 +389,13 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
+    func verifyAppSwitch(with configuration: BTConfiguration, fallbackToWeb: Bool) throws -> Bool {
         if !configuration.isVenmoEnabled {
             throw BTVenmoError.disabled
         }
 
-        if !isVenmoAppInstalled() {
+
+        if !fallbackToWeb && !isVenmoAppInstalled() {
             throw BTVenmoError.appNotAvailable
         }
 
@@ -387,20 +412,21 @@ import BraintreeCore
         with result: BTVenmoAccountNonce,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded, payPalContextID: payPalContextID)
         completion(result, nil)
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeFailed,
-            errorDescription: error.localizedDescription
+            errorDescription: error.localizedDescription,
+            payPalContextID: payPalContextID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled, payPalContextID: payPalContextID)
         completion(nil, BTVenmoError.canceled)
     }
 }

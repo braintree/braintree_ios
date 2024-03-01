@@ -14,14 +14,9 @@ class VenmoViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
         let venmoECDButton = createButton(title: "Venmo (with ECD options)", action: #selector(tappedVenmoWithECD))
-        venmoECDButton.setTitle("Venmo (with ECD options)", for: .normal)
-        venmoECDButton.setTitleColor(.blue, for: .normal)
-        venmoECDButton.setTitleColor(.lightGray, for: .highlighted)
-        venmoECDButton.setTitleColor(.lightGray, for: .disabled)
-        venmoECDButton.addTarget(self, action: #selector(tappedVenmoWithECD), for: .touchUpInside)
-        venmoECDButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let stackView = UIStackView(arrangedSubviews: [venmoButton, venmoECDButton])
+        let venmoUniversalLinkButton = createButton(title: "Venmo Universal Links", action: #selector(tappedVenmoWithUniversalLinks))
+
+        let stackView = UIStackView(arrangedSubviews: [venmoButton, venmoECDButton, venmoUniversalLinkButton])
         stackView.axis = .vertical
         stackView.spacing = 5
         stackView.alignment = .center
@@ -58,7 +53,17 @@ class VenmoViewController: PaymentButtonBaseViewController {
         
         checkout(request: venmoRequest)
     }
-    
+
+    @objc func tappedVenmoWithUniversalLinks() {
+        self.progressBlock("Tapped Venmo Universal Links - initiating Venmo auth")
+
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
+        venmoRequest.vault = true
+        venmoRequest.fallbackToWeb = true
+
+        checkout(request: venmoRequest)
+    }
+
     func checkout(request: BTVenmoRequest)  {
         Task {
             do {
