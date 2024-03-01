@@ -590,7 +590,7 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
     }
 
-    func testTokenizeVenmoAccount_fallbackToWebTrue_sendsSucessAnalyticsEvent() {
+    func testTokenizeVenmoAccount_fallbackToWebTrue_sendsSuccessAnalyticsEvent() {
         mockAPIClient.tokenizationKey = nil
         mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
 
