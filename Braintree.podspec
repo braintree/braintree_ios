@@ -30,6 +30,7 @@ Pod::Spec.new do |s|
   s.subspec "ApplePay" do |s|
     s.source_files  = "Sources/BraintreeApplePay/*.swift"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeApplePay_PrivacyInfo" => "Sources/BraintreeApplePay/PrivacyInfo.xcprivacy" }
     s.frameworks = "PassKit"
   end
 
