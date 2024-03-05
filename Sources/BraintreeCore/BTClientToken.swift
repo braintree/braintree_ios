@@ -19,7 +19,7 @@ import Foundation
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The extracted configURL
-    public let configURL: URL
+    public let configURL: BTJSON
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The original string used to initialize this instance
@@ -40,7 +40,7 @@ import Foundation
             throw BTClientTokenError.invalidAuthorizationFingerprint
         }
         
-        guard let configURL = json["configUrl"].asURL() else {
+        guard let configURL = json["configUrl"] as? BTJSON else {
             throw BTClientTokenError.invalidConfigURL
         }
         

@@ -25,7 +25,7 @@ class BTClientToken_Tests: XCTestCase {
         )
 
         XCTAssertEqual(clientToken.authorizationFingerprint, "an_authorization_fingerprint")
-        XCTAssertEqual(clientToken.configURL, URL(string: configURLString))
+        XCTAssertEqual(clientToken.configURL.value as? String, configURLString)
     }
 
     func testInitialization_withV2Base64EncodedClientTokens_isSuccessful() throws {
@@ -37,7 +37,7 @@ class BTClientToken_Tests: XCTestCase {
         )
 
         XCTAssertEqual(clientToken.authorizationFingerprint, "an_authorization_fingerprint")
-        XCTAssertEqual(clientToken.configURL, URL(string: configURLString))
+        XCTAssertEqual(clientToken.configURL.value as? String, configURLString)
     }
 
     func testInitialization_withInvalidJSON_returnsError() {
@@ -147,7 +147,7 @@ class BTClientToken_Tests: XCTestCase {
         let returnedClientToken = BTClientToken(coder: decoder)
         decoder.finishDecoding()
 
-        XCTAssertEqual(returnedClientToken?.configURL, URL(string: configURLString))
+        XCTAssertEqual(returnedClientToken?.configURL.value as? String, configURLString)        
         XCTAssertEqual(returnedClientToken?.authorizationFingerprint, authFingerprintString)
     }
 

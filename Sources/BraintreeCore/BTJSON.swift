@@ -219,10 +219,18 @@ import Foundation
     /// The `BTJSON` as a `URL`
     /// - Returns: A `URL` representing the `BTJSON` instance
     public func asURL() -> URL? {
-        guard let urlString = value as? String else {
+        guard let urlString = value as? String,
+              validateURLFormat(urlString: urlString) else {
             return nil
         }
         return URL(string: urlString)
+    }
+    
+    private func validateURLFormat(urlString: String) -> Bool {
+        // Regex pattern for http or https URL
+        let urlRegex = #"^(https?://)[^\s/$.?#].[^\s]*$"#
+        let predicate = NSPredicate(format:"SELF MATCHES %@", urlRegex)
+        return predicate.evaluate(with: urlString)
     }
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.

@@ -180,8 +180,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual((error! as NSError).domain, BTPayPalError.errorDomain)
-            XCTAssertEqual((error! as NSError).code, BTPayPalError.asWebAuthenticationSessionURLInvalid("").errorCode)
-            XCTAssertEqual((error! as NSError).localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://. Try again or contact Braintree Support.")
+            XCTAssertEqual((error! as NSError).code, BTPayPalError.invalidURL.errorCode)
+            XCTAssertEqual((error! as NSError).localizedDescription, "The approval and/or return URL contained an invalid URL. Try again or contact Braintree Support.")
             expectation.fulfill()
         }
 
