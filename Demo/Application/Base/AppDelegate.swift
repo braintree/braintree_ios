@@ -16,7 +16,11 @@ import BraintreeCore
         
         return true
     }
-    
+
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        return true
+    }
+
     func registerDefaultsFromSettings() {
         if processInfoArgs.contains("-EnvironmentSandbox") {
             userDefaults.set(BraintreeDemoEnvironment.sandbox.rawValue, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
