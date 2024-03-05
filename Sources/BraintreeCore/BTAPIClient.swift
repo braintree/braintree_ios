@@ -140,8 +140,8 @@ import Foundation
         var configPath: String = "v1/configuration"
         var configuration: BTConfiguration?
 
-        if let clientToken {
-            configPath = clientToken.configURL.absoluteString
+        if let token = clientToken?.configURL.value as? String {
+            configPath = token
         }
 
         configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
