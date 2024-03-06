@@ -67,11 +67,13 @@ let package = Package(
         ),
         .target(
             name: "BraintreeCard",
-            dependencies: ["BraintreeCore"]
+            dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreeCore",
-            exclude: ["Info.plist", "Braintree.h"]
+            exclude: ["Info.plist", "Braintree.h"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreeDataCollector",
