@@ -25,4 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
     }
+
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        // TODO: add implementation
+        print("Returning from the Universal Link to the app")
+    }
 }
