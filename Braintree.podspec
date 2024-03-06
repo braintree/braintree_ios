@@ -67,6 +67,7 @@ Pod::Spec.new do |s|
   s.subspec "SEPADirectDebit" do |s|
     s.source_files = "Sources/BraintreeSEPADirectDebit/*.swift"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeSEPADirectDebit_PrivacyInfo" => "Sources/BraintreeSEPADirectDebit/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PayPalNativeCheckout" do |s|
