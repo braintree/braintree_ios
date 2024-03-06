@@ -27,7 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-        // TODO: add implementation
-        print("Returning from the Universal Link to the app")
+        if let returnURL = userActivity.webpageURL {
+            // TODO: implementation - pass full URL to BT SDK
+            print("Returned to Demo app via universal link: \(returnURL)")
+        }
     }
 }
