@@ -352,11 +352,11 @@ import BraintreeCore
         shouldVault = success && vault
 
         if success {
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchSucceeded)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchSucceeded, linkType: linkType)
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
         } else {            
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed, linkType: linkType)
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
     }
