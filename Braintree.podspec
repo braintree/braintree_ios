@@ -82,6 +82,7 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeThreeDSecure/**/*.{swift}"
     s.dependency "Braintree/Card"
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+    s.resource_bundle = { "BraintreeThreeDSecure_PrivacyInfo" => "Sources/BraintreeThreeDSecure/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Venmo" do |s|
