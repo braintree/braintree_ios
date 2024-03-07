@@ -36,8 +36,6 @@ class BTAnalyticsService: Equatable {
 
     private var payPalContextID: String?
 
-    private var linkType: String?
-
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient, flushThreshold: Int = 1) {
@@ -61,8 +59,12 @@ class BTAnalyticsService: Equatable {
     ) {
         DispatchQueue.main.async {
             self.payPalContextID = payPalContextID
-            self.linkType = linkType
-            self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
+            self.enqueueEvent(
+                eventName,
+                errorDescription: errorDescription,
+                correlationID: correlationID,
+                linkType: linkType
+            )
             self.flushIfAtThreshold()
         }
     }
@@ -78,8 +80,12 @@ class BTAnalyticsService: Equatable {
     ) {
         DispatchQueue.main.async {
             self.payPalContextID = payPalContextID
-            self.linkType = linkType
-            self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
+            self.enqueueEvent(
+                eventName,
+                errorDescription: errorDescription,
+                correlationID: correlationID,
+                linkType: linkType
+            )
             self.flush(completion)
         }
     }
@@ -134,12 +140,18 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     /// Adds an event to the queue
-    func enqueueEvent(_ eventName: String, errorDescription: String?, correlationID: String?) {
+    func enqueueEvent(
+        _ eventName: String,
+        errorDescription: String?,
+        correlationID: String?,
+        linkType: String?
+    ) {
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
         let event = FPTIBatchData.Event(
             correlationID: correlationID,
             errorDescription: errorDescription,
             eventName: eventName,
+            linkType: linkType,
             timestamp: String(timestampInMilliseconds)
         )
         let session = BTAnalyticsSession(with: apiClient.metadata.sessionID)
@@ -174,7 +186,6 @@ class BTAnalyticsService: Equatable {
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue, 
-            linkType: linkType,
             merchantID: config.merchantID,
             payPalContextID: payPalContextID,
             sessionID: sessionID,

@@ -7,7 +7,7 @@
   * Add `BTVenmoRequest.fallbackToWeb`
     * If set to `true` customers will fallback to a web based Venmo flow if the Venmo app is not installed
     * This method uses Universal Links instead of URL Schemes
-  * Send `link_type` in `batch_params` to PayPal's analytics service (FPTI)
+  * Send `link_type` in `event_params` to PayPal's analytics service (FPTI)
 
 ## 6.12.0 (2024-01-18)
 * BraintreePayPal

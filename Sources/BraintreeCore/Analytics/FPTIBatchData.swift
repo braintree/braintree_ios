@@ -30,6 +30,8 @@ struct FPTIBatchData: Codable {
         let correlationID: String?
         let errorDescription: String?
         let eventName: String
+        /// The type of link the SDK will be handling, currently deeplink or universal
+        let linkType: String?
         let timestamp: String
         let tenantName: String = "Braintree"
 
@@ -37,6 +39,7 @@ struct FPTIBatchData: Codable {
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case linkType = "link_type"
             case timestamp = "t"
             case tenantName = "tenant_name"
         }
@@ -94,9 +97,6 @@ struct FPTIBatchData: Codable {
             #endif
         }()
 
-        /// The type of link the SDK will be handling, currently deeplink or universal
-        let linkType: String?
-
         let merchantAppVersion: String = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? "N/A"
 
         let merchantID: String?
@@ -125,7 +125,6 @@ struct FPTIBatchData: Codable {
             case packageManager = "ios_package_manager"
             case integrationType = "api_integration_type"
             case isSimulator = "is_simulator"
-            case linkType = "link_type"
             case merchantAppVersion = "mapv"
             case merchantID = "merchant_id"
             case payPalContextID = "paypal_context_id"
