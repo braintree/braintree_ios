@@ -104,7 +104,8 @@ let package = Package(
         ),
         .target(
             name: "BraintreeShopperInsights",
-            dependencies: ["BraintreeCore"]
+            dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreeThreeDSecure",
