@@ -68,6 +68,7 @@ Pod::Spec.new do |s|
   s.subspec "SEPADirectDebit" do |s|
     s.source_files = "Sources/BraintreeSEPADirectDebit/*.swift"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeSEPADirectDebit_PrivacyInfo" => "Sources/BraintreeSEPADirectDebit/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PayPalNativeCheckout" do |s|
@@ -81,6 +82,7 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeThreeDSecure/**/*.{swift}"
     s.dependency "Braintree/Card"
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+    s.resource_bundle = { "BraintreeThreeDSecure_PrivacyInfo" => "Sources/BraintreeThreeDSecure/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Venmo" do |s|

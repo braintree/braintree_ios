@@ -101,11 +101,13 @@ let package = Package(
         .target(
             name: "BraintreeSEPADirectDebit",
             dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreeSEPADirectDebit"
+            path: "Sources/BraintreeSEPADirectDebit",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreeThreeDSecure",
-            dependencies: ["BraintreeCard", "CardinalMobile", "PPRiskMagnes", "BraintreeCore"]
+            dependencies: ["BraintreeCard", "CardinalMobile", "PPRiskMagnes", "BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "CardinalMobile",
