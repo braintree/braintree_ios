@@ -63,7 +63,6 @@ class BTAnalyticsService: Equatable {
                 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
-                NSLog("[Braintree SDK] Failed to send analytics")
                 return
             }
 
@@ -84,11 +83,7 @@ class BTAnalyticsService: Equatable {
             }
 
             let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: self.apiClient.metadata.sessionID, event: event)
-            self.http?.post("v1/tracking/batch/events", parameters: postParameters, completion: { _,_, error in
-                if let error {
-                    NSLog("[Braintree SDK] Failed to send analytics: \(error.localizedDescription)")
-                }
-            })
+            self.http?.post("v1/tracking/batch/events", parameters: postParameters, completion: { _,_, error in })
         }
     }
 
