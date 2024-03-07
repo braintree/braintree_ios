@@ -7,6 +7,8 @@
   * Add `BTVenmoRequest.fallbackToWeb`
     * If set to `true` customers will fallback to a web based Venmo flow if the Venmo app is not installed
     * This method uses Universal Links instead of URL Schemes
+* BraintreeCore
+  * Fix bug where FPTI analytic events were being sent multiple times
 
 ## 6.12.0 (2024-01-18)
 * BraintreePayPal
