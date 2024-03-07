@@ -185,7 +185,7 @@ class BTAnalyticsService: Equatable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.fptiEnvironment,
-            integrationType: apiClient.metadata.integration.stringValue, 
+            integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
             payPalContextID: payPalContextID,
             sessionID: sessionID,
