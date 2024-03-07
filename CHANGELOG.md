@@ -27,6 +27,7 @@
 ## 5.24.1 (2023-11-17)
 * BraintreePayPalDataCollector
   * Update previously incorrect version of PPRiskMagnes 5.4.1 with staging removed 
+  * This version of the PPRiskMagnes framework is dynamic
 
 ## 6.9.0 (2023-11-16)
 * BraintreeThreeDSecure
