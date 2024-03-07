@@ -7,6 +7,7 @@
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes with 5.4.1 - staging removed (fixes #1107)
+  * This version of the PPRiskMagnes framework is static
 
 ## 5.23.0 (2023-08-18)
 * BraintreeVenmo
