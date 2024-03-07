@@ -21,12 +21,14 @@ final class FPTIBatchData_Tests: XCTestCase {
             correlationID: "fake-correlation-id-1",
             errorDescription: "fake-error-description-1",
             eventName: "fake-event-1",
+            linkType: "universal",
             timestamp: "fake-time-1"
         ),
         FPTIBatchData.Event(
             correlationID: nil,
             errorDescription: nil,
             eventName: "fake-event-2",
+            linkType: nil,
             timestamp: "fake-time-2"
         )
     ]
@@ -83,6 +85,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[1]["event_name"] as? String, "fake-event-2")
         XCTAssertEqual(eventParams[0]["tenant_name"] as? String, "Braintree")
         XCTAssertEqual(eventParams[1]["tenant_name"] as? String, "Braintree")
+        XCTAssertEqual(eventParams[0]["link_type"] as? String, "universal")
+        XCTAssertNil(eventParams[1]["link_type"])
         XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
         XCTAssertNil(eventParams[1]["error_desc"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")

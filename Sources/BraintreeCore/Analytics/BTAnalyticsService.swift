@@ -54,11 +54,17 @@ class BTAnalyticsService: Equatable {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        linkType: String? = nil
     ) {
         DispatchQueue.main.async {
             self.payPalContextID = payPalContextID
-            self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
+            self.enqueueEvent(
+                eventName,
+                errorDescription: errorDescription,
+                correlationID: correlationID,
+                linkType: linkType
+            )
             self.flushIfAtThreshold()
         }
     }
@@ -69,11 +75,17 @@ class BTAnalyticsService: Equatable {
         errorDescription: String? = nil,
         correlationID: String? = nil,
         payPalContextID: String? = nil,
+        linkType: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         DispatchQueue.main.async {
             self.payPalContextID = payPalContextID
-            self.enqueueEvent(eventName, errorDescription: errorDescription, correlationID: correlationID)
+            self.enqueueEvent(
+                eventName,
+                errorDescription: errorDescription,
+                correlationID: correlationID,
+                linkType: linkType
+            )
             self.flush(completion)
         }
     }
@@ -128,12 +140,18 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     /// Adds an event to the queue
-    func enqueueEvent(_ eventName: String, errorDescription: String?, correlationID: String?) {
+    func enqueueEvent(
+        _ eventName: String,
+        errorDescription: String?,
+        correlationID: String?,
+        linkType: String?
+    ) {
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
         let event = FPTIBatchData.Event(
             correlationID: correlationID,
             errorDescription: errorDescription,
             eventName: eventName,
+            linkType: linkType,
             timestamp: String(timestampInMilliseconds)
         )
         let session = BTAnalyticsSession(with: apiClient.metadata.sessionID)

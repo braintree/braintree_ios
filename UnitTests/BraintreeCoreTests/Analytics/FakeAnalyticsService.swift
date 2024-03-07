@@ -9,7 +9,8 @@ class FakeAnalyticsService: BTAnalyticsService {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        linkType: String? = nil
     ) {
         self.lastEvent = eventName
         self.didLastFlush = false
@@ -20,6 +21,7 @@ class FakeAnalyticsService: BTAnalyticsService {
         errorDescription: String? = nil,
         correlationID: String? = nil,
         payPalContextID: String? = nil,
+        linkType: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         self.lastEvent = eventName
