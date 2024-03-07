@@ -63,6 +63,7 @@ class BTAnalyticsService: Equatable {
                 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
+                NSLog("[Braintree SDK] Failed to send analytics")
                 return
             }
 

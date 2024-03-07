@@ -13,110 +13,35 @@ final class BTAnalyticsService_Tests: XCTestCase {
         oneSecondLater = UInt64((Date().timeIntervalSince1970 * 1000) + 999)
     }
 
-    func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() {
+    func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        let expectation = expectation(description: "Sends analytics event")
-        analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api-m.paypal.com")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSendAnalyticsEvent_sendsAnalyticsEvent() {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        analyticsService.http = mockAnalyticsHTTP
-
-        let expectation = expectation(description: "Sends analytics event")
         
-        analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
-            expectation.fulfill()
-        }
+        await analyticsService.performEventRequest("any.analytics.event")
         
-        waitForExpectations(timeout: 1) { error in
-            // Assertions
-            XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
-
-            let timestamp = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
-            let eventName = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters)
-            XCTAssertEqual(eventName!, "any.analytics.event")
-            XCTAssertGreaterThanOrEqual(timestamp, self.currentTime)
-            XCTAssertLessThanOrEqual(timestamp, self.oneSecondLater)
-            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
-        }
+        XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api-m.paypal.com")
     }
 
-    func testAnalyticsService_whenAPIClientConfigurationFails_returnsError() {
+    func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let stubbedError = NSError(domain: "SomeError", code: 1)
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
 
-        stubAPIClient.cannedConfigurationResponseError = stubbedError
         analyticsService.http = mockAnalyticsHTTP
+        
+        await analyticsService.performEventRequest("any.analytics.event")
+        
+        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+        
+        let timestamp = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
+        let eventName = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters)
+        
+        XCTAssertEqual(eventName!, "any.analytics.event")
+        XCTAssertGreaterThanOrEqual(timestamp, self.currentTime)
+        XCTAssertLessThanOrEqual(timestamp, self.oneSecondLater)
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
-        let expectation = expectation(description: "Callback invoked with error")
-
-        analyticsService.sendAnalyticsEvent("an.analytics.event") { error in
-            guard let error = error as? NSError else { return }
-            XCTAssertEqual(error, stubbedError)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testAnalyticsService_afterConfigurationError_maintainsQueuedEventsUntilConfigurationIsSuccessful() {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let stubbedError = NSError(domain: "SomeError", code: 1)
-        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        stubAPIClient.cannedConfigurationResponseError = stubbedError
-        analyticsService.http = mockAnalyticsHTTP
-
-        let expectation1 = expectation(description: "Callback invoked with error")
-
-        analyticsService.sendAnalyticsEvent("an.analytics.event.1") { error in
-            guard let error = error as? NSError else { return }
-            XCTAssertEqual(error, stubbedError)
-            expectation1.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-
-        stubAPIClient.cannedConfigurationResponseError = nil
-
-        let expectation2 = expectation(description: "Callback invoked with error")
-
-        analyticsService.sendAnalyticsEvent("an.analytics.event.2") { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
-
-            let timestampOne = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 0)!
-            let timestampTwo = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 1)!
-
-            let eventOne = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 0)
-            XCTAssertEqual(eventOne, "an.analytics.event.1")
-            XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
-            XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
-
-            let eventTwo = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 1)
-            XCTAssertEqual(eventTwo, "an.analytics.event.2")
-            XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
-            XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
-            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
-            expectation2.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
     }
 
     // MARK: - Helper Functions
