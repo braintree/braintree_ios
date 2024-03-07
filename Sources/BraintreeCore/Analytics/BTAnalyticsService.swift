@@ -1,25 +1,11 @@
 import Foundation
 
-/// Encapsulates analytics events for a given session
-struct BTAnalyticsSession {
-
-    let sessionID: String
-    var events: [FPTIBatchData.Event] = []
-    
-    init(with sessionID: String, event: FPTIBatchData.Event) {
-        self.sessionID = sessionID
-        self.events = [event]
-    }
-}
-
 class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?
- 
-    var analyticsSession: BTAnalyticsSession?
     
     /// The FPTI URL to post all analytic events.
     static let url = URL(string: "https://api-m.paypal.com")!
@@ -35,7 +21,13 @@ class BTAnalyticsService: Equatable {
     }
 
     // MARK: - Internal Methods
-
+    
+    /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
+    /// - Parameters:
+    ///   - eventName: Name of analytic event.
+    ///   - errorDescription: Optional. Full error description returned to merchant.
+    ///   - correlationID: Optional. CorrelationID associated with the checkout session.
+    ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
     func sendAnalyticsEvent(
         _ eventName: String,
         errorDescription: String? = nil,
@@ -51,7 +43,8 @@ class BTAnalyticsService: Equatable {
             )
         }
     }
-
+    
+    /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(
         _ eventName: String,
         errorDescription: String? = nil,
@@ -67,9 +60,7 @@ class BTAnalyticsService: Equatable {
             eventName: eventName,
             timestamp: String(timestampInMilliseconds)
         )
-        
-        self.analyticsSession = BTAnalyticsSession(with: apiClient.metadata.sessionID, event: event)
-        
+                
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
                 return
@@ -91,15 +82,15 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: self.analyticsSession!.sessionID)
+            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: self.apiClient.metadata.sessionID, event: event)
             self.http?.post("v1/tracking/batch/events", parameters: postParameters, completion: { _,_,_ in })
         }
     }
 
     // MARK: - Helpers
 
-    /// Constructs POST params to be sent to FPTI from the queued events in the session
-    func createAnalyticsEvent(config: BTConfiguration, sessionID: String) -> Codable {
+    /// Constructs POST params to be sent to FPTI
+    func createAnalyticsEvent(config: BTConfiguration, sessionID: String, event: FPTIBatchData.Event) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.fptiEnvironment,
@@ -110,7 +101,7 @@ class BTAnalyticsService: Equatable {
             tokenizationKey: apiClient.tokenizationKey
         )
         
-        return FPTIBatchData(metadata: batchMetadata, events: analyticsSession!.events)
+        return FPTIBatchData(metadata: batchMetadata, events: [event])
     }
 
     // MARK: Equitable Protocol Conformance
