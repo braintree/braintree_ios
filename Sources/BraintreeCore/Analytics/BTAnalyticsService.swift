@@ -16,14 +16,8 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
 
-    /// A serial dispatch queue that synchronizes access to `analyticsSessions`
-    let sessionsQueue: DispatchQueue = DispatchQueue(label: "com.braintreepayments.BTAnalyticsService")
-
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?
-
-    /// Defaults to 1, can be overridden
-    var flushThreshold: Int
  
     var analyticsSession: BTAnalyticsSession?
     
@@ -36,21 +30,34 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Initializer
 
-    init(apiClient: BTAPIClient, flushThreshold: Int = 1) {
+    init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.flushThreshold = flushThreshold
     }
 
     // MARK: - Internal Methods
 
-    /// Sends request to FPTI immediately, without checking number of events in queue against flush threshold
     func sendAnalyticsEvent(
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil,
-        completion: @escaping (Error?) -> Void = { _ in }
+        payPalContextID: String? = nil
     ) {
+        Task(priority: .background) {
+            await performEventRequest(
+                eventName,
+                errorDescription: errorDescription,
+                correlationID: correlationID,
+                payPalContextID: payPalContextID
+            )
+        }
+    }
+
+    func performEventRequest(
+        _ eventName: String,
+        errorDescription: String? = nil,
+        correlationID: String? = nil,
+        payPalContextID: String? = nil
+    ) async {
         self.payPalContextID = payPalContextID
         
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
@@ -63,16 +70,8 @@ class BTAnalyticsService: Equatable {
         
         self.analyticsSession = BTAnalyticsSession(with: apiClient.metadata.sessionID, event: event)
         
-        self.flush(completion)
-    }
-
-    /// Executes API request to FPTI
-    func flush(_ completion: @escaping (Error?) -> Void = { _ in }) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
-                if let error {
-                    completion(error)
-                }
                 return
             }
 
@@ -83,25 +82,17 @@ class BTAnalyticsService: Equatable {
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
                     self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: tokenizationKey)
                 } else {
-                    completion(BTAnalyticsServiceError.invalidAPIClient)
                     return
                 }
             }
 
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
             if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
-                completion(nil)
                 return
             }
 
             let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: self.analyticsSession!.sessionID)
-            self.http?.post("v1/tracking/batch/events", parameters: postParameters) { body, response, error in
-                if let error {
-                    completion(error)
-                }
-            }
-
-            completion(nil)
+            self.http?.post("v1/tracking/batch/events", parameters: postParameters, completion: { _,_,_ in })
         }
     }
 
@@ -125,6 +116,6 @@ class BTAnalyticsService: Equatable {
     // MARK: Equitable Protocol Conformance
 
     static func == (lhs: BTAnalyticsService, rhs: BTAnalyticsService) -> Bool {
-        lhs.http == rhs.http && lhs.flushThreshold == rhs.flushThreshold && lhs.apiClient == rhs.apiClient
+        lhs.http == rhs.http && lhs.apiClient == rhs.apiClient
     }
 }

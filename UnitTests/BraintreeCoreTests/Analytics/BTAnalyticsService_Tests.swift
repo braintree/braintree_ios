@@ -27,12 +27,11 @@ final class BTAnalyticsService_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    func testSendAnalyticsEvent_whenNumberOfQueuedEventsMeetsThreshold_sendsAnalyticsEvent() {
+    func testSendAnalyticsEvent_sendsAnalyticsEvent() {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
 
-        analyticsService.flushThreshold = 1
         analyticsService.http = mockAnalyticsHTTP
 
         let expectation = expectation(description: "Sends analytics event")
@@ -52,118 +51,6 @@ final class BTAnalyticsService_Tests: XCTestCase {
             XCTAssertLessThanOrEqual(timestamp, self.oneSecondLater)
             self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
         }
-    }
-
-    func testSendAnalyticsEvent_whenFlushThresholdIsGreaterThanNumberOfBatchedEvents_doesNotSendAnalyticsEvent() {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        analyticsService.flushThreshold = 2
-        analyticsService.http = mockAnalyticsHTTP
-
-        let expectation = expectation(description: "Sends analytics event")
-        
-        analyticsService.sendAnalyticsEvent("any.analytics.event") { error in
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 1) { error in
-            XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
-        }
-    }
-
-    func testSendAnalyticsEventCompletion_whenCalled_sendsAllEvents() {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        analyticsService.flushThreshold = 5
-        analyticsService.http = mockAnalyticsHTTP
-
-        let expectation = expectation(description: "Sends batched request")
-
-        analyticsService.sendAnalyticsEvent("an.analytics.event")
-        analyticsService.sendAnalyticsEvent("another.analytics.event") { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
-            XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
-
-            let timestampOne = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 0)!
-            let timestampTwo = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 1)!
-            
-            let eventOne = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 0)
-            XCTAssertEqual(eventOne, "an.analytics.event")
-            XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
-            XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
-
-            let eventTwo = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 1)
-            XCTAssertEqual(eventTwo, "another.analytics.event")
-            XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
-            XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
-            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testFlush_whenCalled_sendsAllQueuedEvents() {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        analyticsService.flushThreshold = 5
-        analyticsService.http = mockAnalyticsHTTP
-
-        analyticsService.sendAnalyticsEvent("an.analytics.event")
-        analyticsService.sendAnalyticsEvent("another.analytics.event")
-
-        // Pause briefly to allow analytics service to dispatch async blocks
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
-
-        let expectation = expectation(description: "Sends batched request")
-
-        analyticsService.flush() { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
-
-            let timestampOne = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 0)!
-            let timestampTwo = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters, at: 1)!
-
-            let eventOne = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 0)
-            XCTAssertEqual(eventOne, "an.analytics.event")
-            XCTAssertGreaterThanOrEqual(timestampOne, self.currentTime)
-            XCTAssertLessThanOrEqual(timestampOne, self.oneSecondLater)
-
-            let eventTwo = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters, at: 1)
-            XCTAssertEqual(eventTwo, "another.analytics.event")
-            XCTAssertGreaterThanOrEqual(timestampTwo, self.currentTime)
-            XCTAssertLessThanOrEqual(timestampTwo, self.oneSecondLater)
-            self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testFlush_whenThereAreNoQueuedEvents_doesNotPOST() {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-
-        analyticsService.flushThreshold = 5
-        analyticsService.http = mockAnalyticsHTTP
-
-        let expectation = expectation(description: "Sends batched request")
-
-        analyticsService.flush() { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 0)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
     }
 
     func testAnalyticsService_whenAPIClientConfigurationFails_returnsError() {
