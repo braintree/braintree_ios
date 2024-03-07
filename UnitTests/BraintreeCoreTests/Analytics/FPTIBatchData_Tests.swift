@@ -9,7 +9,7 @@ final class FPTIBatchData_Tests: XCTestCase {
     let batchMetadata = FPTIBatchData.Metadata(
         authorizationFingerprint: "fake-auth",
         environment: "fake-env",
-        integrationType: "fake-integration-type", 
+        integrationType: "fake-integration-type",
         merchantID: "fake-merchant-id",
         payPalContextID: "fake-order-id",
         sessionID: "fake-session",
