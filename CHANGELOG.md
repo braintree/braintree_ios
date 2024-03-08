@@ -1,7 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Send `paypal_context_id` in `batch_params` to PayPal's analytics service (FPTI) when available
+* BraintreeCore
+  * Send `paypal_context_id` in `event_params` to PayPal's analytics service (FPTI) when available
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
   * Add `BTVenmoRequest.fallbackToWeb`
