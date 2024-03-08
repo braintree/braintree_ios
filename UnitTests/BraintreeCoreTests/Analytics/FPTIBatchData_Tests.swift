@@ -11,7 +11,6 @@ final class FPTIBatchData_Tests: XCTestCase {
         environment: "fake-env",
         integrationType: "fake-integration-type",
         merchantID: "fake-merchant-id",
-        payPalContextID: "fake-order-id",
         sessionID: "fake-session",
         tokenizationKey: "fake-auth"
     )
@@ -22,6 +21,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             errorDescription: "fake-error-description-1",
             eventName: "fake-event-1",
             linkType: "universal",
+            payPalContextID: "fake-order-id",
             timestamp: "fake-time-1"
         ),
         FPTIBatchData.Event(
@@ -29,6 +29,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             errorDescription: nil,
             eventName: "fake-event-2",
             linkType: nil,
+            payPalContextID: "fake-order-id-2",
             timestamp: "fake-time-2"
         )
     ]
@@ -73,7 +74,6 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
         XCTAssertTrue((batchParams["mobile_device_model"] as! String).matches("iPhone\\d,\\d|x86_64|arm64"))
         XCTAssertEqual(batchParams["merchant_id"] as! String, "fake-merchant-id")
-        XCTAssertEqual(batchParams["paypal_context_id"] as! String, "fake-order-id")
         XCTAssertEqual(batchParams["platform"] as? String, "iOS")
         XCTAssertEqual(batchParams["session_id"] as? String, "fake-session")
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
@@ -87,6 +87,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[1]["tenant_name"] as? String, "Braintree")
         XCTAssertEqual(eventParams[0]["link_type"] as? String, "universal")
         XCTAssertNil(eventParams[1]["link_type"])
+        XCTAssertEqual(eventParams[0]["paypal_context_id"] as! String, "fake-order-id")
+        XCTAssertEqual(eventParams[1]["paypal_context_id"] as! String, "fake-order-id-2")
         XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
         XCTAssertNil(eventParams[1]["error_desc"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")

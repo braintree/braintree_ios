@@ -7,8 +7,8 @@ class FakeAnalyticsService: BTAnalyticsService {
 
     override func sendAnalyticsEvent(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
+        errorDescription: String? = nil,
         payPalContextID: String? = nil,
         linkType: String? = nil
     ) {
@@ -18,10 +18,10 @@ class FakeAnalyticsService: BTAnalyticsService {
 
     override func sendAnalyticsEvent(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil,
+        errorDescription: String? = nil,
         linkType: String? = nil,
+        payPalContextID: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         self.lastEvent = eventName
