@@ -415,8 +415,8 @@ import BraintreeDataCollector
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
-            errorDescription: error.localizedDescription,
             correlationID: clientMetadataID,
+            errorDescription: error.localizedDescription,
             payPalContextID: payPalContextID
         )
         completion(nil, error)

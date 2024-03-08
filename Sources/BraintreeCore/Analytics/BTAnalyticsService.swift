@@ -34,8 +34,6 @@ class BTAnalyticsService: Equatable {
 
     private let apiClient: BTAPIClient
 
-    private var payPalContextID: String?
-
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient, flushThreshold: Int = 1) {
@@ -52,18 +50,18 @@ class BTAnalyticsService: Equatable {
     /// - Parameter eventName: String representing the event name
     func sendAnalyticsEvent(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
+        errorDescription: String? = nil,
         payPalContextID: String? = nil,
         linkType: String? = nil
     ) {
         DispatchQueue.main.async {
-            self.payPalContextID = payPalContextID
             self.enqueueEvent(
                 eventName,
-                errorDescription: errorDescription,
                 correlationID: correlationID,
-                linkType: linkType
+                errorDescription: errorDescription,
+                linkType: linkType,
+                payPalContextID: payPalContextID
             )
             self.flushIfAtThreshold()
         }
@@ -72,19 +70,19 @@ class BTAnalyticsService: Equatable {
     /// Sends request to FPTI immediately, without checking number of events in queue against flush threshold
     func sendAnalyticsEvent(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil,
+        errorDescription: String? = nil,
         linkType: String? = nil,
+        payPalContextID: String? = nil,
         completion: @escaping (Error?) -> Void = { _ in }
     ) {
         DispatchQueue.main.async {
-            self.payPalContextID = payPalContextID
             self.enqueueEvent(
                 eventName,
-                errorDescription: errorDescription,
                 correlationID: correlationID,
-                linkType: linkType
+                errorDescription: errorDescription,
+                linkType: linkType,
+                payPalContextID: payPalContextID
             )
             self.flush(completion)
         }
@@ -142,9 +140,10 @@ class BTAnalyticsService: Equatable {
     /// Adds an event to the queue
     func enqueueEvent(
         _ eventName: String,
-        errorDescription: String?,
         correlationID: String?,
-        linkType: String?
+        errorDescription: String?,
+        linkType: String?,
+        payPalContextID: String?
     ) {
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
         let event = FPTIBatchData.Event(
@@ -152,6 +151,7 @@ class BTAnalyticsService: Equatable {
             errorDescription: errorDescription,
             eventName: eventName,
             linkType: linkType,
+            payPalContextID: payPalContextID,
             timestamp: String(timestampInMilliseconds)
         )
         let session = BTAnalyticsSession(with: apiClient.metadata.sessionID)
@@ -187,7 +187,6 @@ class BTAnalyticsService: Equatable {
             environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
-            payPalContextID: payPalContextID,
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )
