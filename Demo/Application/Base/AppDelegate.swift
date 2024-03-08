@@ -16,7 +16,7 @@ import BraintreeCore
         
         return true
     }
-    
+
     func registerDefaultsFromSettings() {
         if processInfoArgs.contains("-EnvironmentSandbox") {
             userDefaults.set(BraintreeDemoEnvironment.sandbox.rawValue, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)

@@ -10,8 +10,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
         let payPalPayLaterButton = createButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
+        let universalLinkButton = createButton(title: "Universal Link Flow", action: #selector(universalLinkFlow))
 
-        let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton]
+        let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton, universalLinkButton]
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -82,5 +83,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
             self.completionBlock(nonce)
         }
+    }
+
+    @objc func universalLinkFlow(_ sender: UIButton) {
+        UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev")!)
     }
 }
