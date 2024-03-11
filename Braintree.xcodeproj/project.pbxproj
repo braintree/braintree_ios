@@ -74,6 +74,8 @@
 		57D94372296CCA2F0079EAB1 /* String+NonceValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */; };
 		62236E1A2B98CFB000CDCC37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */; };
 		6298A1992B91010600E46EDF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */; };
+		62A659A42B98CB23008DFD67 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */; };
+		62A746412B9255AC003D32FF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */; };
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
@@ -91,6 +93,7 @@
 		8053F05929FB2F700076F988 /* URL+IsPayPal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053F05829FB2F700076F988 /* URL+IsPayPal.swift */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
+		806C85632B90EBED00A2754C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */; };
 		8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */; };
 		80842DA72B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */; };
 		80A6C6192B21205900416D50 /* UIApplication+URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */; };
@@ -702,6 +705,8 @@
 		59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAuthenticateJWT_Tests.swift; sourceTree = "<group>"; };
 		800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPTIBatchData.swift; sourceTree = "<group>"; };
@@ -721,6 +726,7 @@
 		80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+ThreeDSecure_Tests.swift"; sourceTree = "<group>"; };
 		80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLHTTP_SSLPinning_IntegrationTests.swift; sourceTree = "<group>"; };
 		805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPostalAddress_Tests.swift; sourceTree = "<group>"; };
+		806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIRequest.swift; sourceTree = "<group>"; };
 		80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		80A1EE3D2236AAC600F6218B /* BTThreeDSecureAdditionalInformation_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAdditionalInformation_Tests.swift; sourceTree = "<group>"; };
@@ -1182,6 +1188,7 @@
 				57D9436D2968A8080079EAB1 /* BTPayPalLocaleCode.swift */,
 				BE349112294B798300D2CF68 /* BTPayPalRequest.swift */,
 				BE349110294B77E100D2CF68 /* BTPayPalVaultRequest.swift */,
+				62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreePayPal;
 			sourceTree = "<group>";
@@ -1232,6 +1239,7 @@
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				BEBC6E5D2927CF59004E25A0 /* Braintree.h */,
+				62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeCore;
 			sourceTree = "<group>";
@@ -1503,6 +1511,7 @@
 				BE80C00A29C66F4800793A6C /* BTCardNonce.swift */,
 				BE80C00829C559B800793A6C /* BTCardRequest.swift */,
 				BE80C00629C5516E00793A6C /* BTThreeDSecureInfo.swift */,
+				806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeCard;
 			sourceTree = "<group>";
@@ -2475,6 +2484,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62A659A42B98CB23008DFD67 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2482,6 +2492,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62A746412B9255AC003D32FF /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2532,6 +2543,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				806C85632B90EBED00A2754C /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
