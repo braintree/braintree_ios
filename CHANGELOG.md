@@ -8,6 +8,7 @@
     * This method uses Universal Links instead of URL Schemes
 * BraintreeCore
   * Send `paypal_context_id` in `batch_params` to PayPal's analytics service (FPTI) when available
+  * Send `link_type` in `event_params` to PayPal's analytics service (FPTI)
   * Fix bug where FPTI analytic events were being sent multiple times
 
 ## 6.12.0 (2024-01-18)

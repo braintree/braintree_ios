@@ -30,6 +30,8 @@ struct FPTIBatchData: Codable {
         let correlationID: String?
         let errorDescription: String?
         let eventName: String
+        /// The type of link the SDK will be handling, currently deeplink or universal
+        let linkType: String?
         let timestamp: String
         let tenantName: String = "Braintree"
 
@@ -37,6 +39,7 @@ struct FPTIBatchData: Codable {
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case linkType = "link_type"
             case timestamp = "t"
             case tenantName = "tenant_name"
         }

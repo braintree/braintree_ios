@@ -8,7 +8,8 @@ class FakeAnalyticsService: BTAnalyticsService {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        linkType: String? = nil
     ) {
         self.lastEvent = eventName
     }

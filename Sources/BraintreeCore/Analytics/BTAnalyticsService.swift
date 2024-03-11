@@ -32,13 +32,15 @@ class BTAnalyticsService: Equatable {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        linkType: String? = nil
     ) {
         Task(priority: .background) {
             await performEventRequest(
                 eventName,
                 errorDescription: errorDescription,
                 correlationID: correlationID,
+                linkType: linkType,
                 payPalContextID: payPalContextID
             )
         }
@@ -49,6 +51,7 @@ class BTAnalyticsService: Equatable {
         _ eventName: String,
         errorDescription: String? = nil,
         correlationID: String? = nil,
+        linkType: String? = nil,
         payPalContextID: String? = nil
     ) async {
         self.payPalContextID = payPalContextID
@@ -58,6 +61,7 @@ class BTAnalyticsService: Equatable {
             correlationID: correlationID,
             errorDescription: errorDescription,
             eventName: eventName,
+            linkType: linkType,
             timestamp: String(timestampInMilliseconds)
         )
                 
