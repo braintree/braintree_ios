@@ -86,6 +86,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }
 
     @objc func universalLinkFlow(_ sender: UIButton) {
-        UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev")!)
+        UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments")!)
     }
 }

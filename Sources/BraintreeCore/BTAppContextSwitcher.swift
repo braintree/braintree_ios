@@ -13,7 +13,10 @@ import UIKit
     /// The URL scheme to return to this app after switching to another app or opening a SFSafariViewController.
     /// This URL scheme must be registered as a URL Type in the app's info.plist, and it must start with the app's bundle ID.
     public var returnURLScheme: String = ""
-    
+
+    /// The URL to use for the PayPal universal link flow. Must contain the path `braintree-payments`.
+    public var universalLink: String = ""
+
     // MARK: - Private Properties
     
     private var appContextSwitchClients = [BTAppContextSwitchClient.Type]()
