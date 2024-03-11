@@ -25,7 +25,7 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         appSwitch.register(MockAppContextSwitchClient.self)
         let expectedURL = URL(string: "fake://url")!
 
-        BTAppContextSwitcher.sharedInstance.handleOpen(expectedURL)
+        _ = BTAppContextSwitcher.sharedInstance.handleOpen(expectedURL)
 
         XCTAssertEqual(MockAppContextSwitchClient.lastCanHandleURL!, expectedURL)
     }
@@ -80,13 +80,19 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         XCTAssertFalse(handled)
         XCTAssertNil(MockAppContextSwitchClient.lastHandleReturnURL)
     }
-        
+
     func testHandleOpenURLContext_withNoAppSwitching_returnsFalse() {
         let mockURLContext = BTMockOpenURLContext(url: URL(string: "fake://url")!).mock
         let handled = BTAppContextSwitcher.sharedInstance.handleOpenURL(context: mockURLContext)
         XCTAssertFalse(handled)
     }
 
+    // MARK: - universalLink Tests
+
+    func testSetUniversalLink() {
+        BTAppContextSwitcher.sharedInstance.universalLink = "https://fake.com"
+        XCTAssertEqual(appSwitch.universalLink, "https://fake.com")
+    }
 }
 
 @objcMembers class MockAppContextSwitchClient: BTAppContextSwitchClient {
