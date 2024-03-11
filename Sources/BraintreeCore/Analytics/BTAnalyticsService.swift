@@ -28,6 +28,7 @@ class BTAnalyticsService: Equatable {
     ///   - errorDescription: Optional. Full error description returned to merchant.
     ///   - correlationID: Optional. CorrelationID associated with the checkout session.
     ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
+    ///   - linkType: Optional. The type of link the SDK will be handling, currently deeplink or universal.
     func sendAnalyticsEvent(
         _ eventName: String,
         errorDescription: String? = nil,
