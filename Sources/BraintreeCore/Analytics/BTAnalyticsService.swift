@@ -12,8 +12,6 @@ class BTAnalyticsService: Equatable {
 
     private let apiClient: BTAPIClient
 
-    private var payPalContextID: String?
-
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient) {
@@ -25,22 +23,22 @@ class BTAnalyticsService: Equatable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameters:
     ///   - eventName: Name of analytic event.
-    ///   - errorDescription: Optional. Full error description returned to merchant.
     ///   - correlationID: Optional. CorrelationID associated with the checkout session.
-    ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
+    ///   - errorDescription: Optional. Full error description returned to merchant.
     ///   - linkType: Optional. The type of link the SDK will be handling, currently deeplink or universal.
+    ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
     func sendAnalyticsEvent(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil,
-        linkType: String? = nil
+        errorDescription: String? = nil,
+        linkType: String? = nil,
+        payPalContextID: String? = nil
     ) {
         Task(priority: .background) {
             await performEventRequest(
                 eventName,
-                errorDescription: errorDescription,
                 correlationID: correlationID,
+                errorDescription: errorDescription,
                 linkType: linkType,
                 payPalContextID: payPalContextID
             )
@@ -50,19 +48,18 @@ class BTAnalyticsService: Equatable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
+        errorDescription: String? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) async {
-        self.payPalContextID = payPalContextID
-        
         let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
         let event = FPTIBatchData.Event(
             correlationID: correlationID,
             errorDescription: errorDescription,
             eventName: eventName,
             linkType: linkType,
+            payPalContextID: payPalContextID,
             timestamp: String(timestampInMilliseconds)
         )
                 
@@ -101,7 +98,6 @@ class BTAnalyticsService: Equatable {
             environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
-            payPalContextID: payPalContextID,
             sessionID: sessionID,
             tokenizationKey: apiClient.tokenizationKey
         )

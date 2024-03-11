@@ -352,11 +352,11 @@ import BraintreeCore
         shouldVault = success && vault
 
         if success {
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchSucceeded, linkType: linkType)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchSucceeded, linkType: linkType, payPalContextID: payPalContextID)
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
         } else {            
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed, linkType: linkType)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed, linkType: linkType, payPalContextID: payPalContextID)
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
     }
@@ -416,7 +416,7 @@ import BraintreeCore
         with result: BTVenmoAccountNonce,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded, payPalContextID: payPalContextID, linkType: linkType)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded, linkType: linkType, payPalContextID: payPalContextID)
         completion(result, nil)
     }
 
@@ -424,14 +424,14 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
-            payPalContextID: payPalContextID,
-            linkType: linkType
+            linkType: linkType, 
+            payPalContextID: payPalContextID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled, payPalContextID: payPalContextID, linkType: linkType)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled, linkType: linkType, payPalContextID: payPalContextID)
         completion(nil, BTVenmoError.canceled)
     }
 }

@@ -190,8 +190,8 @@ import PayPalCheckout
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalNativeCheckoutAnalytics.tokenizeFailed,
-            errorDescription: error.localizedDescription,
             correlationID: clientMetadataID,
+            errorDescription: error.localizedDescription,
             payPalContextID: payPalContextID
         )
         completion(nil, error)

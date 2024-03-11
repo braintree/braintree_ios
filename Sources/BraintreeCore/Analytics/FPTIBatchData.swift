@@ -32,6 +32,9 @@ struct FPTIBatchData: Codable {
         let eventName: String
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?
+        /// Used for linking events from the client to server side request
+        /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
+        let payPalContextID: String?
         let timestamp: String
         let tenantName: String = "Braintree"
 
@@ -40,6 +43,7 @@ struct FPTIBatchData: Codable {
             case errorDescription = "error_desc"
             case eventName = "event_name"
             case linkType = "link_type"
+            case payPalContextID = "paypal_context_id"
             case timestamp = "t"
             case tenantName = "tenant_name"
         }
@@ -101,10 +105,6 @@ struct FPTIBatchData: Codable {
 
         let merchantID: String?
 
-        /// Used for linking events from the client to server side request
-        /// This value will be PayPal Order ID, Payment Token, EC token or Billing Agreement depending on the flow
-        let payPalContextID: String?
-
         let platform = "iOS"
 
         let sessionID: String
@@ -127,7 +127,6 @@ struct FPTIBatchData: Codable {
             case isSimulator = "is_simulator"
             case merchantAppVersion = "mapv"
             case merchantID = "merchant_id"
-            case payPalContextID = "paypal_context_id"
             case platform = "platform"
             case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"

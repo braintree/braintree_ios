@@ -341,17 +341,17 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
-        payPalContextID: String? = nil,
-        linkType: String? = nil
+        errorDescription: String? = nil,
+        linkType: String? = nil,
+        payPalContextID: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
-            errorDescription: errorDescription,
             correlationID: correlationID,
-            payPalContextID: payPalContextID,
-            linkType: linkType
+            errorDescription: errorDescription,
+            linkType: linkType,
+            payPalContextID: payPalContextID
         )
     }
 
