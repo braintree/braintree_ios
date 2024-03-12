@@ -83,6 +83,11 @@ import Foundation
     /// If this value is set, `totalAmount` must also be set.
     public var lineItems: [BTVenmoLineItem]?
 
+    /// Optional. Used to determine if the customer should fallback to the web flow if Venmo app is not installed.
+    ///
+    /// Defaults to `false`
+    public var fallbackToWeb: Bool = false
+
     // MARK: - Initializer
 
     /// Initialize a Venmo request with a payment method usage.
