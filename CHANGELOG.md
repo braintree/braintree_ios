@@ -1,7 +1,15 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
-* Send `paypal_context_id` in `batch_params` to PayPal's analytics service (FPTI) when available
+## 6.13.0 (2024-03-12)
+* BraintreeVenmo
+  * Add `isFinalAmount` to `BTVenmoRequest`
+  * Add `BTVenmoRequest.fallbackToWeb`
+    * If set to `true` customers will fallback to a web based Venmo flow if the Venmo app is not installed
+    * This method uses Universal Links instead of URL Schemes
+* BraintreeCore
+  * Send `paypal_context_id` in `event_params` to PayPal's analytics service (FPTI) when available
+  * Send `link_type` in `event_params` to PayPal's analytics service (FPTI)
+  * Fix bug where FPTI analytic events were being sent multiple times
 
 ## 6.12.0 (2024-01-18)
 * BraintreePayPal

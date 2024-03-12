@@ -49,7 +49,12 @@ import Foundation
     /// Whether the customer's shipping address should be collected and displayed on the Venmo paysheet.
     /// Defaults to `false`
     public var collectCustomerShippingAddress: Bool = false
-    
+
+    /// Indicates whether the purchase amount is the final amount.
+    /// Removes "subject to change" notice in Venmo app paysheet UI.
+    /// Defaults to `false`
+    public var isFinalAmount: Bool = false
+
     /// Optional. The subtotal amount of the transaction to be displayed on the paysheet. Excludes taxes, discounts, and shipping amounts.
     ///
     /// If this value is set, `totalAmount` must also be set.
@@ -77,6 +82,11 @@ import Foundation
     ///
     /// If this value is set, `totalAmount` must also be set.
     public var lineItems: [BTVenmoLineItem]?
+
+    /// Optional. Used to determine if the customer should fallback to the web flow if Venmo app is not installed.
+    ///
+    /// Defaults to `false`
+    public var fallbackToWeb: Bool = false
 
     // MARK: - Initializer
 
