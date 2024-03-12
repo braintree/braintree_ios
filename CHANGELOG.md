@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeDataCollector
+  * Bump to PPRiskMagnes v5.5.0 with code signing & a privacy manifest file
+  
 ## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
