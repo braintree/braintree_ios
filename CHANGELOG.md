@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
   * Add `BTVenmoRequest.fallbackToWeb`
