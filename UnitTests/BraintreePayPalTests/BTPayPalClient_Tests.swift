@@ -666,6 +666,11 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
     }
 
+    func testHandleReturnURL_whenURLIsValid_setsBTPayPalClientToNil() {
+        BTPayPalClient.handleReturnURL(URL(string: "https://mycoolwebsite.com/braintree-payments/success")!)
+        XCTAssertNil(BTPayPalClient.payPalClient)
+    }
+
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
