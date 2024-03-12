@@ -41,6 +41,9 @@ import BraintreeCore
     /// In the Venmo flow this will be the payment context ID
     private var payPalContextID: String? = nil
 
+    /// Used for sending the type of flow, universal vs deeplink to FPTI
+    private var linkType: String? = nil
+
     // MARK: - Initializer
 
     /// Creates an Apple Pay client
@@ -61,7 +64,8 @@ import BraintreeCore
     ///   If the user cancels out of the flow, the error code will be `.canceled`.
     @objc(tokenizeWithVenmoRequest:completion:)
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted)
+        linkType = request.fallbackToWeb ? "universal" : "deeplink"
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
         if returnURLScheme == "" {
@@ -348,11 +352,11 @@ import BraintreeCore
         shouldVault = success && vault
 
         if success {
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchSucceeded)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchSucceeded, linkType: linkType, payPalContextID: payPalContextID)
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
         } else {            
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed, linkType: linkType, payPalContextID: payPalContextID)
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
     }
@@ -412,7 +416,7 @@ import BraintreeCore
         with result: BTVenmoAccountNonce,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded, payPalContextID: payPalContextID)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeSucceeded, linkType: linkType, payPalContextID: payPalContextID)
         completion(result, nil)
     }
 
@@ -420,13 +424,14 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
+            linkType: linkType, 
             payPalContextID: payPalContextID
         )
         completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled, payPalContextID: payPalContextID)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled, linkType: linkType, payPalContextID: payPalContextID)
         completion(nil, BTVenmoError.canceled)
     }
 }
