@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Require Xcode 15.0 (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+
 ## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
