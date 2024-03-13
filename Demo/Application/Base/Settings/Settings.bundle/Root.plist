@@ -27,6 +27,7 @@
 				<string>iDEAL</string>
 				<string>Amex</string>
 				<string>SEPA Direct Debit</string>
+				<string>Shopper Insights</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -40,6 +41,7 @@
 				<string>IdealViewController</string>
 				<string>AmexViewController</string>
 				<string>SEPADirectDebitViewController</string>
+				<string>ShopperInsightsViewController</string>
 			</array>
 		</dict>
 		<dict>

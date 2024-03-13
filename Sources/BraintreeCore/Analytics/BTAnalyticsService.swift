@@ -71,9 +71,9 @@ class BTAnalyticsService: Equatable {
             // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
             if self.http == nil {
                 if let clientToken = self.apiClient.clientToken {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    self.http = BTHTTP(url: BTCoreConstants.payPalProductionURL, authorizationFingerprint: clientToken.authorizationFingerprint)
                 } else if let tokenizationKey = self.apiClient.tokenizationKey {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: tokenizationKey)
+                    self.http = BTHTTP(url: BTCoreConstants.payPalProductionURL, tokenizationKey: tokenizationKey)
                 } else {
                     return
                 }

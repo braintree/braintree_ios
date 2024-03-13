@@ -14,7 +14,7 @@ class BTGraphQLHTTP: BTHTTP {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    override func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+    override func post(_ path: String, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
         httpRequest(method: "POST", parameters: parameters, completion: completion)
     }
 

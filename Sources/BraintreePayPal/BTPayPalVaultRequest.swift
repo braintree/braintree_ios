@@ -11,6 +11,9 @@ import BraintreeCore
 
     /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     public var offerCredit: Bool
+    
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    public var userAuthenticationEmail: String?
 
     // MARK: - Initializer
 
@@ -30,8 +33,12 @@ import BraintreeCore
         let baseParameters = super.parameters(with: configuration)
         var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
 
-        if billingAgreementDescription != nil {
+        if let billingAgreementDescription {
             vaultParameters["description"] = billingAgreementDescription
+        }
+        
+        if let userAuthenticationEmail {
+            vaultParameters["payer_email"] = userAuthenticationEmail
         }
 
         if let shippingAddressOverride {

@@ -8,4 +8,7 @@ import Foundation
 
     /// Use the GraphQL API
     case graphQLAPI
+    
+    /// Use the PayPal API
+    case payPalAPI
 }

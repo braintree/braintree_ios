@@ -44,6 +44,10 @@ let package = Package(
             targets: ["BraintreeSEPADirectDebit"]
         ),
         .library(
+            name: "BraintreeShopperInsights",
+            targets: ["BraintreeShopperInsights"]
+        ),
+        .library(
             name: "BraintreeThreeDSecure",
             targets: ["BraintreeThreeDSecure", "CardinalMobile", "PPRiskMagnes"]
         ),
@@ -97,6 +101,11 @@ let package = Package(
             name: "BraintreeSEPADirectDebit",
             dependencies: ["BraintreeCore"],
             path: "Sources/BraintreeSEPADirectDebit"
+        ),
+        .target(
+            name: "BraintreeShopperInsights",
+            dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreeThreeDSecure",

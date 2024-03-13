@@ -26,7 +26,8 @@ import Foundation
 
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
-
+    var payPalHTTP: BTHTTP?
+    
     var session: URLSession {
         let configurationQueue: OperationQueue = OperationQueue()
         configurationQueue.name = "com.braintreepayments.BTAPIClient"
@@ -178,6 +179,14 @@ import Foundation
                         graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
                     }
                 }
+                
+                if payPalHTTP == nil {
+                    let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
+                    
+                    if let clientToken, let paypalBaseURL {
+                        payPalHTTP = BTHTTP(url: paypalBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    }
+                }
             }
 
             completion(configuration, nil)
@@ -318,6 +327,7 @@ import Foundation
     public func post(
         _ path: String,
         parameters: Encodable,
+        headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
@@ -333,7 +343,33 @@ import Foundation
             }
 
             let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
+            http(for: httpType)?.post(path, parameters: postParameters, headers: headers, completion: completion)
+        }
+    }
+
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
+    /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
+    /// - Parameters:
+    ///   - path: The endpoint URI path.
+    ///   - parameters: Optional set of query parameters to be encoded with the request.
+    ///   - httpType: The underlying `BTAPIClientHTTPService` of the HTTP request. Defaults to `.gateway`.
+    /// - Returns: On success, `(BTJSON?, HTTPURLResponse?)` will contain the JSON body response and the HTTP response.
+    @_documentation(visibility: private)
+    public func post(
+        _ path: String,
+        parameters: Encodable,
+        headers: [String: String]? = nil,
+        httpType: BTAPIClientHTTPService = .gateway
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        try await withCheckedThrowingContinuation { continuation in
+            post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResonse, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: (json, httpResonse))
+                }
+            }
         }
     }
 
@@ -364,6 +400,8 @@ import Foundation
             return parameters?.merging(["_meta": metadata.parameters]) { $1 }
         case .graphQLAPI:
             return parameters?.merging(["clientSdkMetadata": metadata.parameters]) { $1 }
+        case .payPalAPI:
+            return parameters
         }
     }
 
@@ -476,6 +514,15 @@ import Foundation
         components.path = "/graphql"
         return components.url
     }
+    
+    func payPalAPIURL(forEnvironment environment: String) -> URL? {
+        if environment.caseInsensitiveCompare("sandbox") == .orderedSame ||
+            environment.caseInsensitiveCompare("development") == .orderedSame {
+            return BTCoreConstants.payPalSandboxURL
+        } else {
+            return BTCoreConstants.payPalProductionURL
+        }
+    }
 
     func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
         switch httpType {
@@ -483,6 +530,8 @@ import Foundation
             return http
         case .graphQLAPI:
             return graphQLHTTP
+        case .payPalAPI:
+            return payPalHTTP
         }
     }
 }
