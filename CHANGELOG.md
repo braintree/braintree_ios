@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.14.0 (2024-03-13)
 * BraintreeDataCollector
   * Bump to PPRiskMagnes v5.5.0 with code signing & a privacy manifest file
   
