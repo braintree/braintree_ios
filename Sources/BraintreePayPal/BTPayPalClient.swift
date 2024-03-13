@@ -51,6 +51,8 @@ import BraintreeDataCollector
     /// - Parameter apiClient: The API Client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
+        BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
+
         self.apiClient = apiClient
         self.webAuthenticationSession = BTWebAuthenticationSession()
 

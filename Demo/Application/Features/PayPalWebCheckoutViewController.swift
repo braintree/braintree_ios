@@ -4,7 +4,12 @@ import BraintreePayPal
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
+    var payPalClient: BTPayPalClient!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        payPalClient = BTPayPalClient(apiClient: apiClient)
+    }
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
@@ -86,6 +91,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }
 
     @objc func universalLinkFlow(_ sender: UIButton) {
-        UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments")!)
+        UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments/success")!)
     }
 }
