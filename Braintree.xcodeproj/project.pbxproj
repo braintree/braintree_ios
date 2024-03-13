@@ -16,6 +16,7 @@
 		3B1C529429D5EB4E00B68A58 /* BTVenmoAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1C529329D5EB4E00B68A58 /* BTVenmoAnalytics.swift */; };
 		3B1C529729D638D400B68A58 /* BTVenmoAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1C529529D637F400B68A58 /* BTVenmoAnalytics_Tests.swift */; };
 		3B57E9EA29ECC1AF00245174 /* BTLocalPaymentAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57E9E929ECC1AF00245174 /* BTLocalPaymentAnalytics.swift */; };
+		3B5A41E92BA2375600921922 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3B5A41E82BA2375600921922 /* PrivacyInfo.xcprivacy */; };
 		3B7A261129C0CAA40087059D /* BTPayPalAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A261029C0CAA40087059D /* BTPayPalAnalytics.swift */; };
 		3B7A261429C35BD00087059D /* BTPayPalAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A261229C35B670087059D /* BTPayPalAnalytics_Tests.swift */; };
 		3BC0E09229E4673C009217D6 /* BTSEPADirectAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0E09129E4673C009217D6 /* BTSEPADirectAnalytics.swift */; };
@@ -633,6 +634,7 @@
 		3B1C529329D5EB4E00B68A58 /* BTVenmoAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAnalytics.swift; sourceTree = "<group>"; };
 		3B1C529529D637F400B68A58 /* BTVenmoAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAnalytics_Tests.swift; sourceTree = "<group>"; };
 		3B57E9E929ECC1AF00245174 /* BTLocalPaymentAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentAnalytics.swift; sourceTree = "<group>"; };
+		3B5A41E82BA2375600921922 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B7A261029C0CAA40087059D /* BTPayPalAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalAnalytics.swift; sourceTree = "<group>"; };
 		3B7A261229C35B670087059D /* BTPayPalAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalAnalytics_Tests.swift; sourceTree = "<group>"; };
 		3BC0E09129E4673C009217D6 /* BTSEPADirectAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectAnalytics.swift; sourceTree = "<group>"; };
@@ -1172,6 +1174,7 @@
 				80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */,
 				80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */,
 				80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */,
+				3B5A41E82BA2375600921922 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeLocalPayment;
 			sourceTree = "<group>";
@@ -2475,6 +2478,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B5A41E92BA2375600921922 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

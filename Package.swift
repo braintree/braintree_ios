@@ -81,7 +81,8 @@ let package = Package(
         ),
         .target(
             name: "BraintreeLocalPayment",
-            dependencies: ["BraintreeCore", "BraintreeDataCollector"]
+            dependencies: ["BraintreeCore", "BraintreeDataCollector"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreePayPal",
