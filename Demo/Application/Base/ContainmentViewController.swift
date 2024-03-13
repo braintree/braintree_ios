@@ -188,7 +188,7 @@ class ContainmentViewController: UIViewController {
 
     private func instantiateViewController(with authorization: String) -> BaseViewController? {
         guard let integrationName = UserDefaults.standard.string(forKey: "BraintreeDemoSettingsIntegration") else {
-            return nil
+            return PayPalWebCheckoutViewController(authorization: authorization)
         }
 
         switch integrationName {
@@ -215,7 +215,7 @@ class ContainmentViewController: UIViewController {
         case "VenmoViewController":
             return VenmoViewController(authorization: authorization)
         default:
-            return nil
+            return PayPalWebCheckoutViewController(authorization: authorization)
         }
     }
 
