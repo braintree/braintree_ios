@@ -91,7 +91,8 @@ let package = Package(
         .target(
             name: "BraintreePayPalNativeCheckout",
             dependencies: ["BraintreeCore", "BraintreePayPal", "PayPalCheckout"],
-            path: "Sources/BraintreePayPalNativeCheckout"
+            path: "Sources/BraintreePayPalNativeCheckout",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "PayPalCheckout",
