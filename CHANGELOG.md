@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Added property `BTAppContextSwitcher.sharedInstance.universalLink` for the PayPal app switch flow
+
 ## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
