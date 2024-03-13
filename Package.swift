@@ -115,7 +115,8 @@ let package = Package(
         ),
         .target(
             name: "BraintreeVenmo",
-            dependencies: ["BraintreeCore"]
+            dependencies: ["BraintreeCore"],
+	        resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
