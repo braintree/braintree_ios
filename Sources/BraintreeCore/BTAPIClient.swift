@@ -66,7 +66,7 @@ import Foundation
         self.metadata = BTClientMetadata()
 
         super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self, flushThreshold: 5)
+        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
         let errorString = BTLogLevelDescription.string(for: .error) 
@@ -377,16 +377,17 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
-        errorDescription: String? = nil,
         correlationID: String? = nil,
+        errorDescription: String? = nil,
+        linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
-            errorDescription: errorDescription,
             correlationID: correlationID,
-            payPalContextID: payPalContextID,
-            completion: { _ in }
+            errorDescription: errorDescription,
+            linkType: linkType,
+            payPalContextID: payPalContextID
         )
     }
 

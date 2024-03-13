@@ -389,7 +389,7 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertTrue(apiClient?.analyticsService is BTAnalyticsService)
     }
 
-    func testSendAnalyticsEvent_whenCalled_callsAnalyticsService_doesFlush() {
+    func testSendAnalyticsEvent_whenCalled_callsAnalyticsService() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
 
@@ -397,7 +397,6 @@ class BTAPIClient_Tests: XCTestCase {
         apiClient.sendAnalyticsEvent("blahblah")
 
         XCTAssertEqual(mockAnalyticsService.lastEvent, "blahblah")
-        XCTAssertTrue(mockAnalyticsService.didLastFlush)
     }
 
     // MARK: - Client SDK Metadata
