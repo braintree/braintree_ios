@@ -3,6 +3,10 @@
 ## unreleased
 * Require Xcode 15.0 (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 
+## 6.14.0 (2024-03-13)
+* BraintreeDataCollector
+  * Bump to PPRiskMagnes v5.5.0 with code signing & a privacy manifest file
+
 ## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
@@ -33,6 +37,7 @@
 ## 5.24.1 (2023-11-17)
 * BraintreePayPalDataCollector
   * Update previously incorrect version of PPRiskMagnes 5.4.1 with staging removed 
+  * This version of the PPRiskMagnes framework is dynamic
 
 ## 6.9.0 (2023-11-16)
 * BraintreeThreeDSecure
@@ -45,6 +50,7 @@
 ## 5.24.0 (2023-10-30)
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes with 5.4.1 - staging removed (fixes #1107)
+  * This version of the PPRiskMagnes framework is static
 
 ## 6.8.0 (2023-10-24)
 * BraintreeDataCollector
