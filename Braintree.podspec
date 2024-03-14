@@ -50,6 +50,7 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeDataCollector/*.swift"
     s.dependency "Braintree/Core"
     s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+    s.resource_bundle = { "BraintreeDataCollector_PrivacyInfo" => "Sources/BraintreeDataCollector/PrivacyInfo.xcprivacy"}
   end
 
   s.subspec "LocalPayment" do |s|
