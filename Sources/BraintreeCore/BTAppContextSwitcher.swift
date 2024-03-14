@@ -29,7 +29,7 @@ import UIKit
     /// - Parameters: url the URL you receive in  `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate) when returning to your app
     /// - Returns: `true` when the SDK can process the return URL
     @objc(handleOpenURLContext:)
-    public func handleOpenURL(context: UIOpenURLContext) -> Bool {
+    @discardableResult public func handleOpenURL(context: UIOpenURLContext) -> Bool {
         handleOpen(context.url)
     }
     
@@ -37,7 +37,7 @@ import UIKit
     /// - Parameter url:  The URL you receive in `scene:openURLContexts:` (or `application:openURL:options:` if not using SceneDelegate)
     /// - Returns: `true` when the SDK has handled the URL successfully
     @objc(handleOpenURL:)
-    public func handleOpen(_ url: URL) -> Bool {
+    @discardableResult public func handleOpen(_ url: URL) -> Bool {
         for appContextSwitchClient in appContextSwitchClients {
             if appContextSwitchClient.canHandleReturnURL(url) {
                 appContextSwitchClient.handleReturnURL(url)
