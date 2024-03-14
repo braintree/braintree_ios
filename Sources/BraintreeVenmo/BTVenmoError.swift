@@ -61,6 +61,9 @@ public enum BTVenmoError: Error, CustomNSError, LocalizedError, Equatable {
     /// 10.  The Venmo flow was canceled by the user
     case canceled
 
+    /// 11. One or more values in redirect URL are invalid
+    case invalidRedirectURLParameter
+
     public static var errorDomain: String {
         "com.braintreepayments.BTVenmoErrorDomain"
     }
@@ -89,6 +92,8 @@ public enum BTVenmoError: Error, CustomNSError, LocalizedError, Equatable {
             return 9
         case .canceled:
             return 10
+        case .invalidRedirectURLParameter:
+            return 11
         }
     }
 
@@ -116,6 +121,8 @@ public enum BTVenmoError: Error, CustomNSError, LocalizedError, Equatable {
             return "Cannot collect customer data when ECD is disabled. Enable this feature in the Control Panel to collect this data."
         case .canceled:
             return "Venmo flow was canceled by the user."
+        case .invalidRedirectURLParameter:
+            return "One or more values in redirect URL are invalid."
         }
     }
 }
