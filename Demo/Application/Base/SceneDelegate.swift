@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-        if let returnURL = userActivity.webpageURL, returnURL.path == "/braintree-payments/success" {
+        if let returnURL = userActivity.webpageURL, returnURL.path.contains("braintree-payments") {
             print("Returned to Demo app via universal link: \(returnURL)")
             _ = BTAppContextSwitcher.sharedInstance.handleOpen(returnURL)
         }
