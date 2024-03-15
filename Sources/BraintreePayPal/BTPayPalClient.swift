@@ -75,7 +75,6 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-
         tokenize(request: request, completion: completion)
     }
 
