@@ -75,9 +75,6 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        if request.userAuthenticationEmail != nil {
-            webAuthenticationSession.prefersEphemeralWebBrowserSession = true
-        }
 
         tokenize(request: request, completion: completion)
     }
