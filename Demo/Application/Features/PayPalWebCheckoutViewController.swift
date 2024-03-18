@@ -4,12 +4,7 @@ import BraintreePayPal
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
-    var payPalClient: BTPayPalClient!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        payPalClient = BTPayPalClient(apiClient: apiClient)
-    }
+    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
@@ -91,6 +86,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }
 
     @objc func universalLinkFlow(_ sender: UIButton) {
+        // TODO: implement in a future PR - used here so we don't have to remove lazy instantiation
+        payPalClient.tokenize(BTPayPalVaultRequest()) { _, _ in }
         UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments/success")!)
     }
 }
