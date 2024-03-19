@@ -86,7 +86,7 @@ Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 3. Open `Braintree.xcworkspace` in Xcode
 4. Select the `Demo` scheme, and then run
 
-Xcode 14+ is required to run the demo app.
+Xcode 15.0+ is required to run the demo app.
 
 ## Contributing
 
