@@ -231,7 +231,7 @@ import BraintreeDataCollector
 
     // MARK: - App Switch Methods
 
-    func handleOpen(_ url: URL) {
+    func handleReturnURL(_ url: URL) {
         // TODO: implement handling return URL in a follow up PR
     }
 
@@ -450,13 +450,13 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
-        payPalClient?.handleOpen(url)
+        payPalClient?.handleReturnURL(url)
         BTPayPalClient.payPalClient = nil
     }
 
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
-        url.scheme == "https" && (url.path.contains("cancel") || url.path.contains("success"))
+        BTPayPalAppSwitchReturnURL.isValid(url)
     }
 }
