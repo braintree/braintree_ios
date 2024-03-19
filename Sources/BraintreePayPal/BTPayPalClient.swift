@@ -457,6 +457,6 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
-        url.scheme == "https" && (url.path.contains("cancel") || url.path.contains("success"))
+        BTPayPalAppSwitchReturnURL.isValid(url)
     }
 }
