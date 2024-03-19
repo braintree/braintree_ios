@@ -68,8 +68,6 @@ struct BTVenmoAppSwitchReturnURL {
     /// - Parameter url: an app switch return URL
     /// - Returns: `true` if the url represents a Venmo Touch app switch return
     static func isValid(url: URL) -> Bool {
-        url.scheme?.caseInsensitiveCompare(BTAppContextSwitcher.sharedInstance.returnURLScheme) == .orderedSame
-        && url.host == "x-callback-url"
-        && url.path.hasPrefix("/vzero/auth/venmo/")
+        url.host == "x-callback-url" && url.path.hasPrefix("/vzero/auth/venmo/")
     }
 }
