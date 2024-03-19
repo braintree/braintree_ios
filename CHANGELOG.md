@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
 
 ## 6.15.0 (2024-03-18)
