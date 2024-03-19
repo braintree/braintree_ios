@@ -69,6 +69,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
     }
     
     func testParameters_withEnablePayPalAppSwitchTrue_returnsAllParams() {
+        BTAppContextSwitcher.sharedInstance.universalLink = "some-url"
         let request = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
 
         let parameters = request.parameters(with: configuration)
@@ -76,6 +77,6 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
-        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "https://www.fake-url.com")
+        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
     }
 }

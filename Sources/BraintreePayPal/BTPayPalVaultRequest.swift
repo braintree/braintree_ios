@@ -34,7 +34,7 @@ import BraintreeCore
                 "launch_paypal_app": enablePayPalAppSwitch,
                 "os_version": UIDevice.current.systemVersion,
                 "os_type": UIDevice.current.systemName,
-                "merchant_app_return_url": "https://www.fake-url.com" // TODO: - Add value from BTAppContextSwitcher.shared.universalLink
+                "merchant_app_return_url": BTAppContextSwitcher.sharedInstance.universalLink
             ]
             return baseParameters.merging(appSwitchParameters) { $1 }
         }
