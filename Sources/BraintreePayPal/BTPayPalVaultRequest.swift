@@ -19,8 +19,9 @@ import BraintreeCore
 
     /// Initializes a PayPal Native Vault request
     /// - Parameter offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public init(offerCredit: Bool = false) {
+    public init(offerCredit: Bool = false, userAuthenticationEmail: String? = nil) {
         self.offerCredit = offerCredit
+        self.userAuthenticationEmail = userAuthenticationEmail
 
         super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
     }
