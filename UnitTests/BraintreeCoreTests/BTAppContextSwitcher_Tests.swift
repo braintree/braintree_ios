@@ -25,7 +25,7 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         appSwitch.register(MockAppContextSwitchClient.self)
         let expectedURL = URL(string: "fake://url")!
 
-        BTAppContextSwitcher.sharedInstance.handleOpen(expectedURL)
+        _ = BTAppContextSwitcher.sharedInstance.handleOpen(expectedURL)
 
         XCTAssertEqual(MockAppContextSwitchClient.lastCanHandleURL!, expectedURL)
     }

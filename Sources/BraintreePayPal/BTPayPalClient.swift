@@ -29,6 +29,12 @@ import BraintreeDataCollector
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
 
+    // MARK: - Static Properties
+
+    /// This static instance of `BTPayPalClient` is used during the app switch process.
+    /// We require a static reference of the client to call `handleReturnURL` and return to the app.
+    static var payPalClient: BTPayPalClient? = nil
+
     // MARK: - Private Properties
 
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
@@ -45,6 +51,8 @@ import BraintreeDataCollector
     /// - Parameter apiClient: The API Client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
+        BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
+
         self.apiClient = apiClient
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
@@ -219,6 +227,12 @@ import BraintreeDataCollector
             return
         }
         performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
+    }
+
+    // MARK: - App Switch Methods
+
+    func handleReturnURL(_ url: URL) {
+        // TODO: implement handling return URL in a follow up PR
     }
 
     // MARK: - Private Methods
@@ -429,5 +443,20 @@ import BraintreeDataCollector
             payPalContextID: payPalContextID
         )
         completion(nil, BTPayPalError.canceled)
+    }
+}
+
+extension BTPayPalClient: BTAppContextSwitchClient {
+    /// :nodoc:
+    @_documentation(visibility: private)
+    @objc public static func handleReturnURL(_ url: URL) {
+        payPalClient?.handleReturnURL(url)
+        BTPayPalClient.payPalClient = nil
+    }
+
+    /// :nodoc:
+    @_documentation(visibility: private)
+    @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
+        BTPayPalAppSwitchReturnURL.isValid(url)
     }
 }

@@ -634,6 +634,43 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
+    // MARK: - App Switch
+
+    func testCanHandleReturnURL_whenHostIsURLScheme_returnsFalse() {
+        let url = URL(string: "fake-scheme://success")!
+        XCTAssertFalse(BTPayPalClient.canHandleReturnURL(url))
+    }
+
+    func testCanHandleReturnURL_whenPathIsInvalid_returnsFalse() {
+        let url = URL(string: "https://mycoolwebsite.com/junkpath")!
+        XCTAssertFalse(BTPayPalClient.canHandleReturnURL(url))
+    }
+
+    func testCanHandleReturnURL_whenSchemeIsHTTP_returnsFalse() {
+        let url = URL(string: "http://mycoolwebsite.com/success")!
+        XCTAssertFalse(BTPayPalClient.canHandleReturnURL(url))
+    }
+
+    func testCanHandleReturnURL_whenPathIsValidSuccess_returnsTrue() {
+        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/success")!
+        XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
+    }
+
+    func testCanHandleReturnURL_whenPathIsValidCancel_returnsTrue() {
+        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/cancel")!
+        XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
+    }
+
+    func testCanHandleReturnURL_whenPathIsValidWithQueryParameters_returnsTrue() {
+        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/success?token=112233")!
+        XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
+    }
+
+    func testHandleReturnURL_whenURLIsValid_setsBTPayPalClientToNil() {
+        BTPayPalClient.handleReturnURL(URL(string: "https://mycoolwebsite.com/braintree-payments/success")!)
+        XCTAssertNil(BTPayPalClient.payPalClient)
+    }
+
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
