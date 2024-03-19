@@ -7,7 +7,7 @@ import Foundation
 
     /// Optional: Used to determine if the customer will use the PayPal app switch flow.
     /// Defaults to `false`.
-    /// - Note: This property is currently available in limited release
+    /// - Note: This property is currently in beta and may change or be removed in future releases.
     public var enablePayPalAppSwitch: Bool
 
     // MARK: - Initializer
@@ -16,6 +16,7 @@ import Foundation
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
+    ///   This property is currently in beta and may change or be removed in future releases.
     public init(offerCredit: Bool = false, enablePayPalAppSwitch: Bool = false) {
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
         super.init(offerCredit: offerCredit)
