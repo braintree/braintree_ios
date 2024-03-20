@@ -228,6 +228,8 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
+        kdebug_signpost_start(10, 0, 0, 0, 0)
+
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
@@ -300,6 +302,8 @@ import BraintreeDataCollector
 
             handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
         } sessionDidAppear: { [self] didAppear in
+            kdebug_signpost_end(10, 0, 0, 0, 0)
+            
             if didAppear {
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
             } else {
