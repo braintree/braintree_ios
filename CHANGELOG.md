@@ -3,6 +3,9 @@
 ## unreleased
 * BraintreeCore
   * Add property `BTAppContextSwitcher.sharedInstance.universalLink` for the PayPal app switch flow
+* BraintreePayPal
+  * Add `BTPayPalVault.enablePayPalAppSwitch`
+    * If set to `true` we will attempt to use the PayPal App Switch flow
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property

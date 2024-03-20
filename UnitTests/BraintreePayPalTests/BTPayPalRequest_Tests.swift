@@ -93,4 +93,11 @@ class BTPayPalRequest_Tests: XCTestCase {
         guard let experienceProfile = parameters["experience_profile"] as? [String:Any] else { XCTFail(); return }
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
     }
+
+    // MARK: - enablePayPalAppSwitch
+
+    func testEnablePayPalAppSwitch_whenNotPassed_defaultsValueAsFalse() {
+        let request = BTPayPalVaultRequest()
+        XCTAssertFalse(request.enablePayPalAppSwitch)
+    }
 }
