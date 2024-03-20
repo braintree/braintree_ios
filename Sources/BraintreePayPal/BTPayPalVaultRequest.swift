@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalVaultBaseRequest {
 
@@ -9,6 +13,9 @@ import Foundation
     /// Defaults to `false`.
     /// - Note: This property is currently in beta and may change or be removed in future releases.
     public var enablePayPalAppSwitch: Bool
+
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    public var userAuthenticationEmail: String?
 
     // MARK: - Initializer
 
@@ -20,6 +27,17 @@ import Foundation
     ///   This property is currently in beta and may change or be removed in future releases.
     public init(offerCredit: Bool = false, userAuthenticationEmail: String? = nil, enablePayPalAppSwitch: Bool = false) {
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
-        super.init(offerCredit: offerCredit, userAuthenticationEmail: userAuthenticationEmail)
+        self.userAuthenticationEmail = userAuthenticationEmail
+        super.init(offerCredit: offerCredit)
+    }
+
+    public override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+        var baseParameters = super.parameters(with: configuration)
+
+        if let userAuthenticationEmail {
+            baseParameters["payer_email"] = userAuthenticationEmail
+        }
+
+        return baseParameters
     }
 }
