@@ -38,12 +38,12 @@ import BraintreeCore
             baseParameters["payer_email"] = userAuthenticationEmail
         }
         
-        if enablePayPalAppSwitch {
+        if enablePayPalAppSwitch, let universalLinkURL = BTAppContextSwitcher.sharedInstance.universalLink {
             let appSwitchParameters: [String: Any] = [
                 "launch_paypal_app": enablePayPalAppSwitch,
                 "os_version": UIDevice.current.systemVersion,
                 "os_type": UIDevice.current.systemName,
-                "merchant_app_return_url": BTAppContextSwitcher.sharedInstance.universalLink
+                "merchant_app_return_url": universalLinkURL.absoluteString
             ]
             return baseParameters.merging(appSwitchParameters) { $1 }
         }

@@ -71,7 +71,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
     }
     
     func testParameters_withEnablePayPalAppSwitchTrue_returnsAllParams() {
-        BTAppContextSwitcher.sharedInstance.universalLink = "some-url"
+        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "some-url")!
         let request = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
 
         let parameters = request.parameters(with: configuration)
