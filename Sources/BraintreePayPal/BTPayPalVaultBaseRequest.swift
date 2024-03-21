@@ -31,7 +31,7 @@ import BraintreeCore
         let baseParameters = super.parameters(with: configuration)
         var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
 
-        if billingAgreementDescription != nil {
+        if let billingAgreementDescription {
             vaultParameters["description"] = billingAgreementDescription
         }
 

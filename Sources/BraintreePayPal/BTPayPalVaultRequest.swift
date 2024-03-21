@@ -11,26 +11,32 @@ import BraintreeCore
 
     /// Optional: Used to determine if the customer will use the PayPal app switch flow.
     /// Defaults to `false`.
-    /// - Note: This property is currently available in limited release
+    /// - Note: This property is currently in beta and may change or be removed in future releases.
     public var enablePayPalAppSwitch: Bool
+
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    public var userAuthenticationEmail: String?
 
     // MARK: - Initializer
 
-    /// Initializes a PayPal Native Vault request
+    /// Initializes a PayPal Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
-    public init(offerCredit: Bool = false, enablePayPalAppSwitch: Bool = false) {
+    ///   This property is currently in beta and may change or be removed in future releases.
+    public init(offerCredit: Bool = false, userAuthenticationEmail: String? = nil, enablePayPalAppSwitch: Bool = false) {
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
+        self.userAuthenticationEmail = userAuthenticationEmail
         super.init(offerCredit: offerCredit)
     }
-    
-    // MARK: Public Methods
-    
-    /// :nodoc: This method is not covered by semantic versioning.
-    @_documentation(visibility: private)
+
     public override func parameters(with configuration: BTConfiguration) -> [String: Any] {
-        let baseParameters = super.parameters(with: configuration)
+        var baseParameters = super.parameters(with: configuration)
+
+        if let userAuthenticationEmail {
+            baseParameters["payer_email"] = userAuthenticationEmail
+        }
         
         if enablePayPalAppSwitch {
             let appSwitchParameters: [String: Any] = [

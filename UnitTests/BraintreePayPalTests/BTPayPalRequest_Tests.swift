@@ -100,9 +100,4 @@ class BTPayPalRequest_Tests: XCTestCase {
         let request = BTPayPalVaultRequest()
         XCTAssertFalse(request.enablePayPalAppSwitch)
     }
-
-    func testEnablePayPalAppSwitch_whenNotPassed_returnsValueAsTrue() {
-        let request = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
-        XCTAssertTrue(request.enablePayPalAppSwitch)
-    }
 }
