@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -36,6 +36,16 @@ import BraintreeCore
 
         if let userAuthenticationEmail {
             baseParameters["payer_email"] = userAuthenticationEmail
+        }
+        
+        if enablePayPalAppSwitch {
+            let appSwitchParameters: [String: Any] = [
+                "launch_paypal_app": enablePayPalAppSwitch,
+                "os_version": UIDevice.current.systemVersion,
+                "os_type": UIDevice.current.systemName,
+                "merchant_app_return_url": BTAppContextSwitcher.sharedInstance.universalLink
+            ]
+            return baseParameters.merging(appSwitchParameters) { $1 }
         }
 
         return baseParameters
