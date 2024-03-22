@@ -16,6 +16,10 @@ import BraintreeDataCollector
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
     
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles
+    /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
+    var application: URLOpener = UIApplication.shared
+    
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL? = nil
 
@@ -278,7 +282,7 @@ import BraintreeDataCollector
                 }
                 
                 if let paypalAppRedirectUrl = body["paypalAppApprovalUrl"].asURL() {
-                    // new flow
+                    self.launchPayPalApp(with: paypalAppRedirectUrl, completion: completion)
                 } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                             body["agreementSetup"]["approvalUrl"].asURL() {
                     let pairingID = self.token(from: approvalURL)
@@ -298,15 +302,20 @@ import BraintreeDataCollector
     }
     
     private func launchPayPalApp(with paypalAppRedirectUrl: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        guard var url = URLComponents(url: paypalAppRedirectUrl, resolvingAgainstBaseURL: true) else {
-            self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
-            return
-        }
-        
-        url.queryItems = [
+        var urlComponents = URLComponents(url: paypalAppRedirectUrl, resolvingAgainstBaseURL: true)
+        urlComponents?.queryItems = [
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(UInt64(Date().timeIntervalSince1970 * 1000)))
         ]
+        
+        guard let redirectURL = urlComponents?.url else {
+            self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+            return
+        }
+
+        application.open(redirectURL, options: [:]) { success in
+            // TODO: - Handle success or fail of opening app
+        }
     }
     
     private func performSwitchRequest(
