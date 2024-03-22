@@ -277,7 +277,7 @@ import BraintreeDataCollector
                     return
                 }
                 
-                if let paypalAppApprovalUrl = body["paypalAppApprovalUrl"].asURL() {
+                if let paypalAppRedirectUrl = body["paypalAppApprovalUrl"].asURL() {
                     // new flow
                 } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                             body["agreementSetup"]["approvalUrl"].asURL() {
@@ -295,6 +295,18 @@ import BraintreeDataCollector
                 }
             }
         }
+    }
+    
+    private func launchPayPalApp(with paypalAppRedirectUrl: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        guard var url = URLComponents(url: paypalAppRedirectUrl, resolvingAgainstBaseURL: true) else {
+            self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+            return
+        }
+        
+        url.queryItems = [
+            URLQueryItem(name: "source", value: "braintree_sdk"),
+            URLQueryItem(name: "switch_initiated_time", value: String(UInt64(Date().timeIntervalSince1970 * 1000)))
+        ]
     }
     
     private func performSwitchRequest(
