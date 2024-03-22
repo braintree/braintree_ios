@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import AuthenticationServices
 
 #if canImport(BraintreeCore)
@@ -28,6 +28,14 @@ import BraintreeDataCollector
 
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
+
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles
+    /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
+    var application: URLOpener = UIApplication.shared
+
+    /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
+    /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
+    var appSwitchCompletion: (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
 
     // MARK: - Static Properties
 
@@ -273,26 +281,83 @@ import BraintreeDataCollector
                     return
                 }
 
-                guard let body,
-                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-                        body["agreementSetup"]["approvalUrl"].asURL() else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
-                    return
+                if (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true, let universalLinkURL = body?["paypalAppApprovalUrl"].asURL() {
+                    self.payPalUniversalLinkFlow(body: body, universalLinkURL: universalLinkURL, completion: completion)
+                } else {
+                    self.payPalWebFlow(request: request, body: body, completion: completion)
                 }
-
-                let pairingID = self.token(from: approvalURL)
-
-                if !pairingID.isEmpty {
-                    self.payPalContextID = pairingID
-                }
-
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
-                self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
             }
         }
     }
-    
+
+    private func payPalWebFlow(
+        request: BTPayPalRequest,
+        body: BTJSON?,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        guard let body,
+              let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                body["agreementSetup"]["approvalUrl"].asURL() else {
+            notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+            return
+        }
+
+        let pairingID = token(from: approvalURL)
+
+        if !pairingID.isEmpty {
+            payPalContextID = pairingID
+        }
+
+        let dataCollector = BTDataCollector(apiClient: apiClient)
+        clientMetadataID = payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
+        handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
+    }
+
+    private func payPalUniversalLinkFlow(
+        body: BTJSON?,
+        universalLinkURL: URL,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        guard let body,
+              let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                body["agreementSetup"]["approvalUrl"].asURL() else {
+            notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+            return
+        }
+
+        let pairingID = token(from: approvalURL)
+
+        if !pairingID.isEmpty {
+            payPalContextID = pairingID
+        }
+
+        guard let appSwitchURL = BTPayPalAppSwitchURL().universalLinksURL(
+            universalLinkURL: universalLinkURL,
+            token: pairingID
+        ) else {
+            notifyFailure(with: BTPayPalError.invalidAppSwitchURL, completion: completion)
+            return
+        }
+        startPayPalAppSwitchFlow(with: appSwitchURL, completion: completion)
+    }
+
+    func startPayPalAppSwitchFlow(with appSwitchURL: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        application.open(appSwitchURL, options: [:]) { success in
+            self.invokedOpenURLSuccessfully(success, completion: completion)
+        }
+    }
+
+    func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        if success {
+            // TODO: send appSwitchSucceeded analytics event
+            BTPayPalClient.payPalClient = self
+            self.appSwitchCompletion = completion
+        } else {
+            // TODO: send appSwitchFailed analytics event
+            notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
+        }
+    }
+
     private func performSwitchRequest(
         appSwitchURL: URL,
         paymentType: BTPayPalPaymentType,
