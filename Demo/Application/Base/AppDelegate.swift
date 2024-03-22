@@ -4,7 +4,7 @@ import BraintreeCore
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
         
     private let returnURLScheme = "com.braintreepayments.Demo.payments"
-    private let universalLinkURL = "https://braintree-ios-demo.fly.dev/braintree-payments"
+    private let universalLinkURL = "https://paypal.com" // "https://braintree-ios-demo.fly.dev/braintree-payments"
     private let processInfoArgs = ProcessInfo.processInfo.arguments
     private let userDefaults = UserDefaults.standard
     

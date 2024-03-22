@@ -15,7 +15,7 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 3. HTTP POST request returned an error
     case httpPostRequestError([String: Any])
 
-    /// 4. The approval or redirect URL is invalid
+    /// 4. The web approval URL, web redirect URL, or PayPal native app approval URL is invalid
     case invalidURL
 
     /// 5. The ASWebAuthenticationSession URL is invalid

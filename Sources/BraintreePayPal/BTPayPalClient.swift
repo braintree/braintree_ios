@@ -272,23 +272,27 @@ import BraintreeDataCollector
                     self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
                     return
                 }
-
-                guard let body,
-                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-                        body["agreementSetup"]["approvalUrl"].asURL() else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+                
+                guard let body else {
                     return
                 }
+                
+                if let paypalAppApprovalUrl = body["paypalAppApprovalUrl"].asURL() {
+                    // new flow
+                } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                            body["agreementSetup"]["approvalUrl"].asURL() {
+                    let pairingID = self.token(from: approvalURL)
 
-                let pairingID = self.token(from: approvalURL)
+                    if !pairingID.isEmpty {
+                        self.payPalContextID = pairingID
+                    }
 
-                if !pairingID.isEmpty {
-                    self.payPalContextID = pairingID
+                    let dataCollector = BTDataCollector(apiClient: self.apiClient)
+                    self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
+                    self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
+                } else {
+                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
                 }
-
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
-                self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
             }
         }
     }
