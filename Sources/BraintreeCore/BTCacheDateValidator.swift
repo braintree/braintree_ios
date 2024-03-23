@@ -20,6 +20,7 @@ struct BTCacheDateValidator {
 
         let earlierDate: Date = cachedResponseTimestamp <= expirationTimestamp ? cachedResponseTimestamp : expirationTimestamp
 
-        return earlierDate == cachedResponseTimestamp
+        // return earlierDate == cachedResponseTimestamp
+        return true // turn off caching for Instruments testing
     }
 }
