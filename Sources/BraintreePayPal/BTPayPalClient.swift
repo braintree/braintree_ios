@@ -277,62 +277,49 @@ import BraintreeDataCollector
                     return
                 }
                 
-                guard let body else {
-                    return
-                }
-                
-                if let paypalAppRedirectUrl = body["paymentResource"]["paypalAppApprovalUrl"].asURL() {
-                    self.launchPayPalApp(with: paypalAppRedirectUrl, completion: completion)
-                } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-                            body["agreementSetup"]["approvalUrl"].asURL() {
-                    self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
-                } else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
-                }
-                
-                guard let switchURL = SwitchType(body: body) else {
+                guard let body, let approvalURL = ApprovalURLParser(body: body) else {
                     self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
                     return
                 }
                 
-                self.payPalContextID = switchURL.finalURL.pairingID
+                self.payPalContextID = approvalURL.pairingID
 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(switchURL.finalURL.pairingID)
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(approvalURL.pairingID)
                 
-                switch switchURL.finalURL {
-                case .webCheckoutURL(let url):
+                switch approvalURL.redirectType {
+                case .payPalApp(let url):
                     self.launchPayPalApp(with: url, completion: completion)
-                case .payPalAppURL(let url):
+                case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
             }
         }
     }
     
-    enum Things {
-        case webCheckoutURL(url: URL)
-        case payPalAppURL(url: URL)
+    enum PayPalRedirectType {
+        case webBrowser(url: URL)
+        case payPalApp(url: URL)
+    }
+    
+    struct ApprovalURLParser {
+        
+        var redirectType: PayPalRedirectType
         
         var pairingID: String? {
-            switch self {
-            case .webCheckoutURL(let url), .payPalAppURL(let url):
+            switch redirectType {
+            case .webBrowser(let url), .payPalApp(let url):
                 let url = URLComponents(url: url, resolvingAgainstBaseURL: true)
                 return url?.queryItems?.first(where: { $0.name == "token" || $0.name == "ba_token" })?.value
             }
         }
-    }
-    
-    struct SwitchType {
-        
-        var finalURL: Things
         
         init?(body: BTJSON) {
             if let paypalAppRedirectUrl = body["paymentResource"]["paypalAppApprovalUrl"].asURL() {
-                finalURL = .payPalAppURL(url: paypalAppRedirectUrl)
+                redirectType = .payPalApp(url: paypalAppRedirectUrl)
             } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                 body["agreementSetup"]["approvalUrl"].asURL() {
-                finalURL = .webCheckoutURL(url: approvalURL)
+                redirectType = .webBrowser(url: approvalURL)
             } else {
                 return nil
             }
