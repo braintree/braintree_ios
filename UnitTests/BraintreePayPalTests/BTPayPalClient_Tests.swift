@@ -241,6 +241,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "123")
+        XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
     func testTokenize_whenApprovalURLDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
@@ -721,6 +722,8 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
     }
+    
+    
 
     // MARK: - Analytics
 
