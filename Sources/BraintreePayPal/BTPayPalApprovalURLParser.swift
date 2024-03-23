@@ -4,12 +4,17 @@ import Foundation
 import BraintreeCore
 #endif
 
+/// The type of PayPal authentication flow to occur
 enum PayPalRedirectType {
+    
+    /// The in-app browser (ASWebAuthenticationSession) web checkout flow
     case webBrowser(url: URL)
+    
+    /// The universal link flow, switching out of the merchant app into the native PayPal app
     case payPalApp(url: URL)
 }
 
-struct ApprovalURLParser {
+struct BTPayPalApprovalURLParser {
     
     var redirectType: PayPalRedirectType
     

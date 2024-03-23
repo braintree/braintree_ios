@@ -277,7 +277,7 @@ import BraintreeDataCollector
                     return
                 }
                 
-                guard let body, let approvalURL = ApprovalURLParser(body: body) else {
+                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
                     self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
                     return
                 }
