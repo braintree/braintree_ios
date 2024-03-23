@@ -14,6 +14,7 @@ enum PayPalRedirectType {
     case payPalApp(url: URL)
 }
 
+/// Parses response body from `/v1/paypal_hermes/*` POST requests to determine the `PayPalRedirectType`
 struct BTPayPalApprovalURLParser {
     
     var redirectType: PayPalRedirectType
