@@ -188,10 +188,12 @@ class BTPayPalClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
 
-    func testTokenizePayPalAccount_whenApprovalUrlIsInvalid_returnsError() {
+    func testTokenizePayPalAccount_whenAllApprovalURLsInvalid_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
-                "redirectUrl": ""
+                "redirectUrl": "",
+                "approvalUrl": "",
+                "paypalAppApprovalUrl": ""
             ]
         ])
 
@@ -223,6 +225,22 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "EC-Random-Value")
+    }
+    
+    // TODO: - Un-pend test once app switch flow sends analytics
+    func pendTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDInAnalytics() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "paypalAppApprovalUrl": "https://www.fake.com?ba_token=123"
+            ]
+        ])
+
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        payPalClient.tokenize(request) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "123")
     }
 
     func testTokenize_whenApprovalURLDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
@@ -634,7 +652,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
-    // MARK: - App Switch
+    // MARK: - App Switch - canHandleReturnURL
 
     func testCanHandleReturnURL_whenHostIsURLScheme_returnsFalse() {
         let url = URL(string: "fake-scheme://success")!
@@ -669,6 +687,37 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleReturnURL_whenURLIsValid_setsBTPayPalClientToNil() {
         BTPayPalClient.handleReturnURL(URL(string: "https://mycoolwebsite.com/braintree-payments/success")!)
         XCTAssertNil(BTPayPalClient.payPalClient)
+    }
+    
+    // MARK: - App Switch - tokenize
+
+    func testTokenizeVaultAccount_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() async {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+        
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
+                "redirectUrl": "https://www.other-url.com/"
+            ]
+        ])
+        
+        let vaultRequest = BTPayPalVaultRequest(userAuthenticationEmail: "fake@gmail.com", enablePayPalAppSwitch: true)
+        
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        
+        let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
+        XCTAssertEqual(urlComponents?.host, "www.some-url.com")
+        XCTAssertEqual(urlComponents?.path, "/some-path")
+
+        XCTAssertEqual(urlComponents?.queryItems?[0].name, "source")
+        XCTAssertEqual(urlComponents?.queryItems?[0].value, "braintree_sdk")
+        XCTAssertEqual(urlComponents?.queryItems?[1].name, "switch_initiated_time")
+        
+        let currentTime = Date().timeIntervalSince1970 * 1000
+        XCTAssertLessThan(Double((urlComponents?.queryItems?[1].value!)!)!, currentTime)
     }
 
     // MARK: - Analytics
