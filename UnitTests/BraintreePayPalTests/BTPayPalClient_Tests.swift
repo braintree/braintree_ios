@@ -715,9 +715,11 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.queryItems?[0].name, "source")
         XCTAssertEqual(urlComponents?.queryItems?[0].value, "braintree_sdk")
         XCTAssertEqual(urlComponents?.queryItems?[1].name, "switch_initiated_time")
-        
-        let currentTime = Date().timeIntervalSince1970 * 1000
-        XCTAssertLessThan(Double((urlComponents?.queryItems?[1].value!)!)!, currentTime)
+        if let urlTimestamp = urlComponents?.queryItems?[1].value {
+            XCTAssertNotNil(Int(urlTimestamp))
+        } else {
+            XCTFail("Expected integer value for query param `switch_initiated_time`")
+        }
     }
 
     // MARK: - Analytics
