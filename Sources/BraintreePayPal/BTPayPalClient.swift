@@ -354,30 +354,6 @@ import BraintreeDataCollector
         }
     }
     
-    private func token(from approvalURL: URL) -> String {
-        guard let query = approvalURL.query else { return "" }
-        let queryDictionary = parse(queryString: query)
-        
-        return queryDictionary["token"] ?? queryDictionary["ba_token"] ?? ""
-    }
-    
-    private func parse(queryString query: String) -> [String: String] {
-        var dict = [String: String]()
-        let pairs = query.components(separatedBy: "&")
-        
-        for pair in pairs {
-            let elements = pair.components(separatedBy: "=")
-            if elements.count > 1,
-               let key = elements[0].removingPercentEncoding,
-               let value = elements[1].removingPercentEncoding,
-               !key.isEmpty,
-               !value.isEmpty {
-                dict[key] = value
-            }
-        }
-        return dict
-    }
-    
     private func isValidURLAction(url: URL) -> Bool {
         guard let host = url.host, let scheme = url.scheme, !scheme.isEmpty else {
             return false
