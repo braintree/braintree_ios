@@ -6,6 +6,7 @@
 * BraintreePayPal
   * Add `BTPayPalVault.enablePayPalAppSwitch`
     * If set to `true` we will attempt to use the PayPal App Switch flow
+* Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
@@ -16,7 +17,7 @@
 ## 6.14.0 (2024-03-13)
 * BraintreeDataCollector
   * Bump to PPRiskMagnes v5.5.0 with code signing & a privacy manifest file
-  
+
 ## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
