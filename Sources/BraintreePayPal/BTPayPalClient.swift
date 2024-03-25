@@ -301,7 +301,7 @@ import BraintreeDataCollector
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         urlComponents?.queryItems = [
             URLQueryItem(name: "source", value: "braintree_sdk"),
-            URLQueryItem(name: "switch_initiated_time", value: String(UInt64(Date().timeIntervalSince1970 * 1000)))
+            URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
         ]
         
         guard let redirectURL = urlComponents?.url else {
