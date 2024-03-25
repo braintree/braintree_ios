@@ -297,8 +297,8 @@ import BraintreeDataCollector
         }
     }
     
-    private func launchPayPalApp(with paypalAppRedirectUrl: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        var urlComponents = URLComponents(url: paypalAppRedirectUrl, resolvingAgainstBaseURL: true)
+    private func launchPayPalApp(with payPalAppRedirectURL: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         urlComponents?.queryItems = [
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(UInt64(Date().timeIntervalSince1970 * 1000)))
