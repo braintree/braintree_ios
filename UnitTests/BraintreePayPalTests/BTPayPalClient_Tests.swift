@@ -671,6 +671,21 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNil(BTPayPalClient.payPalClient)
     }
 
+    func testHandleReturnURL_whenURLIsCancel_returnsCancel() {
+        BTPayPalClient.handleReturnURL(URL(string: "https://www.merchant-app.com/merchant-path/cancel?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!)
+        // TODO: implement once invokedOpenURLSuccessfully in handled
+    }
+
+    func testHandleReturnURL_whenURLIsUnknown_returnsError() {
+        BTPayPalClient.handleReturnURL(URL(string: "https://www.merchant-app.com/merchant-path/garbage-url")!)
+        // TODO: implement once invokedOpenURLSuccessfully in handled
+    }
+
+    func testHandleReturnURL_whenURLIsSuccess_returnsTokenization() {
+        BTPayPalClient.handleReturnURL(URL(string: "https://www.merchant-app.com/merchant-path/success?token=A_FAKE_EC_TOKEN&ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890.1234")!)
+        // TODO: implement once invokedOpenURLSuccessfully in handled
+    }
+
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {

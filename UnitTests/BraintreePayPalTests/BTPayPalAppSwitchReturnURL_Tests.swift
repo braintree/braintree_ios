@@ -4,10 +4,10 @@ import XCTest
 final class BTPayPalAppSwitchReturnURL_Tests: XCTestCase {
 
     func testInitWithURL_whenSuccessReturnURL_createsValuesAndSetsSuccessState() {
-        let returnURL = BTPayPalAppSwitchReturnURL(url: URL(string: "https://www.merchant-app.com/merchant-path/success?token=A_FAKE_EC_TOKEN&ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890.1234")!)
+        let returnURL = BTPayPalAppSwitchReturnURL(url: URL(string: "https://www.merchant-app.com/merchant-path/success?token=A_FAKE_EC_TOKEN&ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!)
         XCTAssertEqual(returnURL?.baToken, "A_FAKE_BA_TOKEN")
         XCTAssertEqual(returnURL?.ecToken, "A_FAKE_EC_TOKEN")
-        XCTAssertEqual(returnURL?.timestamp, "1234567890.1234")
+        XCTAssertEqual(returnURL?.timestamp, "1234567890")
         XCTAssertEqual(returnURL?.state, .succeeded)
     }
 
