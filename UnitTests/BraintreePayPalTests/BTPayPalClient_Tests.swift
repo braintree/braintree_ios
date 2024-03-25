@@ -204,8 +204,8 @@ class BTPayPalClient_Tests: XCTestCase {
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalError.invalidURL.errorCode)
-            XCTAssertEqual(error.localizedDescription, BTPayPalError.invalidURL.errorDescription)
+            XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "An error occured with retrieving a PayPal authentication URL: Missing approval URL in gateway response.")
             expectation.fulfill()
         }
 

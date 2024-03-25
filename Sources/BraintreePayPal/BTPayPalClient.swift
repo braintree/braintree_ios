@@ -278,7 +278,7 @@ import BraintreeDataCollector
                 }
                 
                 guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+                    self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                     return
                 }
                 
@@ -305,7 +305,7 @@ import BraintreeDataCollector
         ]
         
         guard let redirectURL = urlComponents?.url else {
-            self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+            self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
             return
         }
 
