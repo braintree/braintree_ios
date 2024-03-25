@@ -723,7 +723,6 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
     
-    
 
     // MARK: - Analytics
 
