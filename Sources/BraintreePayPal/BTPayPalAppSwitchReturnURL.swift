@@ -42,12 +42,6 @@ struct BTPayPalAppSwitchReturnURL {
             timestamp = parameters["switch_initiated_time"]
         } else if url.path.contains("cancel") {
             state = .canceled
-            if let ecToken = parameters["token"] {
-                self.ecToken = ecToken
-            }
-
-            baToken = parameters["ba_token"]
-            timestamp = parameters["switch_initiated_time"]
         } else {
             state = .unknown
         }
