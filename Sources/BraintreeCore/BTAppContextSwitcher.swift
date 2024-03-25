@@ -17,7 +17,7 @@ import UIKit
 
     /// The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
     /// - Note: This property should only be used for the PayPal app switch flow.
-    public var universalLink: String = ""
+    public var universalLink: URL?
 
     // MARK: - Private Properties
     

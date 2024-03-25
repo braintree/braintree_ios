@@ -90,8 +90,8 @@ class BTAppContextSwitcher_Tests: XCTestCase {
     // MARK: - universalLink Tests
 
     func testSetUniversalLink() {
-        BTAppContextSwitcher.sharedInstance.universalLink = "https://fake.com"
-        XCTAssertEqual(appSwitch.universalLink, "https://fake.com")
+        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "https://fake.com")
+        XCTAssertEqual(appSwitch.universalLink?.absoluteString, "https://fake.com")
     }
 }
 
