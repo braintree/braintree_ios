@@ -32,7 +32,13 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 9. Deallocated BTPayPalClient
     case deallocated
-    
+
+    /// 10. Return URL is invalid
+    case invalidReturnURL(String)
+
+    /// 11. Unknown app switch error occurred.
+    case unknownAppSwitchError
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -59,6 +65,10 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 8
         case .deallocated:
             return 9
+        case .invalidReturnURL:
+            return 10
+        case .unknownAppSwitchError:
+            return 11
         }
     }
 
@@ -84,6 +94,10 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         case .deallocated:
             return "BTPayPalClient has been deallocated."
+        case .invalidReturnURL(let missingValue):
+            return "Return URL is missing \(missingValue)"
+        case .unknownAppSwitchError:
+            return "An unknown error occurred during the App Switch flow."
         }
     }
 
