@@ -242,10 +242,8 @@ import BraintreeDataCollector
         }
 
         switch returnURL.state {
-        case .succeeded:
+        case .succeeded, .canceled:
             handleReturn(url, paymentType: .vault, completion: appSwitchCompletion)
-        case .canceled:
-            notifyCancel(completion: appSwitchCompletion)
         default:
             notifyFailure(with: BTPayPalError.unknownAppSwitchError, completion: appSwitchCompletion)
         }
@@ -388,7 +386,7 @@ import BraintreeDataCollector
             hostAndPath.append("/")
         }
         
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
+        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && BTAppContextSwitcher.sharedInstance.universalLink == nil {
             return false
         }
 

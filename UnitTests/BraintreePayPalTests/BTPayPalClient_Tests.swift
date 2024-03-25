@@ -671,19 +671,67 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNil(BTPayPalClient.payPalClient)
     }
 
-    func testHandleReturnURL_whenURLIsCancel_returnsCancel() {
-        BTPayPalClient.handleReturnURL(URL(string: "https://www.merchant-app.com/merchant-path/cancel?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!)
-        // TODO: implement once invokedOpenURLSuccessfully in handled
+    func testHandleReturn_whenURLIsCancel_returnsCancel() {
+        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "https://merchant-app.com/merchant-path")
+        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/cancel?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
+        let expectation = expectation(description: "completion block called")
+
+        payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.canceled.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalError.canceled.errorDescription)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
 
     func testHandleReturnURL_whenURLIsUnknown_returnsError() {
-        BTPayPalClient.handleReturnURL(URL(string: "https://www.merchant-app.com/merchant-path/garbage-url")!)
-        // TODO: implement once invokedOpenURLSuccessfully in handled
+        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "https://merchant-app.com/merchant-path")
+        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/garbage-url")!
+        let expectation = expectation(description: "completion block called")
+
+        payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.invalidURLAction.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalError.invalidURLAction.errorDescription)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
 
     func testHandleReturnURL_whenURLIsSuccess_returnsTokenization() {
-        BTPayPalClient.handleReturnURL(URL(string: "https://www.merchant-app.com/merchant-path/success?token=A_FAKE_EC_TOKEN&ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890.1234")!)
-        // TODO: implement once invokedOpenURLSuccessfully in handled
+        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "https://merchant-app.com/merchant-path")
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paypalAccounts":
+                [
+                    [
+                        "description": "jane.doe@example.com",
+                        "details": [
+                            "email": "jane.doe@example.com",
+                        ],
+                        "nonce": "a-nonce",
+                        "type": "PayPalAccount",
+                    ] as [String: Any]
+                ]
+        ])
+
+        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?token=A_FAKE_EC_TOKEN&ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890.1234")
+        let expectation = expectation(description: "completion block called")
+
+        payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(nonce)
+            XCTAssertEqual(nonce?.nonce, "a-nonce")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
 
     // MARK: - Analytics
