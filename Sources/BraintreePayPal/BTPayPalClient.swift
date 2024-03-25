@@ -49,6 +49,9 @@ import BraintreeDataCollector
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
 
+    /// URL Scheme for PayPal In-App Checkout
+    private let payPalInAppScheme: String = "paypal-in-app-checkout://"
+
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -87,12 +90,7 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        // Check if PayPal app is installed
-        if request.enablePayPalAppSwitch == true {
-            appSwitch(completion: completion)
-        } else {
-            tokenize(request: request, completion: completion)
-        }
+        tokenize(request: request, completion: completion)
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Vault flow.
@@ -159,33 +157,15 @@ import BraintreeDataCollector
             }
         }
     }
-    
-    // MARK: - Internal Methods
 
-    func appSwitch(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        // TODO: Implement app switch flow
-        if isPayPalAppInstalled() {
-            apiClient.post("/v1/payment_methods/paypal_accounts") { body, response, error in
-                if let error {
-                    self.notifyFailure(with: error, completion: completion)
-                    return
-                }
-                
-                guard let payPalAccount = body?["paypalAccounts"].asArray()?.first,
-                      let tokenizedAccount = BTPayPalAccountNonce(json: payPalAccount) else {
-                    self.notifyFailure(with: BTPayPalError.failedToCreateNonce, completion: completion)
-                    return
-                }
-                
-                return self.notifySuccess(with: tokenizedAccount, completion: completion)
-            }
+    @objc public func isPayPalAppInstalled() -> Bool {
+        guard let paypalURL = URL(string: payPalInAppScheme) else {
+            return false
         }
-    }
-
-    private func isPayPalAppInstalled() -> Bool {
-        let paypalURL = URL(string: "paypal://")!
         return application.canOpenURL(paypalURL)
     }
+
+    // MARK: - Internal Methods
 
     func handleBrowserSwitchReturn(
         _ url: URL?,
@@ -290,6 +270,10 @@ import BraintreeDataCollector
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
+            }
+
+            if !self.isPayPalAppInstalled() {
+                (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch = false
             }
 
             self.payPalRequest = request
