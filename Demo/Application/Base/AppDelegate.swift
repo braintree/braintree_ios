@@ -4,8 +4,6 @@ import BraintreeCore
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
         
     private let returnURLScheme = "com.braintreepayments.Demo.payments"
-    // TODO: - Replace with Demo app URL of "https://braintree-ios-demo.fly.dev/braintree-payments" once BT GW allowlists all URLs.
-    private let universalLinkURL = "https://paypal.com"
     private let processInfoArgs = ProcessInfo.processInfo.arguments
     private let userDefaults = UserDefaults.standard
     
@@ -13,7 +11,6 @@ import BraintreeCore
         registerDefaultsFromSettings()
         persistDemoSettings()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = returnURLScheme
-        BTAppContextSwitcher.sharedInstance.universalLink = universalLinkURL
 
         userDefaults.setValue(true, forKey: "magnes.debug.mode")
         
