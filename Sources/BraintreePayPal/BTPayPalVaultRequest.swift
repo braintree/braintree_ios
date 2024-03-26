@@ -23,6 +23,7 @@ import BraintreeCore
     // MARK: - Initializer
 
     /// Initializes a PayPal Vault request
+    /// - Note: This initializer should be used for merchants using the PayPal App Switch flow
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
@@ -30,10 +31,10 @@ import BraintreeCore
     ///   This property is currently in beta and may change or be removed in future releases.
     ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
     public convenience init(
-        offerCredit: Bool = false,
         userAuthenticationEmail: String,
         enablePayPalAppSwitch: Bool,
-        universalLink: URL
+        universalLink: URL,
+        offerCredit: Bool = false
     ) {
         self.init(offerCredit: offerCredit, userAuthenticationEmail: userAuthenticationEmail, enablePayPalAppSwitch: enablePayPalAppSwitch)
         self.universalLink = universalLink
