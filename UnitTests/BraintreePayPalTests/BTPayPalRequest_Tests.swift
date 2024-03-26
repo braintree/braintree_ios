@@ -96,8 +96,15 @@ class BTPayPalRequest_Tests: XCTestCase {
 
     // MARK: - enablePayPalAppSwitch
 
-    func testEnablePayPalAppSwitch_whenNotPassed_defaultsValueAsFalse() {
-        let request = BTPayPalVaultRequest()
+    func testEnablePayPalAppSwitch_whenInitialized_setsAllRequiredValues() {
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "my-website-is-cool.com")!
+        )
+
+        XCTAssertEqual(request.userAuthenticationEmail, "fake@gmail.com")
         XCTAssertFalse(request.enablePayPalAppSwitch)
+        XCTAssertEqual(request.universalLink?.absoluteString, "my-website-is-cool.com")
     }
 }
