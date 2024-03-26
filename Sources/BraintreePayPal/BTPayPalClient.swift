@@ -16,6 +16,10 @@ import BraintreeDataCollector
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
     
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles
+    /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
+    var application: URLOpener = UIApplication.shared
+    
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL? = nil
 
@@ -286,24 +290,41 @@ import BraintreeDataCollector
                     self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
                     return
                 }
-
-                guard let body,
-                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-                        body["agreementSetup"]["approvalUrl"].asURL() else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+                
+                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
+                    self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                     return
                 }
-
-                let pairingID = self.token(from: approvalURL)
-
-                if !pairingID.isEmpty {
-                    self.payPalContextID = pairingID
-                }
+                
+                self.payPalContextID = approvalURL.pairingID
 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
-                self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(approvalURL.pairingID)
+                
+                switch approvalURL.redirectType {
+                case .payPalApp(let url):
+                    self.launchPayPalApp(with: url, completion: completion)
+                case .webBrowser(let url):
+                    self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
+                }
             }
+        }
+    }
+    
+    private func launchPayPalApp(with payPalAppRedirectURL: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "source", value: "braintree_sdk"),
+            URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
+        ]
+        
+        guard let redirectURL = urlComponents?.url else {
+            self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
+            return
+        }
+
+        application.open(redirectURL, options: [:]) { success in
+            // TODO: - Handle success or fail of opening app
         }
     }
     
@@ -344,30 +365,6 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
-    }
-    
-    private func token(from approvalURL: URL) -> String {
-        guard let query = approvalURL.query else { return "" }
-        let queryDictionary = parse(queryString: query)
-        
-        return queryDictionary["token"] ?? queryDictionary["ba_token"] ?? ""
-    }
-    
-    private func parse(queryString query: String) -> [String: String] {
-        var dict = [String: String]()
-        let pairs = query.components(separatedBy: "&")
-        
-        for pair in pairs {
-            let elements = pair.components(separatedBy: "=")
-            if elements.count > 1,
-               let key = elements[0].removingPercentEncoding,
-               let value = elements[1].removingPercentEncoding,
-               !key.isEmpty,
-               !value.isEmpty {
-                dict[key] = value
-            }
-        }
-        return dict
     }
     
     private func isValidURLAction(url: URL) -> Bool {

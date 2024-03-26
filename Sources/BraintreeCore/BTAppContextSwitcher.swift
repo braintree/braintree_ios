@@ -9,7 +9,8 @@ import UIKit
     
     /// Singleton for shared instance of `BTAppContextSwitcher`
     public static let sharedInstance = BTAppContextSwitcher()
-    
+   
+    // NEXT_MAJOR_VERSION: move this property into the feature client request where it is used
     /// The URL scheme to return to this app after switching to another app or opening a SFSafariViewController.
     /// This URL scheme must be registered as a URL Type in the app's info.plist, and it must start with the app's bundle ID.
     /// - Note: This property should only be used for the Venmo flow.

@@ -15,8 +15,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 3. HTTP POST request returned an error
     case httpPostRequestError([String: Any])
 
-    /// 4. The approval or redirect URL is invalid
-    case invalidURL
+    /// 4. The web approval URL, web redirect URL, or PayPal native app approval URL is invalid
+    case invalidURL(String)
 
     /// 5. The ASWebAuthenticationSession URL is invalid
     case asWebAuthenticationSessionURLInvalid(String)
@@ -82,8 +82,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "Failed to fetch Braintree configuration."
         case .httpPostRequestError(let error):
             return "HTTP POST request failed with \(error)."
-        case .invalidURL:
-            return "The approval and/or return URL contained an invalid URL. Try again or contact Braintree Support."
+        case .invalidURL(let error):
+            return "An error occured with retrieving a PayPal authentication URL: \(error)"
         case .asWebAuthenticationSessionURLInvalid(let scheme):
             return "Attempted to open an invalid URL in ASWebAuthenticationSession: \(scheme)://. Try again or contact Braintree Support."
         case .invalidURLAction:
