@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 * BraintreeCore
   * Add property `BTAppContextSwitcher.sharedInstance.universalLink` for the PayPal app switch flow
 * BraintreePayPal
@@ -16,7 +17,7 @@
 ## 6.14.0 (2024-03-13)
 * BraintreeDataCollector
   * Bump to PPRiskMagnes v5.5.0 with code signing & a privacy manifest file
-  
+
 ## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`

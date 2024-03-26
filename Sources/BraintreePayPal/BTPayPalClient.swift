@@ -327,7 +327,6 @@ import BraintreeDataCollector
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, payPalContextID: payPalContextID)
             notifyCancel(completion: completion)
             return
         }
