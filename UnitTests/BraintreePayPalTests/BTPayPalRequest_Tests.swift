@@ -104,7 +104,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         )
 
         XCTAssertEqual(request.userAuthenticationEmail, "fake@gmail.com")
-        XCTAssertFalse(request.enablePayPalAppSwitch)
+        XCTAssertTrue(request.enablePayPalAppSwitch)
         XCTAssertEqual(request.universalLink?.absoluteString, "my-website-is-cool.com")
     }
 }

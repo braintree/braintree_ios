@@ -39,6 +39,7 @@ import BraintreeCore
     ) {
         self.init(offerCredit: offerCredit, userAuthenticationEmail: userAuthenticationEmail)
         self.universalLink = universalLink
+        self.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
 
     /// Initializes a PayPal Vault request
