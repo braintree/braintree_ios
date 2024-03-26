@@ -703,8 +703,12 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
         
-        let vaultRequest = BTPayPalVaultRequest(userAuthenticationEmail: "fake@gmail.com", enablePayPalAppSwitch: true)
-        
+        let vaultRequest = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "https://paypal.com")!
+        )
+
         payPalClient.tokenize(vaultRequest) { _, _ in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
