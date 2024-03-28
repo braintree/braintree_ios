@@ -205,7 +205,7 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTAssertNil(nonce)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
             XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
-            XCTAssertEqual(error.localizedDescription, "An error occured with retrieving a PayPal authentication URL: Missing approval URL in gateway response.")
+            XCTAssertEqual(error.localizedDescription, "An error occurred with retrieving a PayPal URL: Missing approval URL in gateway response.")
             expectation.fulfill()
         }
 
