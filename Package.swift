@@ -29,8 +29,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreePaymentFlow",
-            targets: ["BraintreePaymentFlow", "PPRiskMagnes"],
-            resources: [.copy("PrivacyInfo.xcprivacy")]
+            targets: ["BraintreePaymentFlow", "PPRiskMagnes"]
         ),
         .library(
             name: "BraintreePayPal",
@@ -93,7 +92,8 @@ let package = Package(
         .target(
             name: "BraintreePaymentFlow",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
-            publicHeadersPath: "Public"
+            publicHeadersPath: "Public",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreePayPal",
