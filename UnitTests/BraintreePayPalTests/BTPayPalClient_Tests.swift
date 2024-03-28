@@ -729,10 +729,15 @@ class BTPayPalClient_Tests: XCTestCase {
     
 
     func testHandleReturn_whenURLIsCancel_returnsCancel() {
-        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "https://merchant-app.com/merchant-path")
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: "sally@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "https://merchant-app.com/merchant-path")!
+        )
         let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/cancel?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
         let expectation = expectation(description: "completion block called")
 
+        payPalClient.payPalRequest = request
         payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
@@ -745,11 +750,16 @@ class BTPayPalClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testHandleReturnURL_whenURLIsUnknown_returnsError() {
-        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "https://merchant-app.com/merchant-path")
+    func testHandleReturn_whenURLIsUnknown_returnsError() {
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: "sally@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "https://merchant-app.com/merchant-path")!
+        )
         let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/garbage-url")!
         let expectation = expectation(description: "completion block called")
 
+        payPalClient.payPalRequest = request
         payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
@@ -762,8 +772,12 @@ class BTPayPalClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testHandleReturnURL_whenURLIsSuccess_returnsTokenization() {
-        BTAppContextSwitcher.sharedInstance.universalLink = URL(string: "https://merchant-app.com/merchant-path")
+    func testHandleReturn_whenURLIsSuccess_returnsTokenization() {
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: "sally@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "https://merchant-app.com/merchant-path")!
+        )
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paypalAccounts":
                 [
@@ -781,6 +795,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?token=A_FAKE_EC_TOKEN&ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890.1234")
         let expectation = expectation(description: "completion block called")
 
+        payPalClient.payPalRequest = request
         payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
             XCTAssertNil(error)
             XCTAssertNotNil(nonce)
@@ -788,6 +803,21 @@ class BTPayPalClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
+        waitForExpectations(timeout: 1)
+    }
+
+    func testHandleReturnURL_whenReturnURLIsInvalid_returnsError() {
+        let expectation = expectation(description: "completion block called")
+        payPalClient.appSwitchCompletion = { nonce, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.unknownAppSwitchError.errorCode)
+            XCTAssertEqual(error.localizedDescription, "An unknown error occurred during the App Switch flow.")
+            expectation.fulfill()
+        }
+
+        payPalClient.handleReturnURL(URL(string: "https://merchant-app.com/merchant-path/garbage")!)
         waitForExpectations(timeout: 1)
     }
 
