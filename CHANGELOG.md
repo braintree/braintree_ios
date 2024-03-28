@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Require Xcode 15.0+ and Swift 5.9+ (per [Apple App Store requirements](https://developer.apple.com/news/upcoming-requirements/?id=04292024a))
+
 ## 5.24.1 (2023-11-17)
 * BraintreePayPalDataCollector
   * Update previously incorrect version of PPRiskMagnes 5.4.1 with staging removed
