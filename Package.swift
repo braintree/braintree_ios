@@ -29,7 +29,8 @@ let package = Package(
         ),
         .library(
             name: "BraintreePaymentFlow",
-            targets: ["BraintreePaymentFlow", "PPRiskMagnes"]
+            targets: ["BraintreePaymentFlow", "PPRiskMagnes"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .library(
             name: "BraintreePayPal",

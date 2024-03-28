@@ -57,6 +57,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
+    s.resource_bundle = { "BraintreePaymentFlow_PrivacyInfo" => "Sources/BraintreePaymentFlow/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PayPal" do |s|
