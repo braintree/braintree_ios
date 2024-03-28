@@ -241,7 +241,7 @@ import BraintreeDataCollector
 
     func handleReturnURL(_ url: URL) {
         guard let returnURL = BTPayPalAppSwitchReturnURL(url: url) else {
-            notifyFailure(with: BTPayPalError.invalidReturnURL("App Switch return URL cannot be nil"), completion: appSwitchCompletion)
+            notifyFailure(with: BTPayPalError.invalidURL("App Switch return URL cannot be nil"), completion: appSwitchCompletion)
             return
         }
 
@@ -382,7 +382,7 @@ import BraintreeDataCollector
             hostAndPath.append("/")
         }
         
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && BTAppContextSwitcher.sharedInstance.universalLink == nil {
+        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && (payPalRequest as? BTPayPalVaultRequest)?.universalLink == nil {
             return false
         }
 
