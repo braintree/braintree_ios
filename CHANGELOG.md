@@ -4,6 +4,7 @@
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes to version 5.5.0 with privacy manifest changes and code-signing
   * This version of the PPRiskMagnes framework is dynamic
+* Require Xcode 15.0+ and Swift 5.9+ (per [Apple App Store requirements](https://developer.apple.com/news/upcoming-requirements/?id=04292024a))
 
 ## 5.24.1 (2023-11-17)
 * BraintreePayPalDataCollector
