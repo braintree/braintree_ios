@@ -7,6 +7,9 @@
   * Add `BTPayPalVault.enablePayPalAppSwitch`
     * If set to `true` we will attempt to use the PayPal App Switch flow
 * Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+* BraintreePayPal
+  * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:universalLink:offerCredit:)`
+    * This init should be used for the PayPal App Switch flow
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
