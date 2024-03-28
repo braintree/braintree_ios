@@ -15,11 +15,11 @@ import BraintreeDataCollector
 
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
-    
+
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles
     /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
     var application: URLOpener = UIApplication.shared
-    
+
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL? = nil
 
@@ -48,6 +48,9 @@ import BraintreeDataCollector
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
+
+    /// URL Scheme for PayPal In-App Checkout
+    private let payPalInAppScheme: String = "paypal-in-app-checkout://"
 
     // MARK: - Initializer
 
@@ -154,9 +157,16 @@ import BraintreeDataCollector
             }
         }
     }
-    
+
+    @objc public func isPayPalAppInstalled() -> Bool {
+        guard let paypalURL = URL(string: payPalInAppScheme) else {
+            return false
+        }
+        return application.canOpenURL(paypalURL)
+    }
+
     // MARK: - Internal Methods
-    
+
     func handleBrowserSwitchReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType,
@@ -260,6 +270,10 @@ import BraintreeDataCollector
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
+            }
+
+            if !self.isPayPalAppInstalled() {
+                (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch = false
             }
 
             self.payPalRequest = request

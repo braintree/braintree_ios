@@ -728,6 +728,27 @@ class BTPayPalClient_Tests: XCTestCase {
     }
     
 
+    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenPayPalInAppURL_returnsTrue() {
+        let payPalClient = BTPayPalClient(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+        fakeApplication.canOpenURLWhitelist.append(URL(string: "paypal-in-app-checkout://")!)
+        payPalClient.application = fakeApplication
+
+        XCTAssertTrue(payPalClient.isPayPalAppInstalled())
+    }
+
+    func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalse() {
+        let payPalClient = BTPayPalClient(apiClient: mockAPIClient)
+        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+        payPalClient.application = fakeApplication
+
+        XCTAssertFalse(payPalClient.isPayPalAppInstalled())
+    }
+
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
