@@ -72,11 +72,8 @@
 		2DE12F581B59C36900EA1BCF /* BTPostalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = A72E134B1B44630C002703DD /* BTPostalAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F591B59C36900EA1BCF /* BTPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = A72E134C1B44630C002703DD /* BTPostalAddress.m */; };
 		2DE12F5A1B59C36900EA1BCF /* BTPaymentMethodNonce.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D061B3DE3B40024F9AB /* BTPaymentMethodNonce.h */; settings = {ATTRIBUTES = (Public, ); }; };
-<<<<<<< HEAD
 		3B1842C52BB5E08D00B18B51 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3B1842C42BB5E08D00B18B51 /* PrivacyInfo.xcprivacy */; };
-=======
 		3B8FEF8D2BB37789008F4D0B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3B8FEF8C2BB37789008F4D0B /* PrivacyInfo.xcprivacy */; };
->>>>>>> 5.x-privacy-manifest
 		3DAB5933286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5932286B40E2003A7BC5 /* BTPayPalNativeCheckoutRequest_Tests.swift */; };
 		3DAB5937286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5936286B9C6E003A7BC5 /* BTPayPalNativeHermesResponse_Tests.swift */; };
 		3DAB5939286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB5938286BA3D0003A7BC5 /* BTPayPalNativeTokenizationClient_Tests.swift */; };
