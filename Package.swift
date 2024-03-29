@@ -92,6 +92,7 @@ let package = Package(
         .target(
             name: "BraintreePaymentFlow",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
