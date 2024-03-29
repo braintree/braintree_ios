@@ -15,8 +15,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Xcode 14.3
-        run: sudo xcode-select -switch /Applications/Xcode_14.3.app
+      - name: Use Xcode 15.1
+        run: sudo xcode-select -switch /Applications/Xcode_15.1.app
 
       - name: Check for unreleased section in changelog
         run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)

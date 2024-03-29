@@ -1,12 +1,18 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+
+## 6.16.0 (2024-03-19)
+* Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
+
 ## 6.15.0 (2024-03-18)
 * [Meets Apple's new Privacy Update requirements](https://developer.apple.com/news/?id=3d8a9yyh)
 
 ## 6.14.0 (2024-03-13)
 * BraintreeDataCollector
   * Bump to PPRiskMagnes v5.5.0 with code signing & a privacy manifest file
-  
+
 ## 6.13.0 (2024-03-12)
 * BraintreeVenmo
   * Add `isFinalAmount` to `BTVenmoRequest`
