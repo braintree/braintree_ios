@@ -322,7 +322,7 @@ import BraintreeDataCollector
         guard let query = approvalURL.query else { return "" }
         let queryDictionary = parse(queryString: query)
         
-        return queryDictionary["token"] ?? queryDictionary["ba_token"] ?? ""
+        return queryDictionary["ba_token"] ?? queryDictionary["token"] ?? ""
     }
     
     private func parse(queryString query: String) -> [String: String] {
