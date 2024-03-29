@@ -812,8 +812,8 @@ class BTPayPalClient_Tests: XCTestCase {
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalError.unknownAppSwitchError.errorCode)
-            XCTAssertEqual(error.localizedDescription, "An unknown error occurred during the App Switch flow.")
+            XCTAssertEqual(error.code, BTPayPalError.appSwitchReturnURLPathInvalid.errorCode)
+            XCTAssertEqual(error.localizedDescription, "The App Switch return URL did not contain the cancel or success path.")
             expectation.fulfill()
         }
 
