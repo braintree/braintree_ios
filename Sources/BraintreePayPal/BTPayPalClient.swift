@@ -324,10 +324,21 @@ import BraintreeDataCollector
         }
 
         application.open(redirectURL, options: [:]) { success in
-            // TODO: - Handle success or fail of opening app
+            self.invokedOpenURLSuccessfully(success, completion: completion)
         }
     }
-    
+
+    private func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce? , Error?) -> Void) {
+        if success {
+            // TODO: send appSwitchSucceeded analytics with payPalContextID and linkType
+            BTPayPalClient.payPalClient = self
+            appSwitchCompletion = completion
+        } else {
+            // TODO: send appSwitchFailed analytics with payPalContextID and linkType
+            notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
+        }
+    }
+
     private func performSwitchRequest(
         appSwitchURL: URL,
         paymentType: BTPayPalPaymentType,

@@ -36,6 +36,9 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 10. The App Switch return URL did not contain the cancel or success path.
     case appSwitchReturnURLPathInvalid
 
+    /// 11. App Switch could not complete
+    case appSwitchFailed
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -64,6 +67,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 9
         case .appSwitchReturnURLPathInvalid:
             return 10
+        case .appSwitchFailed:
+            return 11
         }
     }
 
@@ -91,6 +96,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "BTPayPalClient has been deallocated."
         case .appSwitchReturnURLPathInvalid:
             return "The App Switch return URL did not contain the cancel or success path."
+        case .appSwitchFailed:
+            return "UIApplication failed to perform app switch to PayPal."
         }
     }
 
