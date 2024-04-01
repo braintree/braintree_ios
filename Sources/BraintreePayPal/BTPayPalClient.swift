@@ -328,7 +328,7 @@ import BraintreeDataCollector
         }
     }
 
-    private func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce? , Error?) -> Void) {
+    private func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         if success {
             // TODO: send appSwitchSucceeded analytics with payPalContextID and linkType
             BTPayPalClient.payPalClient = self
