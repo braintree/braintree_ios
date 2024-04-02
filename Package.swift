@@ -112,7 +112,8 @@ let package = Package(
         .target(
             name: "BraintreeSEPADirectDebit",
             dependencies: ["BraintreeCore"],
-            path: "Sources/BraintreeSEPADirectDebit"
+            path: "Sources/BraintreeSEPADirectDebit",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "BraintreeThreeDSecure",
