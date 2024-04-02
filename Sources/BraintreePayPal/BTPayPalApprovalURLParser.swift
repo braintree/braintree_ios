@@ -22,11 +22,16 @@ struct BTPayPalApprovalURLParser {
     var pairingID: String? {
         switch redirectType {
         case .webBrowser(let url), .payPalApp(let url):
-            let url = URLComponents(url: url, resolvingAgainstBaseURL: true)
-            if let token = url?.queryItems?.first(where: { $0.name == "token" || $0.name == "ba_token" })?.value,
-               !token.isEmpty {
-                return token
+            let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?
+                .queryItems?
+                .compactMap { $0 }
+
+            if let baToken = queryItems?.filter({ $0.name == "ba_token" }).first?.value, !baToken.isEmpty {
+                return baToken
+            } else if let ecToken = queryItems?.filter({ $0.name == "token" }).first?.value, !ecToken.isEmpty {
+                return ecToken
             }
+
             return nil
         }
     }
