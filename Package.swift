@@ -87,6 +87,7 @@ let package = Package(
             name: "BraintreeDataCollector",
             dependencies: ["BraintreeCore", "KountDataCollector"],
             exclude: ["Kount"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
