@@ -72,6 +72,7 @@ let package = Package(
         .target(
             name: "BraintreeApplePay",
             dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
