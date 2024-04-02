@@ -742,6 +742,27 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
     
+    func testTokenizeVaultAccount_whenOpenURLReturnsFalse_returnsError() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedOpenURLSuccess = false
+        payPalClient.application = fakeApplication
+        
+        let vaultRequest = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "https://paypal.com")!
+        )
+
+        payPalClient.tokenize(vaultRequest) { nonce, error in
+            XCTAssertNil(nonce)
+            
+            if let error = error as NSError? {
+                XCTAssertEqual(error.code, 11)
+                XCTAssertEqual(error.localizedDescription, "UIApplication failed to perform app switch to PayPal.")
+                XCTAssertEqual(error.domain, "com.braintreepayments.BTPayPalErrorDomain")
+            }
+        }
+    }
 
     func testHandleReturn_whenURLIsCancel_returnsCancel() {
         let request = BTPayPalVaultRequest(
