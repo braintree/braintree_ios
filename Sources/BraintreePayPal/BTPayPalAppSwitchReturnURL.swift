@@ -15,7 +15,7 @@ enum BTPayPalAppSwitchReturnURLState {
 /// PayPal app switch authorization requests should result in success or user-initiated cancelation. These states are communicated in the url.
 struct BTPayPalAppSwitchReturnURL {
 
-    /// The overall status of the app switch - success, failure or cancelation
+    /// The overall status of the app switch - success, cancelation, or an unknown path
     var state: BTPayPalAppSwitchReturnURLState = .unknownPath
 
     /// Initializes a new `BTPayPalAppSwitchReturnURL`
