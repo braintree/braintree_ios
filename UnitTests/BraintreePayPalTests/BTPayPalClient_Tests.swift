@@ -747,15 +747,22 @@ class BTPayPalClient_Tests: XCTestCase {
         fakeApplication.cannedOpenURLSuccess = false
         payPalClient.application = fakeApplication
         
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
+                "redirectUrl": "https://www.other-url.com/"
+            ]
+        ])
+        
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
             enablePayPalAppSwitch: true,
             universalLink: URL(string: "https://paypal.com")!
         )
-
+        let expectation = expectation(description: "completion block called")
+        
         payPalClient.tokenize(vaultRequest) { nonce, error in
             XCTAssertNil(nonce)
-            
             if let error = error as NSError? {
                 XCTAssertEqual(error.code, 11)
                 XCTAssertEqual(error.localizedDescription, "UIApplication failed to perform app switch to PayPal.")
@@ -763,7 +770,10 @@ class BTPayPalClient_Tests: XCTestCase {
             } else {
                 XCTFail("Expected non nil error.")
             }
+            expectation.fulfill()
         }
+        
+        waitForExpectations(timeout: 1)
     }
 
     func testHandleReturn_whenURLIsCancel_returnsCancel() {
