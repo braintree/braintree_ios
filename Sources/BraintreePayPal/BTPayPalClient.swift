@@ -33,6 +33,10 @@ import BraintreeDataCollector
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
 
+    /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
+    /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
+    var appSwitchCompletion: (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
+
     // MARK: - Static Properties
 
     /// This static instance of `BTPayPalClient` is used during the app switch process.
@@ -157,7 +161,7 @@ import BraintreeDataCollector
     
     // MARK: - Internal Methods
     
-    func handleBrowserSwitchReturn(
+    func handleReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
@@ -236,7 +240,17 @@ import BraintreeDataCollector
     // MARK: - App Switch Methods
 
     func handleReturnURL(_ url: URL) {
-        // TODO: implement handling return URL in a follow up PR
+        guard let returnURL = BTPayPalAppSwitchReturnURL(url: url) else {
+            notifyFailure(with: BTPayPalError.invalidURL("App Switch return URL cannot be nil"), completion: appSwitchCompletion)
+            return
+        }
+
+        switch returnURL.state {
+        case .succeeded, .canceled:
+            handleReturn(url, paymentType: .vault, completion: appSwitchCompletion)
+        case .unknownPath:
+            notifyFailure(with: BTPayPalError.appSwitchReturnURLPathInvalid, completion: appSwitchCompletion)
+        }
     }
 
     // MARK: - Private Methods
@@ -333,7 +347,7 @@ import BraintreeDataCollector
                 return
             }
 
-            handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
+            handleReturn(url, paymentType: paymentType, completion: completion)
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
@@ -368,7 +382,7 @@ import BraintreeDataCollector
             hostAndPath.append("/")
         }
         
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
+        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && (payPalRequest as? BTPayPalVaultRequest)?.universalLink == nil {
             return false
         }
 

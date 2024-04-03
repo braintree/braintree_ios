@@ -18,7 +18,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
+        payPalClient.handleReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
             guard let nonce = tokenizedPayPalAccount?.nonce else {
                 XCTFail("Failed to tokenize account.")
                 return
@@ -42,7 +42,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
-        payPalClient.handleBrowserSwitchReturn(returnURL,paymentType: .checkout) { tokenizedPayPalAccount, error in
+        payPalClient.handleReturn(returnURL,paymentType: .checkout) { tokenizedPayPalAccount, error in
             guard let nonce = tokenizedPayPalAccount?.nonce else {
                 XCTFail("Failed to tokenize account.")
                 return
@@ -68,7 +68,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { tokenizedPayPalAccount, error in
+        payPalClient.handleReturn(returnURL, paymentType: .vault) { tokenizedPayPalAccount, error in
             guard let nonce = tokenizedPayPalAccount?.nonce else {
                 XCTFail("Failed to tokenize account.")
                 return
@@ -92,7 +92,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
-        payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { tokenizedPayPalAccount, error in
+        payPalClient.handleReturn(returnURL, paymentType: .vault) { tokenizedPayPalAccount, error in
             guard let nonce = tokenizedPayPalAccount?.nonce else {
                 XCTFail("Failed to tokenize account.")
                 return
