@@ -13,7 +13,7 @@ final class BTPayPalAppSwitchReturnURL_Tests: XCTestCase {
         XCTAssertEqual(returnURL?.state, .succeeded)
     }
 
-    func testInitWithURL_whenCancelURL_setsCancelState() {
+    func testInitWithURL_whenCancelURLWithoutToken_setsCancelState() {
         let returnURL = BTPayPalAppSwitchReturnURL(url: URL(string: "https://www.merchant-app.com/merchant-path/cancel?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!)
         XCTAssertEqual(returnURL?.state, .canceled)
     }
