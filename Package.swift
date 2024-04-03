@@ -84,6 +84,7 @@ let package = Package(
         .target(
             name: "BraintreeCore",
             exclude: ["Info.plist"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
