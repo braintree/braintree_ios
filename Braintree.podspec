@@ -86,6 +86,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPal"
     s.dependency "PayPalCheckout", '0.110.0'
+    s.resource_bundle = { "BraintreePayPalNativeCheckout_PrivacyInfo" => "Sources/BraintreePayPalNativeCheckout/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "ThreeDSecure" do |s|
