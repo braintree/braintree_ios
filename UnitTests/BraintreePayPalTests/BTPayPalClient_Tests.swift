@@ -760,6 +760,8 @@ class BTPayPalClient_Tests: XCTestCase {
                 XCTAssertEqual(error.code, 11)
                 XCTAssertEqual(error.localizedDescription, "UIApplication failed to perform app switch to PayPal.")
                 XCTAssertEqual(error.domain, "com.braintreepayments.BTPayPalErrorDomain")
+            } else {
+                XCTFail("Expected non nil error.")
             }
         }
     }
