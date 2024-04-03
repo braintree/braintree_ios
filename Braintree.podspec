@@ -40,6 +40,7 @@ Pod::Spec.new do |s|
     s.source_files  = "Sources/BraintreeCard/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeCard/Public/BraintreeCard/*.h"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeCard_PrivacyInfo" => "Sources/BraintreeCard/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Core" do |s|
