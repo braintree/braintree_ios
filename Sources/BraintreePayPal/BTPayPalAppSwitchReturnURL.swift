@@ -1,7 +1,11 @@
 import Foundation
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 enum BTPayPalAppSwitchReturnURLState {
-    case unknown
+    case unknownPath
     case succeeded
     case canceled
 }
@@ -11,10 +15,19 @@ enum BTPayPalAppSwitchReturnURLState {
 /// PayPal app switch authorization requests should result in success or user-initiated cancelation. These states are communicated in the url.
 struct BTPayPalAppSwitchReturnURL {
 
+    /// The overall status of the app switch - success, cancelation, or an unknown path
+    var state: BTPayPalAppSwitchReturnURLState = .unknownPath
+
     /// Initializes a new `BTPayPalAppSwitchReturnURL`
     /// - Parameter url: an incoming app switch url
     init?(url: URL) {
-        // TODO: implement init based on return URL
+        if url.path.contains("success") {
+            state = .succeeded
+        } else if url.path.contains("cancel") {
+            state = .canceled
+        } else {
+            state = .unknownPath
+        }
     }
 
     // MARK: - Static Methods
