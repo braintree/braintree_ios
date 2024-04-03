@@ -859,13 +859,12 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenPayPalInAppURL_returnsTrue() {
         let payPalClient = BTPayPalClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-        let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = false
-        fakeApplication.canOpenURLWhitelist.append(URL(string: "paypal-in-app-checkout://")!)
-        payPalClient.application = fakeApplication
+        let payPalInAppScheme: String = "paypal-in-app-checkout://"
 
-        XCTAssertTrue(payPalClient.isPayPalAppInstalled())
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "aypal-in-app-checkout://v1/success")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "aypal-in-app-checkout://v1/cancel")
     }
 
     func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalse() {

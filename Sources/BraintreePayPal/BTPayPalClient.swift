@@ -37,6 +37,9 @@ import BraintreeDataCollector
     /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
 
+    /// Exposed for testing to check if the PayPal app is installed
+    var payPalAppInstalled: Bool = false
+
     // MARK: - Static Properties
 
     /// This static instance of `BTPayPalClient` is used during the app switch process.
@@ -162,13 +165,6 @@ import BraintreeDataCollector
         }
     }
 
-    @objc public func isPayPalAppInstalled() -> Bool {
-        guard let paypalURL = URL(string: payPalInAppScheme) else {
-            return false
-        }
-        return application.canOpenURL(paypalURL)
-    }
-
     // MARK: - Internal Methods
   
     func handleReturn(
@@ -286,7 +282,9 @@ import BraintreeDataCollector
                 return
             }
 
-            if !self.isPayPalAppInstalled() {
+            self.payPalAppInstalled = self.isPayPalAppInstalled()
+
+            if !self.payPalAppInstalled {
                 (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch = false
             }
 
@@ -324,7 +322,14 @@ import BraintreeDataCollector
             }
         }
     }
-    
+
+    private func isPayPalAppInstalled() -> Bool {
+        guard let paypalURL = URL(string: payPalInAppScheme) else {
+            return false
+        }
+        return application.canOpenURL(paypalURL)
+    }
+
     private func launchPayPalApp(with payPalAppRedirectURL: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         urlComponents?.queryItems = [
