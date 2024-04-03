@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 enum BTPayPalAppSwitchReturnURLState {
-    case unknown
+    case unknownPath
     case succeeded
     case canceled
 }
@@ -16,19 +16,17 @@ enum BTPayPalAppSwitchReturnURLState {
 struct BTPayPalAppSwitchReturnURL {
 
     /// The overall status of the app switch - success, failure or cancelation
-    var state: BTPayPalAppSwitchReturnURLState = .unknown
+    var state: BTPayPalAppSwitchReturnURLState = .unknownPath
 
     /// Initializes a new `BTPayPalAppSwitchReturnURL`
     /// - Parameter url: an incoming app switch url
     init?(url: URL) {
-        let parameters = BTURLUtils.queryParameters(for: url)
-
         if url.path.contains("success") {
             state = .succeeded
         } else if url.path.contains("cancel") {
             state = .canceled
         } else {
-            state = .unknown
+            state = .unknownPath
         }
     }
 

@@ -20,6 +20,6 @@ final class BTPayPalAppSwitchReturnURL_Tests: XCTestCase {
 
     func testInitWithURL_whenUnknownURL_setsUnknownState() {
         let returnURL = BTPayPalAppSwitchReturnURL(url: URL(string: "https://www.merchant-app.com/merchant-path/garbage-url")!)
-        XCTAssertEqual(returnURL?.state, .unknown)
+        XCTAssertEqual(returnURL?.state, .unknownPath)
     }
 }
