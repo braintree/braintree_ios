@@ -248,7 +248,7 @@ import BraintreeDataCollector
         switch returnURL.state {
         case .succeeded, .canceled:
             handleReturn(url, paymentType: .vault, completion: appSwitchCompletion)
-        default:
+        case .unknownPath:
             notifyFailure(with: BTPayPalError.appSwitchReturnURLPathInvalid, completion: appSwitchCompletion)
         }
     }
