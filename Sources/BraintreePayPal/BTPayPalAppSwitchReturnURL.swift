@@ -18,15 +18,6 @@ struct BTPayPalAppSwitchReturnURL {
     /// The overall status of the app switch - success, failure or cancelation
     var state: BTPayPalAppSwitchReturnURLState = .unknown
 
-    /// The EC Token from the return URL.
-    var ecToken: String?
-
-    /// The BA Token from the return URL.
-    var baToken: String?
-
-    /// The timestamp from the return URL.
-    var timestamp: String?
-
     /// Initializes a new `BTPayPalAppSwitchReturnURL`
     /// - Parameter url: an incoming app switch url
     init?(url: URL) {
@@ -34,12 +25,6 @@ struct BTPayPalAppSwitchReturnURL {
 
         if url.path.contains("success") {
             state = .succeeded
-            if let ecToken = parameters["token"] {
-                self.ecToken = ecToken
-            }
-
-            baToken = parameters["ba_token"]
-            timestamp = parameters["switch_initiated_time"]
         } else if url.path.contains("cancel") {
             state = .canceled
         } else {
