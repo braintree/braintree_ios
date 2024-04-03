@@ -1,11 +1,6 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* BraintreeCore
-  * Add property `BTAppContextSwitcher.sharedInstance.universalLink` for the PayPal app switch flow
-* BraintreePayPal
-  * Add `BTPayPalVault.enablePayPalAppSwitch`
-    * If set to `true` we will attempt to use the PayPal App Switch flow
 * Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 * BraintreePayPal
   * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:universalLink:offerCredit:)`
