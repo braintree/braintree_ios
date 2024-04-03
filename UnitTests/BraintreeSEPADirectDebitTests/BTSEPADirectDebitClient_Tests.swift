@@ -179,12 +179,6 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
             ]
         )
 
-        mockWebAuthenticationSession.cannedErrorResponse = NSError(
-            domain: BTSEPADirectDebitError.errorDomain,
-            code: BTSEPADirectDebitError.approvalURLInvalid.errorCode,
-            userInfo: ["Description": "Mock approvalURLInvalid error description."]
-        )
-
         let sepaDirectDebitClient = BTSEPADirectDebitClient(
             apiClient: mockAPIClient,
             webAuthenticationSession: mockWebAuthenticationSession,

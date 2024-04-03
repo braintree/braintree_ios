@@ -858,23 +858,60 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenPayPalInAppURL_returnsTrue() {
-        let payPalClient = BTPayPalClient(apiClient: mockAPIClient)
-        let payPalInAppScheme: String = "paypal-in-app-checkout://"
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+        payPalClient.payPalAppInstalled = true
 
-        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        let vaultRequest = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "https://paypal.com")!
+        )
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
+                "redirectUrl": "https://www.other-url.com/"
+            ]
+        ])
+
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
-        XCTAssertEqual(lastPostParameters["return_url"] as? String, "aypal-in-app-checkout://v1/success")
-        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "aypal-in-app-checkout://v1/cancel")
+
+        XCTAssertEqual(lastPostParameters["launch_paypal_app"] as? Bool, true)
+        XCTAssertTrue((lastPostParameters["os_version"] as! String).matches("\\d+\\.\\d+"))
+        XCTAssertTrue((lastPostParameters["os_type"] as! String).matches("iOS|iPadOS"))
+        XCTAssertEqual(lastPostParameters["merchant_app_return_url"] as? String, "https://paypal.com")
     }
 
     func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalse() {
-        let payPalClient = BTPayPalClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = false
         payPalClient.application = fakeApplication
 
-        XCTAssertFalse(payPalClient.isPayPalAppInstalled())
+        let vaultRequest = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: payPalClient.payPalAppInstalled,
+            universalLink: URL(string: "https://paypal.com")!
+        )
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
+                "redirectUrl": "https://www.other-url.com/"
+            ]
+        ])
+
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
+
+        XCTAssertNil(lastPostParameters["launch_paypal_app"] as? Bool)
+        XCTAssertNil(lastPostParameters["os_version"] as? String)
+        XCTAssertNil(lastPostParameters["os_type"] as? String)
+        XCTAssertNil(lastPostParameters["merchant_app_return_url"] as? String)
     }
 
     // MARK: - Analytics
