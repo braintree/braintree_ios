@@ -149,7 +149,8 @@ let package = Package(
         .target(
             name: "PayPalDataCollector",
             dependencies: ["BraintreeCore", "PPRiskMagnes"],
-            path: "Sources/PayPalDataCollector"
+            path: "Sources/PayPalDataCollector",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
