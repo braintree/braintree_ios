@@ -227,21 +227,32 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "EC-Random-Value")
     }
     
-    // TODO: - Un-pend test once app switch flow sends analytics
-    func pendTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDInAnalytics() {
+    func testTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDAndLinkTypeInAnalytics() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+        payPalClient.payPalAppInstalled = true
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+
+        let vaultRequest = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: true,
+            universalLink: URL(string: "https://www.paypal.com")!
+        )
+
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "paypalAppApprovalUrl": "https://www.fake.com?ba_token=123"
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.paypal.com/success?ba_token=BA-Random-Value"
             ]
         ])
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+        payPalClient.tokenize(vaultRequest) { _, _ in }
 
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        payPalClient.tokenize(request) { _, _ in }
+        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
+        payPalClient.handleReturnURL(returnURL)
 
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "123")
-        XCTAssertNotNil(payPalClient.clientMetadataID)
+        XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "BA-Random-Value")
+        XCTAssertEqual(self.mockAPIClient.postedLinkType, "universal")
+        XCTAssertNotNil(self.payPalClient.clientMetadataID)
     }
 
     func testTokenize_whenApprovalURLDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
@@ -272,6 +283,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
+        XCTAssertEqual(self.mockAPIClient.postedLinkType, "deeplink")
     }
 
     // MARK: - Browser switch
@@ -710,11 +722,10 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() async {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
-        
+
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
-                "redirectUrl": "https://www.other-url.com/"
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
             ]
         ])
         
