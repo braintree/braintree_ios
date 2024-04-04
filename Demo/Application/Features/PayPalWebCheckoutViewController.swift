@@ -87,11 +87,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     @objc func universalLinkFlow(_ sender: UIButton) {
         // TODO: implement in a future PR - used here so we don't have to remove lazy instantiation
-        // TODO: replace URL with https://braintree-ios-demo.fly.dev/braintree-payments
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
             enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://paypal.com")!
+            universalLink: URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments")!
         )
         payPalClient.tokenize(request) { _, _ in }
         UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments/success")!)
