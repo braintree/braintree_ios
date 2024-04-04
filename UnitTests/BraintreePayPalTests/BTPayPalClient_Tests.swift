@@ -250,9 +250,9 @@ class BTPayPalClient_Tests: XCTestCase {
         let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
         payPalClient.handleReturnURL(returnURL)
 
-        XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(self.mockAPIClient.postedLinkType, "universal")
-        XCTAssertNotNil(self.payPalClient.clientMetadataID)
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
+        XCTAssertEqual(mockAPIClient.postedLinkType, "universal")
+        XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
     func testTokenize_whenApprovalURLDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
@@ -868,7 +868,7 @@ class BTPayPalClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenPayPalInAppURL_returnsTrue() {
+    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenPayPalInAppURL_returnsTrueAndSendsAnalytics() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
         payPalClient.payPalAppInstalled = true
@@ -889,6 +889,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(vaultRequest) { _, _ in }
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "true")
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
 
         XCTAssertEqual(lastPostParameters["launch_paypal_app"] as? Bool, true)
@@ -897,7 +898,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["merchant_app_return_url"] as? String, "https://paypal.com")
     }
 
-    func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalse() {
+    func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalseAndSendsAnalytics() {
         let fakeApplication = FakeApplication()
         fakeApplication.cannedCanOpenURL = false
         payPalClient.application = fakeApplication
@@ -918,6 +919,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(vaultRequest) { _, _ in }
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "false")
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
 
         XCTAssertNil(lastPostParameters["launch_paypal_app"] as? Bool)

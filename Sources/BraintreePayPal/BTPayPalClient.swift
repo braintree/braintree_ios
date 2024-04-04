@@ -268,8 +268,10 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        payPalAppInstalled = isPayPalAppInstalled()
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch ?? false ? "universal" : "deeplink"
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, linkType: linkType)
+        
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, linkType: linkType, payPalInstalled: payPalAppInstalled)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
@@ -285,8 +287,6 @@ import BraintreeDataCollector
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
             }
-
-            self.payPalAppInstalled = self.isPayPalAppInstalled()
 
             if !self.payPalAppInstalled {
                 (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch = false
@@ -387,13 +387,15 @@ import BraintreeDataCollector
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
                     linkType: linkType,
-                    payPalContextID: payPalContextID
+                    payPalContextID: payPalContextID,
+                    payPalInstalled: payPalAppInstalled
                 )
             } else {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
                     linkType: linkType,
-                    payPalContextID: payPalContextID
+                    payPalContextID: payPalContextID,
+                    payPalInstalled: payPalAppInstalled
                 )
             }
         } sessionDidCancel: { [self] in
@@ -402,7 +404,8 @@ import BraintreeDataCollector
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserLoginAlertCanceled,
                     linkType: linkType,
-                    payPalContextID: payPalContextID
+                    payPalContextID: payPalContextID,
+                    payPalInstalled: payPalAppInstalled
                 )
             }
 
@@ -482,7 +485,8 @@ import BraintreeDataCollector
             BTPayPalAnalytics.tokenizeSucceeded,
             correlationID: clientMetadataID,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            payPalInstalled: payPalAppInstalled
         )
         completion(result, nil)
     }
@@ -493,7 +497,8 @@ import BraintreeDataCollector
             correlationID: clientMetadataID,
             errorDescription: error.localizedDescription,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            payPalInstalled: payPalAppInstalled
         )
         completion(nil, error)
     }
@@ -503,7 +508,8 @@ import BraintreeDataCollector
             BTPayPalAnalytics.browserLoginCanceled,
             correlationID: clientMetadataID,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            payPalInstalled: payPalAppInstalled
         )
         completion(nil, BTPayPalError.canceled)
     }
