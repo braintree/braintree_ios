@@ -888,11 +888,12 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalse() {
         let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
         payPalClient.application = fakeApplication
 
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: payPalClient.payPalAppInstalled,
+            enablePayPalAppSwitch: true,
             universalLink: URL(string: "https://paypal.com")!
         )
 
