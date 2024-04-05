@@ -125,6 +125,7 @@ let package = Package(
         .target(
             name: "BraintreeThreeDSecure",
             dependencies: ["BraintreePaymentFlow", "BraintreeCard", "CardinalMobile", "PPRiskMagnes"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public",
             cSettings: [.headerSearchPath("V2UICustomization")]
         ),
