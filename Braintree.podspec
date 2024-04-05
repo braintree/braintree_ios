@@ -111,6 +111,7 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeVenmo_PrivacyInfo" => "Sources/BraintreeVenmo/PrivacyInfo.xcprivacy" }
   end
 
 end

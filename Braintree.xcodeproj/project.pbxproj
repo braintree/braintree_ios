@@ -150,6 +150,7 @@
 		5A741654B0F515134D184C08 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED6B5783E5FAAF1A78834A9 /* Pods_Tests_IntegrationTests.framework */; };
 		628C3F4C2BBC5F5100EA2A39 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 628C3F4B2BBC5F5100EA2A39 /* PrivacyInfo.xcprivacy */; };
 		62A367AA2BC073A800F9A2B7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A367A92BC073A800F9A2B7 /* PrivacyInfo.xcprivacy */; };
+		62D6734E2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62D6734D2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy */; };
 		62D673502BBF0FC000ADBC9D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62D6734F2BBF0FC000ADBC9D /* PrivacyInfo.xcprivacy */; };
 		62E020BF2BBDA6A300882F07 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62E020BE2BBDA6A300882F07 /* PrivacyInfo.xcprivacy */; };
 		62E020C32BBDAC6400882F07 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62E020C22BBDAC6400882F07 /* PrivacyInfo.xcprivacy */; };
@@ -927,6 +928,7 @@
 		57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeCheckoutAccountNonce.swift; sourceTree = "<group>"; };
 		628C3F4B2BBC5F5100EA2A39 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62A367A92BC073A800F9A2B7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		62D6734D2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62D6734F2BBF0FC000ADBC9D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62E020BE2BBDA6A300882F07 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62E020C22BBDAC6400882F07 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -2111,6 +2113,7 @@
 				4228D83A2624E439001D2564 /* BTVenmoRequest_Internal.h */,
 				80A79DD525CA04CB00A9E9A2 /* BTVenmoRequest.m */,
 				41777D471B8D028C0026F987 /* Public */,
+				62D6734D2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeVenmo;
 			sourceTree = "<group>";
@@ -3353,6 +3356,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62D6734E2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

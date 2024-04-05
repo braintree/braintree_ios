@@ -141,6 +141,7 @@ let package = Package(
         .target(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
