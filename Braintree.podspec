@@ -105,12 +105,14 @@ Pod::Spec.new do |s|
     s.source_files  = "Sources/BraintreeUnionPay/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeUnionPay/Public/BraintreeUnionPay/*.h"
     s.dependency "Braintree/Card"
+    s.resource_bundle = { "BraintreeUnionPay_PrivacyInfo" => "Sources/BraintreeUnionPay/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Venmo" do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeVenmo_PrivacyInfo" => "Sources/BraintreeVenmo/PrivacyInfo.xcprivacy" }
   end
 
 end

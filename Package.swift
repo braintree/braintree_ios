@@ -136,11 +136,13 @@ let package = Package(
         .target(
             name: "BraintreeUnionPay",
             dependencies: ["BraintreeCard"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
