@@ -81,6 +81,7 @@ Pod::Spec.new do |s|
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
     s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+    s.resource_bundle = { "PayPalDataCollector_PrivacyInfo" => "Sources/PayPalDataCollector/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PayPalNativeCheckout" do |s|
