@@ -92,7 +92,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
             enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://paypal.com")!
+            universalLink: URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments")!
         )
         payPalClient.tokenize(request) { _, _ in }
         UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments/success")!)

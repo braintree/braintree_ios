@@ -190,8 +190,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testTokenizePayPalAccount_whenAllApprovalURLsInvalid_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "",
+            "agreementSetup": [
                 "approvalUrl": "",
                 "paypalAppApprovalUrl": ""
             ]
@@ -230,7 +229,7 @@ class BTPayPalClient_Tests: XCTestCase {
     // TODO: - Un-pend test once app switch flow sends analytics
     func pendTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDInAnalytics() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
+            "agreementSetup": [
                 "paypalAppApprovalUrl": "https://www.fake.com?ba_token=123"
             ]
         ])
@@ -712,9 +711,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.application = fakeApplication
         
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
-                "redirectUrl": "https://www.other-url.com/"
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
             ]
         ])
         
@@ -869,9 +867,8 @@ class BTPayPalClient_Tests: XCTestCase {
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
-                "redirectUrl": "https://www.other-url.com/"
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
             ]
         ])
 
@@ -898,9 +895,8 @@ class BTPayPalClient_Tests: XCTestCase {
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
-                "redirectUrl": "https://www.other-url.com/"
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
             ]
         ])
 
