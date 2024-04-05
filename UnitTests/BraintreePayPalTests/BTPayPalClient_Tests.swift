@@ -190,8 +190,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testTokenizePayPalAccount_whenAllApprovalURLsInvalid_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "redirectUrl": "",
+            "agreementSetup": [
                 "approvalUrl": "",
                 "paypalAppApprovalUrl": ""
             ]
@@ -241,7 +240,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
-                "paypalAppApprovalUrl": "https://www.paypal.com/success?ba_token=BA-Random-Value"
+                "paypalAppApprovalUrl": "https://www.paypal.com?ba_token=BA-Random-Value"
             ]
         ])
 
@@ -882,9 +881,8 @@ class BTPayPalClient_Tests: XCTestCase {
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
-                "redirectUrl": "https://www.other-url.com/"
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
             ]
         ])
 
@@ -912,9 +910,8 @@ class BTPayPalClient_Tests: XCTestCase {
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "paymentResource": [
-                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1",
-                "redirectUrl": "https://www.other-url.com/"
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
             ]
         ])
 
