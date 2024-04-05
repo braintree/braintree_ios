@@ -5,6 +5,7 @@
 * BraintreePayPal
   * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:universalLink:offerCredit:)`
     * This init should be used for the PayPal App Switch flow
+  * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
