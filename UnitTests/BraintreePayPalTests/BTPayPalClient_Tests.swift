@@ -252,6 +252,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
         XCTAssertEqual(mockAPIClient.postedLinkType, "universal")
+        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "true")
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
@@ -283,7 +284,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(self.mockAPIClient.postedLinkType, "deeplink")
+        XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
+        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "false")
     }
 
     // MARK: - Browser switch

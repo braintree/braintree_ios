@@ -13,6 +13,5 @@ final class BTPayPalAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTPayPalAnalytics.appSwitchStarted, "paypal:tokenize:app-switch:started")
         XCTAssertEqual(BTPayPalAnalytics.appSwitchSucceeded, "paypal:tokenize:app-switch:succeeded")
         XCTAssertEqual(BTPayPalAnalytics.appSwitchFailed, "paypal:tokenize:app-switch:failed")
-
     }
 }
