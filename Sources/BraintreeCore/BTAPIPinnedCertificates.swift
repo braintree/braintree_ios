@@ -10,7 +10,7 @@ import Foundation
 /// in `braintree-ios-certificate-generation` and re-run the certificate generation script.
 class BTAPIPinnedCertificates {
 
-    public static func trustedCertificates() -> [NSData] {
+    static func trustedCertificates() -> [NSData] {
         var result: [NSData] = []
 
         // DigiCertTrustedRootG4.crt
