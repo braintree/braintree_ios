@@ -98,6 +98,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PaymentFlow"
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+    s.resource_bundle = { "BraintreeThreeDSecure_PrivacyInfo" => "Sources/BraintreeThreeDSecure/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "UnionPay" do |s|

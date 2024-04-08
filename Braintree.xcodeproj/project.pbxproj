@@ -149,6 +149,7 @@
 		57108A1C28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift */; };
 		5A741654B0F515134D184C08 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED6B5783E5FAAF1A78834A9 /* Pods_Tests_IntegrationTests.framework */; };
 		628C3F4C2BBC5F5100EA2A39 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 628C3F4B2BBC5F5100EA2A39 /* PrivacyInfo.xcprivacy */; };
+		62A367AC2BC074B100F9A2B7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A367AB2BC074B100F9A2B7 /* PrivacyInfo.xcprivacy */; };
 		62A367AA2BC073A800F9A2B7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A367A92BC073A800F9A2B7 /* PrivacyInfo.xcprivacy */; };
 		62D6734E2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62D6734D2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy */; };
 		62D673502BBF0FC000ADBC9D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62D6734F2BBF0FC000ADBC9D /* PrivacyInfo.xcprivacy */; };
@@ -927,6 +928,7 @@
 		57108A0E2832E1DE004EB870 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		57108A1B28342BC1004EB870 /* BTPayPalNativeCheckoutAccountNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalNativeCheckoutAccountNonce.swift; sourceTree = "<group>"; };
 		628C3F4B2BBC5F5100EA2A39 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		62A367AB2BC074B100F9A2B7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62A367A92BC073A800F9A2B7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62D6734D2BBF0D7D00ADBC9D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62D6734F2BBF0FC000ADBC9D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -2183,6 +2185,7 @@
 				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
 				801A0A1725890DF200DAF851 /* V2UICustomization */,
 				A91E1EBE24FEEF47007540E5 /* Public */,
+				62A367AB2BC074B100F9A2B7 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeThreeDSecure;
 			sourceTree = "<group>";
@@ -3409,6 +3412,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62A367AC2BC074B100F9A2B7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
