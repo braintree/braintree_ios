@@ -19,6 +19,12 @@ enum BTPayPalAnalytics {
     
     // general cancel used in conversion rates
     static let browserLoginCanceled = "paypal:tokenize:browser-login:canceled"
-    // specific cancel from permisison alert
+    // specific cancel from permission alert
     static let browserLoginAlertCanceled = "paypal:tokenize:browser-login:alert-canceled"
+
+    // MARK: - App Switch events
+
+    static let appSwitchStarted = "paypal:tokenize:app-switch:started"
+    static let appSwitchSucceeded = "paypal:tokenize:app-switch:succeeded"
+    static let appSwitchFailed = "paypal:tokenize:app-switch:failed"
 }

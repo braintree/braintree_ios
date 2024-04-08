@@ -35,6 +35,7 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
+        let payPalInstalled: String?
         let timestamp: String
         let tenantName: String = "Braintree"
 
@@ -44,6 +45,7 @@ struct FPTIBatchData: Codable {
             case eventName = "event_name"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
+            case payPalInstalled = "paypal_installed"
             case timestamp = "t"
             case tenantName = "tenant_name"
         }
