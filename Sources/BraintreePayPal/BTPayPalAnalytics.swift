@@ -22,6 +22,10 @@ enum BTPayPalAnalytics {
     // specific cancel from permission alert
     static let browserLoginAlertCanceled = "paypal:tokenize:browser-login:alert-canceled"
 
+    // MARK: - Additional Conversion events
+
+    static let handleReturnStarted = "paypal:tokenize:handle-return:started"
+
     // MARK: - App Switch events
 
     static let appSwitchStarted = "paypal:tokenize:app-switch:started"

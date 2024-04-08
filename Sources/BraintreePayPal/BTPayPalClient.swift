@@ -175,6 +175,13 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.handleReturnStarted,
+            correlationID: clientMetadataID,
+            linkType: linkType,
+            payPalContextID: payPalContextID,
+            payPalInstalled: payPalAppInstalled
+        )
         guard let url, isValidURLAction(url: url) else {
             notifyFailure(with: BTPayPalError.invalidURLAction, completion: completion)
             return

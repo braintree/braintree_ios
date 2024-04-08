@@ -1,7 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+* Require Xcode 15.0+ and Swift 5.9+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 * BraintreePayPal
   * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:universalLink:offerCredit:)`
     * This init should be used for the PayPal App Switch flow
