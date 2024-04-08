@@ -1,7 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+* Require Xcode 15.0+ and Swift 5.9+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 * Updated expiring pinned vendor SSL certificates
 
 ## 6.16.0 (2024-03-19)
