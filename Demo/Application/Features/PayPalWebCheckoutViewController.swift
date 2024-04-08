@@ -11,9 +11,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
         let payPalPayLaterButton = createButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
-        let universalLinkButton = createButton(title: "Universal Link Flow", action: #selector(universalLinkFlow))
+        let payPalAppSwitchButton = createButton(title: "PayPal App Switch Flow", action: #selector(tappedPayPalAppSwitchFlow))
 
-        let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton, universalLinkButton]
+        let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton, payPalAppSwitchButton]
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -86,15 +86,22 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         }
     }
 
-    @objc func universalLinkFlow(_ sender: UIButton) {
-        // TODO: implement in a future PR - used here so we don't have to remove lazy instantiation
+    @objc func tappedPayPalAppSwitchFlow(_ sender: UIButton) {
         let payPalClient = BTPayPalClient(apiClient: BTAPIClient(authorization: "sandbox_jy4fvpfg_v7x2rb226dx4pr7b")!)
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
             enablePayPalAppSwitch: true,
             universalLink: URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments")!
         )
-        payPalClient.tokenize(request) { _, _ in }
-        UIApplication.shared.open(URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments/success")!)
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+
+            self.completionBlock(nonce)
+        }
     }
 }
