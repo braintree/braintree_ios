@@ -727,7 +727,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
-                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
             ]
         ])
         
@@ -745,10 +745,12 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.host, "www.some-url.com")
         XCTAssertEqual(urlComponents?.path, "/some-path")
 
-        XCTAssertEqual(urlComponents?.queryItems?[0].name, "source")
-        XCTAssertEqual(urlComponents?.queryItems?[0].value, "braintree_sdk")
-        XCTAssertEqual(urlComponents?.queryItems?[1].name, "switch_initiated_time")
-        if let urlTimestamp = urlComponents?.queryItems?[1].value {
+        XCTAssertEqual(urlComponents?.queryItems?[0].name, "ba_token")
+        XCTAssertEqual(urlComponents?.queryItems?[0].value, "value1")
+        XCTAssertEqual(urlComponents?.queryItems?[1].name, "source")
+        XCTAssertEqual(urlComponents?.queryItems?[1].value, "braintree_sdk")
+        XCTAssertEqual(urlComponents?.queryItems?[2].name, "switch_initiated_time")
+        if let urlTimestamp = urlComponents?.queryItems?[2].value {
             XCTAssertNotNil(Int(urlTimestamp))
         } else {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
