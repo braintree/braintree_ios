@@ -2,6 +2,8 @@
 
 ## unreleased
 * Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+* BraintreeDataCollector
+  * Bump to PPRiskMagnes v5.5.0-static-Xcode15-MinOSVersion100 with fix for Xcode 15.3 SPM validation bug
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
