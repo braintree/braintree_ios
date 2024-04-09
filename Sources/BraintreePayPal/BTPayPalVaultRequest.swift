@@ -16,7 +16,7 @@ import BraintreeCore
 
     /// Optional: Used to determine if the customer will use the PayPal app switch flow.
     /// Defaults to `false`.
-    /// - Note: This property is currently in beta and may change or be removed in future releases.
+    /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
 
     /// The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
@@ -30,7 +30,7 @@ import BraintreeCore
     ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
     ///   - universalLink: Required: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    /// - Note: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
+    /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     public convenience init(
         userAuthenticationEmail: String,
         enablePayPalAppSwitch: Bool,
