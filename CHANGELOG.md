@@ -1,7 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+* Require Xcode 15.0+ and Swift 5.9+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+* Updated expiring pinned vendor SSL certificates
 * BraintreeDataCollector
   * Bump to PPRiskMagnes v5.5.0-static-Xcode15-MinOSVersion100 with fix for Xcode 15.3 SPM validation bug
 
