@@ -5,6 +5,8 @@
 * Updated expiring pinned vendor SSL certificates
 * BraintreeThreeDSecure
   * Bump CardinalMobile SDK to version 2.2.5-9 with code signing and a privacy manifest file.
+* BraintreeDataCollector
+  * Bump to PPRiskMagnes version 5.5.0 with fix for Xcode 15.3 Swift Pacakge Manager validation bug (fixes #1229))
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
