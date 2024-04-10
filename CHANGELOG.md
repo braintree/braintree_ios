@@ -3,6 +3,8 @@
 ## unreleased
 * Require Xcode 15.0+ and Swift 5.9+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 * Updated expiring pinned vendor SSL certificates
+* BraintreeDataCollector
+  * Bump to PPRiskMagnes version 5.5.0 with fix for Xcode 15.3 Swift Pacakge Manager validation bug (fixes #1229))
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
