@@ -2,7 +2,8 @@
 
 ## unreleased
 * Require Xcode 15.0+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
-* Update Cardinal SDK to version 2.2.5-9
+* BraintreeThreeDSecure
+  * Bump CardinalMobile SDK to version 2.2.5-9 with code signing and a privacy manifest file.
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property
