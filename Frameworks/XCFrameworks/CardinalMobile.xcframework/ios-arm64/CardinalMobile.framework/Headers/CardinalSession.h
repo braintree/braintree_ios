@@ -6,8 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Warning.h"
-#import "DirectoryServerIDConst.h"
+#import <CardinalMobile/Warning.h>
+#import <CardinalMobile/DirectoryServerIDConst.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

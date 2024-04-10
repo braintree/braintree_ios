@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ThreeDS2Service.h"
+#import <CardinalMobile/ThreeDS2Service.h>
 
 @class ConfigParameters;
 @class UiCustomization;
