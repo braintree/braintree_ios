@@ -66,43 +66,51 @@ let package = Package(
         .target(
             name: "BraintreeAmericanExpress",
             dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeApplePay",
             dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeCard",
             dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeCore",
             exclude: ["Info.plist"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeDataCollector",
             dependencies: ["BraintreeCore", "KountDataCollector"],
             exclude: ["Kount"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreePaymentFlow",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreePayPal",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreePayPalNativeCheckout",
             dependencies: ["BraintreeCore", "BraintreePayPal", "PayPalCheckout"],
-            path: "Sources/BraintreePayPalNativeCheckout"
+            path: "Sources/BraintreePayPalNativeCheckout",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "PayPalCheckout",
@@ -118,6 +126,7 @@ let package = Package(
         .target(
             name: "BraintreeThreeDSecure",
             dependencies: ["BraintreePaymentFlow", "BraintreeCard", "CardinalMobile", "PPRiskMagnes"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public",
             cSettings: [.headerSearchPath("V2UICustomization")]
         ),
@@ -128,11 +137,13 @@ let package = Package(
         .target(
             name: "BraintreeUnionPay",
             dependencies: ["BraintreeCard"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .target(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")],
             publicHeadersPath: "Public"
         ),
         .binaryTarget(
@@ -142,7 +153,8 @@ let package = Package(
         .target(
             name: "PayPalDataCollector",
             dependencies: ["BraintreeCore", "PPRiskMagnes"],
-            path: "Sources/PayPalDataCollector"
+            path: "Sources/PayPalDataCollector",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
