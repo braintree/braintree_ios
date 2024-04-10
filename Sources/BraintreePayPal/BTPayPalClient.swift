@@ -321,6 +321,9 @@ import BraintreeDataCollector
                 
                 self.payPalContextID = approvalURL.pairingID
 
+                // TODO: remove NotificationCenter before merging into main DTBTSDK-3766
+                NotificationCenter.default.post(name: Notification.Name("BAToken"), object: self.payPalContextID)
+
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(approvalURL.pairingID)
                 
@@ -351,6 +354,7 @@ import BraintreeDataCollector
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         urlComponents?.queryItems = [
+            URLQueryItem(name: "ba_token", value: payPalContextID),
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
         ]
