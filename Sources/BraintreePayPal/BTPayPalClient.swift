@@ -48,6 +48,9 @@ import BraintreeDataCollector
 
     // MARK: - Private Properties
 
+    /// URL Scheme for PayPal In-App Checkout
+    private let payPalInAppScheme: String = "paypal-in-app-checkout://"
+
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
     /// Will only be `true` if the user proceed through the `UIAlertController`
     private var webSessionReturned: Bool = false
@@ -58,9 +61,6 @@ import BraintreeDataCollector
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: String? = nil
-
-    /// URL Scheme for PayPal In-App Checkout
-    private let payPalInAppScheme: String = "paypal-in-app-checkout://"
 
     // MARK: - Initializer
 
@@ -314,7 +314,7 @@ import BraintreeDataCollector
                     return
                 }
                 
-                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
+                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body, linkType: self.linkType) else {
                     self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                     return
                 }
