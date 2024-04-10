@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* [Meets Apple's new Privacy Update requirements](https://developer.apple.com/news/?id=3d8a9yyh)
 * BraintreePayPalDataCollector
   * Update PPRiskMagnes to version 5.5.0 with privacy manifest changes and code-signing
   * This version of the PPRiskMagnes framework is dynamic
