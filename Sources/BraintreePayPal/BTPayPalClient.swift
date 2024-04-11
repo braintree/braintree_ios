@@ -188,7 +188,7 @@ import BraintreeDataCollector
             return
         }
         
-        guard !url.absoluteString.contains("cancel") else {
+        guard let action = BTPayPalReturnURL.action(from: url), action != "cancel" else {
             notifyCancel(completion: completion)
             return
         }
@@ -275,10 +275,8 @@ import BraintreeDataCollector
         }
 
         switch returnURL.state {
-        case .succeeded:
+        case .succeeded, .canceled:
             handleReturn(url, paymentType: .vault, completion: appSwitchCompletion)
-        case .canceled:
-            notifyCancel(completion: appSwitchCompletion)
         case .unknownPath:
             notifyFailure(with: BTPayPalError.appSwitchReturnURLPathInvalid, completion: appSwitchCompletion)
         }
@@ -430,10 +428,8 @@ import BraintreeDataCollector
             }
 
             switch returnURL.state {
-            case .succeeded:
+            case .succeeded, .canceled:
                 handleReturn(url, paymentType: .vault, completion: completion)
-            case .canceled:
-                notifyCancel(completion: completion)
             case .unknownPath:
                 notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }

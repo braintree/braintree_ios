@@ -74,9 +74,7 @@ struct BTPayPalReturnURL {
         return true
     }
 
-    // MARK: - Private Methods
-
-    private static func action(from url: URL) -> String? {
+    static func action(from url: URL) -> String? {
         guard let action = url.lastPathComponent.components(separatedBy: "?").first, !action.isEmpty else {
             return url.host
         }
