@@ -4,22 +4,22 @@ import Foundation
 import BraintreeCore
 #endif
 
-enum BTPayPalAppSwitchReturnURLState {
+enum BTPayPalReturnURLState {
     case unknownPath
     case succeeded
     case canceled
 }
 
-/// This class interprets URLs received from the PayPal app via app switch returns.
+/// This class interprets URLs received from the PayPal app via app switch returns and web returns via ASWebAuthenticationSession.
 ///
-/// PayPal app switch authorization requests should result in success or user-initiated cancelation. These states are communicated in the url.
+/// PayPal app switch and ASWebAuthenticationSession authorization requests should result in success or user-initiated cancelation. These states are communicated in the url.
 struct BTPayPalReturnURL {
 
     /// The overall status of the app switch - success, cancelation, or an unknown path
-    var state: BTPayPalAppSwitchReturnURLState = .unknownPath
+    var state: BTPayPalReturnURLState = .unknownPath
 
-    /// Initializes a new `BTPayPalAppSwitchReturnURL`
-    /// - Parameter url: an incoming app switch url
+    /// Initializes a new `BTPayPalReturnURL`
+    /// - Parameter url: an incoming app switch or ASWebAuthenticationSession url
     init?(_ redirectType: PayPalRedirectType) {
         switch redirectType {
         case .payPalApp(let url), .webBrowser(let url):
