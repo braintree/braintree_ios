@@ -1,11 +1,18 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Require Xcode 15.0+ and Swift 5.9+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 * BraintreePayPal
   * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:universalLink:offerCredit:)`
     * This init should be used for the PayPal App Switch flow
   * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
+
+## 6.17.0 (2024-04-10)
+* Require Xcode 15.0+ and Swift 5.9+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
+* Updated expiring pinned vendor SSL certificates
+* BraintreeThreeDSecure
+  * Bump CardinalMobile SDK to version 2.2.5-9 with code signing and a privacy manifest file.
+* BraintreeDataCollector
+  * Bump to PPRiskMagnes version 5.5.0 with fix for Xcode 15.3 Swift Pacakge Manager validation bug (fixes #1229))
 
 ## 6.16.0 (2024-03-19)
 * Add `BTPayPalVaultRequest.userAuthenticationEmail` optional property

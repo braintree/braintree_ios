@@ -329,7 +329,7 @@ import BraintreeDataCollector
                     return
                 }
                 
-                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
+                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body, linkType: self.linkType) else {
                     self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                     return
                 }
