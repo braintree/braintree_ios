@@ -31,6 +31,12 @@ class ContainmentViewController: UIViewController {
         }
     }
 
+    private var copiedNonce: BTPaymentMethodNonce? {
+        didSet {
+            statusItem?.isEnabled = (copiedNonce != nil)
+        }
+    }
+
     // MARK: - Progress and Completion Blocks
 
     func progressBlock(_ status: String?) {
@@ -44,8 +50,8 @@ class ContainmentViewController: UIViewController {
     }
 
     func nonceCompletionBlock(_ nonce: BTPaymentMethodNonce?) {
-        currentPaymentMethodNonce = nonce
-        updateStatus(currentPaymentMethodNonce?.nonce ?? "no nonce returned")
+        copiedNonce = nonce
+        updateStatus(copiedNonce?.nonce ?? "no nonce returned")
     }
 
     override func viewDidLoad() {
@@ -113,13 +119,13 @@ class ContainmentViewController: UIViewController {
     @objc private func tappedStatus() {
         print("Tapped status!")
 
+        if let copiedNonce {
+            UIPasteboard.general.string = copiedNonce.nonce
+            return
+        }
+
         if let currentPaymentMethodNonce {
             let nonce = currentPaymentMethodNonce.nonce
-
-            if currentViewController?.nonceCompletionBlock != nil {
-                UIPasteboard.general.string = nonce
-                return
-            }
 
             updateStatus("Creating Transaction…")
 
