@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "5.24.1"
+  s.version          = "5.25.0"
   s.summary          = "Braintree iOS SDK: Helps you accept card and alternative payments in your iOS app."
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -25,12 +25,14 @@ Pod::Spec.new do |s|
     s.source_files  = "Sources/BraintreeAmericanExpress/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeAmericanExpress/Public/BraintreeAmericanExpress/*.h"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeAmericanExpress_PrivacyInfo" => "Sources/BraintreeAmericanExpress/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "ApplePay" do |s|
     s.source_files  = "Sources/BraintreeApplePay/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeApplePay/Public/BraintreeApplePay/*.h"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeApplePay_PrivacyInfo" => "Sources/BraintreeApplePay/PrivacyInfo.xcprivacy" }
     s.frameworks = "PassKit"
   end
 
@@ -38,11 +40,13 @@ Pod::Spec.new do |s|
     s.source_files  = "Sources/BraintreeCard/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeCard/Public/BraintreeCard/*.h"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeCard_PrivacyInfo" => "Sources/BraintreeCard/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Core" do |s|
     s.source_files  = "Sources/BraintreeCore/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeCore/Public/BraintreeCore/*.h"
+    s.resource_bundle = { "BraintreeCore_PrivacyInfo" => "Sources/BraintreeCore/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "DataCollector" do |s|
@@ -50,6 +54,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreeDataCollector/Public/BraintreeDataCollector/*.h"
     s.vendored_frameworks = "Frameworks/XCFrameworks/KountDataCollector.xcframework"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeDataCollector_PrivacyInfo" => "Sources/BraintreeDataCollector/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PaymentFlow" do |s|
@@ -57,6 +62,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreePaymentFlow/Public/BraintreePaymentFlow/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
+    s.resource_bundle = { "BraintreePaymentFlow_PrivacyInfo" => "Sources/BraintreePaymentFlow/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PayPal" do |s|
@@ -64,6 +70,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Sources/BraintreePayPal/Public/BraintreePayPal/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
+    s.resource_bundle = { "BraintreePayPal_PrivacyInfo" => "Sources/BraintreePayPal/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "SEPADirectDebit" do |s|
@@ -75,6 +82,7 @@ Pod::Spec.new do |s|
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
     s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+    s.resource_bundle = { "PayPalDataCollector_PrivacyInfo" => "Sources/PayPalDataCollector/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PayPalNativeCheckout" do |s|
@@ -82,6 +90,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPal"
     s.dependency "PayPalCheckout", '0.110.0'
+    s.resource_bundle = { "BraintreePayPalNativeCheckout_PrivacyInfo" => "Sources/BraintreePayPalNativeCheckout/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "ThreeDSecure" do |s|
@@ -90,18 +99,21 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PaymentFlow"
     s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+    s.resource_bundle = { "BraintreeThreeDSecure_PrivacyInfo" => "Sources/BraintreeThreeDSecure/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "UnionPay" do |s|
     s.source_files  = "Sources/BraintreeUnionPay/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeUnionPay/Public/BraintreeUnionPay/*.h"
     s.dependency "Braintree/Card"
+    s.resource_bundle = { "BraintreeUnionPay_PrivacyInfo" => "Sources/BraintreeUnionPay/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Venmo" do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.{h,m}"
     s.public_header_files = "Sources/BraintreeVenmo/Public/BraintreeVenmo/*.h"
     s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeVenmo_PrivacyInfo" => "Sources/BraintreeVenmo/PrivacyInfo.xcprivacy" }
   end
 
 end
