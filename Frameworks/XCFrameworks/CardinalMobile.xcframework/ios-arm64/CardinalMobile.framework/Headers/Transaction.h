@@ -6,10 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AuthenticationRequestParameters.h"
-#import "ProgressDialog.h"
-#import "ChallengeStatusReceiver.h"
-#import "ChallengeParameters.h"
+#import <CardinalMobile/AuthenticationRequestParameters.h>
+#import <CardinalMobile/ProgressDialog.h>
+#import <CardinalMobile/ChallengeStatusReceiver.h>
+#import <CardinalMobile/ChallengeParameters.h>
 
 /**
  * An object that confronts to Transaction protocol hold parameters that the 3DS Server requires to create AReq messages and to perform the Challenge Flow.

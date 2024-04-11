@@ -6,10 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ConfigParameters.h"
-#import "UiCustomization.h"
-#import "Warning.h"
-#import "CardinalTransaction.h"
+#import <CardinalMobile/ConfigParameters.h>
+#import <CardinalMobile/UiCustomization.h>
+#import <CardinalMobile/Warning.h>
+#import <CardinalMobile/CardinalTransaction.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
