@@ -6,6 +6,15 @@
     * This init should be used for the PayPal App Switch flow
   * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
 
+## 5.25.0 (2024-04-10)
+* Require Xcode 15.0+ and Swift 5.9+ (per [Apple App Store requirements](https://developer.apple.com/news/upcoming-requirements/?id=04292024a)) 
+* [Meets Apple's new Privacy Update requirements](https://developer.apple.com/news/?id=3d8a9yyh)
+* BraintreePayPalDataCollector  
+  * Update PPRiskMagnes to version 5.5.0 with privacy manifest changes and code-signing
+  * This version of the PPRiskMagnes framework is dynamic
+* BraintreeThreeDSecure
+  * Bump CardinalMobile SDK to version 2.2.5-9 with code signing and a privacy manifest file.
+  
 ## 6.17.0 (2024-04-10)
 * Require Xcode 15.0+ and Swift 5.9+ (per [App Store requirements](https://developer.apple.com/news/?id=khzvxn8a))
 * Updated expiring pinned vendor SSL certificates
