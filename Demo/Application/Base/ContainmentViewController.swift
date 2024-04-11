@@ -18,6 +18,7 @@ class ContainmentViewController: UIViewController {
             updateStatus("Presenting \(type(of: currentViewController))")
             currentViewController.progressBlock = progressBlock
             currentViewController.completionBlock = completionBlock
+            currentViewController.nonceCompletionBlock = nonceCompletionBlock
 
             appendViewController(currentViewController)
             title = currentViewController.title
@@ -40,6 +41,11 @@ class ContainmentViewController: UIViewController {
     func completionBlock(_ nonce: BTPaymentMethodNonce?) {
         currentPaymentMethodNonce = nonce
         updateStatus("Got a nonce. Tap to make a transaction.")
+    }
+
+    func nonceCompletionBlock(_ nonce: BTPaymentMethodNonce?) {
+        currentPaymentMethodNonce = nonce
+        updateStatus(currentPaymentMethodNonce?.nonce ?? "no nonce returned")
     }
 
     override func viewDidLoad() {
@@ -109,6 +115,12 @@ class ContainmentViewController: UIViewController {
 
         if let currentPaymentMethodNonce {
             let nonce = currentPaymentMethodNonce.nonce
+
+            if currentViewController?.nonceCompletionBlock != nil {
+                UIPasteboard.general.string = nonce
+                return
+            }
+
             updateStatus("Creating Transaction…")
 
             let merchantAccountID = currentPaymentMethodNonce.type == "UnionPay" ? "fake_switch_usd" : nil
