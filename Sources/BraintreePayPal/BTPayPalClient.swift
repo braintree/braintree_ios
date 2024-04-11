@@ -182,17 +182,30 @@ import BraintreeDataCollector
             payPalContextID: payPalContextID,
             payPalInstalled: payPalAppInstalled
         )
-        guard let url, isValidURLAction(url: url) else {
+
+        guard let url, BTPayPalReturnURL.isValidURLAction(url: url, linkType: linkType) else {
             notifyFailure(with: BTPayPalError.invalidURLAction, completion: completion)
             return
         }
         
-        guard let response = responseDictionary(from: url) else {
+        guard let action = BTPayPalReturnURL.action(from: url), action != "cancel" else {
             notifyCancel(completion: completion)
             return
         }
-        
-        var account: [String: Any] = response
+
+        let clientDictionary: [String: String] = [
+            "platform": "iOS",
+            "product_name": "PayPal",
+            "paypal_sdk_version": "version"
+        ]
+
+        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
+
+        var account: [String: Any] = [
+            "client": clientDictionary,
+            "response": responseDictionary,
+            "response_type": "web"
+        ]
 
         if paymentType == .checkout {
             account["options"] = ["validate": false]
@@ -256,7 +269,7 @@ import BraintreeDataCollector
     // MARK: - App Switch Methods
 
     func handleReturnURL(_ url: URL) {
-        guard let returnURL = BTPayPalAppSwitchReturnURL(url: url) else {
+        guard let returnURL = BTPayPalReturnURL(.payPalApp(url: url)) else {
             notifyFailure(with: BTPayPalError.invalidURL("App Switch return URL cannot be nil"), completion: appSwitchCompletion)
             return
         }
@@ -409,7 +422,17 @@ import BraintreeDataCollector
                 return
             }
 
-            handleReturn(url, paymentType: paymentType, completion: completion)
+            guard let url, let returnURL = BTPayPalReturnURL(.webBrowser(url: url)) else {
+                notifyFailure(with: BTPayPalError.invalidURL("ASWebAuthenticationSession return URL cannot be nil"), completion: completion)
+                return
+            }
+
+            switch returnURL.state {
+            case .succeeded, .canceled:
+                handleReturn(url, paymentType: .vault, completion: completion)
+            case .unknownPath:
+                notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
+            }
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
                 apiClient.sendAnalyticsEvent(
@@ -442,65 +465,6 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
-    }
-    
-    private func isValidURLAction(url: URL) -> Bool {
-        guard let host = url.host, let scheme = url.scheme, !scheme.isEmpty else {
-            return false
-        }
-        
-        var hostAndPath = host
-            .appending(url.path)
-            .components(separatedBy: "/")
-            .dropLast(1) // remove the action (`success`, `cancel`, etc)
-            .joined(separator: "/")
-
-        if hostAndPath.count > 0 {
-            hostAndPath.append("/")
-        }
-        
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && (payPalRequest as? BTPayPalVaultRequest)?.universalLink == nil {
-            return false
-        }
-
-        guard let action = action(from: url),
-              let query = url.query,
-              query.count > 0,
-              action.count >= 0,
-              ["success", "cancel", "authenticate"].contains(action) else {
-            return false
-        }
-        
-        return true
-    }
-    
-    private func responseDictionary(from url: URL) -> [String : Any]? {
-        if let action = action(from: url), action == "cancel" {
-            return nil
-        }
-
-        let clientDictionary: [String: String] = [
-            "platform": "iOS",
-            "product_name": "PayPal",
-            "paypal_sdk_version": "version"
-        ]
-
-        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
-        
-        return [
-            "client": clientDictionary,
-            "response": responseDictionary,
-            "response_type": "web"
-        ]
-    }
-    
-    private func action(from url: URL) -> String? {
-        guard let action = url.lastPathComponent.components(separatedBy: "?").first,
-           !action.isEmpty else {
-            return url.host
-        }
-
-        return action
     }
 
     // MARK: - Analytics Helper Methods
@@ -554,6 +518,6 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
-        BTPayPalAppSwitchReturnURL.isValid(url)
+        BTPayPalReturnURL.isValid(url)
     }
 }

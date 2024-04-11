@@ -218,7 +218,9 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://www.paypal.com/checkout/success")
+        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
 
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
@@ -278,7 +280,9 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://www.paypal.com/checkout/success")
+        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
 
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
@@ -286,6 +290,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
         XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
         XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "false")
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
     // MARK: - Browser switch
