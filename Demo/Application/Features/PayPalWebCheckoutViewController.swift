@@ -96,6 +96,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }
 
     @objc func tappedPayPalAppSwitchFlow(_ sender: UIButton) {
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+        
         let payPalClient = BTPayPalClient(apiClient: BTAPIClient(authorization: "sandbox_jy4fvpfg_v7x2rb226dx4pr7b")!)
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
@@ -119,7 +122,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 return
             }
 
-            self.completionBlock(nonce)
+            self.nonceCompletionBlock(nonce)
         }
     }
 
