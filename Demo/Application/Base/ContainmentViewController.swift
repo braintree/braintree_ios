@@ -121,6 +121,7 @@ class ContainmentViewController: UIViewController {
 
         if let copiedNonce {
             UIPasteboard.general.string = copiedNonce.nonce
+            self.copiedNonce = nil
             return
         }
 
