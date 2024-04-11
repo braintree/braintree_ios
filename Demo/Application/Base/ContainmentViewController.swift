@@ -127,7 +127,6 @@ class ContainmentViewController: UIViewController {
 
         if let currentPaymentMethodNonce {
             let nonce = currentPaymentMethodNonce.nonce
-
             updateStatus("Creating Transaction…")
 
             let merchantAccountID = currentPaymentMethodNonce.type == "UnionPay" ? "fake_switch_usd" : nil
