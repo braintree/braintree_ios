@@ -30,14 +30,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         baTokenLabel.textColor = .systemPink
 
         let stackView = UIStackView(arrangedSubviews: [
-            buttonsStackView(
-                label: "1-Time Checkout Flows",
-                views: [payPalCheckoutButton, payPalPayLaterButton]
-            ),
-            buttonsStackView(
-                label: "Vault Flows",
-                views: [emailTextField, payPalVaultButton, payPalAppSwitchButton]
-            )
+            buttonsStackView(label: "1-Time Checkout Flows", views: [payPalCheckoutButton, payPalPayLaterButton]),
+            buttonsStackView(label: "Vault Flows",views: [emailTextField, payPalVaultButton, payPalAppSwitchButton])
         ])
         
         stackView.axis = .vertical
