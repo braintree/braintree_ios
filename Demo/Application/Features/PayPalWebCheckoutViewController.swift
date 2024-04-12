@@ -6,6 +6,13 @@ import BraintreeCore
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
+    
+    lazy var emailTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "placeholder@email.com"
+        textField.backgroundColor = .systemBackground
+        return textField
+    }()
 
     // TODO: remove UILabel before merging into main DTBTSDK-3766
     let baTokenLabel = UILabel()
@@ -22,15 +29,25 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         baTokenLabel.addGestureRecognizer(tapGesture)
         baTokenLabel.textColor = .systemPink
 
-        let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton, payPalAppSwitchButton, baTokenLabel]
-        let stackView = UIStackView(arrangedSubviews: buttons)
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView(arrangedSubviews: [
+            buttonsStackView(
+                label: "1-Time Checkout Flows",
+                views: [payPalCheckoutButton, payPalPayLaterButton]
+            ),
+            buttonsStackView(
+                label: "Vault Flows",
+                views: [emailTextField, payPalVaultButton, payPalAppSwitchButton]
+            )
+        ])
         
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 25
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }
+    
+    // MARK: 1-Time Checkout Flows
 
     @objc func tappedPayPalCheckout(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
@@ -55,26 +72,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
-
-    @objc func tappedPayPalVault(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - Vault using BTPayPalClient")
-        sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
-
-        let request = BTPayPalVaultRequest()
-
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-
-            self.completionBlock(nonce)
-        }
-    }
-
+    
     @objc func tappedPayPalPayLater(_ sender: UIButton) {
         progressBlock("Tapped PayPal - initiating with Pay Later offered")
         sender.setTitle("Processing...", for: .disabled)
@@ -94,14 +92,41 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
+    
+    // MARK: Vault Flows
+    
+    @objc func tappedPayPalVault(_ sender: UIButton) {
+        progressBlock("Tapped PayPal - Vault using BTPayPalClient")
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+
+        let request = BTPayPalVaultRequest()
+        request.userAuthenticationEmail = emailTextField.text
+
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+
+            self.completionBlock(nonce)
+        }
+    }
 
     @objc func tappedPayPalAppSwitchFlow(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
+        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
+            self.progressBlock("Email cannot be nil for App Switch flow")
+            return
+        }
+        
         let payPalClient = BTPayPalClient(apiClient: BTAPIClient(authorization: "sandbox_jy4fvpfg_v7x2rb226dx4pr7b")!)
         let request = BTPayPalVaultRequest(
-            userAuthenticationEmail: "sally@gmail.com",
+            userAuthenticationEmail: userEmail,
             enablePayPalAppSwitch: true,
             universalLink: URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments")!
         )
@@ -124,6 +149,22 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
             self.nonceCompletionBlock(nonce)
         }
+    }
+    
+    // MARK: - Helpers
+    
+    private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
+        let titleLabel = UILabel()
+        titleLabel.text = label
+        
+        let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
+        buttonsStackView.axis = .vertical
+        buttonsStackView.distribution = .fillProportionally
+        buttonsStackView.backgroundColor = UIColor.systemGray6
+        buttonsStackView.layoutMargins = .init(top: 5, left: 5, bottom: 5, right: 5)
+        buttonsStackView.isLayoutMarginsRelativeArrangement = true
+        
+        return buttonsStackView
     }
 
     // TODO: remove labelTapped and receivedNotification before merging into main DTBTSDK-3766
