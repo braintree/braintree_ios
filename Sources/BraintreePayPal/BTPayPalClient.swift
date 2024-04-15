@@ -332,17 +332,17 @@ import BraintreeDataCollector
                     return
                 }
                 
-                self.payPalContextID = approvalURL.pairingID
+                self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
 
                 // TODO: remove NotificationCenter before merging into main DTBTSDK-3766
                 NotificationCenter.default.post(name: Notification.Name("BAToken"), object: self.payPalContextID)
 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(approvalURL.pairingID)
-                
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
+
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
-                    self.launchPayPalApp(with: url, completion: completion)
+                    self.launchPayPalApp(with: url, baToken: approvalURL.baToken, completion: completion)
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
@@ -357,7 +357,7 @@ import BraintreeDataCollector
         return application.canOpenURL(paypalURL)
     }
 
-    private func launchPayPalApp(with payPalAppRedirectURL: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+    private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String?, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
             linkType: linkType,
@@ -365,14 +365,14 @@ import BraintreeDataCollector
             payPalInstalled: payPalAppInstalled
         )
 
-        guard let payPalContextID else {
+        guard let baToken else {
             notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
             return
         }
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         urlComponents?.queryItems = [
-            URLQueryItem(name: "ba_token", value: payPalContextID),
+            URLQueryItem(name: "ba_token", value: baToken),
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
         ]
