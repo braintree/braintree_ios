@@ -21,7 +21,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
         let payPalPayLaterButton = createButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
-        let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitchFlow))
+        let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
 
         // TODO: remove tapGesture before merging into main DTBTSDK-3766
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
@@ -109,7 +109,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         }
     }
 
-    @objc func tappedPayPalAppSwitchFlow(_ sender: UIButton) {
+    @objc func tappedPayPalAppSwitch(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
