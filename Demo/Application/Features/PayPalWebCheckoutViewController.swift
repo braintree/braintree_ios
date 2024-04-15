@@ -87,7 +87,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         }
     }
     
-    // MARK: Vault Flows
+    // MARK: - Vault Flows
     
     @objc func tappedPayPalVault(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Vault using BTPayPalClient")
