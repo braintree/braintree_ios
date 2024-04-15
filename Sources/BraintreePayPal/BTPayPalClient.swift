@@ -365,6 +365,11 @@ import BraintreeDataCollector
             payPalInstalled: payPalAppInstalled
         )
 
+        guard let payPalContextID else {
+            notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
+            return
+        }
+
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         urlComponents?.queryItems = [
             URLQueryItem(name: "ba_token", value: payPalContextID),
