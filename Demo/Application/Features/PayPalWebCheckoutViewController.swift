@@ -41,7 +41,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         return stackView
     }
     
-    // MARK: 1-Time Checkout Flows
+    // MARK: - 1-Time Checkout Flows
 
     @objc func tappedPayPalCheckout(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
