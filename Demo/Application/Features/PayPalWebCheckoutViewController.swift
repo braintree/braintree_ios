@@ -155,7 +155,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         buttonsStackView.axis = .vertical
         buttonsStackView.distribution = .fillProportionally
         buttonsStackView.backgroundColor = .systemGray6
-        buttonsStackView.layoutMargins = .init(top: 5, left: 5, bottom: 5, right: 5)
+        buttonsStackView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         buttonsStackView.isLayoutMarginsRelativeArrangement = true
         
         return buttonsStackView
