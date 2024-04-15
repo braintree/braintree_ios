@@ -154,7 +154,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
         buttonsStackView.axis = .vertical
         buttonsStackView.distribution = .fillProportionally
-        buttonsStackView.backgroundColor = UIColor.systemGray6
+        buttonsStackView.backgroundColor = .systemGray6
         buttonsStackView.layoutMargins = .init(top: 5, left: 5, bottom: 5, right: 5)
         buttonsStackView.isLayoutMarginsRelativeArrangement = true
         
