@@ -31,7 +31,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let stackView = UIStackView(arrangedSubviews: [
             buttonsStackView(label: "1-Time Checkout Flows", views: [payPalCheckoutButton, payPalPayLaterButton]),
-            buttonsStackView(label: "Vault Flows",views: [emailTextField, payPalVaultButton, payPalAppSwitchButton])
+            buttonsStackView(label: "Vault Flows",views: [emailTextField, payPalVaultButton, payPalAppSwitchButton]),
+            baTokenLabel
         ])
         
         stackView.axis = .vertical
@@ -115,6 +116,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         
         guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
             self.progressBlock("Email cannot be nil for App Switch flow")
+            sender.isEnabled = true
             return
         }
         
