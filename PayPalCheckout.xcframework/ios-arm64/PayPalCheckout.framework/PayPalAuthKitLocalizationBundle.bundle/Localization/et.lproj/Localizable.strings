@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Logige sisse";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Sisestage e-posti aadress, mobiil või kasutajanimi";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Kas unustasite e-posti aadressi?";
+"PublicCredentialVerificationView.NextButton" = "Edasi";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Makske PayPaliga";
+"OTPVerifyCredentialView.NextButton" = "Edasi";
+"OTPVerifyCredentialView.TryAgainLabel" = "Kontrollige oma e-posti aadressi ja proovige uuesti.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Sisestage e-posti aadress ja proovige uuesti.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Alustamiseks sisestage oma e-posti aadress.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Kas unustasite oma sisselogimisteabe?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Logige sisse";
+"RememberedPasswordLoginView.ChangeButton" = "Muuda";
+"RememberedPasswordLoginView.PasswordTextInput" = "Parool";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Kas unustasite parooli?";
+"RememberedPasswordLoginView.LoginButton" = "Logige sisse";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Logige ühekordse koodiga hõlpsalt sisse";
+"OTPGenerateCodeView.InformationLabel" = "Jätkates lubate meil saata teile automaatse tekstsõnumi, et teie telefoninumber kinnitada. Võivad lisanduda teenusepakkuja tariifid.";
+"OTPGenerateCodeView.GetCodeButton" = "Hangi kood";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Kasuta selle asemel parooli";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-post";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefoninumber";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Valmis";
+"OTPPhoneSelectionView.SubtitleLabel" = "Saadame koodi numbrile:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Logige ühekordse koodiga hõlpsalt sisse";
+"OTPLoginView.InformationLabel" = "Jätkates lubate meil teiega ühendust võtta ja nõustute tekstsõnumeid vastu võtma. Rakenduda võivad operaatoritasud.";
+"OTPLoginView.LoginButton" = "Logige sisse";
+"OTPLoginView.UsePasswordInsteadButton" = "Kasuta selle asemel parooli";
+"OTPLoginView.CheckCodeLabel" = "Kontrollige koodi ja proovige uuesti.";
+"OTPLoginView.CodeSentLabel" = "Kood saadeti numbrile %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "See kood on aegunud. Hankige uus kood.";
+"OTPLoginView.GetNewCodeButton" = "Hankige uus kood";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Midagi läks valesti";
+"OTPGenericErrorView.SubtitleLabel" = "Võite hiljem uuesti proovida või logige sisse oma parooliga.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Kasuta selle asemel parooli";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Saatsime teile uue koodi.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Kiire turvakontroll";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Unustasite parooli";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Unustasite e-posti aadressi";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Parooli lähtestamine";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Midagi läks valesti";
+"ClientErrorResult.Message.Unknown" = "Proovige hiljem uuesti";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Tere tulemast PayPali";
+"ULLoginView.SubtitleLabel" = "Alustamiseks logige sisse või registreeruge.";
+"ULLoginView.LoginButton" = "Logige sisse";
+"ULLoginView.SignUpButton" = "Registreeruge";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Muutke";

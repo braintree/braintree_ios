@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Вход в системата";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Въведете имейл, мобилен номер или потребителско име";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Забравен имейл?";
+"PublicCredentialVerificationView.NextButton" = "Напред";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Платете с PayPal";
+"OTPVerifyCredentialView.NextButton" = "Напред";
+"OTPVerifyCredentialView.TryAgainLabel" = "Проверете имейл адреса си и опитайте отново.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Въведете имейл адрес и опитайте отново.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Въведете имейла си, за да започнете.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Забравихте ли данните си за влизане?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Вход в системата";
+"RememberedPasswordLoginView.ChangeButton" = "Промяна";
+"RememberedPasswordLoginView.PasswordTextInput" = "Парола";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Забравена парола?";
+"RememberedPasswordLoginView.LoginButton" = "Вход в системата";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Бърз вход с еднократен код";
+"OTPGenerateCodeView.InformationLabel" = "Като продължавате, вие ни позволявате да ви изпратим автоматизирано текстово съобщение, за да потвърдите телефона си. Възможно е начисляване на такси от оператора.";
+"OTPGenerateCodeView.GetCodeButton" = "Получаване на код";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Използвайте парола вместо това";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Имейл";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Телефонен номер";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Готово";
+"OTPPhoneSelectionView.SubtitleLabel" = "Ще изпратим код на:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Бърз вход с еднократен код";
+"OTPLoginView.InformationLabel" = "Продължавайки, вие ни позволявате да се свързваме с вас и се съгласявате да получавате текстови съобщения. Може да се начислят такси от оператора.";
+"OTPLoginView.LoginButton" = "Вход в системата";
+"OTPLoginView.UsePasswordInsteadButton" = "Използвайте парола вместо това";
+"OTPLoginView.CheckCodeLabel" = "Проверете вашия код и опитайте отново.";
+"OTPLoginView.CodeSentLabel" = "Кодът е изпратен на %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Вашият код е изтекъл. Получете нов код.";
+"OTPLoginView.GetNewCodeButton" = "Получаване на нов код";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Нещо се обърка";
+"OTPGenericErrorView.SubtitleLabel" = "Можете да опитате по-късно или да влезете с паролата си.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Използвайте парола вместо това";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Изпратихме ви нов код.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Бърза проверка на защитата";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Забравена парола";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Забравен имейл";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Нулиране на паролата";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Нещо се обърка";
+"ClientErrorResult.Message.Unknown" = "Опитайте отново по-късно";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Добре дошли в PayPal";
+"ULLoginView.SubtitleLabel" = "Влезте в системата или се регистрирайте, за да започнете.";
+"ULLoginView.LoginButton" = "Вход в системата";
+"ULLoginView.SignUpButton" = "Регистриране";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Промяна";

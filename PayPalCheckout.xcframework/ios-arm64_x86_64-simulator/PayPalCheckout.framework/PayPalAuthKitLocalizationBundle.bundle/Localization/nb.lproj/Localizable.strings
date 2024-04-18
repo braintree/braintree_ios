@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Logg på";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Oppgi e-postadresse, mobilnummer eller brukernavn";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Glemt e-postadressen?";
+"PublicCredentialVerificationView.NextButton" = "Neste";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Betal med PayPal.";
+"OTPVerifyCredentialView.NextButton" = "Neste";
+"OTPVerifyCredentialView.TryAgainLabel" = "Kontroller e-postadressen og prøv på nytt.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Skriv inn en e-postadresse og prøv på nytt.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Angi e-postadressen din for å komme i gang.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Glemt påloggingsinformasjonen?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Logg på";
+"RememberedPasswordLoginView.ChangeButton" = "Endre";
+"RememberedPasswordLoginView.PasswordTextInput" = "Passord";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Har du glemt passordet ditt?";
+"RememberedPasswordLoginView.LoginButton" = "Logg på";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Logg på raskt med en engangskode";
+"OTPGenerateCodeView.InformationLabel" = "Ved å fortsette tillater du at vi sender deg en automatisk tekstmelding for å bekrefte telefonen din. Prisene fra operatørselskapet ditt kan gjelde.";
+"OTPGenerateCodeView.GetCodeButton" = "Send kode";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Bruk passord i stedet";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-post";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefonnummer";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Ferdig";
+"OTPPhoneSelectionView.SubtitleLabel" = "Vi sender en kode til:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Logg på raskt med en engangskode";
+"OTPLoginView.InformationLabel" = "Ved å fortsette tillater du at vi kontakter deg, og du godtar å motta tekstmeldinger. Det kan påløpe operatørgebyrer.";
+"OTPLoginView.LoginButton" = "Logg på";
+"OTPLoginView.UsePasswordInsteadButton" = "Bruk passord i stedet";
+"OTPLoginView.CheckCodeLabel" = "Sjekk koden din, og prøv på nytt.";
+"OTPLoginView.CodeSentLabel" = "Kode sendt til %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Koden er utløpt. Få en ny kode";
+"OTPLoginView.GetNewCodeButton" = "Få ny kode";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Noe gikk galt";
+"OTPGenericErrorView.SubtitleLabel" = "Du kan prøve på nytt senere eller logge på med passordet ditt.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Bruk passord i stedet";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Vi har sendt deg en ny kode.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "En rask sikkerhetssjekk";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Glemt passordet";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Glemt e-postadresse";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Tilbakestill passord";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Noe gikk galt";
+"ClientErrorResult.Message.Unknown" = "Prøv på nytt senere";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Velkommen til PayPal";
+"ULLoginView.SubtitleLabel" = "Logg på eller opprett en konto for å komme i gang.";
+"ULLoginView.LoginButton" = "Logg på";
+"ULLoginView.SignUpButton" = "Opprett konto";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Endre";

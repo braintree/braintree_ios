@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Вход";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Адрес электронной почты, мобильный телефон или имя пользователя";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Забыли адрес электронной почты?";
+"PublicCredentialVerificationView.NextButton" = "Далее";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Оплатить через PayPal";
+"OTPVerifyCredentialView.NextButton" = "Далее";
+"OTPVerifyCredentialView.TryAgainLabel" = "Проверьте ваш адрес электронной почты и повторите попытку.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Введите адрес электронной почты и повторите попытку.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Введите ваш электронный адрес, чтобы начать.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Забыли ваши учетные данные для входа в систему?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Вход";
+"RememberedPasswordLoginView.ChangeButton" = "Изменить";
+"RememberedPasswordLoginView.PasswordTextInput" = "Пароль";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Забыли пароль?";
+"RememberedPasswordLoginView.LoginButton" = "Войти";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Быстрый вход с помощью одноразового кода";
+"OTPGenerateCodeView.InformationLabel" = "Нажимая «Продолжить», вы разрешаете нам отправлять вам автоматическое текстовое сообщение для подтверждения вашего номера телефона. Оператор услуг связи может взимать оплату в соответствии с тарифами.";
+"OTPGenerateCodeView.GetCodeButton" = "Получить код";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Попробуйте использовать пароль";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Ваш электронный адрес";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Номер телефона";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Готово";
+"OTPPhoneSelectionView.SubtitleLabel" = "Мы отправим код на номер:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Быстрый вход с помощью одноразового кода";
+"OTPLoginView.InformationLabel" = "Нажимая «Продолжить», вы разрешаете нам связаться с вами и соглашаетесь получать текстовые сообщения. Оператор услуг связи может взимать оплату в соответствии с тарифами.";
+"OTPLoginView.LoginButton" = "Войти";
+"OTPLoginView.UsePasswordInsteadButton" = "Попробуйте использовать пароль";
+"OTPLoginView.CheckCodeLabel" = "Проверьте код и повторите попытку.";
+"OTPLoginView.CodeSentLabel" = "Код отправлен на номер %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Время действия вашего кода истекло. Получите новый код.";
+"OTPLoginView.GetNewCodeButton" = "Получить новый код";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Похоже, произошла ошибка";
+"OTPGenericErrorView.SubtitleLabel" = "Вы можете повторить попытку позже или войти в учетную запись с помощью пароля";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Попробуйте использовать пароль";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Мы отправили вам новый код.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Проверка безопасности";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Забыли пароль";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Забыли адрес электронной почты";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Сменить пароль";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Похоже, произошла ошибка";
+"ClientErrorResult.Message.Unknown" = "Повторите попытку позже.";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Добро пожаловать в PayPal";
+"ULLoginView.SubtitleLabel" = "Войдите в учетную запись или зарегистрируйтесь, чтобы начать работу.";
+"ULLoginView.LoginButton" = "Войти";
+"ULLoginView.SignUpButton" = "Зарегистрироваться";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Изменить";

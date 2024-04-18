@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "ログイン";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "メールアドレス、電話番号、またはユーザー名を入力";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "メールアドレスをお忘れの場合";
+"PublicCredentialVerificationView.NextButton" = "次へ";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "PayPalで支払う";
+"OTPVerifyCredentialView.NextButton" = "次へ";
+"OTPVerifyCredentialView.TryAgainLabel" = "メールアドレスを確認して、もう一度お試しください。";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "メールアドレスを入力して、もう一度お試しください。";
+"OTPVerifyCredentialView.EnterEmailLabel" = "はじめに、お客さまのメールアドレスを入力してください。";
+"OTPVerifyCredentialView.ForgotLoginButton" = "ログイン情報をお忘れの場合";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "ログイン";
+"RememberedPasswordLoginView.ChangeButton" = "変更";
+"RememberedPasswordLoginView.PasswordTextInput" = "パスワードを入力";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "パスワードをお忘れの場合";
+"RememberedPasswordLoginView.LoginButton" = "ログイン";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "ワンタイムコードですぐにログインできます";
+"OTPGenerateCodeView.InformationLabel" = "続行することにより、お客さまは、弊社が電話番号を確認するための自動SMSをお客さまに送信することを許可するものとみなされます。なお、通信料がかかる場合があることにご留意ください。";
+"OTPGenerateCodeView.GetCodeButton" = "コードの取得";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "代わりにパスワードを使用する";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "メール";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "電話番号";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "完了";
+"OTPPhoneSelectionView.SubtitleLabel" = "以下にコードを送信します";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "ワンタイムコードですぐにログインできます";
+"OTPLoginView.InformationLabel" = "続行することにより、お客さまは、弊社がお客さまにご連絡することを許可し、SMSを受け取ることに同意するものとみなされます。また、通信料がかかる場合があることにご留意ください。";
+"OTPLoginView.LoginButton" = "ログイン";
+"OTPLoginView.UsePasswordInsteadButton" = "代わりにパスワードを使用する";
+"OTPLoginView.CheckCodeLabel" = "コードを確認してもう一度実行してください。";
+"OTPLoginView.CodeSentLabel" = "%1$@にコードが送信されました。";
+"OTPLoginView.CodeExpiredLabel" = "コードの有効期限が切れています。新しいコードを取得してください。";
+"OTPLoginView.GetNewCodeButton" = "新しいコードを取得";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "問題が発生しました";
+"OTPGenericErrorView.SubtitleLabel" = "あとでもう一度お試しいただくか、パスワードを使ってログインしてください。";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "代わりにパスワードを使用する";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "新しいコードを送信しました。";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "迅速なセキュリティチェック";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "パスワードをお忘れの場合";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "メールアドレスをお忘れの場合";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "パスワードをリセット";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "問題が発生しました";
+"ClientErrorResult.Message.Unknown" = "しばらくしてから再度ご利用ください";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "PayPalへようこそ";
+"ULLoginView.SubtitleLabel" = "ログインまたは新規登録してご利用を開始してください。";
+"ULLoginView.LoginButton" = "ログイン";
+"ULLoginView.SignUpButton" = "新規登録";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "変更";

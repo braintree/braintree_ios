@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Log masuk";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Masukkan e-mel, telefon bimbit atau nama pengguna";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Terlupa e-mel?";
+"PublicCredentialVerificationView.NextButton" = "Seterusnya";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Bayar dengan PayPal";
+"OTPVerifyCredentialView.NextButton" = "Seterusnya";
+"OTPVerifyCredentialView.TryAgainLabel" = "Periksa alamat e-mel anda dan cuba lagi.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Masukkan alamat e-mel dan cuba lagi.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Masukkan alamat e-mel anda untuk bermula.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Lupa maklumat log masuk anda?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Log masuk";
+"RememberedPasswordLoginView.ChangeButton" = "Tukar";
+"RememberedPasswordLoginView.PasswordTextInput" = "Kata laluan";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Terlupa kata laluan?";
+"RememberedPasswordLoginView.LoginButton" = "Log Masuk";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Log masuk pantas dengan kod satu kali";
+"OTPGenerateCodeView.InformationLabel" = "Dengan meneruskan, anda membenarkan kami menghantar mesej teks automatik kepada anda untuk mengesahkan telefon anda. Yuran penyedia perkhidmatan mungkin dikenakan.";
+"OTPGenerateCodeView.GetCodeButton" = "Dapatkan Kod";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Gunakan kata laluan sebagai ganti";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-mel";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Nombor telefon";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Selesai";
+"OTPPhoneSelectionView.SubtitleLabel" = "Kami akan menghantar kod ke:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Log masuk pantas dengan kod satu kali";
+"OTPLoginView.InformationLabel" = "Dengan meneruskan, anda membenarkan kami menghubungi anda dan bersetuju untuk menerima mesej teks. Yuran penyedia perkhidmatan mungkin dikenakan.";
+"OTPLoginView.LoginButton" = "Log Masuk";
+"OTPLoginView.UsePasswordInsteadButton" = "Gunakan kata laluan sebagai ganti";
+"OTPLoginView.CheckCodeLabel" = "Semak kod anda dan cuba lagi.";
+"OTPLoginView.CodeSentLabel" = "Kod telah dihantar kepada %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Kod anda telah tamat tempoh. Dapatkan kod baharu.";
+"OTPLoginView.GetNewCodeButton" = "Dapatkan kod baharu";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Ada sesuatu yang tidak kena";
+"OTPGenericErrorView.SubtitleLabel" = "Anda boleh cuba lagi kemudian atau log masuk dengan kata laluan anda.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Gunakan kata laluan sebagai ganti";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Kami telah menghantar kod baharu kepada anda.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Pemeriksaan keselamatan pantas";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Terlupa Kata Laluan";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Terlupa E-mel";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Set Semula Kata Laluan";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Ada sesuatu yang tidak kena";
+"ClientErrorResult.Message.Unknown" = "Sila cuba lagi kemudian";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Selamat datang ke PayPal";
+"ULLoginView.SubtitleLabel" = "Log masuk atau daftar untuk bermula.";
+"ULLoginView.LoginButton" = "Log Masuk";
+"ULLoginView.SignUpButton" = "Daftar";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Tukar";

@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Zaloguj się";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Wprowadź adres e-mail, numer komórkowy lub nazwę użytkownika";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Nie pamiętasz adresu e-mail?";
+"PublicCredentialVerificationView.NextButton" = "Następny";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Zapłać Zapłać z PayPal PayPal";
+"OTPVerifyCredentialView.NextButton" = "Następny";
+"OTPVerifyCredentialView.TryAgainLabel" = "Sprawdź swój adres e-mail i spróbuj ponownie.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Wprowadź adres e-mail i spróbuj ponownie.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Aby rozpocząć, wpisz swój adres e-mail.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Nie pamiętasz swoich danych logowania?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Zaloguj się";
+"RememberedPasswordLoginView.ChangeButton" = "Zmień";
+"RememberedPasswordLoginView.PasswordTextInput" = "Hasło";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Nie pamiętasz hasła?";
+"RememberedPasswordLoginView.LoginButton" = "Zaloguj się";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Zaloguj się szybko za pomocą kodu jednorazowego";
+"OTPGenerateCodeView.InformationLabel" = "Kontynuując, zezwalasz nam na wysłanie automatycznej wiadomości SMS w celu potwierdzenia Twojego numeru telefonu. Mogą obowiązywać stawki operatora.";
+"OTPGenerateCodeView.GetCodeButton" = "Pobierz kod";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Zamiast tego użyj hasła";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Wiadomość e-mail";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Phone number";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Gotowe";
+"OTPPhoneSelectionView.SubtitleLabel" = "Wyślemy kod na numer:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Zaloguj się szybko za pomocą kodu jednorazowego";
+"OTPLoginView.InformationLabel" = "Kontynuując, zezwalasz nam na kontaktowanie się z Tobą i zgadzasz się na otrzymywanie wiadomości SMS. Mogą obowiązywać opłaty operatora.";
+"OTPLoginView.LoginButton" = "Zaloguj się";
+"OTPLoginView.UsePasswordInsteadButton" = "Zamiast tego użyj hasła";
+"OTPLoginView.CheckCodeLabel" = "Sprawdź kod i spróbuj ponownie.";
+"OTPLoginView.CodeSentLabel" = "Kod został wysłany na numer %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Ten kod wygasł. Pobierz nowy kod.";
+"OTPLoginView.GetNewCodeButton" = "Pobierz nowy kod";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Wystąpił błąd";
+"OTPGenericErrorView.SubtitleLabel" = "Możesz spróbować ponownie później lub zaloguj się za pomocą hasła.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Zamiast tego użyj hasła";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Wysłaliśmy Ci nowy kod.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Szybka kontrola bezpieczeństwa";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Nie pamiętasz hasła?";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Nie pamiętasz adresu e-mail?";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Zresetuj hasło";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Wystąpił błąd";
+"ClientErrorResult.Message.Unknown" = "Spróbuj ponownie później";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Witamy w PayPal";
+"ULLoginView.SubtitleLabel" = "Zaloguj się lub załóż konto, aby rozpocząć.";
+"ULLoginView.LoginButton" = "Zaloguj się";
+"ULLoginView.SignUpButton" = "Załóż konto";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Zmień";

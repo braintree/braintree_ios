@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "ලොගින් වන්න";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "ඊමේල්, ජංගම දුරකථනය හෝ පරිශීලක නාමය ඇතුළත් කරන්න";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "ඊමේල් ලිපිනය අමතක වුණා ද?";
+"PublicCredentialVerificationView.NextButton" = "ඊළඟ";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "PayPal සමඟ ගෙවන්න";
+"OTPVerifyCredentialView.NextButton" = "ඊළඟ";
+"OTPVerifyCredentialView.TryAgainLabel" = "ඔබේ ඊමේල් ලිපිනය පරීක්ෂා කර නැවත උත්සාහ කරන්න.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "ඊමේල් ලිපිනයක් ඇතුළු කර නැවත උත්සාහ කරන්න.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "ආරම්භ කිරීමට ඔබගේ ඊමේල් ලිපිනය ඇතුළත් කරන්න.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "ඔබේ ලොගින් තොරතුරු අමතක වුණා ද?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "ලොගින් වන්න";
+"RememberedPasswordLoginView.ChangeButton" = "වෙනස් කරන්න";
+"RememberedPasswordLoginView.PasswordTextInput" = "මුරපදය";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "මුරපදය අමතක වුණා ද?";
+"RememberedPasswordLoginView.LoginButton" = "ලොගින් වන්න";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "එක් වරක් සඳහා වන කේතයක් සමග ලොගින් වන්න";
+"OTPGenerateCodeView.InformationLabel" = "ඉදිරියට යාමෙන්, ඔබගේ දුරකථනය තහවුරු කිරීම සඳහා ඔබට ස්වයංක්‍රීය කෙටි පණිවිඩයක් යැවීමට ඔබ අපට ඉඩ සලසයි. වාහක ගාස්තු අදාළ විය හැකිය.";
+"OTPGenerateCodeView.GetCodeButton" = "කේතයක් ලබා ගන්න";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "ඒ වෙනුවට මුරපදය භාවිත කරන්න";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "ඊමේල් ලිපිනය";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "දුරකථන අංකය";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "නිමයි";
+"OTPPhoneSelectionView.SubtitleLabel" = "අපි මේ වෙත කේතයක් එවන්නෙමු:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "එක් වරක් සඳහා වන කේතයක් සමග ලොගින් වන්න";
+"OTPLoginView.InformationLabel" = "ඉදිරියට යාමෙන්, ඔබ අපට ඔබව සම්බන්ධ කර ගැනීමට ඉඩ සලසන අතර කෙටි පණිවිඩ ලැබීමට එකඟ වෙයි. වාහක ගාස්තු අදාළ විය හැකි ය.";
+"OTPLoginView.LoginButton" = "ලොගින් වන්න";
+"OTPLoginView.UsePasswordInsteadButton" = "ඒ වෙනුවට මුරපදය භාවිත කරන්න";
+"OTPLoginView.CheckCodeLabel" = "ඔබේ කේතය පරීක්ෂා කර නැවත උත්සාහ කරන්න.";
+"OTPLoginView.CodeSentLabel" = "කේතය %1$@ වෙත යවා ඇත.";
+"OTPLoginView.CodeExpiredLabel" = "ඔබේ කේතය කල් ඉකුත් වී ඇත. නව කේතයක් ලබා ගන්න.";
+"OTPLoginView.GetNewCodeButton" = "නව කේතය ලබා ගන්න";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "යම් කිසි දෝෂයක් සිදු විය";
+"OTPGenericErrorView.SubtitleLabel" = "ඔබට පසුව නැවත උත්සාහ කිරීමට හෝ ඔබගේ මුරපදය සමග ලොගින් වීමට හැකි ය.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "ඒ වෙනුවට මුරපදය භාවිත කරන්න";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "අපි ඔබට නව කේතයක් එවූයෙමු.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "ඉක්මන් ආරක්ෂක පරීක්ෂාවක්";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "මුරපදය අමතක විය";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "ඊමේලය අමතක වූයේ ද";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "මුරපදය යළි සකසන්න";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "යම් කිසි දෝෂයක් සිදු විය";
+"ClientErrorResult.Message.Unknown" = "කරුණාකර පසුව යළිත් උත්සාහ කරන්න";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "PayPal වෙත සාදරයෙන් පිළිගනිමු";
+"ULLoginView.SubtitleLabel" = "ආරම්භ කිරීමට ලොගින් වන්න, නැතහොත් ලියාපදිංචි වන්න.";
+"ULLoginView.LoginButton" = "ලොගින් වන්න";
+"ULLoginView.SignUpButton" = "ලියාපදිංචි වන්න";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "වෙනස් කරන්න";

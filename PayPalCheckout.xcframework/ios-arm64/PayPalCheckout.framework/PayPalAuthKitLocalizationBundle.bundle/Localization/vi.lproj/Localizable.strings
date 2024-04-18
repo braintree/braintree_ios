@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Đăng nhập";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Nhập email, số di động hoặc tên người dùng";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Bạn quên email?";
+"PublicCredentialVerificationView.NextButton" = "Tiếp";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Thanh toán bằng PayPal";
+"OTPVerifyCredentialView.NextButton" = "Tiếp";
+"OTPVerifyCredentialView.TryAgainLabel" = "Hãy kiểm tra địa chỉ email của bạn và thử lại.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Nhập địa chỉ email và thử lại.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Nhập địa chỉ email của bạn để bắt đầu.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Bạn quên thông tin đăng nhập?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Đăng nhập";
+"RememberedPasswordLoginView.ChangeButton" = "Thay đổi";
+"RememberedPasswordLoginView.PasswordTextInput" = "Mật khẩu";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Quên mật khẩu?";
+"RememberedPasswordLoginView.LoginButton" = "Đăng nhập";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Đăng nhập nhanh bằng mã đăng nhập dùng một lần";
+"OTPGenerateCodeView.InformationLabel" = "Bằng cách tiếp tục, bạn cho phép chúng tôi gửi cho bạn tin nhắn văn bản tự động để xác nhận số điện thoại của bạn. Có thể áp dụng phí nhà mạng.";
+"OTPGenerateCodeView.GetCodeButton" = "Nhận mã";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Vui lòng sử dụng mật khẩu";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Email";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Số điện thoại";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Đã hoàn tất";
+"OTPPhoneSelectionView.SubtitleLabel" = "Chúng tôi sẽ gửi mã đến:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Đăng nhập nhanh bằng mã đăng nhập dùng một lần";
+"OTPLoginView.InformationLabel" = "Bằng việc tiếp tục, bạn cho phép chúng tôi liên hệ với bạn và đồng ý nhận tin nhắn văn bản. Nhà mạng di động có thể tính phí.";
+"OTPLoginView.LoginButton" = "Đăng nhập";
+"OTPLoginView.UsePasswordInsteadButton" = "Vui lòng sử dụng mật khẩu";
+"OTPLoginView.CheckCodeLabel" = "Hãy kiểm tra mã và thử lại.";
+"OTPLoginView.CodeSentLabel" = "Chúng tôi đã gửi mã đến %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Mã của bạn đã hết hạn. Hãy lấy mã mới.";
+"OTPLoginView.GetNewCodeButton" = "Nhận mã mới";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Đã xảy ra sự cố";
+"OTPGenericErrorView.SubtitleLabel" = "Bạn có thể thử lại sau hoặc đăng nhập bằng mật khẩu.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Vui lòng sử dụng mật khẩu";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Chúng tôi đã gửi mã mới cho bạn.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Kiểm tra bảo mật nhanh";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Quên mật khẩu";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Quên email";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Đặt lại mật khẩu";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Đã xảy ra sự cố";
+"ClientErrorResult.Message.Unknown" = "Vui lòng thử lại sau";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Chào mừng bạn đến với PayPal";
+"ULLoginView.SubtitleLabel" = "Đăng nhập hoặc đăng ký để bắt đầu.";
+"ULLoginView.LoginButton" = "Đăng nhập";
+"ULLoginView.SignUpButton" = "Đăng ký";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Thay đổi";

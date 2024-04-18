@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Log in";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Enter email, mobile, or username";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Forgot email?";
+"PublicCredentialVerificationView.NextButton" = "Next";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Log in";
+"RememberedPasswordLoginView.ChangeButton" = "Change";
+"RememberedPasswordLoginView.PasswordTextInput" = "Password";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Forgot password?";
+"RememberedPasswordLoginView.LoginButton" = "Log In";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Pay with PayPal";
+"OTPVerifyCredentialView.NextButton" = "Next";
+"OTPVerifyCredentialView.TryAgainLabel" = "Check your email address and try again.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Enter an email address and try again.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Enter your email to get started.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Forgot your login info?";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Log in fast with a one-time code";
+"OTPGenerateCodeView.InformationLabel" = "By continuing, you allow us to send you an automated text message to confirm your phone. Carrier rates may apply.";
+"OTPGenerateCodeView.GetCodeButton" = "Get a Code";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Use password instead";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Email";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Phone number";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Done";
+"OTPPhoneSelectionView.SubtitleLabel" = "We'll send a code to:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Log in fast with a one-time code";
+"OTPLoginView.InformationLabel" = "By continuing, you allow us to contact you and agree to receive text messages. Carrier fees may apply.";
+"OTPLoginView.LoginButton" = "Log In";
+"OTPLoginView.UsePasswordInsteadButton" = "Use password instead";
+"OTPLoginView.CheckCodeLabel" = "Check your code and try again.";
+"OTPLoginView.CodeSentLabel" = "Code sent to %@.";
+"OTPLoginView.CodeExpiredLabel" = "Your code has expired. Get a new code.";
+"OTPLoginView.GetNewCodeButton" = "Get new code";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Something went wrong";
+"OTPGenericErrorView.SubtitleLabel" = "You can try again later or log in with your password.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Use password instead";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "We sent you a new code.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "A quick security check";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Forgot Password";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Forgot Email";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Reset Password";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Something went wrong";
+"ClientErrorResult.Message.Unknown" = "Please try again later";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Welcome to PayPal";
+"ULLoginView.SubtitleLabel" = "Log in or sign up to get started.";
+"ULLoginView.LoginButton" = "Log In";
+"ULLoginView.SignUpButton" = "Sign Up";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Change";

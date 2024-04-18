@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Mag-log in";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Ilagay ang email, mobile, o username";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Nakalimutan ang Email?";
+"PublicCredentialVerificationView.NextButton" = "Magpatuloy";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Magbayad gamit ang PayPal";
+"OTPVerifyCredentialView.NextButton" = "Magpatuloy";
+"OTPVerifyCredentialView.TryAgainLabel" = "Suriin ang email address mo at subukan ulit.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Maglagay ng email address at subukan ulit.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Ilagay ang email mo para magsimula.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Nakalimutan ang login info mo?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Mag-log in";
+"RememberedPasswordLoginView.ChangeButton" = "Baguhin";
+"RememberedPasswordLoginView.PasswordTextInput" = "Password";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Nakalimutan ang password?";
+"RememberedPasswordLoginView.LoginButton" = "Mag-log In";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Mag-log in nang mabilis gamit ang isang one-time code";
+"OTPGenerateCodeView.InformationLabel" = "Kapag nagpatuloy ka, pinapayagan mo kaming padalhan ka ng automated na text message para kumpirmahin ang telepono mo. Posibleng may mga carrier rate.";
+"OTPGenerateCodeView.GetCodeButton" = "Kumuha ng Code";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Gamitin na lang ang password";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Email";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Numero ng telepono";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Tapos na";
+"OTPPhoneSelectionView.SubtitleLabel" = "Magpapadala kami ng code sa:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Mag-log in nang mabilis gamit ang isang one-time code";
+"OTPLoginView.InformationLabel" = "Kapag nagpatuloy ka, pinapayagan mo kaming i-contact ka at sumasang-ayon kang makatanggap ng mga text message. Posibleng may carrier fee.";
+"OTPLoginView.LoginButton" = "Mag-log In";
+"OTPLoginView.UsePasswordInsteadButton" = "Gamitin na lang ang password";
+"OTPLoginView.CheckCodeLabel" = "Tingnan ang code mo at subukan ulit.";
+"OTPLoginView.CodeSentLabel" = "Ipinadala ang code sa %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Nag-expire na ang code mo. Kumuha ng bagong code.";
+"OTPLoginView.GetNewCodeButton" = "Kumuha ng bagong code";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Nagkaroon ng problema";
+"OTPGenericErrorView.SubtitleLabel" = "Pwede mong subukan ulit mamaya o mag-log in gamit ang password mo.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Gamitin na lang ang password";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Pinadalhan ka namin ng bagong code.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Mabilis na pagsusuri sa security";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Nakalimutan ang Password";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Nakalimutan ang Email";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "I-reset ang Password";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Nagkaroon ng problema";
+"ClientErrorResult.Message.Unknown" = "Pakisubukan ulit mamaya";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Welcome sa PayPal";
+"ULLoginView.SubtitleLabel" = "Mag-log in o mag-sign up para magsimula.";
+"ULLoginView.LoginButton" = "Mag-log In";
+"ULLoginView.SignUpButton" = "Mag-sign Up";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Baguhin";

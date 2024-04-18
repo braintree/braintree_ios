@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Kirjaudu sisään";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Sähköpostiosoite, matkapuhelinnumero tai käyttäjätunnus";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Unohditko sähköpostiosoitteen?";
+"PublicCredentialVerificationView.NextButton" = "Seuraava";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Maksa PayPalilla";
+"OTPVerifyCredentialView.NextButton" = "Seuraava";
+"OTPVerifyCredentialView.TryAgainLabel" = "Tarkista sähköpostiosoite ja yritä uudelleen.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Anna sähköpostiosoite ja yritä uudelleen.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Aloita antamalla sähköpostiosoitteesi.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Unohditko kirjautumistietosi?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Kirjaudu sisään";
+"RememberedPasswordLoginView.ChangeButton" = "Vaihda";
+"RememberedPasswordLoginView.PasswordTextInput" = "Salasana";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Unohditko salasanan?";
+"RememberedPasswordLoginView.LoginButton" = "Kirjaudu sisään";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Kirjaudu nopeasti kertakäyttökoodin avulla";
+"OTPGenerateCodeView.InformationLabel" = "Jatkamalla sallit meidän lähettää sinulle automaattisen tekstiviestin puhelinnumerosi vahvistamiseksi. Operaattori saattaa veloittaa välityskuluja.";
+"OTPGenerateCodeView.GetCodeButton" = "Hanki koodi";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Käytä sen sijaan salasanaa";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Sähköposti";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Puhelinnumero";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Valmis";
+"OTPPhoneSelectionView.SubtitleLabel" = "Lähetämme koodin numeroon";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Kirjaudu nopeasti kertakäyttökoodin avulla";
+"OTPLoginView.InformationLabel" = "Jatkamalla sallit meidän ottaa yhteyttä sinuun ja hyväksyt tekstiviestien vastaanottamisen. Operaattori saattaa veloittaa välityskuluja.";
+"OTPLoginView.LoginButton" = "Kirjaudu sisään";
+"OTPLoginView.UsePasswordInsteadButton" = "Käytä sen sijaan salasanaa";
+"OTPLoginView.CheckCodeLabel" = "Tarkista koodi ja yritä uudelleen.";
+"OTPLoginView.CodeSentLabel" = "Koodi lähetetty numeroon %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Koodin voimassaolo on päättynyt. Hanki uusi koodi.";
+"OTPLoginView.GetNewCodeButton" = "Pyydä uutta koodia";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Jokin meni pieleen";
+"OTPGenericErrorView.SubtitleLabel" = "Voit yrittää myöhemmin uudelleen tai kirjautua sisään salasanallasi.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Käytä sen sijaan salasanaa";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Lähetimme sinulle uuden koodin.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Nopea turvatarkastus";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Unohditko salasanan?";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Unohditko sähköpostiosoitteen?";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Vaihda salasana";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Jokin meni pieleen";
+"ClientErrorResult.Message.Unknown" = "Yritä myöhemmin uudelleen";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Tervetuloa PayPaliin";
+"ULLoginView.SubtitleLabel" = "Aloita kirjautumalla sisään tai rekisteröitymällä.";
+"ULLoginView.LoginButton" = "Kirjaudu sisään";
+"ULLoginView.SignUpButton" = "Rekisteröidy";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Vaihda";

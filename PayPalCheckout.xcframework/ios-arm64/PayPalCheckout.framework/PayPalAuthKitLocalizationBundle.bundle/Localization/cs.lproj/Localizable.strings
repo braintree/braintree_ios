@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Přihlásit";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Zadejte e-mailovou adresu, číslo mobilního telefonu nebo uživatelské jméno.";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Zapomněli jste e-mailovou adresu?";
+"PublicCredentialVerificationView.NextButton" = "Další";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Zaplatit přes PayPal";
+"OTPVerifyCredentialView.NextButton" = "Další";
+"OTPVerifyCredentialView.TryAgainLabel" = "Zkontrolujte e-mailovou adresu a zkuste to znovu.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Zadejte e-mailovou adresu a zkuste to znovu.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Začněte zadáním své e-mailové adresy.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Zapomněli jste přihlašovací údaje?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Přihlásit";
+"RememberedPasswordLoginView.ChangeButton" = "Změnit";
+"RememberedPasswordLoginView.PasswordTextInput" = "Heslo";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Zapomněli jste heslo?";
+"RememberedPasswordLoginView.LoginButton" = "Přihlásit";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Rychle se přihlásit pomocí jednorázového kódu";
+"OTPGenerateCodeView.InformationLabel" = "Pokud budete pokračovat, dáváte nám svolení, abychom vám zaslali automatickou textovou zprávu pro potvrzení vašeho telefonního čísla. Operátor si může účtovat poplatky.";
+"OTPGenerateCodeView.GetCodeButton" = "Získat kód";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Zkuste místo toho heslo.";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-mailová adresa";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefonní číslo";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Hotovo";
+"OTPPhoneSelectionView.SubtitleLabel" = "Kód vám pošleme na toto číslo:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Rychle se přihlásit pomocí jednorázového kódu";
+"OTPLoginView.InformationLabel" = "Pokud budete pokračovat, dáváte nám svolení, abychom vás kontaktovali, a souhlasíte s tím, aby vám byly zasílány textové zprávy. Operátor si může účtovat poplatky.";
+"OTPLoginView.LoginButton" = "Přihlásit";
+"OTPLoginView.UsePasswordInsteadButton" = "Zkuste místo toho heslo.";
+"OTPLoginView.CheckCodeLabel" = "Zkontrolujte svůj kód a zkuste to znovu.";
+"OTPLoginView.CodeSentLabel" = "Kód byl odeslán na číslo %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Platnost kódu vypršela. Požádejte o nový kód.";
+"OTPLoginView.GetNewCodeButton" = "Poslat nový kód";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Došlo k chybě.";
+"OTPGenericErrorView.SubtitleLabel" = "Můžete to zkusit ještě později nebo se přihlásit pomocí hesla.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Zkuste místo toho heslo.";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Poslali jsme vám nový kód.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Rychlá bezpečnostní kontrola";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Zapomněli jste heslo?";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Zapomenutá e-mailová adresa";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Obnovit heslo";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Došlo k chybě.";
+"ClientErrorResult.Message.Unknown" = "Zkuste to znovu později";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Vítejte ve službě PayPal";
+"ULLoginView.SubtitleLabel" = "Nejprve se přihlaste nebo zaregistrujte.";
+"ULLoginView.LoginButton" = "Přihlásit";
+"ULLoginView.SignUpButton" = "Zaregistrovat";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Změnit";

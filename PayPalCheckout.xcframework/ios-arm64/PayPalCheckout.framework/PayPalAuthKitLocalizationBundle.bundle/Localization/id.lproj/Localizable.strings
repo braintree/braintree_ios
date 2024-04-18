@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Log in";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Masukkan email, nomor telepon seluler, atau nama pengguna";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Lupa email?";
+"PublicCredentialVerificationView.NextButton" = "Berikutnya";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Bayar dengan PayPal";
+"OTPVerifyCredentialView.NextButton" = "Berikutnya";
+"OTPVerifyCredentialView.TryAgainLabel" = "Periksa alamat email Anda dan coba lagi.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Masukkan alamat email, lalu coba lagi.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Masukkan alamat email Anda untuk memulai.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Lupa informasi login?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Log in";
+"RememberedPasswordLoginView.ChangeButton" = "Ubah";
+"RememberedPasswordLoginView.PasswordTextInput" = "Sandi";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Lupa sandi?";
+"RememberedPasswordLoginView.LoginButton" = "Log In";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Log in cepat dengan kode sekali pakai";
+"OTPGenerateCodeView.InformationLabel" = "Dengan melanjutkan, Anda mengizinkan kami untuk mengirim SMS otomatis untuk mengonfirmasi ponsel Anda. Tarif operator mungkin berlaku.";
+"OTPGenerateCodeView.GetCodeButton" = "Dapatkan Kode";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Gunakan sandi";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Email";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Nomor telepon";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Selesai";
+"OTPPhoneSelectionView.SubtitleLabel" = "Kami akan mengirimkan kode ke:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Log in cepat dengan kode sekali pakai";
+"OTPLoginView.InformationLabel" = "Dengan melanjutkan, Anda mengizinkan kami untuk menghubungi Anda dan setuju untuk menerima SMS. Tarif operator mungkin berlaku.";
+"OTPLoginView.LoginButton" = "Log In";
+"OTPLoginView.UsePasswordInsteadButton" = "Gunakan sandi";
+"OTPLoginView.CheckCodeLabel" = "Periksa kode dan coba lagi.";
+"OTPLoginView.CodeSentLabel" = "Kode telah dikirim ke %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Kode Anda telah kedaluwarsa. Dapatkan kode baru.";
+"OTPLoginView.GetNewCodeButton" = "Dapatkan kode baru";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Terjadi kesalahan";
+"OTPGenericErrorView.SubtitleLabel" = "Anda dapat mencobanya lagi nanti atau log in dengan sandi Anda.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Gunakan sandi";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Kami telah mengirimkan kode baru kepada Anda.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Pemeriksaan keamanan singkat";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Lupa Sandi";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Lupa Email";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Buat Ulang Sandi";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Terjadi kesalahan";
+"ClientErrorResult.Message.Unknown" = "Coba lagi nanti";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Selamat datang di PayPal.";
+"ULLoginView.SubtitleLabel" = "Log in atau daftar untuk memulai.";
+"ULLoginView.LoginButton" = "Log In";
+"ULLoginView.SignUpButton" = "Daftar";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Ubah";

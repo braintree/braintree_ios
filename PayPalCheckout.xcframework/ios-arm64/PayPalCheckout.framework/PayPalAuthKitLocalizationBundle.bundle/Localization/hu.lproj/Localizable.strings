@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Bejelentkezés";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Adja meg e-mail-címét, mobilszámát vagy felhasználónevét";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Elfelejtette az e-mail-címét?";
+"PublicCredentialVerificationView.NextButton" = "Tovább";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Fizessen PayPallal";
+"OTPVerifyCredentialView.NextButton" = "Tovább";
+"OTPVerifyCredentialView.TryAgainLabel" = "Ellenőrizze az e-mail-címet, és próbálja újra.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Adjon meg egy e-mail-címet, majd próbálja újra.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Első lépésként adja meg e-mail-címét.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Elfelejtette bejelentkezési adatait?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Bejelentkezés";
+"RememberedPasswordLoginView.ChangeButton" = "Módosítás";
+"RememberedPasswordLoginView.PasswordTextInput" = "Jelszó";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Elfelejtette a jelszavát?";
+"RememberedPasswordLoginView.LoginButton" = "Bejelentkezés";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Gyors bejelentkezés egyszeri kóddal";
+"OTPGenerateCodeView.InformationLabel" = "A folytatással lehetővé teszi, hogy automatikus szöveges üzenetet küldjünk Önnek a telefonszáma megerősítése érdekében. A szolgáltató díjat számíthat fel.";
+"OTPGenerateCodeView.GetCodeButton" = "Kód kérése";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Használja inkább jelszavát";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-mail";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefonszám";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Kész";
+"OTPPhoneSelectionView.SubtitleLabel" = "A kódot ide küldjük:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Gyors bejelentkezés egyszeri kóddal";
+"OTPLoginView.InformationLabel" = "A folytatással lehetővé teszi, hogy kapcsolatba lépjünk Önnel, és beleegyezik, hogy szöveges üzeneteket küldjünk Önnek. A szolgáltató díjat számíthat fel.";
+"OTPLoginView.LoginButton" = "Bejelentkezés";
+"OTPLoginView.UsePasswordInsteadButton" = "Használja inkább jelszavát";
+"OTPLoginView.CheckCodeLabel" = "Ellenőrizze a kódot, majd próbálja újra.";
+"OTPLoginView.CodeSentLabel" = "Kód elküldve a(z) %1$@ számra.";
+"OTPLoginView.CodeExpiredLabel" = "Ez a kód lejárt. Kérjen új kódot.";
+"OTPLoginView.GetNewCodeButton" = "Új kód kérése";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Hiba történt";
+"OTPGenericErrorView.SubtitleLabel" = "Próbálja újra később, vagy jelentkezzen be a jelszavával.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Használja inkább jelszavát";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Új kódot küldtünk Önnek.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Gyors biztonsági ellenőrzés";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Elfelejtette a jelszavát?";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Elfelejtette az e-mail-címét?";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Jelszó visszaállítása";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Hiba történt";
+"ClientErrorResult.Message.Unknown" = "Próbálja újra később";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Üdvözöljük a PayPalon!";
+"ULLoginView.SubtitleLabel" = "Első lépésként jelentkezzen be vagy regisztráljon.";
+"ULLoginView.LoginButton" = "Bejelentkezés";
+"ULLoginView.SignUpButton" = "Regisztráció";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Módosítás";

@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Hyr";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Email-i, telefoni celular ose emri i përdoruesit";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Harrove email-in?";
+"PublicCredentialVerificationView.NextButton" = "Para";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Paguaj me PayPal";
+"OTPVerifyCredentialView.NextButton" = "Para";
+"OTPVerifyCredentialView.TryAgainLabel" = "Kontrollo adresën e email-it dhe provo përsëri.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Vendos një adresë email-i dhe provo përsëri.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Vendos email-in tënd për të filluar.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Ke harruar të dhënat e tua të identifikimit?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Hyr";
+"RememberedPasswordLoginView.ChangeButton" = "Ndrysho";
+"RememberedPasswordLoginView.PasswordTextInput" = "Fjalëkalimi";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Ke harruar fjalëkalimin?";
+"RememberedPasswordLoginView.LoginButton" = "Hyr";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Hyr në mënyrë të shpejtë me një kod njëpërdorimësh";
+"OTPGenerateCodeView.InformationLabel" = "Duke vazhduar, ti na lejon të të dërgojmë një mesazh të automatizuar me tekst për të konfirmuar numrin tënd të telefonit. Mund të zbatohen tarifat e operatorit celular.";
+"OTPGenerateCodeView.GetCodeButton" = "Merr një kod";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Përdor fjalëkalimin më mirë";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Email-i";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Numri i telefonit";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "U krye";
+"OTPPhoneSelectionView.SubtitleLabel" = "Kodin do ta dërgojmë në numrin:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Hyr në mënyrë të shpejtë me një kod njëpërdorimësh";
+"OTPLoginView.InformationLabel" = "Duke vazhduar, na lejon të të kontaktojmë dhe pranon të të dërgojmë mesazhe me tekst. Mund të zbatohen tarifat e operatorit celular.";
+"OTPLoginView.LoginButton" = "Hyr";
+"OTPLoginView.UsePasswordInsteadButton" = "Përdor fjalëkalimin më mirë";
+"OTPLoginView.CheckCodeLabel" = "Kontrollo kodin dhe provo përsëri.";
+"OTPLoginView.CodeSentLabel" = "Kodi u dërgua në numrin %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Kodi yt ka skaduar. Merr një kod të ri.";
+"OTPLoginView.GetNewCodeButton" = "Merr kodin e ri";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Ndodhi një gabim";
+"OTPGenericErrorView.SubtitleLabel" = "Provo përsëri më vonë ose hyr me fjalëkalim.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Përdor fjalëkalimin më mirë";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Të dërguam një kod të ri.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Një kontroll i shpejtë sigurie";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Harrova fjalëkalimin";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Harrova email-in";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Rivendos fjalëkalimin";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Ndodhi një gabim";
+"ClientErrorResult.Message.Unknown" = "Provo përsëri më vonë";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Mirë se erdhe në PayPal";
+"ULLoginView.SubtitleLabel" = "Hyr ose regjistrohu për të filluar.";
+"ULLoginView.LoginButton" = "Hyr";
+"ULLoginView.SignUpButton" = "Regjistrohu";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Ndrysho";

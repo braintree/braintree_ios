@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Prihlásiť sa";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Zadajte e-mailovú adresu, číslo mobilného telefónu alebo meno používateľa";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Zabudli ste e-mailovú adresu?";
+"PublicCredentialVerificationView.NextButton" = "Ďalej";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Zaplatiť cez PayPal";
+"OTPVerifyCredentialView.NextButton" = "Ďalej";
+"OTPVerifyCredentialView.TryAgainLabel" = "Skontrolujte svoju e-mailovú adresu a skúste to znova.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Zadajte e-mailovú adresu a skúste to znova.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Začnite zadaním svojej e-mailovej adresy.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Zabudli ste svoje prihlasovacie údaje?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Prihlásiť sa";
+"RememberedPasswordLoginView.ChangeButton" = "Zmeniť";
+"RememberedPasswordLoginView.PasswordTextInput" = "Heslo";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Zabudli ste heslo?";
+"RememberedPasswordLoginView.LoginButton" = "Prihlásiť sa";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Rýchlo sa prihlásiť pomocou jednorazového kódu";
+"OTPGenerateCodeView.InformationLabel" = "Pokračovaním nám dávate povolanie poslať vám automatickú SMS správu, ktorou potvrdíme vaše telefónne číslo. Môžu sa účtovať poplatky operátora.";
+"OTPGenerateCodeView.GetCodeButton" = "Získať kód";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Použiť radšej heslo";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-mail";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefónne číslo";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Hotovo";
+"OTPPhoneSelectionView.SubtitleLabel" = "Kód vám pošleme na číslo:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Rýchlo sa prihlásiť pomocou jednorazového kódu";
+"OTPLoginView.InformationLabel" = "Pokračovaním nám dávate povolenie kontaktovať vás a vyjadrujete súhlas s prijímaním textových správ. Môžu sa účtovať poplatky operátora.";
+"OTPLoginView.LoginButton" = "Prihlásiť sa";
+"OTPLoginView.UsePasswordInsteadButton" = "Použiť radšej heslo";
+"OTPLoginView.CheckCodeLabel" = "Kód skontrolujte a skúste to znova.";
+"OTPLoginView.CodeSentLabel" = "Kód bol odoslaný na telefónne číslo %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Platnosť vášho kódu sa skončila. Získajte nový kód.";
+"OTPLoginView.GetNewCodeButton" = "Získať nový kód";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Zrejme došlo k chybe.";
+"OTPGenericErrorView.SubtitleLabel" = "Skúste to znova neskôr alebo sa prihláste pomocou hesla.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Použiť radšej heslo";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Poslali sme vám nový kód.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Rýchla bezpečnostná kontrola";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Zabudnuté heslo";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Zabudnutá e-mailová adresa";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Obnoviť heslo";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Zrejme došlo k chybe.";
+"ClientErrorResult.Message.Unknown" = "Skúste to znova neskôr.";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Vitajte v službe PayPal";
+"ULLoginView.SubtitleLabel" = "Najskôr sa zaregistrujte alebo prihláste.";
+"ULLoginView.LoginButton" = "Prihlásiť sa";
+"ULLoginView.SignUpButton" = "Zaregistrovať sa";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Zmeniť";

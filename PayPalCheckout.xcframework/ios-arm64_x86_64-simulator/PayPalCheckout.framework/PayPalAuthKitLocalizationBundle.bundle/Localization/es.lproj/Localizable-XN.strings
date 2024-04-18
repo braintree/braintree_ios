@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Iniciar sesión";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Correo electrónico, celular o nombre de usuario";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "¿Ha olvidado su correo electrónico?";
+"PublicCredentialVerificationView.NextButton" = "Siguiente";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Pago con PayPal";
+"OTPVerifyCredentialView.NextButton" = "Siguiente";
+"OTPVerifyCredentialView.TryAgainLabel" = "Verifique su dirección de correo electrónico e inténtelo de nuevo.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Ingrese una dirección de correo electrónico e inténtelo de nuevo.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Para empezar, ingrese su correo electrónico.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "¿Ha olvidado su información de inicio de sesión?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Iniciar sesión";
+"RememberedPasswordLoginView.ChangeButton" = "Modificar";
+"RememberedPasswordLoginView.PasswordTextInput" = "Contraseña";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "¿Ha olvidado su contraseña?";
+"RememberedPasswordLoginView.LoginButton" = "Iniciar sesión";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Iniciar sesión rápidamente con un código de un solo uso";
+"OTPGenerateCodeView.InformationLabel" = "Al continuar, nos permite enviarle un mensaje de texto automático para confirmar su teléfono. Sujeto al cargo de tarifas de su operador de telefonía.";
+"OTPGenerateCodeView.GetCodeButton" = "Obtener código";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Intente con la contraseña";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Dirección de correo electrónico";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Número de teléfono";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Listo";
+"OTPPhoneSelectionView.SubtitleLabel" = "Enviaremos un código al:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Iniciar sesión rápidamente con un código de un solo uso";
+"OTPLoginView.InformationLabel" = "Al continuar, nos permite ponernos en contacto con usted y acepta recibir mensajes de texto. Sujeto a comisiones por parte de su operador de telefonía.";
+"OTPLoginView.LoginButton" = "Iniciar sesión";
+"OTPLoginView.UsePasswordInsteadButton" = "Intente con la contraseña";
+"OTPLoginView.CheckCodeLabel" = "Revise el código e inténtelo de nuevo.";
+"OTPLoginView.CodeSentLabel" = "Código enviado al %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Su código ha vencido. Obtenga un código nuevo.";
+"OTPLoginView.GetNewCodeButton" = "Obtener un nuevo código";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Se ha producido un error";
+"OTPGenericErrorView.SubtitleLabel" = "Puede intentarlo de nuevo más tarde o iniciar sesión con su contraseña.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Intente con la contraseña";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Le hemos enviado un código nuevo.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Confirme su dispositivo";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Olvidé mi contraseña";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Correo electrónico olvidado";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Restablecer contraseña";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Se ha producido un error";
+"ClientErrorResult.Message.Unknown" = "Inténtelo de nuevo más tarde";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Le damos la bienvenida a PayPal";
+"ULLoginView.SubtitleLabel" = "Iniciar sesión o abrir cuenta para comenzar.";
+"ULLoginView.LoginButton" = "Iniciar sesión";
+"ULLoginView.SignUpButton" = "Abrir cuenta";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Modificar";
