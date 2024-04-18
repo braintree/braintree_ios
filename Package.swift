@@ -98,7 +98,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PayPalCheckout",
-            path: path: "Frameworks/XCFrameworks/PayPalCheckout.xcframework"
+            path: "Frameworks/XCFrameworks/PayPalCheckout.xcframework"
         ),
         .target(
             name: "BraintreeSEPADirectDebit",
