@@ -4,7 +4,7 @@
 * Add BraintreeShopperInsights module (BETA)
   * Add PrivacyInfo.xcprivacy file
 * BraintreePayPal
-  * Add `BTPayPalRequest.userAuthenticationEmail` optional property
+  * Add `BTPayPalCheckoutRequest.userAuthenticationEmail` optional property
   
 ## 5.25.0 (2024-04-10)
 * Require Xcode 15.0+ and Swift 5.9+ (per [Apple App Store requirements](https://developer.apple.com/news/upcoming-requirements/?id=04292024a)) 
