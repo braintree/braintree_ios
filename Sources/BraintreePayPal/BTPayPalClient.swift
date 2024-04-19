@@ -150,6 +150,11 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.handleReturnStarted,
+            correlationID: clientMetadataID,
+            payPalContextID: payPalContextID
+        )
         guard let url, isValidURLAction(url: url) else {
             notifyFailure(with: BTPayPalError.invalidURLAction, completion: completion)
             return
@@ -313,7 +318,6 @@ import BraintreeDataCollector
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled, payPalContextID: payPalContextID)
             notifyCancel(completion: completion)
             return
         }
@@ -323,7 +327,7 @@ import BraintreeDataCollector
         guard let query = approvalURL.query else { return "" }
         let queryDictionary = parse(queryString: query)
         
-        return queryDictionary["token"] ?? queryDictionary["ba_token"] ?? ""
+        return queryDictionary["ba_token"] ?? queryDictionary["token"] ?? ""
     }
     
     private func parse(queryString query: String) -> [String: String] {
