@@ -48,8 +48,8 @@ import BraintreeDataCollector
 
     // MARK: - Private Properties
 
-    /// URL Scheme for PayPal In-App Checkout
-    private let payPalInAppScheme: String = "paypal-in-app-checkout://"
+    /// URL Scheme for PayPal App Switch Checkout
+    private let payPalAppSwitchScheme: String = "paypal-app-switch-checkout://"
 
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
     /// Will only be `true` if the user proceed through the `UIAlertController`
@@ -351,7 +351,7 @@ import BraintreeDataCollector
     }
 
     private func isPayPalAppInstalled() -> Bool {
-        guard let paypalURL = URL(string: payPalInAppScheme) else {
+        guard let paypalURL = URL(string: payPalAppSwitchScheme) else {
             return false
         }
         return application.canOpenURL(paypalURL)
