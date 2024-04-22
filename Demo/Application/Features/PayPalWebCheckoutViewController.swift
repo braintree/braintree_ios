@@ -64,9 +64,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
         request.lineItems = [lineItem]
         
-        if payLaterToggle.isOn {
-            request.offerPayLater = true
-        }
+        request.offerPayLater = payLaterToggle.isOn
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
@@ -107,7 +105,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
         let titleLabel = UILabel()
         titleLabel.text = label
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .title3)
+        titleLabel.font = .preferredFont(forTextStyle: .title3)
         
         let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
         buttonsStackView.axis = .vertical
