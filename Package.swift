@@ -78,7 +78,9 @@ let package = Package(
         .target(
             name: "BraintreeDataCollector",
             dependencies: ["BraintreeCore", "PPRiskMagnes"],
-            resources: [.copy("PrivacyInfo.xcprivacy")]
+            resources: [.copy("PrivacyInfo.xcprivacy"),
+                        .copy("Sources/Frameworks/XCFrameworks/PrivacyInfo.xcprivacy")
+            ]
         ),
         .target(
             name: "BraintreeLocalPayment",
