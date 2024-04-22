@@ -1,7 +1,7 @@
 import Foundation
 
 /// Buyer data required to use the Shopper Insights feature.
-/// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct BTShopperInsightsRequest {
     
     // MARK: - Internal Properties
@@ -15,7 +15,7 @@ public struct BTShopperInsightsRequest {
     /// - Parameters:
     ///   - email: The buyer's email address.
     ///   - phone: The buyer's phone number details.
-    /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+    /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
     public init(email: String, phone: Phone) {
         self.email = email
         self.phone = phone
@@ -24,7 +24,7 @@ public struct BTShopperInsightsRequest {
     /// Initialize a `BTShopperInsightsRequest`
     /// - Parameters:
     ///   - email: The buyer's email address.
-    /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+    /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
     public init(email: String) {
         self.email = email
     }
@@ -32,14 +32,14 @@ public struct BTShopperInsightsRequest {
     /// Initialize a `BTShopperInsightsRequest`
     /// - Parameters:
     ///   - phone: The buyer's phone number details.
-    /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+    /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
     public init(phone: Phone) {
         self.phone = phone
     }
 }
 
 /// Buyer's phone number details for use with the Shopper Insights feature.
-/// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct Phone: Encodable {
     
     private let countryCode: String
@@ -54,7 +54,7 @@ public struct Phone: Encodable {
     /// - Parameters:
     ///   - countryCode: The buyer's country code prefix to the national telephone number. An identifier for a specific country. Must not contain special characters.
     ///   - nationalNumber: The buyer's national phone number. Must not contain special characters.
-    /// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+    /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
     public init(countryCode: String, nationalNumber: String) {
         self.countryCode = countryCode
         self.nationalNumber = nationalNumber

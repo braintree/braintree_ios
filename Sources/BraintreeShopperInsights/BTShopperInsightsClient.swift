@@ -20,7 +20,7 @@ public class BTShopperInsightsClient {
     
     /// Creates a `BTShopperInsightsClient`
     /// - Parameter apiClient: A `BTAPIClient` instance.
-    /// - Note: This features only works with a client token.
+    /// - Warning: This features only works with a client token.
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
