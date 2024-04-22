@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Prisijungti";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Įveskite el. pašto adresą, mobiliojo telefono numerį arba naudotojo vardą";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Pamiršote el. pašto adresą?";
+"PublicCredentialVerificationView.NextButton" = "Toliau";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Mokėti per „PayPal“";
+"OTPVerifyCredentialView.NextButton" = "Toliau";
+"OTPVerifyCredentialView.TryAgainLabel" = "Patikrinkite el. pašto adresą ir bandykite dar kartą.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Įveskite el. pašto adresą ir bandykite dar kartą.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Kad pradėtumėte, įveskite savo el. pašto adresą.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Pamiršote savo prisijungimo informaciją?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Prisijungti";
+"RememberedPasswordLoginView.ChangeButton" = "Keisti";
+"RememberedPasswordLoginView.PasswordTextInput" = "Slaptažodis";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Pamiršote slaptažodį?";
+"RememberedPasswordLoginView.LoginButton" = "Prisijungti";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Greitas prisijungimas naudojant vienkartinį kodą";
+"OTPGenerateCodeView.InformationLabel" = "Tęsdami leidžiate mums atsiųsti automatizuotą tekstinę žinutę, kad patvirtintume jūsų telefono numerį. Gali būti taikomi operatoriaus įkainiai.";
+"OTPGenerateCodeView.GetCodeButton" = "Gauti kodą";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Arba naudokite slaptažodį";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "El. paštas";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefono numeris";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Atlikta";
+"OTPPhoneSelectionView.SubtitleLabel" = "Kodą išsiųsime gavėjui:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Greitas prisijungimas naudojant vienkartinį kodą";
+"OTPLoginView.InformationLabel" = "Tęsdami leidžiate su jumis susisiekti ir sutinkate gauti tekstines žinutes. Gali būti taikomi paslaugų teikėjo mokesčiai.";
+"OTPLoginView.LoginButton" = "Prisijungti";
+"OTPLoginView.UsePasswordInsteadButton" = "Arba naudokite slaptažodį";
+"OTPLoginView.CheckCodeLabel" = "Patikrinkite kodą ir bandykite dar kartą.";
+"OTPLoginView.CodeSentLabel" = "Kodas išsiųstas numeriu %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Jūsų kodo galiojimas baigėsi. Gaukite naują kodą.";
+"OTPLoginView.GetNewCodeButton" = "Gaukite naują kodą";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Kažkas nepavyko";
+"OTPGenericErrorView.SubtitleLabel" = "Bandykite dar kartą vėliau arba prisijunkite naudodami slaptažodį.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Arba naudokite slaptažodį";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Išsiuntėme jums naują kodą.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Greita saugumo patikra";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Pamiršote slaptažodį";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Pamiršote el. pašto adresą";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Nustatyti slaptažodį iš naujo";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Kažkas nepavyko";
+"ClientErrorResult.Message.Unknown" = "Pabandykite vėliau";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Sveiki prisijungę prie „PayPal“";
+"ULLoginView.SubtitleLabel" = "Norėdami pradėti, prisijunkite arba užsiregistruokite.";
+"ULLoginView.LoginButton" = "Prisijungti";
+"ULLoginView.SignUpButton" = "Užsiregistruoti";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Keisti";

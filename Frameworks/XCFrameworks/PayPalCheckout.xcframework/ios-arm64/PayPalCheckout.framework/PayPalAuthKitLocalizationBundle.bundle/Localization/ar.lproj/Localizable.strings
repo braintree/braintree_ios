@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "تسجيل الدخول";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "أدخل البريد الإلكتروني أو رقم المحمول أو اسم المستخدم";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "هل نسيت البريد الإلكتروني؟";
+"PublicCredentialVerificationView.NextButton" = "التالي";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "الدفع عبر PayPal";
+"OTPVerifyCredentialView.NextButton" = "التالي";
+"OTPVerifyCredentialView.TryAgainLabel" = "راجع عنوان بريدك الإلكتروني وحاول مجدداً.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "أدخل عنوان بريد إلكتروني وحاول مجدداً.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "أدرج عنوان بريدك الإلكتروني للبدء.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "هل نسيت معلومات تسجيل دخولك؟";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "تسجيل الدخول";
+"RememberedPasswordLoginView.ChangeButton" = "تغيير";
+"RememberedPasswordLoginView.PasswordTextInput" = "كلمة المرور";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "هل نسيت كلمة المرور؟";
+"RememberedPasswordLoginView.LoginButton" = "تسجيل الدخول";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "تسجيل الدخول سريعاً برمز لمرة واحدة";
+"OTPGenerateCodeView.InformationLabel" = "عندما تختار المتابعة فأنت تسمح لنا بإرسال رسالة نصية تلقائية إليك لتصديق هاتفك. قد تخضع لرسوم شركة المحمول.";
+"OTPGenerateCodeView.GetCodeButton" = "طلب رمز";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "استخدم كلمة المرور بدلاً من ذلك";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "البريد الإلكتروني";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "رقم الهاتف";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "تم";
+"OTPPhoneSelectionView.SubtitleLabel" = "سنرسل الرمز إلى:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "تسجيل الدخول سريعاً برمز لمرة واحدة";
+"OTPLoginView.InformationLabel" = "عندما تختار المتابعة فأنت تسمح لنا بالاتصال بك وتوافق على تلقي الرسائل النصية. قد تخضع لرسوم شركة المحمول.";
+"OTPLoginView.LoginButton" = "تسجيل الدخول";
+"OTPLoginView.UsePasswordInsteadButton" = "استخدم كلمة المرور بدلاً من ذلك";
+"OTPLoginView.CheckCodeLabel" = "تحقّق من الرمز الخاص بك وحاوِل مجدداً.";
+"OTPLoginView.CodeSentLabel" = "أُرسل الرمز إلى %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "انتهت صلاحية الرمز الخاص بك. طلب رمز جديد.";
+"OTPLoginView.GetNewCodeButton" = "طلب رمز جديد";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "حدث خطأ ما";
+"OTPGenericErrorView.SubtitleLabel" = "يمكنك المحاولة مجدداً أو تسجيل الدخول بكلمة مرورك.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "استخدم كلمة المرور بدلاً من ذلك";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "أرسلنا إليك رمزاً جديداً.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "فحص حماية سريع";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "نسيت كلمة المرور";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "هل نسيت البريد الإلكتروني";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "إعادة تعيين كلمة المرور";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "حدث خطأ ما";
+"ClientErrorResult.Message.Unknown" = "يُرجى إعادة المحاولة لاحقاً";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "مرحباً في PayPal";
+"ULLoginView.SubtitleLabel" = "سجّل الدخول أو سجل الاشتراك للبدء.";
+"ULLoginView.LoginButton" = "تسجيل الدخول";
+"ULLoginView.SignUpButton" = "تسجيل الاشتراك";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "تغيير";

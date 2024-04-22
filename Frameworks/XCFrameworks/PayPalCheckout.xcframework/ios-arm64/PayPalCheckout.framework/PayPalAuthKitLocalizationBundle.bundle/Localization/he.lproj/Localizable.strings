@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "היכנס לחשבון";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "כתובת אימייל, טלפון נייד או שם משתמש";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "שכחת את כתובת האימייל שלך?";
+"PublicCredentialVerificationView.NextButton" = "הבא";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "שלם באמצעות PayPal‏";
+"OTPVerifyCredentialView.NextButton" = "הבא";
+"OTPVerifyCredentialView.TryAgainLabel" = "עליך לבדוק את כתובת האימייל ולנסות שוב.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "עליך להזין כתובת אימייל ולנסות שוב.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "כדי להתחיל, עליך להזין את כתובת האימייל שלך.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "שכחת את פרטי הכניסה שלך?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "היכנס לחשבון";
+"RememberedPasswordLoginView.ChangeButton" = "שינוי";
+"RememberedPasswordLoginView.PasswordTextInput" = "סיסמה";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "שכחת את הסיסמה?";
+"RememberedPasswordLoginView.LoginButton" = "כניסה לחשבון";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "כניסה לחשבון באמצעות קוד חד-פעמי";
+"OTPGenerateCodeView.InformationLabel" = "המשך מהווה אישור לקבלת הודעת טקסט אוטומטית מאיתנו שמאשרת שמספר הטלפון אכן שייך לך. ייתכן שיחולו חיובי ספק.";
+"OTPGenerateCodeView.GetCodeButton" = "קבל קוד מבצע";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "להשתמש בסיסמה במקום זאת";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "אימייל";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "מספר טלפון";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "סיום";
+"OTPPhoneSelectionView.SubtitleLabel" = "אנו נשלח את הקוד אל:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "כניסה לחשבון באמצעות קוד חד-פעמי";
+"OTPLoginView.InformationLabel" = "המשך מהווה מתן אישור ל-PayPal ליצור איתך קשר והסכמה לקבל הודעות טקסט מאיתנו. ייתכן שיחולו חיובי ספק.";
+"OTPLoginView.LoginButton" = "כניסה לחשבון";
+"OTPLoginView.UsePasswordInsteadButton" = "להשתמש בסיסמה במקום זאת";
+"OTPLoginView.CheckCodeLabel" = "עליך לבדוק שהזנת נכון את הקוד ולנסות שוב.";
+"OTPLoginView.CodeSentLabel" = "הקוד נשלח אל %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "פג תוקף הקוד שלך. קבל קוד חדש.";
+"OTPLoginView.GetNewCodeButton" = "קבלת קוד חדש";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "משהו השתבש";
+"OTPGenericErrorView.SubtitleLabel" = "ניתן לנסות שוב מאוחר יותר, או להיכנס לחשבון באמצעות הסיסמה שלך.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "להשתמש בסיסמה במקום זאת";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "שלחנו אליך קוד חדש";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "בדיקת אבטחה זריזה";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "שכחתי את הסיסמה";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "שכחת את כתובת האימייל שלך?";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "איפוס סיסמה";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "משהו השתבש";
+"ClientErrorResult.Message.Unknown" = "יש לנסות שוב מאוחר יותר.";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "ברוך בואך אל PayPal";
+"ULLoginView.SubtitleLabel" = "כדי להתחיל, עליך להיכנס לחשבון או להירשם.";
+"ULLoginView.LoginButton" = "כניסה לחשבון";
+"ULLoginView.SignUpButton" = "הרשמה";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "שינוי";

@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "登入";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "輸入電郵地址、手機號碼或用戶名稱";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "忘記電郵地址？";
+"PublicCredentialVerificationView.NextButton" = "下一頁";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "使用 PayPal 付款";
+"OTPVerifyCredentialView.NextButton" = "下一頁";
+"OTPVerifyCredentialView.TryAgainLabel" = "請檢查電郵地址並重試。";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "輸入電郵地址並重試。";
+"OTPVerifyCredentialView.EnterEmailLabel" = "輸入電郵地址即可開始。";
+"OTPVerifyCredentialView.ForgotLoginButton" = "忘記你的登入資料？";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "登入";
+"RememberedPasswordLoginView.ChangeButton" = "更改";
+"RememberedPasswordLoginView.PasswordTextInput" = "密碼";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "忘記密碼？";
+"RememberedPasswordLoginView.LoginButton" = "登入";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "使用一次性代碼快速登入";
+"OTPGenerateCodeView.InformationLabel" = "繼續操作即代表你允許我們向你發送自動短訊，以確認你的電話號碼。電訊服務供應商可能收取費用。";
+"OTPGenerateCodeView.GetCodeButton" = "取得代碼";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "改為使用密碼";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "電郵地址";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "電話號碼";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "完成";
+"OTPPhoneSelectionView.SubtitleLabel" = "我們會發送代碼至：";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "使用一次性代碼快速登入";
+"OTPLoginView.InformationLabel" = "繼續操作即表示你允許我們聯絡你，並同意接收短訊。電訊服務供應商可能收取費用。";
+"OTPLoginView.LoginButton" = "登入";
+"OTPLoginView.UsePasswordInsteadButton" = "改為使用密碼";
+"OTPLoginView.CheckCodeLabel" = "請檢查你的代碼並再試一次。";
+"OTPLoginView.CodeSentLabel" = "驗証碼已發送到 %1$@。";
+"OTPLoginView.CodeExpiredLabel" = "你的代碼已到期。取得新代碼。";
+"OTPLoginView.GetNewCodeButton" = "獲取新代碼";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "系統發生問題";
+"OTPGenericErrorView.SubtitleLabel" = "你可以稍後再試或使用密碼登入。";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "改為使用密碼";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "我們已發送新代碼。";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "快速安全檢查";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "忘記密碼";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "忘記電郵地址";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "重設密碼";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "系統發生問題";
+"ClientErrorResult.Message.Unknown" = "請稍後再試";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "歡迎使用 PayPal";
+"ULLoginView.SubtitleLabel" = "登入或註冊以開始使用。";
+"ULLoginView.LoginButton" = "登入";
+"ULLoginView.SignUpButton" = "註冊";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "更改";

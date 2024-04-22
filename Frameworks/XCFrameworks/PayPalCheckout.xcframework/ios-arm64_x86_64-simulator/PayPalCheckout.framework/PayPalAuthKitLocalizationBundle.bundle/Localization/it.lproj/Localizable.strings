@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Accedi";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Immetti email, cellulare o nome utente";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Indirizzo email dimenticato?";
+"PublicCredentialVerificationView.NextButton" = "Avanti";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Paga con PayPal.";
+"OTPVerifyCredentialView.NextButton" = "Avanti";
+"OTPVerifyCredentialView.TryAgainLabel" = "Controlla l'indirizzo email e riprova.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Immetti un indirizzo email e riprova.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Immetti il tuo indirizzo email per cominciare.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Dati di accesso dimenticati?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Accedi";
+"RememberedPasswordLoginView.ChangeButton" = "Cambia";
+"RememberedPasswordLoginView.PasswordTextInput" = "Password";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Password dimenticata?";
+"RememberedPasswordLoginView.LoginButton" = "Accedi";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Accedi in un attimo con un codice usa e getta";
+"OTPGenerateCodeView.InformationLabel" = "Proseguendo, ci consenti di inviarti un SMS automatico per confermare il tuo numero di telefono. È possibile l'applicazione di tariffe da parte del tuo operatore.";
+"OTPGenerateCodeView.GetCodeButton" = "Richiedi codice";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Usa la password";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Indirizzo email";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Numero di cellulare";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Fine";
+"OTPPhoneSelectionView.SubtitleLabel" = "Invieremo un codice a:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Accedi in un attimo con un codice usa e getta";
+"OTPLoginView.InformationLabel" = "Proseguendo, ci consenti di contattarti e accetti di ricevere SMS. Potrebbero essere applicate tariffe dall’operatore.";
+"OTPLoginView.LoginButton" = "Accedi";
+"OTPLoginView.UsePasswordInsteadButton" = "Usa la password";
+"OTPLoginView.CheckCodeLabel" = "Controlla il codice e riprova";
+"OTPLoginView.CodeSentLabel" = "Codice inviato a %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Il codice è scaduto. Ottieni un nuovo codice.";
+"OTPLoginView.GetNewCodeButton" = "Richiedi un altro codice";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Si è verificato un errore";
+"OTPGenericErrorView.SubtitleLabel" = "Puoi riprovare più tardi oppure accedere con la password.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Usa la password";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Ti abbiamo inviato un nuovo codice.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Conferma il tuo dispositivo";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Password dimenticata";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Indirizzo email dimenticato";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Reimposta password";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Si è verificato un errore";
+"ClientErrorResult.Message.Unknown" = "Riprova più tardi.";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Ti diamo il benvenuto in PayPal";
+"ULLoginView.SubtitleLabel" = "Accedi o registrati per iniziare.";
+"ULLoginView.LoginButton" = "Accedi";
+"ULLoginView.SignUpButton" = "Registrati";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Modifica";

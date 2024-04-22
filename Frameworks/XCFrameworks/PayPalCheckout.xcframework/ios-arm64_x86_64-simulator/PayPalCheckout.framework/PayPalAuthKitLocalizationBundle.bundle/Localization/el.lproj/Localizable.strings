@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Σύνδεση";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Εισαγάγετε email, κινητό τηλέφωνο ή όνομα χρήστη";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Ξεχάσατε το email σας;";
+"PublicCredentialVerificationView.NextButton" = "Συνέχεια";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Πληρωμή μέσω PayPal";
+"OTPVerifyCredentialView.NextButton" = "Συνέχεια";
+"OTPVerifyCredentialView.TryAgainLabel" = "Ελέγξτε τη διεύθυνση email και δοκιμάστε ξανά.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Εισαγάγετε μια διεύθυνση email και δοκιμάστε ξανά.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Εισαγάγετε το email σας για να ξεκινήσετε.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Ξεχάσατε τα στοιχεία σύνδεσής σας;";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Σύνδεση";
+"RememberedPasswordLoginView.ChangeButton" = "Αλλαγή";
+"RememberedPasswordLoginView.PasswordTextInput" = "Κωδικός πρόσβασης";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Ξεχάσατε τον κωδικό πρόσβασης;";
+"RememberedPasswordLoginView.LoginButton" = "Σύνδεση";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Συνδεθείτε γρήγορα με κωδικό μίας χρήσης";
+"OTPGenerateCodeView.InformationLabel" = "Αν συνεχίσετε, μας επιτρέπετε να σας στείλουμε ένα αυτοματοποιημένο γραπτό μήνυμα για να επιβεβαιώσουμε το τηλέφωνό σας. Ενδέχεται να ισχύουν χρεώσεις από τον πάροχο υπηρεσιών κινητής τηλεφωνίας.";
+"OTPGenerateCodeView.GetCodeButton" = "Λήψη κωδικού";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Ή χρησιμοποιήστε κωδικό πρόσβασης";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Email";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Αριθμός τηλεφώνου";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Τέλος";
+"OTPPhoneSelectionView.SubtitleLabel" = "Θα στείλουμε έναν κωδικό στο:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Συνδεθείτε γρήγορα με κωδικό μίας χρήσης";
+"OTPLoginView.InformationLabel" = "Αν συνεχίσετε, μας επιτρέπετε να επικοινωνήσουμε μαζί σας και συμφωνείτε να λαμβάνετε γραπτά μηνύματα. Ενδέχεται να ισχύουν χρεώσεις από τον πάροχο υπηρεσιών κινητής τηλεφωνίας.";
+"OTPLoginView.LoginButton" = "Σύνδεση";
+"OTPLoginView.UsePasswordInsteadButton" = "Ή χρησιμοποιήστε κωδικό πρόσβασης";
+"OTPLoginView.CheckCodeLabel" = "Ελέγξτε τον κωδικό σας και δοκιμάστε ξανά.";
+"OTPLoginView.CodeSentLabel" = "Ο κωδικός εστάλη στο %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Ο κωδικός σας έχει λήξει. Λάβετε νέο κωδικό.";
+"OTPLoginView.GetNewCodeButton" = "Λήψη νέου κωδικού";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Προέκυψε ένα πρόβλημα";
+"OTPGenericErrorView.SubtitleLabel" = "Μπορείτε να δοκιμάσετε ξανά αργότερα ή να συνδεθείτε με τον κωδικό πρόσβασής σας.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Ή χρησιμοποιήστε κωδικό πρόσβασης";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Σας στείλαμε έναν νέο κωδικό.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Επιβεβαίωση συσκευής";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Ξέχασα τον κωδικό πρόσβασης";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Ξέχασα το email μου";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Επαναφορά κωδικού πρόσβασης";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Προέκυψε ένα πρόβλημα";
+"ClientErrorResult.Message.Unknown" = "Δοκιμάστε ξανά αργότερα";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Καλώς ορίσατε στην PayPal";
+"ULLoginView.SubtitleLabel" = "Συνδεθείτε ή εγγραφείτε για να ξεκινήσετε.";
+"ULLoginView.LoginButton" = "Σύνδεση";
+"ULLoginView.SignUpButton" = "Εγγραφή";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Αλλαγή";

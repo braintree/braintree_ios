@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Inloggen";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Voer je e-mailadres, mobiele nummer of gebruikersnaam in";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "E-mailadres vergeten?";
+"PublicCredentialVerificationView.NextButton" = "Volgende";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Betaal met PayPal";
+"OTPVerifyCredentialView.NextButton" = "Volgende";
+"OTPVerifyCredentialView.TryAgainLabel" = "Controleer je e-mailadres en probeer het opnieuw.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Voer een e-mailadres in en probeer het opnieuw.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Voer je e-mailadres in om aan de slag te gaan.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Inloggegevens vergeten?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Inloggen";
+"RememberedPasswordLoginView.ChangeButton" = "Wijzigen";
+"RememberedPasswordLoginView.PasswordTextInput" = "Wachtwoord";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Wachtwoord vergeten?";
+"RememberedPasswordLoginView.LoginButton" = "Inloggen";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Snel inloggen met een eenmalige code";
+"OTPGenerateCodeView.InformationLabel" = "Door verder te gaan geef je ons toestemming je een geautomatiseerd sms-bericht te sturen om je telefoonnummer te bevestigen. Je provider kan hiervoor kosten in rekening brengen.";
+"OTPGenerateCodeView.GetCodeButton" = "Vraag een code aan";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Wachtwoord gebruiken";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-mail";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefoonnummer";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Klaar";
+"OTPPhoneSelectionView.SubtitleLabel" = "We sturen een code naar:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Snel inloggen met een eenmalige code";
+"OTPLoginView.InformationLabel" = "Door verder te gaan geef je ons toestemming contact met je op te nemen en ga je akkoord met het ontvangen van sms'jes. Je provider kan kosten in rekening brengen.";
+"OTPLoginView.LoginButton" = "Inloggen";
+"OTPLoginView.UsePasswordInsteadButton" = "Wachtwoord gebruiken";
+"OTPLoginView.CheckCodeLabel" = "Controleer de code en probeer het opnieuw.";
+"OTPLoginView.CodeSentLabel" = "Code verzonden naar %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Je code is verlopen. Vraag een nieuwe code aan.";
+"OTPLoginView.GetNewCodeButton" = "Nieuwe code aanvragen";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Er ging iets fout";
+"OTPGenericErrorView.SubtitleLabel" = "Probeer het later opnieuw of log in met je wachtwoord.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Wachtwoord gebruiken";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "We hebben je een nieuwe code gestuurd.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Een snelle veiligheidscontrole";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Wachtwoord vergeten";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "E-mailadres vergeten";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Wachtwoord opnieuw instellen";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Er ging iets fout";
+"ClientErrorResult.Message.Unknown" = "Probeer het later opnieuw.";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Welkom bij PayPal";
+"ULLoginView.SubtitleLabel" = "Log in of meld je aan om aan de slag te gaan.";
+"ULLoginView.LoginButton" = "Inloggen";
+"ULLoginView.SignUpButton" = "Aanmelden";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Wijzigen";

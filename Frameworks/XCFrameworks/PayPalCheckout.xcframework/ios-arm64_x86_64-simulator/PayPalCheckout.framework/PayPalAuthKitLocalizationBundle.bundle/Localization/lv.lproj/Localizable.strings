@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Pieteikties";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Ievadiet e-pasta adresi, mobilo tālruni vai lietotājvārdu";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Vai esat aizmirsis e-pasta adresi?";
+"PublicCredentialVerificationView.NextButton" = "Tālāk";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Maksāt ar PayPal";
+"OTPVerifyCredentialView.NextButton" = "Tālāk";
+"OTPVerifyCredentialView.TryAgainLabel" = "Pārbaudiet e-pasta adresi un mēģiniet vēlreiz.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Ievadiet e-pasta adresi un mēģiniet vēlreiz.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Ievadiet savu e-pasta adresi, lai sāktu darbu.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Aizmirsāt pieteikšanās informāciju?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Pieteikties";
+"RememberedPasswordLoginView.ChangeButton" = "Mainīt";
+"RememberedPasswordLoginView.PasswordTextInput" = "Parole";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Vai aizmirsāt paroli?";
+"RememberedPasswordLoginView.LoginButton" = "Pieteikties";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Ātra pieteikšanās ar vienreizējo kodu";
+"OTPGenerateCodeView.InformationLabel" = "Turpinot jūs atļaujat mums nosūtīt jums automatizētu īsziņu, lai apstiprinātu jūsu tālruņa numuru. Telesakaru operators var piemērot maksu.";
+"OTPGenerateCodeView.GetCodeButton" = "Saņemt kodu";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Tā vietā izmantojiet paroli";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-pasta adrese";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Tālruņa numurs";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Izpildīts";
+"OTPPhoneSelectionView.SubtitleLabel" = "Mēs nosūtīsim kodu uz:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Ātra pieteikšanās ar vienreizējo kodu";
+"OTPLoginView.InformationLabel" = "Turpinot jūs ļaujat mums sazināties ar jums un piekrītat saņemt īsziņas. Operators var iekasēt maksu.";
+"OTPLoginView.LoginButton" = "Pieteikties";
+"OTPLoginView.UsePasswordInsteadButton" = "Tā vietā izmantojiet paroli";
+"OTPLoginView.CheckCodeLabel" = "Pārbaudiet kodu un mēģiniet vēlreiz.";
+"OTPLoginView.CodeSentLabel" = "Kods nosūtīts uz %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Šis kods vairs nav derīgs. Pieprasiet jaunu kodu.";
+"OTPLoginView.GetNewCodeButton" = "Pieprasīt jaunu kodu";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Notika kāda kļūme";
+"OTPGenericErrorView.SubtitleLabel" = "Vēlāk varat mēģināt vēlreiz vai pieteikties ar paroli.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Tā vietā izmantojiet paroli";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Mēs nosūtījām jums jaunu kodu.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Ātra drošības pārbaude";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Aizmirsu paroli";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Aizmirsāt e-pasta adresi";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Atiestatīt paroli";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Notika kāda kļūme";
+"ClientErrorResult.Message.Unknown" = "Lūdzu, mēģiniet vēlreiz vēlāk";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Laipni lūdzam pakalpojumā PayPal!";
+"ULLoginView.SubtitleLabel" = "Piesakieties vai reģistrējieties, lai sāktu darbu.";
+"ULLoginView.LoginButton" = "Pieteikties";
+"ULLoginView.SignUpButton" = "Pieteikties";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Mainīt";

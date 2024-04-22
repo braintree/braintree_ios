@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Se connecter";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Adresse email, n° de mobile ou nom d'utilisateur";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Adresse email oubliée ?";
+"PublicCredentialVerificationView.NextButton" = "Suivant";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Payez avec PayPal";
+"OTPVerifyCredentialView.NextButton" = "Suivant";
+"OTPVerifyCredentialView.TryAgainLabel" = "Vérifiez votre adresse email et réessayez.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Saisissez une adresse email et réessayez.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Saisissez votre adresse email pour commencer.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Identifiants de connexion oubliés ?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Se connecter";
+"RememberedPasswordLoginView.ChangeButton" = "Modifier";
+"RememberedPasswordLoginView.PasswordTextInput" = "Mot de passe";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Mot de passe oublié ?";
+"RememberedPasswordLoginView.LoginButton" = "Connectez-vous";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Se connecter rapidement avec un code à usage unique";
+"OTPGenerateCodeView.InformationLabel" = "En continuant, vous nous autorisez à vous envoyer un SMS automatisé pour confirmer votre numéro de téléphone. Des frais d'opérateur peuvent s'appliquer.";
+"OTPGenerateCodeView.GetCodeButton" = "Obtenir un code";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Utiliser le mot de passe";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Email";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Numéro de téléphone";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "OK";
+"OTPPhoneSelectionView.SubtitleLabel" = "Nous enverrons un code au :";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Se connecter rapidement avec un code à usage unique";
+"OTPLoginView.InformationLabel" = "En continuant, vous nous autorisez à vous contacter et acceptez de recevoir des SMS. Des frais peuvent être appliqués par l'opérateur.";
+"OTPLoginView.LoginButton" = "Connectez-vous";
+"OTPLoginView.UsePasswordInsteadButton" = "Utiliser le mot de passe";
+"OTPLoginView.CheckCodeLabel" = "Vérifiez votre code et réessayez.";
+"OTPLoginView.CodeSentLabel" = "Code envoyé au %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Votre code a expiré. Obtenir un nouveau code.";
+"OTPLoginView.GetNewCodeButton" = "Obtenir un nouveau code";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Une erreur s'est produite";
+"OTPGenericErrorView.SubtitleLabel" = "Vous pouvez réessayer plus tard ou vous connecter avec votre mot de passe.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Utiliser le mot de passe";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Nous vous avons envoyé un nouveau code.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Contrôle de sécurité rapide";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Mot de passe oublié";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Adresse email oubliée";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Réinitialiser le mot de passe";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Une erreur s'est produite";
+"ClientErrorResult.Message.Unknown" = "Réessayez plus tard";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Bienvenue chez PayPal";
+"ULLoginView.SubtitleLabel" = "Connectez-vous ou ouvrez un compte pour commencer.";
+"ULLoginView.LoginButton" = "Connectez-vous";
+"ULLoginView.SignUpButton" = "Ouvrir un compte";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Modifier";

@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "เข้าสู่ระบบ";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "ป้อนอีเมล โทรศัพท์มือถือ หรือชื่อผู้ใช้";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "ลืมอีเมลใช่หรือไม่";
+"PublicCredentialVerificationView.NextButton" = "ถัดไป";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "ชำระเงินด้วย PayPal";
+"OTPVerifyCredentialView.NextButton" = "ถัดไป";
+"OTPVerifyCredentialView.TryAgainLabel" = "ตรวจสอบที่อยู่อีเมลแล้วลองอีกครั้ง";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "ป้อนอีเมลแล้วลองอีกครั้ง";
+"OTPVerifyCredentialView.EnterEmailLabel" = "ป้อนอีเมลของคุณเพื่อเริ่มใช้งาน";
+"OTPVerifyCredentialView.ForgotLoginButton" = "ลืมข้อมูลการเข้าสู่ระบบใช่ไหม";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "เข้าสู่ระบบ";
+"RememberedPasswordLoginView.ChangeButton" = "เปลี่ยน";
+"RememberedPasswordLoginView.PasswordTextInput" = "รหัสผ่าน";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "ลืมรหัสผ่านใช่ไหม";
+"RememberedPasswordLoginView.LoginButton" = "เข้าสู่ระบบ";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "เข้าสู่ระบบอย่างรวดเร็วด้วยรหัสแบบใช้ครั้งเดียว";
+"OTPGenerateCodeView.InformationLabel" = "เมื่อดําเนินการต่อ แสดงว่าคุณอนุญาตให้เราส่งข้อความอัตโนมัติถึงคุณเพื่อยืนยันโทรศัพท์ของคุณ ทั้งนี้อาจมีค่าธรรมเนียมจากเครือข่าย";
+"OTPGenerateCodeView.GetCodeButton" = "รับรหัส";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "ใช้รหัสผ่านแทน";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "อีเมล";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "หมายเลขโทรศัพท์";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "เสร็จแล้ว";
+"OTPPhoneSelectionView.SubtitleLabel" = "เราจะส่งรหัสไปที่";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "เข้าสู่ระบบอย่างรวดเร็วด้วยรหัสแบบใช้ครั้งเดียว";
+"OTPLoginView.InformationLabel" = "การดําเนินการต่อจะแสดงว่าคุณอนุญาตให้เราติดต่อคุณ และตกลงที่จะรับข้อความ อาจมีค่าธรรมเนียมเรียกเก็บจากผู้ให้บริการ";
+"OTPLoginView.LoginButton" = "เข้าสู่ระบบ";
+"OTPLoginView.UsePasswordInsteadButton" = "ใช้รหัสผ่านแทน";
+"OTPLoginView.CheckCodeLabel" = "ตรวจสอบรหัสแล้วป้อนอีกครั้ง";
+"OTPLoginView.CodeSentLabel" = "ส่งรหัสไปที่ %1$@";
+"OTPLoginView.CodeExpiredLabel" = "รหัสของคุณหมดอายุแล้ว โปรดขอรหัสใหม่";
+"OTPLoginView.GetNewCodeButton" = "ขอรหัสใหม่";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "เกิดข้อผิดพลาดบางประการ";
+"OTPGenericErrorView.SubtitleLabel" = "คุณสามารถลองอีกครั้งได้ในภายหลัง หรือเข้าสู่ระบบด้วยรหัสผ่านของคุณ";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "ใช้รหัสผ่านแทน";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "เราส่งรหัสใหม่ให้คุณแล้ว";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "ตรวจสอบความปลอดภัยอย่างรวดเร็ว";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "ลืมรหัสผ่าน";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "ลืมอีเมล";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "รีเซ็ตรหัสผ่าน";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "เกิดข้อผิดพลาดบางประการ";
+"ClientErrorResult.Message.Unknown" = "โปรดลองอีกครั้งในภายหลัง";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "ยินดีต้อนรับสู่ PayPal ค่ะ";
+"ULLoginView.SubtitleLabel" = "เข้าสู่ระบบหรือสมัครสมาชิกเพื่อเริ่มใช้งาน";
+"ULLoginView.LoginButton" = "เข้าสู่ระบบ";
+"ULLoginView.SignUpButton" = "สมัคร";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "เปลี่ยน";

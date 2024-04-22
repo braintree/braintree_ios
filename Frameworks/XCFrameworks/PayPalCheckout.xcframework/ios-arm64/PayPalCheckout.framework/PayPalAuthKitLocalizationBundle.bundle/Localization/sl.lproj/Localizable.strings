@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Prijava";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Vnesite e-naslov, mobilni telefon ali uporabniško ime";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Ste pozabili e-poštni naslov?";
+"PublicCredentialVerificationView.NextButton" = "Naprej";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Plačilo s PayPalom";
+"OTPVerifyCredentialView.NextButton" = "Naprej";
+"OTPVerifyCredentialView.TryAgainLabel" = "Preverite svoj e-naslov in poskusite znova.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Vnesite e-naslov in poskusite znova.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Vnesite e-naslov, da začnete.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Ste pozabili podatke za prijavo?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Prijava";
+"RememberedPasswordLoginView.ChangeButton" = "Spremeni";
+"RememberedPasswordLoginView.PasswordTextInput" = "Geslo";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Pozabljeno geslo?";
+"RememberedPasswordLoginView.LoginButton" = "Prijavi se";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Hitro se prijavite z enkratno kodo";
+"OTPGenerateCodeView.InformationLabel" = "Z nadaljevanjem nam dovolite, da vam pošljemo samodejno besedilno sporočilo za potrditev vašega telefona. Obračunajo se lahko provizije.";
+"OTPGenerateCodeView.GetCodeButton" = "Pridobi kodo";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Namesto tega uporabi geslo";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-pošta";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Telefonska številka";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Dokončaj";
+"OTPPhoneSelectionView.SubtitleLabel" = "Kodo bomo poslali na:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Hitro se prijavite z enkratno kodo";
+"OTPLoginView.InformationLabel" = "Z nadaljevanjem nam dovoljujete, da stopimo v stik z vami in se strinjate s prejemanjem besedilnih sporočil. Lahko se zaračunajo pristojbine prevoznika.";
+"OTPLoginView.LoginButton" = "Prijavi se";
+"OTPLoginView.UsePasswordInsteadButton" = "Namesto tega uporabi geslo";
+"OTPLoginView.CheckCodeLabel" = "Preverite svojo kodo in poskusite znova.";
+"OTPLoginView.CodeSentLabel" = "Koda je bila poslana na %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Vaša koda je potekla. Pridobite novo kodo";
+"OTPLoginView.GetNewCodeButton" = "Pridobi novo kodo";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Prišlo je do napake";
+"OTPGenericErrorView.SubtitleLabel" = "Lahko poskusite znova pozneje ali se prijavite s svojim geslom.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Namesto tega uporabi geslo";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Poslali smo vam novo kodo.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Hiter varnostni pregled";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Pozabljeno geslo";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Pozabljen e-naslov";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Ponastavitev gesla";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Prišlo je do napake";
+"ClientErrorResult.Message.Unknown" = "Prosimo, poskusite znova kasneje";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Dobrodošli na PayPal.";
+"ULLoginView.SubtitleLabel" = "Če želite začeti, se prijavite ali registrirajte.";
+"ULLoginView.LoginButton" = "Prijavi se";
+"ULLoginView.SignUpButton" = "Prijava";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Sprememba";

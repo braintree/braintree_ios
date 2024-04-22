@@ -1,0 +1,67 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Pagá con PayPal";
+"OTPVerifyCredentialView.NextButton" = "Siguiente";
+"OTPVerifyCredentialView.TryAgainLabel" = "Verificá la dirección de correo electrónico e intentalo de nuevo.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Ingresá una dirección de correo electrónico e intentalo de nuevo.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Ingresá tu correo electrónico para comenzar.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "¿Olvidaste la información de inicio de sesión?";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Iniciá sesión rápidamente con un código de un solo uso";
+"OTPGenerateCodeView.InformationLabel" = "Al continuar, nos permitís enviarte un mensaje de texto automatizado para confirmar tu número de teléfono. Es posible que el operador aplique comisiones.";
+"OTPGenerateCodeView.GetCodeButton" = "Obtener código";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Ingresar con contraseña";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "Correo electrónico";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Número de teléfono";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Listo";
+"OTPPhoneSelectionView.SubtitleLabel" = "Te enviaremos un código a:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Iniciá sesión rápidamente con un código de un solo uso";
+"OTPLoginView.InformationLabel" = "Al continuar, nos permitís comunicarnos con vos y aceptás recibir mensajes de texto. Es posible que el operador aplique sus propias comisiones.";
+"OTPLoginView.LoginButton" = "Iniciar sesión";
+"OTPLoginView.UsePasswordInsteadButton" = "Ingresar con contraseña";
+"OTPLoginView.CheckCodeLabel" = "Comprobá el código e intentalo de nuevo.";
+"OTPLoginView.CodeSentLabel" = "Código enviado a %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "El código ha vencido. Obtené un código nuevo.";
+"OTPLoginView.GetNewCodeButton" = "Obtener un nuevo código";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Se ha producido un error";
+"OTPGenericErrorView.SubtitleLabel" = "Podés intentarlo de nuevo más tarde o iniciar sesión con tu contraseña.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Ingresar con contraseña";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Te enviamos un nuevo código.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Verificación de seguridad";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Contraseña olvidada";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Correo electrónico olvidado";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Restablecer contraseña";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Se ha producido un error";
+"ClientErrorResult.Message.Unknown" = "Intentalo de nuevo más tarde";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Te damos la bienvenida a PayPal";
+"ULLoginView.SubtitleLabel" = "Iniciá sesión o abrí una cuenta para empezar.";
+"ULLoginView.LoginButton" = "Iniciar sesión";
+"ULLoginView.SignUpButton" = "Abrir cuenta";

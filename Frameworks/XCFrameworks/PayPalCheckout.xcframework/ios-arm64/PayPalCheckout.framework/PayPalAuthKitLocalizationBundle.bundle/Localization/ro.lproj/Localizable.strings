@@ -1,0 +1,83 @@
+//
+//  Localizable.strings
+//  PayPalAuthKitLocalizationBundle
+//
+//  Created by Dave Hoofnagle on 6/23/22.
+//  Copyright © 2022 paypal. All rights reserved.
+//
+
+// MARK: - PublicCredentialVerificationView
+"PublicCredentialVerificationView.HeaderLabel" = "Conectare";
+"PublicCredentialVerificationView.PublicCredentialTextInput" = "Adresa de e-mail, telefonul mobil sau numele de utilizator";
+"PublicCredentialVerificationView.ForgotPublicCredentialButton" = "Ai uitat adresa de e-mail?";
+"PublicCredentialVerificationView.NextButton" = "Înainte";
+
+// MARK: - OTPVerifyCredentialView
+"OTPVerifyCredentialView.HeaderTitleLabel" = "Plătește cu PayPal";
+"OTPVerifyCredentialView.NextButton" = "Înainte";
+"OTPVerifyCredentialView.TryAgainLabel" = "Verifică-ți adresa de e-mail și încearcă din nou.";
+"OTPVerifyCredentialView.TryAgainEmptyLabel" = "Introdu o adresă de e-mail și încearcă din nou.";
+"OTPVerifyCredentialView.EnterEmailLabel" = "Introdu adresa de e-mail pentru a începe.";
+"OTPVerifyCredentialView.ForgotLoginButton" = "Ai uitat informațiile de conectare?";
+
+// MARK: - RememberedPasswordLoginView
+"RememberedPasswordLoginView.HeaderLabel" = "Conectare";
+"RememberedPasswordLoginView.ChangeButton" = "Schimbă";
+"RememberedPasswordLoginView.PasswordTextInput" = "Parolă";
+"RememberedPasswordLoginView.ForgotPasswordButton" = "Parolă uitată";
+"RememberedPasswordLoginView.LoginButton" = "Conectează-te";
+
+// MARK: - OTPGenerateCodeView
+"OTPGenerateCodeView.HeaderTitleLabel" = "Conectează-te rapid cu un cod unic";
+"OTPGenerateCodeView.InformationLabel" = "Continuând, ne permiți să-ți trimitem un SMS automatizat pentru a-ți confirma numărul de telefon. Se pot aplica comisioanele operatorului.";
+"OTPGenerateCodeView.GetCodeButton" = "Obține un cod";
+"OTPGenerateCodeView.UsePasswordInsteadButton" = "Folosește parola în schimb";
+
+// MARK: - OTPAnimatedTextField
+"OTPAnimatedTextField.EmailTextField" = "E-mail";
+
+// MARK: - OTPPhoneTextField
+"OTPPhoneTextField.PhoneTitleLabel" = "Număr de telefon";
+
+// MARK: - OTPPhoneSelectionView
+"OTPPhoneSelectionView.DoneButton" = "Efectuat";
+"OTPPhoneSelectionView.SubtitleLabel" = "Vom trimite un cod la:";
+
+// MARK: - OTPLoginView
+"OTPLoginView.HeaderTitleLabel" = "Conectează-te rapid cu un cod unic";
+"OTPLoginView.InformationLabel" = "Continuând, ne permiți să te contactăm și ești de acord să primești mesaje text. Se pot aplica taxele operatorului de telefonie.";
+"OTPLoginView.LoginButton" = "Conectează-te";
+"OTPLoginView.UsePasswordInsteadButton" = "Folosește parola în schimb";
+"OTPLoginView.CheckCodeLabel" = "Verifică codul și încearcă din nou.";
+"OTPLoginView.CodeSentLabel" = "Cod trimis la %1$@.";
+"OTPLoginView.CodeExpiredLabel" = "Codul tău a expirat. Obține un cod nou.";
+"OTPLoginView.GetNewCodeButton" = "Obține un cod nou";
+
+// MARK: - OTPGenericErrorView
+"OTPGenericErrorView.HeaderTitleLabel" = "Ceva nu a mers bine";
+"OTPGenericErrorView.SubtitleLabel" = "Poți încerca din nou mai târziu sau te poți conecta cu parola.";
+"OTPGenericErrorView.UsePasswordInsteadButton" = "Folosește parola în schimb";
+
+// MARK: - OTPSnackbarView
+"OTPSnackbarView.MessageLabel" = "Ți-am trimis un cod nou.";
+
+// MARK: - URIView
+"URIView.TitleLabel" = "Verificare de securitate rapidă";
+
+// MARK: - PasswordRecoveryView
+"PasswordRecoveryView.ForgotPasswordTitleLabel" = "Parolă uitată";
+"PasswordRecoveryView.ForgotEmailTitleLabel" = "Ai uitat adresa de e-mail";
+"PasswordRecoveryView.ResetPasswordTitleLabel" = "Resetează parola";
+
+// MARK: - ClientErrorResult
+"ClientErrorResult.Title.Unknown" = "Ceva nu a mers bine";
+"ClientErrorResult.Message.Unknown" = "Încearcă din nou mai târziu";
+
+// MARK: - ULLoginView
+"ULLoginView.TitleLabel" = "Bun-venit la PayPal";
+"ULLoginView.SubtitleLabel" = "Conectează-te sau înregistreaz[-te pentru a începe.";
+"ULLoginView.LoginButton" = "Conectează-te";
+"ULLoginView.SignUpButton" = "Înscrie-te";
+
+// MARK: - OTPUserChangeView
+"OTPUserChangeView.ChangeButton" = "Modifică";
