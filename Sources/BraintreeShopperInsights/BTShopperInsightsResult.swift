@@ -1,7 +1,7 @@
 import Foundation
 
 /// A summary of the buyer's recommended payment methods.
-/// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct BTShopperInsightsResult {
     
     /// If true, display the PayPal button with high priority.

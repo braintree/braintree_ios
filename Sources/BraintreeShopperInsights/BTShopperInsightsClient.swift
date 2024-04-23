@@ -6,7 +6,7 @@ import BraintreeCore
 
 ///  Use `BTShopperInsightsClient` to optimize your checkout experience by prioritizing the customer’s preferred payment methods in your UI.
 ///  By customizing each customer’s checkout experience, you can improve conversion, increase sales/repeat buys and boost user retention/loyalty.
-/// - Note: This feature is in beta. It's public API may change or be removed in future releases.
+/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public class BTShopperInsightsClient {
     
     // MARK: - Internal Properties
@@ -20,7 +20,7 @@ public class BTShopperInsightsClient {
     
     /// Creates a `BTShopperInsightsClient`
     /// - Parameter apiClient: A `BTAPIClient` instance.
-    /// - Note: This features only works with a client token.
+    /// - Warning: This features only works with a client token.
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
@@ -29,7 +29,7 @@ public class BTShopperInsightsClient {
     /// - Parameters:
     ///   - request: A `BTShopperInsightsRequest` containing the buyer's user information
     /// - Returns: A `BTShopperInsightsResult` instance
-    /// - Note: This feature is in beta. Its public API may change or be removed in future releases.
+    /// - Warning: This feature is in beta. Its public API may change or be removed in future releases.
     ///         PayPal recommendation is only available for US, AU, FR, DE, ITA, NED, ESP, Switzerland and UK merchants.
     ///         Venmo recommendation is only available for US merchants.
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
