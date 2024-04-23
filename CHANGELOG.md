@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* BraintreeDataCollector
+  * Updates to ensure all relevant privacy disclosures are surfaced
+  * Note on Privacy Term Duplication: Reports generated with Xcode 15.3 SPM will
+    show some duplication of privacy terms
+
 ## 5.25.0 (2024-04-10)
 * Require Xcode 15.0+ and Swift 5.9+ (per [Apple App Store requirements](https://developer.apple.com/news/upcoming-requirements/?id=04292024a)) 
 * [Meets Apple's new Privacy Update requirements](https://developer.apple.com/news/?id=3d8a9yyh)
