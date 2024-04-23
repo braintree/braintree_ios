@@ -1,7 +1,6 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-
 * BraintreeDataCollector
   * Updates to ensure all relevant privacy disclosures are surfaced
   * Note on Privacy Term Duplication: Reports generated with Xcode 15.3 SPM will
