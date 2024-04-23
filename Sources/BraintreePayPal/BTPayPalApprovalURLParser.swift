@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// The type of PayPal authentication flow to occur
-enum PayPalRedirectType {
+enum PayPalRedirectType: Equatable {
     
     /// The in-app browser (ASWebAuthenticationSession) web checkout flow
     case webBrowser(url: URL)
