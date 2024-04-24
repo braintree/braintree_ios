@@ -219,7 +219,7 @@ import Foundation
     /// The `BTJSON` as a `URL`
     /// - Returns: A `URL` representing the `BTJSON` instance
     public func asURL() -> URL? {
-        guard let urlString = value as? String else {
+        guard let urlString = value as? String, urlString.utf8.count == urlString.utf16.count else {
             return nil
         }
         return URL(string: urlString)

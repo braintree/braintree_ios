@@ -1,7 +1,7 @@
 framework module PPRiskMagnes {
   umbrella header "PPRiskMagnes.h"
-
   export *
+
   module * { export * }
 }
 

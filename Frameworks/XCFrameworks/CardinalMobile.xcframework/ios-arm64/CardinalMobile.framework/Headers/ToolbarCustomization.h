@@ -5,7 +5,7 @@
 //  Copyright © 2018 Cardinal Commerce. All rights reserved.
 //
 
-#import "Customization.h"
+#import <CardinalMobile/Customization.h>
 
 /**
  * The ToolbarCustomization class provides methods for the 3DS Requestor App to pass toolbar customization parameters to the 3DS SDK.
