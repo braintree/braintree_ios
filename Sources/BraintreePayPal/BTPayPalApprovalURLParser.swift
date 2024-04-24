@@ -18,7 +18,8 @@ enum PayPalRedirectType: Equatable {
 struct BTPayPalApprovalURLParser {
     
     let redirectType: PayPalRedirectType
-    let url: URL
+
+    private let url: URL
 
     var ecToken: String? {
         let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?
