@@ -342,7 +342,12 @@ import BraintreeDataCollector
 
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
-                    self.launchPayPalApp(with: url, baToken: approvalURL.baToken, completion: completion)
+                    guard let baToken = approvalURL.baToken else {
+                        self.notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
+                        return
+                    }
+
+                    self.launchPayPalApp(with: url, baToken: baToken, completion: completion)
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
@@ -357,18 +362,13 @@ import BraintreeDataCollector
         return application.canOpenURL(paypalURL)
     }
 
-    private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String?, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+    private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
             linkType: linkType,
             payPalContextID: payPalContextID,
             payPalInstalled: payPalAppInstalled
         )
-
-        guard let baToken else {
-            notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
-            return
-        }
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         urlComponents?.queryItems = [
