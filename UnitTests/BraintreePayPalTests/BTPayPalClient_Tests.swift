@@ -762,7 +762,7 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
 
-    func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingECToken_returnsError() {
+    func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
 
