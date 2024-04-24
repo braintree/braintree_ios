@@ -23,7 +23,7 @@ struct BTPayPalReturnURL {
     init?(_ redirectType: PayPalRedirectType) {
         switch redirectType {
         case .payPalApp(let url), .webBrowser(let url):
-            if url.path.contains("success") || url.path.contains("approve") {
+            if url.path.contains("success") {
                 state = .succeeded
             } else if url.path.contains("cancel") {
                 state = .canceled

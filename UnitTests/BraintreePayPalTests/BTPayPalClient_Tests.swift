@@ -301,7 +301,7 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://www.paypal.com/agreements/approve")
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "sdk.ios.braintree://onetouch/v1/success")
         payPalClient.webAuthenticationSession = mockWebAuthenticationSession
 
         let request = BTPayPalVaultRequest()
