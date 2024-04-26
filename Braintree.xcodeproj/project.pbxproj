@@ -217,7 +217,7 @@
 		BE57E1132847F8C9002CFBAC /* BTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */; };
 		BE5898992B30B15600AA196E /* BTPayPalMessagingTextAlignment_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5898982B30B15600AA196E /* BTPayPalMessagingTextAlignment_Tests.swift */; };
 		BE58989B2B30B49000AA196E /* BTPayPalMessagingOfferType_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE58989A2B30B49000AA196E /* BTPayPalMessagingOfferType_Tests.swift */; };
-		BE58989D2B30B5BC00AA196E /* BTPayPalMessagingPlacement_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE58989C2B30B5BB00AA196E /* BTPayPalMessagingPlacement_Tests.swift */; };
+		BE58989D2B30B5BC00AA196E /* BTPayPalMessagingPageType_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE58989C2B30B5BB00AA196E /* BTPayPalMessagingPageType_Tests.swift */; };
 		BE58989F2B30B68300AA196E /* BTPayPalMessagingLogoType_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE58989E2B30B68300AA196E /* BTPayPalMessagingLogoType_Tests.swift */; };
 		BE5898A12B30B75500AA196E /* BTPayPalMessagingColor_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5898A02B30B75500AA196E /* BTPayPalMessagingColor_Tests.swift */; };
 		BE5898A32B30B82500AA196E /* BTPayPalMessagingRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5898A22B30B82500AA196E /* BTPayPalMessagingRequest_Tests.swift */; };
@@ -897,7 +897,7 @@
 		BE57E1122847F8C9002CFBAC /* BTDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollector.swift; sourceTree = "<group>"; };
 		BE5898982B30B15600AA196E /* BTPayPalMessagingTextAlignment_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingTextAlignment_Tests.swift; sourceTree = "<group>"; };
 		BE58989A2B30B49000AA196E /* BTPayPalMessagingOfferType_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingOfferType_Tests.swift; sourceTree = "<group>"; };
-		BE58989C2B30B5BB00AA196E /* BTPayPalMessagingPlacement_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingPlacement_Tests.swift; sourceTree = "<group>"; };
+		BE58989C2B30B5BB00AA196E /* BTPayPalMessagingPageType_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingPageType_Tests.swift; sourceTree = "<group>"; };
 		BE58989E2B30B68300AA196E /* BTPayPalMessagingLogoType_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingLogoType_Tests.swift; sourceTree = "<group>"; };
 		BE5898A02B30B75500AA196E /* BTPayPalMessagingColor_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingColor_Tests.swift; sourceTree = "<group>"; };
 		BE5898A22B30B82500AA196E /* BTPayPalMessagingRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingRequest_Tests.swift; sourceTree = "<group>"; };
@@ -1861,12 +1861,12 @@
 				BE5898A02B30B75500AA196E /* BTPayPalMessagingColor_Tests.swift */,
 				BE58989E2B30B68300AA196E /* BTPayPalMessagingLogoType_Tests.swift */,
 				BE58989A2B30B49000AA196E /* BTPayPalMessagingOfferType_Tests.swift */,
-				BE58989C2B30B5BB00AA196E /* BTPayPalMessagingPlacement_Tests.swift */,
+				BE58989C2B30B5BB00AA196E /* BTPayPalMessagingPageType_Tests.swift */,
 				BE5898A22B30B82500AA196E /* BTPayPalMessagingRequest_Tests.swift */,
 				BE5898982B30B15600AA196E /* BTPayPalMessagingTextAlignment_Tests.swift */,
 				BECC91982B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift */,
-				BEF137E12B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift */,
 				BECC919C2B20E87D00A2EE42 /* Info.plist */,
+				BEF137E12B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift */,
 			);
 			path = BraintreePayPalMessagingTests;
 			sourceTree = "<group>";
@@ -3368,7 +3368,7 @@
 				BE5898992B30B15600AA196E /* BTPayPalMessagingTextAlignment_Tests.swift in Sources */,
 				BE58989B2B30B49000AA196E /* BTPayPalMessagingOfferType_Tests.swift in Sources */,
 				BECC91992B20E1E400A2EE42 /* BTPayPalMessagingView_Tests.swift in Sources */,
-				BE58989D2B30B5BC00AA196E /* BTPayPalMessagingPlacement_Tests.swift in Sources */,
+				BE58989D2B30B5BC00AA196E /* BTPayPalMessagingPageType_Tests.swift in Sources */,
 				BEF137E22B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift in Sources */,
 				BE5898A12B30B75500AA196E /* BTPayPalMessagingColor_Tests.swift in Sources */,
 			);
