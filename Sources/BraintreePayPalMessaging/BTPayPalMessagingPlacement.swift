@@ -3,35 +3,40 @@ import PayPalMessages
 
 /// Message location within an application
 /// - Note: This module is in beta. It's public API may change or be removed in future releases.
-public enum BTPayPalMessagingPlacement {
+public enum BTPayPalMessagePageType {
 
     /// Home view
     case home
 
-    /// Category view displaying multiple products
-    case category
-
-    /// Individual product view
-    case product
+    /// Individual product details view
+    case productDetails
 
     /// Shopping cart view
     case cart
 
-    /// Checkout view
-    case payment
+    /// Popover shopping cart view that covers part of the view
+    case miniCart
 
-    var placementRawValue: PayPalMessagePlacement {
+    /// Checkout view
+    case checkout
+
+    /// Search results
+    case searchResults
+
+    var pageType: PayPalMessagePageType {
         switch self {
         case .home:
             return .home
-        case .category:
-            return .category
-        case .product:
-            return .product
+        case .productDetails:
+            return .productDetails
         case .cart:
             return .cart
-        case .payment:
-            return .payment
+        case .miniCart:
+            return .miniCart
+        case .checkout:
+            return .checkout
+        case .searchResults:
+            return .searchResults
         }
     }
 }

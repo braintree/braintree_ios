@@ -57,7 +57,6 @@ public class BTPayPalMessagingView: UIView {
                 clientID: clientID,
                 environment: configuration.environment == "production" ? .live : .sandbox,
                 amount: request.amount,
-                placement: request.placement?.placementRawValue,
                 offerType: request.offerType?.offerTypeRawValue
             )
 
@@ -68,7 +67,7 @@ public class BTPayPalMessagingView: UIView {
                 style: PayPalMessageStyle(
                     logoType: request.logoType.logoTypeRawValue,
                     color: request.color.messageColorRawValue,
-                    textAlignment: request.textAlignment.textAlignmentRawValue
+                    textAlign: request.textAlignment.textAlignmentRawValue
                 )
             )
 
