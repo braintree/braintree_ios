@@ -7,7 +7,7 @@ import Foundation
 public struct BTPayPalMessagingRequest {
 
     var amount: Double?
-    var pageType: BTPayPalMessagePageType?
+    var pageType: BTPayPalMessagingPageType?
     var offerType: BTPayPalMessagingOfferType?
     var buyerCountry: String?
     var logoType: BTPayPalMessagingLogoType
@@ -25,7 +25,7 @@ public struct BTPayPalMessagingRequest {
     ///   - color: Text and logo color option for a PayPal Message. Defaults to `.black`
     public init(
         amount: Double? = nil,
-        pageType: BTPayPalMessagePageType? = nil,
+        pageType: BTPayPalMessagingPageType? = nil,
         offerType: BTPayPalMessagingOfferType? = nil,
         buyerCountry: String? = nil,
         logoType: BTPayPalMessagingLogoType = .inline,

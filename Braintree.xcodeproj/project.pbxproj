@@ -274,7 +274,7 @@
 		BEA0F91E2B23728000C21EFA /* BTPayPalMessagingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */; };
 		BEA0F9202B23731700C21EFA /* BTPayPalMessagingLogoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F91F2B23731700C21EFA /* BTPayPalMessagingLogoType.swift */; };
 		BEA0F9222B23736500C21EFA /* BTPayPalMessagingOfferType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9212B23736500C21EFA /* BTPayPalMessagingOfferType.swift */; };
-		BEA0F9242B2373A600C21EFA /* BTPayPalMessagingPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */; };
+		BEA0F9242B2373A600C21EFA /* BTPayPalMessagingPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPageType.swift */; };
 		BEA0F9262B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9252B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift */; };
 		BEA0F9282B23741900C21EFA /* BTPayPalMessagingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9272B23741900C21EFA /* BTPayPalMessagingRequest.swift */; };
 		BEA0F92A2B23768600C21EFA /* BTPayPalMessagingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0F9292B23768600C21EFA /* BTPayPalMessagingError.swift */; };
@@ -949,7 +949,7 @@
 		BEA0F91D2B23728000C21EFA /* BTPayPalMessagingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingDelegate.swift; sourceTree = "<group>"; };
 		BEA0F91F2B23731700C21EFA /* BTPayPalMessagingLogoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingLogoType.swift; sourceTree = "<group>"; };
 		BEA0F9212B23736500C21EFA /* BTPayPalMessagingOfferType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingOfferType.swift; sourceTree = "<group>"; };
-		BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingPlacement.swift; sourceTree = "<group>"; };
+		BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingPageType.swift; sourceTree = "<group>"; };
 		BEA0F9252B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingTextAlignment.swift; sourceTree = "<group>"; };
 		BEA0F9272B23741900C21EFA /* BTPayPalMessagingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingRequest.swift; sourceTree = "<group>"; };
 		BEA0F9292B23768600C21EFA /* BTPayPalMessagingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalMessagingError.swift; sourceTree = "<group>"; };
@@ -1847,7 +1847,7 @@
 				BEA0F9292B23768600C21EFA /* BTPayPalMessagingError.swift */,
 				BEA0F91F2B23731700C21EFA /* BTPayPalMessagingLogoType.swift */,
 				BEA0F9212B23736500C21EFA /* BTPayPalMessagingOfferType.swift */,
-				BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPlacement.swift */,
+				BEA0F9232B2373A600C21EFA /* BTPayPalMessagingPageType.swift */,
 				BEA0F9272B23741900C21EFA /* BTPayPalMessagingRequest.swift */,
 				BEA0F9252B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift */,
 				BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */,
@@ -3346,7 +3346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEA0F9242B2373A600C21EFA /* BTPayPalMessagingPlacement.swift in Sources */,
+				BEA0F9242B2373A600C21EFA /* BTPayPalMessagingPageType.swift in Sources */,
 				BEA0F9222B23736500C21EFA /* BTPayPalMessagingOfferType.swift in Sources */,
 				BEF137E02B33309A00B9B225 /* BTPayPalMessagingView.swift in Sources */,
 				BE67CDBE2B29FC3D00BA4904 /* BTPayPalMessagingAnalytics.swift in Sources */,
