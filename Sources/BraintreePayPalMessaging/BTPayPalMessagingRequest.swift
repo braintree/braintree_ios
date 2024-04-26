@@ -7,6 +7,7 @@ import Foundation
 public struct BTPayPalMessagingRequest {
 
     var amount: Double?
+    var pageType: BTPayPalMessagePageType?
     var offerType: BTPayPalMessagingOfferType?
     var buyerCountry: String?
     var logoType: BTPayPalMessagingLogoType
@@ -16,6 +17,7 @@ public struct BTPayPalMessagingRequest {
     /// Initialize a `BTPayPalMessaging`
     /// - Parameters:
     ///   - amount: Price expressed in cents amount based on the current context (i.e. individual product price vs total cart price)
+    ///   - pageType: Message screen location (e.g. product, cart, home)
     ///   - offerType: Preferred message offer to display
     ///   - buyerCountry: Consumer's country (Integrations must be approved by PayPal to use this option)
     ///   - logoType: Logo type option for a PayPal Message. Defaults to `.inline`
@@ -23,6 +25,7 @@ public struct BTPayPalMessagingRequest {
     ///   - color: Text and logo color option for a PayPal Message. Defaults to `.black`
     public init(
         amount: Double? = nil,
+        pageType: BTPayPalMessagePageType? = nil,
         offerType: BTPayPalMessagingOfferType? = nil,
         buyerCountry: String? = nil,
         logoType: BTPayPalMessagingLogoType = .inline,
@@ -30,6 +33,7 @@ public struct BTPayPalMessagingRequest {
         color: BTPayPalMessagingColor = .black
     ) {
         self.amount = amount
+        self.pageType = pageType
         self.offerType = offerType
         self.buyerCountry = buyerCountry
         self.logoType = logoType
