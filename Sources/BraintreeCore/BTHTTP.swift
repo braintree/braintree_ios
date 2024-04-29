@@ -18,7 +18,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
     let baseURL: URL
-    let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
+    let cacheManager = BTURLCacheManager()
     var clientAuthorization: ClientAuthorization?
 
     /// Session exposed for testing
@@ -145,14 +145,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 return
             }
             
-            // CHECKS CACHE FOR ITEM
-            if let cachedResponse = URLCache.shared.cachedResponse(for: request),
+            if let cachedResponse = self.cacheManager.getFromCache(request: request),
                shouldCache {
-                if !self.cacheDateValidator.isCacheInvalid(cachedResponse) {
-                    self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
-                    return
-                }
-                URLCache.shared.removeAllCachedResponses()
+                self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
+                return
             }
             
             self.session.dataTask(with: request) { [weak self] data, response, error in
@@ -333,13 +329,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             return
         }
 
-        // We should only cache the response if we do not have an error and status code is 2xx
-        let successStatusCode: Bool = httpResponse.statusCode >= 200 && httpResponse.statusCode < 300
-
-        if request != nil && shouldCache && successStatusCode, let request = request {
-            let cachedURLResponse: CachedURLResponse = CachedURLResponse(response: response, data: data)
-
-            URLCache.shared.storeCachedResponse(cachedURLResponse, for: request)
+        if let request, shouldCache {
+            cacheManager.putInCache(request: request, response: response, data: data, statusCode: httpResponse.statusCode)
         }
 
         callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)
