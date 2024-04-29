@@ -21,26 +21,8 @@ import Foundation
 
     // MARK: - Internal Properties
 
-    /// Used to fetch and store configurations in the URL Cache of the session
-    var configurationHTTP: BTHTTP?
-
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
-
-    var session: URLSession {
-        let configurationQueue: OperationQueue = OperationQueue()
-        configurationQueue.name = "com.braintreepayments.BTAPIClient"
-
-        // BTHTTP's default NSURLSession does not cache responses, but we want the BTHTTP instance that fetches configuration to cache aggressively
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.default
-        let configurationCache: URLCache = URLCache(memoryCapacity: 1 * 1024 * 1024, diskCapacity: 0, diskPath: nil)
-
-        configuration.urlCache = configurationCache
-
-        // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
-        configuration.requestCachePolicy = .useProtocolCachePolicy
-        return URLSession(configuration: configuration)
-    }
 
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
@@ -81,20 +63,18 @@ import Foundation
             }
 
             tokenizationKey = authorization
-            configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
+            http = BTHTTP(url: baseURL, tokenizationKey: authorization)
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
 
                 guard let clientToken else { return nil }
-                configurationHTTP = try BTHTTP(clientToken: clientToken)
+                http = try BTHTTP(clientToken: clientToken)
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
             }
         }
-
-        configurationHTTP?.session = session
 
         // Kickoff the background request to fetch the config
         fetchOrReturnRemoteConfiguration { configuration, error in
@@ -112,8 +92,6 @@ import Foundation
         if graphQLHTTP != nil && graphQLHTTP?.session != nil {
             graphQLHTTP?.session.finishTasksAndInvalidate()
         }
-
-        configurationHTTP?.session.configuration.urlCache?.removeAllCachedResponses()
     }
 
     // MARK: - Public Methods
@@ -144,7 +122,7 @@ import Foundation
             configPath = clientToken.configURL.absoluteString
         }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
+        http?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return

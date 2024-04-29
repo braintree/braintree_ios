@@ -28,7 +28,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         
         let delegateQueue: OperationQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
-        delegateQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
         
         return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
     }()
@@ -103,11 +102,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         do {
             let dict = try parameters?.toDictionary()
             
-            if shouldCache {
-                httpRequestWithCaching(method: "GET", path: path, parameters: dict, completion: completion)
-            } else {
-                httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
-            }
+            httpRequest(method: "GET", path: path, parameters: dict, shouldCache: shouldCache, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -137,48 +132,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - HTTP Method Helpers
 
-    func httpRequestWithCaching(
-        method: String,
-        path: String,
-        parameters: [String: Any]? = [:],
-        completion: RequestCompletion?
-    ) {
-        createRequest(method: method, path: path, parameters: parameters) { request, error in
-            guard let request = request else {
-                self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
-                return
-            }
-
-            var cachedResponse: CachedURLResponse? = URLCache.shared.cachedResponse(for: request) ?? nil
-
-            if self.cacheDateValidator.isCacheInvalid(cachedResponse ?? nil) {
-                URLCache.shared.removeAllCachedResponses()
-                cachedResponse = nil
-            }
-
-            // The increase in speed of API calls with cached configuration caused an increase in "network connection lost" errors.
-            // Adding this delay allows us to throttle the network requests slightly to reduce load on the servers and decrease connection lost errors.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                if let cachedResponse = cachedResponse {
-                    self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
-                } else {
-                    self.session.dataTask(with: request) { [weak self] data, response, error in
-                        guard let self else {
-                            completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                            return
-                        }
-
-                        handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
-                    }.resume()
-                }
-            }
-        }
-    }
-
     func httpRequest(
         method: String,
         path: String,
         parameters: [String: Any]? = [:],
+        shouldCache: Bool = false,
         completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
@@ -186,14 +144,24 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
                 return
             }
-
+            
+            // CHECKS CACHE FOR ITEM
+            if let cachedResponse = URLCache.shared.cachedResponse(for: request),
+               shouldCache {
+                if !self.cacheDateValidator.isCacheInvalid(cachedResponse) {
+                    self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
+                    return
+                }
+                URLCache.shared.removeAllCachedResponses()
+            }
+            
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
                     return
                 }
 
-                handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+                handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
             }.resume()
         }
     }
