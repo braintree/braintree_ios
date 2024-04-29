@@ -70,6 +70,11 @@ public class BTPayPalMessagingView: UIView {
                     textAlign: request.textAlignment.textAlignmentRawValue
                 )
             )
+            
+            PayPalMessageConfig.setGlobalAnalytics(
+                integrationName: self.apiClient.metadata.integration.stringValue,
+                integrationVersion: self.apiClient.metadata.version
+            )
 
             let messageView = PayPalMessageView(config: messageConfig, stateDelegate: self, eventDelegate: self)
             messageView.translatesAutoresizingMaskIntoConstraints = false
