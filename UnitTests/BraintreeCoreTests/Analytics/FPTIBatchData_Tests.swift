@@ -22,7 +22,8 @@ final class FPTIBatchData_Tests: XCTestCase {
             eventName: "fake-event-1",
             linkType: "universal",
             payPalContextID: "fake-order-id",
-            timestamp: "fake-time-1"
+            timestamp: "fake-time-1",
+            venmoInstalled: true
         ),
         FPTIBatchData.Event(
             correlationID: nil,
@@ -30,7 +31,8 @@ final class FPTIBatchData_Tests: XCTestCase {
             eventName: "fake-event-2",
             linkType: nil,
             payPalContextID: "fake-order-id-2",
-            timestamp: "fake-time-2"
+            timestamp: "fake-time-2",
+            venmoInstalled: nil
         )
     ]
     
@@ -93,5 +95,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["error_desc"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")
         XCTAssertNil(eventParams[1]["correlation_id"])
+        XCTAssertEqual(eventParams[0]["venmo_installed"] as? Bool, true)
+        XCTAssertNil(eventParams[1]["venmo_installed"])
     }
 }

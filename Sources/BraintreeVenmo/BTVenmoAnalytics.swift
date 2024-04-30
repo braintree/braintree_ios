@@ -13,5 +13,4 @@ enum BTVenmoAnalytics {
     
     static let appSwitchSucceeded = "venmo:tokenize:app-switch:succeeded"
     static let appSwitchFailed = "venmo:tokenize:app-switch:failed"
-    static let venmoInstalled = "venmo:tokenize:app-switch:venmo_installed"
 }

@@ -37,6 +37,7 @@ struct FPTIBatchData: Codable {
         let payPalContextID: String?
         let timestamp: String
         let tenantName: String = "Braintree"
+        let venmoInstalled: Bool?
 
         enum CodingKeys: String, CodingKey {
             case correlationID = "correlation_id"
@@ -46,6 +47,7 @@ struct FPTIBatchData: Codable {
             case payPalContextID = "paypal_context_id"
             case timestamp = "t"
             case tenantName = "tenant_name"
+            case venmoInstalled = "venmo_installed"
         }
     }
     

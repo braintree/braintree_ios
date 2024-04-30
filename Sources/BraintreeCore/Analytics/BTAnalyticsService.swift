@@ -32,7 +32,8 @@ class BTAnalyticsService: Equatable {
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        venmoInstalled: Bool? = nil
     ) {
         Task(priority: .background) {
             await performEventRequest(
@@ -40,7 +41,8 @@ class BTAnalyticsService: Equatable {
                 correlationID: correlationID,
                 errorDescription: errorDescription,
                 linkType: linkType,
-                payPalContextID: payPalContextID
+                payPalContextID: payPalContextID,
+                venmoInstalled: venmoInstalled
             )
         }
     }
@@ -51,7 +53,8 @@ class BTAnalyticsService: Equatable {
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        venmoInstalled: Bool? = nil
     ) async {
         let timestampInMilliseconds = Int(round(Date().timeIntervalSince1970 * 1000))
         let event = FPTIBatchData.Event(
@@ -60,7 +63,8 @@ class BTAnalyticsService: Equatable {
             eventName: eventName,
             linkType: linkType,
             payPalContextID: payPalContextID,
-            timestamp: String(timestampInMilliseconds)
+            timestamp: String(timestampInMilliseconds), 
+            venmoInstalled: venmoInstalled
         )
                 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
