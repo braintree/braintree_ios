@@ -25,7 +25,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders
-        configuration.requestCachePolicy = .returnCacheDataElseLoad
         
         let delegateQueue: OperationQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
