@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Remove throttle delay in fetching configuration, added in v5.9.0
+
 ## 6.18.0 (2024-04-25)
 * BraintreePayPalNativeCheckout
   * Bump PayPalCheckout to version 1.3.0 with code signing & a privacy manifest file.
