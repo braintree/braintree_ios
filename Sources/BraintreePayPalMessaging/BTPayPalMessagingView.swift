@@ -72,7 +72,7 @@ public class BTPayPalMessagingView: UIView {
             )
             
             PayPalMessageConfig.setGlobalAnalytics(
-                integrationName: self.apiClient.metadata.integration.stringValue,
+                integrationName: "BT_SDK",
                 integrationVersion: self.apiClient.metadata.version
             )
 
