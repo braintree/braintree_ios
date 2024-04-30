@@ -397,8 +397,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     // MARK: - Configuration tests
 
-    func testGETRequests_whenShouldCache_cachesConfiguration() {
-        URLCache.shared.removeAllCachedResponses()
+    func testGETRequests_whenShouldCacheTrue_cachesConfiguration() {
         let expectation = expectation(description: "Fetches configuration")
 
         http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: true) { body, response, error in
@@ -412,11 +411,9 @@ final class BTHTTP_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
-        URLCache.shared.removeAllCachedResponses()
     }
 
-    func testGETRequests_whenShouldNotCache_doesNotStoreInCache() {
-        URLCache.shared.removeAllCachedResponses()
+    func testGETRequests_whenShouldCacheFalse_doesNotStoreInCache() {
         let expectation = expectation(description: "Fetches configuration")
 
         http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: false) { body, response, error in
@@ -430,7 +427,6 @@ final class BTHTTP_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
-        URLCache.shared.removeAllCachedResponses()
     }
 
     // MARK: - Authentication

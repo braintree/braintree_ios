@@ -25,6 +25,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders
+        configuration.requestCachePolicy = .returnCacheDataElseLoad
         
         let delegateQueue: OperationQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
@@ -157,7 +158,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                     return
                 }
 
-                handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
+                handleRequestCompletion(data: data, request: request, shouldCache: shouldCache, response: response, error: error, completion: completion)
             }.resume()
         }
     }
