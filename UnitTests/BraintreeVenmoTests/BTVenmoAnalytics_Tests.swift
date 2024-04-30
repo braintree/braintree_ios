@@ -9,5 +9,6 @@ final class BTVenmoAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTVenmoAnalytics.appSwitchSucceeded, "venmo:tokenize:app-switch:succeeded")
         XCTAssertEqual(BTVenmoAnalytics.appSwitchFailed, "venmo:tokenize:app-switch:failed")
         XCTAssertEqual(BTVenmoAnalytics.appSwitchCanceled, "venmo:tokenize:app-switch:canceled")
+        XCTAssertEqual(BTVenmoAnalytics.venmoInstalled, "venmo:tokenize:app-switch:venmo_installed")
     }
 }

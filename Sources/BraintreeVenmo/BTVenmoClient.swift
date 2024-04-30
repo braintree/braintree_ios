@@ -248,7 +248,11 @@ import BraintreeCore
             return false
         }
         
-        return application.canOpenURL(appSwitchURL)
+        let venmoInstalled = application.canOpenURL(appSwitchURL)
+        if venmoInstalled {
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.venmoInstalled)
+        }
+        return venmoInstalled
     }
 
     /// Switches to the App Store to download the Venmo application.
