@@ -1,5 +1,5 @@
 # Braintree iOS SDK Release Notes
-
+test
 ## 6.18.0 (2024-04-25)
 * BraintreePayPalNativeCheckout
   * Bump PayPalCheckout to version 1.3.0 with code signing & a privacy manifest file.
