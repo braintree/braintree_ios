@@ -359,7 +359,7 @@ import BraintreeCore
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
         } else {            
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed, linkType: linkType, payPalContextID: payPalContextID)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchFailed, linkType: linkType, payPalContextID: payPalContextID, venmoInstalled: self.venmoAppInstalled)
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
     }
