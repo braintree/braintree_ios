@@ -431,11 +431,7 @@ import BraintreeCore
     }
 
     private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(
-            BTVenmoAnalytics.appSwitchCanceled,
-            linkType: linkType,
-            payPalContextID: payPalContextID
-        )
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchCanceled, linkType: linkType, payPalContextID: payPalContextID)
         completion(nil, BTVenmoError.canceled)
     }
 }
