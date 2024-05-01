@@ -9,8 +9,7 @@ class FakeAnalyticsService: BTAnalyticsService {
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil,
-        venmoInstalled: Bool? = nil
+        payPalContextID: String? = nil
     ) {
         self.lastEvent = eventName
     }

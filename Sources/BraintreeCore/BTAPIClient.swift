@@ -344,16 +344,14 @@ import Foundation
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil,
-        venmoInstalled: Bool? = nil
+        payPalContextID: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
             correlationID: correlationID,
             errorDescription: errorDescription,
             linkType: linkType,
-            payPalContextID: payPalContextID,
-            venmoInstalled: venmoInstalled
+            payPalContextID: payPalContextID
         )
     }
 

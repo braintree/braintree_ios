@@ -13,7 +13,6 @@ public class MockAPIClient: BTAPIClient {
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil
     public var postedLinkType: String? = nil
-    public var postedVenmoInstalled: Bool? = nil
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -88,12 +87,10 @@ public class MockAPIClient: BTAPIClient {
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil,
-        venmoInstalled: Bool? = nil
+        payPalContextID: String? = nil
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
-        postedVenmoInstalled = venmoInstalled
         postedAnalyticsEvents.append(name)
     }
 
