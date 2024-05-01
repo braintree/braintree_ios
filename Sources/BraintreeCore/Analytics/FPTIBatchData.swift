@@ -37,7 +37,7 @@ struct FPTIBatchData: Codable {
         let payPalContextID: String?
         let timestamp: String
         let tenantName: String = "Braintree"
-        let venmoInstalled: Bool
+        let venmoInstalled: Bool = isVenmoAppInstalled()
 
         enum CodingKeys: String, CodingKey {
             case correlationID = "correlation_id"
@@ -48,16 +48,6 @@ struct FPTIBatchData: Codable {
             case timestamp = "t"
             case tenantName = "tenant_name"
             case venmoInstalled = "venmo_installed"
-        }
-
-        init(correlationID: String?, errorDescription: String?, eventName: String, linkType: String?, payPalContextID: String?, timestamp: String) {
-            self.correlationID = correlationID
-            self.errorDescription = errorDescription
-            self.eventName = eventName
-            self.linkType = linkType
-            self.payPalContextID = payPalContextID
-            self.timestamp = timestamp
-            self.venmoInstalled = FPTIBatchData.isVenmoAppInstalled()
         }
     }
     
@@ -146,19 +136,7 @@ struct FPTIBatchData: Codable {
     }
 
     private static func isVenmoAppInstalled() -> Bool {
-        guard let appSwitchURL = appSwitchBaseURLComponents().url else {
-            return false
-        }
-
-        return UIApplication.shared.canOpenURL(appSwitchURL)
-    }
-
-    private static func appSwitchBaseURLComponents() -> URLComponents {
-        let xCallbackTemplate: String = "scheme://x-callback-url/path"
-       let venmoScheme: String = "com.venmo.touch.v2"
-        var components: URLComponents = URLComponents(string: xCallbackTemplate) ?? URLComponents()
-        components.scheme = venmoScheme
-        components.percentEncodedPath = "/vzero/auth"
-        return components
+        let venmoURL = URL(string: "com.venmo.touch.v2://")!
+        return UIApplication.shared.canOpenURL(venmoURL)
     }
 }
