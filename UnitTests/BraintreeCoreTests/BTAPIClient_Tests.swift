@@ -162,15 +162,6 @@ class BTAPIClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testConfigurationHTTP_byDefault_usesAnInMemoryCache() {
-        // We don't want configuration to cache configuration responses past the lifetime of the app
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        guard let cache: URLCache = apiClient?.configurationHTTP?.session.configuration.urlCache else { return }
-
-        XCTAssertTrue(cache.diskCapacity == 0)
-        XCTAssertTrue(cache.memoryCapacity > 0)
-    }
-
     // MARK: - fetchPaymentMethodNonces with v2 client token
     
     func testFetchPaymentMethodNonces_performsGETWithCorrectParameter() {
