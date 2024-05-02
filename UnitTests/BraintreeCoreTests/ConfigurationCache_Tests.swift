@@ -34,7 +34,8 @@ class ConfigurationCache_Tests: XCTestCase {
         XCTAssertNil(try sut.getFromCache(authorization: "cat"))
     }
     
-    func testGetFromCache_ifCachedItemValid_returnsItem() throws {
+    func testGetFromCache_ifCachedItemNotExpired_returnsItem() throws {
+        fakeConfiguration.time = Date().timeIntervalSince1970 - 299 // 4 minutes, and 59 second ago
         sut.cacheInstance.setObject(fakeConfiguration, forKey: base64EndodedCat)
 
         let cachedItem = try sut.getFromCache(authorization: "cat")
