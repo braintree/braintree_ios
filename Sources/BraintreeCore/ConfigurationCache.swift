@@ -23,7 +23,6 @@ class ConfigurationCache {
         cachedConfigStorage[cacheKey] = configuration
     }
     
-    // TODO use auth type enum
     func getFromCache(authorization: String) throws -> BTConfiguration? {
         let cacheKey = try createCacheKey(authorization)
         guard let cachedConfig = cachedConfigStorage[cacheKey] else {
@@ -41,11 +40,11 @@ class ConfigurationCache {
     
     // MARK: - Private Methods
     
-    private func createCacheKey(_ authorization: String) throws -> String {
+    private func createCacheKey(_ authorization: String) throws -> String {       
         if let data = authorization.data(using: .utf8) {
             return data.base64EncodedString()
         } else {
-            throw BTClientTokenError.invalidAuthorizationFingerprint // TODO add specific error here
+            throw BTAPIClientError.failedBase64Encoding
         }
     }
 }

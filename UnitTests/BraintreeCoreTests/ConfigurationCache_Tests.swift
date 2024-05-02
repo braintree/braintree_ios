@@ -19,6 +19,14 @@ class ConfigurationCache_Tests: XCTestCase {
         XCTAssertEqual(sut.cachedConfigStorage[base64EncodedDog], fakeConfiguration)
     }
     
+    func testPutInCache_whenBase64EncodingFails_throwsError() {
+        do {
+            try sut.putInCache(authorization: "💇‍♀️", configuration: fakeConfiguration)
+        } catch {
+            XCTAssertEqual(error.localizedDescription, "Unable to base64 encode the authorization string.")
+        }
+    }
+    
     func testGetFromCache_ifCachedItemExpired_returnsNil() throws {
         fakeConfiguration.time = Date().timeIntervalSince1970 - (60 * 6) // 6 minutes ago
         sut.cachedConfigStorage[base64EndodedCat] = fakeConfiguration
