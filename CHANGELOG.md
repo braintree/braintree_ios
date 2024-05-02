@@ -1,7 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Remove throttle delay in fetching configuration, added in v5.9.0
+* Remove throttle delay in accessing configuration, added in v5.9.0
+  * Move from URLCache to custom for `v1/configuration` caching
 
 ## 6.18.0 (2024-04-25)
 * BraintreePayPalNativeCheckout
