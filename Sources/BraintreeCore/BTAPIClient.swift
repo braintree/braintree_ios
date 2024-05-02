@@ -116,10 +116,14 @@ import Foundation
         //   - If fetching fails, return error
 
         var configPath: String = "v1/configuration"
-        var configuration: BTConfiguration?
 
         if let clientToken {
             configPath = clientToken.configURL.absoluteString
+        }
+        
+        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: "") {
+            completion(cachedConfig, nil)
+            return
         }
 
         http?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
@@ -135,10 +139,14 @@ import Foundation
                 completion(nil, BTAPIClientError.configurationUnavailable)
                 return
             } else {
-                configuration = BTConfiguration(json: body)
+                guard let body else {
+                    completion(nil, BTAPIClientError.configurationUnavailable)
+                    return
+                }
+                let configuration = BTConfiguration(json: body)
 
                 if http == nil {
-                    let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
+                    let baseURL: URL? = configuration.json?["clientApiUrl"].asURL()
 
                     if let clientToken, let baseURL {
                         http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -148,7 +156,7 @@ import Foundation
                 }
 
                 if graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
+                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration.environment ?? "")
 
                     if let clientToken, let graphQLBaseURL {
                         graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -156,9 +164,10 @@ import Foundation
                         graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
                     }
                 }
+                
+                try? ConfigurationCache.shared.putInCache(authorization: "", configuration: configuration)
+                completion(configuration, nil)
             }
-
-            completion(configuration, nil)
         }
     }
 

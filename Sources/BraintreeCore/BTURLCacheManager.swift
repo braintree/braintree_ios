@@ -1,5 +1,47 @@
 import Foundation
 
+class ConfigurationCache {
+    
+    static let shared = ConfigurationCache()
+    
+    private let timeToLiveMinutes = 5.0
+
+    var cachedConfigStorage: [String: BTConfiguration] = [:]
+
+    private init() { }
+    
+    func putInCache(authorization: String, configuration: BTConfiguration) throws {
+        let cacheKey = try createCacheKey(authorization)
+        cachedConfigStorage[cacheKey] = configuration
+    }
+    
+    // TODO use auth type enum
+    func getFromCache(authorization: String) throws -> BTConfiguration? {
+        let cacheKey = try createCacheKey(authorization)
+        guard let cachedConfig = cachedConfigStorage[cacheKey] else {
+            return nil
+        }
+        
+        let timeInCache = Date().timeIntervalSince1970 - cachedConfig.time
+        if timeInCache < timeToLiveMinutes {
+            return cachedConfig
+        } else {
+            cachedConfigStorage.removeValue(forKey: cacheKey)
+            return nil
+        }
+    }
+    
+    private func createCacheKey(_ authorization: String) throws -> String {
+        if let data = authorization.data(using: .utf8) {
+            return data.base64EncodedString()
+        } else {
+            throw BTClientTokenError.invalidAuthorizationFingerprint // TODO add specific error here
+        }
+    }
+    
+    private func isCacheItemValid() {}
+}
+
 struct BTURLCacheManager {
     
     // MARK: - Private Properties
