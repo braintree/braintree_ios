@@ -7,7 +7,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        ConfigurationCache.shared.cachedConfigStorage = [:] // wipe config cache
+        ConfigurationCache.shared.cacheInstance.removeAllObjects() // wipe config cache
         mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
     }
 

@@ -9,7 +9,7 @@ class ConfigurationCache {
     // MARK: - Internal Properties
     
     /// Exposed for testing
-    var cachedConfigStorage: [String: BTConfiguration] = [:]
+    let cacheInstance = NSCache<NSString, BTConfiguration>()
 
     // MARK: - Singleton Setup
     
@@ -20,12 +20,12 @@ class ConfigurationCache {
     
     func putInCache(authorization: String, configuration: BTConfiguration) throws {
         let cacheKey = try createCacheKey(authorization)
-        cachedConfigStorage[cacheKey] = configuration
+        cacheInstance.setObject(configuration, forKey: cacheKey)
     }
     
     func getFromCache(authorization: String) throws -> BTConfiguration? {
         let cacheKey = try createCacheKey(authorization)
-        guard let cachedConfig = cachedConfigStorage[cacheKey] else {
+        guard let cachedConfig = cacheInstance.object(forKey: cacheKey) else {
             return nil
         }
         
@@ -33,16 +33,16 @@ class ConfigurationCache {
         if timeInCache < timeToLiveMinutes {
             return cachedConfig
         } else {
-            cachedConfigStorage.removeValue(forKey: cacheKey)
+            cacheInstance.removeObject(forKey: cacheKey)
             return nil
         }
     }
     
     // MARK: - Private Methods
     
-    private func createCacheKey(_ authorization: String) throws -> String {       
+    private func createCacheKey(_ authorization: String) throws -> NSString {
         if let data = authorization.data(using: .utf8) {
-            return data.base64EncodedString()
+            return data.base64EncodedString() as NSString
         } else {
             throw BTAPIClientError.failedBase64Encoding
         }
