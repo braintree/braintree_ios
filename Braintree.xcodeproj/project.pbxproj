@@ -226,7 +226,7 @@
 		BE642DA927D013A400694A5B /* BTSEPADirectDebitClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642D8C27D0130300694A5B /* BTSEPADirectDebitClient_Tests.swift */; };
 		BE642DAB27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */; };
 		BE698EA028AA8DCB001D9B10 /* BTHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698E9F28AA8DCB001D9B10 /* BTHTTP.swift */; };
-		BE698EA228AA8EEA001D9B10 /* BTURLCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EA128AA8EEA001D9B10 /* BTURLCacheManager.swift */; };
+		BE698EA228AA8EEA001D9B10 /* ConfigurationCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */; };
 		BE698EA428AD2C10001D9B10 /* BTCoreConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EA328AD2C10001D9B10 /* BTCoreConstants.swift */; };
 		BE70A963284FA3F000F6D3F7 /* BTDataCollectorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */; };
 		BE70A965284FA9DE00F6D3F7 /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */; };
@@ -860,7 +860,7 @@
 		BE642DA027D0132A00694A5B /* BraintreeSEPADirectDebitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeSEPADirectDebitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE642DAA27D01BCA00694A5B /* BTSEPADirectDebitNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitNonce_Tests.swift; sourceTree = "<group>"; };
 		BE698E9F28AA8DCB001D9B10 /* BTHTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTP.swift; sourceTree = "<group>"; };
-		BE698EA128AA8EEA001D9B10 /* BTURLCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLCacheManager.swift; sourceTree = "<group>"; };
+		BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCache.swift; sourceTree = "<group>"; };
 		BE698EA328AD2C10001D9B10 /* BTCoreConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCoreConstants.swift; sourceTree = "<group>"; };
 		BE698EA528B3CDAD001D9B10 /* BTURLCacheManager_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLCacheManager_Tests.swift; sourceTree = "<group>"; };
 		BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken_Tests.swift; sourceTree = "<group>"; };
@@ -1215,7 +1215,6 @@
 				579DAEC6286E064500FCE87F /* BTAppContextSwitchClient.swift */,
 				579DAEC4286E04A700FCE87F /* BTAppContextSwitcher.swift */,
 				BED00CAD28A5419900D74AEC /* BTBinData.swift */,
-				BE698EA128AA8EEA001D9B10 /* BTURLCacheManager.swift */,
 				BE32ACBB2907744400A61FED /* BTCardNetwork.swift */,
 				574891EC286F7ECA0020DA36 /* BTClientMetadata.swift */,
 				574891EA286F7E4F0020DA36 /* BTClientMetadataIntegration.swift */,
@@ -1243,6 +1242,7 @@
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
 				BEBD05212A1FE8BE0003C15C /* BTWebAuthenticationSession.swift */,
 				BEB9BF522A26872B00A3673E /* BTWebAuthenticationSessionClient.swift */,
+				BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */,
 				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
 				80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
@@ -2810,7 +2810,7 @@
 				BE5C8C0328A2C183004F9130 /* BTConfiguration+Core.swift in Sources */,
 				BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */,
 				BE9FB82B2898324C00D6FE2F /* BTPaymentMethodNonce.swift in Sources */,
-				BE698EA228AA8EEA001D9B10 /* BTURLCacheManager.swift in Sources */,
+				BE698EA228AA8EEA001D9B10 /* ConfigurationCache.swift in Sources */,
 				BEB9BF532A26872B00A3673E /* BTWebAuthenticationSessionClient.swift in Sources */,
 				80F86FF029FC2ED6003297FF /* Encodable+Dictionary.swift in Sources */,
 				579DAEC7286E064500FCE87F /* BTAppContextSwitchClient.swift in Sources */,
