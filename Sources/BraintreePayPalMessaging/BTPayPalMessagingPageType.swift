@@ -23,7 +23,7 @@ public enum BTPayPalMessagingPageType {
     /// Search results
     case searchResults
 
-    var pageType: PayPalMessagePageType {
+    var pageTypeRawValue: PayPalMessagePageType {
         switch self {
         case .home:
             return .home
