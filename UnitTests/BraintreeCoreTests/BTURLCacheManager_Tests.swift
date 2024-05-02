@@ -3,28 +3,33 @@ import XCTest
 
 class BTURLCacheManager_Tests: XCTestCase {
     
-    private var sut: BTURLCacheManager!
-    private var mockCache: MockURLCache!
+    private var sut = BTURLCacheManager()
 
     override func setUp() {
-        mockCache = MockURLCache()
-        sut = BTURLCacheManager(cache: mockCache)
+        sut.cacheInstance.removeAllCachedResponses()
     }
 
+    // WARNING: - These tests are expected to fail, after reading this SO post -     // https://stackoverflow.com/questions/52938033/urlresponse-is-not-retrieved-after-storing-in-cache-using-storecachedresponse
+    // I learned URLCache is highly asynchronous, which is why these tests are failing. Adding a DispatchQueue.main.async() with delay 0.1 seconds causes these tests to pass, which I think was a red herring for our original fix added in braintree_ios PR #807
+    
     func testPutInCache_ifSuccessStatusCode_caches() {
         let urlRequest = URLRequest(url: URL(string: "www.fake-123.com")!)
         let response = HTTPURLResponse()
         
         sut.putInCache(request: urlRequest, response: response, data: Data(), statusCode: 249)
         
-        XCTAssertNotNil(mockCache.cannedCache[urlRequest])
+        XCTAssertNotNil(sut.cacheInstance.cachedResponse(for: urlRequest))
     }
 
     func testPutInCache_ifBadStatusCode_doesNotCache() {
-        let urlRequest = URLRequest(url: URL(string: "www.fake.com")!)
-        sut.putInCache(request: urlRequest, response: URLResponse(), data: Data(), statusCode: 301)
+        let goodURLRequest = URLRequest(url: URL(string: "www.fake.com")!)
+        sut.putInCache(request: goodURLRequest, response: URLResponse(), data: Data(), statusCode: 201)
         
-        XCTAssertEqual(mockCache.cannedCache, [:])
+        let badURLRequest = URLRequest(url: URL(string: "www.fake.com")!)
+        sut.putInCache(request: badURLRequest, response: URLResponse(), data: Data(), statusCode: 301)
+        
+        XCTAssertNotNil(sut.cacheInstance.cachedResponse(for: goodURLRequest))
+        XCTAssertNil(sut.cacheInstance.cachedResponse(for: badURLRequest))
     }
     
     func testGetFromCache_ifCachedItemInvalid_returnsNil() {
@@ -36,8 +41,8 @@ class BTURLCacheManager_Tests: XCTestCase {
             httpVersion: "",
             headerFields: ["Date": "Mon, 10 Apr 2024, 10:00:00 PDT"]
         )!
-        let cachedResponse = CachedURLResponse(response: response, data: Data())
-        mockCache.cannedCache = [urlRequest: cachedResponse]
+        let responseToCache = CachedURLResponse(response: response, data: Data())
+        sut.cacheInstance.storeCachedResponse(responseToCache, for: urlRequest)
         
         XCTAssertNil(sut.getFromCache(request: urlRequest))
     }
@@ -56,8 +61,8 @@ class BTURLCacheManager_Tests: XCTestCase {
             httpVersion: "",
             headerFields: ["Date": dateNow]
         )!
-        let cachedResponse = CachedURLResponse(response: response, data: Data())
-        mockCache.cannedCache = [urlRequest: cachedResponse]
+        let responseToCache = CachedURLResponse(response: response, data: Data())
+        sut.cacheInstance.storeCachedResponse(responseToCache, for: urlRequest)
         
         XCTAssertNotNil(sut.getFromCache(request: urlRequest))
     }

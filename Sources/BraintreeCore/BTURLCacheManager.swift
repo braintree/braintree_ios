@@ -6,14 +6,9 @@ struct BTURLCacheManager {
     
     private let timeToLiveMinutes: Double = 5
     private let dateFormatter: DateFormatter = DateFormatter()
-    private let cacheInstance: URLCacheable
     
-    // MARK: - Init
-        
-    /// Exposed for testing, injection of URLCache mock.
-    init(cache: URLCacheable = URLCache.shared) {
-        self.cacheInstance = cache
-    }
+    /// Exposed for testing
+    let cacheInstance = URLCache.shared
     
     // MARK: Internal Methods
     
