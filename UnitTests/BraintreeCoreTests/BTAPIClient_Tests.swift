@@ -7,6 +7,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        ConfigurationCache.shared.cachedConfigStorage = [:] // wipe config cache
         mockConfigurationHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
     }
 
@@ -60,6 +61,24 @@ class BTAPIClient_Tests: XCTestCase {
     }
 
     // MARK: - fetchOrReturnRemoteConfiguration
+    
+    func testFetchOrReturnRemoteConfiguration_whenCached_returnsConfigFromCache() {
+        let sampleJSON = ["test": "value", "environment": "fake-env1"]
+        try? ConfigurationCache.shared.putInCache(authorization: "development_tokenization_key", configuration: BTConfiguration(json: BTJSON(value: sampleJSON)))
+        let mockHTTP = FakeHTTP.fakeHTTP()
+
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        apiClient?.http = mockHTTP
+        
+        let expectation = expectation(description: "Callback invoked")
+        apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
+            XCTAssertEqual(configuration?.environment, "fake-env1")
+            XCTAssertEqual(configuration?.json?["test"].asString(), "value")
+            XCTAssertNil(mockHTTP.lastRequestEndpoint)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+    }
 
     func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")

@@ -116,12 +116,14 @@ import Foundation
         //   - If fetching fails, return error
 
         var configPath: String = "v1/configuration"
+        var configuration: BTConfiguration?
 
         if let clientToken {
             configPath = clientToken.configURL.absoluteString
         }
         
-        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: "") {
+        let authCredential = clientToken?.authorizationFingerprint ?? tokenizationKey ?? "XXXX"
+        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authCredential) {
             completion(cachedConfig, nil)
             return
         }
@@ -139,14 +141,10 @@ import Foundation
                 completion(nil, BTAPIClientError.configurationUnavailable)
                 return
             } else {
-                guard let body else {
-                    completion(nil, BTAPIClientError.configurationUnavailable)
-                    return
-                }
-                let configuration = BTConfiguration(json: body)
+                configuration = BTConfiguration(json: body)
 
                 if http == nil {
-                    let baseURL: URL? = configuration.json?["clientApiUrl"].asURL()
+                    let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
 
                     if let clientToken, let baseURL {
                         http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -156,7 +154,7 @@ import Foundation
                 }
 
                 if graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration.environment ?? "")
+                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
 
                     if let clientToken, let graphQLBaseURL {
                         graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
@@ -165,9 +163,12 @@ import Foundation
                     }
                 }
                 
-                try? ConfigurationCache.shared.putInCache(authorization: "", configuration: configuration)
-                completion(configuration, nil)
+                if let configuration {
+                    try? ConfigurationCache.shared.putInCache(authorization: authCredential, configuration: configuration)
+                }
             }
+            
+            completion(configuration, nil)
         }
     }
 
