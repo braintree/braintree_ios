@@ -167,7 +167,7 @@ import Foundation
                     try? ConfigurationCache.shared.putInCache(authorization: authCredential, configuration: configuration)
                 }
             }
-            
+
             completion(configuration, nil)
         }
     }

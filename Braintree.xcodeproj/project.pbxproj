@@ -105,7 +105,7 @@
 		80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */; };
 		80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */; };
 		80BA64B429D795D000E15264 /* BTLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */; };
-		80C10F832BE090AA00BFA2EE /* BTURLCacheManager_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EA528B3CDAD001D9B10 /* BTURLCacheManager_Tests.swift */; };
+		80C10F832BE090AA00BFA2EE /* ConfigurationCache_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */; };
 		80CD34002A6042FC009545F5 /* CardinalSessionTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CD33FF2A6042FC009545F5 /* CardinalSessionTestable.swift */; };
 		80CD34012A604307009545F5 /* MockCardinalSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CD33FD2A603892009545F5 /* MockCardinalSession.swift */; };
 		80CF988529DB64D400D51979 /* BTLocalPaymentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CF988429DB64D400D51979 /* BTLocalPaymentError.swift */; };
@@ -862,7 +862,7 @@
 		BE698E9F28AA8DCB001D9B10 /* BTHTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTP.swift; sourceTree = "<group>"; };
 		BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCache.swift; sourceTree = "<group>"; };
 		BE698EA328AD2C10001D9B10 /* BTCoreConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCoreConstants.swift; sourceTree = "<group>"; };
-		BE698EA528B3CDAD001D9B10 /* BTURLCacheManager_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLCacheManager_Tests.swift; sourceTree = "<group>"; };
+		BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCache_Tests.swift; sourceTree = "<group>"; };
 		BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken_Tests.swift; sourceTree = "<group>"; };
 		BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollectorError.swift; sourceTree = "<group>"; };
 		BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTDataCollector.swift; sourceTree = "<group>"; };
@@ -1719,7 +1719,6 @@
 				842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */,
 				A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */,
 				030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */,
-				BE698EA528B3CDAD001D9B10 /* BTURLCacheManager_Tests.swift */,
 				BEBC6F252937A510004E25A0 /* BTClientMetadata_Tests.swift */,
 				BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */,
 				A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */,
@@ -1730,6 +1729,7 @@
 				805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */,
 				A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */,
 				A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */,
+				BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */,
 				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
@@ -3129,7 +3129,7 @@
 				A908436224FD82A9004134CA /* BTAppContextSwitcher_Tests.swift in Sources */,
 				BEBC6F282937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift in Sources */,
 				BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */,
-				80C10F832BE090AA00BFA2EE /* BTURLCacheManager_Tests.swift in Sources */,
+				80C10F832BE090AA00BFA2EE /* ConfigurationCache_Tests.swift in Sources */,
 				BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
