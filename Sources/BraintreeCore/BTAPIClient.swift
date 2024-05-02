@@ -122,8 +122,9 @@ import Foundation
             configPath = clientToken.configURL.absoluteString
         }
         
-        let authCredential = clientToken?.authorizationFingerprint ?? tokenizationKey ?? "XXXX"
-        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authCredential) {
+        let authCredential = clientToken?.authorizationFingerprint ?? tokenizationKey
+        if let authCredential,
+           let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authCredential) {
             completion(cachedConfig, nil)
             return
         }
@@ -163,7 +164,7 @@ import Foundation
                     }
                 }
                 
-                if let configuration {
+                if let authCredential, let configuration {
                     try? ConfigurationCache.shared.putInCache(authorization: authCredential, configuration: configuration)
                 }
             }
