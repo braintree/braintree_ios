@@ -4,8 +4,9 @@
 * BraintreePayPalNativeCheckout
   * Bump PayPalCheckout to version 1.3.0 with code signing & a privacy manifest file.
 * BraintreePayPalMessaging (BETA)
-  * Rename `BTPayPalMessagingPlacement` to `BTPayPalMessagingPageType`
-  * Rename `BTPayPalMessagingLogoType` enum case `.simple` to: `.none`
+  * Add `BTPayPalMessagingRequest`, `BTPayPalMessagingColor`, `BTPayPalMessagingLogoType`, `BTPayPalMessagingOfferType`, `BTPayPalMessagingPageType`, `BTPayPalMessagingTextAlignment`, and `BTPayPalMessagingDelegate`
+  * Add `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+    * To get started create a `BTPayPalMessagingView` and call `start(_:)` with a `BTPayPalMessagingRequest`
 
 ## 5.25.0 (2024-04-10)
 * Require Xcode 15.0+ and Swift 5.9+ (per [Apple App Store requirements](https://developer.apple.com/news/upcoming-requirements/?id=04292024a)) 
