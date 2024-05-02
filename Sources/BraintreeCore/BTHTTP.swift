@@ -18,7 +18,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
     let baseURL: URL
-    let cacheManager = BTURLCacheManager()
     var clientAuthorization: ClientAuthorization?
 
     /// Session exposed for testing
@@ -98,11 +97,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - HTTP Methods
 
-    func get(_ path: String, parameters: Encodable? = nil, shouldCache: Bool = false, completion: @escaping RequestCompletion) {
+    func get(_ path: String, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters?.toDictionary()
             
-            httpRequest(method: "GET", path: path, parameters: dict, shouldCache: shouldCache, completion: completion)
+            httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -136,18 +135,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         method: String,
         path: String,
         parameters: [String: Any]? = [:],
-        shouldCache: Bool = false,
         completion: RequestCompletion?
     ) {
         createRequest(method: method, path: path, parameters: parameters) { request, error in
             guard let request = request else {
-                self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
-                return
-            }
-            
-            if let cachedResponse = self.cacheManager.getFromCache(request: request),
-               shouldCache {
-                self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
+                self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
                 return
             }
             
@@ -157,7 +149,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                     return
                 }
 
-                handleRequestCompletion(data: data, request: request, shouldCache: shouldCache, response: response, error: error, completion: completion)
+                handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
             }.resume()
         }
     }
@@ -280,7 +272,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
-        shouldCache: Bool,
         response: URLResponse?,
         error: Error?,
         completion: RequestCompletion?
@@ -327,10 +318,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             }
             return
-        }
-
-        if let request, shouldCache {
-            cacheManager.putInCache(request: request, response: response, data: data, statusCode: httpResponse.statusCode)
         }
 
         callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)

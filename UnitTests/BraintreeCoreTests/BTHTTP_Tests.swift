@@ -395,40 +395,6 @@ final class BTHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    // MARK: - Configuration tests
-
-    func testGETRequests_whenShouldCacheTrue_cachesConfiguration() {
-        let expectation = expectation(description: "Fetches configuration")
-
-        http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: true) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertNotNil(URLCache.shared.cachedResponse(for: httpRequest))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testGETRequests_whenShouldCacheFalse_doesNotStoreInCache() {
-        let expectation = expectation(description: "Fetches configuration")
-
-        http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: false) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertNil(URLCache.shared.cachedResponse(for: httpRequest))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
     // MARK: - Authentication
 
     func testGETRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams() {
