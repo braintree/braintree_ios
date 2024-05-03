@@ -470,8 +470,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
                let endDate = transaction.responseEndDate,
                let path = transaction.request.url?.path,
                path != "/v1/tracking/batch/events" {
+                let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
+
                 apiTimingDelegate?.fetchAPITiming(
-                    path: path,
+                    path: cleanedPath,
                     startTime: Int(round(startDate.timeIntervalSince1970 * 1000)),
                     endTime: Int(round(endDate.timeIntervalSince1970 * 1000))
                 )
