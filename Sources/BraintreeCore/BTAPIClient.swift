@@ -69,12 +69,14 @@ import Foundation
 
             tokenizationKey = authorization
             configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
+            configurationHTTP?.apiTimingDelegate = self
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
 
                 guard let clientToken else { return nil }
                 configurationHTTP = try BTHTTP(clientToken: clientToken)
+                configurationHTTP?.apiTimingDelegate = self
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
