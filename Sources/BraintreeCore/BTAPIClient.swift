@@ -494,7 +494,14 @@ import Foundation
     // MARK: BTAPITimingDelegate conformance
 
     func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
-        if shouldSendAPIRequestLatency == true {
+        if shouldSendAPIRequestLatency && path.contains("v1/configuration") {
+            analyticsService?.sendAnalyticsEvent(
+                BTCoreAnalytics.apiRequestLatency,
+                endpoint: path,
+                endTime: endTime,
+                startTime: startTime
+            )
+        } else if shouldSendAPIRequestLatency {
             analyticsService?.sendAnalyticsEvent(
                 BTCoreAnalytics.apiRequestLatency,
                 endpoint: path,
