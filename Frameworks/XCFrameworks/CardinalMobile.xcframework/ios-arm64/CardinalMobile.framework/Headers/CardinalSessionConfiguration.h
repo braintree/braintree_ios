@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "UiCustomization.h"
+#import <CardinalMobile/UiCustomization.h>
 NS_ASSUME_NONNULL_BEGIN
 
 /*!

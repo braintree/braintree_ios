@@ -6,10 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ButtonCustomization.h"
-#import "ToolbarCustomization.h"
-#import "LabelCustomization.h"
-#import "TextBoxCustomization.h"
+#import <CardinalMobile/ButtonCustomization.h>
+#import <CardinalMobile/ToolbarCustomization.h>
+#import <CardinalMobile/LabelCustomization.h>
+#import <CardinalMobile/TextBoxCustomization.h>
 
 /**
  * The ButtonType enum defines the button type.
