@@ -30,16 +30,22 @@ class BTAnalyticsService: Equatable {
     func sendAnalyticsEvent(
         _ eventName: String,
         correlationID: String? = nil,
+        endpoint: String? = nil,
+        endTime: Int? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
+        startTime: Int? = nil,
         payPalContextID: String? = nil
     ) {
         Task(priority: .background) {
             await performEventRequest(
                 eventName,
                 correlationID: correlationID,
+                endpoint: endpoint,
+                endTime: endTime,
                 errorDescription: errorDescription,
                 linkType: linkType,
+                startTime: startTime,
                 payPalContextID: payPalContextID
             )
         }
@@ -49,17 +55,23 @@ class BTAnalyticsService: Equatable {
     func performEventRequest(
         _ eventName: String,
         correlationID: String? = nil,
+        endpoint: String? = nil,
+        endTime: Int? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
+        startTime: Int? = nil,
         payPalContextID: String? = nil
     ) async {
         let timestampInMilliseconds = Int(round(Date().timeIntervalSince1970 * 1000))
         let event = FPTIBatchData.Event(
             correlationID: correlationID,
+            endpoint: endpoint,
+            endTime: endTime,
             errorDescription: errorDescription,
             eventName: eventName,
             linkType: linkType,
             payPalContextID: payPalContextID,
+            startTime: startTime,
             timestamp: String(timestampInMilliseconds)
         )
                 
