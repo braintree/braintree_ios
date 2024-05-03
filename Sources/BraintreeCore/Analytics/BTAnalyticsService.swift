@@ -12,6 +12,8 @@ class BTAnalyticsService: Equatable {
 
     private let apiClient: BTAPIClient
 
+    private var events: [FPTIBatchData.Event] = []
+
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient) {
@@ -62,7 +64,9 @@ class BTAnalyticsService: Equatable {
             payPalContextID: payPalContextID,
             timestamp: String(timestampInMilliseconds)
         )
-                
+
+        events.append(event)
+
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
                 return
@@ -84,15 +88,23 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: self.apiClient.metadata.sessionID, event: event)
-            self.http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
+            // Send a batch of analytics events every 30 seconds
+            Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+                self.sendQueuedAnalyticsEvents(configuration: configuration)
+            }
         }
     }
 
     // MARK: - Helpers
 
+    @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration) {
+        let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events)
+        http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
+        events = []
+    }
+
     /// Constructs POST params to be sent to FPTI
-    func createAnalyticsEvent(config: BTConfiguration, sessionID: String, event: FPTIBatchData.Event) -> Codable {
+    func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.fptiEnvironment,
@@ -102,7 +114,7 @@ class BTAnalyticsService: Equatable {
             tokenizationKey: apiClient.tokenizationKey
         )
         
-        return FPTIBatchData(metadata: batchMetadata, events: [event])
+        return FPTIBatchData(metadata: batchMetadata, events: events)
     }
 
     // MARK: Equitable Protocol Conformance
