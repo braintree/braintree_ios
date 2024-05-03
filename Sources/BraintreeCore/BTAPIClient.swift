@@ -2,7 +2,7 @@ import Foundation
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
-@objcMembers public class BTAPIClient: NSObject {
+@objcMembers public class BTAPIClient: NSObject, BTAPITimingDelegate {
 
     /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
@@ -18,6 +18,10 @@ import Foundation
 
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
+
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    @_documentation(visibility: private)
+    public var shouldSendAPIRequestLatency: Bool = false
 
     // MARK: - Internal Properties
     
@@ -467,8 +471,10 @@ import Foundation
 
             if let clientToken, let baseURL {
                 http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                http?.apiTimingDelegate = self
             } else if let tokenizationKey, let baseURL {
                 http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
+                http?.apiTimingDelegate = self
             }
         }
 
@@ -480,6 +486,19 @@ import Foundation
             } else if let tokenizationKey, let graphQLBaseURL {
                 graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
             }
+        }
+    }
+
+    // MARK: BTAPITimingDelegate conformance
+
+    func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
+        if shouldSendAPIRequestLatency == true {
+            analyticsService?.sendAnalyticsEvent(
+                BTCoreAnalytics.apiRequestLatency,
+                endpoint: path,
+                endTime: endTime,
+                startTime: startTime
+            )
         }
     }
 }

@@ -34,8 +34,8 @@ class BTAnalyticsService: Equatable {
         endTime: Int? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        startTime: Int? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        startTime: Int? = nil
     ) {
         Task(priority: .background) {
             await performEventRequest(
@@ -45,8 +45,8 @@ class BTAnalyticsService: Equatable {
                 endTime: endTime,
                 errorDescription: errorDescription,
                 linkType: linkType,
-                startTime: startTime,
-                payPalContextID: payPalContextID
+                payPalContextID: payPalContextID,
+                startTime: startTime
             )
         }
     }
@@ -59,8 +59,8 @@ class BTAnalyticsService: Equatable {
         endTime: Int? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        startTime: Int? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        startTime: Int? = nil
     ) async {
         let timestampInMilliseconds = Int(round(Date().timeIntervalSince1970 * 1000))
         let event = FPTIBatchData.Event(
