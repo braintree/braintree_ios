@@ -19,6 +19,10 @@ import Foundation
     var fptiEnvironment: String? {
         environment == "production" ? "live" : environment
     }
+    
+    /// :nodoc: Timestamp of initialization of each `BTConfiguration` instance
+    /// Mutable for testing.
+    var time = Date().timeIntervalSince1970
 
     /// :nodoc: This initalizer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///  Used to initialize a `BTConfiguration`
