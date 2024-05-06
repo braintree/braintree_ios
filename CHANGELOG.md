@@ -54,10 +54,6 @@
 * Update all SDK errors to be public and [Equatable](https://developer.apple.com/documentation/swift/equatable) (fixes #1152 and #1080)
 * BraintreeThreeDSecure
   * Fix bug where `BTThreeDSecureClient.initializeChallenge()` callback wasn't properly invoked (fixes #1154)
-* BraintreePayPalMessaging (BETA)
-  * Add `BTPayPalMessagingRequest`, `BTPayPalMessagingColor`, `BTPayPalMessagingLogoType`, `BTPayPalMessagingOfferType`, `BTPayPalMessagingPlacement`, `BTPayPalMessagingTextAlignment`, and `BTPayPalMessagingDelegate`
-  * Add `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
-    * To get started create a `BTPayPalMessagingView` and call `start(_:)` with a `BTPayPalMessagingRequest`
 
 ## 6.10.0 (2023-11-17)
 * BraintreePayPalNativeCheckout
