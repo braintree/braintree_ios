@@ -467,8 +467,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
                let path = transaction.request.url?.path {
                 networkTimingDelegate?.fetchAPITiming(
                     path: path,
-                    startTime: startDate.utcTimpestampMilliseconds,
-                    endTime: endDate.utcTimpestampMilliseconds
+                    startTime: startDate.utcTimestampMilliseconds,
+                    endTime: endDate.utcTimestampMilliseconds
                 )
             }
         }

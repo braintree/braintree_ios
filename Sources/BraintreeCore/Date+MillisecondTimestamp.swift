@@ -2,7 +2,7 @@ import Foundation
 
 extension Date {
     
-    var utcTimpestampMilliseconds: Int {
+    var utcTimestampMilliseconds: Int {
         Int(round(Date().timeIntervalSince1970 * 1000))
     }
 }
