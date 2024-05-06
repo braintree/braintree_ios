@@ -1,10 +1,6 @@
 import Foundation
 import Security
 
-protocol BTAPITimingDelegate: AnyObject {
-    func fetchAPITiming(path: String, startTime: Int, endTime: Int)
-}
-
 /// Performs HTTP methods on the Braintree Client API
 class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
 
@@ -24,7 +20,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
     var dispatchQueue: DispatchQueue = DispatchQueue.main
     var clientAuthorization: ClientAuthorization?
 
-    weak var apiTimingDelegate: BTAPITimingDelegate?
+    weak var networkTimingDelegate: BTHTTPNetworkTiming?
 
     /// Session exposed for testing
     lazy var session: URLSession = {
@@ -472,7 +468,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
                path != "/v1/tracking/batch/events" {
                 let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
 
-                apiTimingDelegate?.fetchAPITiming(
+                networkTimingDelegate?.fetchAPITiming(
                     path: cleanedPath,
                     startTime: startDate.utcTimpestampMilliseconds,
                     endTime: endDate.utcTimpestampMilliseconds

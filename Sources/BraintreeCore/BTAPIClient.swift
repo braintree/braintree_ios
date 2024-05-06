@@ -2,7 +2,7 @@ import Foundation
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
-@objcMembers public class BTAPIClient: NSObject, BTAPITimingDelegate {
+@objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
 
     /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
@@ -69,14 +69,14 @@ import Foundation
 
             tokenizationKey = authorization
             configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
-            configurationHTTP?.apiTimingDelegate = self
+            configurationHTTP?.networkTimingDelegate = self
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
 
                 guard let clientToken else { return nil }
                 configurationHTTP = try BTHTTP(clientToken: clientToken)
-                configurationHTTP?.apiTimingDelegate = self
+                configurationHTTP?.networkTimingDelegate = self
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
@@ -473,10 +473,10 @@ import Foundation
 
             if let clientToken, let baseURL {
                 http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                http?.apiTimingDelegate = self
+                http?.networkTimingDelegate = self
             } else if let tokenizationKey, let baseURL {
                 http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
-                http?.apiTimingDelegate = self
+                http?.networkTimingDelegate = self
             }
         }
 
