@@ -13,6 +13,7 @@ public class MockAPIClient: BTAPIClient {
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil
     public var postedLinkType: String? = nil
+    public var postedShouldSendAPIRequestLatency: Bool = false
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -92,6 +93,10 @@ public class MockAPIClient: BTAPIClient {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
         postedAnalyticsEvents.append(name)
+
+        if postedShouldSendAPIRequestLatency {
+            postedAnalyticsEvents.append(BTCoreAnalytics.apiRequestLatency)
+        }
     }
 
     func didFetchPaymentMethods(sorted: Bool) -> Bool {

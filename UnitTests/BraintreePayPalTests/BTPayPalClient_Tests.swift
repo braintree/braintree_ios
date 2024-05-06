@@ -18,6 +18,7 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
+        mockAPIClient.postedShouldSendAPIRequestLatency = true
 
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
     }
@@ -279,6 +280,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
+        XCTAssertTrue(postedAnalyticsEvents.contains(BTCoreAnalytics.apiRequestLatency))
     }
 
     func testTokenizePayPalAccount_whenPayPalCreditOffered_performsSwitchCorrectly() {
@@ -302,6 +304,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
+        XCTAssertTrue(postedAnalyticsEvents.contains(BTCoreAnalytics.apiRequestLatency))
     }
 
     func testTokenizePayPalAccount_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
