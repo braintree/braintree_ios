@@ -474,8 +474,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
 
                 apiTimingDelegate?.fetchAPITiming(
                     path: cleanedPath,
-                    startTime: Int(round(startDate.timeIntervalSince1970 * 1000)),
-                    endTime: Int(round(endDate.timeIntervalSince1970 * 1000))
+                    startTime: startDate.utcTimpestampMilliseconds,
+                    endTime: endDate.utcTimpestampMilliseconds
                 )
             }
         }

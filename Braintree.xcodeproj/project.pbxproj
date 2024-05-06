@@ -110,6 +110,7 @@
 		80CD34012A604307009545F5 /* MockCardinalSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CD33FD2A603892009545F5 /* MockCardinalSession.swift */; };
 		80CF988529DB64D400D51979 /* BTLocalPaymentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CF988429DB64D400D51979 /* BTLocalPaymentError.swift */; };
 		80D1638729E75CF1001D880E /* BTThreeDSecureClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D1638529E75766001D880E /* BTThreeDSecureClient.swift */; };
+		80D280CD2BE9354B00762D27 /* Date+MillisecondTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D280CC2BE9354B00762D27 /* Date+MillisecondTimestamp.swift */; };
 		80E2460F29E492DF00945A1D /* BTLocalPaymentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2460E29E492DF00945A1D /* BTLocalPaymentClient.swift */; };
 		80F86FF029FC2ED6003297FF /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */; };
 		80FF7D1A25881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7D1925881C03001C32EF /* BTThreeDSecureV2UICustomization_Tests.swift */; };
@@ -749,6 +750,7 @@
 		80CD33FF2A6042FC009545F5 /* CardinalSessionTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardinalSessionTestable.swift; sourceTree = "<group>"; };
 		80CF988429DB64D400D51979 /* BTLocalPaymentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentError.swift; sourceTree = "<group>"; };
 		80D1638529E75766001D880E /* BTThreeDSecureClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureClient.swift; sourceTree = "<group>"; };
+		80D280CC2BE9354B00762D27 /* Date+MillisecondTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+MillisecondTimestamp.swift"; sourceTree = "<group>"; };
 		80DBE69423A931A600373230 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		80E2460E29E492DF00945A1D /* BTLocalPaymentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentClient.swift; sourceTree = "<group>"; };
 		80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
@@ -1245,6 +1247,7 @@
 				BEBD05212A1FE8BE0003C15C /* BTWebAuthenticationSession.swift */,
 				BEB9BF522A26872B00A3673E /* BTWebAuthenticationSessionClient.swift */,
 				BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */,
+				80D280CC2BE9354B00762D27 /* Date+MillisecondTimestamp.swift */,
 				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
 				80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
@@ -2819,6 +2822,7 @@
 				579DAEC7286E064500FCE87F /* BTAppContextSwitchClient.swift in Sources */,
 				8053F05929FB2F700076F988 /* URL+IsPayPal.swift in Sources */,
 				BEC3F11328A4401E0074DF0F /* BTHTTPError.swift in Sources */,
+				80D280CD2BE9354B00762D27 /* Date+MillisecondTimestamp.swift in Sources */,
 				574891EB286F7E4F0020DA36 /* BTClientMetadataIntegration.swift in Sources */,
 				8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */,
 				BE698EA428AD2C10001D9B10 /* BTCoreConstants.swift in Sources */,

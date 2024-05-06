@@ -62,7 +62,7 @@ class BTAnalyticsService: Equatable {
         payPalContextID: String? = nil,
         startTime: Int? = nil
     ) async {
-        let timestampInMilliseconds = Int(round(Date().timeIntervalSince1970 * 1000))
+        let timestampInMilliseconds = Date().utcTimpestampMilliseconds
         let event = FPTIBatchData.Event(
             correlationID: correlationID,
             endpoint: endpoint,
