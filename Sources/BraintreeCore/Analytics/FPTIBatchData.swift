@@ -136,7 +136,9 @@ struct FPTIBatchData: Codable {
     }
 
     private static func isVenmoAppInstalled() -> Bool {
-        let venmoURL = URL(string: "com.venmo.touch.v2://")!
+        guard let venmoURL = URL(string: "\(BTCoreConstants.venmoScheme)://") else {
+            return false
+        }
         return UIApplication.shared.canOpenURL(venmoURL)
     }
 }
