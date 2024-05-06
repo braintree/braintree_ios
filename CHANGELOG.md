@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.18.1 (2024-05-06)
 * Remove throttle delay in accessing configuration, added in v5.9.0
   * Move from URLCache to NSCache for configuration caching
 
