@@ -57,6 +57,7 @@ public class BTPayPalMessagingView: UIView {
                 clientID: clientID,
                 environment: configuration.environment == "production" ? .live : .sandbox,
                 amount: request.amount,
+                pageType: request.pageType?.pageTypeRawValue,
                 offerType: request.offerType?.offerTypeRawValue
             )
 
