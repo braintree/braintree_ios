@@ -6,18 +6,26 @@ class BTAnalyticsService: Equatable {
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?
-    
+    var timerInterval: Double = 10
+
     /// The FPTI URL to post all analytic events.
     static let url = URL(string: "https://api-m.paypal.com")!
 
+    // MARK: - Private Properties
+
     private let apiClient: BTAPIClient
 
+    private var timer: Timer?
     private var events: [FPTIBatchData.Event] = []
 
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+    }
+
+    deinit {
+        timer?.invalidate()
     }
 
     // MARK: - Internal Methods
@@ -88,8 +96,8 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            // Send a batch of analytics events every 30 seconds
-            Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+            // Send a batch of analytics events
+            self.timer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true) { _ in
                 self.sendQueuedAnalyticsEvents(configuration: configuration)
             }
         }
@@ -100,7 +108,7 @@ class BTAnalyticsService: Equatable {
     @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration) {
         let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events)
         http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-        events = []
+        events.removeAll()
     }
 
     /// Constructs POST params to be sent to FPTI
