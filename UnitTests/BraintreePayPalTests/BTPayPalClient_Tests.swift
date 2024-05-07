@@ -61,6 +61,10 @@ class BTPayPalClient_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
+    func testInitBTPayPalClient_setsShouldSendAPIRequestLatencyOnBTAPIClient() {
+        XCTAssertTrue(payPalClient.apiClient.shouldSendAPIRequestLatency)
+    }
+
     // MARK: - POST request to Hermes endpoint
 
     func testTokenizePayPalAccount_checkout_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
@@ -280,7 +284,6 @@ class BTPayPalClient_Tests: XCTestCase {
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
-        XCTAssertTrue(postedAnalyticsEvents.contains(BTCoreAnalytics.apiRequestLatency))
     }
 
     func testTokenizePayPalAccount_whenPayPalCreditOffered_performsSwitchCorrectly() {
@@ -304,7 +307,6 @@ class BTPayPalClient_Tests: XCTestCase {
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
-        XCTAssertTrue(postedAnalyticsEvents.contains(BTCoreAnalytics.apiRequestLatency))
     }
 
     func testTokenizePayPalAccount_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {

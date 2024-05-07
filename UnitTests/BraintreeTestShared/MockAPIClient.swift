@@ -93,10 +93,6 @@ public class MockAPIClient: BTAPIClient {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
         postedAnalyticsEvents.append(name)
-
-        if postedShouldSendAPIRequestLatency {
-            postedAnalyticsEvents.append(BTCoreAnalytics.apiRequestLatency)
-        }
     }
 
     func didFetchPaymentMethods(sorted: Bool) -> Bool {
