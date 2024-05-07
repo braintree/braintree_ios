@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.26.0 (2024-05-07)
 * Updated expiring pinned vendor SSL certificates
 
 ## 5.25.0 (2024-04-10)
