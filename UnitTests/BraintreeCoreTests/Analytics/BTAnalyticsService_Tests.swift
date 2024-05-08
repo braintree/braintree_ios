@@ -25,7 +25,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
+        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient, timerInterval: 0)
 
         analyticsService.http = mockAnalyticsHTTP
         
