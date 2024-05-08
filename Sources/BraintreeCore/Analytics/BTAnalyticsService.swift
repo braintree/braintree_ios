@@ -98,12 +98,12 @@ class BTAnalyticsService: Equatable {
             }
 
             // Send analytics events immediately if no timer is needed for unit tests
-            if self.timerInterval != 0 {
-                self.timer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: false) { _ in
+            if self.timerInterval == 0 {
+                self.sendQueuedAnalyticsEvents(configuration: configuration)
+            } else {
+                self.timer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true) { _ in
                     self.sendQueuedAnalyticsEvents(configuration: configuration)
                 }
-            } else {
-                self.sendQueuedAnalyticsEvents(configuration: configuration)
             }
         }
     }
