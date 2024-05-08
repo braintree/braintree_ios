@@ -77,6 +77,8 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        BTCoreConstants.startDate = Date().utcTimestampMilliseconds
+        
         tokenize(request: request, completion: completion)
     }
 
@@ -307,6 +309,12 @@ import BraintreeDataCollector
 
             handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
         } sessionDidAppear: { [self] didAppear in
+            BTCoreConstants.endDate = Date().utcTimestampMilliseconds
+
+            if let start = BTCoreConstants.startDate,
+               let end = BTCoreConstants.endDate {
+                print("TOTAL🏈 TIME: \(end - start)")
+            }
             if didAppear {
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
             } else {

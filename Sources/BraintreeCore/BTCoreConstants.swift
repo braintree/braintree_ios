@@ -13,6 +13,9 @@ import Foundation
     static let apiVersion: String = "2016-10-07"
     
     static let graphQLVersion: String = "2018-03-06"
+    
+    public static var startDate: Int? = nil
+    public static var endDate: Int? = nil
 
     // MARK: - BTHTTPError Constants
 
