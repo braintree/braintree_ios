@@ -462,7 +462,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
         metrics.transactionMetrics.forEach { transaction in
-            if let startDate = transaction.requestStartDate,
+            if let startDate = transaction.fetchStartDate,
                let endDate = transaction.responseEndDate,
                let path = transaction.request.url?.path {
                 networkTimingDelegate?.fetchAPITiming(
