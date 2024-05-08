@@ -20,27 +20,10 @@ import Foundation
     public private(set) var metadata: BTClientMetadata
 
     // MARK: - Internal Properties
-
-    /// Used to fetch and store configurations in the URL Cache of the session
+    
     var configurationHTTP: BTHTTP?
-
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
-
-    var session: URLSession {
-        let configurationQueue: OperationQueue = OperationQueue()
-        configurationQueue.name = "com.braintreepayments.BTAPIClient"
-
-        // BTHTTP's default NSURLSession does not cache responses, but we want the BTHTTP instance that fetches configuration to cache aggressively
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.default
-        let configurationCache: URLCache = URLCache(memoryCapacity: 1 * 1024 * 1024, diskCapacity: 0, diskPath: nil)
-
-        configuration.urlCache = configurationCache
-
-        // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
-        configuration.requestCachePolicy = .useProtocolCachePolicy
-        return URLSession(configuration: configuration)
-    }
 
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
@@ -94,8 +77,6 @@ import Foundation
             }
         }
 
-        configurationHTTP?.session = session
-
         // Kickoff the background request to fetch the config
         fetchOrReturnRemoteConfiguration { configuration, error in
             // No-op
@@ -112,8 +93,6 @@ import Foundation
         if graphQLHTTP != nil && graphQLHTTP?.session != nil {
             graphQLHTTP?.session.finishTasksAndInvalidate()
         }
-
-        configurationHTTP?.session.configuration.urlCache?.removeAllCachedResponses()
     }
 
     // MARK: - Public Methods
@@ -138,13 +117,23 @@ import Foundation
         //   - If fetching fails, return error
 
         var configPath: String = "v1/configuration"
-        var configuration: BTConfiguration?
 
         if let clientToken {
             configPath = clientToken.configURL.absoluteString
         }
+        
+        guard let authorization = clientToken?.authorizationFingerprint ?? tokenizationKey else {
+            completion(nil, BTAPIClientError.configurationUnavailable)
+            return
+        }
+        
+        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authorization) {
+            setupHTTPCredentials(cachedConfig)
+            completion(cachedConfig, nil)
+            return
+        }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
+        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
@@ -153,34 +142,18 @@ import Foundation
             if error != nil {
                 completion(nil, error)
                 return
-            } else if response?.statusCode != 200 {
+            } else if response?.statusCode != 200 || body == nil {
                 completion(nil, BTAPIClientError.configurationUnavailable)
                 return
             } else {
-                configuration = BTConfiguration(json: body)
+                let configuration = BTConfiguration(json: body)
 
-                if http == nil {
-                    let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
-
-                    if let clientToken, let baseURL {
-                        http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let baseURL {
-                        http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
-
-                if graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
-
-                    if let clientToken, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
+                setupHTTPCredentials(configuration)
+                try? ConfigurationCache.shared.putInCache(authorization: authorization, configuration: configuration)
+                
+                completion(configuration, nil)
+                return
             }
-
-            completion(configuration, nil)
         }
     }
 
@@ -483,6 +456,30 @@ import Foundation
             return http
         case .graphQLAPI:
             return graphQLHTTP
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupHTTPCredentials(_ configuration: BTConfiguration) {
+        if http == nil {
+            let baseURL: URL? = configuration.json?["clientApiUrl"].asURL()
+
+            if let clientToken, let baseURL {
+                http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+            } else if let tokenizationKey, let baseURL {
+                http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
+            }
+        }
+
+        if graphQLHTTP == nil {
+            let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration.environment ?? "")
+
+            if let clientToken, let graphQLBaseURL {
+                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+            } else if let tokenizationKey, let graphQLBaseURL {
+                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
+            }
         }
     }
 }

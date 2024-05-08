@@ -4,6 +4,13 @@
 * BraintreeCore
   * Batch analytics events to FPTI
 
+## 5.26.0 (2024-05-07)
+* Updated expiring pinned vendor SSL certificates
+
+## 6.18.1 (2024-05-06)
+* Remove throttle delay in accessing configuration, added in v5.9.0
+  * Move from URLCache to NSCache for configuration caching
+
 ## 6.18.0 (2024-04-25)
 * BraintreePayPalNativeCheckout
   * Bump PayPalCheckout to version 1.3.0 with code signing & a privacy manifest file.
