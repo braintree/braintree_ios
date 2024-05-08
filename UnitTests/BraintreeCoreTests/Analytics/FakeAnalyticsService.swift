@@ -2,7 +2,8 @@ import Foundation
 @testable import BraintreeCore
 
 class FakeAnalyticsService: BTAnalyticsService {
-    var lastEvent: String = ""
+    var lastEvent: String? = nil
+    var endpoint: String? = nil
 
     override func sendAnalyticsEvent(
         _ eventName: String,
@@ -15,5 +16,6 @@ class FakeAnalyticsService: BTAnalyticsService {
         startTime: Int? = nil
     ) {
         self.lastEvent = eventName
+        self.endpoint = endpoint
     }
 }
