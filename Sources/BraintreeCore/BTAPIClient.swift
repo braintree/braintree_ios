@@ -25,7 +25,6 @@ import Foundation
 
     // MARK: - Internal Properties
     
-    var configurationHTTP: BTHTTP?
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
@@ -68,15 +67,15 @@ import Foundation
             }
 
             tokenizationKey = authorization
-            configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
-            configurationHTTP?.networkTimingDelegate = self
+            http = BTHTTP(url: baseURL, tokenizationKey: authorization)
+            http?.networkTimingDelegate = self
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
 
                 guard let clientToken else { return nil }
-                configurationHTTP = try BTHTTP(clientToken: clientToken)
-                configurationHTTP?.networkTimingDelegate = self
+                http = try BTHTTP(clientToken: clientToken)
+                http?.networkTimingDelegate = self
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
@@ -139,7 +138,7 @@ import Foundation
             return
         }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
