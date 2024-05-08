@@ -18,12 +18,12 @@ final class PayPalMessaging_Success_UITests: XCTestCase {
     func testStart_withValidRequest_firesDelegates() {
         XCTAssertTrue(app.buttons["DELEGATE: didAppear fired"].waitForExistence(timeout: 10))
 
-        let expectedButtonText = "PayPal - Pay monthly for purchases of $199.00-$10,000.00. Learn more"
+        let expectedButtonText = "PayPal - Pay monthly for purchases of $199-$10,000. Learn more"
         waitForElementToBeHittable(app.buttons[expectedButtonText])
         app.buttons[expectedButtonText].tap()
         sleep(2)
 
-        app.buttons["PayPal Learn More Modal Close"].tap()
+        app.buttons["PayPal learn more modal close"].tap()
         sleep(2)
 
         XCTAssertTrue(app.buttons["DELEGATE: didSelect fired"].waitForExistence(timeout: 10))

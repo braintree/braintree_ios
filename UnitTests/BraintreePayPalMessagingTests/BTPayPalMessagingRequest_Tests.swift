@@ -8,7 +8,7 @@ final class BTPayPalMessagingRequest_Tests: XCTestCase {
         let request = BTPayPalMessagingRequest()
 
         XCTAssertNil(request.amount)
-        XCTAssertNil(request.placement)
+        XCTAssertNil(request.pageType)
         XCTAssertNil(request.offerType)
         XCTAssertNil(request.buyerCountry)
         XCTAssertEqual(request.logoType, .inline)
@@ -19,7 +19,7 @@ final class BTPayPalMessagingRequest_Tests: XCTestCase {
     func testPayPalMessagingRequest_withAllValuesInitialized_setsAllValues() {
         let request = BTPayPalMessagingRequest(
             amount: 6.66,
-            placement: .home,
+            pageType: .home,
             offerType: .payPalCreditNoInterest,
             buyerCountry: "US",
             logoType: .alternative,
@@ -28,7 +28,7 @@ final class BTPayPalMessagingRequest_Tests: XCTestCase {
         )
 
         XCTAssertEqual(request.amount, 6.66)
-        XCTAssertEqual(request.placement, .home)
+        XCTAssertEqual(request.pageType, .home)
         XCTAssertEqual(request.offerType, .payPalCreditNoInterest)
         XCTAssertEqual(request.buyerCountry, "US")
         XCTAssertEqual(request.logoType, .alternative)

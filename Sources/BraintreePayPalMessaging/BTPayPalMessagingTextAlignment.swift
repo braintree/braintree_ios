@@ -14,7 +14,7 @@ public enum BTPayPalMessagingTextAlignment {
     /// Text aligned to the right
     case right
 
-    var textAlignmentRawValue: PayPalMessageTextAlignment {
+    var textAlignmentRawValue: PayPalMessageTextAlign {
         switch self {
         case .left:
             return .left

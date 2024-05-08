@@ -17,6 +17,6 @@ final class BTPayPalMessagingLogoType_Tests: XCTestCase {
     }
 
     func testLogoType_withNone_returnsRawValueNone() {
-        XCTAssertEqual(BTPayPalMessagingLogoType.simple.logoTypeRawValue, .none)
+        XCTAssertEqual(BTPayPalMessagingLogoType.none.logoTypeRawValue, .none)
     }
 }
