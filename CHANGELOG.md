@@ -1,8 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Remove throttle delay in accessing configuration, added in v5.9.0
-  * Move from URLCache to NSCache for configuration caching
+* BraintreeCore
+  * Remove throttle delay in accessing configuration, added in v5.9.0
+    * Move from URLCache to NSCache for configuration caching
+  * Use single `URLSession` instance across configuration and subsequent payment-method-specific HTTP requests
 * BraintreePayPal
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
 
