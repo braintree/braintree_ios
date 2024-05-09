@@ -473,11 +473,11 @@ import Foundation
 
             if let clientToken, let baseURL {
                 http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                http?.networkTimingDelegate = self
             } else if let tokenizationKey, let baseURL {
                 http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
-                http?.networkTimingDelegate = self
             }
+            
+            http?.networkTimingDelegate = self
         }
 
         if graphQLHTTP == nil {
