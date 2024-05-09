@@ -15,7 +15,6 @@ class BTAnalyticsService: Equatable {
     private let apiClient: BTAPIClient
     private let timerInterval: Double
 
-    private var timer: Timer?
     private var events: [FPTIBatchData.Event] = []
 
     // MARK: - Initializer
@@ -23,10 +22,6 @@ class BTAnalyticsService: Equatable {
     init(apiClient: BTAPIClient, timerInterval: Double = 30) {
         self.apiClient = apiClient
         self.timerInterval = timerInterval
-    }
-
-    deinit {
-        timer?.invalidate()
     }
 
     // MARK: - Internal Methods
@@ -101,8 +96,8 @@ class BTAnalyticsService: Equatable {
             if self.timerInterval == 0 {
                 self.sendQueuedAnalyticsEvents(configuration: configuration)
             } else {
-                self.timer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true) { _ in
-                    self.sendQueuedAnalyticsEvents(configuration: configuration)
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.timerInterval) { [weak self] in
+                    self?.sendQueuedAnalyticsEvents(configuration: configuration)
                 }
             }
         }
@@ -112,6 +107,7 @@ class BTAnalyticsService: Equatable {
 
     @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration) {
         if !events.isEmpty {
+            print(events)
             let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events)
             http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
             events.removeAll(keepingCapacity: true)
