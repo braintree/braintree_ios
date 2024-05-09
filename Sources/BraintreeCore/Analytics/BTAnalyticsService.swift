@@ -107,7 +107,6 @@ class BTAnalyticsService: Equatable {
 
     @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration) {
         if !events.isEmpty {
-            print(events)
             let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events)
             http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
             events.removeAll(keepingCapacity: true)
