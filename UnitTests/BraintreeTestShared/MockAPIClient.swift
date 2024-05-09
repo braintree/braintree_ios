@@ -13,7 +13,6 @@ public class MockAPIClient: BTAPIClient {
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil
     public var postedLinkType: String? = nil
-    public var postedShouldSendAPIRequestLatency: Bool = false
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil

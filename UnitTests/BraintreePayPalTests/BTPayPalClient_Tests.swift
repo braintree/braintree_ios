@@ -18,8 +18,6 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
-        mockAPIClient.postedShouldSendAPIRequestLatency = true
-
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
     }
 
