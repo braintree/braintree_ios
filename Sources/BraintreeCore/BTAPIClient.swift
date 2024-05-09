@@ -314,6 +314,7 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        request: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
@@ -321,6 +322,7 @@ import Foundation
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
+            request: request,
             correlationID: correlationID,
             errorDescription: errorDescription,
             linkType: linkType,

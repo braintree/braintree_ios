@@ -30,6 +30,8 @@ struct FPTIBatchData: Codable {
         let correlationID: String?
         let errorDescription: String?
         let eventName: String
+        /// Checks whether Merchant launched tokenzie request with Vault
+        let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?
         /// Used for linking events from the client to server side request
@@ -42,6 +44,7 @@ struct FPTIBatchData: Codable {
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
             case timestamp = "t"

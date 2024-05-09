@@ -19,7 +19,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         FPTIBatchData.Event(
             correlationID: "fake-correlation-id-1",
             errorDescription: "fake-error-description-1",
-            eventName: "fake-event-1",
+            eventName: "fake-event-1", 
+            isVaultRequest: false,
             linkType: "universal",
             payPalContextID: "fake-order-id",
             timestamp: "fake-time-1"
@@ -27,7 +28,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         FPTIBatchData.Event(
             correlationID: nil,
             errorDescription: nil,
-            eventName: "fake-event-2",
+            eventName: "fake-event-2", 
+            isVaultRequest: true,
             linkType: nil,
             payPalContextID: "fake-order-id-2",
             timestamp: "fake-time-2"
@@ -71,6 +73,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertTrue((batchParams["ios_package_manager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
         XCTAssertEqual(batchParams["api_integration_type"] as? String, "fake-integration-type")
         XCTAssertEqual(batchParams["is_simulator"] as? Bool, true)
+        XCTAssertEqual(batchParams["is_vault"] as? Bool, true)
         XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
         XCTAssertTrue((batchParams["mobile_device_model"] as! String).matches("iPhone\\d,\\d|x86_64|arm64"))
         XCTAssertEqual(batchParams["merchant_id"] as! String, "fake-merchant-id")

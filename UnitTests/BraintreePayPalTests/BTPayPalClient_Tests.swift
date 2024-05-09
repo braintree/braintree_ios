@@ -635,6 +635,19 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
 
+    func testRequestType_Checkout() {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
+        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        XCTAssertTrue(payPalClient.isVaultRequest)
+    }
+
+    func testRequestType_Vault() {
+        let vaultRequest = BTPayPalVaultRequest()
+        vaultRequest.billingAgreementDescription = "description"
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+        XCTAssertFalse(payPalClient.isVaultRequest)
+    }
+
     // MARK: - _meta parameter
 
     func testMetadata_whenCheckoutBrowserSwitchIsSuccessful_isPOSTedToServer() {

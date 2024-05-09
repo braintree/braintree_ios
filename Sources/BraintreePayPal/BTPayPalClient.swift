@@ -29,6 +29,9 @@ import BraintreeDataCollector
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
 
+    /// Checks whether Merchant launched tokenzie request with Vault
+    var isVaultRequest: Bool? = nil
+
     // MARK: - Private Properties
 
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
@@ -76,6 +79,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         tokenize(request: request, completion: completion)
+        isVaultRequest = true
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Vault flow.
@@ -118,6 +122,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         tokenize(request: request, completion: completion)
+        isVaultRequest = false
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Checkout or Pay Later flow.
@@ -232,7 +237,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
+        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, request: isVaultRequest)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)

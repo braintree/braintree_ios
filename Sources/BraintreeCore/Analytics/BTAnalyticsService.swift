@@ -23,12 +23,14 @@ class BTAnalyticsService: Equatable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameters:
     ///   - eventName: Name of analytic event.
+    ///   - request: Optional. Type of checkout request associated with checkout session.
     ///   - correlationID: Optional. CorrelationID associated with the checkout session.
     ///   - errorDescription: Optional. Full error description returned to merchant.
     ///   - linkType: Optional. The type of link the SDK will be handling, currently deeplink or universal.
     ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
     func sendAnalyticsEvent(
         _ eventName: String,
+        request: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
@@ -48,6 +50,7 @@ class BTAnalyticsService: Equatable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(
         _ eventName: String,
+        request: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
@@ -58,6 +61,7 @@ class BTAnalyticsService: Equatable {
             correlationID: correlationID,
             errorDescription: errorDescription,
             eventName: eventName,
+            isVaultRequest: request,
             linkType: linkType,
             payPalContextID: payPalContextID,
             timestamp: String(timestampInMilliseconds)
