@@ -10,6 +10,8 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public static let callbackURLScheme: String = "sdk.ios.braintree"
 
+    public static let venmoScheme: String = "com.venmo.touch.v2"
+
     static let apiVersion: String = "2016-10-07"
     
     static let graphQLVersion: String = "2018-03-06"
