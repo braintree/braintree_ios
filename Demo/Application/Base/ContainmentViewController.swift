@@ -176,6 +176,11 @@ class ContainmentViewController: UIViewController {
                 }
             }
 
+        case .origamiTokenizationKey:
+            updateStatus("Fetching Origami Token...")
+            let origamiTokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
+            currentViewController = instantiateViewController(with: origamiTokenizationKey)
+
         case .mockedPayPalTokenizationKey:
             let tokenizationKey = "sandbox_q7v35n9n_555d2htrfsnnmfb3"
             currentViewController = instantiateViewController(with: tokenizationKey)

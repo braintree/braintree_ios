@@ -11,6 +11,7 @@ enum BraintreeDemoEnvironment: Int {
 enum BraintreeDemoAuthType: Int {
     case clientToken
     case tokenizationKey
+    case origamiTokenizationKey
     case mockedPayPalTokenizationKey
     case uiTestHardcodedClientToken
 }

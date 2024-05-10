@@ -28,6 +28,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     let payLaterToggle = UISwitch()
 
+    lazy var origamiCheckoutToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Origami Checkout"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let origamiCheckoutToggle = UISwitch()
+
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
@@ -36,6 +45,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
             buttonsStackView(label: "1-Time Checkout", views: [
                 UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
+                UIStackView(arrangedSubviews: [origamiCheckoutToggleLabel, origamiCheckoutToggle]),
                 payPalCheckoutButton
             ]),
             buttonsStackView(label: "Vault",views: [payPalVaultButton])
@@ -65,6 +75,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         request.lineItems = [lineItem]
         
         request.offerPayLater = payLaterToggle.isOn
+
+        if origamiCheckoutToggle.isOn {
+            request.intent = .sale
+        }
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
