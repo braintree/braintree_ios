@@ -13,13 +13,15 @@ class BTAnalyticsService: Equatable {
     // MARK: - Private Properties
 
     private let apiClient: BTAPIClient
-    private let timerInterval: Double
+    private let timerInterval: Int
+    private let queue = DispatchQueue(label: "BTAnalyticsServiceTimer")
 
-    private var events: [FPTIBatchData.Event] = []
+    private static var events: [FPTIBatchData.Event] = []
+    private var timer: DispatchSourceTimer?
 
     // MARK: - Initializer
 
-    init(apiClient: BTAPIClient, timerInterval: Double = 30) {
+    init(apiClient: BTAPIClient, timerInterval: Int = 30) {
         self.apiClient = apiClient
         self.timerInterval = timerInterval
     }
@@ -69,7 +71,7 @@ class BTAnalyticsService: Equatable {
             timestamp: String(timestampInMilliseconds)
         )
 
-        events.append(event)
+        BTAnalyticsService.events.append(event)
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
@@ -96,9 +98,13 @@ class BTAnalyticsService: Equatable {
             if self.timerInterval == 0 {
                 self.sendQueuedAnalyticsEvents(configuration: configuration)
             } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.timerInterval) { [weak self] in
+                self.timer = DispatchSource.makeTimerSource(queue: self.queue)
+                self.timer?.schedule(deadline: .now() + 30, repeating: .seconds(self.timerInterval))
+                self.timer?.setEventHandler { [weak self] in
                     self?.sendQueuedAnalyticsEvents(configuration: configuration)
                 }
+
+                self.timer?.resume()
             }
         }
     }
@@ -106,10 +112,12 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration) {
-        if !events.isEmpty {
-            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events)
+        if !BTAnalyticsService.events.isEmpty {
+            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events)
             http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-            events.removeAll(keepingCapacity: true)
+            BTAnalyticsService.events.removeAll()
+        } else {
+            timer?.cancel()
         }
     }
 
