@@ -30,7 +30,7 @@ import BraintreeDataCollector
     var webAuthenticationSession: BTWebAuthenticationSession
 
     /// Checks whether Merchant launched tokenzie request with Vault
-    var isVaultRequest: Bool? = nil
+    var isVaultRequest: Bool = false
 
     // MARK: - Private Properties
 
