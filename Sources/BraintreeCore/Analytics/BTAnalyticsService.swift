@@ -9,19 +9,29 @@ class BTAnalyticsService: Equatable {
 
     /// The FPTI URL to post all analytic events.
     static let url = URL(string: "https://api-m.paypal.com")!
+    
+    /// Exposed for unit tests to synchronously fire analytics
+    var timerOn = true
 
     // MARK: - Private Properties
 
     private let apiClient: BTAPIClient
-    private let timerInterval: Double
-
-    private var events: [FPTIBatchData.Event] = []
-
+    private let timerInterval = 30.0
+    private static var eventsQueue: [FPTIBatchData.Event] = []
+    private static var timer: Timer?
+    
     // MARK: - Initializer
 
-    init(apiClient: BTAPIClient, timerInterval: Double = 30) {
+    init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.timerInterval = timerInterval
+        
+        BTAnalyticsService.timer = Timer.scheduledTimer(
+            timeInterval: timerInterval,
+            target: self,
+            selector: #selector(flushQueue),
+            userInfo: nil,
+            repeats: false
+        )
     }
 
     // MARK: - Internal Methods
@@ -40,25 +50,6 @@ class BTAnalyticsService: Equatable {
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-        Task(priority: .background) {
-            await performEventRequest(
-                eventName,
-                correlationID: correlationID,
-                errorDescription: errorDescription,
-                linkType: linkType,
-                payPalContextID: payPalContextID
-            )
-        }
-    }
-    
-    /// Exposed to be able to execute this function synchronously in unit tests
-    func performEventRequest(
-        _ eventName: String,
-        correlationID: String? = nil,
-        errorDescription: String? = nil,
-        linkType: String? = nil,
-        payPalContextID: String? = nil
-    ) async {
         let timestampInMilliseconds = Int(round(Date().timeIntervalSince1970 * 1000))
         let event = FPTIBatchData.Event(
             correlationID: correlationID,
@@ -69,8 +60,17 @@ class BTAnalyticsService: Equatable {
             timestamp: String(timestampInMilliseconds)
         )
 
-        events.append(event)
-
+        BTAnalyticsService.eventsQueue.append(event)
+        
+        // Exposed for unit tests
+        // TODO: - Is there a cleaner way without having to add logic to test code?
+        if !timerOn {
+            flushQueue()
+        }
+    }
+    
+    /// Block executed repeatedly by `Timer` static property, based on set `timerInterval` property
+    @objc func flushQueue() {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
                 return
@@ -92,29 +92,24 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            // Send analytics events immediately if no timer is needed for unit tests
-            if self.timerInterval == 0 {
+            if !BTAnalyticsService.eventsQueue.isEmpty {
                 self.sendQueuedAnalyticsEvents(configuration: configuration)
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.timerInterval) { [weak self] in
-                    self?.sendQueuedAnalyticsEvents(configuration: configuration)
-                }
             }
         }
     }
 
     // MARK: - Helpers
 
-    @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration) {
-        if !events.isEmpty {
-            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events)
-            http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-            events.removeAll(keepingCapacity: true)
-        }
+    /// Sends batched events to FPTI and wipes event queue
+    @objc private func sendQueuedAnalyticsEvents(configuration: BTConfiguration) {
+        let postParameters = createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.eventsQueue)
+        print("Fired events: \(BTAnalyticsService.eventsQueue.map({$0.eventName}))")
+        http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
+        BTAnalyticsService.eventsQueue.removeAll(keepingCapacity: true)
     }
 
     /// Constructs POST params to be sent to FPTI
-    func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
+    private func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
             environment: config.fptiEnvironment,
