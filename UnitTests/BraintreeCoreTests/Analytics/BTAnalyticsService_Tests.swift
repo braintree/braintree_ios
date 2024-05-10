@@ -13,25 +13,23 @@ final class BTAnalyticsService_Tests: XCTestCase {
         oneSecondLater = UInt64((Date().timeIntervalSince1970 * 1000) + 999)
     }
 
-    func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() {
+    func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-        analyticsService.timerOn = false
         
-        analyticsService.sendAnalyticsEvent("any.analytics.event")
+        await analyticsService.performEventRequest("any.analytics.event")
         
         XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api-m.paypal.com")
     }
 
-    func testSendAnalyticsEvent_sendsAnalyticsEvent() {
+    func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-        analyticsService.timerOn = false
-        
+        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient, timerInterval: 0)
+
         analyticsService.http = mockAnalyticsHTTP
         
-        analyticsService.sendAnalyticsEvent("any.analytics.event")
+        await analyticsService.performEventRequest("any.analytics.event")
         
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         
