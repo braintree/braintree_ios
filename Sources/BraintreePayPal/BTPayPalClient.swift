@@ -39,9 +39,9 @@ import BraintreeDataCollector
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
     
-    private var configFetchComplete: Int? = nil
     private var hermesCallReceivedTimestamp: Int? = nil
     private var tokenizeStartedTimestamp: Int? = nil
+    
     private var configCached: Bool? = nil
     
     // MARK: - Initializer
@@ -263,7 +263,7 @@ import BraintreeDataCollector
             )
 
             self.configCached = configuration.isFromCache
-            self.configFetchComplete = Date().utcTimestampMilliseconds
+            let configFetchedTimestamp = Date().utcTimestampMilliseconds
             
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
@@ -271,7 +271,7 @@ import BraintreeDataCollector
             }
 
             self.payPalRequest = request
-            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.hermesPostStarted, startTime: self.configFetchComplete, endTime: Date().utcTimestampMilliseconds)
+            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.hermesPostStarted, startTime: configFetchedTimestamp, endTime: Date().utcTimestampMilliseconds)
             self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
                 self.hermesCallReceivedTimestamp = Date().utcTimestampMilliseconds
                 

@@ -115,7 +115,6 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        let startTimeConfigMethod = Date().utcTimestampMilliseconds
         // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
         //
         // Rules:
