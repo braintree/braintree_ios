@@ -38,7 +38,12 @@ import BraintreeDataCollector
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
-
+    
+    private var configFetchComplete: Int? = nil
+    private var hermesCallReceivedTimestamp: Int? = nil
+    private var tokenizeStartedTimestamp: Int? = nil
+    private var configCached: Bool? = nil
+    
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -234,7 +239,11 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        tokenizeStartedTimestamp = Date().utcTimestampMilliseconds
         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
+        
+        let configStartTime = Date().utcTimestampMilliseconds
+        
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
@@ -245,14 +254,27 @@ import BraintreeDataCollector
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
+            
+            self.apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.configFetchTime,
+                configCached: configuration.isFromCache,
+                startTime: configStartTime,
+                endTime: Date().utcTimestampMilliseconds
+            )
 
+            self.configCached = configuration.isFromCache
+            self.configFetchComplete = Date().utcTimestampMilliseconds
+            
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
             }
 
             self.payPalRequest = request
+            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.hermesPostStarted, startTime: self.configFetchComplete, endTime: Date().utcTimestampMilliseconds)
             self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
+                self.hermesCallReceivedTimestamp = Date().utcTimestampMilliseconds
+                
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyFailure(with: error, completion: completion)
@@ -307,10 +329,24 @@ import BraintreeDataCollector
 
             handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
         } sessionDidAppear: { [self] didAppear in
+            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.asWebStartTime, startTime: self.hermesCallReceivedTimestamp, endTime: Date().utcTimestampMilliseconds)
+            
             if didAppear {
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
+                apiClient.sendAnalyticsEvent(
+                    BTPayPalAnalytics.browserPresentationSucceeded,
+                    configCached: self.configCached,
+                    payPalContextID: payPalContextID,
+                    startTime: tokenizeStartedTimestamp,
+                    endTime: Date().utcTimestampMilliseconds
+                )
             } else {
-                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed, payPalContextID: payPalContextID)
+                apiClient.sendAnalyticsEvent(
+                    BTPayPalAnalytics.browserPresentationFailed,
+                    configCached: self.configCached,
+                    payPalContextID: payPalContextID,
+                    startTime: tokenizeStartedTimestamp,
+                    endTime: Date().utcTimestampMilliseconds
+                )
             }
         } sessionDidCancel: { [self] in
             if !webSessionReturned {

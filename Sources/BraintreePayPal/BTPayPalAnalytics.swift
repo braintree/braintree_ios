@@ -25,4 +25,13 @@ enum BTPayPalAnalytics {
     // MARK: - Additional Conversion events
 
     static let handleReturnStarted = "paypal:tokenize:handle-return:started"
+    
+    /// From config retrieved --> hermes post called
+    static let hermesPostStarted = "paypal:hermes-post-started"
+    
+    /// From hermes post received --> asWebStart finished
+    static let asWebStartTime = "paypal:asweb-started"
+    
+    /// Duration of BTAPIClient.fetchOrReturnRemoteConfig()
+    static let configFetchTime = "paypal:fetch-config"
 }

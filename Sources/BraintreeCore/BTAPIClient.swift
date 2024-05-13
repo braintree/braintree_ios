@@ -25,7 +25,7 @@ import Foundation
 
     // MARK: - Internal Properties
     
-    var configurationHTTP: BTHTTP?
+//    var configurationHTTP: BTHTTP?
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
@@ -68,15 +68,15 @@ import Foundation
             }
 
             tokenizationKey = authorization
-            configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
-            configurationHTTP?.networkTimingDelegate = self
+            http = BTHTTP(url: baseURL, tokenizationKey: authorization)
+            http?.networkTimingDelegate = self
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
 
                 guard let clientToken else { return nil }
-                configurationHTTP = try BTHTTP(clientToken: clientToken)
-                configurationHTTP?.networkTimingDelegate = self
+                http = try BTHTTP(clientToken: clientToken)
+                http?.networkTimingDelegate = self
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
@@ -115,13 +115,13 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
+        let startTimeConfigMethod = Date().utcTimestampMilliseconds
         // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
         //
         // Rules:
         //   - If cachedConfiguration is present, return it without a request
         //   - If cachedConfiguration is not present, fetch it and cache the successful response
         //   - If fetching fails, return error
-
         var configPath: String = "v1/configuration"
 
         if let clientToken {
@@ -135,11 +135,12 @@ import Foundation
         
         if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authorization) {
             setupHTTPCredentials(cachedConfig)
+            cachedConfig.isFromCache = true
             completion(cachedConfig, nil)
             return
         }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
@@ -320,17 +321,23 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        configCached: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        startTime: Int? = nil,
+        endTime: Int? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
+            configCached: configCached,
             correlationID: correlationID,
+            endTime: endTime,
             errorDescription: errorDescription,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            startTime: startTime
         )
     }
 

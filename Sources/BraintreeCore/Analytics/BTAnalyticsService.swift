@@ -29,6 +29,7 @@ class BTAnalyticsService: Equatable {
     ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
     func sendAnalyticsEvent(
         _ eventName: String,
+        configCached: Bool? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
@@ -40,6 +41,7 @@ class BTAnalyticsService: Equatable {
         Task(priority: .background) {
             await performEventRequest(
                 eventName,
+                configCached: configCached,
                 correlationID: correlationID,
                 endpoint: endpoint,
                 endTime: endTime,
@@ -54,6 +56,7 @@ class BTAnalyticsService: Equatable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(
         _ eventName: String,
+        configCached: Bool? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
@@ -64,6 +67,7 @@ class BTAnalyticsService: Equatable {
     ) async {
         let timestampInMilliseconds = Date().utcTimestampMilliseconds
         let event = FPTIBatchData.Event(
+            configCached: configCached,
             correlationID: correlationID,
             endpoint: endpoint,
             endTime: endTime,
