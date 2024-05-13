@@ -30,7 +30,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var origamiCheckoutToggleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Origami Checkout"
+        label.text = "New PayPal Checkout"
         label.font = .preferredFont(forTextStyle: .footnote)
         return label
     }()
@@ -78,6 +78,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         if origamiCheckoutToggle.isOn {
             request.intent = .sale
+        } else {
+            request.intent = .authorize
         }
 
         payPalClient.tokenize(request) { nonce, error in

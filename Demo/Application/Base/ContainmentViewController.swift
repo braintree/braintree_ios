@@ -177,7 +177,7 @@ class ContainmentViewController: UIViewController {
             }
 
         case .origamiTokenizationKey:
-            updateStatus("Fetching Origami Token...")
+            updateStatus("Fetching new checkout token...")
             let origamiTokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
             currentViewController = instantiateViewController(with: origamiTokenizationKey)
 

@@ -91,7 +91,7 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
-				<string>Origami Tokenization Key</string>
+				<string>New Checkout Tokenization Key</string>
 			</array>
 			<key>Key</key>
 			<string>BraintreeDemoSettingsAuthorizationTypeKey</string>
@@ -101,7 +101,7 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
-				<string>Origami Tokenization Key</string>
+				<string>New Checkout Tokenization Key</string>
 			</array>
 			<key>Values</key>
 			<array>
