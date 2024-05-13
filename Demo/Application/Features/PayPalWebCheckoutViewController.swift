@@ -7,11 +7,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
 
     override func createPaymentButton() -> UIView {
-        let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
+//        let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
-        let payPalPayLaterButton = createButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
+//        let payPalPayLaterButton = createButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
 
-        let buttons = [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton]
+        let buttons = [payPalVaultButton] // [payPalCheckoutButton, payPalVaultButton, payPalPayLaterButton]
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
         stackView.alignment = .center
