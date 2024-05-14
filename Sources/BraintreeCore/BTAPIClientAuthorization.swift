@@ -32,7 +32,7 @@ class BTTokenizationKey: Authorization {
     
     init(_ rawValue: String) {
         self.bearer = rawValue
-        self.configURL = URL(string: "")!
+        self.configURL = URL(string: "www.apple.com")!
         self.originalValue = rawValue
     }
 }

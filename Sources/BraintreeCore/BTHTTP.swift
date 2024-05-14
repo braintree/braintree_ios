@@ -20,6 +20,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     let baseURL: URL
     var clientAuthorization: ClientAuthorization?
 
+    var authorization: Authorization? = nil // make non nil
+    
     /// Session exposed for testing
     lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
@@ -52,6 +54,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     }
     
     // MARK: - Internal Initializers
+    
+    init(authorizationNew: Authorization) {
+        self.authorization = authorizationNew
+        self.baseURL = URL(string: "www.apple.com")!
+    }
     
     init(url: URL) {
         self.baseURL = url
