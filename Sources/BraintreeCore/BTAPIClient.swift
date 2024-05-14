@@ -10,12 +10,9 @@ import Foundation
 
     // MARK: - Public Properties
 
-    /// The tokenization key used to authorize the APIClient
-    public var tokenizationKey: String?
-
-    /// The client token used to authorize the APIClient
-    public var clientToken: BTClientToken?
-
+    /// TODO - eliminate the above 2
+    public var authorization: Authorization
+    
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
 
@@ -47,8 +44,6 @@ import Foundation
     init?(authorization: String, sendAnalyticsEvent: Bool) {
         self.metadata = BTClientMetadata()
 
-        super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
         guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
 
         let errorString = BTLogLevelDescription.string(for: .error) 
@@ -63,19 +58,22 @@ import Foundation
                 return nil
             }
 
-            tokenizationKey = authorization
+            self.authorization = BTTokenizationKey(authorization)
             configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
         case .clientToken:
             do {
-                clientToken = try BTClientToken(clientToken: authorization)
+                let clientToken = try BTClientToken(clientToken: authorization)
+                self.authorization = clientToken
 
-                guard let clientToken else { return nil }
                 configurationHTTP = try BTHTTP(clientToken: clientToken)
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
             }
         }
+        super.init()
+        
+        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
 
         // Kickoff the background request to fetch the config
         fetchOrReturnRemoteConfiguration { configuration, error in
@@ -117,17 +115,8 @@ import Foundation
         //   - If fetching fails, return error
 
         var configPath: String = "v1/configuration"
-
-        if let clientToken {
-            configPath = clientToken.configURL.absoluteString
-        }
         
-        guard let authorization = clientToken?.authorizationFingerprint ?? tokenizationKey else {
-            completion(nil, BTAPIClientError.configurationUnavailable)
-            return
-        }
-        
-        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authorization) {
+        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
             setupHTTPCredentials(cachedConfig)
             completion(cachedConfig, nil)
             return
@@ -149,7 +138,7 @@ import Foundation
                 let configuration = BTConfiguration(json: body)
 
                 setupHTTPCredentials(configuration)
-                try? ConfigurationCache.shared.putInCache(authorization: authorization, configuration: configuration)
+                try? ConfigurationCache.shared.putInCache(authorization: authorization.bearer, configuration: configuration)
                 
                 completion(configuration, nil)
                 return
@@ -175,7 +164,7 @@ import Foundation
     ///   - completion: Callback that returns either an array of payment method nonces or an error
     ///   - Note: Only the top level `BTPaymentMethodNonce` type is returned, fetching any additional details will need to be done on the server
     public func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        if clientToken == nil {
+        if authorization.type != .clientToken{
             completion(nil, BTAPIClientError.notAuthorized)
             return
         }
@@ -465,20 +454,20 @@ import Foundation
         if http == nil {
             let baseURL: URL? = configuration.json?["clientApiUrl"].asURL()
 
-            if let clientToken, let baseURL {
-                http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-            } else if let tokenizationKey, let baseURL {
-                http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
+            if authorization.type == .clientToken, let baseURL {
+                http = BTHTTP(url: baseURL, authorizationFingerprint: authorization.bearer)
+            } else if authorization.type == .tokenizationKey, let baseURL {
+                http = BTHTTP(url: baseURL, tokenizationKey: authorization.originalValue)
             }
         }
 
         if graphQLHTTP == nil {
             let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration.environment ?? "")
 
-            if let clientToken, let graphQLBaseURL {
-                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-            } else if let tokenizationKey, let graphQLBaseURL {
-                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
+            if authorization.type == .clientToken, let graphQLBaseURL {
+                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: authorization.bearer)
+            } else if authorization.type == .tokenizationKey, let graphQLBaseURL {
+                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: authorization.originalValue)
             }
         }
     }

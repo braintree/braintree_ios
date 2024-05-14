@@ -70,10 +70,10 @@ class BTAnalyticsService: Equatable {
 
             // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
             if self.http == nil {
-                if let clientToken = self.apiClient.clientToken {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: clientToken.authorizationFingerprint)
-                } else if let tokenizationKey = self.apiClient.tokenizationKey {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: tokenizationKey)
+                if self.apiClient.authorization.type == .clientToken {
+                    self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: self.apiClient.authorization.bearer)
+                } else if self.apiClient.authorization.type == .tokenizationKey {
+                    self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: self.apiClient.authorization.originalValue)
                 } else {
                     return
                 }
@@ -94,12 +94,12 @@ class BTAnalyticsService: Equatable {
     /// Constructs POST params to be sent to FPTI
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String, event: FPTIBatchData.Event) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
-            authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
+            authorizationFingerprint: " ",
             environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
             sessionID: sessionID,
-            tokenizationKey: apiClient.tokenizationKey
+            tokenizationKey: " "
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: [event])
