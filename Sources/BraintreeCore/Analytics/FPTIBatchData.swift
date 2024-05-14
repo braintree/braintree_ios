@@ -50,13 +50,10 @@ struct FPTIBatchData: Codable {
             case payPalContextID = "paypal_context_id"
             case timestamp = "t"
             case tenantName = "tenant_name"
-<<<<<<< api-request-latency
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
-=======
             case venmoInstalled = "venmo_installed"
->>>>>>> main
         }
     }
     
