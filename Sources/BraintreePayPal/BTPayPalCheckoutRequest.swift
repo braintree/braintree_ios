@@ -134,7 +134,7 @@ import BraintreeCore
             checkoutParameters["currency_iso_code"] = currencyCode
         }
         
-        if let userAuthenticationEmail {
+        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
             checkoutParameters["payer_email"] = userAuthenticationEmail
         }
 
