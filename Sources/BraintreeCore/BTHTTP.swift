@@ -121,14 +121,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
     }
 
-    func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
-    }
-
-    func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
-    }
-
     // MARK: - HTTP Method Helpers
 
     func httpRequest(
