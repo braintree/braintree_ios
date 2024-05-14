@@ -176,10 +176,10 @@ class ContainmentViewController: UIViewController {
                 }
             }
 
-        case .origamiTokenizationKey:
+        case .newPayPalCheckoutTokenizationKey:
             updateStatus("Fetching new checkout token...")
-            let origamiTokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
-            currentViewController = instantiateViewController(with: origamiTokenizationKey)
+            let newPayPalCheckoutTokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
+            currentViewController = instantiateViewController(with: newPayPalCheckoutTokenizationKey)
 
         case .mockedPayPalTokenizationKey:
             let tokenizationKey = "sandbox_q7v35n9n_555d2htrfsnnmfb3"
