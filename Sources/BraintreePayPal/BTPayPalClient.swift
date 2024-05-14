@@ -29,7 +29,7 @@ import BraintreeDataCollector
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
 
-    /// Checks whether Merchant launched tokenzie request with Vault
+    /// True if `tokenize()` was called with a VaultRequest object type
     var isVaultRequest: Bool = false
 
     // MARK: - Private Properties
@@ -237,7 +237,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, request: isVaultRequest)
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, request: isVaultRequest)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)

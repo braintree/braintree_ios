@@ -30,7 +30,7 @@ struct FPTIBatchData: Codable {
         let correlationID: String?
         let errorDescription: String?
         let eventName: String
-        /// Checks whether Merchant launched tokenzie request with Vault
+        /// True if `tokenize()` was called with a VaultRequest object type
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?

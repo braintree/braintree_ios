@@ -30,7 +30,7 @@ class BTAnalyticsService: Equatable {
     ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
     func sendAnalyticsEvent(
         _ eventName: String,
-        request: Bool? = nil,
+        isVaultRequest: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
@@ -50,7 +50,7 @@ class BTAnalyticsService: Equatable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(
         _ eventName: String,
-        request: Bool? = nil,
+        isVaultRequest: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
@@ -61,7 +61,7 @@ class BTAnalyticsService: Equatable {
             correlationID: correlationID,
             errorDescription: errorDescription,
             eventName: eventName,
-            isVaultRequest: request,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID,
             timestamp: String(timestampInMilliseconds)
