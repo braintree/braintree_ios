@@ -15,6 +15,11 @@ import Foundation
         json?["environment"].asString()
     }
     
+    // TODO no doc
+    public var clientAPIURL: URL? {
+        json?["clientApiUrl"].asURL()
+    }
+    
     /// The environment name sent to PayPal's FPTI analytics service
     var fptiEnvironment: String? {
         environment == "production" ? "live" : environment

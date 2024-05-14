@@ -10,7 +10,7 @@ class BTGraphQLHTTP: BTHTTP {
 
     // MARK: - Overrides
 
-    override func get(_ path: String, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
+    override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 

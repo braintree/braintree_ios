@@ -58,14 +58,19 @@ import Foundation
                 return nil
             }
 
-            self.authorization = BTTokenizationKey(authorization)
-            configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
+            do {
+                self.authorization =  try BTTokenizationKey(authorization)
+                http = BTHTTP(authorizationNew: self.authorization)
+            } catch {
+                print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription) /// TODO descriptin
+                return nil
+            }
         case .clientToken:
             do {
                 let clientToken = try BTClientToken(clientToken: authorization)
                 self.authorization = clientToken
 
-                configurationHTTP = try BTHTTP(clientToken: clientToken)
+                http = BTHTTP(authorizationNew: self.authorization)
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
@@ -114,7 +119,7 @@ import Foundation
         //   - If cachedConfiguration is not present, fetch it and cache the successful response
         //   - If fetching fails, return error
 
-        var configPath: String = "v1/configuration"
+        let configPath = "v1/configuration"
         
         if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
             setupHTTPCredentials(cachedConfig)
@@ -122,7 +127,7 @@ import Foundation
             return
         }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return

@@ -80,6 +80,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     init(url: URL, tokenizationKey: String) {
         self.baseURL = url
         self.clientAuthorization = .tokenizationKey(tokenizationKey)
+        
+        self.authorization = try? BTTokenizationKey(tokenizationKey)
     }
 
     /// Initialize `BTHTTP` with the authorization fingerprint from a client token
@@ -100,11 +102,13 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
 
         self.init(url: url, authorizationFingerprint: clientToken.authorizationFingerprint)
+        self.authorization = clientToken
+
     }
 
     // MARK: - HTTP Methods
 
-    func get(_ path: String, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
+    func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters?.toDictionary()
             
@@ -141,10 +145,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     func httpRequest(
         method: String,
         path: String,
+        configuration: BTConfiguration? = nil,
         parameters: [String: Any]? = [:],
         completion: RequestCompletion?
     ) {
-        createRequest(method: method, path: path, parameters: parameters) { request, error in
+        createRequest(method: method, path: path, configuration: configuration, parameters: parameters) { request, error in
             guard let request = request else {
                 self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
                 return
@@ -164,9 +169,17 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     func createRequest(
         method: String,
         path: String,
+        configuration: BTConfiguration? = nil,
         parameters: [String: Any]? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
+        var baseURL: URL
+        if let clientAPIURL = configuration?.clientAPIURL {
+            baseURL = clientAPIURL
+        } else {
+            baseURL = authorization?.configURL ?? URL(string: "www.apple.com")!
+        }
+        
         let hasHTTPPrefix: Bool = path.hasPrefix("http")
         let baseURLString: String = baseURL.absoluteString
         var errorUserInfo: [String: Any] = [:]
@@ -182,12 +195,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         
         let fullPathURL: URL?
         let isDataURL: Bool = baseURL.scheme == "data"
-
-        if !isDataURL {
-            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
-        } else {
+//
+//        if !isDataURL {
+//            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
+//        } else {
             fullPathURL = baseURL
-        }
+//        }
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
