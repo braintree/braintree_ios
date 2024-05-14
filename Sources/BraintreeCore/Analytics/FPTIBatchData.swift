@@ -40,6 +40,7 @@ struct FPTIBatchData: Codable {
         let startTime: Int?
         let timestamp: String
         let tenantName: String = "Braintree"
+        let venmoInstalled: Bool = isVenmoAppInstalled()
 
         enum CodingKeys: String, CodingKey {
             case correlationID = "correlation_id"
@@ -49,9 +50,13 @@ struct FPTIBatchData: Codable {
             case payPalContextID = "paypal_context_id"
             case timestamp = "t"
             case tenantName = "tenant_name"
+<<<<<<< api-request-latency
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
+=======
+            case venmoInstalled = "venmo_installed"
+>>>>>>> main
         }
     }
     
@@ -137,5 +142,12 @@ struct FPTIBatchData: Codable {
             case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"
         }
+    }
+
+    private static func isVenmoAppInstalled() -> Bool {
+        guard let venmoURL = URL(string: "\(BTCoreConstants.venmoScheme)://") else {
+            return false
+        }
+        return UIApplication.shared.canOpenURL(venmoURL)
     }
 }
