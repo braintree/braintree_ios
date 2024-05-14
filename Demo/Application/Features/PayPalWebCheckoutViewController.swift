@@ -76,11 +76,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         
         request.offerPayLater = payLaterToggle.isOn
 
-        if newPayPalCheckoutToggle.isOn {
-            request.intent = .sale
-        } else {
-            request.intent = .authorize
-        }
+        request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
