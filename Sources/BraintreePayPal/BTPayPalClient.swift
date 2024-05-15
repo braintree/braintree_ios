@@ -1,5 +1,6 @@
 import Foundation
 import AuthenticationServices
+import os
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -38,7 +39,11 @@ import BraintreeDataCollector
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
-
+    
+    private let logHandler = OSLog(subsystem: "com.braintreepayments.paypal", category: "latency")
+    private lazy var isPayPalClientObject = OSSignpostID(log: logHandler, object: self)
+    
+    
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -232,6 +237,12 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        os_signpost(
+            .begin,
+            log: logHandler,
+            name: "paypal:tokenize:started",
+            signpostID: isPayPalClientObject
+        )
         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
@@ -307,6 +318,12 @@ import BraintreeDataCollector
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
+                os_signpost(
+                    .end,
+                    log: logHandler,
+                    name: "paypal:tokenize:browser-presentation:succeeded",
+                    signpostID: isPayPalClientObject
+                )
             } else {
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed, payPalContextID: payPalContextID)
             }
