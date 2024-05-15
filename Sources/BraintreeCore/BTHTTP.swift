@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 /// Performs HTTP methods on the Braintree Client API
-class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
+class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
 
     typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -14,11 +14,13 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
+    let baseURL: URL
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
-    let baseURL: URL
     var clientAuthorization: ClientAuthorization?
+
+    weak var networkTimingDelegate: BTHTTPNetworkTiming?
 
     /// Session exposed for testing
     lazy var session: URLSession = {
@@ -425,7 +427,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
     }
 
-    // MARK: - URLSessionDelegate conformance
+    // MARK: - URLSessionTaskDelegate conformance
 
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
@@ -447,6 +449,20 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             }
         } else {
             completionHandler(.performDefaultHandling, nil)
+        }
+    }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        metrics.transactionMetrics.forEach { transaction in
+            if let startDate = transaction.fetchStartDate,
+               let endDate = transaction.responseEndDate,
+               let path = transaction.request.url?.path {
+                networkTimingDelegate?.fetchAPITiming(
+                    path: path,
+                    startTime: startDate.utcTimestampMilliseconds,
+                    endTime: endDate.utcTimestampMilliseconds
+                )
+            }
         }
     }
 }
