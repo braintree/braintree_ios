@@ -5,6 +5,19 @@
   * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:universalLink:offerCredit:)`
     * This init should be used for the PayPal App Switch flow
   * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
+
+## 6.18.2 (2024-05-15)
+* BraintreePayPal
+  * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
+
+## 5.26.0 (2024-05-07)
+* Updated expiring pinned vendor SSL certificates
+
+## 6.18.1 (2024-05-06)
+* Remove throttle delay in accessing configuration, added in v5.9.0
+  * Move from URLCache to NSCache for configuration caching
+
+## 6.18.0 (2024-04-25)
 * BraintreePayPalNativeCheckout
   * Bump PayPalCheckout to version 1.3.0 with code signing & a privacy manifest file.
 

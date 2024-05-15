@@ -28,6 +28,8 @@ struct FPTIBatchData: Codable {
     struct Event: Codable {
         
         let correlationID: String?
+        let endpoint: String?
+        let endTime: Int?
         let errorDescription: String?
         let eventName: String
         /// The type of link the SDK will be handling, currently deeplink or universal
@@ -36,8 +38,10 @@ struct FPTIBatchData: Codable {
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
         let payPalInstalled: String?
+        let startTime: Int?
         let timestamp: String
         let tenantName: String = "Braintree"
+        let venmoInstalled: Bool = isVenmoAppInstalled()
 
         enum CodingKeys: String, CodingKey {
             case correlationID = "correlation_id"
@@ -48,6 +52,10 @@ struct FPTIBatchData: Codable {
             case payPalInstalled = "paypal_installed"
             case timestamp = "t"
             case tenantName = "tenant_name"
+            case startTime = "start_time"
+            case endTime = "end_time"
+            case endpoint = "endpoint"
+            case venmoInstalled = "venmo_installed"
         }
     }
     
@@ -133,5 +141,12 @@ struct FPTIBatchData: Codable {
             case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"
         }
+    }
+
+    private static func isVenmoAppInstalled() -> Bool {
+        guard let venmoURL = URL(string: "\(BTCoreConstants.venmoScheme)://") else {
+            return false
+        }
+        return UIApplication.shared.canOpenURL(venmoURL)
     }
 }

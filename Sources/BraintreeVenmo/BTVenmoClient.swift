@@ -247,7 +247,7 @@ import BraintreeCore
         guard let appSwitchURL = BTVenmoAppSwitchRedirectURL.baseAppSwitchURL else {
             return false
         }
-        
+
         return application.canOpenURL(appSwitchURL)
     }
 

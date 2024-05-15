@@ -30,19 +30,25 @@ class BTAnalyticsService: Equatable {
     func sendAnalyticsEvent(
         _ eventName: String,
         correlationID: String? = nil,
+        endpoint: String? = nil,
+        endTime: Int? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
-        payPalInstalled: String? = nil
+        payPalInstalled: String? = nil,
+        startTime: Int? = nil
     ) {
         Task(priority: .background) {
             await performEventRequest(
                 eventName,
                 correlationID: correlationID,
+                endpoint: endpoint,
+                endTime: endTime,
                 errorDescription: errorDescription,
                 linkType: linkType,
                 payPalContextID: payPalContextID,
-                payPalInstalled: payPalInstalled
+                payPalInstalled: payPalInstalled,
+                startTime: startTime
             )
         }
     }
@@ -51,19 +57,25 @@ class BTAnalyticsService: Equatable {
     func performEventRequest(
         _ eventName: String,
         correlationID: String? = nil,
+        endpoint: String? = nil,
+        endTime: Int? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
-        payPalInstalled: String? = nil
+        payPalInstalled: String? = nil,
+        startTime: Int? = nil
     ) async {
-        let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
+        let timestampInMilliseconds = Date().utcTimestampMilliseconds
         let event = FPTIBatchData.Event(
             correlationID: correlationID,
+            endpoint: endpoint,
+            endTime: endTime,
             errorDescription: errorDescription,
             eventName: eventName,
             linkType: linkType,
             payPalContextID: payPalContextID,
             payPalInstalled: payPalInstalled,
+            startTime: startTime,
             timestamp: String(timestampInMilliseconds)
         )
                 

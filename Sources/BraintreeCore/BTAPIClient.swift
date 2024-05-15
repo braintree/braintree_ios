@@ -2,7 +2,7 @@ import Foundation
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
-@objcMembers public class BTAPIClient: NSObject {
+@objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
 
     /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
@@ -19,28 +19,15 @@ import Foundation
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
 
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    @_documentation(visibility: private)
+    public var shouldSendAPIRequestLatency: Bool = false
+
     // MARK: - Internal Properties
-
-    /// Used to fetch and store configurations in the URL Cache of the session
+    
     var configurationHTTP: BTHTTP?
-
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
-
-    var session: URLSession {
-        let configurationQueue: OperationQueue = OperationQueue()
-        configurationQueue.name = "com.braintreepayments.BTAPIClient"
-
-        // BTHTTP's default NSURLSession does not cache responses, but we want the BTHTTP instance that fetches configuration to cache aggressively
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.default
-        let configurationCache: URLCache = URLCache(memoryCapacity: 1 * 1024 * 1024, diskCapacity: 0, diskPath: nil)
-
-        configuration.urlCache = configurationCache
-
-        // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
-        configuration.requestCachePolicy = .useProtocolCachePolicy
-        return URLSession(configuration: configuration)
-    }
 
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
@@ -82,19 +69,19 @@ import Foundation
 
             tokenizationKey = authorization
             configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
+            configurationHTTP?.networkTimingDelegate = self
         case .clientToken:
             do {
                 clientToken = try BTClientToken(clientToken: authorization)
 
                 guard let clientToken else { return nil }
                 configurationHTTP = try BTHTTP(clientToken: clientToken)
+                configurationHTTP?.networkTimingDelegate = self
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
             }
         }
-
-        configurationHTTP?.session = session
 
         // Kickoff the background request to fetch the config
         fetchOrReturnRemoteConfiguration { configuration, error in
@@ -112,8 +99,6 @@ import Foundation
         if graphQLHTTP != nil && graphQLHTTP?.session != nil {
             graphQLHTTP?.session.finishTasksAndInvalidate()
         }
-
-        configurationHTTP?.session.configuration.urlCache?.removeAllCachedResponses()
     }
 
     // MARK: - Public Methods
@@ -138,13 +123,23 @@ import Foundation
         //   - If fetching fails, return error
 
         var configPath: String = "v1/configuration"
-        var configuration: BTConfiguration?
 
         if let clientToken {
             configPath = clientToken.configURL.absoluteString
         }
+        
+        guard let authorization = clientToken?.authorizationFingerprint ?? tokenizationKey else {
+            completion(nil, BTAPIClientError.configurationUnavailable)
+            return
+        }
+        
+        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authorization) {
+            setupHTTPCredentials(cachedConfig)
+            completion(cachedConfig, nil)
+            return
+        }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
+        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
@@ -153,34 +148,18 @@ import Foundation
             if error != nil {
                 completion(nil, error)
                 return
-            } else if response?.statusCode != 200 {
+            } else if response?.statusCode != 200 || body == nil {
                 completion(nil, BTAPIClientError.configurationUnavailable)
                 return
             } else {
-                configuration = BTConfiguration(json: body)
+                let configuration = BTConfiguration(json: body)
 
-                if http == nil {
-                    let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
-
-                    if let clientToken, let baseURL {
-                        http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let baseURL {
-                        http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
-
-                if graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
-
-                    if let clientToken, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
+                setupHTTPCredentials(configuration)
+                try? ConfigurationCache.shared.putInCache(authorization: authorization, configuration: configuration)
+                
+                completion(configuration, nil)
+                return
             }
-
-            completion(configuration, nil)
         }
     }
 
@@ -485,6 +464,47 @@ import Foundation
             return http
         case .graphQLAPI:
             return graphQLHTTP
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupHTTPCredentials(_ configuration: BTConfiguration) {
+        if http == nil {
+            let baseURL: URL? = configuration.json?["clientApiUrl"].asURL()
+
+            if let clientToken, let baseURL {
+                http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+            } else if let tokenizationKey, let baseURL {
+                http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
+            }
+            
+            http?.networkTimingDelegate = self
+        }
+
+        if graphQLHTTP == nil {
+            let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration.environment ?? "")
+
+            if let clientToken, let graphQLBaseURL {
+                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+            } else if let tokenizationKey, let graphQLBaseURL {
+                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
+            }
+        }
+    }
+
+    // MARK: BTAPITimingDelegate conformance
+
+    func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
+        let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
+
+        if (shouldSendAPIRequestLatency || path.contains("v1/configuration")) && cleanedPath != "/v1/tracking/batch/events" {
+            analyticsService?.sendAnalyticsEvent(
+                BTCoreAnalytics.apiRequestLatency,
+                endpoint: cleanedPath,
+                endTime: endTime,
+                startTime: startTime
+            )
         }
     }
 }

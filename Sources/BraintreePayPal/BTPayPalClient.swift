@@ -69,6 +69,7 @@ import BraintreeDataCollector
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
+        apiClient.shouldSendAPIRequestLatency = true
 
         self.apiClient = apiClient
         self.webAuthenticationSession = BTWebAuthenticationSession()

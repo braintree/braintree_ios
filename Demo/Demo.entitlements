@@ -5,6 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:braintree-ios-demo.fly.dev</string>
+		<string>applinks:mobile-sdk-demo-site-838cead5d3ab.herokuapp.com</string>
 	</array>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>

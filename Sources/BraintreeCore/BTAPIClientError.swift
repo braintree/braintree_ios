@@ -11,6 +11,9 @@ public enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError, Equatab
 
     /// 2. Deallocated BTAPIClient
     case deallocated
+    
+    /// 3. Failed to base64 encode an authorizationFingerprint or tokenizationKey, when used as a cacheKey
+    case failedBase64Encoding
 
     public static var errorDomain: String {
         "com.braintreepayments.BTAPIClientErrorDomain"
@@ -30,6 +33,9 @@ public enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError, Equatab
 
         case .deallocated:
             return "BTAPIClient has been deallocated."
+            
+        case .failedBase64Encoding:
+            return "Unable to base64 encode the authorization string."
         }
     }
 }
