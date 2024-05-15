@@ -240,8 +240,9 @@ import BraintreeDataCollector
         os_signpost(
             .begin,
             log: logHandler,
-            name: "paypal:tokenize:started",
-            signpostID: isPayPalClientObject
+            name: "paypal:tokenize",
+            signpostID: isPayPalClientObject, 
+            "begin"
         )
         self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -321,8 +322,9 @@ import BraintreeDataCollector
                 os_signpost(
                     .end,
                     log: logHandler,
-                    name: "paypal:tokenize:browser-presentation:succeeded",
-                    signpostID: isPayPalClientObject
+                    name: "paypal:tokenize", 
+                    signpostID: isPayPalClientObject,
+                    "end"
                 )
             } else {
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed, payPalContextID: payPalContextID)
