@@ -28,6 +28,8 @@ struct FPTIBatchData: Codable {
     struct Event: Codable {
         
         let correlationID: String?
+        let endpoint: String?
+        let endTime: Int?
         let errorDescription: String?
         let eventName: String
         /// The type of link the SDK will be handling, currently deeplink or universal
@@ -35,6 +37,7 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
+        let startTime: Int?
         let timestamp: String
         let tenantName: String = "Braintree"
         let venmoInstalled: Bool = isVenmoAppInstalled()
@@ -47,6 +50,9 @@ struct FPTIBatchData: Codable {
             case payPalContextID = "paypal_context_id"
             case timestamp = "t"
             case tenantName = "tenant_name"
+            case startTime = "start_time"
+            case endTime = "end_time"
+            case endpoint = "endpoint"
             case venmoInstalled = "venmo_installed"
         }
     }

@@ -45,6 +45,8 @@ import BraintreeDataCollector
     /// - Parameter apiClient: The API Client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
+        apiClient.shouldSendAPIRequestLatency = true
+
         self.apiClient = apiClient
         self.webAuthenticationSession = BTWebAuthenticationSession()
 

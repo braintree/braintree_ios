@@ -6,6 +6,8 @@
 ## 6.18.1 (2024-05-06)
 * Remove throttle delay in accessing configuration, added in v5.9.0
   * Move from URLCache to NSCache for configuration caching
+* BraintreePayPal
+  * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
 
 ## 6.18.0 (2024-04-25)
 * BraintreePayPalNativeCheckout

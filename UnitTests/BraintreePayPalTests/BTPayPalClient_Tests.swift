@@ -18,7 +18,6 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
-
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
     }
 
@@ -58,6 +57,10 @@ class BTPayPalClient_Tests: XCTestCase {
         }
 
         self.waitForExpectations(timeout: 1)
+    }
+
+    func testInitBTPayPalClient_setsShouldSendAPIRequestLatencyOnBTAPIClient() {
+        XCTAssertTrue(payPalClient.apiClient.shouldSendAPIRequestLatency)
     }
 
     // MARK: - POST request to Hermes endpoint
