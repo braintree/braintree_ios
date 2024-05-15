@@ -159,4 +159,13 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["request_billing_agreement"])
         XCTAssertNil(parameters["billing_agreement_details"])
     }
+    
+    func testParametersWithConfiguration_whenUserAuthenticationEmailNotSet_doesNotSetPayerEmailInRequest() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.userAuthenticationEmail = ""
+        
+        let parameters = request.parameters(with: configuration)
+        
+        XCTAssertNil(parameters["payer_email"])
+    }
 }
