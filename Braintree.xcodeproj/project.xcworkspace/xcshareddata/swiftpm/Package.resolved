@@ -1,5 +1,4 @@
 {
-  "originHash" : "024ac5e55a2a469e348385c76e7e63f1e8eaca9804eefeb066d877c063895163",
   "pins" : [
     {
       "identity" : "paypalcheckout-ios",
@@ -11,5 +10,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
