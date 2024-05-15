@@ -19,6 +19,19 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         return textField
     }()
     
+    lazy var phoneNumberLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Buyer phone:"
+        return label
+    }()
+    
+    lazy var phoneNumberTextField: UITextField = {
+        let textfield = UITextField()
+        textfield.placeholder = "000-000-000"
+        textfield.backgroundColor = .systemBackground
+        return textfield
+    }()
+    
     lazy var payLaterToggleLabel: UILabel = {
         let label = UILabel()
         label.text = "Offer Pay Later"
@@ -43,6 +56,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let stackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
+            UIStackView(arrangedSubviews: [phoneNumberLabel, phoneNumberTextField]),
             buttonsStackView(label: "1-Time Checkout", views: [
                 UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
                 UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
@@ -67,6 +81,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let request = BTPayPalCheckoutRequest(amount: "5.00")
         request.userAuthenticationEmail = emailTextField.text
+        request.userPhoneNumber = phoneNumberTextField.text
         
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
@@ -99,6 +114,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
+        request.userPhoneNumber = phoneNumberTextField.text
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true

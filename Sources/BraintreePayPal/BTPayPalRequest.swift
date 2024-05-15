@@ -96,6 +96,10 @@ import BraintreeCore
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
     @_documentation(visibility: private)
     public var paymentType: BTPayPalPaymentType
+    
+    /// Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
+    /// identified with the same phone number.
+    public var userPhoneNumber: String?
 
     // MARK: - Static Properties
     
@@ -115,7 +119,8 @@ import BraintreeCore
         merchantAccountID: String? = nil,
         lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
-        riskCorrelationId: String? = nil
+        riskCorrelationId: String? = nil,
+        userPhoneNumber: String? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -129,6 +134,7 @@ import BraintreeCore
         self.lineItems = lineItems
         self.billingAgreementDescription = billingAgreementDescription
         self.riskCorrelationID = riskCorrelationId
+        self.userPhoneNumber = userPhoneNumber
     }
 
     // MARK: Public Methods

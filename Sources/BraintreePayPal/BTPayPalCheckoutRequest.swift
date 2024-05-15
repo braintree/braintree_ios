@@ -137,6 +137,10 @@ import BraintreeCore
         if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
             checkoutParameters["payer_email"] = userAuthenticationEmail
         }
+        
+        if let userPhoneNumber, !userPhoneNumber.isEmpty {
+            checkoutParameters["phone"] = userPhoneNumber
+        }
 
         if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
             experienceProfile["user_action"] = userAction.stringValue

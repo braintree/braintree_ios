@@ -41,6 +41,10 @@ import BraintreeCore
         if let userAuthenticationEmail {
             vaultParameters["payer_email"] = userAuthenticationEmail
         }
+        
+        if let userPhoneNumber, !userPhoneNumber.isEmpty {
+            vaultParameters["phone"] = userPhoneNumber
+        }
 
         if let shippingAddressOverride {
             let shippingAddressParameters: [String: String?] = [
