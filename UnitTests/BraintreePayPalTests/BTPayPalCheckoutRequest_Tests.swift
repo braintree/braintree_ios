@@ -168,4 +168,13 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         
         XCTAssertNil(parameters["payer_email"])
     }
+    
+    func testParametersWithConfiguration_whenUserPhoneNumberIsPresent_SetsPayerPhoneNumberInRequest() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.userPhoneNumber = "4087463271"
+        
+        let parameters = request.parameters(with: configuration)
+        
+        XCTAssertEqual(parameters["phone"] as? String, "4087463271")
+    }
 }

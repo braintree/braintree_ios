@@ -65,4 +65,13 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(shippingParams["country_code"], "US")
         XCTAssertEqual(shippingParams["recipient_name"], "Recipient")
     }
+    
+    func testParametersWithConfiguration_whenUserPhoneNumberIsPresent_SetsPayerPhoneNumberInRequest() {
+        let request = BTPayPalVaultRequest()
+        request.userPhoneNumber = "4087463271"
+        
+        let parameters = request.parameters(with: configuration)
+        
+        XCTAssertEqual(parameters["phone"] as? String, "4087463271")
+    }
 }
