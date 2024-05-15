@@ -322,7 +322,7 @@ import Foundation
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
-            request: request,
+            isVaultRequest: request,
             correlationID: correlationID,
             errorDescription: errorDescription,
             linkType: linkType,
