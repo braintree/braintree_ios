@@ -4,6 +4,10 @@
 * BraintreeCore
   * Batch analytics events to FPTI
 
+## 6.18.2 (2024-05-15)
+* BraintreePayPal
+  * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
+
 ## 5.26.0 (2024-05-07)
 * Updated expiring pinned vendor SSL certificates
 

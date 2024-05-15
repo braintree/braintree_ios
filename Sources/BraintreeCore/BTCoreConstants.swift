@@ -5,10 +5,12 @@ import Foundation
 @objcMembers public class BTCoreConstants: NSObject {
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    public static var braintreeSDKVersion: String = "6.18.1"
+    public static var braintreeSDKVersion: String = "6.18.2"
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public static let callbackURLScheme: String = "sdk.ios.braintree"
+
+    public static let venmoScheme: String = "com.venmo.touch.v2"
 
     static let apiVersion: String = "2016-10-07"
     
