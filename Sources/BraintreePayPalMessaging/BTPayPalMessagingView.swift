@@ -7,7 +7,7 @@ import BraintreeCore
 #endif
 
 /// Use `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
-/// - Note: This module is in beta. It's public API may change or be removed in future releases.
+/// - Warning: This module is in beta. It's public API may change or be removed in future releases.
 public class BTPayPalMessagingView: UIView {
 
     // MARK: - Properties
@@ -34,7 +34,7 @@ public class BTPayPalMessagingView: UIView {
 
     /// Creates a view to be displayed to promote offers such as Pay Later and PayPal Credit to customers.
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
-    /// - Note: use `BTPayPalMessagingDelegate` protocol to receive notifications for events
+    /// - Warning: use `BTPayPalMessagingDelegate` protocol to receive notifications for events
     public func start(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in

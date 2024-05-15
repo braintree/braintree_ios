@@ -2,7 +2,7 @@ import Foundation
 import PayPalMessages
 
 /// Text alignment option for a PayPal Message
-/// - Note: This module is in beta. It's public API may change or be removed in future releases.
+/// - Warning: This module is in beta. It's public API may change or be removed in future releases.
 public enum BTPayPalMessagingTextAlignment {
 
     /// Text aligned to the left
