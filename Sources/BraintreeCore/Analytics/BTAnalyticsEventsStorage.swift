@@ -1,5 +1,6 @@
 import Foundation
 
+/// Used to store and access our array of events in a thread-safe manner
 actor BTAnalyticsEventsStorage {
 
     private var events: [FPTIBatchData.Event]
