@@ -105,20 +105,26 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            self.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
-            self.timer?.schedule(
-                deadline: .now() + .seconds(self.timerInterval),
-                repeating: .seconds(self.timerInterval),
-                leeway: .seconds(1)
-            )
-            
-            self.timer?.setEventHandler {
+            if self.timerInterval == 0 {
                 Task {
                     await self.sendQueuedAnalyticsEvents(configuration: configuration)
                 }
-            }
+            } else {
+                self.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
+                self.timer?.schedule(
+                    deadline: .now() + .seconds(self.timerInterval),
+                    repeating: .seconds(self.timerInterval),
+                    leeway: .seconds(1)
+                )
 
-            self.timer?.resume()
+                self.timer?.setEventHandler {
+                    Task {
+                        await self.sendQueuedAnalyticsEvents(configuration: configuration)
+                    }
+                }
+
+                self.timer?.resume()
+            }
         }
     }
 
