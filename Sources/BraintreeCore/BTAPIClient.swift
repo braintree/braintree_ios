@@ -115,6 +115,13 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
+        // Mocking response
+        guard let configuration = getConfigMockResponse() else {
+            return completion(nil, BTAPIClientError.configurationUnavailable)
+        }
+        completion(configuration, nil)
+        return
+        
         // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
         //
         // Rules:
@@ -162,7 +169,21 @@ import Foundation
             }
         }
     }
-
+    
+    private func getConfigMockResponse() -> BTConfiguration? {
+        guard let authorization = clientToken?.authorizationFingerprint ?? tokenizationKey else {
+            return nil
+        }
+        
+        let bodyMocked = getMockedResponse(from: "config")
+        let configuration = BTConfiguration(json: bodyMocked)
+        setupHTTPCredentials(configuration)
+        
+        try? ConfigurationCache.shared.putInCache(authorization: authorization, configuration: configuration)
+        
+        return configuration
+    }
+    
     /// Fetches a customer's vaulted payment method nonces.
     /// Must be using client token with a customer ID specified.
     ///  - Parameter completion: Callback that returns either an array of payment method nonces or an error
@@ -503,6 +524,17 @@ import Foundation
                 endTime: endTime,
                 startTime: startTime
             )
+        }
+    }
+    
+    public func getMockedResponse(from file: String) -> BTJSON? {
+        guard let bundle = Bundle(identifier: "com.braintreepayments.BraintreeCore"), let path = bundle.path(forResource: file, ofType: "json") else { return nil }
+        do {
+            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+            let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+            return BTJSON(value: jsonResult)
+        } catch {
+            return nil
         }
     }
 }
