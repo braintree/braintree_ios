@@ -14,12 +14,13 @@ class BTAnalyticsService: Equatable {
 
     private let apiClient: BTAPIClient
     private let timerInterval: Int
+    private let events = BTAnalyticsEventsStorage()
 
-    private static var events: [FPTIBatchData.Event] = []
+    private var timer: DispatchSourceTimer?
 
     // MARK: - Initializer
 
-    init(apiClient: BTAPIClient, timerInterval: Int = 30) {
+    init(apiClient: BTAPIClient, timerInterval: Int = 20) {
         self.apiClient = apiClient
         self.timerInterval = timerInterval
     }
@@ -81,7 +82,7 @@ class BTAnalyticsService: Equatable {
             timestamp: String(timestampInMilliseconds)
         )
 
-        BTAnalyticsService.events.append(event)
+        await events.append(event)
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
@@ -106,30 +107,35 @@ class BTAnalyticsService: Equatable {
 
             // Send analytics events immediately if no timer is needed for unit tests
             if self.timerInterval == 0 {
-                self.sendQueuedAnalyticsEvents(configuration: configuration)
+                Task {
+                    await self.sendQueuedAnalyticsEvents(configuration: configuration)
+                }
             } else {
-                let timer: DispatchSourceTimer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
-                timer.schedule(
-                    deadline: .now() + 30,
+                self.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
+                self.timer?.schedule(
+                    deadline: .now() + 20,
                     repeating: .seconds(self.timerInterval),
                     leeway: .seconds(1)
                 )
-                timer.setEventHandler { [weak self] in
-                    self?.sendQueuedAnalyticsEvents(configuration: configuration, timer: timer)
+
+                self.timer?.setEventHandler {
+                    Task {
+                        await self.sendQueuedAnalyticsEvents(configuration: configuration)
+                    }
                 }
 
-                timer.resume()
+                self.timer?.resume()
             }
         }
     }
 
     // MARK: - Helpers
 
-    @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration, timer: DispatchSourceTimer? = nil) {
-        if !BTAnalyticsService.events.isEmpty {
-            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events)
+    @objc func sendQueuedAnalyticsEvents(configuration: BTConfiguration) async {
+        if await !events.isEmpty {
+            let postParameters = await self.createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events.allValues)
             http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-            BTAnalyticsService.events.removeAll()
+            await events.removeAll()
         } else {
             timer?.cancel()
         }
