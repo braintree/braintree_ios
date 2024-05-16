@@ -131,6 +131,7 @@ class BTAnalyticsService: Equatable {
             await events.removeAll()
         } else {
             timer?.cancel()
+            timer = nil
         }
     }
 
