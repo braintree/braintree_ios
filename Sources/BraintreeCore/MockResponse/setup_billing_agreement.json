@@ -1,0 +1,7 @@
+{
+  "agreementSetup": {
+    "tokenId": "BA-8UK18348BC7368539",
+    "approvalUrl": "https://www.sandbox.paypal.com/agreements/approve?nolegacy=1u0026ba_token=BA-8UK18348BC7368539u0026platform=ios",
+    "paypalAppApprovalUrl": null
+  }
+}

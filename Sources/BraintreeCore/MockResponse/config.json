@@ -1,0 +1,134 @@
+{
+  "challenges": [
+    "cvv",
+    "postal_code"
+  ],
+  "environment": "sandbox",
+  "clientApiUrl": "https://api.sandbox.braintreegateway.com:443/merchants/dcpspy2brwdjr3qn/client_api",
+  "assetsUrl": "https://assets.braintreegateway.com",
+  "authUrl": "https://auth.venmo.sandbox.braintreegateway.com",
+  "analytics": {
+    "url": "https://origin-analytics-sand.sandbox.braintree-api.com/dcpspy2brwdjr3qn"
+  },
+  "threeDSecureEnabled": true,
+  "paypalEnabled": true,
+  "paypal": {
+    "displayName": "Acme Widgets, Ltd. (Sandbox)",
+    "clientId": "Ab4TjrHIr6j1hIUcTaZZBbfLeAZ9q_QARjPaEU5vzM1PRb_dE3GN3ZOKHLor_eIgZEk3WO3K1WT19TX6",
+    "baseUrl": "https://assets.braintreegateway.com",
+    "assetsUrl": "https://checkout.paypal.com",
+    "directBaseUrl": null,
+    "allowHttp": true,
+    "environmentNoNetwork": true,
+    "environment": "offline",
+    "unvettedMerchant": false,
+    "braintreeClientId": "masterclient3",
+    "billingAgreementsEnabled": true,
+    "merchantAccountId": "stch2nfdfwszytw5",
+    "currencyIsoCode": "USD"
+  },
+  "braintreeApi": {
+    "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjIwMTgwNDI2MTYtc2FuZGJveCIsImlzcyI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20ifQ.eyJleHAiOjE3MTU5NjQzNDUsImp0aSI6ImE4MWJhOGI0LTJmNjgtNDgyMC1iOTQwLTJhNjY0NmEwYjA5OCIsInN1YiI6ImRjcHNweTJicndkanIzcW4iLCJpc3MiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwibWVyY2hhbnQiOnsicHVibGljX2lkIjoiZGNwc3B5MmJyd2RqcjNxbiIsInZlcmlmeV9jYXJkX2J5X2RlZmF1bHQiOnRydWV9LCJyaWdodHMiOlsidG9rZW5pemUiLCJtYW5hZ2VfdmF1bHQiXSwic2NvcGUiOlsiQnJhaW50cmVlOlZhdWx0Il0sIm9wdGlvbnMiOnt9fQ.IY3IQZiLATeKZjbj5pdGkBZW4BxYWQOOnZmk9Qc0oCt61OoJBZL8juSjdRCgUCNo4qwm9hf5agHw3fWm8yp7yQ",
+    "url": "https://payments.sandbox.braintree-api.com"
+  },
+  "merchantId": "dcpspy2brwdjr3qn",
+  "venmo": "offline",
+  "applePay": {
+    "status": "mock",
+    "countryCode": "US",
+    "currencyCode": "USD",
+    "merchantIdentifier": "merchant.com.braintreepayments.apple-pay-demo.Braintree-Demo",
+    "supportedNetworks": [
+      "visa",
+      "mastercard",
+      "amex",
+      "discover",
+      "maestro"
+    ]
+  },
+  "creditCards": {
+    "supportedCardTypes": [
+      "American Express",
+      "Discover",
+      "JCB",
+      "MasterCard",
+      "Visa",
+      "Hiper",
+      "Hipercard",
+      "Apple Pay - Visa",
+      "Apple Pay - MasterCard",
+      "Apple Pay - American Express",
+      "Apple Pay - Discover",
+      "Apple Pay - Maestro",
+      "Android Pay Card - Discover",
+      "Android Pay Card - MasterCard",
+      "Android Pay Card - Visa",
+      "Android Pay Card - American Express",
+      "Android Pay Network Token - Visa",
+      "Android Pay Network Token - MasterCard",
+      "Android Pay Network Token - American Express",
+      "Android Pay Network Token - Discover",
+      "venmo_account"
+    ],
+    "supportedGateways": [
+      {
+        "name": "clientApi"
+      },
+      {
+        "name": "braintreeApi",
+        "timeout": 5000
+      }
+    ],
+    "collectDeviceData": true
+  },
+  "payWithVenmo": {
+    "merchantId": "1953896702662410263",
+    "accessToken": "access_token$sandbox$38kx88m8y5bf27c6$ac3cdf777d0f9811ff18e9b5151f45e4",
+    "environment": "sandbox",
+    "enrichedCustomerDataEnabled": true
+  },
+  "kount": {
+    
+  },
+  "fraudProvider": {
+    
+  },
+  "unionPay": {
+    "enabled": true,
+    "merchantAccountId": "fake_switch_usd"
+  },
+  "visaCheckout": {
+    "apikey": "F3XKEZAV5U2UC0B9K7Z113G5SQssVJVwha2CCNrxpJk63_znQ",
+    "encryptionKey": "52VJ4B15JHNSRKKXYZZB13nV5E-QlJngPlFOG2aEWLKEfqCvA",
+    "externalClientId": "sandbox_merchant_id",
+    "supportedCardTypes": [
+      "Visa",
+      "MasterCard",
+      "American Express",
+      "Discover"
+    ]
+  },
+  "masterpass": {
+    "merchantCheckoutId": "c28cabed4da44c2ea8a14ca4413984cb",
+    "supportedNetworks": [
+      "visa",
+      "master",
+      "amex",
+      "discover",
+      "diners",
+      "maestro",
+      "jcb"
+    ]
+  },
+  "cardinalAuthenticationJWT": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMDFjNzY2My1kODFhLTQ5NzYtODMwZS02Zjk3MzE2YmFlMDgiLCJpYXQiOjE3MTU4Nzc5NDYsImV4cCI6MTcxNTg4NTE0NiwiaXNzIjoiNWM1MzZmZTI2ZmUzZDExMWMwNThlNjk4IiwiT3JnVW5pdElkIjoiNTVlZjNmN2NmNzIzYWE0MzFjOTllMTgwIn0.qV6DqcRMclJEAMf88o9szDWhDvRkzAVRAEjuTMY5hW0",
+  "threeDSecure": {
+    "cardinalAuthenticationJWT": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMDFjNzY2My1kODFhLTQ5NzYtODMwZS02Zjk3MzE2YmFlMDgiLCJpYXQiOjE3MTU4Nzc5NDYsImV4cCI6MTcxNTg4NTE0NiwiaXNzIjoiNWM1MzZmZTI2ZmUzZDExMWMwNThlNjk4IiwiT3JnVW5pdElkIjoiNTVlZjNmN2NmNzIzYWE0MzFjOTllMTgwIn0.qV6DqcRMclJEAMf88o9szDWhDvRkzAVRAEjuTMY5hW0"
+  },
+  "graphQL": {
+    "url": "https://payments.sandbox.braintree-api.com/graphql",
+    "date": "2018-05-08",
+    "features": [
+      "tokenize_credit_cards"
+    ]
+  }
+}

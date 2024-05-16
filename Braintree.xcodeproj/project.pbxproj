@@ -52,6 +52,8 @@
 		428F976626727333001042E1 /* BTMockOpenURLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 428F976526727333001042E1 /* BTMockOpenURLContext.m */; };
 		42FC218B25CDE0290047C49A /* BTPayPalRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FC218A25CDE0290047C49A /* BTPayPalRequest_Tests.swift */; };
 		42FC237125CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */; };
+		457945932BF6742100CCCE45 /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 457945902BF66B2E00CCCE45 /* config.json */; };
+		457945952BF67CD200CCCE45 /* setup_billing_agreement.json in Resources */ = {isa = PBXBuildFile; fileRef = 457945942BF67CD200CCCE45 /* setup_billing_agreement.json */; };
 		460C0C220F594AE8EE205E57 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A528809AD9007946B9 /* BTJSON.swift */; };
 		5708E0A828809BC6007946B9 /* BTJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A728809BC6007946B9 /* BTJSONError.swift */; };
@@ -684,6 +686,8 @@
 		42F75E5A24D48138007DC5E7 /* BTThreeDSecureClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureClient_Tests.swift; sourceTree = "<group>"; };
 		42FC218A25CDE0290047C49A /* BTPayPalRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalRequest_Tests.swift; sourceTree = "<group>"; };
 		42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCheckoutRequest_Tests.swift; sourceTree = "<group>"; };
+		457945902BF66B2E00CCCE45 /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		457945942BF67CD200CCCE45 /* setup_billing_agreement.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = setup_billing_agreement.json; sourceTree = "<group>"; };
 		463DED22C0F426A474E6D7E2 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		541AEE40A1F01913E0638CC9 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5708E0A528809AD9007946B9 /* BTJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON.swift; sourceTree = "<group>"; };
@@ -1208,6 +1212,15 @@
 			path = BraintreePayPal;
 			sourceTree = "<group>";
 		};
+		457945922BF66B3300CCCE45 /* MockResponse */ = {
+			isa = PBXGroup;
+			children = (
+				457945942BF67CD200CCCE45 /* setup_billing_agreement.json */,
+				457945902BF66B2E00CCCE45 /* config.json */,
+			);
+			path = MockResponse;
+			sourceTree = "<group>";
+		};
 		570B93AE285397D20041BAFE /* BraintreeCore */ = {
 			isa = PBXGroup;
 			children = (
@@ -1254,6 +1267,7 @@
 				80D280CC2BE9354B00762D27 /* Date+MillisecondTimestamp.swift */,
 				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
+				457945922BF66B3300CCCE45 /* MockResponse */,
 				62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */,
 				80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
@@ -2515,6 +2529,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				62A746412B9255AC003D32FF /* PrivacyInfo.xcprivacy in Resources */,
+				457945932BF6742100CCCE45 /* config.json in Resources */,
+				457945952BF67CD200CCCE45 /* setup_billing_agreement.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
