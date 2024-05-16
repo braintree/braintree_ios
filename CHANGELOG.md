@@ -3,6 +3,7 @@
 ## 6.18.2 (2024-05-15)
 * BraintreePayPal
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
+  * Send `isVaultRequest` to FPTI for tracking Vault vs One Time Checkout and Venmo Checkout in "Pay with PayPal" flows
 
 ## 5.26.0 (2024-05-07)
 * Updated expiring pinned vendor SSL certificates
