@@ -131,11 +131,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
         parameters: [String: Any]? = [:],
         completion: RequestCompletion?
     ) {
-        createRequest(method: method, path: path, parameters: parameters) { request, error in
-            guard let request = request else {
-                self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
-                return
-            }
+        do {
+            let request = try createRequest(method: method, path: path, parameters: parameters)
             
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
@@ -145,15 +142,17 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
 
                 handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
             }.resume()
+        } catch {
+            self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
+            return
         }
     }
 
     func createRequest(
         method: String,
         path: String,
-        parameters: [String: Any]? = [:],
-        completion: @escaping (URLRequest?, Error?) -> Void
-    ) {
+        parameters: [String: Any]? = [:]
+    ) throws -> URLRequest {
         let hasHTTPPrefix: Bool = path.hasPrefix("http")
         let baseURLString: String = baseURL.absoluteString
         var errorUserInfo: [String: Any] = [:]
@@ -163,8 +162,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
-            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
-            return
+            throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
         
         let fullPathURL: URL?
@@ -193,30 +191,25 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
             errorUserInfo["parameters"] = parameters
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
 
-            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
-            return
+            throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
 
-        buildHTTPRequest(
+        return try buildHTTPRequest(
             method: method,
             url: fullPathURL,
             parameters: mutableParameters,
             isDataURL: isDataURL
-        ) { request, error in
-            completion(request, error)
-        }
+        )
     }
 
     func buildHTTPRequest(
         method: String,
         url: URL,
         parameters: NSMutableDictionary? = [:],
-        isDataURL: Bool,
-        completion: @escaping (URLRequest?, Error?) -> Void
-    ) {
+        isDataURL: Bool
+    ) throws -> URLRequest {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
-            completion(nil, BTHTTPError.urlStringInvalid)
-            return
+            throw BTHTTPError.urlStringInvalid
         }
 
         var headers: [String: String] = defaultHeaders
@@ -227,15 +220,13 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
                 components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             }
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPError.urlStringInvalid)
-                return
+                throw BTHTTPError.urlStringInvalid
             }
 
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPError.urlStringInvalid)
-                return
+                throw BTHTTPError.urlStringInvalid
             }
 
             request = URLRequest(url: urlFromComponents)
@@ -245,8 +236,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
             do {
                 bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
             } catch {
-                completion(nil, error)
-                return
+                throw error
             }
 
             request.httpBody = bodyData
@@ -260,7 +250,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
         request.allHTTPHeaderFields = headers
         request.httpMethod = method
 
-        completion(request, nil)
+        return request
     }
 
     func handleRequestCompletion(
