@@ -119,14 +119,14 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
+    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
+        httpRequest(method: "POST", path: path, configuration: configuration, parameters: parameters, completion: completion)
     }
     
-    func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
+    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters.toDictionary()
-            post(path, parameters: dict, completion: completion)
+            post(path, configuration: configuration, parameters: dict, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -193,13 +193,21 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             return
         }
         
-        let fullPathURL: URL?
+        var fullPathURL: URL?
         let isDataURL: Bool = baseURL.scheme == "data"
-//
-//        if !isDataURL {
-//            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
-//        } else {
+
+        if !isDataURL {
+            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
+        } else {
             fullPathURL = baseURL
+        }
+        
+        if let configuration, !hasHTTPPrefix {
+            fullPathURL = configuration.clientAPIURL!.appendingPathComponent(path)
+        }
+        
+//        if (isRelativeURL && configuration != null) {
+//            request.baseUrl(configuration.clientApiUrl)
 //        }
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
@@ -209,6 +217,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         if case .authorizationFingerprint(let fingerprint) = clientAuthorization,
            !baseURL.isPayPalURL {
             mutableParameters["authorization_fingerprint"] = fingerprint
+        }
+        
+        if authorization?.type == .clientToken, !baseURL.isPayPalURL {
+            mutableParameters["authorization_fingerprint"] = authorization?.bearer
         }
 
         guard let fullPathURL = fullPathURL else {
