@@ -6,10 +6,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    enum ClientAuthorization: Equatable {
-        case authorizationFingerprint(String), tokenizationKey(String)
-    }
-
     // MARK: - Internal Properties
 
     /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
@@ -17,8 +13,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
-
-    var clientAuthorization: ClientAuthorization?
 
     var authorization: Authorization
     
@@ -169,11 +163,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
         // TODO: - Investigate for parity on JS and Android
         // JIRA - DTBTSDK-2682
-        if case .authorizationFingerprint(let fingerprint) = clientAuthorization,
-           !baseURL.isPayPalURL {
-            mutableParameters["authorization_fingerprint"] = fingerprint
-        }
-        
         if authorization.type == .clientToken, !baseURL.isPayPalURL {
             mutableParameters["authorization_fingerprint"] = authorization.bearer
         }
