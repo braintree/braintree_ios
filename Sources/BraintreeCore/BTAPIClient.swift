@@ -18,7 +18,6 @@ import Foundation
 
     // MARK: - Internal Properties
     
-    var configurationHTTP: BTHTTP?
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
 
@@ -50,14 +49,6 @@ import Foundation
 
         switch authorizationType {
         case .tokenizationKey:
-            let baseURL: URL? = Self.baseURLFromTokenizationKey(authorization)
-
-            guard let baseURL else {
-                let reason: String = "BTClient could not initialize because the provided tokenization key was invalid"
-                print(errorString + " Missing analytics session metadata - will not send event " + reason)
-                return nil
-            }
-
             do {
                 self.authorization =  try BTTokenizationKey(authorization)
                 http = BTHTTP(authorization: self.authorization)
@@ -336,43 +327,6 @@ import Foundation
 
     // MARK: - Internal Static Methods
 
-    static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
-        let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
-        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
-
-        let range = NSRange(location: 0, length: tokenizationKey.count)
-        let matches = regularExpression.matches(in: tokenizationKey, range: range)
-
-        if matches.count != 1 || matches.first?.numberOfRanges != 3 {
-            return nil
-        }
-
-        var environment: String = ""
-        var merchantID: String = ""
-
-        matches.forEach { match in
-            environment = (tokenizationKey as NSString).substring(with: match.range(at: 1))
-            merchantID = (tokenizationKey as NSString).substring(with: match.range(at: 2))
-        }
-
-        var components: URLComponents = URLComponents()
-        components.scheme = scheme(forEnvironment: environment)
-
-        guard let host = host(forEnvironment: environment, httpType: .gateway) else { return nil }
-        let hostComponents: [String] = host.components(separatedBy: ":")
-
-        components.host = hostComponents.first
-
-        if hostComponents.count > 1 {
-            let portString: String = hostComponents[1]
-            components.port = Int(portString)
-        }
-
-        components.path = clientApiBasePath(forMerchantID: merchantID)
-
-        return components.url
-    }
-
     static func authorizationType(forAuthorization authorization: String) -> BTAPIClientAuthorization? {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
@@ -381,68 +335,8 @@ import Foundation
 
         return tokenizationKeyMatch != nil ? .tokenizationKey : .clientToken
     }
-
-    static func scheme(forEnvironment environment: String) -> String {
-        environment.lowercased() == "development" ? "http" : "https"
-    }
-
-    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPService) -> String? {
-        var host: String? = nil
-        let environmentLowercased: String = environment.lowercased()
-
-        switch httpType {
-        case .gateway:
-            if environmentLowercased == "sandbox" {
-                host = "api.sandbox.braintreegateway.com"
-            } else if environmentLowercased == "production" {
-                host = "api.braintreegateway.com:443"
-            } else if environmentLowercased == "development" {
-                host = "localhost:3000"
-            }
-
-        case .graphQLAPI:
-            if environmentLowercased == "sandbox" {
-                host = "payments.sandbox.braintree-api.com"
-            } else if environmentLowercased == "development" {
-                host = "localhost:8080"
-            } else {
-                host = "payments.braintree-api.com"
-            }
-
-        default:
-            host = nil
-        }
-
-        return host
-    }
-
-    static func clientApiBasePath(forMerchantID merchantID: String) -> String {
-        "/merchants/\(merchantID)/client_api"
-    }
-
+    
     // MARK: - Internal Methods
-
-    func graphQLURL(forEnvironment environment: String) -> URL? {
-        var components: URLComponents = URLComponents()
-        components.scheme = Self.scheme(forEnvironment: environment)
-
-        guard let host: String = Self.host(forEnvironment: environment, httpType: .graphQLAPI) else { return nil }
-        let hostComponents: [String] = host.components(separatedBy: ":")
-
-        if hostComponents.count == 0 {
-            return nil
-        }
-
-        components.host = hostComponents.first
-
-        if hostComponents.count > 1 {
-            let portString: String = hostComponents[1]
-            components.port = Int(portString)
-        }
-
-        components.path = "/graphql"
-        return components.url
-    }
 
     func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
         switch httpType {
@@ -457,23 +351,11 @@ import Foundation
     
     private func setupHTTPCredentials(_ configuration: BTConfiguration) {
         if http == nil {
-            let baseURL: URL? = configuration.json?["clientApiUrl"].asURL()
-
-            if authorization.type == .clientToken, let baseURL {
-                http = BTHTTP(authorization: authorization)
-            } else if authorization.type == .tokenizationKey, let baseURL {
-                http = BTHTTP(authorization: authorization)
-            }
+            http = BTHTTP(authorization: authorization)
         }
 
         if graphQLHTTP == nil {
-            let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration.environment ?? "")
-
-            if authorization.type == .clientToken, let graphQLBaseURL {
-                graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
-            } else if authorization.type == .tokenizationKey, let graphQLBaseURL {
-                graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
-            }
+            graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
         }
     }
 }
