@@ -8,7 +8,7 @@ class FakeAnalyticsService: BTAnalyticsService {
     override func sendAnalyticsEvent(
         _ eventName: String,
         correlationID: String? = nil,
-        request: Bool? = nil,
+        isVaultRequest: Bool? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
         errorDescription: String? = nil,
