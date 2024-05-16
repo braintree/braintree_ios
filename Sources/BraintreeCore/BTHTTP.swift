@@ -120,18 +120,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         parameters: [String: Any]? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
-        var baseURL: URL
-        if let clientAPIURL = configuration?.clientAPIURL {
-            baseURL = clientAPIURL
-        } else {
-            baseURL = authorization.configURL ?? URL(string: "www.apple.com")!
-        }
+        let fullPathURL = configuration?.clientAPIURL?.appendingPathComponent(path) ?? authorization.configURL
         
-        let hasHTTPPrefix: Bool = path.hasPrefix("http")
-        let baseURLString: String = baseURL.absoluteString
-        var errorUserInfo: [String: Any] = [:]
-
-        if hasHTTPPrefix && (baseURLString.isEmpty || baseURLString == "") {
+        if fullPathURL.absoluteString.isEmpty {
+            var errorUserInfo: [String: Any] = [:]
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -140,50 +132,18 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             return
         }
         
-        var fullPathURL: URL?
-        let isDataURL: Bool = baseURL.scheme == "data"
-
-        if !isDataURL {
-            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
-        } else {
-            fullPathURL = baseURL
-        }
-        
-        if hasHTTPPrefix {
-            fullPathURL = URL(string: path)
-        } else if let configuration {
-            fullPathURL = configuration.clientAPIURL!.appendingPathComponent(path)
-        }
-        
-//        if (isRelativeURL && configuration != null) {
-//            request.baseUrl(configuration.clientApiUrl)
-//        }
-
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
         // TODO: - Investigate for parity on JS and Android
         // JIRA - DTBTSDK-2682
-        if authorization.type == .clientToken, !baseURL.isPayPalURL {
+        if authorization.type == .clientToken, !fullPathURL.isPayPalURL {
             mutableParameters["authorization_fingerprint"] = authorization.bearer
-        }
-
-        guard let fullPathURL = fullPathURL else {
-            // baseURL can be non-nil (e.g. an empty string) and still return nil for appendingPathComponent(_:)
-            // causing a crash when URLComponents(string:_) is called with nil.
-            errorUserInfo["method"] = method
-            errorUserInfo["path"] = path
-            errorUserInfo["parameters"] = parameters
-            errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
-
-            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
-            return
         }
 
         buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: mutableParameters,
-            isDataURL: isDataURL
+            parameters: mutableParameters
         ) { request, error in
             completion(request, error)
         }
@@ -193,7 +153,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         method: String,
         url: URL,
         parameters: NSMutableDictionary? = [:],
-        isDataURL: Bool,
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
@@ -205,9 +164,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         var request: URLRequest
 
         if method == "GET" || method == "DELETE" {
-            if !isDataURL {
-                components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
-            }
+            components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
+            
             guard let urlFromComponents = components.url else {
                 completion(nil, BTHTTPError.urlStringInvalid)
                 return
