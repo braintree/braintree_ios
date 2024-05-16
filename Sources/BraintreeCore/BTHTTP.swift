@@ -17,10 +17,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
-    let baseURL: URL
+
     var clientAuthorization: ClientAuthorization?
 
-    var authorization: Authorization? = nil // make non nil
+    var authorization: Authorization
     
     /// Session exposed for testing
     lazy var session: URLSession = {
@@ -55,55 +55,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     
     // MARK: - Internal Initializers
     
-    init(authorizationNew: Authorization) {
-        self.authorization = authorizationNew
-        self.baseURL = URL(string: "www.apple.com")!
-    }
-    
-    init(url: URL) {
-        self.baseURL = url
-    }
-
-    /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
-    /// - Parameters:
-    ///   - url: The base URL for the Braintree Client API
-    ///   - authorizationFingerprint: The authorization fingerprint HMAC from a client token
-    init(url: URL, authorizationFingerprint: String) {
-        self.baseURL = url
-        self.clientAuthorization = .authorizationFingerprint(authorizationFingerprint)
-    }
-
-    /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a tokenizationKey
-    /// - Parameters:
-    ///   - url: The base URL for the Braintree Client API
-    ///   - tokenizationKey: The authorization fingerprint HMAC from a client token
-    init(url: URL, tokenizationKey: String) {
-        self.baseURL = url
-        self.clientAuthorization = .tokenizationKey(tokenizationKey)
-        
-        self.authorization = try? BTTokenizationKey(tokenizationKey)
-    }
-
-    /// Initialize `BTHTTP` with the authorization fingerprint from a client token
-    /// - Parameter clientToken: The client token
-    convenience init(clientToken: BTClientToken) throws {
-        let url: URL
-
-        if let clientApiURL = clientToken.json["clientApiUrl"].asURL() {
-            url = clientApiURL
-        } else if let configURL = clientToken.json["configUrl"].asURL() {
-            url = configURL
-        } else {
-            throw BTHTTPError.clientApiURLInvalid
-        }
-        
-        if clientToken.authorizationFingerprint.isEmpty {
-            throw BTHTTPError.invalidAuthorizationFingerprint
-        }
-
-        self.init(url: url, authorizationFingerprint: clientToken.authorizationFingerprint)
-        self.authorization = clientToken
-
+    init(authorization: Authorization) {
+        self.authorization = authorization
     }
 
     // MARK: - HTTP Methods
@@ -177,7 +130,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         if let clientAPIURL = configuration?.clientAPIURL {
             baseURL = clientAPIURL
         } else {
-            baseURL = authorization?.configURL ?? URL(string: "www.apple.com")!
+            baseURL = authorization.configURL ?? URL(string: "www.apple.com")!
         }
         
         let hasHTTPPrefix: Bool = path.hasPrefix("http")
@@ -221,8 +174,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             mutableParameters["authorization_fingerprint"] = fingerprint
         }
         
-        if authorization?.type == .clientToken, !baseURL.isPayPalURL {
-            mutableParameters["authorization_fingerprint"] = authorization?.bearer
+        if authorization.type == .clientToken, !baseURL.isPayPalURL {
+            mutableParameters["authorization_fingerprint"] = authorization.bearer
         }
 
         guard let fullPathURL = fullPathURL else {
@@ -293,8 +246,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             headers["Content-Type"] = "application/json; charset=utf-8"
         }
         
-        if authorization?.type == .tokenizationKey {
-            headers["Client-Key"] = authorization?.originalValue
+        if authorization.type == .tokenizationKey {
+            headers["Client-Key"] = authorization.originalValue
         }
 
         request.allHTTPHeaderFields = headers
@@ -451,20 +404,13 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             return false
         }
 
-        return baseURL == otherObject.baseURL && clientAuthorization == otherObject.clientAuthorization
+        return authorization.originalValue == otherObject.authorization.originalValue
     }
 
     // MARK: - NSCopying conformance
 
     func copy(with zone: NSZone? = nil) -> Any {
-        switch clientAuthorization {
-        case .authorizationFingerprint(let fingerprint):
-            return BTHTTP(url: baseURL, authorizationFingerprint: fingerprint)
-        case .tokenizationKey(let key):
-            return BTHTTP(url: baseURL, tokenizationKey: key)
-        default:
-            return BTHTTP(url: baseURL)
-        }
+        return BTHTTP(authorization: authorization)
     }
 
     // MARK: - URLSessionDelegate conformance

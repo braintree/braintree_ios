@@ -20,6 +20,10 @@ import Foundation
         json?["clientApiUrl"].asURL()
     }
     
+    public var graphQLURL: URL? {
+        json?["graphQL"]["url"].asURL()
+    }
+    
     /// The environment name sent to PayPal's FPTI analytics service
     var fptiEnvironment: String? {
         environment == "production" ? "live" : environment

@@ -15,6 +15,65 @@ public protocol Authorization {
     var originalValue: String { get } // TODO: rawValue re-name
 }
 
+extension Authorization {
+    
+    func graphQLURL(forEnvironment environment: String) -> URL? {
+        var components: URLComponents = URLComponents()
+        components.scheme = Self.scheme(forEnvironment: environment)
+
+        guard let host: String = Self.host(forEnvironment: environment, httpType: .graphQLAPI) else { return nil }
+        let hostComponents: [String] = host.components(separatedBy: ":")
+
+        if hostComponents.count == 0 {
+            return nil
+        }
+
+        components.host = hostComponents.first
+
+        if hostComponents.count > 1 {
+            let portString: String = hostComponents[1]
+            components.port = Int(portString)
+        }
+
+        components.path = "/graphql"
+        return components.url
+    }
+    
+    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPService) -> String? {
+        var host: String? = nil
+        let environmentLowercased: String = environment.lowercased()
+
+        switch httpType {
+        case .gateway:
+            if environmentLowercased == "sandbox" {
+                host = "api.sandbox.braintreegateway.com"
+            } else if environmentLowercased == "production" {
+                host = "api.braintreegateway.com:443"
+            } else if environmentLowercased == "development" {
+                host = "localhost:3000"
+            }
+
+        case .graphQLAPI:
+            if environmentLowercased == "sandbox" {
+                host = "payments.sandbox.braintree-api.com"
+            } else if environmentLowercased == "development" {
+                host = "localhost:8080"
+            } else {
+                host = "payments.braintree-api.com"
+            }
+
+        default:
+            host = nil
+        }
+
+        return host
+    }
+    
+    static func scheme(forEnvironment environment: String) -> String {
+        environment.lowercased() == "development" ? "http" : "https"
+    }
+}
+
 //extension Authorization {
 //
 //    func isTokenizationKey() {

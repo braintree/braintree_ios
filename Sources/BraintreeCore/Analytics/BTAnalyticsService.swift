@@ -71,18 +71,18 @@ class BTAnalyticsService: Equatable {
             // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
             if self.http == nil {
                 if self.apiClient.authorization.type == .clientToken {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: self.apiClient.authorization.bearer)
+                    self.http = BTHTTP(authorization: self.apiClient.authorization)
                 } else if self.apiClient.authorization.type == .tokenizationKey {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: self.apiClient.authorization.originalValue)
+                    self.http = BTHTTP(authorization: self.apiClient.authorization)
                 } else {
                     return
                 }
             }
 
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
-                return
-            }
+//            if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
+//                return
+//            }
 
             let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: self.apiClient.metadata.sessionID, event: event)
             self.http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }

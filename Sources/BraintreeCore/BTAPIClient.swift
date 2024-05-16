@@ -60,7 +60,7 @@ import Foundation
 
             do {
                 self.authorization =  try BTTokenizationKey(authorization)
-                http = BTHTTP(authorizationNew: self.authorization)
+                http = BTHTTP(authorization: self.authorization)
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription) /// TODO descriptin
                 return nil
@@ -70,7 +70,7 @@ import Foundation
                 let clientToken = try BTClientToken(clientToken: authorization)
                 self.authorization = clientToken
 
-                http = BTHTTP(authorizationNew: self.authorization)
+                http = BTHTTP(authorization: self.authorization)
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
@@ -460,9 +460,9 @@ import Foundation
             let baseURL: URL? = configuration.json?["clientApiUrl"].asURL()
 
             if authorization.type == .clientToken, let baseURL {
-                http = BTHTTP(url: baseURL, authorizationFingerprint: authorization.bearer)
+                http = BTHTTP(authorization: authorization)
             } else if authorization.type == .tokenizationKey, let baseURL {
-                http = BTHTTP(url: baseURL, tokenizationKey: authorization.originalValue)
+                http = BTHTTP(authorization: authorization)
             }
         }
 
@@ -470,9 +470,9 @@ import Foundation
             let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration.environment ?? "")
 
             if authorization.type == .clientToken, let graphQLBaseURL {
-                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: authorization.bearer)
+                graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
             } else if authorization.type == .tokenizationKey, let graphQLBaseURL {
-                graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: authorization.originalValue)
+                graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
             }
         }
     }
