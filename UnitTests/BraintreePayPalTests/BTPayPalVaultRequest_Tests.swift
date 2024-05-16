@@ -48,12 +48,14 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         request.isShippingAddressEditable = true
         request.offerCredit = true
         request.userAuthenticationEmail = "fake@email.com"
+        request.userPhoneNumber = "4087463271"
 
         let parameters = request.parameters(with: configuration)
 
         XCTAssertEqual(parameters["description"] as? String, "desc")
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
         XCTAssertEqual(parameters["payer_email"] as? String, "fake@email.com")
+        XCTAssertEqual(parameters["phone"] as? String, "4087463271")
 
         guard let shippingParams = parameters["shipping_address"] as? [String:String] else { XCTFail(); return }
 
@@ -64,14 +66,5 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(shippingParams["postal_code"], "11111")
         XCTAssertEqual(shippingParams["country_code"], "US")
         XCTAssertEqual(shippingParams["recipient_name"], "Recipient")
-    }
-    
-    func testParametersWithConfiguration_whenUserPhoneNumberIsPresent_SetsPayerPhoneNumberInRequest() {
-        let request = BTPayPalVaultRequest()
-        request.userPhoneNumber = "4087463271"
-        
-        let parameters = request.parameters(with: configuration)
-        
-        XCTAssertEqual(parameters["phone"] as? String, "4087463271")
     }
 }
