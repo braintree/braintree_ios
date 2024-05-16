@@ -112,7 +112,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         do {
             let dict = try parameters?.toDictionary()
             
-            httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
+            httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -202,7 +202,9 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             fullPathURL = baseURL
         }
         
-        if let configuration, !hasHTTPPrefix {
+        if hasHTTPPrefix {
+            fullPathURL = URL(string: path)
+        } else if let configuration {
             fullPathURL = configuration.clientAPIURL!.appendingPathComponent(path)
         }
         
@@ -291,8 +293,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             headers["Content-Type"] = "application/json; charset=utf-8"
         }
         
-        if case .tokenizationKey(let key) = clientAuthorization {
-            headers["Client-Key"] = key
+        if authorization?.type == .tokenizationKey {
+            headers["Client-Key"] = authorization?.originalValue
         }
 
         request.allHTTPHeaderFields = headers

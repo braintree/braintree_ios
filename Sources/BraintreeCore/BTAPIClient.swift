@@ -230,7 +230,7 @@ import Foundation
                 return
             }
 
-            http(for: httpType)?.get(path, parameters: parameters, completion: completion)
+            http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
         }
     }
 

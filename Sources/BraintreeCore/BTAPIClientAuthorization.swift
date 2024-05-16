@@ -111,6 +111,6 @@ class BTTokenizationKey: Authorization {
     }
     
     static func clientApiBasePath(forMerchantID merchantID: String) -> String {
-        "/merchants/\(merchantID)/client_api"
+        "/merchants/\(merchantID)/client_api" + "/v1/configuration"
     }
 }
