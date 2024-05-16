@@ -1,5 +1,6 @@
 import Foundation
 import AuthenticationServices
+import os
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -39,6 +40,9 @@ import BraintreeDataCollector
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
 
+    private let logHandler = OSLog(subsystem: "com.braintreepayments.paypal", category: "latency")
+    private lazy var isPayPalClientObject = OSSignpostID(log: logHandler, object: self)
+    
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -234,7 +238,14 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
+        os_signpost(
+            .begin,
+            log: logHandler,
+            name: "paypal:tokenize",
+            signpostID: isPayPalClientObject,
+            "begin"
+        )
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
@@ -257,37 +268,37 @@ import BraintreeDataCollector
             self.getSetupBillingAgreementFromMockResponse(request: request, completion: completion)
             return
             
-            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
-                if let error = error as? NSError {
-                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
-                        self.notifyFailure(with: error, completion: completion)
-                        return
-                    }
-
-                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
-                    var dictionary = error.userInfo
-                    dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
-                    self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
-                    return
-                }
-
-                guard let body,
-                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-                        body["agreementSetup"]["approvalUrl"].asURL() else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
-                    return
-                }
-
-                let pairingID = self.token(from: approvalURL)
-
-                if !pairingID.isEmpty {
-                    self.payPalContextID = pairingID
-                }
-
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
-                self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
-            }
+//            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
+//                if let error = error as? NSError {
+//                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+//                        self.notifyFailure(with: error, completion: completion)
+//                        return
+//                    }
+//
+//                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+//                    var dictionary = error.userInfo
+//                    dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+//                    self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
+//                    return
+//                }
+//
+//                guard let body,
+//                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+//                        body["agreementSetup"]["approvalUrl"].asURL() else {
+//                    self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+//                    return
+//                }
+//
+//                let pairingID = self.token(from: approvalURL)
+//
+//                if !pairingID.isEmpty {
+//                    self.payPalContextID = pairingID
+//                }
+//
+//                let dataCollector = BTDataCollector(apiClient: self.apiClient)
+//                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
+//                self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
+//            }
         }
     }
     
@@ -295,23 +306,23 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        let bodyResponse = self.apiClient.getMockedResponse(from: "setup_billing_agreement")
+        let bodyResponse = apiClient.getMockedResponse(from: "setup_billing_agreement")
         guard let bodyResponse,
               let approvalURL = bodyResponse["paymentResource"]["redirectUrl"].asURL() ??
                 bodyResponse["agreementSetup"]["approvalUrl"].asURL() else {
-            self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+            notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
             return
         }
 
-        let pairingID = self.token(from: approvalURL)
+        let pairingID = token(from: approvalURL)
 
         if !pairingID.isEmpty {
-            self.payPalContextID = pairingID
+            payPalContextID = pairingID
         }
 
-        let dataCollector = BTDataCollector(apiClient: self.apiClient)
-        self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
-        self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
+        let dataCollector = BTDataCollector(apiClient: apiClient)
+        clientMetadataID = payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
+        handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
     }
     
     private func performSwitchRequest(
@@ -336,6 +347,13 @@ import BraintreeDataCollector
             handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
+                os_signpost(
+                    .end,
+                    log: logHandler,
+                    name: "paypal:tokenize",
+                    signpostID: isPayPalClientObject,
+                    "end"
+                )
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded, payPalContextID: payPalContextID)
             } else {
                 apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed, payPalContextID: payPalContextID)
