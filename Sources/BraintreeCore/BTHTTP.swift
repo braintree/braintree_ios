@@ -116,8 +116,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
     
     func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
         do {
-            let dict = try parameters.toDictionary()
-            post(path, parameters: dict, completion: completion)
+            if path == "v1/tracking/batch/events" {
+                completion(BTJSON(), nil, nil)
+            } else {
+                let dict = try parameters.toDictionary()
+                post(path, parameters: dict, completion: completion)
+            }
         } catch let error {
             completion(nil, nil, error)
         }
