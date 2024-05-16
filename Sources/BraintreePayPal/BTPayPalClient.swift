@@ -252,6 +252,11 @@ import BraintreeDataCollector
             }
 
             self.payPalRequest = request
+            
+            // Mocking response
+            self.getSetupBillingAgreementFromMockResponse(request: request, completion: completion)
+            return
+            
             self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
@@ -284,6 +289,29 @@ import BraintreeDataCollector
                 self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
             }
         }
+    }
+    
+    private func getSetupBillingAgreementFromMockResponse(
+        request: BTPayPalRequest,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        let bodyResponse = self.apiClient.getMockedResponse(from: "setup_billing_agreement")
+        guard let bodyResponse,
+              let approvalURL = bodyResponse["paymentResource"]["redirectUrl"].asURL() ??
+                bodyResponse["agreementSetup"]["approvalUrl"].asURL() else {
+            self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
+            return
+        }
+
+        let pairingID = self.token(from: approvalURL)
+
+        if !pairingID.isEmpty {
+            self.payPalContextID = pairingID
+        }
+
+        let dataCollector = BTDataCollector(apiClient: self.apiClient)
+        self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(pairingID)
+        self.handlePayPalRequest(with: approvalURL, paymentType: request.paymentType, completion: completion)
     }
     
     private func performSwitchRequest(
