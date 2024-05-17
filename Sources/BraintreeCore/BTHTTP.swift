@@ -13,8 +13,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
-
-    var authorization: ClientAuthorization
+    let customBaseURL: URL?
+    let authorization: ClientAuthorization
     
     /// Session exposed for testing
     lazy var session: URLSession = {
@@ -49,8 +49,9 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     
     // MARK: - Internal Initializers
     
-    init(authorization: ClientAuthorization) {
+    init(authorization: ClientAuthorization, customBaseURL: URL? = nil) {
         self.authorization = authorization
+        self.customBaseURL = customBaseURL
     }
 
     // MARK: - HTTP Methods
@@ -120,7 +121,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         parameters: [String: Any]? = [:],
         completion: @escaping (URLRequest?, Error?) -> Void
     ) {
-        let fullPathURL = configuration?.clientAPIURL?.appendingPathComponent(path) ?? authorization.configURL
+        var fullPathURL: URL
+        if let customBaseURL {
+            fullPathURL = customBaseURL
+        } else {
+            fullPathURL = configuration?.clientAPIURL?.appendingPathComponent(path) ?? authorization.configURL
+        }
         
         if fullPathURL.absoluteString.isEmpty {
             var errorUserInfo: [String: Any] = [:]
