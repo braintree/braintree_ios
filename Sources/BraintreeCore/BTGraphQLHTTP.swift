@@ -36,7 +36,7 @@ class BTGraphQLHTTP: BTHTTP {
     ) {
         var errorUserInfo: [String: Any] = [:]
 
-        guard let baseURL = configuration?.graphQLURL,
+        guard let baseURL = configuration?.graphQLURL ?? customBaseURL,
             !baseURL.absoluteString.isEmpty else {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
