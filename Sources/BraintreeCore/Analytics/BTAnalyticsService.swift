@@ -4,21 +4,22 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
 
+    /// The FPTI URL to post all analytic events.
+    static let url = URL(string: "https://api-m.paypal.com")!
+
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?
 
-    /// The FPTI URL to post all analytic events.
-    static let url = URL(string: "https://api-m.paypal.com")!
-    
     /// Exposed for testing only
     var shouldBypassTimerQueue = false
 
     // MARK: - Private Properties
 
+    private static let events = BTAnalyticsEventsStorage()
+
     private let apiClient: BTAPIClient
     /// Amount of time, in seconds, between batch API requests sent to FPTI
     private let timerInterval = 20
-    private static let events = BTAnalyticsEventsStorage()
 
     private static var timer: DispatchSourceTimer?
     
@@ -26,6 +27,13 @@ class BTAnalyticsService: Equatable {
 
     init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+    }
+
+    // MARK: - Deinit
+
+    deinit {
+        BTAnalyticsService.timer?.cancel()
+        BTAnalyticsService.timer = nil
     }
 
     // MARK: - Internal Methods
@@ -154,11 +162,6 @@ class BTAnalyticsService: Equatable {
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: events)
-    }
-    
-    deinit {
-        BTAnalyticsService.timer?.cancel()
-        BTAnalyticsService.timer = nil
     }
 
     // MARK: Equitable Protocol Conformance
