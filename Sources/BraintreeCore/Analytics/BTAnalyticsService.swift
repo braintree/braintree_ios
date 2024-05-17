@@ -20,7 +20,7 @@ class BTAnalyticsService: Equatable {
     private let timerInterval = 20
     private static let events = BTAnalyticsEventsStorage()
 
-    private var timer: DispatchSourceTimer?
+    private static var timer: DispatchSourceTimer?
     
     // MARK: - Initializer
 
@@ -111,21 +111,21 @@ class BTAnalyticsService: Equatable {
                 return
             }
 
-            if self.timer == nil {
-                self.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
-                self.timer?.schedule(
+            if BTAnalyticsService.timer == nil {
+                BTAnalyticsService.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
+                BTAnalyticsService.timer?.schedule(
                     deadline: .now() + .seconds(self.timerInterval),
                     repeating: .seconds(self.timerInterval),
                     leeway: .seconds(1)
                 )
 
-                self.timer?.setEventHandler {
+                BTAnalyticsService.timer?.setEventHandler {
                     Task {
                         await self.sendQueuedAnalyticsEvents(configuration: configuration)
                     }
                 }
 
-                self.timer?.resume()
+                BTAnalyticsService.timer?.resume()
             }
         } catch {
             return
@@ -139,9 +139,6 @@ class BTAnalyticsService: Equatable {
             let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events.allValues)
             http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
             await BTAnalyticsService.events.removeAll()
-        } else {
-            timer?.cancel()
-            timer = nil
         }
     }
 
@@ -157,6 +154,11 @@ class BTAnalyticsService: Equatable {
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: events)
+    }
+    
+    deinit {
+        BTAnalyticsService.timer?.cancel()
+        BTAnalyticsService.timer = nil
     }
 
     // MARK: Equitable Protocol Conformance
