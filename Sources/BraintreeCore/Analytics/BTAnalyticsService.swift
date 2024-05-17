@@ -16,16 +16,16 @@ class BTAnalyticsService: Equatable {
     // MARK: - Private Properties
 
     private let apiClient: BTAPIClient
-    private let timerInterval: Int
+    /// Amount of time, in seconds, between batch API requests sent to FPTI
+    private let timerInterval = 20
     private static let events = BTAnalyticsEventsStorage()
 
     private var timer: DispatchSourceTimer?
-
+    
     // MARK: - Initializer
 
-    init(apiClient: BTAPIClient, timerInterval: Int = 20) {
+    init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        self.timerInterval = timerInterval
     }
 
     // MARK: - Internal Methods
