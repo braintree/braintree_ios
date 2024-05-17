@@ -1,16 +1,16 @@
 import UIKit
 
-public enum BTAPIClientAuthorization {
-    case tokenizationKey
-    case clientToken
-}
-
-public protocol Authorization {
+public protocol ClientAuthorization {
     
-    var type: BTAPIClientAuthorization { get }
+    var type: AuthorizationType { get }
     var configURL: URL { get }
     var bearer: String { get }
     
     /// The original Client token or Tokenization Key string
     var originalValue: String { get } // TODO: rawValue re-name
+}
+
+public enum AuthorizationType {
+    case tokenizationKey
+    case clientToken
 }

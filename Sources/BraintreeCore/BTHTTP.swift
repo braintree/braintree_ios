@@ -14,7 +14,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
 
-    var authorization: Authorization
+    var authorization: ClientAuthorization
     
     /// Session exposed for testing
     lazy var session: URLSession = {
@@ -49,7 +49,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     
     // MARK: - Internal Initializers
     
-    init(authorization: Authorization) {
+    init(authorization: ClientAuthorization) {
         self.authorization = authorization
     }
 

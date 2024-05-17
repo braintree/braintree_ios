@@ -2,7 +2,7 @@ import Foundation
 
 /// An authorization string used to initialize the Braintree SDK
 @_documentation(visibility: private)
-@objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying, Authorization {
+@objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying, ClientAuthorization {
     
     // NEXT_MAJOR_VERSION (v7): properties exposed for Objective-C interoperability + Drop-in access.
     // Once the entire SDK is in Swift, determine if we want public properties to be internal and
@@ -24,7 +24,7 @@ import Foundation
     // duplicate of authFingerprint
     public let bearer: String
 
-    public let type = BTAPIClientAuthorization.clientToken
+    public let type = AuthorizationType.clientToken
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The original string used to initialize this instance

@@ -11,7 +11,7 @@ import Foundation
     // MARK: - Public Properties
 
     /// TODO - eliminate the above 2
-    public var authorization: Authorization
+    public var authorization: ClientAuthorization
     
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
@@ -43,14 +43,14 @@ import Foundation
     init?(authorization: String, sendAnalyticsEvent: Bool) {
         self.metadata = BTClientMetadata()
 
-        guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
+        guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
 
         let errorString = BTLogLevelDescription.string(for: .error) 
 
         switch authorizationType {
         case .tokenizationKey:
             do {
-                self.authorization =  try BTTokenizationKey(authorization)
+                self.authorization =  try TokenizationKey(authorization)
                 http = BTHTTP(authorization: self.authorization)
             } catch {
                 print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription) /// TODO descriptin
@@ -327,7 +327,7 @@ import Foundation
 
     // MARK: - Internal Static Methods
 
-    static func authorizationType(forAuthorization authorization: String) -> BTAPIClientAuthorization? {
+    static func authorizationType(for authorization: String) -> AuthorizationType? {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
 

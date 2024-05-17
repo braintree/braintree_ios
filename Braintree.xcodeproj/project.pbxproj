@@ -207,7 +207,7 @@
 		BE1ACEF72938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */; };
 		BE24C66E28E49A730067B11A /* BTAPIClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C66D28E49A730067B11A /* BTAPIClientError.swift */; };
 		BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */; };
-		BE24C67528E7491E0067B11A /* BTAPIClientAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67428E7491E0067B11A /* BTAPIClientAuthorization.swift */; };
+		BE24C67528E7491E0067B11A /* ClientAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67428E7491E0067B11A /* ClientAuthorization.swift */; };
 		BE2F9846289D5435008EF189 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
 		BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */; };
 		BE32ACBC2907744400A61FED /* BTCardNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE32ACBB2907744400A61FED /* BTCardNetwork.swift */; };
@@ -845,7 +845,7 @@
 		BE24C66528D906090067B11A /* CardinalMobile.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:H7M4G5NDNU:CardinalCommerce Corp"; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE24C66D28E49A730067B11A /* BTAPIClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientError.swift; sourceTree = "<group>"; };
 		BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientHTTPType.swift; sourceTree = "<group>"; };
-		BE24C67428E7491E0067B11A /* BTAPIClientAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientAuthorization.swift; sourceTree = "<group>"; };
+		BE24C67428E7491E0067B11A /* ClientAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAuthorization.swift; sourceTree = "<group>"; };
 		BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTConfiguration.swift; sourceTree = "<group>"; };
 		BE32ACBB2907744400A61FED /* BTCardNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardNetwork.swift; sourceTree = "<group>"; };
 		BE349110294B77E100D2CF68 /* BTPayPalVaultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalVaultRequest.swift; sourceTree = "<group>"; };
@@ -1208,8 +1208,8 @@
 			isa = PBXGroup;
 			children = (
 				80F4F4D529F8A628003EACB1 /* Analytics */,
+				80B207342BF6D3B000787E37 /* Authorization */,
 				570B93AF2853980C0041BAFE /* BTAPIClient.swift */,
-				BE24C67428E7491E0067B11A /* BTAPIClientAuthorization.swift */,
 				BE24C66D28E49A730067B11A /* BTAPIClientError.swift */,
 				BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */,
 				BE9EC0972899CF040022EC63 /* BTAPIPinnedCertificates.swift */,
@@ -1221,7 +1221,6 @@
 				574891EC286F7ECA0020DA36 /* BTClientMetadata.swift */,
 				574891EA286F7E4F0020DA36 /* BTClientMetadataIntegration.swift */,
 				574891E8286F7D300020DA36 /* BTClientMetadataSource.swift */,
-				BED00CAF28A579D700D74AEC /* BTClientToken.swift */,
 				BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */,
 				BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */,
 				BE5C8C0228A2C183004F9130 /* BTConfiguration+Core.swift */,
@@ -1241,7 +1240,6 @@
 				BE9FB82A2898324C00D6FE2F /* BTPaymentMethodNonce.swift */,
 				BE9FB82C28984ADE00D6FE2F /* BTPaymentMethodNonceParser.swift */,
 				BE63A3A6288F3026001936DA /* BTPostalAddress.swift */,
-				80B207322BF6C0F100787E37 /* BTTokenizationKey.swift */,
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
 				BEBD05212A1FE8BE0003C15C /* BTWebAuthenticationSession.swift */,
 				BEB9BF522A26872B00A3673E /* BTWebAuthenticationSessionClient.swift */,
@@ -1325,6 +1323,16 @@
 				A948D6F124FAC8F900F4F178 /* BraintreeVenmoTests */,
 			);
 			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		80B207342BF6D3B000787E37 /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				BED00CAF28A579D700D74AEC /* BTClientToken.swift */,
+				80B207322BF6C0F100787E37 /* BTTokenizationKey.swift */,
+				BE24C67428E7491E0067B11A /* ClientAuthorization.swift */,
+			);
+			path = Authorization;
 			sourceTree = "<group>";
 		};
 		80F4F4D529F8A628003EACB1 /* Analytics */ = {
@@ -2823,7 +2831,7 @@
 				574891EB286F7E4F0020DA36 /* BTClientMetadataIntegration.swift in Sources */,
 				8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */,
 				BE698EA428AD2C10001D9B10 /* BTCoreConstants.swift in Sources */,
-				BE24C67528E7491E0067B11A /* BTAPIClientAuthorization.swift in Sources */,
+				BE24C67528E7491E0067B11A /* ClientAuthorization.swift in Sources */,
 				BE32ACBC2907744400A61FED /* BTCardNetwork.swift in Sources */,
 				570B93D92853C6180041BAFE /* BTLogLevel.swift in Sources */,
 				80A6C6192B21205900416D50 /* UIApplication+URLOpener.swift in Sources */,

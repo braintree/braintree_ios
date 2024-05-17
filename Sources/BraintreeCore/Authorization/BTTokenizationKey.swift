@@ -1,8 +1,8 @@
 import Foundation
 
-class BTTokenizationKey: Authorization {
+class TokenizationKey: ClientAuthorization {
     
-    let type = BTAPIClientAuthorization.tokenizationKey
+    let type = AuthorizationType.tokenizationKey
     
     let bearer: String
     let configURL: URL
@@ -11,7 +11,7 @@ class BTTokenizationKey: Authorization {
     init(_ rawValue: String) throws {
         self.bearer = rawValue
         self.originalValue = rawValue
-        guard let configURL = BTTokenizationKey.baseURLFromTokenizationKey(rawValue) else {
+        guard let configURL = TokenizationKey.baseURLFromTokenizationKey(rawValue) else {
             throw BTClientTokenError.invalidAuthorizationFingerprint // todo
         }
         self.configURL = configURL
