@@ -77,9 +77,10 @@ import Foundation
     @objc public var lastRequestParameters: [String: Any]?
     @objc public var cannedConfiguration: BTJSON?
 
-//    @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
-//        self.init(url: URL(string: "http://fake.com")!)
-//    }
+    @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
+        let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
+        return self.init(authorization: fakeTokenizationKey, customBaseURL: URL(string: "http://fake.com")!)
+    }
 
     public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1

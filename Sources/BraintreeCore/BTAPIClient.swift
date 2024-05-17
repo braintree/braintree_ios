@@ -118,7 +118,7 @@ import Foundation
             return
         }
 
-        http?.get(authorization.configURL.absoluteString, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
@@ -304,13 +304,13 @@ import Foundation
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-//        analyticsService?.sendAnalyticsEvent(
-//            eventName,
-//            correlationID: correlationID,
-//            errorDescription: errorDescription,
-//            linkType: linkType,
-//            payPalContextID: payPalContextID
-//        )
+        analyticsService?.sendAnalyticsEvent(
+            eventName,
+            correlationID: correlationID,
+            errorDescription: errorDescription,
+            linkType: linkType,
+            payPalContextID: payPalContextID
+        )
     }
 
     // MARK: Analytics Internal Methods
