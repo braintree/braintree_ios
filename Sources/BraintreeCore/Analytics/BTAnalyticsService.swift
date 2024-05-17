@@ -9,6 +9,9 @@ class BTAnalyticsService: Equatable {
 
     /// The FPTI URL to post all analytic events.
     static let url = URL(string: "https://api-m.paypal.com")!
+    
+    /// Exposed for testing only
+    var shouldBypassTimerQueue = false
 
     // MARK: - Private Properties
 
@@ -83,12 +86,10 @@ class BTAnalyticsService: Equatable {
         )
 
         await events.append(event)
-
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            guard let configuration, error == nil else {
-                return
-            }
-
+        
+        do {
+            let configuration = try await apiClient.fetchConfiguration()
+            
             // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
             if self.http == nil {
                 if let clientToken = self.apiClient.clientToken {
@@ -104,12 +105,13 @@ class BTAnalyticsService: Equatable {
             if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
                 return
             }
+            
+            if shouldBypassTimerQueue {
+                await self.sendQueuedAnalyticsEvents(configuration: configuration)
+                return
+            }
 
-            if self.timerInterval == 0 {
-                Task {
-                    await self.sendQueuedAnalyticsEvents(configuration: configuration)
-                }
-            } else {
+            if self.timer == nil {
                 self.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
                 self.timer?.schedule(
                     deadline: .now() + .seconds(self.timerInterval),
@@ -125,6 +127,8 @@ class BTAnalyticsService: Equatable {
 
                 self.timer?.resume()
             }
+        } catch {
+            return
         }
     }
 

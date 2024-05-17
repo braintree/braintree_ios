@@ -162,6 +162,18 @@ import Foundation
             }
         }
     }
+    
+    func fetchConfiguration() async throws -> BTConfiguration {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchOrReturnRemoteConfiguration { configuration, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let configuration {
+                    continuation.resume(returning: configuration)
+                }
+            }
+        }
+    }
 
     /// Fetches a customer's vaulted payment method nonces.
     /// Must be using client token with a customer ID specified.
