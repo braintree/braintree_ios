@@ -415,48 +415,48 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-//    func testErrorResponse_correctlyMapsErrorTypeToStatusCode() {
-//        let errorTypes = ["user_error": 422, "developer_error": 403, "unknown_error": 500]
-//        let errorCodes: [String: Int] = [
-//            "user_error": BTHTTPError.clientError([:]).errorCode,
-//            "developer_error": BTHTTPError.clientError([:]).errorCode,
-//            "unknown_error": BTHTTPError.serverError([:]).errorCode
-//        ]
-//
-//        for (errorType, _) in errorTypes {
-//            let expectedStatusCode = errorTypes[errorType]
-//            let stubGraphQLErrorResponse = [
-//                "errors": [
-//                    [
-//                        "extensions": ["errorType": errorType]
-//                    ]
-//                ]
-//            ]
-//
-//            HTTPStubs.stubRequests { request in
-//              return true
-//            } withStubResponse: { request in
-//                return HTTPStubsResponse(
-//                    data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
-//                    statusCode: 200,
-//                    headers: ["Content-Type": "application/json"]
-//                )
-//            }
-//
-//            let expectation = expectation(description: "POST callback")
-//            http?.post("") { body, _, error in
-//                let error = error as NSError?
-//                let errorDictionary = error!.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
-//                XCTAssertEqual(errorDictionary.statusCode, expectedStatusCode)
-//                XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)
-//                XCTAssertEqual(error?.code, errorCodes[errorType])
-//
-//                expectation.fulfill()
-//            }
-//
-//            waitForExpectations(timeout: 2)
-//        }
-//    }
+    func testErrorResponse_correctlyMapsErrorTypeToStatusCode() {
+        let errorTypes = ["user_error": 422, "developer_error": 403, "unknown_error": 500]
+        let errorCodes: [String: Int] = [
+            "user_error": BTHTTPError.clientError([:]).errorCode,
+            "developer_error": BTHTTPError.clientError([:]).errorCode,
+            "unknown_error": BTHTTPError.serverError([:]).errorCode
+        ]
+
+        for (errorType, _) in errorTypes {
+            let expectedStatusCode = errorTypes[errorType]
+            let stubGraphQLErrorResponse = [
+                "errors": [
+                    [
+                        "extensions": ["errorType": errorType]
+                    ]
+                ]
+            ]
+
+            HTTPStubs.stubRequests { request in
+              return true
+            } withStubResponse: { request in
+                return HTTPStubsResponse(
+                    data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
+                    statusCode: 200,
+                    headers: ["Content-Type": "application/json"]
+                )
+            }
+
+            let expectation = expectation(description: "POST callback")
+            http?.post("") { body, _, error in
+                let error = error as NSError?
+                let errorDictionary = error!.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
+                XCTAssertEqual(errorDictionary.statusCode, expectedStatusCode)
+                XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)
+                XCTAssertEqual(error?.code, errorCodes[errorType])
+
+                expectation.fulfill()
+            }
+
+            waitForExpectations(timeout: 2)
+        }
+    }
 
     func testErrorResponse_whenErrorIsMissingLegacyCode_doesNotSetCodeNumber() {
         let expectation = expectation(description: "POST callback")
