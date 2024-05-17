@@ -23,7 +23,7 @@ class BTAnalyticsService: Equatable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameters:
     ///   - eventName: Name of analytic event.
-    ///   - isVaultRequest: Optional. Type of checkout request associated with checkout session.
+    ///   - isVaultRequest: Optional. If the Venmo or PayPal request is being vaulted.
     ///   - correlationID: Optional. CorrelationID associated with the checkout session.
     ///   - errorDescription: Optional. Full error description returned to merchant.
     ///   - linkType: Optional. The type of link the SDK will be handling, currently deeplink or universal.

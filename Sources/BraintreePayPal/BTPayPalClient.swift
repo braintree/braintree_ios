@@ -80,8 +80,8 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        tokenize(request: request, completion: completion)
         isVaultRequest = true
+        tokenize(request: request, completion: completion)
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Vault flow.
