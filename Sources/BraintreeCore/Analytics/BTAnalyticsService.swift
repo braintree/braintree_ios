@@ -14,7 +14,7 @@ class BTAnalyticsService: Equatable {
 
     private let apiClient: BTAPIClient
     private let timerInterval: Int
-    private let events = BTAnalyticsEventsStorage()
+    private static let events = BTAnalyticsEventsStorage()
 
     private var timer: DispatchSourceTimer?
 
@@ -82,7 +82,7 @@ class BTAnalyticsService: Equatable {
             timestamp: String(timestampInMilliseconds)
         )
 
-        await events.append(event)
+        await BTAnalyticsService.events.append(event)
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             guard let configuration, error == nil else {
@@ -131,10 +131,10 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     func sendQueuedAnalyticsEvents(configuration: BTConfiguration) async {
-        if await !events.isEmpty {
-            let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: events.allValues)
+        if await !BTAnalyticsService.events.isEmpty {
+            let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events.allValues)
             http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-            await events.removeAll()
+            await BTAnalyticsService.events.removeAll()
         } else {
             timer?.cancel()
             timer = nil
