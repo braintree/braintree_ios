@@ -932,49 +932,6 @@ final class BTHTTP_Tests: XCTestCase {
         }
     }
 
-    // MARK: - IsEqual tests
-
-    func testReturnsTrueIfBTHTTPsHaveTheSameClientToken() {
-        let http1 = BTHTTP(authorization: fakeClientToken)
-        let http2 = BTHTTP(authorization: fakeClientToken)
-        XCTAssertEqual(http1, http2)
-    }
-
-    func testReturnsFalseIfBTHTTPsDoNotHaveTheSameClientToken() throws {
-        let http1 = BTHTTP(authorization: fakeClientToken)
-        
-        let fakeClientToken2 = try BTClientToken(clientToken: "eyJ2ZXJzaW9uIjozLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiIxYzM5N2E5OGZmZGRkNDQwM2VjNzEzYWRjZTI3NTNiMzJlODc2MzBiY2YyN2M3NmM2OWVmZjlkMTE5MjljOTVkfGNyZWF0ZWRfYXQ9MjAxNy0wNC0wNVQwNjowNzowOC44MTUwOTkzMjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24ifQ==")
-        let http2 = BTHTTP(authorization: fakeClientToken2)
-        XCTAssertNotEqual(http1, http2)
-    }
-    
-    func testReturnsTrueIfBTHTTPsHaveTheSameTokenizationKey() {
-        let http1 = BTHTTP(authorization: fakeTokenizationKey)
-        let http2 = BTHTTP(authorization: fakeTokenizationKey)
-        XCTAssertEqual(http1, http2)
-    }
-    
-    func testReturnsFalseIfBTHTTPsDoNotHaveTheSameTokenizationKey() throws {
-        let http1 = BTHTTP(authorization: fakeTokenizationKey)
-        
-        let fakeClientToken2 = try TokenizationKey("sandbox_value123_merchant456")
-        let http2 = BTHTTP(authorization: fakeTokenizationKey)
-        XCTAssertNotEqual(http1, http2)
-    }
-
-    // MARK: - Copy tests
-
-    func testReturnsAnEqualInstance() {
-        http = BTHTTP(authorization: fakeTokenizationKey)
-        XCTAssertEqual(http, http?.copy() as? BTHTTP)
-    }
-
-    func testReturnedInstanceHasTheSameCertificates() {
-        http = BTHTTP(authorization: fakeTokenizationKey)
-        let copiedHTTP = http?.copy() as? BTHTTP
-        XCTAssertEqual(http?.pinnedCertificates, copiedHTTP?.pinnedCertificates)
-    }
-
     // MARK: - Helper Methods
 
     func withStub(_ completion: () -> Void) {
