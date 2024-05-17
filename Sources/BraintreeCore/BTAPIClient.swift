@@ -10,7 +10,7 @@ import Foundation
 
     // MARK: - Public Properties
 
-    /// TODO - eliminate the above 2
+    /// The TokenizationKey or ClientToken used to authorize the APIClient
     public var authorization: ClientAuthorization
     
     /// Client metadata that is used for tracking the client session
@@ -53,7 +53,6 @@ import Foundation
                 self.authorization =  try TokenizationKey(authorization)
                 http = BTHTTP(authorization: self.authorization)
             } catch {
-                print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription) /// TODO descriptin
                 return nil
             }
         case .clientToken:
@@ -63,12 +62,10 @@ import Foundation
 
                 http = BTHTTP(authorization: self.authorization)
             } catch {
-                print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
             }
         }
         super.init()
-        
         BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
 
         // Kickoff the background request to fetch the config

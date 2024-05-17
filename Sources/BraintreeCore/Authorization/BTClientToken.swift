@@ -15,14 +15,11 @@ import Foundation
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The extracted authorization fingerprint
-    public let authorizationFingerprint: String
+    public let bearer: String
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The extracted configURL
     public let configURL: URL
-    
-    // duplicate of authFingerprint
-    public let bearer: String
 
     public let type = AuthorizationType.clientToken
 
@@ -49,7 +46,6 @@ import Foundation
             throw BTClientTokenError.invalidConfigURL
         }
         
-        self.authorizationFingerprint = authorizationFingerprint
         self.bearer = authorizationFingerprint
         self.configURL = configURL
         self.originalValue = clientToken

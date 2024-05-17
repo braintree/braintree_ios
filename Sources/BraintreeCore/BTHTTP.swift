@@ -49,6 +49,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     
     // MARK: - Internal Initializers
     
+    /// Initialize `BTHTTP` with an Authorization credential
+    /// - Parameters:
+    ///   - authorization: a CilentToken or TokenizationKey
+    ///   - customBaseURL: an optional baseURL override
     required init(authorization: ClientAuthorization, customBaseURL: URL? = nil) {
         self.authorization = authorization
         self.customBaseURL = customBaseURL

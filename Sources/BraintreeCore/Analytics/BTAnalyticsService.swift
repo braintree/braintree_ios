@@ -88,12 +88,12 @@ class BTAnalyticsService: Equatable {
     /// Constructs POST params to be sent to FPTI
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String, event: FPTIBatchData.Event) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
-            authorizationFingerprint: " ",
+            authorizationFingerprint: apiClient.authorization.type == .clientToken ? apiClient.authorization.bearer : nil,
             environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
             sessionID: sessionID,
-            tokenizationKey: " "
+            tokenizationKey: apiClient.authorization.type == .tokenizationKey ? apiClient.authorization.originalValue : nil
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: [event])

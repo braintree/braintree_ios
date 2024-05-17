@@ -117,7 +117,7 @@ import BraintreeCore
 
             var requestParameters: [String: Any?] = [
                 "nonce": request.nonce,
-                "authorizationFingerprint": "TODO", //self.apiClient.clientToken?.authorizationFingerprint,
+                "authorizationFingerprint": self.apiClient.authorization.bearer,
                 "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
             ]
 
