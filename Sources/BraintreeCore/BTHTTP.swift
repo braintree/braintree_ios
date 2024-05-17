@@ -49,7 +49,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     
     // MARK: - Internal Initializers
     
-    init(authorization: ClientAuthorization, customBaseURL: URL? = nil) {
+    required init(authorization: ClientAuthorization, customBaseURL: URL? = nil) {
         self.authorization = authorization
         self.customBaseURL = customBaseURL
     }
