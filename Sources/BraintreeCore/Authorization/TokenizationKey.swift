@@ -12,7 +12,7 @@ class TokenizationKey: ClientAuthorization {
         self.bearer = rawValue
         self.originalValue = rawValue
         guard let configURL = TokenizationKey.baseURLFromTokenizationKey(rawValue) else {
-            throw BTClientTokenError.invalidAuthorizationFingerprint // todo
+            throw TokenizationKeyError.invalid
         }
         self.configURL = configURL
     }
@@ -37,9 +37,9 @@ class TokenizationKey: ClientAuthorization {
         }
 
         var components: URLComponents = URLComponents()
-        components.scheme = scheme(forEnvironment: environment)
+        components.scheme = environment == "development" ? "http" : "https"
 
-        guard let host = host(forEnvironment: environment, httpType: .gateway) else { return nil }
+        guard let host = host(for: environment) else { return nil }
         let hostComponents: [String] = host.components(separatedBy: ":")
 
         components.host = hostComponents.first
@@ -49,46 +49,20 @@ class TokenizationKey: ClientAuthorization {
             components.port = Int(portString)
         }
 
-        components.path = clientApiBasePath(forMerchantID: merchantID)
+        components.path = "/merchants/\(merchantID)/client_api" + "/v1/configuration"
 
         return components.url
     }
-    
-    static func scheme(forEnvironment environment: String) -> String {
-        environment.lowercased() == "development" ? "http" : "https"
-    }
 
-    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPService) -> String? {
-        var host: String? = nil
-        let environmentLowercased: String = environment.lowercased()
-
-        switch httpType {
-        case .gateway:
-            if environmentLowercased == "sandbox" {
-                host = "api.sandbox.braintreegateway.com"
-            } else if environmentLowercased == "production" {
-                host = "api.braintreegateway.com:443"
-            } else if environmentLowercased == "development" {
-                host = "localhost:3000"
-            }
-
-        case .graphQLAPI:
-            if environmentLowercased == "sandbox" {
-                host = "payments.sandbox.braintree-api.com"
-            } else if environmentLowercased == "development" {
-                host = "localhost:8080"
-            } else {
-                host = "payments.braintree-api.com"
-            }
-
-        default:
-            host = nil
+    static func host(for environment: String) -> String? {
+        if environment.lowercased() == "sandbox" {
+            return "api.sandbox.braintreegateway.com"
+        } else if environment.lowercased() == "production" {
+            return "api.braintreegateway.com:443"
+        } else if environment.lowercased() == "development" {
+            return "localhost:3000"
         }
 
-        return host
-    }
-    
-    static func clientApiBasePath(forMerchantID merchantID: String) -> String {
-        "/merchants/\(merchantID)/client_api" + "/v1/configuration"
+        return nil
     }
 }

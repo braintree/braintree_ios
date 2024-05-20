@@ -553,43 +553,4 @@ class BTAPIClient_Tests: XCTestCase {
         waitForExpectations(timeout: 5)
 
     }
-
-    // MARK: - Environment Base URL
-    
-    // TODO: - Move into tokenizationKey tests & configuraiton tests
-
-//    func testBaseURL_isDeterminedByTokenizationKey() {
-//        var apiClient = BTAPIClient(authorization: "development_tokenization_key")
-//        XCTAssertEqual(apiClient?.http?.baseURL.absoluteString, "http://localhost:3000/merchants/key/client_api")
-//
-//        apiClient = BTAPIClient(authorization: "sandbox_tokenization_key")
-//        XCTAssertEqual(apiClient?.http?.baseURL.absoluteString, "https://api.sandbox.braintreegateway.com/merchants/key/client_api")
-//
-//        apiClient = BTAPIClient(authorization: "production_tokenization_key")
-//        XCTAssertEqual(apiClient?.http?.baseURL.absoluteString, "https://api.braintreegateway.com:443/merchants/key/client_api")
-//    }
-//
-//    func testGraphQLURLForEnvironment_returnsSandboxURL() {
-//        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-//        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "sandbox")
-//        XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.sandbox.braintree-api.com/graphql")
-//    }
-//
-//    func testGraphQLURLForEnvironment_returnsDevelopmentURL() {
-//        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-//        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "development")
-//        XCTAssertEqual(sandboxURL?.absoluteString, "http://localhost:8080/graphql")
-//    }
-//
-//    func testGraphQLURLForEnvironment_returnsProductionURL() {
-//        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-//        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "production")
-//        XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.braintree-api.com/graphql")
-//    }
-//
-//    func testGraphQLURLForEnvironment_returnsProductionURL_asDefault() {
-//        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-//        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "unknown")
-//        XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.braintree-api.com/graphql")
-//    }
 }
