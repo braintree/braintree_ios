@@ -14,6 +14,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         return textField
     }()
 
+    lazy var appSwitchStageToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "App Switch Staging Env"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+
+    let appSwitchStageToggle = UISwitch()
+
     // TODO: remove UILabel before merging into main DTBTSDK-3766
     let baTokenLabel = UILabel()
 
@@ -31,7 +40,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let stackView = UIStackView(arrangedSubviews: [
             buttonsStackView(label: "1-Time Checkout Flows", views: [payPalCheckoutButton, payPalPayLaterButton]),
-            buttonsStackView(label: "Vault Flows",views: [emailTextField, payPalVaultButton, payPalAppSwitchButton]),
+            buttonsStackView(
+                label: "Vault Flows",
+                views: [
+                    emailTextField, 
+                    payPalVaultButton,
+                    payPalAppSwitchButton,
+                    UIStackView(arrangedSubviews: [appSwitchStageToggleLabel, appSwitchStageToggle])
+                ]
+            ),
             baTokenLabel
         ])
         
@@ -119,8 +136,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             sender.isEnabled = true
             return
         }
-        
-        let payPalClient = BTPayPalClient(apiClient: BTAPIClient(authorization: "sandbox_jy4fvpfg_v7x2rb226dx4pr7b")!)
+
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: userEmail,
             enablePayPalAppSwitch: true,
@@ -135,15 +151,30 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             object: nil
         )
 
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
+        if appSwitchStageToggle.isOn {
+            let stagePayPalClient = BTPayPalClient(apiClient: BTAPIClient(authorization: "sandbox_jy4fvpfg_v7x2rb226dx4pr7b")!)
 
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
+            stagePayPalClient.tokenize(request) { nonce, error in
+                sender.isEnabled = true
+
+                guard let nonce else {
+                    self.progressBlock(error?.localizedDescription)
+                    return
+                }
+
+                self.nonceCompletionBlock(nonce)
             }
+        } else {
+            payPalClient.tokenize(request) { nonce, error in
+                sender.isEnabled = true
 
-            self.nonceCompletionBlock(nonce)
+                guard let nonce else {
+                    self.progressBlock(error?.localizedDescription)
+                    return
+                }
+
+                self.completionBlock(nonce)
+            }
         }
     }
     
