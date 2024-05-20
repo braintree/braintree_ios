@@ -18,14 +18,6 @@ class BTGraphQLHTTP: BTHTTP {
         httpRequest(method: "POST", configuration: configuration, parameters: parameters, completion: completion)
     }
 
-    override func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        NSException(name: exceptionName, reason: "PUT is unsupported").raise()
-    }
-
-    override func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        NSException(name: exceptionName, reason: "DELETE is unsupported").raise()
-    }
-
     // MARK: - Internal methods
     
     func httpRequest(

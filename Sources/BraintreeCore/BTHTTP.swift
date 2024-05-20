@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 /// Performs HTTP methods on the Braintree Client API
-class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
+class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -16,6 +16,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
     let customBaseURL: URL?
     let authorization: ClientAuthorization
     
+    weak var networkTimingDelegate: BTHTTPNetworkTiming?
+
     /// Session exposed for testing
     lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
@@ -84,14 +86,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
     }
 
-    func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
-    }
-
-    func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
-    }
-
     // MARK: - HTTP Method Helpers
 
     func httpRequest(
@@ -101,11 +95,8 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         parameters: [String: Any]? = [:],
         completion: RequestCompletion?
     ) {
-        createRequest(method: method, path: path, configuration: configuration, parameters: parameters) { request, error in
-            guard let request = request else {
-                self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
-                return
-            }
+        do {
+            let request = try createRequest(method: method, path: path, configuration: configuration, parameters: parameters)
             
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
@@ -115,6 +106,9 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
                 handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
             }.resume()
+        } catch {
+            self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
+            return
         }
     }
 
@@ -122,24 +116,22 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         method: String,
         path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:],
-        completion: @escaping (URLRequest?, Error?) -> Void
-    ) {
+        parameters: [String: Any]? = [:]
+    ) throws -> URLRequest {
         var fullPathURL: URL
         if let customBaseURL {
             fullPathURL = customBaseURL
         } else {
             fullPathURL = configuration?.clientAPIURL?.appendingPathComponent(path) ?? authorization.configURL
         }
-        
+
         if fullPathURL.absoluteString.isEmpty {
             var errorUserInfo: [String: Any] = [:]
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
-            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
-            return
+            throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
         
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
@@ -150,24 +142,20 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             mutableParameters["authorization_fingerprint"] = authorization.bearer
         }
 
-        buildHTTPRequest(
+        return try buildHTTPRequest(
             method: method,
             url: fullPathURL,
             parameters: mutableParameters
-        ) { request, error in
-            completion(request, error)
-        }
+        )
     }
 
     func buildHTTPRequest(
         method: String,
         url: URL,
-        parameters: NSMutableDictionary? = [:],
-        completion: @escaping (URLRequest?, Error?) -> Void
-    ) {
+        parameters: NSMutableDictionary? = [:]
+    ) throws -> URLRequest {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
-            completion(nil, BTHTTPError.urlStringInvalid)
-            return
+            throw BTHTTPError.urlStringInvalid
         }
 
         var headers: [String: String] = defaultHeaders
@@ -177,15 +165,13 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPError.urlStringInvalid)
-                return
+                throw BTHTTPError.urlStringInvalid
             }
 
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPError.urlStringInvalid)
-                return
+                throw BTHTTPError.urlStringInvalid
             }
 
             request = URLRequest(url: urlFromComponents)
@@ -195,8 +181,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             do {
                 bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
             } catch {
-                completion(nil, error)
-                return
+                throw error
             }
 
             request.httpBody = bodyData
@@ -210,7 +195,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         request.allHTTPHeaderFields = headers
         request.httpMethod = method
 
-        completion(request, nil)
+        return request
     }
 
     func handleRequestCompletion(
@@ -353,24 +338,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         return certificates
     }
 
-    // MARK: - isEqual override
-    
-    override func isEqual(_ object: Any?) -> Bool {
-        guard object is BTHTTP,
-              let otherObject = object as? BTHTTP else {
-            return false
-        }
-
-        return authorization.originalValue == otherObject.authorization.originalValue
-    }
-
-    // MARK: - NSCopying conformance
-
-    func copy(with zone: NSZone? = nil) -> Any {
-        return BTHTTP(authorization: authorization)
-    }
-
-    // MARK: - URLSessionDelegate conformance
+    // MARK: - URLSessionTaskDelegate conformance
 
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
@@ -392,6 +360,20 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             }
         } else {
             completionHandler(.performDefaultHandling, nil)
+        }
+    }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        metrics.transactionMetrics.forEach { transaction in
+            if let startDate = transaction.fetchStartDate,
+               let endDate = transaction.responseEndDate,
+               let path = transaction.request.url?.path {
+                networkTimingDelegate?.fetchAPITiming(
+                    path: path,
+                    startTime: startDate.utcTimestampMilliseconds,
+                    endTime: endDate.utcTimestampMilliseconds
+                )
+            }
         }
     }
 }

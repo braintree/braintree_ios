@@ -405,6 +405,41 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertEqual(mockAnalyticsService.lastEvent, "blahblah")
     }
 
+    func testFetchAPITiming_whenConfigurationPathIsValid_sendsLatencyEvent() {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
+        apiClient.analyticsService = mockAnalyticsService
+
+        apiClient.fetchAPITiming(path: "/merchants/1234567890/client_api/v1/configuration", startTime: 12345678, endTime: 0987654)
+
+        XCTAssertEqual(mockAnalyticsService.lastEvent, "core:api-request-latency")
+        XCTAssertEqual(mockAnalyticsService.endpoint, "/v1/configuration")
+    }
+
+    func testFetchAPITiming_whenPathIsBatchEvents_doesNotSendLatencyEvent() {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
+        apiClient.analyticsService = mockAnalyticsService
+        apiClient.shouldSendAPIRequestLatency = true
+
+        apiClient.fetchAPITiming(path: "/v1/tracking/batch/events", startTime: 12345678, endTime: 0987654)
+
+        XCTAssertNil(mockAnalyticsService.lastEvent)
+        XCTAssertNil(mockAnalyticsService.endpoint)
+    }
+
+    func testFetchAPITiming_whenShouldSendAPIRequestLatencyIsFalse_doesNotSendLatencyEvent() {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
+        apiClient.analyticsService = mockAnalyticsService
+        apiClient.shouldSendAPIRequestLatency = false
+
+        apiClient.fetchAPITiming(path: "/merchants/1234567890/client_api/v1/paypal_hermes/create_payment_resource", startTime: 12345678, endTime: 0987654)
+
+        XCTAssertNil(mockAnalyticsService.lastEvent)
+        XCTAssertNil(mockAnalyticsService.endpoint)
+    }
+
     // MARK: - Client SDK Metadata
 
     func testPOST_whenUsingGateway_includesMetadata() {
