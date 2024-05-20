@@ -53,7 +53,67 @@ final class BTHTTP_Tests: XCTestCase {
 
     // MARK: - URL tests
     
-    // when no configuration, uses confirmation path and doesn't append
+    ///
+        
+    func testRequests_whenNoConfigurationSet_usesConfigURLOnAuthorization() {
+        let http = BTHTTP(authorization: fakeTokenizationKey)
+        http.session = testURLSession
+        let expectation = expectation(description: "GET callback")
+
+        http.httpRequest(method: "ANY", path: "200.json") { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url?.host, self.fakeTokenizationKey.configURL.host)
+            XCTAssertEqual(httpRequest.url?.path, self.fakeTokenizationKey.configURL.path)
+            XCTAssertEqual(httpRequest.url?.scheme, self.fakeTokenizationKey.configURL.scheme)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRequests_whenNoConfigurationSet_doesNotAppendPath() {
+        let expectation = expectation(description: "callback")
+
+        http?.httpRequest(method: "ANY", path: "/some-really-long-path") { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url?.path, self.fakeClientToken.configURL.path)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRequests_whenConfigurationSet_usesClientAPIURLOnConfig() {
+        let http = BTHTTP(authorization: fakeTokenizationKey)
+        http.session = testURLSession
+        let expectation = expectation(description: "callback")
+
+        http.httpRequest(method: "ANY", path: "", configuration: fakeConfiguration) { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url?.scheme, self.fakeConfiguration.clientAPIURL?.scheme)
+            XCTAssertEqual(httpRequest.url?.host, self.fakeConfiguration.clientAPIURL?.host)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRequests_whenConfigurationSet_appendsPath() {
+        let expectation = expectation(description: "callback")
+
+        http?.httpRequest(method: "ANY", path: "/some-really-long-path", configuration: fakeConfiguration) { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url!.path, "\(self.fakeConfiguration.clientAPIURL!.path)/some-really-long-path")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
     
     // when configuration, uses clientAPIURL and appends
 
@@ -87,35 +147,6 @@ final class BTHTTP_Tests: XCTestCase {
 //        waitForExpectations(timeout: 2)
 //    }
 
-    func testItAppendsThePathToTheBaseURL() {
-        let expectation = expectation(description: "GET callback")
-
-        http?.get("200.json", configuration: fakeConfiguration) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func test_whenThePathIsNil_itHitsTheBaseURL() {
-        let expectation = expectation(description: "GET callback")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
 
     // MARK: - data base URLs
 
