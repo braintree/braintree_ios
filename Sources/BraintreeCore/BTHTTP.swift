@@ -120,7 +120,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     ) throws -> URLRequest {
         var fullPathURL: URL
         if let customBaseURL {
-            fullPathURL = customBaseURL
+            fullPathURL = customBaseURL.appendingPathComponent(path)
         } else {
             fullPathURL = configuration?.clientAPIURL?.appendingPathComponent(path) ?? authorization.configURL
         }

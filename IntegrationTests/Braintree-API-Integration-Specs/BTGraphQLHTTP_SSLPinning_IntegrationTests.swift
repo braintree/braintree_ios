@@ -5,11 +5,18 @@ import XCTest
 class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
 
     func testBTGraphQLHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let graphqlHttp = BTGraphQLHTTP(url: URL(string: "https://payments.braintree-api.com")!, tokenizationKey: "")
+        let json = BTJSON(value: [
+            "clientApiUrl": "https://fake-client-api-url.com/path",
+            "graphQL": [
+                "url": "https://payments.braintree-api.com"
+            ]
+        ])
+        let prodConfiguration = BTConfiguration(json: json)
 
         let expectation = self.expectation(description: "Callback invoked")
-
-        graphqlHttp.post("/ping") { body, response, error in
+        
+        let graphqlHttp = BTGraphQLHTTP(authorization: try! TokenizationKey("production_testing_merchant-id"))
+        graphqlHttp.post("/ping", configuration: prodConfiguration) { body, response, error in
             XCTAssertNil(error)
             expectation.fulfill()
         }
@@ -18,11 +25,18 @@ class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
     }
 
     func testBTGraphQLHTTP_whenUsingSandboxEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let graphqlHttp = BTGraphQLHTTP(url: URL(string: "https://payments.sandbox.braintree-api.com")!, tokenizationKey: "")
-
+        let json = BTJSON(value: [
+            "clientApiUrl": "https://fake-client-api-url.com/path",
+            "graphQL": [
+                "url": "https://payments.sandbox.braintree-api.com"
+            ]
+        ])
+        let sandConfiguration = BTConfiguration(json: json)
+        
         let expectation = self.expectation(description: "Callback invoked")
 
-        graphqlHttp.post("/ping") { body, response, error in
+        let graphqlHttp = BTGraphQLHTTP(authorization: try! TokenizationKey("sandbox_testing_merchant-id"))
+        graphqlHttp.post("/ping", configuration: sandConfiguration) { body, response, error in
             XCTAssertNil(error)
             expectation.fulfill()
         }
