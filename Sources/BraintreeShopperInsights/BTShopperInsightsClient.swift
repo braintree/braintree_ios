@@ -53,30 +53,14 @@ public class BTShopperInsightsClient {
             }
             let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
             let result = BTShopperInsightsResult(
-                isPayPalRecommended: isPaymentRecommended(eligiblePaymentMethods.paypal),
-                isVenmoRecommended: isPaymentRecommended(eligiblePaymentMethods.venmo),
-                isInPayPalNetwork: isEligibleInPaypalNetwork(eligiblePaymentMethods.paypal) || isEligibleInPaypalNetwork(eligiblePaymentMethods.venmo)
+                isPayPalRecommended: eligiblePaymentMethods.paypal?.recommended ?? false,
+                isVenmoRecommended: eligiblePaymentMethods.venmo?.recommended ?? false,
+                isEligibleInPayPalNetwork: eligiblePaymentMethods.paypal?.eligibleInPaypalNetwork ?? false || eligiblePaymentMethods.venmo?.eligibleInPaypalNetwork ?? false
             )
             return self.notifySuccess(with: result)
         } catch {
             throw self.notifyFailure(with: error)
         }
-    }
-    
-    /// This method determines whether a payment source is recommended
-    /// - Parameters:
-    ///    - paymentMethodDetail: a `BTEligiblePaymentMethodDetails` containing the payment source's information
-    /// - Returns: `true` if both `eligibleInPPNetwork` and `recommended` are enabled, otherwise returns false.
-    private func isPaymentRecommended(_ paymentMethodDetail: BTEligiblePaymentMethodDetails?) -> Bool {
-        if let eligibleInPPNetwork = paymentMethodDetail?.eligibleInPaypalNetwork,
-           let recommended = paymentMethodDetail?.recommended {
-            return eligibleInPPNetwork && recommended
-        }
-        return false
-    }
-    
-    private func isEligibleInPaypalNetwork(_ paymentMethodDetails: BTEligiblePaymentMethodDetails?) -> Bool {
-        return paymentMethodDetails?.eligibleInPaypalNetwork ?? false
     }
 
     /// Call this method when the PayPal button has been successfully displayed to the buyer.

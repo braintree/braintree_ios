@@ -11,5 +11,5 @@ public struct BTShopperInsightsResult {
     public var isVenmoRecommended = false
     
     /// If true, buyer is a member of the PayPal Inc. (PayPal, Venmo, Honey) network. 
-    public var isInPayPalNetwork = false
+    public var isEligibleInPayPalNetwork = false
 }
