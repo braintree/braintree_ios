@@ -124,7 +124,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: userEmail,
             enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://braintree-ios-demo.fly.dev/braintree-payments")!
+            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
         )
 
         // TODO: remove NotificationCenter before merging into main DTBTSDK-3766
