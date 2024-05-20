@@ -3,7 +3,7 @@ import UIKit
 /// :nodoc: Form of authorization to interact with the Braintree gateway.
 @_documentation(visibility: private)
 public protocol ClientAuthorization {
-    
+
     /// :nodoc: Enum to denote Authorization type of Tokenization Key or Client Token.
     var type: AuthorizationType { get }
     

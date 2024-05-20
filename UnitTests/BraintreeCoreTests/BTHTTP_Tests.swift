@@ -28,7 +28,7 @@ final class BTHTTP_Tests: XCTestCase {
         return URLSession(configuration: testConfiguration)
     }
     
-    let fakeClientToken = try! BTClientToken(clientToken: "ewogICJ2ZXJzaW9uIjogMiwKICAiYXV0aG9yaXphdGlvbkZpbmdlcnByaW50IjogInRlc3QtYXV0aG9yaXphdGlvbi1maW5nZXJwcmludCIsCiAgImNvbmZpZ1VybCI6ICJidC1odHRwLXRlc3Q6Ly9iYXNlLmV4YW1wbGUuY29tOjEyMzQvYmFzZS9wYXRoIiwKICAiY2xpZW50QXBpVXJsIjogImZha2Utc2NoZW1lOi8vZmFrZS1ob3N0LmNvbTpmYWtlLXBvcnQvZmFrZS1jbGllbnQtYXBpLXBhdGgiCn0=")
+    let fakeClientToken = try! BTClientToken(clientToken: TestClientTokenFactory.stubbedURLClientToken)
     let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
     
     var fakeConfiguration: BTConfiguration {

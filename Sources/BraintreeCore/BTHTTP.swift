@@ -101,8 +101,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         do {
             let request = try createRequest(method: method, path: path, configuration: configuration, parameters: parameters)
             
-            print("🏈 request: \(request.url)")
-            print(request)
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))

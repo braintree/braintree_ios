@@ -21,7 +21,7 @@ import Foundation
     /// The extracted configURL
     public let configURL: URL
 
-    /// :nodoc: Defining this class's AuthorizationType as ClientToken
+    /// :nodoc:
     public let type = AuthorizationType.clientToken
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
