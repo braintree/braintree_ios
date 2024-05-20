@@ -49,8 +49,6 @@ import Foundation
 
         guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
 
-        let errorString = BTLogLevelDescription.string(for: .error) 
-
         switch authorizationType {
         case .tokenizationKey:
             do {
@@ -292,7 +290,7 @@ import Foundation
             }
 
             let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
+            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
         }
     }
 
