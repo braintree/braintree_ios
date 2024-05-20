@@ -9,18 +9,6 @@ final class BTHTTP_Tests: XCTestCase {
     var http: BTHTTP?
     var stubDescriptor: HTTPStubsDescriptor?
 
-    var validDataURL: URL {
-        let validObject: [String: Any] = [
-            "clientId": "a-client-id",
-            "nest": ["nested":"nested-value"]
-        ]
-
-        let configurationData: Data = try! JSONSerialization.data(withJSONObject: validObject)
-        let base64EncodedConfigurationData: String = configurationData.base64EncodedString()
-        let dataURLString: String = "data:application/json;base64,\(base64EncodedConfigurationData)"
-        return URL(string: dataURLString)!
-    }
-
     var testURLSession: URLSession {
         let testConfiguration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         testConfiguration.protocolClasses = [BTHTTPTestProtocol.self]
@@ -94,116 +82,6 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(error)
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             XCTAssertEqual(httpRequest.url?.path, "/base/path")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    // MARK: - data base URLs
-
-    func testReturnsTheData() {
-        let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(body?["clientId"].asString(), "a-client-id")
-            XCTAssertEqual(body?["nest"]["nested"].asString(), "nested-value")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testIgnoresPOSTData() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.post("/", parameters: ["a-post-param": "POST"]) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(response?.statusCode, 200)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testIgnoresGETParameters() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/", parameters: ["a-get-param": "GET"]) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(response?.statusCode, 200)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testIgnoresTheSpecifiedPath() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/resource") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(response?.statusCode, 200)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSetsTheContentTypeHeader() {
-        let dataURL: URL = URL(string: "data:text/plain;base64,SGVsbG8sIFdvcmxkIQo=")!
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: dataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
-            XCTAssertEqual(error.code, BTHTTPError.responseContentTypeNotAcceptable([:]).errorCode)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSetsTheResponseStatusCode() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertNotNil(response?.statusCode)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testFailsLikeAnHTTP500WhenTheBase64EncodedDataIsInvalid() {
-        let expectation = expectation(description: "Perform request")
-        let dataStringURL = "data:application/json;base64,BAD-BASE-64-STRING"
-        http = BTHTTP(url: URL(string: dataStringURL)!, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-            XCTAssertNotNil(error)
             expectation.fulfill()
         }
 
