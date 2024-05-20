@@ -54,7 +54,8 @@ public class BTShopperInsightsClient {
             let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
             let result = BTShopperInsightsResult(
                 isPayPalRecommended: isPaymentRecommended(eligiblePaymentMethods.paypal),
-                isVenmoRecommended: isPaymentRecommended(eligiblePaymentMethods.venmo)
+                isVenmoRecommended: isPaymentRecommended(eligiblePaymentMethods.venmo),
+                isInPayPalNetwork: isEligibleInPaypalNetwork(eligiblePaymentMethods.paypal)
             )
             return self.notifySuccess(with: result)
         } catch {
@@ -72,6 +73,10 @@ public class BTShopperInsightsClient {
             return eligibleInPPNetwork && recommended
         }
         return false
+    }
+    
+    private func isEligibleInPaypalNetwork(_ paymentMethodDetails: BTEligiblePaymentMethodDetails?) -> Bool {
+        return paymentMethodDetails?.eligibleInPaypalNetwork ?? false
     }
 
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
