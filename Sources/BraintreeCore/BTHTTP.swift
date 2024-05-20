@@ -13,7 +13,10 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
+    
+    /// A URL set to override the URLs derived from the ClientAuthorization or BTConfiguration response
     let customBaseURL: URL?
+    
     let authorization: ClientAuthorization
     
     weak var networkTimingDelegate: BTHTTPNetworkTiming?
@@ -98,6 +101,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         do {
             let request = try createRequest(method: method, path: path, configuration: configuration, parameters: parameters)
             
+            print("🏈 request: \(request.url)")
+            print(request)
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))

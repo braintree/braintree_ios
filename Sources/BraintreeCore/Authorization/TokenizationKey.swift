@@ -2,11 +2,14 @@ import Foundation
 
 class TokenizationKey: ClientAuthorization {
     
-    let type = AuthorizationType.tokenizationKey
+    // MARK: - Internal Properties
     
+    let type = AuthorizationType.tokenizationKey
     let bearer: String
     let configURL: URL
     let originalValue: String
+    
+    // MARK: - Initializer
     
     init(_ rawValue: String) throws {
         self.bearer = rawValue
@@ -17,7 +20,9 @@ class TokenizationKey: ClientAuthorization {
         self.configURL = configURL
     }
     
-    static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
+    // MARK: - Private Methods
+    
+    private static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
 
@@ -54,7 +59,7 @@ class TokenizationKey: ClientAuthorization {
         return components.url
     }
 
-    static func host(for environment: String) -> String? {
+    private static func host(for environment: String) -> String? {
         if environment.lowercased() == "sandbox" {
             return "api.sandbox.braintreegateway.com"
         } else if environment.lowercased() == "production" {
