@@ -39,7 +39,7 @@ import Foundation
 
     private static var _analyticsService: BTAnalyticsService?
     private var isLoadingConfig: Bool = false
-    private var fetchConfigQueue: DispatchQueue = DispatchQueue(label: "configQueue")
+    private var fetchConfigQueue: DispatchQueue = DispatchQueue(label: "configQueue", attributes: .concurrent)
     private var configCompletionHandlers: [(BTConfiguration?, Error?) -> Void] = []
 
     // MARK: - Initializers
@@ -125,57 +125,78 @@ import Foundation
         //   - If cachedConfiguration is not present, fetch it and cache the successful response
         //   - If fetching fails, return error
 
-        var configPath: String = "v1/configuration"
-
-        if let clientToken {
-            configPath = clientToken.configURL.absoluteString
-        }
-
-        guard let authorization = clientToken?.authorizationFingerprint ?? tokenizationKey else {
-            completion(nil, BTAPIClientError.configurationUnavailable)
-            return
-        }
-
-        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authorization) {
-            setupHTTPCredentials(cachedConfig)
-            completion(cachedConfig, nil)
-            return
-        }
-
-        if isLoadingConfig {
-            configCompletionHandlers.append(completion)
-            return
-        }
-
-        isLoadingConfig = true
-        configCompletionHandlers.append(completion)
-
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        fetchConfigQueue.async { [weak self] in
             guard let self else {
-                completion(nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            defer {
-                isLoadingConfig = false
-                configCompletionHandlers.removeAll()
-            }
-
-            if error != nil {
-                callConfigCompletionHandlers(nil, error)
-                return
-            } else if response?.statusCode != 200 || body == nil {
-                callConfigCompletionHandlers(nil, BTAPIClientError.configurationUnavailable)
-                return
-            } else {
-                let configuration = BTConfiguration(json: body)
-
-                setupHTTPCredentials(configuration)
-                self.fetchConfigQueue.sync {
-                    try? ConfigurationCache.shared.putInCache(authorization: authorization, configuration: configuration)
+                DispatchQueue.main.async {
+                    completion(nil, BTAPIClientError.deallocated)
                 }
-                callConfigCompletionHandlers(configuration, nil)
                 return
+            }
+
+            var configPath: String = "v1/configuration"
+
+            if let clientToken {
+                configPath = clientToken.configURL.absoluteString
+            }
+
+            guard let authorization = clientToken?.authorizationFingerprint ?? tokenizationKey else {
+                DispatchQueue.main.async {
+                    completion(nil, BTAPIClientError.configurationUnavailable)
+                }
+                return
+            }
+
+            if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authorization) {
+                setupHTTPCredentials(cachedConfig)
+                DispatchQueue.main.async {
+                    completion(cachedConfig, nil)
+                }
+                return
+            }
+
+            fetchConfigQueue.async(flags: .barrier) { [weak self] in
+                guard let self else {
+                    DispatchQueue.main.async {
+                        completion(nil, BTAPIClientError.deallocated)
+                    }
+                    return
+                }
+
+                if isLoadingConfig {
+                    configCompletionHandlers.append(completion)
+                    return
+                }
+
+                isLoadingConfig = true
+                configCompletionHandlers.append(completion)
+
+                configurationHTTP?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+                    guard let self else {
+                        completion(nil, BTAPIClientError.deallocated)
+                        return
+                    }
+
+                    defer {
+                        isLoadingConfig = false
+                        configCompletionHandlers.removeAll()
+                    }
+
+                    if error != nil {
+                        callConfigCompletionHandlers(nil, error)
+                        return
+                    } else if response?.statusCode != 200 || body == nil {
+                        callConfigCompletionHandlers(nil, BTAPIClientError.configurationUnavailable)
+                        return
+                    } else {
+                        let configuration = BTConfiguration(json: body)
+
+                        setupHTTPCredentials(configuration)
+                        
+                        try? ConfigurationCache.shared.putInCache(authorization: authorization, configuration: configuration)
+                        callConfigCompletionHandlers(configuration, nil)
+                        return
+                    }
+                }
             }
         }
     }
