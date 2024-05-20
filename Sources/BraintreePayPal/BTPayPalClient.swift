@@ -353,10 +353,10 @@ import BraintreeDataCollector
     }
 
     private func isPayPalAppInstalled() -> Bool {
-        guard let paypalURL = URL(string: BTCoreConstants.payPalURLScheme) else {
+        guard let payPalURL = URL(string: BTCoreConstants.payPalURLScheme) else {
             return false
         }
-        return application.canOpenURL(paypalURL)
+        return application.canOpenURL(payPalURL)
     }
 
     private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
