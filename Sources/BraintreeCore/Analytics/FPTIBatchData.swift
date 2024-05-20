@@ -37,7 +37,7 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
-        let payPalInstalled: String?
+        let payPalInstalled: Bool = isPayPalAppInstalled()
         let startTime: Int?
         let timestamp: String
         let tenantName: String = "Braintree"
@@ -144,9 +144,16 @@ struct FPTIBatchData: Codable {
     }
 
     private static func isVenmoAppInstalled() -> Bool {
-        guard let venmoURL = URL(string: "\(BTCoreConstants.venmoScheme)://") else {
+        guard let venmoURL = URL(string: BTCoreConstants.venmoURLScheme) else {
             return false
         }
         return UIApplication.shared.canOpenURL(venmoURL)
+    }
+
+    private static func isPayPalAppInstalled() -> Bool {
+        guard let payPalURL = URL(string: BTCoreConstants.payPalURLScheme) else {
+            return false
+        }
+        return UIApplication.shared.canOpenURL(payPalURL)
     }
 }

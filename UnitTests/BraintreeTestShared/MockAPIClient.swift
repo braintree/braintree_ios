@@ -88,12 +88,10 @@ public class MockAPIClient: BTAPIClient {
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil,
-        payPalInstalled: Bool? = nil
+        payPalContextID: String? = nil
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
-        postedPayPalAppInstalled = payPalInstalled?.description
         postedAnalyticsEvents.append(name)
     }
 

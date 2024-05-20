@@ -35,7 +35,6 @@ class BTAnalyticsService: Equatable {
         errorDescription: String? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
-        payPalInstalled: String? = nil,
         startTime: Int? = nil
     ) {
         Task(priority: .background) {
@@ -47,7 +46,6 @@ class BTAnalyticsService: Equatable {
                 errorDescription: errorDescription,
                 linkType: linkType,
                 payPalContextID: payPalContextID,
-                payPalInstalled: payPalInstalled,
                 startTime: startTime
             )
         }
@@ -62,7 +60,6 @@ class BTAnalyticsService: Equatable {
         errorDescription: String? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
-        payPalInstalled: String? = nil,
         startTime: Int? = nil
     ) async {
         let timestampInMilliseconds = Date().utcTimestampMilliseconds
@@ -74,7 +71,6 @@ class BTAnalyticsService: Equatable {
             eventName: eventName,
             linkType: linkType,
             payPalContextID: payPalContextID,
-            payPalInstalled: payPalInstalled,
             startTime: startTime,
             timestamp: String(timestampInMilliseconds)
         )

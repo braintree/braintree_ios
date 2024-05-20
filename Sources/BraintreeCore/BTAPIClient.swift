@@ -323,16 +323,14 @@ import Foundation
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
-        payPalContextID: String? = nil,
-        payPalInstalled: Bool? = nil
+        payPalContextID: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
             correlationID: correlationID,
             errorDescription: errorDescription,
             linkType: linkType,
-            payPalContextID: payPalContextID,
-            payPalInstalled: payPalInstalled?.description
+            payPalContextID: payPalContextID
         )
     }
 
