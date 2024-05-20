@@ -16,7 +16,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var appSwitchStageToggleLabel: UILabel = {
         let label = UILabel()
-        label.text = "App Switch Stage"
+        label.text = "App Switch Staging Env"
         label.font = .preferredFont(forTextStyle: .footnote)
         return label
     }()
