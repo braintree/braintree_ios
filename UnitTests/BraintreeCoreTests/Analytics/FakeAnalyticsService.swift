@@ -13,7 +13,7 @@ class FakeAnalyticsService: BTAnalyticsService {
         errorDescription: String? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
-        payPalInstalled: String? = nil
+        payPalInstalled: String? = nil,
         startTime: Int? = nil
     ) {
         self.lastEvent = eventName
