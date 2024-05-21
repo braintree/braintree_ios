@@ -257,7 +257,6 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
         XCTAssertEqual(mockAPIClient.postedLinkType, "universal")
-        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "true")
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
@@ -292,7 +291,6 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
         XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
-        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "false")
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
@@ -312,7 +310,6 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "A_FAKE_BA_TOKEN")
         XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
-        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "false")
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
@@ -950,7 +947,6 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(vaultRequest) { _, _ in }
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
-        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "true")
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
 
         XCTAssertEqual(lastPostParameters["launch_paypal_app"] as? Bool, true)
@@ -979,7 +975,6 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(vaultRequest) { _, _ in }
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
-        XCTAssertEqual(mockAPIClient.postedPayPalAppInstalled, "false")
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
 
         XCTAssertNil(lastPostParameters["launch_paypal_app"] as? Bool)
