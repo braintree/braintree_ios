@@ -36,6 +36,12 @@ public class BTPayPalMessagingView: UIView {
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
     /// - Warning: use `BTPayPalMessagingDelegate` protocol to receive notifications for events
     public func start(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
+        
+        PayPalMessageConfig.setGlobalAnalytics(
+            integrationName: BTCoreConstants.braintreeSDKIdentifier,
+            integrationVersion: BTCoreConstants.braintreeSDKVersion
+        )
+        
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
@@ -73,9 +79,7 @@ public class BTPayPalMessagingView: UIView {
                     textAlign: request.textAlignment.textAlignmentRawValue
                 )
             )
-            
-            PayPalMessageConfig.setGlobalAnalytics(integrationName: "BT_SDK", integrationVersion: "1.0.0")
-
+                        
             let messageView = PayPalMessageView(config: messageConfig, stateDelegate: self, eventDelegate: self)
             messageView.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(messageView)

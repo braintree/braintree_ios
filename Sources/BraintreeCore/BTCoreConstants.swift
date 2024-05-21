@@ -27,4 +27,9 @@ import Foundation
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Key for userInfo dictionary that contains the BTJSON body of the HTTP error response
     public static let jsonResponseBodyKey: String = "com.braintreepayments.BTHTTPJSONResponseBodyKey"
+    
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// Named used for identifiying the integrating SDK e.g. BTPayPalMessageView
+    public static let braintreeSDKIdentifier: String = "BT_SDK"
+    
 }
