@@ -3,7 +3,7 @@ import UIKit
 extension UIApplication {
 
     static func isVenmoAppInstalled() -> Bool {
-        guard let venmoURL = URL(string: BTCoreConstants.venmoURLScheme) else {
+        guard let venmoURL = URL(string: "\(BTCoreConstants.venmoURLScheme)://") else {
             return false
         }
         return shared.canOpenURL(venmoURL)
@@ -13,7 +13,7 @@ extension UIApplication {
     /// Indicates whether the PayPal App is installed.
     @_documentation(visibility: private)
     public static func isPayPalAppInstalled() -> Bool {
-        guard let payPalURL = URL(string: BTCoreConstants.payPalURLScheme) else {
+        guard let payPalURL = URL(string: "\(BTCoreConstants.payPalURLScheme)://") else {
             return false
         }
         return shared.canOpenURL(payPalURL)
