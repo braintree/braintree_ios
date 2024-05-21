@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
+
 ## 6.18.2 (2024-05-15)
 * BraintreePayPal
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
