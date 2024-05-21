@@ -1276,6 +1276,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		800BB3EF2BFCAC1100F30CE8 /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */,
+				8087C10E2BFBACCA0020FC2E /* TokenizationKey_Tests.swift */,
+			);
+			path = Authorization;
+			sourceTree = "<group>";
+		};
 		801A0A1725890DF200DAF851 /* V2UICustomization */ = {
 			isa = PBXGroup;
 			children = (
@@ -1741,11 +1750,11 @@
 			isa = PBXGroup;
 			children = (
 				8053F05529FAB6FF0076F988 /* Analytics */,
+				800BB3EF2BFCAC1100F30CE8 /* Authorization */,
 				842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */,
 				A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */,
 				030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */,
 				BEBC6F252937A510004E25A0 /* BTClientMetadata_Tests.swift */,
-				BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */,
 				A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */,
 				BEBC6F272937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift */,
 				BE54C0322912B68E009C6CEE /* BTHTTP_Tests.swift */,
@@ -1756,7 +1765,6 @@
 				A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */,
 				BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */,
 				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
-				8087C10E2BFBACCA0020FC2E /* TokenizationKey_Tests.swift */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
 			);
