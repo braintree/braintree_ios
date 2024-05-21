@@ -93,6 +93,85 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         }
     }
     
+    func testGetRecommendedPaymentMethods_whenEligibleInPayPalNetworkTrue_returnsOnlyPayPalRecommended() async {
+        do {
+            let mockPayPalRecommendedResponse = BTJSON(
+                value: [
+                    "eligible_methods": [
+                        "paypal": [
+                            "can_be_vaulted": true,
+                            "eligible_in_paypal_network": true,
+                            "recommended": true,
+                            "recommended_priority": 1
+                        ]
+                    ]
+                ]
+            )
+            mockAPIClient.cannedResponseBody = mockPayPalRecommendedResponse
+            let result = try await sut.getRecommendedPaymentMethods(request: request)
+            XCTAssertTrue(result.isPayPalRecommended)
+            XCTAssertFalse(result.isVenmoRecommended)
+            XCTAssertTrue(result.isEligibleInPayPalNetwork)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+        } catch {
+            XCTFail("An error was not expected.")
+        }
+    }
+    
+    func testGetRecommendedPaymentMethods_whenEligibleInPayPalNetworkTrue_returnsOnlyVenmoRecommended() async {
+        do {
+            let mockVenmoRecommendedResponse = BTJSON(
+                value: [
+                    "eligible_methods": [
+                        "venmo": [
+                            "can_be_vaulted": true,
+                            "eligible_in_paypal_network": true,
+                            "recommended": true,
+                            "recommended_priority": 1
+                        ]
+                    ]
+                ]
+            )
+            mockAPIClient.cannedResponseBody = mockVenmoRecommendedResponse
+            let result = try await sut.getRecommendedPaymentMethods(request: request)
+            XCTAssertFalse(result.isPayPalRecommended)
+            XCTAssertTrue(result.isVenmoRecommended)
+            XCTAssertTrue(result.isEligibleInPayPalNetwork)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+        } catch {
+            XCTFail("An error was not expected.")
+        }
+    }
+    
+    func testGetRecommendedPaymentMethods_whenBothEligibleInPayPalNetworkFalse_returnsResult() async {
+        do {
+            let mockPayPalRecommendedResponse = BTJSON(
+                value: [
+                    "eligible_methods": [
+                        "paypal": [
+                            "can_be_vaulted": true,
+                            "eligible_in_paypal_network": false,
+                            "recommended": false,
+                        ],
+                        "venmo": [
+                            "can_be_vaulted": true,
+                            "eligible_in_paypal_network": false,
+                            "recommended": false,
+                        ]
+                    ]
+                ]
+            )
+            mockAPIClient.cannedResponseBody = mockPayPalRecommendedResponse
+            let result = try await sut.getRecommendedPaymentMethods(request: request)
+            XCTAssertFalse(result.isPayPalRecommended)
+            XCTAssertFalse(result.isVenmoRecommended)
+            XCTAssertFalse(result.isEligibleInPayPalNetwork)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+        } catch {
+            XCTFail("An error was not expected.")
+        }
+    }
+    
     // MARK: - Analytics
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {

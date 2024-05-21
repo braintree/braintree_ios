@@ -9,4 +9,7 @@ public struct BTShopperInsightsResult {
     
     /// If true, dislpay the Venmo button with high priority.
     public var isVenmoRecommended = false
+    
+    /// If true, buyer is a member of the PayPal Inc. (PayPal, Venmo, Honey) network. 
+    public var isEligibleInPayPalNetwork = false
 }
