@@ -52,6 +52,8 @@ public class BTPayPalMessagingView: UIView {
                 self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
                 return
             }
+            
+            
 
             let messageData = PayPalMessageData(
                 clientID: clientID,
@@ -71,6 +73,8 @@ public class BTPayPalMessagingView: UIView {
                     textAlign: request.textAlignment.textAlignmentRawValue
                 )
             )
+            
+            PayPalMessageConfig.setGlobalAnalytics(integrationName: "BT_SDK", integrationVersion: "1.0.0")
 
             let messageView = PayPalMessageView(config: messageConfig, stateDelegate: self, eventDelegate: self)
             messageView.translatesAutoresizingMaskIntoConstraints = false
