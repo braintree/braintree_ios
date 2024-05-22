@@ -6718,7 +6718,7 @@
 			repositoryURL = "https://github.com/paypal/paypal-messages-ios";
 			requirement = {
 				kind = exactVersion;
-				version = "1.0.0-alpha.1";
+				version = 1.0.0;
 			};
 		};
 		BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
