@@ -38,7 +38,7 @@ public class BTPayPalMessagingView: UIView {
     public func start(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
         
         PayPalMessageConfig.setGlobalAnalytics(
-            integrationName: BTCoreConstants.braintreeSDKIdentifier,
+            integrationName: "BT_SDK",
             integrationVersion: BTCoreConstants.braintreeSDKVersion
         )
         
