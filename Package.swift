@@ -96,7 +96,8 @@ let package = Package(
         ),
         .target(
             name: "BraintreePayPalMessaging",
-            dependencies: ["BraintreeCore", "PayPalMessages"]
+            dependencies: ["BraintreeCore", "PayPalMessages"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "PayPalMessages",

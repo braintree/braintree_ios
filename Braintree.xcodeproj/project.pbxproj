@@ -680,6 +680,7 @@
 		3B1C529529D637F400B68A58 /* BTVenmoAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAnalytics_Tests.swift; sourceTree = "<group>"; };
 		3B57E9E929ECC1AF00245174 /* BTLocalPaymentAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentAnalytics.swift; sourceTree = "<group>"; };
 		3B5A41E82BA2375600921922 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3B668B7D2BFD12BE0024FB29 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B7A261029C0CAA40087059D /* BTPayPalAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalAnalytics.swift; sourceTree = "<group>"; };
 		3B7A261229C35B670087059D /* BTPayPalAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalAnalytics_Tests.swift; sourceTree = "<group>"; };
 		3BC0E09129E4673C009217D6 /* BTSEPADirectAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectAnalytics.swift; sourceTree = "<group>"; };
@@ -1851,6 +1852,7 @@
 				BEA0F9272B23741900C21EFA /* BTPayPalMessagingRequest.swift */,
 				BEA0F9252B2373E400C21EFA /* BTPayPalMessagingTextAlignment.swift */,
 				BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */,
+				3B668B7D2BFD12BE0024FB29 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreePayPalMessaging;
 			sourceTree = "<group>";

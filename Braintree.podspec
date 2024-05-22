@@ -85,6 +85,7 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreePayPalMessaging/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "PayPalMessages", '1.0.0'
+    s.resource_bundle = { "BraintreePayPalMessaging_PrivacyInfo" => "Sources/BraintreePayPalMessaging/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "ThreeDSecure" do |s|
