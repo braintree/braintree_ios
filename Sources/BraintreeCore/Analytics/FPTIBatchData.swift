@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 /// The POST body for a batch upload of FPTI events
@@ -26,7 +25,9 @@ struct FPTIBatchData: Codable {
     
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
-        
+
+        static var application: URLOpener = UIApplication.shared
+
         let correlationID: String?
         let endpoint: String?
         let endTime: Int?
@@ -37,11 +38,11 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
-        let payPalInstalled: String?
+        let payPalInstalled: Bool = application.isPayPalAppInstalled()
         let startTime: Int?
         let timestamp: String
         let tenantName: String = "Braintree"
-        let venmoInstalled: Bool = isVenmoAppInstalled()
+        let venmoInstalled: Bool = application.isVenmoAppInstalled()
 
         enum CodingKeys: String, CodingKey {
             case correlationID = "correlation_id"
@@ -141,12 +142,5 @@ struct FPTIBatchData: Codable {
             case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"
         }
-    }
-
-    private static func isVenmoAppInstalled() -> Bool {
-        guard let venmoURL = URL(string: "\(BTCoreConstants.venmoScheme)://") else {
-            return false
-        }
-        return UIApplication.shared.canOpenURL(venmoURL)
     }
 }

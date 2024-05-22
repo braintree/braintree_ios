@@ -24,7 +24,6 @@ final class FPTIBatchData_Tests: XCTestCase {
             eventName: "fake-event-1",
             linkType: "universal",
             payPalContextID: "fake-order-id",
-            payPalInstalled: "true",
             startTime: 999888777666,
             timestamp: "fake-time-1"
         ),
@@ -36,7 +35,6 @@ final class FPTIBatchData_Tests: XCTestCase {
             eventName: "fake-event-2",
             linkType: nil,
             payPalContextID: "fake-order-id-2",
-            payPalInstalled: nil,
             startTime: nil,
             timestamp: "fake-time-2"
         )
@@ -97,8 +95,6 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["link_type"])
         XCTAssertEqual(eventParams[0]["paypal_context_id"] as! String, "fake-order-id")
         XCTAssertEqual(eventParams[1]["paypal_context_id"] as! String, "fake-order-id-2")
-        XCTAssertEqual(eventParams[0]["paypal_installed"] as? String, "true")
-        XCTAssertNil(eventParams[1]["paypal_installed"])
         XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
         XCTAssertNil(eventParams[1]["error_desc"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")
