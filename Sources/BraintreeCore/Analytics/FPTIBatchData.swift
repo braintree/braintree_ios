@@ -25,7 +25,9 @@ struct FPTIBatchData: Codable {
     
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
-        
+
+        static var application: URLOpener = UIApplication.shared
+
         let correlationID: String?
         let endpoint: String?
         let endTime: Int?
@@ -36,11 +38,11 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
-        let payPalInstalled: Bool = UIApplication.isPayPalAppInstalled()
+        let payPalInstalled: Bool = application.isPayPalAppInstalled()
         let startTime: Int?
         let timestamp: String
         let tenantName: String = "Braintree"
-        let venmoInstalled: Bool = UIApplication.isVenmoAppInstalled()
+        let venmoInstalled: Bool = application.isVenmoAppInstalled()
 
         enum CodingKeys: String, CodingKey {
             case correlationID = "correlation_id"

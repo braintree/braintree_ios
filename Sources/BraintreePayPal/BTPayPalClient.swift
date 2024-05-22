@@ -285,7 +285,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        payPalAppInstalled = isPayPalAppInstalled()
+        payPalAppInstalled = application.isPayPalAppInstalled()
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true && payPalAppInstalled ? "universal" : "deeplink"
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, linkType: linkType)
@@ -350,13 +350,6 @@ import BraintreeDataCollector
                 }
             }
         }
-    }
-
-    private func isPayPalAppInstalled() -> Bool {
-        guard let payPalURL = URL(string: "\(BTCoreConstants.payPalURLScheme)://") else {
-            return false
-        }
-        return application.canOpenURL(payPalURL)
     }
 
     private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {

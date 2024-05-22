@@ -23,4 +23,12 @@ public class FakeApplication: URLOpener {
         }
         return cannedCanOpenURL
     }
+
+    public func isPayPalAppInstalled() -> Bool {
+        cannedCanOpenURL
+    }
+
+    public func isVenmoAppInstalled() -> Bool {
+        cannedCanOpenURL
+    }
 }
