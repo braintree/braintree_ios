@@ -58,8 +58,6 @@ public class BTPayPalMessagingView: UIView {
                 self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
                 return
             }
-            
-            
 
             let messageData = PayPalMessageData(
                 clientID: clientID,
