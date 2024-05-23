@@ -38,6 +38,11 @@ public class BTPayPalMessagingView: UIView {
     /// - Parameter request: an optional `BTPayPalMessagingRequest`
     /// - Warning: use `BTPayPalMessagingDelegate` protocol to receive notifications for events
     public func start(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) {
+        PayPalMessageConfig.setGlobalAnalytics(
+            integrationName: "BT_SDK",
+            integrationVersion: BTCoreConstants.braintreeSDKVersion
+        )
+        
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
