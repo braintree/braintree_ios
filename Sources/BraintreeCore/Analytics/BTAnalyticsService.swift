@@ -19,7 +19,7 @@ class BTAnalyticsService: Equatable {
 
     private let apiClient: BTAPIClient
     /// Amount of time, in seconds, between batch API requests sent to FPTI
-    private let timerInterval = 20
+    private let timerInterval = 15
 
     private static var timer: DispatchSourceTimer?
     
