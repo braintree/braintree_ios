@@ -14,15 +14,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         return textField
     }()
 
-    lazy var appSwitchStageToggleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "App Switch Staging Env"
-        label.font = .preferredFont(forTextStyle: .footnote)
-        return label
-    }()
-
-    let appSwitchStageToggle = UISwitch()
-
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
@@ -31,15 +22,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let stackView = UIStackView(arrangedSubviews: [
             buttonsStackView(label: "1-Time Checkout Flows", views: [payPalCheckoutButton, payPalPayLaterButton]),
-            buttonsStackView(
-                label: "Vault Flows",
-                views: [
-                    emailTextField, 
-                    payPalVaultButton,
-                    payPalAppSwitchButton,
-                    UIStackView(arrangedSubviews: [appSwitchStageToggleLabel, appSwitchStageToggle])
-                ]
-            )
+            buttonsStackView(label: "Vault Flows", views: [emailTextField, payPalVaultButton, payPalAppSwitchButton])
         ])
         
         stackView.axis = .vertical
@@ -133,30 +116,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
         )
 
-        if appSwitchStageToggle.isOn {
-            let stagePayPalClient = BTPayPalClient(apiClient: BTAPIClient(authorization: "sandbox_jy4fvpfg_v7x2rb226dx4pr7b")!)
-
-            stagePayPalClient.tokenize(request) { nonce, error in
-                sender.isEnabled = true
-
-                guard let nonce else {
-                    self.progressBlock(error?.localizedDescription)
-                    return
-                }
-
-                self.completionBlock(nonce)
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+            
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
             }
-        } else {
-            payPalClient.tokenize(request) { nonce, error in
-                sender.isEnabled = true
-
-                guard let nonce else {
-                    self.progressBlock(error?.localizedDescription)
-                    return
-                }
-
-                self.completionBlock(nonce)
-            }
+            
+            self.completionBlock(nonce)
         }
     }
     
