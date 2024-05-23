@@ -847,47 +847,6 @@ final class BTHTTP_Tests: XCTestCase {
         }
     }
 
-    // MARK: - IsEqual tests
-
-    func testReturnsTrueIfBTHTTPsHaveTheSameBaseURLAndAuthorizationFingerprint() {
-        let baseURL: URL = URL(string: "an-url://hi")!
-        let authorizationFingerprint: String = "test-authorization-fingerprint"
-        let http1: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint)
-        let http2: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint)
-        XCTAssertEqual(http1, http2)
-    }
-
-    func testReturnsFalseIfBTHTTPsDoNotHaveTheSameBaseURL() {
-        let baseURL1: URL = URL(string: "an-url://hi")!
-        let baseURL2: URL = URL(string: "an-url://hi-again")!
-        let authorizationFingerprint: String = "test-authorization-fingerprint"
-        let http1: BTHTTP = BTHTTP(url: baseURL1, authorizationFingerprint: authorizationFingerprint)
-        let http2: BTHTTP = BTHTTP(url: baseURL2, authorizationFingerprint: authorizationFingerprint)
-        XCTAssertNotEqual(http1, http2)
-    }
-
-    func testReturnsFalseIfBTHTTPsDoNotHaveTheSameAuthorizationFingerprint() {
-        let baseURL: URL = URL(string: "an-url://hi")!
-        let authorizationFingerprint1: String = "test-authorization-fingerprint"
-        let authorizationFingerprint2: String = "OTHER"
-        let http1: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint1)
-        let http2: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint2)
-        XCTAssertNotEqual(http1, http2)
-    }
-
-    // MARK: - Copy tests
-
-    func testReturnsAnEqualInstance() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), authorizationFingerprint: "test-authorization-fingerprint")
-        XCTAssertEqual(http, http?.copy() as? BTHTTP)
-    }
-
-    func testReturnedInstanceHasTheSameCertificates() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), authorizationFingerprint: "test-authorization-fingerprint")
-        let copiedHTTP = http?.copy() as? BTHTTP
-        XCTAssertEqual(http?.pinnedCertificates, copiedHTTP?.pinnedCertificates)
-    }
-
     // MARK: - Helper Methods
 
     func withStub(_ completion: () -> Void) {

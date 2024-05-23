@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 /// Performs HTTP methods on the Braintree Client API
-class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
+class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -391,30 +391,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionTaskDelegate {
         }
 
         return certificates
-    }
-
-    // MARK: - isEqual override
-    
-    override func isEqual(_ object: Any?) -> Bool {
-        guard object is BTHTTP,
-              let otherObject = object as? BTHTTP else {
-            return false
-        }
-
-        return baseURL == otherObject.baseURL && clientAuthorization == otherObject.clientAuthorization
-    }
-
-    // MARK: - NSCopying conformance
-
-    func copy(with zone: NSZone? = nil) -> Any {
-        switch clientAuthorization {
-        case .authorizationFingerprint(let fingerprint):
-            return BTHTTP(url: baseURL, authorizationFingerprint: fingerprint)
-        case .tokenizationKey(let key):
-            return BTHTTP(url: baseURL, tokenizationKey: key)
-        default:
-            return BTHTTP(url: baseURL)
-        }
     }
 
     // MARK: - URLSessionTaskDelegate conformance
