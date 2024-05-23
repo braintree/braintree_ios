@@ -779,6 +779,14 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, BTVenmoError.fetchConfigurationFailed.localizedDescription)
         }
     }
+
+    func testTokenize_whenVenmoRequest_setsVaultAnalyticsTag() async {
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        let _ = try? await venmoClient.tokenize(venmoRequest)
+
+        XCTAssertFalse(mockAPIClient.lastPostedVaultType)
+    }
     
     // MARK: - BTAppContextSwitchClient
 

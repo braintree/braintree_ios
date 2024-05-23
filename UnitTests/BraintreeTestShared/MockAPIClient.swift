@@ -9,6 +9,7 @@ public class MockAPIClient: BTAPIClient {
     public var lastGETPath = ""
     public var lastGETParameters = [:] as [String: Any]?
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
+    public var lastPostedVaultType = false
 
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil

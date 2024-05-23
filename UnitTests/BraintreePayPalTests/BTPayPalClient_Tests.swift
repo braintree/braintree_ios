@@ -638,19 +638,6 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
 
-    func testRequestType_Checkout() {
-        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
-        XCTAssertTrue(payPalClient.isVaultRequest)
-    }
-
-    func testRequestType_Vault() {
-        let vaultRequest = BTPayPalVaultRequest()
-        vaultRequest.billingAgreementDescription = "description"
-        payPalClient.tokenize(vaultRequest) { _, _ in }
-        XCTAssertFalse(payPalClient.isVaultRequest)
-    }
-
     // MARK: - _meta parameter
 
     func testMetadata_whenCheckoutBrowserSwitchIsSuccessful_isPOSTedToServer() {
@@ -694,5 +681,19 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { _, _ in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
+    }
+
+    func testTokenize_whenVaultRequest_setsVaultAnalyticsTag() async {
+        let vaultRequest = BTPayPalVaultRequest()
+        let _ = try? await payPalClient.tokenize(vaultRequest)
+
+        XCTAssertTrue(mockAPIClient.lastPostedVaultType)
+    }
+
+    func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTag() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.lastPostedVaultType)
     }
 }
