@@ -12,6 +12,8 @@ public class BTPayPalMessagingView: UIView {
 
     // MARK: - Properties
 
+    private var messageView: PayPalMessageView?
+    
     public weak var delegate: BTPayPalMessagingDelegate?
 
     var apiClient: BTAPIClient
@@ -72,16 +74,26 @@ public class BTPayPalMessagingView: UIView {
                 )
             )
 
-            let messageView = PayPalMessageView(config: messageConfig, stateDelegate: self, eventDelegate: self)
-            messageView.translatesAutoresizingMaskIntoConstraints = false
-            self.addSubview(messageView)
-
+            self.setupMessageView(withConfig: messageConfig)
+        }
+    }
+    
+    private func setupMessageView(withConfig config: PayPalMessageConfig) {
+        if let messageView {
+            messageView.setConfig(config)
+        } else {
+            let payPalMessageView = PayPalMessageView(config: config, stateDelegate: self, eventDelegate: self)
+            payPalMessageView.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(payPalMessageView)
+            
             NSLayoutConstraint.activate([
-                messageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-                messageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                messageView.topAnchor.constraint(equalTo: self.topAnchor),
-                messageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+                payPalMessageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                payPalMessageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                payPalMessageView.topAnchor.constraint(equalTo: topAnchor),
+                payPalMessageView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
+            
+            messageView = payPalMessageView
         }
     }
 
