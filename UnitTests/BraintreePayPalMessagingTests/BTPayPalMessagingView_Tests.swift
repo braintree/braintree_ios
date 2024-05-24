@@ -72,6 +72,8 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         
         let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
         payPalMessageView.delegate = mockDelegate
+        XCTAssertEqual(payPalMessageView.subviews.count, 0)
+        
         payPalMessageView.start()
         
         XCTAssertTrue(mockDelegate.willAppear)
