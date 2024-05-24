@@ -41,6 +41,7 @@ class BTAnalyticsService: Equatable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameters:
     ///   - eventName: Name of analytic event.
+    ///   - isVaultRequest: Optional. If the Venmo or PayPal request is being vaulted.
     ///   - correlationID: Optional. CorrelationID associated with the checkout session.
     ///   - endpoint: Optional. The endpoint of the API request send during networking requests.
     ///   - endTime: Optional. The end time of the roundtrip networking request.
@@ -50,6 +51,7 @@ class BTAnalyticsService: Equatable {
     ///   - startTime: Optional. The start time of the networking request.
     func sendAnalyticsEvent(
         _ eventName: String,
+        isVaultRequest: Bool? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
@@ -75,6 +77,7 @@ class BTAnalyticsService: Equatable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(
         _ eventName: String,
+        isVaultRequest: Bool? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
@@ -90,6 +93,7 @@ class BTAnalyticsService: Equatable {
             endTime: endTime,
             errorDescription: errorDescription,
             eventName: eventName,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID,
             startTime: startTime,
