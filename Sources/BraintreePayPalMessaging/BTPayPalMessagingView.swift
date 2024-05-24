@@ -11,11 +11,10 @@ import BraintreeCore
 public class BTPayPalMessagingView: UIView {
 
     // MARK: - Properties
-
-    private var messageView: PayPalMessageView?
     
     public weak var delegate: BTPayPalMessagingDelegate?
 
+    var messageView: PayPalMessageView?
     var apiClient: BTAPIClient
 
     // MARK: - Initializers
@@ -79,11 +78,11 @@ public class BTPayPalMessagingView: UIView {
                 )
             )
 
-            self.setupMessageView(withConfig: messageConfig)
+            self.setupMessageView(with: messageConfig)
         }
     }
     
-    private func setupMessageView(withConfig config: PayPalMessageConfig) {
+    private func setupMessageView(with config: PayPalMessageConfig) {
         if let messageView {
             messageView.setConfig(config)
         } else {
