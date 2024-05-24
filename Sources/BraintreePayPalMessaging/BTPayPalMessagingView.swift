@@ -11,7 +11,7 @@ import BraintreeCore
 public class BTPayPalMessagingView: UIView {
 
     // MARK: - Properties
-    
+
     public weak var delegate: BTPayPalMessagingDelegate?
 
     var messageView: PayPalMessageView?
