@@ -39,9 +39,7 @@ final class BTHTTP_Tests: XCTestCase {
         URLCache.shared.removeAllCachedResponses()
     }
 
-    // MARK: - URL tests
-    
-    ///
+    // MARK: - Base URL tests
         
     func testRequests_whenNoConfigurationSet_usesConfigURLOnAuthorization() {
         let http = BTHTTP(authorization: fakeTokenizationKey)
@@ -102,9 +100,6 @@ final class BTHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    
-    // when configuration, uses clientAPIURL and appends
-
     func testRequests_useTheSpecifiedURLScheme() {
         let expectation = expectation(description: "GET callback")
 
@@ -117,24 +112,6 @@ final class BTHTTP_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
-    
-    // uses URL from config, when no full URL included
-
-//    func testRequests_useTheHostAtTheBaseURL() {
-//        let expectation = expectation(description: "GET callback")
-//
-//        http?.get("200.json", configuration: fakeConfiguration) { body, response, error in
-//            XCTAssertNotNil(body)
-//            XCTAssertNotNil(response)
-//            XCTAssertNil(error)
-//            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-//            XCTAssertEqual(httpRequest.url?.absoluteString, "bt-http-test://base.example.com:1234/base/path/200.json?authorization_fingerprint=test-authorization-fingerprint")
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2)
-//    }
-
 
     // MARK: - HTTP Method tests
 
@@ -295,24 +272,24 @@ final class BTHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
     
-//    func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_doesNotSendAuthorizationInBody() {
-//        let expectation = expectation(description: "POST callback")
-//
-//        let http = BTHTTP(url: URL(string: "https://api-m.paypal.com")!, authorizationFingerprint: "test-authorization-fingerprint")
-//        http?.session = testURLSession
-//        
-//        http.post("200.json") { body, response, error in
-//            XCTAssertNotNil(body)
-//            XCTAssertNotNil(response)
-//            XCTAssertNil(error)
-//
-//            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-//            XCTAssertFalse(httpRequestBody.contains("authorization_fingerprint"))
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectations(timeout: 2)
-//    }
+    func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_doesNotSendAuthorizationInBody() {
+        let expectation = expectation(description: "POST callback")
+
+        let http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "https://api-m.paypal.com")!)
+        http.session = testURLSession
+        
+        http.post("200.json") { body, response, error in
+            XCTAssertNotNil(body)
+            XCTAssertNotNil(response)
+            XCTAssertNil(error)
+
+            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
+            XCTAssertFalse(httpRequestBody.contains("authorization_fingerprint"))
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
 
     func testPOSTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization() {
         http = BTHTTP(authorization: fakeTokenizationKey)
