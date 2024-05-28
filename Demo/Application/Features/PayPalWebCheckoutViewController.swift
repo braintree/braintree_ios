@@ -122,6 +122,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
+
             }
             
             self.completionBlock(nonce)
