@@ -2,11 +2,13 @@
 
 ## unreleased
 * BraintreeCore
+  * Batch analytics events to FPTI
   * Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
 
 ## 6.18.2 (2024-05-15)
 * BraintreePayPal
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
+  * Send `isVaultRequest` to FPTI for tracking in Venmo and PayPal flows
 
 ## 5.26.0 (2024-05-07)
 * Updated expiring pinned vendor SSL certificates

@@ -141,6 +141,18 @@ import Foundation
             }
         }
     }
+    
+    func fetchConfiguration() async throws -> BTConfiguration {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchOrReturnRemoteConfiguration { configuration, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let configuration {
+                    continuation.resume(returning: configuration)
+                }
+            }
+        }
+    }
 
     /// Fetches a customer's vaulted payment method nonces.
     /// Must be using client token with a customer ID specified.
@@ -299,6 +311,7 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        isVaultRequest: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         linkType: String? = nil,
@@ -306,6 +319,7 @@ import Foundation
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
+            isVaultRequest: isVaultRequest,
             correlationID: correlationID,
             errorDescription: errorDescription,
             linkType: linkType,

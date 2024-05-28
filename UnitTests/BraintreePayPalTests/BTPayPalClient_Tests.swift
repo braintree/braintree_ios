@@ -682,4 +682,18 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
     }
+
+    func testTokenize_whenVaultRequest_setsVaultAnalyticsTag() async {
+        let vaultRequest = BTPayPalVaultRequest()
+        let _ = try? await payPalClient.tokenize(vaultRequest)
+
+        XCTAssertTrue(mockAPIClient.lastPostedVaultType)
+    }
+
+    func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTag() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.lastPostedVaultType)
+    }
 }
