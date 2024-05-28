@@ -1,5 +1,5 @@
 # Braintree iOS SDK Release Notes
-
+ 
 ## unreleased
 * BraintreeCore
   * Batch analytics events to FPTI
