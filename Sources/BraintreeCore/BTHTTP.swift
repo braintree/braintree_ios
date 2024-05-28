@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 /// Performs HTTP methods on the Braintree Client API
-class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
+class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
@@ -14,12 +14,13 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
+    let baseURL: URL
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
-    let baseURL: URL
-    let cacheDateValidator: BTCacheDateValidator = BTCacheDateValidator()
     var clientAuthorization: ClientAuthorization?
+
+    weak var networkTimingDelegate: BTHTTPNetworkTiming?
 
     /// Session exposed for testing
     lazy var session: URLSession = {
@@ -28,7 +29,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         
         let delegateQueue: OperationQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
-        delegateQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
         
         return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
     }()
@@ -99,15 +99,11 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
 
     // MARK: - HTTP Methods
 
-    func get(_ path: String, parameters: Encodable? = nil, shouldCache: Bool = false, completion: @escaping RequestCompletion) {
+    func get(_ path: String, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters?.toDictionary()
             
-            if shouldCache {
-                httpRequestWithCaching(method: "GET", path: path, parameters: dict, completion: completion)
-            } else {
-                httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
-            }
+            httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -127,53 +123,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         }
     }
 
-    func put(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "PUT", path: path, parameters: parameters, completion: completion)
-    }
-
-    func delete(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "DELETE", path: path, parameters: parameters, completion: completion)
-    }
-
     // MARK: - HTTP Method Helpers
-
-    func httpRequestWithCaching(
-        method: String,
-        path: String,
-        parameters: [String: Any]? = [:],
-        completion: RequestCompletion?
-    ) {
-        createRequest(method: method, path: path, parameters: parameters) { request, error in
-            guard let request = request else {
-                self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
-                return
-            }
-
-            var cachedResponse: CachedURLResponse? = URLCache.shared.cachedResponse(for: request) ?? nil
-
-            if self.cacheDateValidator.isCacheInvalid(cachedResponse ?? nil) {
-                URLCache.shared.removeAllCachedResponses()
-                cachedResponse = nil
-            }
-
-            // The increase in speed of API calls with cached configuration caused an increase in "network connection lost" errors.
-            // Adding this delay allows us to throttle the network requests slightly to reduce load on the servers and decrease connection lost errors.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                if let cachedResponse = cachedResponse {
-                    self.handleRequestCompletion(data: cachedResponse.data, request: nil, shouldCache: false, response: cachedResponse.response, error: nil, completion: completion)
-                } else {
-                    self.session.dataTask(with: request) { [weak self] data, response, error in
-                        guard let self else {
-                            completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                            return
-                        }
-
-                        handleRequestCompletion(data: data, request: request, shouldCache: true, response: response, error: error, completion: completion)
-                    }.resume()
-                }
-            }
-        }
-    }
 
     func httpRequest(
         method: String,
@@ -181,29 +131,28 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         parameters: [String: Any]? = [:],
         completion: RequestCompletion?
     ) {
-        createRequest(method: method, path: path, parameters: parameters) { request, error in
-            guard let request = request else {
-                self.handleRequestCompletion(data: nil, request: nil, shouldCache: false, response: nil, error: error, completion: completion)
-                return
-            }
-
+        do {
+            let request = try createRequest(method: method, path: path, parameters: parameters)
+            
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
                     return
                 }
 
-                handleRequestCompletion(data: data, request: request, shouldCache: false, response: response, error: error, completion: completion)
+                handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
             }.resume()
+        } catch {
+            self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
+            return
         }
     }
 
     func createRequest(
         method: String,
         path: String,
-        parameters: [String: Any]? = [:],
-        completion: @escaping (URLRequest?, Error?) -> Void
-    ) {
+        parameters: [String: Any]? = [:]
+    ) throws -> URLRequest {
         let hasHTTPPrefix: Bool = path.hasPrefix("http")
         let baseURLString: String = baseURL.absoluteString
         var errorUserInfo: [String: Any] = [:]
@@ -213,18 +162,10 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
-            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
-            return
+            throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
         
-        let fullPathURL: URL?
-        let isDataURL: Bool = baseURL.scheme == "data"
-
-        if !isDataURL {
-            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
-        } else {
-            fullPathURL = baseURL
-        }
+        let fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
@@ -243,49 +184,39 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             errorUserInfo["parameters"] = parameters
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
 
-            completion(nil, BTHTTPError.missingBaseURL(errorUserInfo))
-            return
+            throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
 
-        buildHTTPRequest(
+        return try buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: mutableParameters,
-            isDataURL: isDataURL
-        ) { request, error in
-            completion(request, error)
-        }
+            parameters: mutableParameters
+        )
     }
 
     func buildHTTPRequest(
         method: String,
         url: URL,
-        parameters: NSMutableDictionary? = [:],
-        isDataURL: Bool,
-        completion: @escaping (URLRequest?, Error?) -> Void
-    ) {
+        parameters: NSMutableDictionary? = [:]
+    ) throws -> URLRequest {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
-            completion(nil, BTHTTPError.urlStringInvalid)
-            return
+            throw BTHTTPError.urlStringInvalid
         }
 
         var headers: [String: String] = defaultHeaders
         var request: URLRequest
 
         if method == "GET" || method == "DELETE" {
-            if !isDataURL {
-                components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
-            }
+            components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
+            
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPError.urlStringInvalid)
-                return
+                throw BTHTTPError.urlStringInvalid
             }
 
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
-                completion(nil, BTHTTPError.urlStringInvalid)
-                return
+                throw BTHTTPError.urlStringInvalid
             }
 
             request = URLRequest(url: urlFromComponents)
@@ -295,8 +226,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             do {
                 bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
             } catch {
-                completion(nil, error)
-                return
+                throw error
             }
 
             request.httpBody = bodyData
@@ -310,13 +240,12 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         request.allHTTPHeaderFields = headers
         request.httpMethod = method
 
-        completion(request, nil)
+        return request
     }
 
     func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
-        shouldCache: Bool,
         response: URLResponse?,
         error: Error?,
         completion: RequestCompletion?
@@ -363,15 +292,6 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
                 callCompletionAsync(with: completion, body: nil, response: nil, error: error)
             }
             return
-        }
-
-        // We should only cache the response if we do not have an error and status code is 2xx
-        let successStatusCode: Bool = httpResponse.statusCode >= 200 && httpResponse.statusCode < 300
-
-        if request != nil && shouldCache && successStatusCode, let request = request {
-            let cachedURLResponse: CachedURLResponse = CachedURLResponse(response: response, data: data)
-
-            URLCache.shared.storeCachedResponse(cachedURLResponse, for: request)
         }
 
         callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)
@@ -463,31 +383,7 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
         return certificates
     }
 
-    // MARK: - isEqual override
-    
-    override func isEqual(_ object: Any?) -> Bool {
-        guard object is BTHTTP,
-              let otherObject = object as? BTHTTP else {
-            return false
-        }
-
-        return baseURL == otherObject.baseURL && clientAuthorization == otherObject.clientAuthorization
-    }
-
-    // MARK: - NSCopying conformance
-
-    func copy(with zone: NSZone? = nil) -> Any {
-        switch clientAuthorization {
-        case .authorizationFingerprint(let fingerprint):
-            return BTHTTP(url: baseURL, authorizationFingerprint: fingerprint)
-        case .tokenizationKey(let key):
-            return BTHTTP(url: baseURL, tokenizationKey: key)
-        default:
-            return BTHTTP(url: baseURL)
-        }
-    }
-
-    // MARK: - URLSessionDelegate conformance
+    // MARK: - URLSessionTaskDelegate conformance
 
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
@@ -509,6 +405,20 @@ class BTHTTP: NSObject, NSCopying, URLSessionDelegate {
             }
         } else {
             completionHandler(.performDefaultHandling, nil)
+        }
+    }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        metrics.transactionMetrics.forEach { transaction in
+            if let startDate = transaction.fetchStartDate,
+               let endDate = transaction.responseEndDate,
+               let path = transaction.request.url?.path {
+                networkTimingDelegate?.fetchAPITiming(
+                    path: path,
+                    startTime: startDate.utcTimestampMilliseconds,
+                    endTime: endDate.utcTimestampMilliseconds
+                )
+            }
         }
     }
 }

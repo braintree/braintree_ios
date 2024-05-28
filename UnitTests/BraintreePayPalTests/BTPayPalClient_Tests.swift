@@ -18,7 +18,6 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
-
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
     }
 
@@ -58,6 +57,10 @@ class BTPayPalClient_Tests: XCTestCase {
         }
 
         self.waitForExpectations(timeout: 1)
+    }
+
+    func testInitBTPayPalClient_setsShouldSendAPIRequestLatencyOnBTAPIClient() {
+        XCTAssertTrue(payPalClient.apiClient.shouldSendAPIRequestLatency)
     }
 
     // MARK: - POST request to Hermes endpoint
@@ -678,5 +681,19 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.handleBrowserSwitchReturn(returnURL, paymentType: .vault) { _, _ in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
+    }
+
+    func testTokenize_whenVaultRequest_setsVaultAnalyticsTag() async {
+        let vaultRequest = BTPayPalVaultRequest()
+        let _ = try? await payPalClient.tokenize(vaultRequest)
+
+        XCTAssertTrue(mockAPIClient.lastPostedVaultType)
+    }
+
+    func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTag() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.lastPostedVaultType)
     }
 }

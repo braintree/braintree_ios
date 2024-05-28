@@ -35,7 +35,7 @@ import Foundation
         cannedError = error
     }
     
-    public override func get(_ path: String, parameters: Encodable? = nil, shouldCache: Bool, completion: BTHTTP.RequestCompletion?) {
+    public override func get(_ path: String, parameters: Encodable? = nil, completion: BTHTTP.RequestCompletion?) {
         GETRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = try? parameters?.toDictionary()
