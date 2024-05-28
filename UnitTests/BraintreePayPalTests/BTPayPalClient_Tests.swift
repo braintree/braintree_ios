@@ -685,15 +685,19 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testTokenize_whenVaultRequest_setsVaultAnalyticsTag() async {
         let vaultRequest = BTPayPalVaultRequest()
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+
         let _ = try? await payPalClient.tokenize(vaultRequest)
 
-        XCTAssertTrue(mockAPIClient.lastPostedVaultType)
+        XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
     }
 
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTag() async {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
+        
         let _ = try? await payPalClient.tokenize(checkoutRequest)
 
-        XCTAssertFalse(mockAPIClient.lastPostedVaultType)
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
 }
