@@ -331,9 +331,6 @@ import BraintreeDataCollector
                 
                 self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
 
-                // TODO: remove NotificationCenter before merging into main DTBTSDK-3766
-                NotificationCenter.default.post(name: Notification.Name("BAToken"), object: self.payPalContextID)
-
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
 

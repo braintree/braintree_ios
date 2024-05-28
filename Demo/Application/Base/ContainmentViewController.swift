@@ -18,7 +18,6 @@ class ContainmentViewController: UIViewController {
             updateStatus("Presenting \(type(of: currentViewController))")
             currentViewController.progressBlock = progressBlock
             currentViewController.completionBlock = completionBlock
-            currentViewController.nonceCompletionBlock = nonceCompletionBlock
 
             appendViewController(currentViewController)
             title = currentViewController.title
@@ -28,12 +27,6 @@ class ContainmentViewController: UIViewController {
     private var currentPaymentMethodNonce: BTPaymentMethodNonce? {
         didSet {
             statusItem?.isEnabled = (currentPaymentMethodNonce != nil)
-        }
-    }
-
-    private var copiedNonce: BTPaymentMethodNonce? {
-        didSet {
-            statusItem?.isEnabled = (copiedNonce != nil)
         }
     }
 
@@ -47,11 +40,6 @@ class ContainmentViewController: UIViewController {
     func completionBlock(_ nonce: BTPaymentMethodNonce?) {
         currentPaymentMethodNonce = nonce
         updateStatus("Got a nonce. Tap to make a transaction.")
-    }
-
-    func nonceCompletionBlock(_ nonce: BTPaymentMethodNonce?) {
-        copiedNonce = nonce
-        updateStatus(copiedNonce?.nonce ?? "no nonce returned")
     }
 
     override func viewDidLoad() {
@@ -118,12 +106,6 @@ class ContainmentViewController: UIViewController {
 
     @objc private func tappedStatus() {
         print("Tapped status!")
-
-        if let copiedNonce {
-            UIPasteboard.general.string = copiedNonce.nonce
-            self.copiedNonce = nil
-            return
-        }
 
         if let currentPaymentMethodNonce {
             let nonce = currentPaymentMethodNonce.nonce

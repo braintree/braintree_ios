@@ -5,7 +5,6 @@ class BaseViewController: UIViewController {
 
     var progressBlock: ((String?) -> Void) = { _ in }
     var completionBlock: ((BTPaymentMethodNonce?) -> Void) = { _ in }
-    var nonceCompletionBlock: ((BTPaymentMethodNonce?) -> Void) = { _ in }
 
     init(authorization: String) {
         super.init(nibName: nil, bundle: nil)
