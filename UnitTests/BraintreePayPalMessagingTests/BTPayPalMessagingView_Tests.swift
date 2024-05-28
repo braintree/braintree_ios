@@ -62,4 +62,28 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         XCTAssertTrue(mockDelegate.willAppear)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
     }
+    
+    func testStart_withClientID_callingMultipleTimes_doesNotIncreaseNumberOfSubviews() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(
+            value: [
+                "paypal": ["clientId": "a-fake-client-id"]
+            ] as [String: Any?]
+        )
+        
+        let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
+        payPalMessageView.delegate = mockDelegate
+        XCTAssertEqual(payPalMessageView.subviews.count, 0)
+        
+        payPalMessageView.start()
+        
+        XCTAssertTrue(mockDelegate.willAppear)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
+        XCTAssertEqual(payPalMessageView.subviews.count, 1)
+
+        payPalMessageView.start()
+        
+        XCTAssertTrue(mockDelegate.willAppear)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
+        XCTAssertEqual(payPalMessageView.subviews.count, 1)
+    }
 }
