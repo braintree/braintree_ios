@@ -67,6 +67,7 @@ import Foundation
                 return nil
             }
         }
+        
         super.init()
         BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
 
@@ -159,7 +160,7 @@ import Foundation
     ///   - completion: Callback that returns either an array of payment method nonces or an error
     ///   - Note: Only the top level `BTPaymentMethodNonce` type is returned, fetching any additional details will need to be done on the server
     public func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        if authorization.type != .clientToken{
+        if authorization.type != .clientToken {
             completion(nil, BTAPIClientError.notAuthorized)
             return
         }

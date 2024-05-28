@@ -15,15 +15,13 @@ import Foundation
         json?["environment"].asString()
     }
     
-    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The Braintree GW URL to use for REST requests
-    public var clientAPIURL: URL? {
+    var clientAPIURL: URL? {
         json?["clientApiUrl"].asURL()
     }
     
-    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The Braintree GraphQL URL
-    public var graphQLURL: URL? {
+    var graphQLURL: URL? {
         json?["graphQL"]["url"].asURL()
     }
     

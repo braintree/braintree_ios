@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error codes associated with a Tokenization Key.
-public enum TokenizationKeyError: Error, CustomNSError, LocalizedError, Equatable {
+public enum TokenizationKeyError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. The tokenization key provided was invalid
     case invalid
@@ -11,10 +11,7 @@ public enum TokenizationKeyError: Error, CustomNSError, LocalizedError, Equatabl
     }
 
     public var errorCode: Int {
-        switch self {
-        case .invalid:
-            return 0
-        }
+        rawValue
     }
     
     public var errorDescription: String? {

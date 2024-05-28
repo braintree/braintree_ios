@@ -49,7 +49,7 @@ class BTGraphQLHTTP: BTHTTP {
         let headers = [
             "User-Agent": userAgentString,
             "Braintree-Version": BTCoreConstants.graphQLVersion,
-            "Authorization": "Bearer \(self.authorization.bearer)",
+            "Authorization": "Bearer \(authorization.bearer)",
             "Content-Type": "application/json; charset=utf-8"
         ]
         

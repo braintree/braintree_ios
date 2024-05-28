@@ -311,7 +311,7 @@ import BraintreeCore
                 return
             }
 
-            if shouldVault && self.apiClient.authorization.type == .clientToken {
+            if shouldVault && apiClient.authorization.type == .clientToken {
                 vault(nonce)
             } else {
                 let detailsDictionary: [String: String?] = ["username": returnURL.username]
