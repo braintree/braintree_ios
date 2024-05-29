@@ -70,6 +70,7 @@ import Foundation
         
         super.init()
         BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
+        http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
         fetchOrReturnRemoteConfiguration { configuration, error in
@@ -366,6 +367,7 @@ import Foundation
     private func setupHTTPCredentials(_ configuration: BTConfiguration) {
         if http == nil {
             http = BTHTTP(authorization: authorization)
+            http?.networkTimingDelegate = self
         }
 
         if graphQLHTTP == nil {
