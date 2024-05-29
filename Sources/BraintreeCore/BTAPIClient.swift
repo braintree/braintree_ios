@@ -498,6 +498,8 @@ import Foundation
             } else if let tokenizationKey, let graphQLBaseURL {
                 graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
             }
+            
+            graphQLHTTP?.networkTimingDelegate = self
         }
     }
 
