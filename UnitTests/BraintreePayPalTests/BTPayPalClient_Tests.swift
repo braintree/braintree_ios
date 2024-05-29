@@ -6,6 +6,7 @@ import XCTest
 class BTPayPalClient_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient!
     var payPalClient: BTPayPalClient!
+    var mockWebAuthenticationSession: MockWebAuthenticationSession!
 
     override func setUp() {
         super.setUp()
@@ -19,6 +20,8 @@ class BTPayPalClient_Tests: XCTestCase {
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
+        mockWebAuthenticationSession = MockWebAuthenticationSession()
+        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
 
     func testTokenizePayPalAccount_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
@@ -221,9 +224,7 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        let mockWebAuthenticationSession = MockWebAuthenticationSession()
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://www.paypal.com/checkout/success")
-        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
 
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
@@ -267,8 +268,6 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
-
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
 
@@ -282,9 +281,7 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        let mockWebAuthenticationSession = MockWebAuthenticationSession()
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://www.paypal.com/checkout/success")
-        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
 
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
@@ -320,7 +317,6 @@ class BTPayPalClient_Tests: XCTestCase {
         request.currencyCode = "GBP"
         request.offerPayLater = true
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
@@ -343,7 +339,6 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalVaultRequest()
         request.offerCredit = true
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
@@ -823,6 +818,12 @@ class BTPayPalClient_Tests: XCTestCase {
             universalLink: URL(string: "https://paypal.com")!
         )
 
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
+            ]
+        ])
+
         payPalClient.tokenize(vaultRequest) { nonce, error in
             XCTAssertNil(nonce)
 
@@ -1012,5 +1013,21 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.handleReturn(returnURL, paymentType: .vault) { _, _ in }
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
+    }
+
+    func testTokenize_whenVaultRequest_setsVaultAnalyticsTag() async {
+        let vaultRequest = BTPayPalVaultRequest()
+
+        let _ = try? await payPalClient.tokenize(vaultRequest)
+
+        XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
+    }
+
+    func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTag() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
 }

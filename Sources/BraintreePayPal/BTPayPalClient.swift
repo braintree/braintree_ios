@@ -40,6 +40,9 @@ import BraintreeDataCollector
     /// Exposed for testing to check if the PayPal app is installed
     var payPalAppInstalled: Bool = false
 
+    /// True if `tokenize()` was called with a Vault request object type
+    var isVaultRequest: Bool = false
+
     // MARK: - Static Properties
 
     /// This static instance of `BTPayPalClient` is used during the app switch process.
@@ -98,6 +101,7 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        isVaultRequest = true
         tokenize(request: request, completion: completion)
     }
 
@@ -140,6 +144,7 @@ import BraintreeDataCollector
         _ request: BTPayPalCheckoutRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        isVaultRequest = false
         tokenize(request: request, completion: completion)
     }
 
@@ -175,6 +180,7 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
+            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
             linkType: linkType,
             payPalContextID: payPalContextID
@@ -288,7 +294,7 @@ import BraintreeDataCollector
         payPalAppInstalled = application.isPayPalAppInstalled()
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true && payPalAppInstalled ? "universal" : "deeplink"
 
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, linkType: linkType)
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
@@ -426,12 +432,14 @@ import BraintreeDataCollector
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
+                    isVaultRequest: isVaultRequest,
                     linkType: linkType,
                     payPalContextID: payPalContextID
                 )
             } else {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
+                    isVaultRequest: isVaultRequest,
                     linkType: linkType,
                     payPalContextID: payPalContextID
                 )
@@ -441,6 +449,7 @@ import BraintreeDataCollector
                 // User tapped system cancel button on permission alert
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserLoginAlertCanceled,
+                    isVaultRequest: isVaultRequest,
                     linkType: linkType,
                     payPalContextID: payPalContextID
                 )
@@ -461,6 +470,7 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
+            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
             linkType: linkType,
             payPalContextID: payPalContextID
@@ -471,6 +481,7 @@ import BraintreeDataCollector
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
+            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
             errorDescription: error.localizedDescription,
             linkType: linkType,
@@ -482,6 +493,7 @@ import BraintreeDataCollector
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
+            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
             linkType: linkType,
             payPalContextID: payPalContextID
