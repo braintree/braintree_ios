@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import BraintreePayPal
+import BraintreeCore
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
@@ -52,15 +53,19 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let request = BTPayPalVaultRequest()
 
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
+        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
+            let newAPI = BTAPIClient(authorization: clientToken!)!
+            let client = BTPayPalClient(apiClient: newAPI)
+            client.tokenize(request) { nonce, error in
+                sender.isEnabled = true
 
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
+                guard let nonce else {
+                    self.progressBlock(error?.localizedDescription)
+                    return
+                }
+
+                self.completionBlock(nonce)
             }
-
-            self.completionBlock(nonce)
         }
     }
 

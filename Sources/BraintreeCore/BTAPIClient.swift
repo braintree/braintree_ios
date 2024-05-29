@@ -24,6 +24,9 @@ import Foundation
     
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
+    
+    /// For analytics to determine if a call to `v1/configuration` was made, or if retreived from in-memory cache
+    var isConfigFromCache = false
 
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
@@ -114,10 +117,14 @@ import Foundation
         
         if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
             setupHTTPCredentials(cachedConfig)
+            isConfigFromCache = true
             completion(cachedConfig, nil)
             return
+        } else {
+            isConfigFromCache = false
         }
 
+        print("!!!!!Fetching CONFIG")
         http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)

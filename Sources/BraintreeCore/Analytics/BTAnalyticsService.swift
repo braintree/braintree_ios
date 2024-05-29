@@ -93,6 +93,7 @@ class BTAnalyticsService: Equatable {
             endTime: endTime,
             errorDescription: errorDescription,
             eventName: eventName,
+            isConfigFromCache: apiClient.isConfigFromCache,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID,
