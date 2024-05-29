@@ -103,6 +103,7 @@ class BTAnalyticsService: Equatable {
         await BTAnalyticsService.events.append(event)
         
         do {
+            print("👏")
             let configuration = try await apiClient.fetchConfiguration()
             
             // TODO: - Refactor to make HTTP non-optional property and instantiate in init()

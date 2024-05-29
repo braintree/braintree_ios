@@ -131,6 +131,8 @@ import Foundation
         
         if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: authorization) {
             setupHTTPCredentials(cachedConfig)
+            sendAnalyticsEvent(BTCoreAnalytics.configCacheHit)
+            print("⚠️")
             completion(cachedConfig, nil)
             return
         }
