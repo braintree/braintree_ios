@@ -780,7 +780,7 @@ class BTVenmoClient_Tests: XCTestCase {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         let _ = try? await venmoClient.tokenize(venmoRequest)
 
-        XCTAssertFalse(mockAPIClient.lastPostedVaultType)
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
     
     // MARK: - BTAppContextSwitchClient
