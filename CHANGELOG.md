@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreeCore
   * Batch analytics events to FPTI
+  * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
 * BraintreePayPalMessaging (BETA)
   * Add `BTPayPalMessagingRequest`, `BTPayPalMessagingColor`, `BTPayPalMessagingLogoType`, `BTPayPalMessagingOfferType`, `BTPayPalMessagingPageType`, `BTPayPalMessagingTextAlignment`, and `BTPayPalMessagingDelegate`
   * Add `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.

@@ -19,10 +19,6 @@ import Foundation
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
 
-    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    @_documentation(visibility: private)
-    public var shouldSendAPIRequestLatency: Bool = false
-
     // MARK: - Internal Properties
     
     var configurationHTTP: BTHTTP?
@@ -502,6 +498,8 @@ import Foundation
             } else if let tokenizationKey, let graphQLBaseURL {
                 graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
             }
+            
+            graphQLHTTP?.networkTimingDelegate = self
         }
     }
 
@@ -510,7 +508,7 @@ import Foundation
     func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
         let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
 
-        if (shouldSendAPIRequestLatency || path.contains("v1/configuration")) && cleanedPath != "/v1/tracking/batch/events" {
+        if cleanedPath != "/v1/tracking/batch/events" {
             analyticsService?.sendAnalyticsEvent(
                 BTCoreAnalytics.apiRequestLatency,
                 endpoint: cleanedPath,

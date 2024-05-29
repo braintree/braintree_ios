@@ -428,7 +428,6 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
         apiClient.analyticsService = mockAnalyticsService
-        apiClient.shouldSendAPIRequestLatency = true
 
         apiClient.fetchAPITiming(path: "/v1/tracking/batch/events", startTime: 12345678, endTime: 0987654)
 
@@ -436,16 +435,15 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertNil(mockAnalyticsService.endpoint)
     }
 
-    func testFetchAPITiming_whenShouldSendAPIRequestLatencyIsFalse_doesNotSendLatencyEvent() {
+    func testFetchAPITiming_whenPathIsNotBatchEvents_sendLatencyEvent() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
         apiClient.analyticsService = mockAnalyticsService
-        apiClient.shouldSendAPIRequestLatency = false
 
         apiClient.fetchAPITiming(path: "/merchants/1234567890/client_api/v1/paypal_hermes/create_payment_resource", startTime: 12345678, endTime: 0987654)
 
-        XCTAssertNil(mockAnalyticsService.lastEvent)
-        XCTAssertNil(mockAnalyticsService.endpoint)
+        XCTAssertEqual(mockAnalyticsService.lastEvent, "core:api-request-latency")
+        XCTAssertEqual(mockAnalyticsService.endpoint, "/v1/paypal_hermes/create_payment_resource")
     }
 
     // MARK: - Client SDK Metadata
