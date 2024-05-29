@@ -165,14 +165,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
         
-        let fullPathURL: URL?
-        let isDataURL: Bool = baseURL.scheme == "data"
-
-        if !isDataURL {
-            fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
-        } else {
-            fullPathURL = baseURL
-        }
+        let fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
 
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
@@ -197,16 +190,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return try buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: mutableParameters,
-            isDataURL: isDataURL
+            parameters: mutableParameters
         )
     }
 
     func buildHTTPRequest(
         method: String,
         url: URL,
-        parameters: NSMutableDictionary? = [:],
-        isDataURL: Bool
+        parameters: NSMutableDictionary? = [:]
     ) throws -> URLRequest {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
             throw BTHTTPError.urlStringInvalid
@@ -216,9 +207,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         var request: URLRequest
 
         if method == "GET" || method == "DELETE" {
-            if !isDataURL {
-                components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
-            }
+            components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
+            
             guard let urlFromComponents = components.url else {
                 throw BTHTTPError.urlStringInvalid
             }

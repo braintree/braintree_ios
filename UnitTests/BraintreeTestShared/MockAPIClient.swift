@@ -9,11 +9,11 @@ public class MockAPIClient: BTAPIClient {
     public var lastGETPath = ""
     public var lastGETParameters = [:] as [String: Any]?
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
-    public var lastPostedVaultType = false
 
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil
     public var postedLinkType: String? = nil
+    public var postedIsVaultRequest = false
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -93,6 +93,7 @@ public class MockAPIClient: BTAPIClient {
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
+        postedIsVaultRequest = isVaultRequest ?? false
         postedAnalyticsEvents.append(name)
     }
 

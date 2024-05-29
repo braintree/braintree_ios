@@ -19,6 +19,7 @@ class BTPayPalClient_Tests: XCTestCase {
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
         payPalClient = BTPayPalClient(apiClient: mockAPIClient)
+        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
     }
 
     func testTokenizePayPalAccount_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
@@ -216,8 +217,6 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
-
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
 
@@ -230,8 +229,6 @@ class BTPayPalClient_Tests: XCTestCase {
                 "redirectUrl": "https://www.paypal.com/checkout?token="
             ]
         ])
-
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
 
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
@@ -246,8 +243,6 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
-
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
 
@@ -261,7 +256,6 @@ class BTPayPalClient_Tests: XCTestCase {
         request.currencyCode = "GBP"
         request.offerPayLater = true
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
@@ -284,7 +278,6 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalVaultRequest()
         request.offerCredit = true
 
-        payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
@@ -681,15 +674,17 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testTokenize_whenVaultRequest_setsVaultAnalyticsTag() async {
         let vaultRequest = BTPayPalVaultRequest()
+
         let _ = try? await payPalClient.tokenize(vaultRequest)
 
-        XCTAssertTrue(mockAPIClient.lastPostedVaultType)
+        XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
     }
 
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTag() async {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+
         let _ = try? await payPalClient.tokenize(checkoutRequest)
 
-        XCTAssertFalse(mockAPIClient.lastPostedVaultType)
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
 }
