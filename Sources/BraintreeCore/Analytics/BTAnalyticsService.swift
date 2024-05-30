@@ -67,6 +67,7 @@ class BTAnalyticsService: Equatable {
                 endpoint: endpoint,
                 endTime: endTime,
                 errorDescription: errorDescription,
+                isVaultRequest: isVaultRequest,
                 linkType: linkType,
                 payPalContextID: payPalContextID,
                 startTime: startTime
