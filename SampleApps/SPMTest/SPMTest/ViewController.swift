@@ -5,6 +5,7 @@ import BraintreeCard
 import BraintreeCore
 import BraintreeDataCollector
 import BraintreeLocalPayment
+import BraintreePayPalMessaging
 import BraintreePayPal
 import BraintreeThreeDSecure
 import BraintreeVenmo
@@ -21,6 +22,7 @@ class ViewController: UIViewController {
         let cardClient = BTCardClient(apiClient: apiClient)
         let dataCollector = BTDataCollector(apiClient: apiClient)
         let localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
+        let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
         let payPalClient = BTPayPalClient(apiClient: apiClient)
         let threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
         let venmoClient = BTVenmoClient(apiClient: apiClient)
