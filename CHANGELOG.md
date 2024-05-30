@@ -5,6 +5,10 @@
   * Batch analytics events to FPTI
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
   * Send `isVaultRequest` to FPTI for tracking in Venmo and PayPal flows
+* BraintreePayPalMessaging (BETA)
+  * Add `BTPayPalMessagingRequest`, `BTPayPalMessagingColor`, `BTPayPalMessagingLogoType`, `BTPayPalMessagingOfferType`, `BTPayPalMessagingPageType`, `BTPayPalMessagingTextAlignment`, and `BTPayPalMessagingDelegate`
+  * Add `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+    * To get started create a `BTPayPalMessagingView` and call `start(_:)` with a `BTPayPalMessagingRequest`
 
 ## 6.18.2 (2024-05-15)
 * BraintreePayPal
