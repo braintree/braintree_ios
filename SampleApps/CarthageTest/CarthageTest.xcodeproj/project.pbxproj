@@ -18,7 +18,6 @@
 		429925C1266189020085F77D /* BraintreeThreeDSecure.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429925A8266189010085F77D /* BraintreeThreeDSecure.xcframework */; };
 		45DDDD992C08F4A100C262E5 /* BraintreePayPalMessaging.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45DDDD982C08F4A100C262E5 /* BraintreePayPalMessaging.xcframework */; };
 		45DDDDA12C08F6E800C262E5 /* PayPalMessages.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45DDDDA02C08F6E800C262E5 /* PayPalMessages.xcframework */; };
-		45DDDDA22C08F6E800C262E5 /* PayPalMessages.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 45DDDDA02C08F6E800C262E5 /* PayPalMessages.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		805656572A38C7BF00686579 /* BraintreeSEPADirectDebit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 805656562A38C7BF00686579 /* BraintreeSEPADirectDebit.xcframework */; };
 		8056565B2A38C7CB00686579 /* BraintreePayPalNativeCheckout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8056565A2A38C7CB00686579 /* BraintreePayPalNativeCheckout.xcframework */; };
 		8056565F2A38C7D200686579 /* BraintreeLocalPayment.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8056565E2A38C7D200686579 /* BraintreeLocalPayment.xcframework */; };
@@ -30,20 +29,6 @@
 		A74D4AFF1BFBB3FB00BF36CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74D4AFD1BFBB3FB00BF36CD /* LaunchScreen.storyboard */; };
 		BE57E0E32846A4FF002CFBAC /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE57E0E22846A4FF002CFBAC /* CardinalMobile.xcframework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		45DDDDA32C08F6E800C262E5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				45DDDDA22C08F6E800C262E5 /* PayPalMessages.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4299259D266189010085F77D /* BraintreeAmericanExpress.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraintreeAmericanExpress.xcframework; path = Carthage/Build/BraintreeAmericanExpress.xcframework; sourceTree = "<group>"; };
@@ -171,7 +156,6 @@
 				A74D4AED1BFBB3FB00BF36CD /* Sources */,
 				A74D4AEE1BFBB3FB00BF36CD /* Frameworks */,
 				A74D4AEF1BFBB3FB00BF36CD /* Resources */,
-				45DDDDA32C08F6E800C262E5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
