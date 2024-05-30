@@ -157,8 +157,8 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
+            isVaultRequest: isVaultRequest,
             payPalContextID: payPalContextID
         )
         guard let url, isValidURLAction(url: url) else {
@@ -432,8 +432,8 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
+            isVaultRequest: isVaultRequest,
             payPalContextID: payPalContextID
         )
         completion(result, nil)
@@ -442,9 +442,9 @@ import BraintreeDataCollector
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
             errorDescription: error.localizedDescription,
+            isVaultRequest: isVaultRequest,
             payPalContextID: payPalContextID
         )
         completion(nil, error)
@@ -453,8 +453,8 @@ import BraintreeDataCollector
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
+            isVaultRequest: isVaultRequest,
             payPalContextID: payPalContextID
         )
         completion(nil, BTPayPalError.canceled)

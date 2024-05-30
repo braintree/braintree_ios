@@ -438,9 +438,9 @@ import BraintreeCore
     private func notifyFailure(with error: Error, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeFailed,
-            isVaultRequest: shouldVault,
             errorDescription: error.localizedDescription,
-            linkType: linkType, 
+            isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(nil, error)

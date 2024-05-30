@@ -7,11 +7,11 @@ class FakeAnalyticsService: BTAnalyticsService {
 
     override func sendAnalyticsEvent(
         _ eventName: String,
-        isVaultRequest: Bool? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
         errorDescription: String? = nil,
+        isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
         startTime: Int? = nil
