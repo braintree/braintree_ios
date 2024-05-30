@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 6.19.0 (2024-05-30)
+## unreleased
 * BraintreeCore
   * Batch analytics events to FPTI
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
