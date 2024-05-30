@@ -36,6 +36,10 @@ let package = Package(
             targets: ["BraintreePayPal", "PPRiskMagnes"]
         ),
         .library(
+            name: "BraintreePayPalMessaging",
+            targets: ["BraintreePayPalMessaging"]
+        ),
+        .library(
             name: "BraintreePayPalNativeCheckout",
             targets: ["BraintreePayPalNativeCheckout"]
         ),
@@ -89,6 +93,16 @@ let package = Package(
             name: "BraintreePayPal",
             dependencies: ["BraintreeCore", "BraintreeDataCollector"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
+        ),
+        .target(
+            name: "BraintreePayPalMessaging",
+            dependencies: ["BraintreeCore", "PayPalMessages"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
+        ),
+        .binaryTarget(
+            name: "PayPalMessages",
+            url: "https://github.com/paypal/paypal-messages-ios/releases/download/1.0.0/PayPalMessages.xcframework.zip",
+            checksum: "565ab72a3ab75169e41685b16e43268a39e24217a12a641155961d8b10ffe1b4"
         ),
         .target(
             name: "BraintreePayPalNativeCheckout",

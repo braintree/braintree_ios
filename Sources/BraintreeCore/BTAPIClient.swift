@@ -308,17 +308,17 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
-        isVaultRequest: Bool? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             eventName,
-            isVaultRequest: isVaultRequest,
             correlationID: correlationID,
             errorDescription: errorDescription,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )
