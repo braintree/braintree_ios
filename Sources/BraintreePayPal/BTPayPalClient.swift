@@ -41,15 +41,18 @@ import BraintreeDataCollector
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
+    
+    private var universalLink: URL?
 
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
     /// - Parameter apiClient: The API Client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
+    @objc(initWithAPIClient:universalLink:)
+    public init(apiClient: BTAPIClient, universalLink: URL? = nil) {
         self.apiClient = apiClient
-        self.webAuthenticationSession = BTWebAuthenticationSession()
+        self.universalLink = universalLink
+        self.webAuthenticationSession = BTWebAuthenticationSession(universalLink: universalLink)
 
         super.init()
         NotificationCenter.default.addObserver(
@@ -255,6 +258,7 @@ import BraintreeDataCollector
                 return
             }
 
+            request.universalLink = self.universalLink
             self.payPalRequest = request
             self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
                 if let error = error as? NSError {

@@ -96,6 +96,10 @@ import BraintreeCore
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
     @_documentation(visibility: private)
     public var paymentType: BTPayPalPaymentType
+    
+    /// :nodoc: This property is not covered by semantic versioning.
+    @_documentation(visibility: private)
+    var universalLink: URL? = nil
 
     // MARK: - Static Properties
     
@@ -166,8 +170,13 @@ import BraintreeCore
             parameters["line_items"] = lineItemsArray
         }
 
-        parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
-        parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+        if let universalLink {
+            parameters["return_url"] = universalLink.absoluteString + "/\(BTPayPalRequest.callbackURLHostAndPath)success"
+            parameters["cancel_url"] = universalLink.absoluteString + "/\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+        } else {
+            parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
+            parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+        }
         parameters["experience_profile"] = experienceProfile
 
         return parameters

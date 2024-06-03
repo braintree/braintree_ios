@@ -4,7 +4,7 @@ import BraintreePayPal
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
+    lazy var payPalClient = BTPayPalClient(apiClient: apiClient, universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!)
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
