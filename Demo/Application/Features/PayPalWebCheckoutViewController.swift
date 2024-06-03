@@ -5,8 +5,11 @@ import BraintreeCore
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
-    
+    lazy var payPalClient = BTPayPalClient(
+        apiClient: apiClient,
+        universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+    )
+
     lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "placeholder@email.com"
@@ -112,8 +115,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: userEmail,
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+            enablePayPalAppSwitch: true
         )
 
         payPalClient.tokenize(request) { nonce, error in
