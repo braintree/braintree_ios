@@ -51,6 +51,8 @@ import BraintreeDataCollector
 
     // MARK: - Private Properties
 
+    private var universalLink: URL? = nil
+
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
     /// Will only be `true` if the user proceed through the `UIAlertController`
     private var webSessionReturned: Bool = false
@@ -81,6 +83,17 @@ import BraintreeDataCollector
             name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
+    }
+
+    /// Initialize a new PayPal client instance for the PayPal App Switch flow.
+    /// - Parameters:
+    ///   - apiClient: The API Client
+    ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
+    /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
+    @objc(initWithAPIClient:universalLink:)
+    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
+        self.init(apiClient: apiClient)
+        self.universalLink = universalLink
     }
 
     // MARK: - Public Methods
@@ -316,7 +329,10 @@ import BraintreeDataCollector
             }
 
             self.payPalRequest = request
-            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
+            self.apiClient.post(
+                request.hermesPath,
+                parameters: request.parameters(with: configuration, universalLink: self.universalLink)
+            ) { body, response, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyFailure(with: error, completion: completion)
