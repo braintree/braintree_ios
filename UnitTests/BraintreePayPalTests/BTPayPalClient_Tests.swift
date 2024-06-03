@@ -19,7 +19,7 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
-        payPalClient = BTPayPalClient(apiClient: mockAPIClient)
+        payPalClient = BTPayPalClient(apiClient: mockAPIClient, universalLink: URL(string: "https://www.paypal.com")!)
         mockWebAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
@@ -241,8 +241,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://www.paypal.com")!
+            enablePayPalAppSwitch: true
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -753,8 +752,7 @@ class BTPayPalClient_Tests: XCTestCase {
         
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://paypal.com")!
+            enablePayPalAppSwitch: true
         )
 
         payPalClient.tokenize(vaultRequest) { _, _ in }
@@ -789,8 +787,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://paypal.com")!
+            enablePayPalAppSwitch: true
         )
 
         let expectation = expectation(description: "completion block called")
@@ -814,8 +811,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://paypal.com")!
+            enablePayPalAppSwitch: true
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -838,8 +834,7 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleReturn_whenURLIsCancel_returnsCancel() {
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://merchant-app.com/merchant-path")!
+            enablePayPalAppSwitch: true
         )
         let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/cancel?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
         let expectation = expectation(description: "completion block called")
@@ -860,8 +855,7 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleReturn_whenURLIsUnknown_returnsError() {
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://merchant-app.com/merchant-path")!
+            enablePayPalAppSwitch: true
         )
         let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/garbage-url")!
         let expectation = expectation(description: "completion block called")
@@ -882,8 +876,7 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleReturn_whenURLIsSuccess_returnsTokenization() {
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://merchant-app.com/merchant-path")!
+            enablePayPalAppSwitch: true
         )
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paypalAccounts":
@@ -935,8 +928,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://paypal.com")!
+            enablePayPalAppSwitch: true
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -953,7 +945,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((lastPostParameters["os_version"] as! String).matches("\\d+\\.\\d+"))
         XCTAssertTrue((lastPostParameters["os_type"] as! String).matches("iOS|iPadOS"))
-        XCTAssertEqual(lastPostParameters["merchant_app_return_url"] as? String, "https://paypal.com")
+        XCTAssertEqual(lastPostParameters["merchant_app_return_url"] as? String, "https://www.paypal.com")
     }
 
     func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalseAndSendsAnalytics() {
@@ -963,8 +955,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "https://paypal.com")!
+            enablePayPalAppSwitch: true
         )
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
