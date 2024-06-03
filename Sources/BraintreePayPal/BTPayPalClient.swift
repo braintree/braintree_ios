@@ -71,7 +71,6 @@ import BraintreeDataCollector
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
-        apiClient.shouldSendAPIRequestLatency = true
 
         self.apiClient = apiClient
         self.webAuthenticationSession = BTWebAuthenticationSession()
@@ -193,8 +192,8 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )
@@ -486,8 +485,8 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )
@@ -497,9 +496,9 @@ import BraintreeDataCollector
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
             errorDescription: error.localizedDescription,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )
@@ -509,8 +508,8 @@ import BraintreeDataCollector
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
-            isVaultRequest: isVaultRequest,
             correlationID: clientMetadataID,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )

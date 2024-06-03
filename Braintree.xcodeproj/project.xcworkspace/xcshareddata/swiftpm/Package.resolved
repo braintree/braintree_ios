@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "paypal-messages-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paypal/paypal-messages-ios",
+      "state" : {
+        "revision" : "86bb29908a7493c67af29d6039e3b737229f077a",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "paypalcheckout-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/paypal/paypalcheckout-ios/",

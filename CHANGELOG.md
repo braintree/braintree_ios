@@ -8,13 +8,16 @@
     * This init should be used for the PayPal App Switch flow
   * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
   * **Note:** This feature is currently in beta and may change or be removed in future releases.
+
+## 6.19.0 (2024-05-30)
 * BraintreeCore
   * Batch analytics events to FPTI
+  * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
+  * Send `isVaultRequest` to FPTI for tracking in Venmo and PayPal flows
 
 ## 6.18.2 (2024-05-15)
 * BraintreePayPal
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
-  * Send `isVaultRequest` to FPTI for tracking in Venmo and PayPal flows
 
 ## 5.26.0 (2024-05-07)
 * Updated expiring pinned vendor SSL certificates
