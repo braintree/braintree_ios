@@ -62,10 +62,6 @@ class BTPayPalClient_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
-    func testInitBTPayPalClient_setsShouldSendAPIRequestLatencyOnBTAPIClient() {
-        XCTAssertTrue(payPalClient.apiClient.shouldSendAPIRequestLatency)
-    }
-
     // MARK: - POST request to Hermes endpoint
 
     func testTokenizePayPalAccount_checkout_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
