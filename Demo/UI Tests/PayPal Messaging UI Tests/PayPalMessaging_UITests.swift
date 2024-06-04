@@ -15,6 +15,12 @@ final class PayPalMessaging_Success_UITests: XCTestCase {
         app.launch()
     }
 
+    override func tearDown() {
+        app.terminate()
+
+        super.tearDown()
+    }
+
     func testStart_withValidRequest_firesDelegates() {
         XCTAssertTrue(app.buttons["DELEGATE: didAppear fired"].waitForExistence(timeout: 10))
 
