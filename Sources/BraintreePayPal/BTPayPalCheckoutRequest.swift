@@ -117,7 +117,7 @@ import BraintreeCore
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
     @_documentation(visibility: private)
-    public override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+    public override func parameters(with configuration: BTConfiguration, universalLink: URL? = nil) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
         var checkoutParameters: [String: Any] = [
             "intent": intent.stringValue,

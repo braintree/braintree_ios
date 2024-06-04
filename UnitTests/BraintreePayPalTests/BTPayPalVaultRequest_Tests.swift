@@ -73,11 +73,10 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
     func testParameters_withEnablePayPalAppSwitchTrue_returnsAllParams() {
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: "sally@gmail.com",
-            enablePayPalAppSwitch: true,
-            universalLink: URL(string: "some-url")!
+            enablePayPalAppSwitch: true
         )
 
-        let parameters = request.parameters(with: configuration)
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
 
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))

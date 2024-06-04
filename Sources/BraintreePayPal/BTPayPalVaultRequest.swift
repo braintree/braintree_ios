@@ -19,26 +19,20 @@ import BraintreeCore
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
 
-    /// The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
-    var universalLink: URL?
-
     // MARK: - Initializers
 
     /// Initializes a PayPal Vault request for the PayPal App Switch flow
     /// - Parameters:
     ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
-    ///   - universalLink: Required: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     public convenience init(
         userAuthenticationEmail: String,
         enablePayPalAppSwitch: Bool,
-        universalLink: URL,
         offerCredit: Bool = false
     ) {
         self.init(offerCredit: offerCredit, userAuthenticationEmail: userAuthenticationEmail)
-        self.universalLink = universalLink
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
 
@@ -51,7 +45,7 @@ import BraintreeCore
         super.init(offerCredit: offerCredit)
     }
 
-    public override func parameters(with configuration: BTConfiguration) -> [String: Any] {
+    public override func parameters(with configuration: BTConfiguration, universalLink: URL? = nil) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
 
         if let userAuthenticationEmail {
