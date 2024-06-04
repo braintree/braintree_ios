@@ -24,7 +24,7 @@ class BTClientToken_Tests: XCTestCase {
             BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 1, overrides: configURLOverride))
         )
 
-        XCTAssertEqual(clientToken.authorizationFingerprint, "an_authorization_fingerprint")
+        XCTAssertEqual(clientToken.bearer, "an_authorization_fingerprint")
         XCTAssertEqual(clientToken.configURL, URL(string: configURLString))
     }
 
@@ -36,7 +36,7 @@ class BTClientToken_Tests: XCTestCase {
             BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 2, overrides: configURLOverride))
         )
 
-        XCTAssertEqual(clientToken.authorizationFingerprint, "an_authorization_fingerprint")
+        XCTAssertEqual(clientToken.bearer, "an_authorization_fingerprint")
         XCTAssertEqual(clientToken.configURL, URL(string: configURLString))
     }
 
@@ -148,7 +148,7 @@ class BTClientToken_Tests: XCTestCase {
         decoder.finishDecoding()
 
         XCTAssertEqual(returnedClientToken?.configURL, URL(string: configURLString))
-        XCTAssertEqual(returnedClientToken?.authorizationFingerprint, authFingerprintString)
+        XCTAssertEqual(returnedClientToken?.bearer, authFingerprintString)
     }
 
     // MARK: - isEqual tests
@@ -192,7 +192,7 @@ class BTClientToken_Tests: XCTestCase {
 
         XCTAssertEqual(copiedClientToken?.configURL, clientToken.configURL)
         XCTAssertEqual(copiedClientToken?.json.asDictionary(), clientToken.json.asDictionary())
-        XCTAssertEqual(copiedClientToken?.authorizationFingerprint, clientToken.authorizationFingerprint)
+        XCTAssertEqual(copiedClientToken?.bearer, clientToken.bearer)
         XCTAssertEqual(copiedClientToken?.originalValue, clientToken.originalValue)
     }
 }

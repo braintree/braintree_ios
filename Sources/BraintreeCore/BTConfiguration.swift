@@ -15,6 +15,16 @@ import Foundation
         json?["environment"].asString()
     }
     
+    /// The Braintree GW URL to use for REST requests
+    var clientAPIURL: URL? {
+        json?["clientApiUrl"].asURL()
+    }
+    
+    /// The Braintree GraphQL URL
+    var graphQLURL: URL? {
+        json?["graphQL"]["url"].asURL()
+    }
+    
     /// The environment name sent to PayPal's FPTI analytics service
     var fptiEnvironment: String? {
         environment == "production" ? "live" : environment

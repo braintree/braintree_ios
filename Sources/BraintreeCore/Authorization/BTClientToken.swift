@@ -2,8 +2,8 @@ import Foundation
 
 /// An authorization string used to initialize the Braintree SDK
 @_documentation(visibility: private)
-@objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying {
-
+@objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying, ClientAuthorization {
+    
     // NEXT_MAJOR_VERSION (v7): properties exposed for Objective-C interoperability + Drop-in access.
     // Once the entire SDK is in Swift, determine if we want public properties to be internal and
     // what we can make internal without breaking the Drop-in.
@@ -15,11 +15,14 @@ import Foundation
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The extracted authorization fingerprint
-    public let authorizationFingerprint: String
+    public let bearer: String
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The extracted configURL
     public let configURL: URL
+
+    /// :nodoc:
+    public let type = AuthorizationType.clientToken
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// The original string used to initialize this instance
@@ -44,7 +47,7 @@ import Foundation
             throw BTClientTokenError.invalidConfigURL
         }
         
-        self.authorizationFingerprint = authorizationFingerprint
+        self.bearer = authorizationFingerprint
         self.configURL = configURL
         self.originalValue = clientToken
     }

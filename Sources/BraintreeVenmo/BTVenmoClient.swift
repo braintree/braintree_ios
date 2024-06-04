@@ -292,7 +292,7 @@ import BraintreeCore
 
                 let venmoAccountNonce: BTVenmoAccountNonce = BTVenmoAccountNonce(with: body)
 
-                if self.shouldVault && self.apiClient.clientToken != nil {
+                if self.shouldVault && self.apiClient.authorization.type == .clientToken {
                     self.vault(venmoAccountNonce.nonce)
                 } else {
                     self.notifySuccess(with: venmoAccountNonce, completion: self.appSwitchCompletion)
@@ -311,7 +311,7 @@ import BraintreeCore
                 return
             }
 
-            if shouldVault && apiClient.clientToken != nil {
+            if shouldVault && apiClient.authorization.type == .clientToken {
                 vault(nonce)
             } else {
                 let detailsDictionary: [String: String?] = ["username": returnURL.username]
