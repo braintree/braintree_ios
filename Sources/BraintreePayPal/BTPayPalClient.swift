@@ -51,7 +51,7 @@ import BraintreeDataCollector
 
     // MARK: - Private Properties
 
-    private var universalLink: URL? = nil
+    private var universalLink: URL?
 
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
     /// Will only be `true` if the user proceed through the `UIAlertController`
