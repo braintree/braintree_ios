@@ -16,12 +16,6 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         waitForElementToAppear(app.cardNumberTextField)
     }
 
-    override func tearDown() {
-        app.terminate()
-
-        super.tearDown()
-    }
-
     func testThreeDSecurePaymentFlowV2_frictionlessFlow_andTransacts() {
         app.enterCardDetailsWith(cardNumber: "4000000000001000", expirationDate: expirationDate)
         app.tokenizeButton.tap()
