@@ -1,3 +1,4 @@
+
 import Foundation
 
 class TokenizationKey: ClientAuthorization {
@@ -24,22 +25,11 @@ class TokenizationKey: ClientAuthorization {
     
     private static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
-        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
+        guard tokenizationKey.range(of: pattern, options: .regularExpression) != nil else { return nil }
 
-        let range = NSRange(location: 0, length: tokenizationKey.count)
-        let matches = regularExpression.matches(in: tokenizationKey, range: range)
-
-        if matches.count != 1 || matches.first?.numberOfRanges != 3 {
-            return nil
-        }
-
-        var environment: String = ""
-        var merchantID: String = ""
-
-        matches.forEach { match in
-            environment = (tokenizationKey as NSString).substring(with: match.range(at: 1))
-            merchantID = (tokenizationKey as NSString).substring(with: match.range(at: 2))
-        }
+        let tokenizationKeyParts = tokenizationKey.split(separator: "_", maxSplits: 3)
+        let environment: String = String(tokenizationKeyParts[0])
+        let merchantID: String = String(tokenizationKeyParts[2])
 
         var components: URLComponents = URLComponents()
         components.scheme = environment == "development" ? "http" : "https"
