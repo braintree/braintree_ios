@@ -21,7 +21,14 @@ class Venmo_UITests: XCTestCase {
      //   waitForElementToBeHittable(demoApp.buttons["Venmo"])
      //   waitForElementToBeHittable(demoApp.buttons["Venmo (with ECD options)"])
     }
-    
+
+    override func tearDown() {
+        demoApp.terminate()
+        mockVenmo.terminate()
+        
+        super.tearDown()
+    }
+
     func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
         // checking this test, triggering another run
         waitForElementToBeHittable(demoApp.buttons["Venmo"])
