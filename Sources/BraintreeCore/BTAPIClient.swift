@@ -2,7 +2,7 @@ import Foundation
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
-@objcMembers public class BTAPIClient: NSObject {
+@objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
 
     /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
@@ -10,38 +10,17 @@ import Foundation
 
     // MARK: - Public Properties
 
-    /// The tokenization key used to authorize the APIClient
-    public var tokenizationKey: String?
-
-    /// The client token used to authorize the APIClient
-    public var clientToken: BTClientToken?
-
+    /// The TokenizationKey or ClientToken used to authorize the APIClient
+    public var authorization: ClientAuthorization
+    
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
 
     // MARK: - Internal Properties
-
-    /// Used to fetch and store configurations in the URL Cache of the session
-    var configurationHTTP: BTHTTP?
-
+    
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
     var payPalHTTP: BTHTTP?
-    
-    var session: URLSession {
-        let configurationQueue: OperationQueue = OperationQueue()
-        configurationQueue.name = "com.braintreepayments.BTAPIClient"
-
-        // BTHTTP's default NSURLSession does not cache responses, but we want the BTHTTP instance that fetches configuration to cache aggressively
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.default
-        let configurationCache: URLCache = URLCache(memoryCapacity: 1 * 1024 * 1024, diskCapacity: 0, diskPath: nil)
-
-        configuration.urlCache = configurationCache
-
-        // Use the caching logic defined in the protocol implementation, if any, for a particular URL load request.
-        configuration.requestCachePolicy = .useProtocolCachePolicy
-        return URLSession(configuration: configuration)
-    }
 
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
@@ -65,37 +44,30 @@ import Foundation
     init?(authorization: String, sendAnalyticsEvent: Bool) {
         self.metadata = BTClientMetadata()
 
-        super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
-        guard let authorizationType: BTAPIClientAuthorization = Self.authorizationType(forAuthorization: authorization) else { return nil }
-
-        let errorString = BTLogLevelDescription.string(for: .error) 
+        guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
 
         switch authorizationType {
         case .tokenizationKey:
-            let baseURL: URL? = Self.baseURLFromTokenizationKey(authorization)
-
-            guard let baseURL else {
-                let reason: String = "BTClient could not initialize because the provided tokenization key was invalid"
-                print(errorString + " Missing analytics session metadata - will not send event " + reason)
+            do {
+                self.authorization =  try TokenizationKey(authorization)
+                http = BTHTTP(authorization: self.authorization)
+            } catch {
                 return nil
             }
-
-            tokenizationKey = authorization
-            configurationHTTP = BTHTTP(url: baseURL, tokenizationKey: authorization)
         case .clientToken:
             do {
-                clientToken = try BTClientToken(clientToken: authorization)
+                let clientToken = try BTClientToken(clientToken: authorization)
+                self.authorization = clientToken
 
-                guard let clientToken else { return nil }
-                configurationHTTP = try BTHTTP(clientToken: clientToken)
+                http = BTHTTP(authorization: self.authorization)
             } catch {
-                print(errorString + " Missing analytics session metadata - will not send event " + error.localizedDescription)
                 return nil
             }
         }
-
-        configurationHTTP?.session = session
+        
+        super.init()
+        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
+        http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
         fetchOrReturnRemoteConfiguration { configuration, error in
@@ -113,8 +85,6 @@ import Foundation
         if graphQLHTTP != nil && graphQLHTTP?.session != nil {
             graphQLHTTP?.session.finishTasksAndInvalidate()
         }
-
-        configurationHTTP?.session.configuration.urlCache?.removeAllCachedResponses()
     }
 
     // MARK: - Public Methods
@@ -138,14 +108,15 @@ import Foundation
         //   - If cachedConfiguration is not present, fetch it and cache the successful response
         //   - If fetching fails, return error
 
-        var configPath: String = "v1/configuration"
-        var configuration: BTConfiguration?
-
-        if let clientToken {
-            configPath = clientToken.configURL.absoluteString
+        let configPath = "v1/configuration"
+        
+        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
+            setupHTTPCredentials(cachedConfig)
+            completion(cachedConfig, nil)
+            return
         }
 
-        configurationHTTP?.get(configPath, parameters: BTConfigurationRequest(), shouldCache: true) { [weak self] body, response, error in
+        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
@@ -154,42 +125,30 @@ import Foundation
             if error != nil {
                 completion(nil, error)
                 return
-            } else if response?.statusCode != 200 {
+            } else if response?.statusCode != 200 || body == nil {
                 completion(nil, BTAPIClientError.configurationUnavailable)
                 return
             } else {
-                configuration = BTConfiguration(json: body)
+                let configuration = BTConfiguration(json: body)
 
-                if http == nil {
-                    let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
-
-                    if let clientToken, let baseURL {
-                        http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let baseURL {
-                        http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
-
-                if graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
-
-                    if let clientToken, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey, let graphQLBaseURL {
-                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
-                    }
-                }
+                setupHTTPCredentials(configuration)
+                try? ConfigurationCache.shared.putInCache(authorization: authorization.bearer, configuration: configuration)
                 
-                if payPalHTTP == nil {
-                    let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
-                    
-                    if let clientToken, let paypalBaseURL {
-                        payPalHTTP = BTHTTP(url: paypalBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    }
+                completion(configuration, nil)
+                return
+            }
+        }
+    }
+    
+    func fetchConfiguration() async throws -> BTConfiguration {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchOrReturnRemoteConfiguration { configuration, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let configuration {
+                    continuation.resume(returning: configuration)
                 }
             }
-
-            completion(configuration, nil)
         }
     }
 
@@ -211,7 +170,7 @@ import Foundation
     ///   - completion: Callback that returns either an array of payment method nonces or an error
     ///   - Note: Only the top level `BTPaymentMethodNonce` type is returned, fetching any additional details will need to be done on the server
     public func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        if clientToken == nil {
+        if authorization.type != .clientToken {
             completion(nil, BTAPIClientError.notAuthorized)
             return
         }
@@ -272,7 +231,7 @@ import Foundation
                 return
             }
 
-            http(for: httpType)?.get(path, parameters: parameters, completion: completion)
+            http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
         }
     }
 
@@ -308,7 +267,7 @@ import Foundation
             }
 
             let postParameters = metadataParametersWith(parameters, for: httpType)
-            http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
+            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
         }
     }
     
@@ -343,10 +302,10 @@ import Foundation
             }
 
             let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(path, parameters: postParameters, headers: headers, completion: completion)
+            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, headers: headers, completion: completion)
         }
     }
-
+    
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///
     /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
@@ -379,6 +338,7 @@ import Foundation
         _ eventName: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
@@ -386,6 +346,7 @@ import Foundation
             eventName,
             correlationID: correlationID,
             errorDescription: errorDescription,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )
@@ -407,44 +368,7 @@ import Foundation
 
     // MARK: - Internal Static Methods
 
-    static func baseURLFromTokenizationKey(_ tokenizationKey: String) -> URL? {
-        let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
-        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
-
-        let range = NSRange(location: 0, length: tokenizationKey.count)
-        let matches = regularExpression.matches(in: tokenizationKey, range: range)
-
-        if matches.count != 1 || matches.first?.numberOfRanges != 3 {
-            return nil
-        }
-
-        var environment: String = ""
-        var merchantID: String = ""
-
-        matches.forEach { match in
-            environment = (tokenizationKey as NSString).substring(with: match.range(at: 1))
-            merchantID = (tokenizationKey as NSString).substring(with: match.range(at: 2))
-        }
-
-        var components: URLComponents = URLComponents()
-        components.scheme = scheme(forEnvironment: environment)
-
-        guard let host = host(forEnvironment: environment, httpType: .gateway) else { return nil }
-        let hostComponents: [String] = host.components(separatedBy: ":")
-
-        components.host = hostComponents.first
-
-        if hostComponents.count > 1 {
-            let portString: String = hostComponents[1]
-            components.port = Int(portString)
-        }
-
-        components.path = clientApiBasePath(forMerchantID: merchantID)
-
-        return components.url
-    }
-
-    static func authorizationType(forAuthorization authorization: String) -> BTAPIClientAuthorization? {
+    static func authorizationType(for authorization: String) -> AuthorizationType? {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
 
@@ -452,67 +376,41 @@ import Foundation
 
         return tokenizationKeyMatch != nil ? .tokenizationKey : .clientToken
     }
-
-    static func scheme(forEnvironment environment: String) -> String {
-        environment.lowercased() == "development" ? "http" : "https"
-    }
-
-    static func host(forEnvironment environment: String, httpType: BTAPIClientHTTPService) -> String? {
-        var host: String? = nil
-        let environmentLowercased: String = environment.lowercased()
-
-        switch httpType {
-        case .gateway:
-            if environmentLowercased == "sandbox" {
-                host = "api.sandbox.braintreegateway.com"
-            } else if environmentLowercased == "production" {
-                host = "api.braintreegateway.com:443"
-            } else if environmentLowercased == "development" {
-                host = "localhost:3000"
-            }
-
-        case .graphQLAPI:
-            if environmentLowercased == "sandbox" {
-                host = "payments.sandbox.braintree-api.com"
-            } else if environmentLowercased == "development" {
-                host = "localhost:8080"
-            } else {
-                host = "payments.braintree-api.com"
-            }
-
-        default:
-            host = nil
-        }
-
-        return host
-    }
-
-    static func clientApiBasePath(forMerchantID merchantID: String) -> String {
-        "/merchants/\(merchantID)/client_api"
-    }
-
+    
     // MARK: - Internal Methods
 
-    func graphQLURL(forEnvironment environment: String) -> URL? {
-        var components: URLComponents = URLComponents()
-        components.scheme = Self.scheme(forEnvironment: environment)
-
-        guard let host: String = Self.host(forEnvironment: environment, httpType: .graphQLAPI) else { return nil }
-        let hostComponents: [String] = host.components(separatedBy: ":")
-
-        if hostComponents.count == 0 {
-            return nil
+    func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
+        switch httpType {
+        case .gateway:
+            return http
+        case .graphQLAPI:
+            return graphQLHTTP
+        case .payPalAPI:
+            return payPalHTTP
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupHTTPCredentials(_ configuration: BTConfiguration) {
+        if http == nil {
+            http = BTHTTP(authorization: authorization)
+            http?.networkTimingDelegate = self
         }
 
-        components.host = hostComponents.first
-
-        if hostComponents.count > 1 {
-            let portString: String = hostComponents[1]
-            components.port = Int(portString)
+        if graphQLHTTP == nil {
+            graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
+            graphQLHTTP?.networkTimingDelegate = self
         }
-
-        components.path = "/graphql"
-        return components.url
+        
+        if payPalHTTP == nil {
+            let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration.environment ?? "")
+            
+            if authorization.type == .clientToken {
+                payPalHTTP = BTHTTP(authorization: authorization, customBaseURL: paypalBaseURL)
+                payPalHTTP?.networkTimingDelegate = self
+            }
+        }
     }
     
     func payPalAPIURL(forEnvironment environment: String) -> URL? {
@@ -524,14 +422,18 @@ import Foundation
         }
     }
 
-    func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
-        switch httpType {
-        case .gateway:
-            return http
-        case .graphQLAPI:
-            return graphQLHTTP
-        case .payPalAPI:
-            return payPalHTTP
+    // MARK: BTAPITimingDelegate conformance
+
+    func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
+        let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
+
+        if cleanedPath != "/v1/tracking/batch/events" {
+            analyticsService?.sendAnalyticsEvent(
+                BTCoreAnalytics.apiRequestLatency,
+                endpoint: cleanedPath,
+                endTime: endTime,
+                startTime: startTime
+            )
         }
     }
 }

@@ -5,7 +5,7 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
 
     func testBTHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication() {
         let url = URL(string: "https://api.braintreegateway.com")!
-        let http = BTHTTP(url: url, tokenizationKey: "development_testing_integration_merchant_id")
+        let http = BTHTTP(authorization: try! TokenizationKey("development_testing_integration_merchant_id"), customBaseURL: url)
         let expectation = expectation(description: "Callback invoked")
 
         http.get("/heartbeat.json") { body, _, error in
@@ -19,7 +19,7 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
 
     func testBTHTTP_whenUsingSandboxEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication() {
         let url = URL(string: "https://api.sandbox.braintreegateway.com")!
-        let http = BTHTTP(url: url, tokenizationKey: "development_testing_integration_merchant_id")
+        let http = BTHTTP(authorization: try! TokenizationKey("sandbox_testing_integration_merchant_id"), customBaseURL: url)
         let expectation = expectation(description: "Callback invoked")
 
         http.get("/heartbeat.json") { body, _, error in
@@ -33,7 +33,7 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
 
     func testBTHTTP_whenUsingAServerWithValidCertificateChainWithARootCAThatWeDoNotExplicitlyTrust_doesNotAllowNetworkCommunication() {
         let url = URL(string: "https://www.globalsign.com")!
-        let http = BTHTTP(url: url, tokenizationKey: "development_testing_integration_merchant_id")
+        let http = BTHTTP(authorization: try! TokenizationKey("development_testing_integration_merchant_id"), customBaseURL: url)
         let expectation = expectation(description: "Callback invoked")
 
         http.get("/heartbeat.json") { body, response, error in

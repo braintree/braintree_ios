@@ -28,6 +28,7 @@
 				<string>Amex</string>
 				<string>SEPA Direct Debit</string>
 				<string>Shopper Insights</string>
+				<string>PayPal Messaging</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -42,6 +43,7 @@
 				<string>AmexViewController</string>
 				<string>SEPADirectDebitViewController</string>
 				<string>ShopperInsightsViewController</string>
+				<string>PayPalMessagingViewController</string>
 			</array>
 		</dict>
 		<dict>

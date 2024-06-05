@@ -19,13 +19,14 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         await analyticsService.performEventRequest("any.analytics.event")
         
-        XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api.paypal.com")
+        XCTAssertEqual(analyticsService.http?.customBaseURL?.absoluteString, "https://api-m.paypal.com")
     }
 
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
+        analyticsService.shouldBypassTimerQueue = true
 
         analyticsService.http = mockAnalyticsHTTP
         

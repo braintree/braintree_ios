@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeTestShared
 import OHHTTPStubs
 @testable import BraintreeCore
 
@@ -9,28 +10,26 @@ final class BTHTTP_Tests: XCTestCase {
     var http: BTHTTP?
     var stubDescriptor: HTTPStubsDescriptor?
 
-    var validDataURL: URL {
-        let validObject: [String: Any] = [
-            "clientId": "a-client-id",
-            "nest": ["nested":"nested-value"]
-        ]
-
-        let configurationData: Data = try! JSONSerialization.data(withJSONObject: validObject)
-        let base64EncodedConfigurationData: String = configurationData.base64EncodedString()
-        let dataURLString: String = "data:application/json;base64,\(base64EncodedConfigurationData)"
-        return URL(string: dataURLString)!
-    }
-
     var testURLSession: URLSession {
         let testConfiguration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
         testConfiguration.protocolClasses = [BTHTTPTestProtocol.self]
         return URLSession(configuration: testConfiguration)
     }
-
+    
+    let fakeClientToken = try! BTClientToken(clientToken: TestClientTokenFactory.stubbedURLClientToken)
+    let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
+    
+    var fakeConfiguration: BTConfiguration {
+        let json = BTJSON(value: [
+            "clientApiUrl": "https://fake-client-api-url.com/base/path"
+        ])
+        return BTConfiguration(json: json)
+    }
+    
     // MARK: - Configuration
 
     override func setUp() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken)
         http?.session = testURLSession
         URLCache.shared.removeAllCachedResponses()
     }
@@ -41,7 +40,66 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     // MARK: - Base URL tests
+        
+    func testRequests_whenNoConfigurationSet_usesConfigURLOnAuthorization() {
+        let http = BTHTTP(authorization: fakeTokenizationKey)
+        http.session = testURLSession
+        let expectation = expectation(description: "GET callback")
 
+        http.httpRequest(method: "ANY", path: "200.json") { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url?.host, self.fakeTokenizationKey.configURL.host)
+            XCTAssertEqual(httpRequest.url?.path, self.fakeTokenizationKey.configURL.path)
+            XCTAssertEqual(httpRequest.url?.scheme, self.fakeTokenizationKey.configURL.scheme)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRequests_whenNoConfigurationSet_doesNotAppendPath() {
+        let expectation = expectation(description: "callback")
+
+        http?.httpRequest(method: "ANY", path: "/some-really-long-path") { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url?.path, self.fakeClientToken.configURL.path)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRequests_whenConfigurationSet_usesClientAPIURLOnConfig() {
+        let http = BTHTTP(authorization: fakeTokenizationKey)
+        http.session = testURLSession
+        let expectation = expectation(description: "callback")
+
+        http.httpRequest(method: "ANY", path: "", configuration: fakeConfiguration) { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url?.scheme, self.fakeConfiguration.clientAPIURL?.scheme)
+            XCTAssertEqual(httpRequest.url?.host, self.fakeConfiguration.clientAPIURL?.host)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
+    func testRequests_whenConfigurationSet_appendsPath() {
+        let expectation = expectation(description: "callback")
+
+        http?.httpRequest(method: "ANY", path: "/some-really-long-path", configuration: fakeConfiguration) { body, _, error in
+            XCTAssertNil(error)
+            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+            XCTAssertEqual(httpRequest.url!.path, "\(self.fakeConfiguration.clientAPIURL!.path)/some-really-long-path")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+    
     func testRequests_useTheSpecifiedURLScheme() {
         let expectation = expectation(description: "GET callback")
 
@@ -55,167 +113,12 @@ final class BTHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    func testRequests_useTheHostAtTheBaseURL() {
-        let expectation = expectation(description: "GET callback")
-
-        http?.get("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.absoluteString, "bt-http-test://base.example.com:1234/base/path/200.json?authorization_fingerprint=test-authorization-fingerprint")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testItAppendsThePathToTheBaseURL() {
-        let expectation = expectation(description: "GET callback")
-
-        http?.get("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func test_whenThePathIsNil_itHitsTheBaseURL() {
-        let expectation = expectation(description: "GET callback")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    // MARK: - data base URLs
-
-    func testReturnsTheData() {
-        let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(body?["clientId"].asString(), "a-client-id")
-            XCTAssertEqual(body?["nest"]["nested"].asString(), "nested-value")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testIgnoresPOSTData() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.post("/", parameters: ["a-post-param": "POST"]) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(response?.statusCode, 200)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testIgnoresGETParameters() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/", parameters: ["a-get-param": "GET"]) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(response?.statusCode, 200)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testIgnoresTheSpecifiedPath() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/resource") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(response?.statusCode, 200)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSetsTheContentTypeHeader() {
-        let dataURL: URL = URL(string: "data:text/plain;base64,SGVsbG8sIFdvcmxkIQo=")!
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: dataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
-            XCTAssertEqual(error.code, BTHTTPError.responseContentTypeNotAcceptable([:]).errorCode)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSetsTheResponseStatusCode() {
-        let expectation = expectation(description: "Perform request")
-        http = BTHTTP(url: validDataURL, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertNotNil(response?.statusCode)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testFailsLikeAnHTTP500WhenTheBase64EncodedDataIsInvalid() {
-        let expectation = expectation(description: "Perform request")
-        let dataStringURL = "data:application/json;base64,BAD-BASE-64-STRING"
-        http = BTHTTP(url: URL(string: dataStringURL)!, authorizationFingerprint: "test-authorization-fingerprint")
-
-        http?.get("/") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-            XCTAssertNotNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
     // MARK: - HTTP Method tests
 
     func testSendsGETRequest() {
         let expectation = expectation(description: "GET request")
-
-        http?.get("200.json") { body, response, error in
+        
+        http?.get("200.json", configuration: fakeConfiguration) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -233,7 +136,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testSendsGETRequestWithParameters() {
         let expectation = expectation(description: "GET request")
 
-        http?.get("200.json", parameters: ["param": "value"]) { body, response, error in
+        http?.get("200.json", configuration: fakeConfiguration, parameters: ["param": "value"]) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -252,7 +155,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testSendsPOSTRequest() {
         let expectation = expectation(description: "POST request")
 
-        http?.post("200.json") { body, response, error in
+        http?.post("200.json", configuration: fakeConfiguration) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -276,7 +179,7 @@ final class BTHTTP_Tests: XCTestCase {
         
         let expectation = expectation(description: "POST request")
 
-        http?.post("200.json", parameters: parameters) { body, response, error in
+        http?.post("200.json", configuration: fakeConfiguration, parameters: parameters) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -298,7 +201,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testSendsPOSTRequestWithDictionaryParameters() {
         let expectation = expectation(description: "POST request")
 
-        http?.post("200.json", parameters: ["param": "value"]) { body, response, error in
+        http?.post("200.json", configuration: fakeConfiguration, parameters: ["param": "value"]) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -317,128 +220,12 @@ final class BTHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    func testSendsPUTRequest() {
-        let expectation = expectation(description: "PUT request")
-
-        http?.put("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.httpMethod, "PUT")
-            XCTAssertNil(httpRequest.httpBody)
-            XCTAssertNil(httpRequest.url?.query)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSendsPUTRequestWithParameters() {
-        let expectation = expectation(description: "PUT request")
-
-        http?.put("200.json", parameters: ["param": "value"]) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.httpMethod, "PUT")
-            XCTAssertNil(httpRequest.url?.query)
-
-            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-            let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
-            XCTAssertEqual(json["param"].asString(), "value")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSendsADELETERequest() {
-        let expectation = expectation(description: "DELETE request")
-
-        http?.delete("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.httpMethod, "DELETE")
-            XCTAssertNil(httpRequest.httpBody)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testSendsDELETERequestWithParameters() {
-        let expectation = expectation(description: "DELETE request")
-
-        http?.delete("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.url?.query, "authorization_fingerprint=test-authorization-fingerprint")
-            XCTAssertEqual(httpRequest.httpMethod, "DELETE")
-            XCTAssertNil(httpRequest.httpBody)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    // MARK: - Configuration tests
-
-    func testGETRequests_whenShouldCache_cachesConfiguration() {
-        URLCache.shared.removeAllCachedResponses()
-        let expectation = expectation(description: "Fetches configuration")
-
-        http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: true) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertNotNil(URLCache.shared.cachedResponse(for: httpRequest))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-        URLCache.shared.removeAllCachedResponses()
-    }
-
-    func testGETRequests_whenShouldNotCache_doesNotStoreInCache() {
-        URLCache.shared.removeAllCachedResponses()
-        let expectation = expectation(description: "Fetches configuration")
-
-        http?.get("/configuration", parameters: ["configVersion": "3"], shouldCache: false) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertNil(URLCache.shared.cachedResponse(for: httpRequest))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-        URLCache.shared.removeAllCachedResponses()
-    }
-
     // MARK: - Authentication
 
     func testGETRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams() {
         let expectation = expectation(description: "Request with authorization")
 
-        http?.get("200.json") { body, response, error in
+        http?.get("200.json", configuration: fakeConfiguration) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -452,7 +239,7 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     func testGETRequests_whenBTHTTPInitializedWithTokenizationKey_sendTokenizationKeyInHeader() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), tokenizationKey: "development_tokenization_key")
+        http = BTHTTP(authorization: fakeTokenizationKey)
         http?.session = testURLSession
 
         let expectation = expectation(description: "GET callback")
@@ -472,7 +259,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testPOSTRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInBody() {
         let expectation = expectation(description: "POST callback")
 
-        http?.post("200.json") { body, response, error in
+        http?.post("200.json", configuration: fakeConfiguration) { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -488,7 +275,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_doesNotSendAuthorizationInBody() {
         let expectation = expectation(description: "POST callback")
 
-        let http = BTHTTP(url: URL(string: "https://api.paypal.com")!, authorizationFingerprint: "test-authorization-fingerprint")
+        let http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "https://api-m.paypal.com")!)
         http.session = testURLSession
         
         http.post("200.json") { body, response, error in
@@ -524,79 +311,11 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     func testPOSTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), tokenizationKey: "development_tokenization_key")
+        http = BTHTTP(authorization: fakeTokenizationKey)
         http?.session = testURLSession
 
         let expectation = expectation(description: "POST callback")
         http?.post("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testPUTRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInBody() {
-        let expectation = expectation(description: "PUT callback")
-
-        http?.put("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequestBody, "{\"authorization_fingerprint\":\"test-authorization-fingerprint\"}")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testPUTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), tokenizationKey: "development_tokenization_key")
-        http?.session = testURLSession
-
-        let expectation = expectation(description: "POST callback")
-        http?.put("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testDELETERequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams() {
-        let expectation = expectation(description: "DELETE callback")
-
-        http?.delete("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.query, "authorization_fingerprint=test-authorization-fingerprint")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testDELETERequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), tokenizationKey: "development_tokenization_key")
-        http?.session = testURLSession
-
-        let expectation = expectation(description: "DELETE callback")
-        http?.delete("200.json") { body, response, error in
             XCTAssertNotNil(body)
             XCTAssertNotNil(response)
             XCTAssertNil(error)
@@ -780,7 +499,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testInterprets2xxAsACompletionWithSuccess() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -807,7 +526,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testResponseCodeParsing_whenStatusCodeIs4xx_returnsError() {
         let expectation = expectation(description: "GET callback")
         let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -837,7 +556,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testResponseCodeParsing_whenStatusCodeIs429_returnsRateLimitError() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -869,7 +588,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testResponseCodeParsing_whenStatusCodeIs5xx_returnsError() {
         let expectation = expectation(description: "GET callback")
         let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -901,7 +620,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testInterpretsTheNetworkBeingDownAsAnError() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -925,7 +644,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testInterpretsTheServerBeingUnavailableAsAnError() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -951,7 +670,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testParsesAJSONResponseBody() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -973,7 +692,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testAcceptsEmptyResponses() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -995,7 +714,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testInterpretsInvalidJSONResponsesAsAJSONError() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -1018,7 +737,7 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testInterpretsNonJSONResponsesAsAContentTypeNotAcceptableError() {
         let expectation = expectation(description: "GET callback")
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         let stub = HTTPStubs.stubRequests { request in
             return true
@@ -1041,54 +760,13 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     func testNoopsForANilCompletionBlock() {
-        http = BTHTTP(url: URL(string: "stub://stub")!, authorizationFingerprint: "test-authorization-fingerprint")
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
 
         http?.get("200.json") { body, response, error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                 // no-op
             }
         }
-    }
-
-    // MARK: - IsEqual tests
-
-    func testReturnsTrueIfBTHTTPsHaveTheSameBaseURLAndAuthorizationFingerprint() {
-        let baseURL: URL = URL(string: "an-url://hi")!
-        let authorizationFingerprint: String = "test-authorization-fingerprint"
-        let http1: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint)
-        let http2: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint)
-        XCTAssertEqual(http1, http2)
-    }
-
-    func testReturnsFalseIfBTHTTPsDoNotHaveTheSameBaseURL() {
-        let baseURL1: URL = URL(string: "an-url://hi")!
-        let baseURL2: URL = URL(string: "an-url://hi-again")!
-        let authorizationFingerprint: String = "test-authorization-fingerprint"
-        let http1: BTHTTP = BTHTTP(url: baseURL1, authorizationFingerprint: authorizationFingerprint)
-        let http2: BTHTTP = BTHTTP(url: baseURL2, authorizationFingerprint: authorizationFingerprint)
-        XCTAssertNotEqual(http1, http2)
-    }
-
-    func testReturnsFalseIfBTHTTPsDoNotHaveTheSameAuthorizationFingerprint() {
-        let baseURL: URL = URL(string: "an-url://hi")!
-        let authorizationFingerprint1: String = "test-authorization-fingerprint"
-        let authorizationFingerprint2: String = "OTHER"
-        let http1: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint1)
-        let http2: BTHTTP = BTHTTP(url: baseURL, authorizationFingerprint: authorizationFingerprint2)
-        XCTAssertNotEqual(http1, http2)
-    }
-
-    // MARK: - Copy tests
-
-    func testReturnsAnEqualInstance() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), authorizationFingerprint: "test-authorization-fingerprint")
-        XCTAssertEqual(http, http?.copy() as? BTHTTP)
-    }
-
-    func testReturnedInstanceHasTheSameCertificates() {
-        http = BTHTTP(url: BTHTTPTestProtocol.testBaseURL(), authorizationFingerprint: "test-authorization-fingerprint")
-        let copiedHTTP = http?.copy() as? BTHTTP
-        XCTAssertEqual(http?.pinnedCertificates, copiedHTTP?.pinnedCertificates)
     }
 
     // MARK: - Helper Methods
