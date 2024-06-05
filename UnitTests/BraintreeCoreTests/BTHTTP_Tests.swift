@@ -294,7 +294,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_sendsAuthorizationInHeader() {
         let expectation = expectation(description: "POST callback")
 
-        let http = BTHTTP(url: URL(string: "https://api.paypal.com")!, authorizationFingerprint: "some-fingerprint")
+        let http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "https://api.paypal.com")!)
         http.session = testURLSession
         
         http.post("200.json") { body, response, error in
@@ -303,7 +303,7 @@ final class BTHTTP_Tests: XCTestCase {
             XCTAssertNil(error)
 
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Authorization"], "Bearer some-fingerprint")
+            XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Authorization"], "Bearer test-authorization-fingerprint")
             expectation.fulfill()
         }
 

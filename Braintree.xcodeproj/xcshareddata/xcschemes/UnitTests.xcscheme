@@ -14,12 +14,23 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8046983D2B27C5530090878E"
-               BuildableName = "BraintreeShopperInsightsTests.xctest"
-               BlueprintName = "BraintreeShopperInsightsTests"
                BlueprintIdentifier = "BECC91782B20DE7C00A2EE42"
                BuildableName = "BraintreePayPalMessagingTests.xctest"
                BlueprintName = "BraintreePayPalMessagingTests"
+               ReferencedContainer = "container:Braintree.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8046983D2B27C5530090878E"
+               BuildableName = "BraintreeShopperInsightsTests.xctest"
+               BlueprintName = "BraintreeShopperInsightsTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -156,9 +167,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8046983D2B27C5530090878E"
-               BuildableName = "BraintreeShopperInsightsTests.xctest"
-               BlueprintName = "BraintreeShopperInsightsTests"
                BlueprintIdentifier = "BECC91782B20DE7C00A2EE42"
                BuildableName = "BraintreePayPalMessagingTests.xctest"
                BlueprintName = "BraintreePayPalMessagingTests"
