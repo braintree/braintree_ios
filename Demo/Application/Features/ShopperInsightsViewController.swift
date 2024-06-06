@@ -7,7 +7,7 @@ import BraintreeShopperInsights
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
-    lazy var paypalClient = BTPayPalClient(apiClient: apiClient)
+    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
     lazy var venmoClient = BTVenmoClient(apiClient: apiClient)
     
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
@@ -40,24 +40,13 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(
-            arrangedSubviews: [
-                emailView,
-                countryCodeView,
-                nationalNumberView,
-            ]
-        )
+        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView,])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(
-            top: 16.0,
-            left: 16.0,
-            bottom: 16.0,
-            right: 16.0
-        )
+        stackView.layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         stackView.insetsLayoutMarginsFromSafeArea = false
         return stackView
     }()
@@ -87,6 +76,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let buttons = [payPalVaultButton, venmoButton]
         buttons.forEach { $0.isEnabled = false }
+
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -131,7 +121,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let paypalRequest = BTPayPalVaultRequest()
         paypalRequest.userAuthenticationEmail = emailView.textField.text ?? nil
         
-        paypalClient.tokenize(paypalRequest) { (nonce, error) in
+        payPalClient.tokenize(paypalRequest) { nonce, error in
             button.isEnabled = true
             self.displayResultDetails(nonce: nonce, error: error)
         }
@@ -145,7 +135,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         button.isEnabled = false
 
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoClient.tokenize(venmoRequest) { (nonce, error) in
+        venmoClient.tokenize(venmoRequest) { nonce, error in
             button.isEnabled = true
             self.displayResultDetails(nonce: nonce, error: error)
         }
