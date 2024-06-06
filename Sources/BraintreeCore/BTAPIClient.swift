@@ -111,10 +111,12 @@ import Foundation
         
         if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
             setupHTTPCredentials(cachedConfig)
+            print("🚨 got from cache")
             completion(cachedConfig, nil)
             return
         }
 
+        print("🚨 bypassed cache, about to make network call") 
         http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)

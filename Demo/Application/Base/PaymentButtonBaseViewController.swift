@@ -9,6 +9,7 @@ class PaymentButtonBaseViewController: BaseViewController {
 
     override init(authorization: String) {
         apiClient = BTAPIClient(authorization: authorization)!
+        print("🍎🚨 get authorization string from BaseVC \(authorization)")
         super.init(authorization: authorization)
     }
     
