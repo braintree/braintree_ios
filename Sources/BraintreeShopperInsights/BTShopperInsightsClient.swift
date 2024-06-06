@@ -47,10 +47,12 @@ public class BTShopperInsightsClient {
                 headers: ["PayPal-Client-Metadata-Id": apiClient.metadata.sessionID],
                 httpType: .payPalAPI
             )
+
             guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
                   eligibleMethodsJSON.count != 0 else {
                 throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
             }
+            
             let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
             let result = BTShopperInsightsResult(
                 isPayPalRecommended: eligiblePaymentMethods.paypal?.recommended ?? false,
