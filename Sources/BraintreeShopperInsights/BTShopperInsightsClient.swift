@@ -68,13 +68,13 @@ public class BTShopperInsightsClient {
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     public func sendPayPalPresentedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalPresented)
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalPresented)
     }
     
     /// Call this method when the PayPal button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendPayPalSelectedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalSelected)
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalSelected)
     }
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
