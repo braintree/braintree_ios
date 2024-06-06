@@ -55,9 +55,9 @@ public class BTShopperInsightsClient {
             
             let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
             let result = BTShopperInsightsResult(
-                isPayPalRecommended: eligiblePaymentMethods.paypal?.recommended ?? false,
+                isPayPalRecommended: eligiblePaymentMethods.payPal?.recommended ?? false,
                 isVenmoRecommended: eligiblePaymentMethods.venmo?.recommended ?? false,
-                isEligibleInPayPalNetwork: eligiblePaymentMethods.paypal?.eligibleInPaypalNetwork ?? false || eligiblePaymentMethods.venmo?.eligibleInPaypalNetwork ?? false
+                isEligibleInPayPalNetwork: eligiblePaymentMethods.payPal?.eligibleInPayPalNetwork ?? false || eligiblePaymentMethods.venmo?.eligibleInPayPalNetwork ?? false
             )
             return self.notifySuccess(with: result)
         } catch {
