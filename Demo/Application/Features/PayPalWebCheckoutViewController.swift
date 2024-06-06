@@ -72,10 +72,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         lineItem.upcCode = "123456789"
         lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
-        request.lineItems = [lineItem]
-        
-        request.offerPayLater = payLaterToggle.isOn
 
+        request.lineItems = [lineItem]        
+        request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
         payPalClient.tokenize(request) { nonce, error in

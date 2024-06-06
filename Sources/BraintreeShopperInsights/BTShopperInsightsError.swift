@@ -2,7 +2,7 @@ import Foundation
 
 public enum BTShopperInsightsError: Int, Error, CustomNSError, LocalizedError, Equatable {
     
-    /// 1. A nil body was returned from the payment method request and no error was returned.
+    /// 0. A nil body was returned from the payment method request and no error was returned.
     case emptyBodyReturned
     
     public static var errorDomain: String {

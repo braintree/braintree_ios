@@ -47,15 +47,17 @@ public class BTShopperInsightsClient {
                 headers: ["PayPal-Client-Metadata-Id": apiClient.metadata.sessionID],
                 httpType: .payPalAPI
             )
+
             guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
                   eligibleMethodsJSON.count != 0 else {
                 throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
             }
+            
             let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
             let result = BTShopperInsightsResult(
-                isPayPalRecommended: eligiblePaymentMethods.paypal?.recommended ?? false,
+                isPayPalRecommended: eligiblePaymentMethods.payPal?.recommended ?? false,
                 isVenmoRecommended: eligiblePaymentMethods.venmo?.recommended ?? false,
-                isEligibleInPayPalNetwork: eligiblePaymentMethods.paypal?.eligibleInPaypalNetwork ?? false || eligiblePaymentMethods.venmo?.eligibleInPaypalNetwork ?? false
+                isEligibleInPayPalNetwork: eligiblePaymentMethods.payPal?.eligibleInPayPalNetwork ?? false || eligiblePaymentMethods.venmo?.eligibleInPayPalNetwork ?? false
             )
             return self.notifySuccess(with: result)
         } catch {
@@ -66,13 +68,13 @@ public class BTShopperInsightsClient {
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     public func sendPayPalPresentedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalPresented)
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalPresented)
     }
     
     /// Call this method when the PayPal button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendPayPalSelectedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalSelected)
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalSelected)
     }
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.

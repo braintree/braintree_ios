@@ -4,8 +4,8 @@ import XCTest
 final class BTShopperInsightsAnalytics_Tests: XCTestCase {
     
     func test_recommendedPaymentAnalyticEvents_sendExpectedEventNames() {
-        XCTAssertEqual(BTShopperInsightsAnalytics.paypalPresented, "shopper-insights:paypal-presented")
-        XCTAssertEqual(BTShopperInsightsAnalytics.paypalSelected, "shopper-insights:paypal-selected")
+        XCTAssertEqual(BTShopperInsightsAnalytics.payPalPresented, "shopper-insights:paypal-presented")
+        XCTAssertEqual(BTShopperInsightsAnalytics.payPalSelected, "shopper-insights:paypal-selected")
         XCTAssertEqual(BTShopperInsightsAnalytics.venmoPresented, "shopper-insights:venmo-presented")
         XCTAssertEqual(BTShopperInsightsAnalytics.venmoSelected, "shopper-insights:venmo-selected")
         XCTAssertEqual(BTShopperInsightsAnalytics.recommendedPaymentsStarted, "shopper-insights:get-recommended-payments:started")
