@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.20.0 (2024-06-06)
 * Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
 * BraintreeShopperInsights (BETA)
   * Add PrivacyInfo.xcprivacy file
