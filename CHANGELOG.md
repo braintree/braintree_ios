@@ -2,6 +2,11 @@
 
 ## unreleased
 * Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
+* BraintreeShopperInsights (BETA)
+  * Add PrivacyInfo.xcprivacy file
+  * Add `BTShopperInsightsClient.getRecommendedPaymentMethods()` for returning recommendations based on the buyer
+* BraintreePayPal
+  * Add `BTPayPalCheckoutRequest.userAuthenticationEmail` optional property
 
 ## 6.19.0 (2024-05-30)
 * BraintreeCore

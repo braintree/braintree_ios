@@ -76,14 +76,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "POST", path: path, configuration: configuration, parameters: parameters, completion: completion)
+    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
+        httpRequest(method: "POST", path: path, configuration: configuration, parameters: parameters, headers: headers, completion: completion)
     }
     
-    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable, completion: @escaping RequestCompletion) {
+    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters.toDictionary()
-            post(path, configuration: configuration, parameters: dict, completion: completion)
+            post(path, configuration: configuration, parameters: dict, headers: headers, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -96,10 +96,11 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         path: String,
         configuration: BTConfiguration? = nil,
         parameters: [String: Any]? = [:],
+        headers: [String: String]? = nil,
         completion: RequestCompletion?
     ) {
         do {
-            let request = try createRequest(method: method, path: path, configuration: configuration, parameters: parameters)
+            let request = try createRequest(method: method, path: path, configuration: configuration, parameters: parameters, headers: headers)
             
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
@@ -119,7 +120,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         method: String,
         path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:]
+        parameters: [String: Any]? = [:],
+        headers: [String: String]? = [:]
     ) throws -> URLRequest {
         var fullPathURL: URL
         if let customBaseURL {
@@ -148,45 +150,63 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return try buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: mutableParameters
+            parameters: mutableParameters,
+            headers: headers
         )
     }
 
     func buildHTTPRequest(
         method: String,
         url: URL,
-        parameters: NSMutableDictionary? = [:]
+        parameters: NSMutableDictionary? = [:],
+        headers additionalHeaders: [String: String]? = nil
     ) throws -> URLRequest {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
             throw BTHTTPError.urlStringInvalid
         }
-
+        
         var headers: [String: String] = defaultHeaders
         var request: URLRequest
-
+        
+        if url.isPayPalURL {
+            headers = [:]
+            if authorization.type == .clientToken {
+                headers["Authorization"] = "Bearer \(authorization.bearer)"
+            }
+        } else {
+            headers = defaultHeaders
+            if authorization.type == .tokenizationKey {
+                headers["Client-Key"] = authorization.bearer
+            }
+        }
+        
+        if let additionalHeaders {
+            headers = headers.merging(additionalHeaders) { $1 }
+        }
+        
         if method == "GET" || method == "DELETE" {
             components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             
             guard let urlFromComponents = components.url else {
                 throw BTHTTPError.urlStringInvalid
             }
-
+            
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
                 throw BTHTTPError.urlStringInvalid
             }
-
+            
             request = URLRequest(url: urlFromComponents)
-
+            
             var bodyData: Data
-
+            
             do {
                 bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
             } catch {
                 throw error
             }
-
+            
             request.httpBody = bodyData
             headers["Content-Type"] = "application/json; charset=utf-8"
         }
@@ -194,10 +214,10 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         if authorization.type == .tokenizationKey {
             headers["Client-Key"] = authorization.originalValue
         }
-
+        
         request.allHTTPHeaderFields = headers
         request.httpMethod = method
-
+        
         return request
     }
 

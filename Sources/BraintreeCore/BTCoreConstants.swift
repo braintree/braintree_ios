@@ -16,6 +16,10 @@ import Foundation
     
     static let graphQLVersion: String = "2018-03-06"
 
+    static let payPalProductionURL = URL(string: "https://api.paypal.com")!
+    
+    static let payPalSandboxURL = URL(string: "https://api.sandbox.paypal.com")!
+
     // MARK: - BTHTTPError Constants
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.

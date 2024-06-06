@@ -5,7 +5,7 @@ class BTAnalyticsService: Equatable {
     // MARK: - Internal Properties
 
     /// The FPTI URL to post all analytic events.
-    static let url = URL(string: "https://api-m.paypal.com")!
+    static let url = URL(string: "https://api.paypal.com")!
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?

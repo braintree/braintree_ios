@@ -34,6 +34,8 @@ struct BTAPIRequest: Encodable {
         case .graphQLAPI:
             let metadataEncoder = metadataContainer.superEncoder(forKey: .graphQLMetadataKey)
             try self.metadata.encode(to: metadataEncoder)
+        case .payPalAPI:
+            break
         }
     }
 }
