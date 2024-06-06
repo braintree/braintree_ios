@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
+
 ## 6.19.0 (2024-05-30)
 * BraintreeCore
   * Batch analytics events to FPTI

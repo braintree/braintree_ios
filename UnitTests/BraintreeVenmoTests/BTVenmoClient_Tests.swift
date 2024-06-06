@@ -425,8 +425,7 @@ class BTVenmoClient_Tests: XCTestCase {
     
     func testTokenizeVenmoAccount_whenUsingClientTokenAndAppSwitchSucceeds_tokenizesVenmoAccount() {
         // Test setup sets up mockAPIClient with a tokenization key, we want a client token
-        mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 2))
+        mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 2))
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
         venmoClient.application = FakeApplication()
@@ -504,8 +503,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
     
     func testTokenizeVenmoAccount_vaultTrue_callsBackWithNonce() {
-        mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
+        mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
 
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         
@@ -546,8 +544,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
     
     func testTokenizeVenmoAccount_vaultTrue_sendsSucessAnalyticsEvent() {
-        mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
+        mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
 
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.application = FakeApplication()
@@ -591,8 +588,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
 
     func testTokenizeVenmoAccount_fallbackToWebTrue_sendsSuccessAnalyticsEvent() {
-        mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
+        mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
 
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.application = FakeApplication()
@@ -633,8 +629,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
 
     func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() {
-        mockAPIClient.tokenizationKey = nil
-        mockAPIClient.clientToken = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
+        mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()

@@ -93,7 +93,7 @@ import BraintreeCore
     ) {
         self.request = request
         
-        guard apiClient.clientToken != nil else {
+        guard apiClient.authorization.type == .clientToken else {
             notifyFailure(
                 with: BTThreeDSecureError.configuration("A client token must be used for ThreeDSecure integrations."),
                 completion: completion
@@ -117,7 +117,7 @@ import BraintreeCore
 
             var requestParameters: [String: Any?] = [
                 "nonce": request.nonce,
-                "authorizationFingerprint": self.apiClient.clientToken?.authorizationFingerprint,
+                "authorizationFingerprint": self.apiClient.authorization.bearer,
                 "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
             ]
 
