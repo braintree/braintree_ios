@@ -8,6 +8,14 @@
     * This init should be used for the PayPal App Switch flow
   * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
   * **Note:** This feature is currently in beta and may change or be removed in future releases.
+  
+## 6.20.0 (2024-06-06)
+* Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
+* BraintreeShopperInsights (BETA)
+  * Add PrivacyInfo.xcprivacy file
+  * Add `BTShopperInsightsClient.getRecommendedPaymentMethods()` for returning recommendations based on the buyer
+* BraintreePayPal
+  * Add `BTPayPalCheckoutRequest.userAuthenticationEmail` optional property
 
 ## 6.19.0 (2024-05-30)
 * BraintreeCore

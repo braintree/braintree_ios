@@ -6,6 +6,7 @@ import Foundation
     @objc public var POSTRequestCount: Int = 0
     @objc public var lastRequestEndpoint: String?
     public var lastRequestMethod: String?
+    public var lastPOSTRequestHeaders: [String: String]? = [:]
     @objc public var lastRequestParameters: [String: Any]?
     var stubMethod: String?
     var stubEndpoint: String?
@@ -14,12 +15,9 @@ import Foundation
     @objc public var cannedStatusCode: Int = 0
     public var cannedError: Error?
 
-    override required init(url: URL = URL(string: "example.com")!) {
-        super.init(url: URL(string: "example.com")!)
-    }
-
     @objc public static func fakeHTTP() -> FakeHTTP {
-        self.init(url: URL(string: "http://fake.com")!)
+        let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
+        return self.init(authorization: fakeTokenizationKey, customBaseURL: URL(string: "http://fake.com")!)
     }
 
     @objc public func stubRequest(withMethod httpMethod: String, toEndpoint endpoint:String, respondWith response: Any, statusCode: Int) {
@@ -35,7 +33,7 @@ import Foundation
         cannedError = error
     }
     
-    public override func get(_ path: String, parameters: Encodable? = nil, completion: BTHTTP.RequestCompletion?) {
+    public override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: BTHTTP.RequestCompletion?) {
         GETRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = try? parameters?.toDictionary()
@@ -57,11 +55,12 @@ import Foundation
         }
     }
 
-    public override func post(_ path: String, parameters: [String: Any]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters
         lastRequestMethod = "POST"
+        lastPOSTRequestHeaders = headers
         if cannedError != nil {
             dispatchQueue.async {
                 completion?(nil, nil, self.cannedError)
@@ -80,15 +79,12 @@ import Foundation
     @objc public var lastRequestParameters: [String: Any]?
     @objc public var cannedConfiguration: BTJSON?
 
-    required override init(url: URL) {
-        super.init(url: url)
-    }
-
     @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
-        self.init(url: URL(string: "http://fake.com")!)
+        let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
+        return self.init(authorization: fakeTokenizationKey, customBaseURL: URL(string: "http://fake.com")!)
     }
 
-    public override func post(_ path: String, parameters: [String: Any]?, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]?, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestParameters = parameters
         completion?(self.cannedConfiguration, nil, nil)

@@ -6,20 +6,19 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
-    enum ClientAuthorization: Equatable {
-        case authorizationFingerprint(String), tokenizationKey(String)
-    }
-
     // MARK: - Internal Properties
 
     /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
-    let baseURL: URL
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
-    var clientAuthorization: ClientAuthorization?
-
+    
+    /// A URL set to override the URLs derived from the ClientAuthorization or BTConfiguration response
+    let customBaseURL: URL?
+    
+    let authorization: ClientAuthorization
+    
     weak var networkTimingDelegate: BTHTTPNetworkTiming?
 
     /// Session exposed for testing
@@ -55,69 +54,36 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     
     // MARK: - Internal Initializers
     
-    init(url: URL) {
-        self.baseURL = url
-    }
-
-    /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a client token
+    /// Initialize `BTHTTP` with an Authorization credential
     /// - Parameters:
-    ///   - url: The base URL for the Braintree Client API
-    ///   - authorizationFingerprint: The authorization fingerprint HMAC from a client token
-    init(url: URL, authorizationFingerprint: String) {
-        self.baseURL = url
-        self.clientAuthorization = .authorizationFingerprint(authorizationFingerprint)
-    }
-
-    /// Initialize `BTHTTP` with the URL from Braintree API and the authorization fingerprint from a tokenizationKey
-    /// - Parameters:
-    ///   - url: The base URL for the Braintree Client API
-    ///   - tokenizationKey: The authorization fingerprint HMAC from a client token
-    init(url: URL, tokenizationKey: String) {
-        self.baseURL = url
-        self.clientAuthorization = .tokenizationKey(tokenizationKey)
-    }
-
-    /// Initialize `BTHTTP` with the authorization fingerprint from a client token
-    /// - Parameter clientToken: The client token
-    convenience init(clientToken: BTClientToken) throws {
-        let url: URL
-
-        if let clientApiURL = clientToken.json["clientApiUrl"].asURL() {
-            url = clientApiURL
-        } else if let configURL = clientToken.json["configUrl"].asURL() {
-            url = configURL
-        } else {
-            throw BTHTTPError.clientApiURLInvalid
-        }
-        
-        if clientToken.authorizationFingerprint.isEmpty {
-            throw BTHTTPError.invalidAuthorizationFingerprint
-        }
-
-        self.init(url: url, authorizationFingerprint: clientToken.authorizationFingerprint)
+    ///   - authorization: a CilentToken or TokenizationKey
+    ///   - customBaseURL: an optional baseURL override
+    required init(authorization: ClientAuthorization, customBaseURL: URL? = nil) {
+        self.authorization = authorization
+        self.customBaseURL = customBaseURL
     }
 
     // MARK: - HTTP Methods
 
-    func get(_ path: String, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
+    func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters?.toDictionary()
             
-            httpRequest(method: "GET", path: path, parameters: dict, completion: completion)
+            httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "POST", path: path, parameters: parameters, completion: completion)
+    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
+        httpRequest(method: "POST", path: path, configuration: configuration, parameters: parameters, headers: headers, completion: completion)
     }
     
-    func post(_ path: String, parameters: Encodable, completion: @escaping RequestCompletion) {
+    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
         do {
             let dict = try parameters.toDictionary()
-            post(path, parameters: dict, completion: completion)
+            post(path, configuration: configuration, parameters: dict, headers: headers, completion: completion)
         } catch let error {
             completion(nil, nil, error)
         }
@@ -128,11 +94,13 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     func httpRequest(
         method: String,
         path: String,
+        configuration: BTConfiguration? = nil,
         parameters: [String: Any]? = [:],
+        headers: [String: String]? = nil,
         completion: RequestCompletion?
     ) {
         do {
-            let request = try createRequest(method: method, path: path, parameters: parameters)
+            let request = try createRequest(method: method, path: path, configuration: configuration, parameters: parameters, headers: headers)
             
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
@@ -151,13 +119,19 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     func createRequest(
         method: String,
         path: String,
-        parameters: [String: Any]? = [:]
+        configuration: BTConfiguration? = nil,
+        parameters: [String: Any]? = [:],
+        headers: [String: String]? = [:]
     ) throws -> URLRequest {
-        let hasHTTPPrefix: Bool = path.hasPrefix("http")
-        let baseURLString: String = baseURL.absoluteString
-        var errorUserInfo: [String: Any] = [:]
+        var fullPathURL: URL
+        if let customBaseURL {
+            fullPathURL = customBaseURL.appendingPathComponent(path)
+        } else {
+            fullPathURL = configuration?.clientAPIURL?.appendingPathComponent(path) ?? authorization.configURL
+        }
 
-        if hasHTTPPrefix && (baseURLString.isEmpty || baseURLString == "") {
+        if fullPathURL.absoluteString.isEmpty {
+            var errorUserInfo: [String: Any] = [:]
             errorUserInfo["method"] = method
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
@@ -165,81 +139,85 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
         
-        let fullPathURL = hasHTTPPrefix ? URL(string: path) : baseURL.appendingPathComponent(path)
-
         let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
 
         // TODO: - Investigate for parity on JS and Android
         // JIRA - DTBTSDK-2682
-        if case .authorizationFingerprint(let fingerprint) = clientAuthorization,
-           !baseURL.isPayPalURL {
-            mutableParameters["authorization_fingerprint"] = fingerprint
-        }
-
-        guard let fullPathURL = fullPathURL else {
-            // baseURL can be non-nil (e.g. an empty string) and still return nil for appendingPathComponent(_:)
-            // causing a crash when URLComponents(string:_) is called with nil.
-            errorUserInfo["method"] = method
-            errorUserInfo["path"] = path
-            errorUserInfo["parameters"] = parameters
-            errorUserInfo[NSLocalizedFailureReasonErrorKey] = "fullPathURL was nil"
-
-            throw BTHTTPError.missingBaseURL(errorUserInfo)
+        if authorization.type == .clientToken, !fullPathURL.isPayPalURL {
+            mutableParameters["authorization_fingerprint"] = authorization.bearer
         }
 
         return try buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: mutableParameters
+            parameters: mutableParameters,
+            headers: headers
         )
     }
 
     func buildHTTPRequest(
         method: String,
         url: URL,
-        parameters: NSMutableDictionary? = [:]
+        parameters: NSMutableDictionary? = [:],
+        headers additionalHeaders: [String: String]? = nil
     ) throws -> URLRequest {
         guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
             throw BTHTTPError.urlStringInvalid
         }
-
+        
         var headers: [String: String] = defaultHeaders
         var request: URLRequest
-
+        
+        if url.isPayPalURL {
+            headers = [:]
+            if authorization.type == .clientToken {
+                headers["Authorization"] = "Bearer \(authorization.bearer)"
+            }
+        } else {
+            headers = defaultHeaders
+            if authorization.type == .tokenizationKey {
+                headers["Client-Key"] = authorization.bearer
+            }
+        }
+        
+        if let additionalHeaders {
+            headers = headers.merging(additionalHeaders) { $1 }
+        }
+        
         if method == "GET" || method == "DELETE" {
             components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             
             guard let urlFromComponents = components.url else {
                 throw BTHTTPError.urlStringInvalid
             }
-
+            
             request = URLRequest(url: urlFromComponents)
         } else {
             guard let urlFromComponents = components.url else {
                 throw BTHTTPError.urlStringInvalid
             }
-
+            
             request = URLRequest(url: urlFromComponents)
-
+            
             var bodyData: Data
-
+            
             do {
                 bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
             } catch {
                 throw error
             }
-
+            
             request.httpBody = bodyData
             headers["Content-Type"] = "application/json; charset=utf-8"
         }
         
-        if case .tokenizationKey(let key) = clientAuthorization {
-            headers["Client-Key"] = key
+        if authorization.type == .tokenizationKey {
+            headers["Client-Key"] = authorization.originalValue
         }
-
+        
         request.allHTTPHeaderFields = headers
         request.httpMethod = method
-
+        
         return request
     }
 

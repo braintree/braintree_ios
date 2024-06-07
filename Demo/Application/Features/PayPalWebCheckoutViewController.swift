@@ -9,23 +9,51 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         apiClient: apiClient,
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
-
+    
+    lazy var emailLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Buyer email:"
+        return label
+    }()
+    
     lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "placeholder@email.com"
         textField.backgroundColor = .systemBackground
         return textField
     }()
+    
+    lazy var payLaterToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Offer Pay Later"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let payLaterToggle = UISwitch()
+
+    lazy var newPayPalCheckoutToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "New PayPal Checkout Experience"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let newPayPalCheckoutToggle = UISwitch()
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
-        let payPalPayLaterButton = createButton(title: "PayPal with Pay Later Offered", action: #selector(tappedPayPalPayLater))
         let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
 
         let stackView = UIStackView(arrangedSubviews: [
-            buttonsStackView(label: "1-Time Checkout Flows", views: [payPalCheckoutButton, payPalPayLaterButton]),
-            buttonsStackView(label: "Vault Flows", views: [emailTextField, payPalVaultButton, payPalAppSwitchButton])
+            UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
+            buttonsStackView(label: "1-Time Checkout", views: [
+                UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
+                UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
+                payPalCheckoutButton
+            ]),
+            buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
         ])
         
         stackView.axis = .vertical
@@ -43,31 +71,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalCheckoutRequest(amount: "5.00")
+        request.userAuthenticationEmail = emailTextField.text
+        
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
         lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
-        request.lineItems = [lineItem]
 
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-
-            self.completionBlock(nonce)
-        }
-    }
-    
-    @objc func tappedPayPalPayLater(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - initiating with Pay Later offered")
-        sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
-
-        let request = BTPayPalCheckoutRequest(amount: "4.30")
-        request.offerPayLater = true
+        request.lineItems = [lineItem]        
+        request.offerPayLater = payLaterToggle.isOn
+        request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true

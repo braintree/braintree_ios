@@ -5,7 +5,7 @@ class BTAnalyticsService: Equatable {
     // MARK: - Internal Properties
 
     /// The FPTI URL to post all analytic events.
-    static let url = URL(string: "https://api-m.paypal.com")!
+    static let url = URL(string: "https://api.paypal.com")!
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?
@@ -108,17 +108,11 @@ class BTAnalyticsService: Equatable {
             
             // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
             if self.http == nil {
-                if let clientToken = self.apiClient.clientToken {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, authorizationFingerprint: clientToken.authorizationFingerprint)
-                } else if let tokenizationKey = self.apiClient.tokenizationKey {
-                    self.http = BTHTTP(url: BTAnalyticsService.url, tokenizationKey: tokenizationKey)
-                } else {
-                    return
-                }
+                self.http = BTHTTP(authorization: self.apiClient.authorization, customBaseURL: BTAnalyticsService.url)
             }
 
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
+            if let http = self.http, http.customBaseURL?.absoluteString == "test://do-not-send.url" {
                 return
             }
             
@@ -161,12 +155,12 @@ class BTAnalyticsService: Equatable {
     /// Constructs POST params to be sent to FPTI
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
-            authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
+            authorizationFingerprint: apiClient.authorization.type == .clientToken ? apiClient.authorization.bearer : nil,
             environment: config.fptiEnvironment,
             integrationType: apiClient.metadata.integration.stringValue,
             merchantID: config.merchantID,
             sessionID: sessionID,
-            tokenizationKey: apiClient.tokenizationKey
+            tokenizationKey: apiClient.authorization.type == .tokenizationKey ? apiClient.authorization.originalValue : nil
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: events)

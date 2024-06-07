@@ -28,6 +28,8 @@ import BraintreeCore
             userDefaults.set(BraintreeDemoAuthType.clientToken.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if processInfoArgs.contains("-TokenizationKey") {
             userDefaults.set(BraintreeDemoAuthType.tokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+        } else if processInfoArgs.contains("-NewPayPalCheckoutTokenizationKey") {
+            userDefaults.set(BraintreeDemoAuthType.newPayPalCheckoutTokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if processInfoArgs.contains("-MockedPayPalTokenizationKey") {
             userDefaults.set(BraintreeDemoAuthType.mockedPayPalTokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if processInfoArgs.contains("-UITestHardcodedClientToken") {

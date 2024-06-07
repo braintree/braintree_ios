@@ -19,7 +19,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         await analyticsService.performEventRequest("any.analytics.event")
         
-        XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api-m.paypal.com")
+        XCTAssertEqual(analyticsService.http?.customBaseURL?.absoluteString, "https://api.paypal.com")
     }
 
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {

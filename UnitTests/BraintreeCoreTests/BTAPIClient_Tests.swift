@@ -13,9 +13,10 @@ class BTAPIClient_Tests: XCTestCase {
 
     // MARK: - Initialization
 
-    func testAPIClientInitialization_withValidTokenizationKey_returnsClientWithTokenizationKey() {
+    func testAPIClientInitialization_withValidTokenizationKey_setsValidAuthorization() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        XCTAssertEqual(apiClient?.tokenizationKey, "development_testing_integration_merchant_id")
+        XCTAssertEqual(apiClient?.authorization.originalValue, "development_testing_integration_merchant_id")
+        XCTAssertEqual(apiClient?.authorization.type, .tokenizationKey)
     }
 
     func testInitialization_withInvalidTokenizationKey_returnsNil() {
@@ -34,30 +35,18 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertNil(BTAPIClient(authorization: ""))
     }
 
-    func testAPIClientInitialization_withValidClientToken_returnsClientWithClientToken() {
+    func testAPIClientInitialization_withValidClientToken_setsValidAuthorization() {
         let clientToken = TestClientTokenFactory.token(withVersion: 2)
         let apiClient = BTAPIClient(authorization: clientToken)
-        XCTAssertEqual(apiClient?.clientToken?.originalValue, clientToken)
+        XCTAssertEqual(apiClient?.authorization.originalValue, clientToken)
+        XCTAssertEqual(apiClient?.authorization.type, .clientToken)
     }
 
-    func testAPIClientInitialization_withVersionThreeClientToken_returnsClientWithClientToken() {
+    func testAPIClientInitialization_withVersionThreeClientToken_setsValidAuthorization() {
         let clientToken = TestClientTokenFactory.token(withVersion: 3)
         let apiClient = BTAPIClient(authorization: clientToken)
-        XCTAssertEqual(apiClient?.clientToken?.originalValue, clientToken)
-    }
-
-    // MARK: - authorizationType
-    
-    func testAPIClientAuthorizationType_forTokenizationKey() {
-        let tokenizationKey = "sandbox_test1xxx_123xx2swdz6nxxx7"
-        let apiClientAuthType = BTAPIClient.authorizationType(forAuthorization: tokenizationKey)
-        XCTAssertEqual(apiClientAuthType, .tokenizationKey)
-    }
-
-    func testAPIClientAuthorizationType_forClientToken() {
-        let clientToken = "1234abc=="
-        let apiClientAuthType = BTAPIClient.authorizationType(forAuthorization: clientToken)
-        XCTAssertEqual(apiClientAuthType, .clientToken)
+        XCTAssertEqual(apiClient?.authorization.originalValue, clientToken)
+        XCTAssertEqual(apiClient?.authorization.type, .clientToken)
     }
 
     // MARK: - fetchOrReturnRemoteConfiguration
@@ -84,7 +73,7 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
         let mockHTTP = FakeHTTP.fakeHTTP()
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
-        apiClient?.configurationHTTP = mockHTTP
+        apiClient?.http = mockHTTP
 
         let expectation = expectation(description: "Callback invoked")
         apiClient?.fetchOrReturnRemoteConfiguration() { _,_ in
@@ -101,7 +90,7 @@ class BTAPIClient_Tests: XCTestCase {
         let mockHTTP = FakeHTTP.fakeHTTP()
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
-        apiClient?.configurationHTTP = mockHTTP
+        apiClient?.http = mockHTTP
 
         let expectation = expectation(description: "Fetch configuration")
         apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
@@ -126,7 +115,7 @@ class BTAPIClient_Tests: XCTestCase {
             respondWith: ["error_message": "Something bad happened"],
             statusCode: 503
         )
-        apiClient?.configurationHTTP = mockHTTP
+        apiClient?.http = mockHTTP
 
         let expectation = expectation(description: "Callback invoked")
         apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
@@ -148,7 +137,7 @@ class BTAPIClient_Tests: XCTestCase {
         let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
 
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
-        apiClient?.configurationHTTP = mockHTTP
+        apiClient?.http = mockHTTP
 
         let expectation = expectation(description: "Fetch configuration")
         apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
@@ -187,7 +176,7 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: TestClientTokenFactory.validClientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        apiClient?.configurationHTTP = mockHTTP
+        apiClient?.http = mockHTTP
         apiClient?.http = mockHTTP
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
@@ -206,7 +195,7 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: TestClientTokenFactory.validClientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        apiClient?.configurationHTTP = mockHTTP
+        apiClient?.http = mockHTTP
         apiClient?.http = mockHTTP
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
@@ -245,7 +234,8 @@ class BTAPIClient_Tests: XCTestCase {
             ]
         ]
 
-        apiClient?.http = mockConfigurationHTTP
+        stubHTTP.cannedConfiguration = BTJSON(value: ["test": true])
+        stubHTTP.cannedStatusCode = 200
         stubHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: stubbedResponse, statusCode: 200)
         apiClient?.http = stubHTTP
 
@@ -277,7 +267,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     func testFetchPaymentMethodNonces_withTokenizationKey_returnsError() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        apiClient?.configurationHTTP = mockConfigurationHTTP
+        apiClient?.http = mockConfigurationHTTP
 
         let expectation = expectation(description: "Error returned")
         apiClient?.fetchPaymentMethodNonces() { paymentMethodNonces, error in
@@ -298,11 +288,12 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: clientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
+        mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
+        mockHTTP.cannedStatusCode = 200
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
-        apiClient?.configurationHTTP = mockConfigurationHTTP
 
-        XCTAssertEqual(apiClient?.clientToken?.json["version"].asIntegerOrZero(), 3)
+        XCTAssertEqual((apiClient?.authorization as! BTClientToken).json["version"].asIntegerOrZero(), 3)
 
         let expectation = expectation(description: "Callback invoked")
         apiClient?.fetchPaymentMethodNonces() { _,_ in
@@ -320,9 +311,10 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: clientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
+        mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
+        mockHTTP.cannedStatusCode = 200
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
-        apiClient?.configurationHTTP = mockConfigurationHTTP
 
         let expectation = expectation(description: "Callback invoked")
         apiClient?.fetchPaymentMethodNonces(true) { _,_ in
@@ -339,9 +331,10 @@ class BTAPIClient_Tests: XCTestCase {
         let apiClient = BTAPIClient(authorization: clientToken)
         let mockHTTP = FakeHTTP.fakeHTTP()
 
+        mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
+        mockHTTP.cannedStatusCode = 200
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [] as [Any?], statusCode: 200)
         apiClient?.http = mockHTTP
-        apiClient?.configurationHTTP = mockConfigurationHTTP
 
         let expectation = expectation(description: "Callback invoked")
         apiClient?.fetchPaymentMethodNonces(false) { _,_ in
@@ -360,7 +353,6 @@ class BTAPIClient_Tests: XCTestCase {
         let mockHTTP = FakeHTTP.fakeHTTP()
 
         // Override apiClient.http so that requests don't fail
-        apiClient?.configurationHTTP = mockHTTP
         apiClient?.http = mockHTTP
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
@@ -453,7 +445,6 @@ class BTAPIClient_Tests: XCTestCase {
         let mockHTTP = FakeHTTP.fakeHTTP()
         let metadata = apiClient?.metadata
 
-        apiClient?.configurationHTTP = mockHTTP
         apiClient?.http = mockHTTP
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
@@ -483,7 +474,6 @@ class BTAPIClient_Tests: XCTestCase {
         ]
 
         apiClient?.graphQLHTTP = mockGraphQLHTTP
-        apiClient?.configurationHTTP = mockHTTP
         apiClient?.http = mockHTTP
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
@@ -505,7 +495,6 @@ class BTAPIClient_Tests: XCTestCase {
         let mockHTTP = FakeHTTP.fakeHTTP()
         let metadata = apiClient?.metadata
 
-        apiClient?.configurationHTTP = mockHTTP
         apiClient?.http = mockHTTP
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
@@ -539,7 +528,6 @@ class BTAPIClient_Tests: XCTestCase {
         ]
 
         apiClient?.graphQLHTTP = mockGraphQLHTTP
-        apiClient?.configurationHTTP = mockHTTP
         apiClient?.http = mockHTTP
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
@@ -565,7 +553,6 @@ class BTAPIClient_Tests: XCTestCase {
     func testGETCallback_returnFetchConfigErrors() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let fakeConfigurationHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
-        apiClient?.configurationHTTP = fakeConfigurationHTTP
         apiClient?.http = fakeConfigurationHTTP
 
         let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
@@ -584,7 +571,6 @@ class BTAPIClient_Tests: XCTestCase {
     func testPOSTCallback_returnFetchConfigErrors() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let fakeConfigurationHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
-        apiClient?.configurationHTTP = fakeConfigurationHTTP
         apiClient?.http = fakeConfigurationHTTP
 
         let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
@@ -599,42 +585,5 @@ class BTAPIClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 5)
 
-    }
-
-    // MARK: - Environment Base URL
-
-    func testBaseURL_isDeterminedByTokenizationKey() {
-        var apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        XCTAssertEqual(apiClient?.configurationHTTP?.baseURL.absoluteString, "http://localhost:3000/merchants/key/client_api")
-
-        apiClient = BTAPIClient(authorization: "sandbox_tokenization_key")
-        XCTAssertEqual(apiClient?.configurationHTTP?.baseURL.absoluteString, "https://api.sandbox.braintreegateway.com/merchants/key/client_api")
-
-        apiClient = BTAPIClient(authorization: "production_tokenization_key")
-        XCTAssertEqual(apiClient?.configurationHTTP?.baseURL.absoluteString, "https://api.braintreegateway.com:443/merchants/key/client_api")
-    }
-
-    func testGraphQLURLForEnvironment_returnsSandboxURL() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "sandbox")
-        XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.sandbox.braintree-api.com/graphql")
-    }
-
-    func testGraphQLURLForEnvironment_returnsDevelopmentURL() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "development")
-        XCTAssertEqual(sandboxURL?.absoluteString, "http://localhost:8080/graphql")
-    }
-
-    func testGraphQLURLForEnvironment_returnsProductionURL() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "production")
-        XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.braintree-api.com/graphql")
-    }
-
-    func testGraphQLURLForEnvironment_returnsProductionURL_asDefault() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let sandboxURL: URL? = apiClient?.graphQLURL(forEnvironment: "unknown")
-        XCTAssertEqual(sandboxURL?.absoluteString, "https://payments.braintree-api.com/graphql")
     }
 }

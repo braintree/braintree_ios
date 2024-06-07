@@ -27,6 +27,7 @@
 				<string>iDEAL</string>
 				<string>Amex</string>
 				<string>SEPA Direct Debit</string>
+				<string>Shopper Insights</string>
 				<string>PayPal Messaging</string>
 			</array>
 			<key>Values</key>
@@ -41,6 +42,7 @@
 				<string>IdealViewController</string>
 				<string>AmexViewController</string>
 				<string>SEPADirectDebitViewController</string>
+				<string>ShopperInsightsViewController</string>
 				<string>PayPalMessagingViewController</string>
 			</array>
 		</dict>
@@ -91,6 +93,7 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
+				<string>New PayPal Checkout Tokenization Key</string>
 			</array>
 			<key>Key</key>
 			<string>BraintreeDemoSettingsAuthorizationTypeKey</string>
@@ -100,11 +103,13 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
+				<string>New PayPal Checkout Tokenization Key</string>
 			</array>
 			<key>Values</key>
 			<array>
 				<integer>0</integer>
 				<integer>1</integer>
+				<integer>2</integer>
 			</array>
 		</dict>
 		<dict>

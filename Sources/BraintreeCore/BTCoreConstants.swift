@@ -5,7 +5,7 @@ import Foundation
 @objcMembers public class BTCoreConstants: NSObject {
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    public static var braintreeSDKVersion: String = "6.19.0"
+    public static var braintreeSDKVersion: String = "6.20.0"
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public static let callbackURLScheme: String = "sdk.ios.braintree"
@@ -19,6 +19,10 @@ import Foundation
     static let apiVersion: String = "2016-10-07"
     
     static let graphQLVersion: String = "2018-03-06"
+
+    static let payPalProductionURL = URL(string: "https://api.paypal.com")!
+    
+    static let payPalSandboxURL = URL(string: "https://api.sandbox.paypal.com")!
 
     // MARK: - BTHTTPError Constants
 

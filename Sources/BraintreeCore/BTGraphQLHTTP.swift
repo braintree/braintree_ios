@@ -10,38 +10,30 @@ class BTGraphQLHTTP: BTHTTP {
 
     // MARK: - Overrides
 
-    override func get(_ path: String, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
+    override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    override func post(_ path: String, parameters: [String: Any]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "POST", parameters: parameters, completion: completion)
+    override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
+        httpRequest(method: "POST", configuration: configuration, parameters: parameters, completion: completion)
     }
 
     // MARK: - Internal methods
     
     func httpRequest(
         method: String,
+        configuration: BTConfiguration? = nil,
         parameters: [String: Any]? = [:],
         completion: @escaping RequestCompletion
     ) {
         var errorUserInfo: [String: Any] = [:]
 
-        if baseURL.absoluteString.isEmpty || baseURL.absoluteString == "" {
+        guard let baseURL = configuration?.graphQLURL ?? customBaseURL,
+            !baseURL.absoluteString.isEmpty else {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
             completion(nil, nil, BTHTTPError.missingBaseURL(errorUserInfo))
             return
-        }
-        
-        let authorization: String
-        switch clientAuthorization {
-        case .authorizationFingerprint(let fingerprint):
-            authorization = fingerprint
-        case .tokenizationKey(let key):
-            authorization = key
-        default:
-            authorization = "" 
         }
         
         guard let components = URLComponents(string: baseURL.absoluteString) else {
@@ -57,7 +49,7 @@ class BTGraphQLHTTP: BTHTTP {
         let headers = [
             "User-Agent": userAgentString,
             "Braintree-Version": BTCoreConstants.graphQLVersion,
-            "Authorization": "Bearer \(authorization)",
+            "Authorization": "Bearer \(authorization.bearer)",
             "Content-Type": "application/json; charset=utf-8"
         ]
         

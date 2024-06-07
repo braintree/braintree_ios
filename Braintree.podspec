@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "6.19.0"
+  s.version          = "6.20.0"
   s.summary          = "Braintree iOS SDK: Helps you accept card and alternative payments in your iOS app."
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -71,6 +71,12 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeSEPADirectDebit/*.swift"
     s.dependency "Braintree/Core"
     s.resource_bundle = { "BraintreeSEPADirectDebit_PrivacyInfo" => "Sources/BraintreeSEPADirectDebit/PrivacyInfo.xcprivacy" }
+  end
+
+  s.subspec "ShopperInsights" do |s|
+    s.source_files = "Sources/BraintreeShopperInsights/*.swift"
+    s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreeShopperInsights_PrivacyInfo" => "Sources/BraintreeShopperInsights/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "PayPalNativeCheckout" do |s|
