@@ -3,13 +3,10 @@ import BraintreeCore
 
 class PaymentButtonBaseViewController: BaseViewController {
 
-    let apiClient: BTAPIClient
-    
     private var paymentButton: UIView = UIView()
 
     override init(authorization: String) {
-        apiClient = BTAPIClient(authorization: authorization)!
-        print("🍎🚨 get authorization string from BaseVC \(authorization)")
+
         super.init(authorization: authorization)
     }
     

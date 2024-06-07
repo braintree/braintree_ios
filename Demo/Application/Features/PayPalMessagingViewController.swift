@@ -1,8 +1,10 @@
 import UIKit
 import BraintreePayPalMessaging
+import BraintreeCore
 
 class PayPalMessagingViewController: PaymentButtonBaseViewController {
 
+    let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
     lazy var payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
 
     let request = BTPayPalMessagingRequest(

@@ -1,11 +1,9 @@
 import UIKit
 import BraintreeAmericanExpress
 import BraintreeCard
+import BraintreeCore
 
 class AmexViewController: PaymentButtonBaseViewController {
-
-    lazy var amexClient = BTAmericanExpressClient(apiClient: apiClient)
-    lazy var cardClient = BTCardClient(apiClient: apiClient)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +44,9 @@ class AmexViewController: PaymentButtonBaseViewController {
         card.cvv = "1234"
 
         progressBlock("Tokenizing Card")
+        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+
+        let cardClient = BTCardClient(apiClient: apiClient)
 
         cardClient.tokenize(card) { tokenizedCard, error in
             guard let tokenizedCard else {
@@ -54,8 +55,8 @@ class AmexViewController: PaymentButtonBaseViewController {
             }
 
             self.progressBlock("Amex - getting rewards balance")
-
-            self.amexClient.getRewardsBalance(forNonce: tokenizedCard.nonce, currencyISOCode: "USD") { rewardsBalance, error in
+            let amexClient = BTAmericanExpressClient(apiClient: apiClient)
+            amexClient.getRewardsBalance(forNonce: tokenizedCard.nonce, currencyISOCode: "USD") { rewardsBalance, error in
                 guard let rewardsBalance else {
                     self.progressBlock(error?.localizedDescription)
                     return

@@ -1,5 +1,6 @@
 import UIKit
 import BraintreeCard
+import BraintreeCore
 
 class CardTokenizationViewController: PaymentButtonBaseViewController {
 
@@ -19,6 +20,7 @@ class CardTokenizationViewController: PaymentButtonBaseViewController {
 
     @objc func tappedSubmit() {
         progressBlock("Tokenizing card details!")
+        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
 
         let cardClient = BTCardClient(apiClient: apiClient)
         let card = CardHelpers.newCard(from: cardFormView)

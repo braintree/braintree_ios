@@ -42,6 +42,7 @@ class ConfigurationCache {
         if timeInCache < (timeToLiveMinutes * 60) {
             return cachedConfig
         } else {
+            print("❌ cache expired")
             cacheInstance.removeObject(forKey: cacheKey)
             return nil
         }

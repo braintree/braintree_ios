@@ -378,7 +378,7 @@ import Foundation
 
     func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
         let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
-
+        print("🕰️ fetchAPITiming: \(cleanedPath)")
         if cleanedPath != "/v1/tracking/batch/events" {
             analyticsService?.sendAnalyticsEvent(
                 BTCoreAnalytics.apiRequestLatency,

@@ -5,8 +5,6 @@ import BraintreeSEPADirectDebit
 
 class SEPADirectDebitViewController: PaymentButtonBaseViewController {
 
-    lazy var sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
-
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "SEPA Direct Debit"
@@ -37,7 +35,8 @@ class SEPADirectDebitViewController: PaymentButtonBaseViewController {
         sepaDirectDebitRequest.mandateType = .oneOff
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
-
+        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
         sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
             if let sepaDirectDebitNonce {
                 self.completionBlock(sepaDirectDebitNonce)

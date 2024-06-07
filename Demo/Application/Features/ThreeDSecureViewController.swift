@@ -1,6 +1,7 @@
 import UIKit
 import BraintreeCard
 import BraintreeThreeDSecure
+import BraintreeCore
 
 class ThreeDSecureViewController: PaymentButtonBaseViewController {
 
@@ -9,8 +10,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
 
     var callbackCountLabel = UILabel()
     var callbackCount: Int = 0
-    
-    lazy var threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +43,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         callbackCount = 0
         updateCallbackCount()
 
+        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
         let card = CardHelpers.newCard(from: cardFormView)
         let cardClient = BTCardClient(apiClient: apiClient)
 
@@ -55,7 +56,8 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
             self.progressBlock("Tokenized card, now verifying with 3DS")
             let threeDSecureRequest = self.createThreeDSecureRequest(with: tokenizedCard.nonce)
 
-            self.threeDSecureClient.startPaymentFlow(threeDSecureRequest) { threeDSecureResult, error in
+            let threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
+            threeDSecureClient.startPaymentFlow(threeDSecureRequest) { threeDSecureResult, error in
                 self.callbackCount += 1
                 self.updateCallbackCount()
 

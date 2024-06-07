@@ -1,13 +1,12 @@
 import UIKit
 import BraintreeVenmo
+import BraintreeCore
 
 class VenmoViewController: PaymentButtonBaseViewController {
-    
-    var venmoClient: BTVenmoClient!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        venmoClient = BTVenmoClient(apiClient: apiClient)
+
         title = "Custom Venmo Button"
     }
     
@@ -67,6 +66,8 @@ class VenmoViewController: PaymentButtonBaseViewController {
     func checkout(request: BTVenmoRequest)  {
         Task {
             do {
+                let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+                let venmoClient = BTVenmoClient(apiClient: apiClient)
                 let venmoAccount = try await venmoClient.tokenize(request)
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)

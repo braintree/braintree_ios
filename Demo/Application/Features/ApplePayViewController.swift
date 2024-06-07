@@ -1,10 +1,9 @@
 import Foundation
 import BraintreeApplePay
 import PassKit
+import BraintreeCore
 
 class ApplePayViewController: PaymentButtonBaseViewController {
-
-    lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +28,8 @@ class ApplePayViewController: PaymentButtonBaseViewController {
     @objc func tappedApplePayButton() {
         progressBlock("Constructing PKPaymentRequest")
 
+        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+        let applePayClient = BTApplePayClient(apiClient: apiClient)
         applePayClient.makePaymentRequest { request, error in
             guard let request else {
                 self.progressBlock(error?.localizedDescription)
@@ -87,7 +88,8 @@ extension ApplePayViewController: PKPaymentAuthorizationViewControllerDelegate {
         handler completion: @escaping (PKPaymentAuthorizationResult) -> Void
     ) {
         progressBlock("Apple Pay did authorize payment")
-
+        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+        let applePayClient = BTApplePayClient(apiClient: apiClient)
         applePayClient.tokenize(payment) { tokenizedApplePayPayment, error in
             guard let tokenizedApplePayPayment else {
                 self.progressBlock(error?.localizedDescription)
