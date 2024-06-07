@@ -22,11 +22,14 @@ class BTAnalyticsService: Equatable {
     private let timerInterval = 15
 
     private static var timer: DispatchSourceTimer?
-    
+
+    private let configuration: BTConfiguration
+
     // MARK: - Initializer
 
-    init(apiClient: BTAPIClient) {
+    init(apiClient: BTAPIClient, configuration: BTConfiguration) {
         self.apiClient = apiClient
+        self.configuration = configuration
     }
 
     // MARK: - Deinit
@@ -102,43 +105,37 @@ class BTAnalyticsService: Equatable {
         )
 
         await BTAnalyticsService.events.append(event)
-        
-        do {
-            let configuration = try await apiClient.fetchConfiguration()
-            
-            // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
-            if self.http == nil {
-                self.http = BTHTTP(authorization: self.apiClient.authorization, customBaseURL: BTAnalyticsService.url)
-            }
 
-            // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if let http = self.http, http.customBaseURL?.absoluteString == "test://do-not-send.url" {
-                return
-            }
-            
-            if shouldBypassTimerQueue {
-                await self.sendQueuedAnalyticsEvents(configuration: configuration)
-                return
-            }
+        // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
+        if self.http == nil {
+            self.http = BTHTTP(authorization: self.apiClient.authorization, customBaseURL: BTAnalyticsService.url)
+        }
 
-            if BTAnalyticsService.timer == nil {
-                BTAnalyticsService.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
-                BTAnalyticsService.timer?.schedule(
-                    deadline: .now() + .seconds(self.timerInterval),
-                    repeating: .seconds(self.timerInterval),
-                    leeway: .seconds(1)
-                )
-
-                BTAnalyticsService.timer?.setEventHandler {
-                    Task {
-                        await self.sendQueuedAnalyticsEvents(configuration: configuration)
-                    }
-                }
-
-                BTAnalyticsService.timer?.resume()
-            }
-        } catch {
+        // A special value passed in by unit tests to prevent BTHTTP from actually posting
+        if let http = self.http, http.customBaseURL?.absoluteString == "test://do-not-send.url" {
             return
+        }
+
+        if shouldBypassTimerQueue {
+            await self.sendQueuedAnalyticsEvents(configuration: configuration)
+            return
+        }
+
+        if BTAnalyticsService.timer == nil {
+            BTAnalyticsService.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
+            BTAnalyticsService.timer?.schedule(
+                deadline: .now() + .seconds(self.timerInterval),
+                repeating: .seconds(self.timerInterval),
+                leeway: .seconds(1)
+            )
+
+            BTAnalyticsService.timer?.setEventHandler {
+                Task {
+                    await self.sendQueuedAnalyticsEvents(configuration: self.configuration)
+                }
+            }
+
+            BTAnalyticsService.timer?.resume()
         }
     }
 

@@ -65,12 +65,15 @@ import Foundation
         }
         
         super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
+
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
         fetchOrReturnRemoteConfiguration { configuration, error in
             // No-op
+            if let configuration {
+                BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self, configuration: configuration)
+            }
         }
     }
 
