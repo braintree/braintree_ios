@@ -2,12 +2,11 @@
 
 ## unreleased
 * BraintreePayPal
-  * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:offerCredit:)`
-    * This init should be used for the PayPal App Switch flow
-  * Add `BTPayPalClient(apiClient:universalLink:)`
-    * This init should be used for the PayPal App Switch flow
-  * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
-  * **Note:** This feature is currently in beta and may change or be removed in future releases.
+  * Add PayPal App Switch vault flow (BETA)
+    * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:offerCredit:)`
+    * Add `BTPayPalClient(apiClient:universalLink:)`
+    * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
+    * **Note:** This feature is currently in beta and may change or be removed in future releases.
   
 ## 6.20.0 (2024-06-06)
 * Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
