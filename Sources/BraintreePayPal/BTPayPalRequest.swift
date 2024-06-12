@@ -135,7 +135,7 @@ import BraintreeCore
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
     @_documentation(visibility: private)
-    public func parameters(with configuration: BTConfiguration) -> [String: Any] {
+    public func parameters(with configuration: BTConfiguration, universalLink: URL? = nil) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
 
         experienceProfile["no_shipping"] = !isShippingAddressRequired

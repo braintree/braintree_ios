@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add PayPal App Switch vault flow (BETA)
+    * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:offerCredit:)`
+    * Add `BTPayPalClient(apiClient:universalLink:)`
+    * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
+    * **Note:** This feature is currently in beta and may change or be removed in future releases.
+  
 ## 6.20.0 (2024-06-06)
 * Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
 * BraintreeShopperInsights (BETA)
@@ -13,10 +21,6 @@
   * Batch analytics events to FPTI
   * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
   * Send `isVaultRequest` to FPTI for tracking in Venmo and PayPal flows
-* BraintreePayPalMessaging (BETA)
-  * Add `BTPayPalMessagingRequest`, `BTPayPalMessagingColor`, `BTPayPalMessagingLogoType`, `BTPayPalMessagingOfferType`, `BTPayPalMessagingPageType`, `BTPayPalMessagingTextAlignment`, and `BTPayPalMessagingDelegate`
-  * Add `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
-    * To get started create a `BTPayPalMessagingView` and call `start(_:)` with a `BTPayPalMessagingRequest`
 
 ## 6.18.2 (2024-05-15)
 * BraintreePayPal

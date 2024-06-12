@@ -11,12 +11,12 @@ import BraintreeCore
         registerDefaultsFromSettings()
         persistDemoSettings()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = returnURLScheme
-        
+
         userDefaults.setValue(true, forKey: "magnes.debug.mode")
         
         return true
     }
-    
+
     func registerDefaultsFromSettings() {
         if processInfoArgs.contains("-EnvironmentSandbox") {
             userDefaults.set(BraintreeDemoEnvironment.sandbox.rawValue, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)

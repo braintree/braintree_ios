@@ -9,7 +9,7 @@ import BraintreePayPal
 #endif
 
 /// Options for the PayPal Vault flow.
-@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest {
+@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalVaultBaseRequest {
 
     // MARK: - Initializer
 

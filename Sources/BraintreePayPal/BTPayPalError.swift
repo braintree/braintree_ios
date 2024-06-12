@@ -15,8 +15,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 3. HTTP POST request returned an error
     case httpPostRequestError([String: Any])
 
-    /// 4. The approval or redirect URL is invalid
-    case invalidURL
+    /// 4. The web approval URL, web redirect URL, PayPal native app approval URL is invalid
+    case invalidURL(String)
 
     /// 5. The ASWebAuthenticationSession URL is invalid
     case asWebAuthenticationSessionURLInvalid(String)
@@ -32,7 +32,16 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 9. Deallocated BTPayPalClient
     case deallocated
-    
+
+    /// 10. The App Switch return URL did not contain the cancel or success path.
+    case appSwitchReturnURLPathInvalid
+
+    /// 11. App Switch could not complete
+    case appSwitchFailed
+
+    /// 12. Missing BA Token for App Switch
+    case missingBAToken
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -59,6 +68,12 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 8
         case .deallocated:
             return 9
+        case .appSwitchReturnURLPathInvalid:
+            return 10
+        case .appSwitchFailed:
+            return 11
+        case .missingBAToken:
+            return 12
         }
     }
 
@@ -72,8 +87,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "Failed to fetch Braintree configuration."
         case .httpPostRequestError(let error):
             return "HTTP POST request failed with \(error)."
-        case .invalidURL:
-            return "The approval and/or return URL contained an invalid URL. Try again or contact Braintree Support."
+        case .invalidURL(let error):
+            return "An error occurred with retrieving a PayPal URL: \(error)"
         case .asWebAuthenticationSessionURLInvalid(let scheme):
             return "Attempted to open an invalid URL in ASWebAuthenticationSession: \(scheme)://. Try again or contact Braintree Support."
         case .invalidURLAction:
@@ -84,6 +99,12 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         case .deallocated:
             return "BTPayPalClient has been deallocated."
+        case .appSwitchReturnURLPathInvalid:
+            return "The App Switch return URL did not contain the cancel or success path."
+        case .appSwitchFailed:
+            return "UIApplication failed to perform app switch to PayPal."
+        case .missingBAToken:
+            return "Missing BA Token for PayPal App Switch."
         }
     }
 

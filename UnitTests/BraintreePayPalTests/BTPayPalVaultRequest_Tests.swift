@@ -54,7 +54,11 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["description"] as? String, "desc")
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
         XCTAssertEqual(parameters["payer_email"] as? String, "fake@email.com")
-
+        XCTAssertNil(parameters["launch_paypal_app"])
+        XCTAssertNil(parameters["os_version"])
+        XCTAssertNil(parameters["os_type"])
+        XCTAssertNil(parameters["merchant_app_return_url"])
+        
         guard let shippingParams = parameters["shipping_address"] as? [String:String] else { XCTFail(); return }
 
         XCTAssertEqual(shippingParams["line1"], "123 Main")
@@ -64,5 +68,19 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(shippingParams["postal_code"], "11111")
         XCTAssertEqual(shippingParams["country_code"], "US")
         XCTAssertEqual(shippingParams["recipient_name"], "Recipient")
+    }
+    
+    func testParameters_withEnablePayPalAppSwitchTrue_returnsAllParams() {
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: "sally@gmail.com",
+            enablePayPalAppSwitch: true
+        )
+
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
+
+        XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
+        XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
+        XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
+        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
     }
 }

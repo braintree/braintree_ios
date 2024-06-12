@@ -88,7 +88,7 @@ struct BTVenmoAppSwitchRedirectURL {
 
     private static func appSwitchBaseURLComponents() -> URLComponents {
         var components: URLComponents = URLComponents(string: xCallbackTemplate) ?? URLComponents()
-        components.scheme = BTCoreConstants.venmoScheme
+        components.scheme = BTCoreConstants.venmoURLScheme
         components.percentEncodedPath = "/vzero/auth"
         return components
     }

@@ -1,10 +1,14 @@
 import Foundation
 import UIKit
 import BraintreePayPal
+import BraintreeCore
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
+    lazy var payPalClient = BTPayPalClient(
+        apiClient: apiClient,
+        universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+    )
     
     lazy var emailLabel: UILabel = {
         let label = UILabel()
@@ -40,6 +44,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
+        let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
 
         let stackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
@@ -48,7 +53,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
                 payPalCheckoutButton
             ]),
-            buttonsStackView(label: "Vault",views: [payPalVaultButton])
+            buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
         ])
         
         stackView.axis = .vertical
@@ -110,13 +115,40 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
+
+    @objc func tappedPayPalAppSwitch(_ sender: UIButton) {
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+        
+        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
+            self.progressBlock("Email cannot be nil for App Switch flow")
+            sender.isEnabled = true
+            return
+        }
+
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: userEmail,
+            enablePayPalAppSwitch: true
+        )
+
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+            
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+
+            }
+            
+            self.completionBlock(nonce)
+        }
+    }
     
     // MARK: - Helpers
     
     private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
         let titleLabel = UILabel()
         titleLabel.text = label
-        titleLabel.font = .preferredFont(forTextStyle: .title3)
         
         let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
         buttonsStackView.axis = .vertical
