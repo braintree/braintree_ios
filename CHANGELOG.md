@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.21.0 (2024-06-12)
 * BraintreePayPal
   * Add PayPal App Switch vault flow (BETA)
     * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:offerCredit:)`
