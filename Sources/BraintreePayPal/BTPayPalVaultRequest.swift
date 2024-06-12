@@ -27,6 +27,7 @@ import BraintreeCore
     ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
+    /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
         userAuthenticationEmail: String,
         enablePayPalAppSwitch: Bool,
