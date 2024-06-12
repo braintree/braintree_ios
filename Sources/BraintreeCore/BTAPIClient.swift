@@ -29,6 +29,10 @@ import Foundation
         set { BTAPIClient._analyticsService = newValue }
     }
 
+    private var isLoadingConfig: Bool = false
+    private var fetchConfigQueue: DispatchQueue = DispatchQueue(label: "configQueue", attributes: .concurrent)
+    private var configCompletionHandlers: [(BTConfiguration?, Error?) -> Void] = []
+
     private static var _analyticsService: BTAnalyticsService?
 
     // MARK: - Initializers
@@ -110,36 +114,70 @@ import Foundation
         //   - If cachedConfiguration is not present, fetch it and cache the successful response
         //   - If fetching fails, return error
 
-        let configPath = "v1/configuration"
-        
-        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
-            setupHTTPCredentials(cachedConfig)
-            print("🚨 got from cache")
-            completion(cachedConfig, nil)
-            return
-        }
-
-        print("🚨 bypassed cache, about to make network call") 
-        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        fetchConfigQueue.async { [weak self] in
             guard let self else {
-                completion(nil, BTAPIClientError.deallocated)
+                DispatchQueue.main.async {
+                    completion(nil, BTAPIClientError.deallocated)
+                }
                 return
             }
 
-            if error != nil {
-                completion(nil, error)
-                return
-            } else if response?.statusCode != 200 || body == nil {
-                completion(nil, BTAPIClientError.configurationUnavailable)
-                return
-            } else {
-                let configuration = BTConfiguration(json: body)
+            let configPath = "v1/configuration"
 
-                setupHTTPCredentials(configuration)
-                try? ConfigurationCache.shared.putInCache(authorization: authorization.bearer, configuration: configuration)
-                
-                completion(configuration, nil)
+            if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
+                setupHTTPCredentials(cachedConfig)
+                DispatchQueue.main.async {
+                    print("🚨 got from cache")
+                    completion(cachedConfig, nil)
+                }
                 return
+            }
+
+            fetchConfigQueue.async(flags: .barrier) { [weak self] in
+                guard let self else {
+                    DispatchQueue.main.async {
+                        completion(nil, BTAPIClientError.deallocated)
+                    }
+                    return
+                }
+
+                if isLoadingConfig {
+                    configCompletionHandlers.append(completion)
+                    return
+                }
+
+                isLoadingConfig = true
+                configCompletionHandlers.append(completion)
+                print("🚨 bypassed cache, about to make network call")
+
+                http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+
+                    guard let self else {
+                        completion(nil, BTAPIClientError.deallocated)
+                        return
+                    }
+
+                    defer {
+                        isLoadingConfig = false
+                        configCompletionHandlers.removeAll()
+                    }
+
+                    if error != nil {
+                        callConfigCompletionHandlers(nil, error)
+                        return
+                    } else if response?.statusCode != 200 || body == nil {
+                        callConfigCompletionHandlers(nil, BTAPIClientError.configurationUnavailable)
+                        return
+                    } else {
+                        let configuration = BTConfiguration(json: body)
+
+                        setupHTTPCredentials(configuration)
+                        try? ConfigurationCache.shared.putInCache(authorization: authorization.bearer, configuration: configuration)
+
+                        callConfigCompletionHandlers(configuration, nil)
+                        return
+                    }
+                }
             }
         }
     }
@@ -353,6 +391,13 @@ import Foundation
     
     // MARK: - Private Methods
     
+    private func callConfigCompletionHandlers(_ config: BTConfiguration?, _ error: Error?) {
+        for completion in configCompletionHandlers {
+            completion(config, error)
+        }
+        configCompletionHandlers = []
+    }
+
     private func setupHTTPCredentials(_ configuration: BTConfiguration) {
         if http == nil {
             http = BTHTTP(authorization: authorization)

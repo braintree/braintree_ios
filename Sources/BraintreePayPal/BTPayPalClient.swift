@@ -238,7 +238,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest)
+        
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
@@ -249,6 +249,8 @@ import BraintreeDataCollector
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
+
+            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: self.isVaultRequest)
 
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
