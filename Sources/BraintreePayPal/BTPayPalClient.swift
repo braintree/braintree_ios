@@ -239,26 +239,14 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
+        Task {
+            guard let configuration = await apiClient.getConfiguration() else {
+                completion(nil, nil)
                 return
             }
-
-            guard let configuration, let json = configuration.json else {
-                self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
-                return
-            }
-
-            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: self.isVaultRequest)
-
-            guard json["paypalEnabled"].isTrue else {
-                self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
-                return
-            }
-
+            
             self.payPalRequest = request
-            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration)) { body, response, error in
+            self.apiClient.post(request.hermesPath, parameters: request.parameters(with: configuration), configuration: configuration) { body, response, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyFailure(with: error, completion: completion)

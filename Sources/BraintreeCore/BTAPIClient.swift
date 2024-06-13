@@ -35,6 +35,8 @@ import Foundation
 
     private static var _analyticsService: BTAnalyticsService?
 
+    private lazy var configurationLoader = ConfigurationLoader(authorization: authorization)
+    
     // MARK: - Initializers
 
     /// Initialize a new API client.
@@ -46,9 +48,9 @@ import Foundation
 
     init?(authorization: String, sendAnalyticsEvent: Bool) {
         self.metadata = BTClientMetadata()
-
+        
         guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
-
+        
         switch authorizationType {
         case .tokenizationKey:
             do {
@@ -61,7 +63,7 @@ import Foundation
             do {
                 let clientToken = try BTClientToken(clientToken: authorization)
                 self.authorization = clientToken
-
+                
                 http = BTHTTP(authorization: self.authorization)
             } catch {
                 return nil
@@ -69,16 +71,8 @@ import Foundation
         }
         
         super.init()
-
+        
         http?.networkTimingDelegate = self
-
-        // Kickoff the background request to fetch the config
-        fetchOrReturnRemoteConfiguration { configuration, error in
-            // No-op
-            if let configuration {
-                BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self, configuration: configuration)
-            }
-        }
     }
 
     // MARK: - Deinit
@@ -248,21 +242,10 @@ import Foundation
         _ path: String,
         parameters: Encodable? = nil,
         httpType: BTAPIClientHTTPService = .gateway,
+        configuration: BTConfiguration? = nil,
         completion: @escaping RequestCompletion
     ) {
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
-                completion(nil, nil, error)
-                return
-            }
-
-            http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
-        }
+        http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
@@ -278,27 +261,16 @@ import Foundation
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
     @_documentation(visibility: private)
-    @objc(POST:parameters:httpType:completion:)
+    @objc(POST:parameters:httpType:configuration:completion:)
     public func post(
         _ path: String,
         parameters: [String: Any]? = nil,
         httpType: BTAPIClientHTTPService = .gateway,
+        configuration: BTConfiguration? = nil,
         completion: @escaping RequestCompletion
     ) {
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
-                completion(nil, nil, error)
-                return
-            }
-
-            let postParameters = metadataParametersWith(parameters, for: httpType)
-            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
-        }
+        let postParameters = metadataParametersWith(parameters, for: httpType)
+        http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -317,22 +289,11 @@ import Foundation
         _ path: String,
         parameters: Encodable,
         httpType: BTAPIClientHTTPService = .gateway,
+        configuration: BTConfiguration? = nil,
         completion: @escaping RequestCompletion
     ) {
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
-                completion(nil, nil, error)
-                return
-            }
-
-            let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
-        }
+        let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
+        http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
     }
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -422,6 +383,15 @@ import Foundation
                 endTime: endTime,
                 startTime: startTime
             )
+        }
+    }
+    
+    @discardableResult public func getConfiguration() async -> BTConfiguration? {
+        do {
+            let configuration = try await configurationLoader.getConfiguration()
+            return configuration
+        } catch {
+            return nil
         }
     }
 }
