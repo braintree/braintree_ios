@@ -15,8 +15,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
     func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
-        
+        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient, configuration: BTConfiguration(json: nil))
+
         await analyticsService.performEventRequest("any.analytics.event")
         
         XCTAssertEqual(analyticsService.http?.customBaseURL?.absoluteString, "https://api-m.paypal.com")
@@ -25,7 +25,13 @@ final class BTAnalyticsService_Tests: XCTestCase {
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
+        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient, configuration: BTConfiguration(json: BTJSON(
+            value: [
+                "analytics": ["url": "test://do-not-send.url"],
+                "merchantId": "a-fake-merchantID"
+            ]
+        )))
+
         analyticsService.shouldBypassTimerQueue = true
 
         analyticsService.http = mockAnalyticsHTTP
