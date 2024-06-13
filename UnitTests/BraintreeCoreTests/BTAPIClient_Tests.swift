@@ -96,6 +96,31 @@ class BTAPIClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
+    func testFetchOrReturnRemoteConfiguration_with_multiple_calls() {
+
+        let mockHTTP = FakeHTTP.fakeHTTP()
+
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        apiClient?.configurationHTTP = mockHTTP
+
+        let expectation = expectation(description: "Callback invoked")
+        expectation.expectedFulfillmentCount = 3
+
+        apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
+            expectation.fulfill()
+        }
+
+        apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
+            expectation.fulfill()
+        }
+
+        apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+        XCTAssertEqual(mockHTTP.GETRequestCount, 1)
+    }
+
     func testAPIClient_canGetRemoteConfiguration() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockHTTP = FakeHTTP.fakeHTTP()
