@@ -30,7 +30,7 @@ import Foundation
     }
 
     private var isLoadingConfig: Bool = false
-    private var fetchConfigQueue: DispatchQueue = DispatchQueue(label: "configQueue", attributes: .concurrent)
+    private var fetchConfigQueue: DispatchQueue = DispatchQueue(label: "configQueue")
     private var configCompletionHandlers: [(BTConfiguration?, Error?) -> Void] = []
 
     private static var _analyticsService: BTAnalyticsService?
