@@ -85,6 +85,31 @@ class BTAPIClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
+    func testFetchOrReturnRemoteConfiguration_with_multiple_calls() {
+
+        let mockHTTP = FakeHTTP.fakeHTTP()
+
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        apiClient?.http = mockHTTP
+
+        let expectation = expectation(description: "Callback invoked")
+        expectation.expectedFulfillmentCount = 3
+
+        apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
+            expectation.fulfill()
+        }
+
+        apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
+            expectation.fulfill()
+        }
+
+        apiClient?.fetchOrReturnRemoteConfiguration() { configuration, error in
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+        XCTAssertEqual(mockHTTP.GETRequestCount, 1)
+    }
+
     func testAPIClient_canGetRemoteConfiguration() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockHTTP = FakeHTTP.fakeHTTP()
@@ -393,49 +418,6 @@ class BTAPIClient_Tests: XCTestCase {
     func testAnalyticsService_isCreatedDuringInitialization() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         XCTAssertTrue(apiClient?.analyticsService is BTAnalyticsService)
-    }
-
-    func testSendAnalyticsEvent_whenCalled_callsAnalyticsService() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
-
-        apiClient.analyticsService = mockAnalyticsService
-        apiClient.sendAnalyticsEvent("blahblah")
-
-        XCTAssertEqual(mockAnalyticsService.lastEvent, "blahblah")
-    }
-
-    func testFetchAPITiming_whenConfigurationPathIsValid_sendsLatencyEvent() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
-        apiClient.analyticsService = mockAnalyticsService
-
-        apiClient.fetchAPITiming(path: "/merchants/1234567890/client_api/v1/configuration", startTime: 12345678, endTime: 0987654)
-
-        XCTAssertEqual(mockAnalyticsService.lastEvent, "core:api-request-latency")
-        XCTAssertEqual(mockAnalyticsService.endpoint, "/v1/configuration")
-    }
-
-    func testFetchAPITiming_whenPathIsBatchEvents_doesNotSendLatencyEvent() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
-        apiClient.analyticsService = mockAnalyticsService
-
-        apiClient.fetchAPITiming(path: "/v1/tracking/batch/events", startTime: 12345678, endTime: 0987654)
-
-        XCTAssertNil(mockAnalyticsService.lastEvent)
-        XCTAssertNil(mockAnalyticsService.endpoint)
-    }
-
-    func testFetchAPITiming_whenPathIsNotBatchEvents_sendLatencyEvent() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
-        apiClient.analyticsService = mockAnalyticsService
-
-        apiClient.fetchAPITiming(path: "/merchants/1234567890/client_api/v1/paypal_hermes/create_payment_resource", startTime: 12345678, endTime: 0987654)
-
-        XCTAssertEqual(mockAnalyticsService.lastEvent, "core:api-request-latency")
-        XCTAssertEqual(mockAnalyticsService.endpoint, "/v1/paypal_hermes/create_payment_resource")
     }
 
     // MARK: - Client SDK Metadata
