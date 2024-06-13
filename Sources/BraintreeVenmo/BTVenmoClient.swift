@@ -65,7 +65,6 @@ import BraintreeCore
     @objc(tokenizeWithVenmoRequest:completion:)
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         linkType = request.fallbackToWeb ? "universal" : "deeplink"
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
         if returnURLScheme == "" {
@@ -86,7 +85,9 @@ import BraintreeCore
                 self.notifyFailure(with: BTVenmoError.fetchConfigurationFailed, completion: completion)
                 return
             }
-            
+
+            self.apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: self.shouldVault, linkType: self.linkType)
+
             do {
                 let _ = try self.verifyAppSwitch(with: configuration, fallbackToWeb: request.fallbackToWeb)
             } catch {

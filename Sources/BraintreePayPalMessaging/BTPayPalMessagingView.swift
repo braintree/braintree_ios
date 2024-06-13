@@ -41,8 +41,7 @@ public class BTPayPalMessagingView: UIView {
             integrationName: "BT_SDK",
             integrationVersion: BTCoreConstants.braintreeSDKVersion
         )
-        
-        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
+
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error)
@@ -53,6 +52,8 @@ public class BTPayPalMessagingView: UIView {
                 self.notifyFailure(with: BTPayPalMessagingError.fetchConfigurationFailed)
                 return
             }
+
+            self.apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
 
             guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
                 self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
