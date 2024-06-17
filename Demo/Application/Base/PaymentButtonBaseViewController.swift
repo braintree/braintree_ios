@@ -29,7 +29,7 @@ class PaymentButtonBaseViewController: BaseViewController {
             paymentButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             paymentButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             paymentButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            paymentButton.heightAnchor.constraint(equalToConstant: 300)
+            paymentButton.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
 
