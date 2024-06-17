@@ -142,7 +142,6 @@ class BTAnalyticsService: Equatable {
         if await !BTAnalyticsService.events.isEmpty {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
-
                 let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events.allValues)
                 http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
                 await BTAnalyticsService.events.removeAll()
