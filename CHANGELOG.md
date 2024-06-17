@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
+
 ## 6.21.0 (2024-06-12)
 * BraintreePayPal
   * Add PayPal App Switch vault flow (BETA)
