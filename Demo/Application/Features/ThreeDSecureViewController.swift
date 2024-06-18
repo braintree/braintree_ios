@@ -91,6 +91,8 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
 
     private func createThreeDSecureRequest(with nonce: String) -> BTThreeDSecureRequest {
         let request = BTThreeDSecureRequest()
+        
+        request.customFields = ["poop": "poop"]
         request.threeDSecureRequestDelegate = self
         request.amount = 10.32
         request.nonce = nonce
