@@ -28,6 +28,8 @@ struct FPTIBatchData: Codable {
 
         static var application: URLOpener = UIApplication.shared
 
+        /// The time immediately before a networking task started establishing a TCP connection to the server. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
+        let connectionStartTime: Int?
         let correlationID: String?
         let endpoint: String?
         let endTime: Int?
@@ -41,12 +43,15 @@ struct FPTIBatchData: Codable {
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
         let payPalInstalled: Bool = application.isPayPalAppInstalled()
+        /// The time immediately before a networking task started requesting a HTTP resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
+        let requestStartTime: Int?
         let startTime: Int?
         let timestamp: String
         let tenantName: String = "Braintree"
         let venmoInstalled: Bool = application.isVenmoAppInstalled()
 
         enum CodingKeys: String, CodingKey {
+            case connectionStartTime = "connect_start"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
@@ -54,6 +59,7 @@ struct FPTIBatchData: Codable {
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
             case payPalInstalled = "paypal_installed"
+            case requestStartTime = "request_start"
             case timestamp = "t"
             case tenantName = "tenant_name"
             case startTime = "start_time"
@@ -76,7 +82,7 @@ struct FPTIBatchData: Codable {
 
         let clientOS: String = UIDevice.current.systemName + " " + UIDevice.current.systemVersion
 
-        let component = "braintreeclientsdk"
+        let component = "sammy-test"
 
         let deviceManufacturer = "Apple"
 
