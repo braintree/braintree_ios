@@ -388,25 +388,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
         metrics.transactionMetrics.forEach { transaction in
-            
-            if let fetchStart = transaction.fetchStartDate,
-               let domainStart = transaction.domainLookupStartDate,
-               let connectStart = transaction.connectStartDate,
-               let requestStart = transaction.requestStartDate,
-               let responseEnd = transaction.responseEndDate {
-                let taskTime = domainStart.utcTimestampMilliseconds - fetchStart.utcTimestampMilliseconds
-                let dnsTime = connectStart.utcTimestampMilliseconds - domainStart.utcTimestampMilliseconds
-                let connectTime = requestStart.utcTimestampMilliseconds - connectStart.utcTimestampMilliseconds
-                let httpTime = responseEnd.utcTimestampMilliseconds - requestStart.utcTimestampMilliseconds
-                let totalTime = responseEnd.utcTimestampMilliseconds - fetchStart.utcTimestampMilliseconds
-                print("path: \(transaction.request.url?.path)")
-                print("taskTime: \(taskTime)")
-                print("dnsTime: \(dnsTime)")
-                print("connectTime: \(connectTime)")
-                print("httpTime: \(httpTime)")
-                print("totalTime: \(totalTime)")
-            }
-            
             if let startDate = transaction.fetchStartDate,
                let endDate = transaction.responseEndDate,
                let path = transaction.request.url?.path {
