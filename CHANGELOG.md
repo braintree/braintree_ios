@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeThreeDSecure
+  * Add `customFields` param to `verifyCard`
 * BraintreeCore
   * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
 
