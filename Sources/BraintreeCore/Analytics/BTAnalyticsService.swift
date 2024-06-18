@@ -103,52 +103,51 @@ class BTAnalyticsService: Equatable {
 
         await BTAnalyticsService.events.append(event)
         
-        do {
-            let configuration = try await apiClient.fetchConfiguration()
-            
-            // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
-            if self.http == nil {
-                self.http = BTHTTP(authorization: self.apiClient.authorization, customBaseURL: BTAnalyticsService.url)
-            }
-
-            // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if let http = self.http, http.customBaseURL?.absoluteString == "test://do-not-send.url" {
-                return
-            }
-            
-            if shouldBypassTimerQueue {
-                await self.sendQueuedAnalyticsEvents(configuration: configuration)
-                return
-            }
-
-            if BTAnalyticsService.timer == nil {
-                BTAnalyticsService.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
-                BTAnalyticsService.timer?.schedule(
-                    deadline: .now() + .seconds(self.timerInterval),
-                    repeating: .seconds(self.timerInterval),
-                    leeway: .seconds(1)
-                )
-
-                BTAnalyticsService.timer?.setEventHandler {
-                    Task {
-                        await self.sendQueuedAnalyticsEvents(configuration: configuration)
-                    }
-                }
-
-                BTAnalyticsService.timer?.resume()
-            }
-        } catch {
+        // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
+        if self.http == nil {
+            self.http = BTHTTP(authorization: self.apiClient.authorization, customBaseURL: BTAnalyticsService.url)
+        }
+        
+        // A special value passed in by unit tests to prevent BTHTTP from actually posting
+        if let http = self.http, http.customBaseURL?.absoluteString == "test://do-not-send.url" {
             return
+        }
+        
+        if shouldBypassTimerQueue {
+            await self.sendQueuedAnalyticsEvents()
+            return
+        }
+        
+        if BTAnalyticsService.timer == nil {
+            BTAnalyticsService.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
+            BTAnalyticsService.timer?.schedule(
+                deadline: .now() + .seconds(self.timerInterval),
+                repeating: .seconds(self.timerInterval),
+                leeway: .seconds(1)
+            )
+            
+            BTAnalyticsService.timer?.setEventHandler {
+                Task {
+                    await self.sendQueuedAnalyticsEvents()
+                }
+            }
+            
+            BTAnalyticsService.timer?.resume()
         }
     }
 
     // MARK: - Helpers
 
-    func sendQueuedAnalyticsEvents(configuration: BTConfiguration) async {
+    func sendQueuedAnalyticsEvents() async {
         if await !BTAnalyticsService.events.isEmpty {
-            let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events.allValues)
-            http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-            await BTAnalyticsService.events.removeAll()
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
+                let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events.allValues)
+                http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
+                await BTAnalyticsService.events.removeAll()
+            } catch {
+                return
+            }
         }
     }
 
