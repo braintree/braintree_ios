@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeThreeDSecure
-  * Add `customFields` param to `verifyCard`
+  * Add `customFields` param to `BTThreeDSecureRequest`
 * BraintreeCore
   * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
 
