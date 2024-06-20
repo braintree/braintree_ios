@@ -10,6 +10,7 @@ import BraintreePayPal
 
 import PayPalCheckout
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 /// Client used to collect PayPal payment methods. If possible, this client will present a native flow; otherwise, it will fall back to a web flow.
 @objc public class BTPayPalNativeCheckoutClient: NSObject {
 
