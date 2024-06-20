@@ -36,7 +36,7 @@ public class BTWebAuthenticationSession: NSObject {
         if #available(iOS 17.4, *), (universalLink != nil) {
             authenticationSession = ASWebAuthenticationSession(
                 url: url,
-                callback: ASWebAuthenticationSession.Callback.https(host: universalLink!.host!, path: universalLink!.path),
+                callback: .https(host: universalLink!.host!, path: "braintree-payments/onetouch/v1/success"), // TODO: set path dynamically
                 completionHandler: sharedHandler
             )
         } else {

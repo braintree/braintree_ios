@@ -384,9 +384,10 @@ import BraintreeDataCollector
             hostAndPath.append("/")
         }
         
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
-            return false
-        }
+        // TODO: uncomment and fixup
+//        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
+//            return false
+//        }
 
         guard let action = action(from: url),
               let query = url.query,
