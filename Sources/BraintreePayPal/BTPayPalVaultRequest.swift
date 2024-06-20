@@ -83,66 +83,170 @@ import BraintreeCore
 
 public struct BTPayPalRecurringBillingAgreementMetadata {
     
+    // An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle.
+    // Required
     let billingCycles: [BTPayPalRecurringBillingCycle]
+    
+    /// The three-character ISO-4217 currency code that identifies the currency.
+    // Required
     let currencyISOCode: String
-    let name: String
-    let productDescription: String
-    let productQuantity: Int
-    let oneTimeFeeAmount: String
-    let shippingAmount: String
-    let productPrice: String
-    let taxAmount: String
+    
+    // Indicates the name of the plan to displayed at checkout.
+    // Optional.
+    let name: String?
+    
+    // Description at the checkout
+    // Optional
+    let productDescription: String?
+    
+    // Quantity associated with the product
+    // Optional
+    let productQuantity: Int?
+    
+    // Price and currency for any one-time charges due at plan signup.
+     // Optional
+    let oneTimeFeeAmount: String?
+    
+    // The shipping amount for the billing cycle at the time of checkout.
+    // Optional
+    let shippingAmount: String?
+    
+    // The item price for the product associated with the billing cycle at the time of checkout.
+    // Optional
+    let productPrice: String?
+    
+    // The taxes for the billing cycle at the time of checkout.
+     // Optional
+    let taxAmount: String?
     
     func parameters() -> [String: Any] {
-        return [
-            "billing_cycles": billingCycles.map({ $0.parameters() }),
-            "currency_iso_code": currencyISOCode,
-            "name": name,
-            "product_description": productDescription,
-            "product_quantity": productQuantity,
-            "one_time_fee_amount": oneTimeFeeAmount,
-            "shipping_amount": shippingAmount,
-            "product_price": productPrice,
-            "tax_amount": taxAmount
-        ]
+        var parameters: [String: Any] = [:]
+        
+        parameters["currency_iso_code"] = currencyISOCode
+        parameters["billing_cycles"] = billingCycles.map({ $0.parameters() })
+        
+        if let name {
+            parameters["name"] = name
+        }
+        
+        if let productDescription {
+            parameters["product_desription"] = productDescription
+        }
+        
+        if let productQuantity {
+            parameters["product_quantity"] = productQuantity
+        }
+        
+        if let oneTimeFeeAmount {
+            parameters["one_time_fee_amount"] = oneTimeFeeAmount
+        }
+        
+        if let shippingAmount {
+            parameters["shipping_amount"] = shippingAmount
+        }
+        
+        if let productPrice {
+            parameters["product_price"] = productPrice
+        }
+        
+        if let taxAmount {
+            parameters["tax_amount"] = taxAmount
+        }
+        
+        return parameters
     }
 }
 
 public struct BTPayPalRecurringBillingCycle {
     
+    /// The number of intervals after which a subscriber is charged or billed.
+    /// For example, if the interval_unit is DAY with an interval_count of 2, the subscription is billed once every two days.
+    /// Maximum values [{DAY -> 365}, {WEEK, 52}, {MONTH, 12}, {YEAR, 1}]
+    // Required
     let billingFrequency: Int
+    
+    /// The interval at which the payment is charged or billed.
+    // Required
+    ///DAY, WEEK, MONTH, YEAR
     let billingFrequencyUnit: String
+    
+    // The number of times this billing cycle gets executed. Trial billing cycles can only be executed a finite number of times (value between 1 and 999 for total_cycles).
+    // Regular billing cycles can be executed infinite times (value of 0 for total_cycles) or a finite number of times (value between 1 and 999 for total_cycles).
+    // Required
     let numberOfExecutions: Int
-    let sequence: Int
-    let startDate: String
+    
+    // The sequence of the billing cycle.
+       // Starting value 1 and max value 100, Default is 1. All billing cycles should have unique sequence values.
+    // Optional
+    let sequence: Int?
+    
+    // Indicates the start date for this billing cycle.
+    // string [ 20 .. 64 ] characters ^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|...Show pattern
+    // The date and time when the billing cycle starts, in Internet date and time format.
+    // If not provided the billing cycle starts at the time of checkout.
+    // If provided and the merchant wants the billing cycle to start at the time of checkout, provide the current time.
+    // Otherwise the start_date can be in future
+    // There can be only one max null startDate in the billing cycle list.
+    // Optional.
+    let startDate: String?
+    
+    // The tenure type of the billing cycle. In case of a plan having trial cycle, only 2 trial cycles are allowed per plan.
+    // TRIAL or REGULAR
+    // Required
     let trial: Bool
-    let pricingScheme: BTPayPalRecurringPricingScheme
+    
+    // The active pricing scheme for this billing cycle. A free trial billing cycle does not require a pricing scheme.
+    // Optional for TRIAL tenureType, Required for REGULAR
+    let pricingScheme: BTPayPalRecurringPricingScheme?
     
     func parameters() -> [String: Any] {
-        return [
-            "billing_frequency": billingFrequency,
-            "billing_frequency_unit": billingFrequencyUnit,
-            "number_of_executions": numberOfExecutions,
-            "sequence": sequence,
-            "start_date": startDate,
-            "trial": trial,
-            "price_scheme": pricingScheme.parameters(),
-        ]
+        var parameters: [String: Any] = [:]
+        
+        parameters["billing_frequency"] = billingFrequency
+        parameters["billing_frequency_unit"] = billingFrequencyUnit
+        parameters["number_of_executions"] = numberOfExecutions
+        parameters["trial"] = trial
+        
+        if let sequence {
+            parameters["sequence"] = sequence
+        }
+        
+        if let startDate {
+            parameters["start_date"] = startDate
+        }
+        
+        if let pricingScheme {
+            parameters["price_scheme"] = pricingScheme.parameters()
+        }
+
+        return parameters
     }
 }
 
 public struct BTPayPalRecurringPricingScheme {
     
-    // TODO - What are the options here "AUTO_RELOAD", "FIXED"
+    // FIXED, VARIABLE, AUTO_RELOAD
+    // Required
     let pricingModel: String
+    
+    // The amount to charge for the subscription, recurring, UCOF or installments.
+    // Required
     let price: String
-    let reloadThresholdAmount: String
+    
+    // Optional
+    // The reload trigger threshold condition amount when the customer is charged.
+    let reloadThresholdAmount: String?
     
     func parameters() -> [String: Any] {
-        return [
-            "pricing_model": pricingModel,
-            "price": price,
-            "reload_threshold_amount": reloadThresholdAmount
-        ]
+        var parameters: [String: Any] = [:]
+        
+        parameters["pricing_model"] = pricingModel
+        parameters["price"] = price
+        
+        if let reloadThresholdAmount {
+            parameters["reload_threshold_amount"] = reloadThresholdAmount
+        }
+        
+        return parameters
     }
 }
