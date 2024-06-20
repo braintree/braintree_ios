@@ -49,7 +49,9 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }()
     
     override func viewDidLoad() {
+        super.heightConstraint = 100
         super.viewDidLoad()
+
         createSubviews()
         layoutConstraints()
     }
