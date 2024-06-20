@@ -167,8 +167,14 @@ public struct BTPayPalRecurringBillingCycle {
     
     /// The interval at which the payment is charged or billed.
     // Required
-    ///DAY, WEEK, MONTH, YEAR
-    let billingFrequencyUnit: String
+    let billingFrequencyUnit: BTPayPalBillingFrequency
+    
+    public enum BTPayPalBillingFrequency: String {
+        case day = "DAY"
+        case week = "WEEK"
+        case month = "MONTH"
+        case year = "YEAR"
+    }
     
     // The number of times this billing cycle gets executed. Trial billing cycles can only be executed a finite number of times (value between 1 and 999 for total_cycles).
     // Regular billing cycles can be executed infinite times (value of 0 for total_cycles) or a finite number of times (value between 1 and 999 for total_cycles).
@@ -227,7 +233,13 @@ public struct BTPayPalRecurringPricingScheme {
     
     // FIXED, VARIABLE, AUTO_RELOAD
     // Required
-    let pricingModel: String
+    let pricingModel: BTPayPalPricingModel
+    
+    public enum BTPayPalPricingModel: String {
+        case fixed = "FIXED"
+        case variable = "VARIABLE"
+        case autoReload = "AUTO_RELOAD"
+    }
     
     // The amount to charge for the subscription, recurring, UCOF or installments.
     // Required
