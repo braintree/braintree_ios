@@ -18,6 +18,12 @@ import BraintreeCore
     /// Defaults to `false`.
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
+    
+    /// TODO: - What are options for this string? Enum instead? "RECURRING", "SUBSCRIPTION"
+    var planType: String?
+    
+    /// TODO: - Docstrings
+    var planMetadata: BTPayPalRecurringBillingAgreementMetadata?
 
     // MARK: - Initializers
 
@@ -62,7 +68,81 @@ import BraintreeCore
             ]
             return baseParameters.merging(appSwitchParameters) { $1 }
         }
+        
+        if let planType {
+            baseParameters["plan_type"] = planType
+        }
+        
+        if let planMetadata {
+            baseParameters["plan_metadata"] = planMetadata.parameters()
+        }
 
         return baseParameters
+    }
+}
+
+public struct BTPayPalRecurringBillingAgreementMetadata {
+    
+    let billingCycles: [BTPayPalRecurringBillingCycle]
+    let currencyISOCode: String
+    let name: String
+    let productDescription: String
+    let productQuantity: Int
+    let oneTimeFeeAmount: String
+    let shippingAmount: String
+    let productPrice: String
+    let taxAmount: String
+    
+    func parameters() -> [String: Any] {
+        return [
+            "billing_cycles": billingCycles.map({ $0.parameters() }),
+            "currency_iso_code": currencyISOCode,
+            "name": name,
+            "product_description": productDescription,
+            "product_quantity": productQuantity,
+            "one_time_fee_amount": oneTimeFeeAmount,
+            "shipping_amount": shippingAmount,
+            "product_price": productPrice,
+            "tax_amount": taxAmount
+        ]
+    }
+}
+
+public struct BTPayPalRecurringBillingCycle {
+    
+    let billingFrequency: Int
+    let billingFrequencyUnit: String
+    let numberOfExecutions: Int
+    let sequence: Int
+    let startDate: String
+    let trial: Bool
+    let pricingScheme: BTPayPalRecurringPricingScheme
+    
+    func parameters() -> [String: Any] {
+        return [
+            "billing_frequency": billingFrequency,
+            "billing_frequency_unit": billingFrequencyUnit,
+            "number_of_executions": numberOfExecutions,
+            "sequence": sequence,
+            "start_date": startDate,
+            "trial": trial,
+            "price_scheme": pricingScheme.parameters(),
+        ]
+    }
+}
+
+public struct BTPayPalRecurringPricingScheme {
+    
+    // TODO - What are the options here "AUTO_RELOAD", "FIXED"
+    let pricingModel: String
+    let price: String
+    let reloadThresholdAmount: String
+    
+    func parameters() -> [String: Any] {
+        return [
+            "pricing_model": pricingModel,
+            "price": price,
+            "reload_threshold_amount": reloadThresholdAmount
+        ]
     }
 }
