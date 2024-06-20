@@ -46,8 +46,16 @@ import BraintreeCore
     /// Initializes a PayPal Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    ///   - TODO
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    public init(offerCredit: Bool = false, userAuthenticationEmail: String? = nil) {
+    public init(
+        offerCredit: Bool = false,
+        planType: String? = nil,
+        planMetadata: BTPayPalRecurringBillingAgreementMetadata? = nil,
+        userAuthenticationEmail: String? = nil
+    ) {
+        self.planType = planType
+        self.planMetadata = planMetadata
         self.userAuthenticationEmail = userAuthenticationEmail
         super.init(offerCredit: offerCredit)
     }

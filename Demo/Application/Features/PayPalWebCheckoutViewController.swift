@@ -40,6 +40,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }()
     
     let newPayPalCheckoutToggle = UISwitch()
+    
+    lazy var rbaDataToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Recurring Billing (RBA) Data"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let rbaDataToggle = UISwitch()
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
@@ -101,8 +110,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalVaultRequest()
+        var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
+        
+        // TODO
+        if rbaDataToggle.isOn {
+            request = BTPayPalVaultRequest(
+                planType: "STUFF",
+                planMetadata: nil
+            )
+        }
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
