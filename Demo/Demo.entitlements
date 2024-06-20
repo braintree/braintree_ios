@@ -5,7 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:mobile-sdk-demo-site-838cead5d3ab.herokuapp.com</string>
-		<string>webcredentials:mobile-sdk-demo-site-838cead5d3ab.herokuapp.com?mode=developer</string>
+		<string>webcredentials:mobile-sdk-demo-site-838cead5d3ab.herokuapp.com</string>
 	</array>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>
