@@ -8,7 +8,6 @@ class AmexViewController: PaymentButtonBaseViewController {
     lazy var cardClient = BTCardClient(apiClient: apiClient)
 
     override func viewDidLoad() {
-        super.heightConstraint = 100
         super.viewDidLoad()
         title = "Amex"
     }

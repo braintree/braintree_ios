@@ -6,7 +6,6 @@ class VenmoViewController: PaymentButtonBaseViewController {
     var venmoClient: BTVenmoClient!
     
     override func viewDidLoad() {
-        super.heightConstraint = 100
         super.viewDidLoad()
         venmoClient = BTVenmoClient(apiClient: apiClient)
         title = "Custom Venmo Button"
